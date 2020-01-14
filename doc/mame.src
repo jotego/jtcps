@@ -1,0 +1,12 @@
+wpset 800102,2,w,1,{printf "SCR1 base = %X", wpdata;g}
+wpset 800104,2,w,1,{printf "SCR2 base = %X", wpdata;g}
+wpset 800106,2,w,1,{printf "SCR3 base = %X", wpdata;g}
+
+wpset 80010c,2,w,1,{printf "SCR1 X = %X", wpdata;g}
+wpset 80010e,2,w,1,{printf "SCR1 Y = %X", wpdata;g}
+
+wpset 800110,2,w,1,{printf "SCR2 X = %X", wpdata;g}
+wpset 800112,2,w,1,{printf "SCR2 Y = %X", wpdata;g}
+
+wpset 800114,2,w,1,{printf "SCR3 X = %X", wpdata;g}
+wpset 800116,2,w,1,{printf "SCR3 Y = %X", wpdata;g}
