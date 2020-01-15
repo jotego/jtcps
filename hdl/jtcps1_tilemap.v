@@ -59,9 +59,9 @@ reg [15:0] code,attr;
 wire [11:0] scan;
 
 case(SIZE)
-    8:  assign scan = { vn[5],   hn[5:0], vn[4:0] };
-    16: assign scan = { vn[5:4], hn[5:0], vn[3:0] };
-    32: assign scan = { vn[5:3], hn[5:0], vn[2:0] };
+    8:  assign scan = { vn[8],   hn[8:3], vn[7:3] };
+    16: assign scan = { vn[8:7], hn[8:3], vn[6:3] };
+    32: assign scan = { vn[8:6], hn[8:3], vn[5:3] };
 endcase
 
 function [3:0] colour;
@@ -74,9 +74,11 @@ always @(posedge clk or posedge rst) begin
         rom_cs  <= 1'b0;
         vram_cs <= 1'b0;
         buf_wr  <= 1'b0;
+        done    <= 1'b0;
         st      <= 0;
     end else begin
         rom_addr[1:0] <= hn[1:0];
+        st <= st+1;
         case( st ) 
             0: begin
                 rom_cs   <= 1'b0;
@@ -90,22 +92,22 @@ always @(posedge clk or posedge rst) begin
             1: begin
                 vram_addr <= { vram_base, 8'd0 } + { 11'd0, scan, 1'b0};
                 vram_cs   <= 1'b1;
-                if( buf_addr== 9'd383 ) begin
+                if( buf_addr>= 9'd383 ) begin
                     buf_wr <= 1'b0;
                     done   <= 1'b1;
-                    st     <= 1'b0;
+                    st     <= 0;
                 end
             end
             3: if( vram_ok ) begin
                 code         <= vram_data;
                 vram_addr[0] <= 1'b1;
                 st <= 50;
-            end else st<=3;
-            50: if( vram_ok ) begin
+            end else st<=st;
+            51: if( vram_ok ) begin
                 attr    <= vram_data;
                 vram_cs <= 1'b0;
                 st <= 4;
-            end
+            end else st<=st;
             4: begin
                 case (SIZE)
                     8:  rom_addr[21:2] <= { 1'b0, code, vn[2:0] };
@@ -117,7 +119,7 @@ always @(posedge clk or posedge rst) begin
             6: if(rom_ok) begin
                 pxl_data <= rom_data;   // 16 bits = 16/4 = 4 pixels
                 hn <= hn + 9'd4;
-            end
+            end else st<=6;
             7,8,9,10,    12,13,14,15, 
             17,18,19,20, 22,23,24,25,
             27,28,29,30, 32,33,34,35,
@@ -130,14 +132,14 @@ always @(posedge clk or posedge rst) begin
             11, 21, 31, 36, 41: if(rom_ok) begin // next 4 pixels
                 pxl_data <= rom_data;
                 hn <= hn + 9'd4;
-            end
+            end else st<=st;
             16: begin
                 if( SIZE==8 ) begin
                     st <= 1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 9'd4;    // pixels 8-12
-                end
+                end else st<=st;
             end
             26: begin
                 if( SIZE==16 ) begin
@@ -145,7 +147,7 @@ always @(posedge clk or posedge rst) begin
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 9'd4; // pixels 16-20
-                end
+                end else st<=st;
             end
             46: st <= 1; // end
         endcase
