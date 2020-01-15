@@ -7,7 +7,7 @@ reg  [ 7:0] v;
 
 reg  [15:0] vram_base=16'h9000, hpos=16'hffc0, vpos=16'h0, vram_data, rom_data;
 wire        done, vram_cs, rom_cs, buf_wr;
-wire [21:0] rom_addr;
+wire [22:0] rom_addr;
 wire [23:0] vram_addr;
 reg  [23:0] last_vram;
 wire [ 8:0] buf_addr;
@@ -15,6 +15,7 @@ wire [ 7:0] buf_data;
 reg  [15:0] vram[0:98303]; // 17 bits
 reg  [16:0] vram_dec;
 wire [ 2:0] buf_cs;
+wire [ 4:1] gfx_cen;
 
 assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
@@ -49,6 +50,11 @@ jtcps1_tilemap UUT(
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),
     .buf_wr     ( buf_wr        )
+);
+
+jtcps1_gfx_pal u_palb(
+    .a  ( rom_addr[22:10] ),
+    .cen( gfx_cen         )
 );
 
 initial begin

@@ -18,6 +18,10 @@
     
 `timescale 1ns/1ps
 
+// Scroll 1 is 512x512, 8x8 tiles
+// Scroll 2 is 1024x1024 16x16 tiles
+// Scroll 3 is 2048x2048 32x32 tiles
+
 module jtcps1_tilemap(
     input              rst,
     input              clk,
@@ -36,7 +40,7 @@ module jtcps1_tilemap(
     input              vram_ok,
     output reg         vram_cs,
 
-    output reg [21:0]  rom_addr,    // up to 1 MB
+    output reg [22:0]  rom_addr,    // up to 1 MB
     input      [15:0]  rom_data,
     output reg         rom_cs,
     input              rom_ok,
@@ -47,6 +51,7 @@ module jtcps1_tilemap(
 );
 
 parameter SIZE=8; // 8, 16 or 32
+
 reg [ 9:0] vn;
 reg [ 8:0] hn;
 reg [15:0] pxl_data;
@@ -57,11 +62,21 @@ reg [21:0] tile_addr;
 reg [15:0] code,attr;
 
 wire [11:0] scan;
+wire [ 2:0] rom_id;
 
 case(SIZE)
-    8:  assign scan = { vn[8],   hn[8:3], vn[7:3] };
-    16: assign scan = { vn[8:7], hn[8:3], vn[6:3] };
-    32: assign scan = { vn[8:6], hn[8:3], vn[5:3] };
+    8:  begin
+        assign scan = { vn[8],   hn[8:3], vn[7:3] };
+        assign rom_id = 3'b001;
+    end
+    16: begin
+        assign scan = { vn[8:7], hn[8:3], vn[6:3] };
+        assign rom_id = 3'b010;
+    end
+    32: begin
+        assign scan = { vn[8:6], hn[8:3], vn[5:3] };
+        assign rom_id = 3'b011;
+    end
 endcase
 
 function [3:0] colour;
@@ -71,13 +86,13 @@ endfunction
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
-        rom_cs  <= 1'b0;
-        vram_cs <= 1'b0;
-        buf_wr  <= 1'b0;
-        done    <= 1'b0;
-        st      <= 0;
+        rom_cs          <= 1'b0;
+        vram_cs         <= 1'b0;
+        buf_wr          <= 1'b0;
+        done            <= 1'b0;
+        st              <= 0;
+        rom_addr[22:20] <= rom_id; // constant value
     end else begin
-        rom_addr[1:0] <= hn[1:0];
         st <= st+1;
         case( st ) 
             0: begin
@@ -87,7 +102,10 @@ always @(posedge clk or posedge rst) begin
                 hn       <= {hpos[8:3],3'd0};
                 buf_addr <= 9'd0-hpos[2:0];
                 buf_wr   <= 1'b0;
-                if(!start) st<=0;
+                if(!start) begin
+                    st   <= 0;
+                    done <= 1'b0;
+                end
             end
             1: begin
                 vram_addr <= { vram_base, 8'd0 } + { 11'd0, scan, 1'b0};
@@ -110,9 +128,9 @@ always @(posedge clk or posedge rst) begin
             end else st<=st;
             4: begin
                 case (SIZE)
-                    8:  rom_addr[21:2] <= { 1'b0, code, vn[2:0] };
-                    16: rom_addr[21:2] <= { code, vn[3:0] };
-                    32: rom_addr[21:2] <= { code[14:0], vn[3:0], buf_addr[3] };
+                    8:  rom_addr[19:0] <= { 1'b0, code, vn[2:0] };
+                    16: rom_addr[19:0] <= { code, vn[3:0] };
+                    32: rom_addr[19:0] <= { code[14:0], vn[3:0], buf_addr[3] };
                 endcase
                 rom_cs    <= 1'b1;
             end

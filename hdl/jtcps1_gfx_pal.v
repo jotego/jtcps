@@ -6,7 +6,7 @@
 
     JTCPS1 program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR a PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -18,7 +18,7 @@
     
 `timescale 1ns/1ps
 
-// pin A
+// pin a
 // 1   output enable, ignored
 // 2   22
 // 3   21
@@ -34,18 +34,26 @@
 // 17  11
 // 18  10 
 
+// A[22:20]   Usage
+// 000        OBJ
+// 001        SCROLL 1
+// 010        SCROLL 2
+// 011        SCROLL 3
+// 100        Star field
+
 module jtcps1_gfx_pal(
     input   [22:10] a,  // pins 2-9, 11,13,15,17,18
     output  [4:1]   cen // pins 12, 14, 16, 19
 );
 
-// Ghouls'n Ghosts
-assign cen[4] = 1'b1;
+// Ghouls'n Ghosts (dm620.2a)
+// jedutil -view dm620.2a  GAL16V8
+assign cen[4] = 1'b0;
 assign cen[3] = &{~a[22:20],a[16]}; // /i2 & /i3 & /i4 & i8
 assign cen[2] = &{~a[22],a[21:20],a[16]}; // /i2 & i3 & i4 & /i8
 // /i2 & /i3 & i4 +
 // /i2 & /i4 & /i8 +
 // /i2 & i3 & /i4
-assign cen[1] = ~A[22] & (~A[21]&A[20] + ~A[20]&~A[16] + A[21] & ~A[20]);
+assign cen[1] = ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20]));
 
 endmodule
