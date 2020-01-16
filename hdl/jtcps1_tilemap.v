@@ -41,7 +41,7 @@ module jtcps1_tilemap(
     output reg         vram_cs,
 
     output reg [22:0]  rom_addr,    // up to 1 MB
-    input      [15:0]  rom_data,
+    input      [31:0]  rom_data,
     output reg         rom_cs,
     input              rom_ok,
 
@@ -81,7 +81,7 @@ endcase
 
 function [3:0] colour;
     input [15:0] c;
-    colour = { c[12], c[8], c[4], c[0] };
+    colour = { c[24], c[16], c[8], c[0] };
 endfunction
 
 always @(posedge clk or posedge rst) begin
@@ -135,39 +135,39 @@ always @(posedge clk or posedge rst) begin
                 rom_cs    <= 1'b1;
             end
             6: if(rom_ok) begin
-                pxl_data <= rom_data;   // 16 bits = 16/4 = 4 pixels
-                hn <= hn + 9'd4;
+                pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
+                hn <= hn + 9'd8;
             end else st<=6;
-            7,8,9,10,    12,13,14,15, 
-            17,18,19,20, 22,23,24,25,
-            27,28,29,30, 32,33,34,35,
-            37,38,39,40, 42,43,44,45: begin
+            7,8,9,10,    11,12,13,14, 
+            16,17,18,19, 20,21,22,23,
+            25,26,27,28, 29,30,31,32,
+            34,35,36,37, 38,39,40,41: begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= colour(pxl_data);
                 pxl_data <= pxl_data>>1;
             end
-            11, 21, 31, 36, 41: if(rom_ok) begin // next 4 pixels
-                pxl_data <= rom_data;
-                hn <= hn + 9'd4;
-            end else st<=st;
-            16: begin
+            15: begin
                 if( SIZE==8 ) begin
                     st <= 1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
-                    hn <= hn + 9'd4;    // pixels 8-12
+                    hn <= hn + 9'd8;    // pixels 8-15
                 end else st<=st;
             end
-            26: begin
+            24: begin
                 if( SIZE==16 ) begin
                     st <= 1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
-                    hn <= hn + 9'd4; // pixels 16-20
+                    hn <= hn + 9'd8; // pixels 16-23
                 end else st<=st;
             end
-            46: st <= 1; // end
+            33: begin
+                pxl_data <= rom_data;
+                hn <= hn + 9'd8; // pixels 24-31
+            end
+            41: st <= 1; // end
         endcase
     end
 end

@@ -5,7 +5,8 @@ module test;
 reg         rst, clk, start, vram_ok, rom_ok=1'b1;
 reg  [ 7:0] v;
 
-reg  [15:0] vram_base=16'h9000, hpos=16'hffc0, vpos=16'h0, vram_data, rom_data;
+reg  [15:0] vram_base=16'h9000, hpos=16'hffc0, vpos=16'h0, vram_data;
+reg  [31:0] rom_data;
 wire        done, vram_cs, rom_cs, buf_wr;
 wire [22:0] rom_addr;
 wire [23:0] vram_addr;
