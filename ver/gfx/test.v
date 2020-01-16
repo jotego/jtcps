@@ -9,6 +9,7 @@ reg  [15:0] vram_base=16'h9000, hpos=16'hffc0, vpos=16'h0, vram_data;
 reg  [31:0] rom_data;
 wire        done, vram_cs, rom_cs, buf_wr;
 wire [22:0] rom_addr;
+reg  [22:0] last_rom;
 wire [23:0] vram_addr;
 reg  [23:0] last_vram;
 wire [ 8:0] buf_addr;
@@ -17,6 +18,8 @@ reg  [15:0] vram[0:98303]; // 17 bits
 reg  [16:0] vram_dec;
 wire [ 2:0] buf_cs;
 wire [ 4:1] gfx_cen;
+reg  [63:0] gfx_rom[0:393219];
+reg  [ 7:0] frame_buffer[0:131071];
 
 assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
@@ -29,6 +32,21 @@ always @(*) begin
         3'b100: vram_dec[16:15] = 2'b10;
     endcase    
     vram_dec[14:0] = vram_addr[14:0];
+end
+
+
+// GFX ROM
+wire [19:0] gfx_addr = rom_addr[19:0];
+wire [63:0] gfx_long = gfx_rom[ rom_addr[19:1] ];
+
+always @(posedge clk) begin
+    last_rom <= rom_addr;
+    rom_data <= !gfx_cen[1] ? ~32'd0 : (rom_addr[0] ? gfx_long[63:32] : gfx_long[31:0]);
+    rom_ok   <= last_rom == rom_addr;
+end
+
+initial begin
+    $readmemh( "gfx.hex", gfx_rom );
 end
 
 jtcps1_tilemap UUT(
@@ -75,6 +93,9 @@ end
 
 integer pxlcnt, framecnt;
 
+integer dumpcnt, fout;
+wire [31:0] video_dump = { 8'hff, {3{frame_buffer[dumpcnt]}} };
+
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         pxlcnt <= 0;
@@ -97,7 +118,20 @@ always @(posedge clk, posedge rst) begin
                 framecnt <= framecnt+1;
             end
         end
-        if ( framecnt==2 ) $finish;
+        if ( framecnt==2 ) begin
+            fout=$fopen("video.raw","wb");
+            for( dumpcnt=0; dumpcnt<512*256; dumpcnt=dumpcnt+1 ) begin
+                $fwrite(fout,"%u", video_dump);
+            end
+            $finish;
+        end
+    end
+end
+
+// frame buffer
+always @(posedge clk) begin
+    if( buf_wr ) begin
+        frame_buffer[ { v, buf_addr } ] <= { buf_data[3:0], buf_data[3:0] };
     end
 end
 
