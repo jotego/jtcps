@@ -37,11 +37,12 @@ end
 
 // GFX ROM
 wire [19:0] gfx_addr = rom_addr[19:0];
-wire [63:0] gfx_long = gfx_rom[ rom_addr[19:1] ];
+wire [63:0] gfx_long = gfx_rom[ rom_addr[19:0] ];
 
 always @(posedge clk) begin
     last_rom <= rom_addr;
-    rom_data <= !gfx_cen[1] ? ~32'd0 : (rom_addr[0] ? gfx_long[63:32] : gfx_long[31:0]);
+    //rom_data <= !gfx_cen[1] ? ~32'd0 : (rom_addr[0] ? gfx_long[63:32] : gfx_long[31:0]);
+    rom_data <= !gfx_cen[1] ? ~32'd0 : (1'b0 ? gfx_long[63:32] : gfx_long[31:0]);
     rom_ok   <= last_rom == rom_addr;
 end
 
@@ -131,7 +132,7 @@ end
 // frame buffer
 always @(posedge clk) begin
     if( buf_wr ) begin
-        frame_buffer[ { v, buf_addr } ] <= { buf_data[3:0], buf_data[3:0] };
+        frame_buffer[ { v, buf_addr } ] <= ~{2{buf_data[3:0]}};
     end
 end
 

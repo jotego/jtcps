@@ -81,7 +81,7 @@ endcase
 
 function [3:0] colour;
     input [31:0] c;
-    colour = { c[24], c[16], c[8], c[0] };
+    colour = { c[31], c[23], c[15], c[7] };
 endfunction
 
 always @(posedge clk or posedge rst) begin
@@ -145,7 +145,7 @@ always @(posedge clk or posedge rst) begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= { 4'd0, colour(pxl_data) };
-                pxl_data <= pxl_data>>1;
+                pxl_data <= pxl_data<<1;
             end
             15: begin
                 if( SIZE==8 ) begin

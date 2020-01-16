@@ -6,9 +6,9 @@ using namespace std;
 
 void dump64_word( ofstream& of, const char *s0, const char *s1, const char *s2, const char *s3 ) {
     ifstream f0(s0,ios_base::binary);
-    ifstream f1(s0,ios_base::binary);
-    ifstream f2(s0,ios_base::binary);
-    ifstream f3(s0,ios_base::binary);
+    ifstream f1(s1,ios_base::binary);
+    ifstream f2(s2,ios_base::binary);
+    ifstream f3(s3,ios_base::binary);
     while( !f0.eof() ) {
         char a[4][2];
         f0.read( a[0], 2 );
@@ -18,12 +18,13 @@ void dump64_word( ofstream& of, const char *s0, const char *s1, const char *s2, 
         int64_t t[4];
         for( int k=0; k<4; k++) {
             int64_t x;
-            t[k] = a[k][1];
+            t[k] = a[k][0];
             t[k] &= 0xff;
             t[k] <<= 8;
-            x    = a[k][0];
+            x    = a[k][1];
             x    &= 0xff;
             t[k] |= x;
+            t[k] &= 0xffff; // redundant
         }
         int64_t all = (((((t[3] << 16)|t[2])<<16)|t[1])<<16)|t[0];
         of << hex << all << '\n';
@@ -34,13 +35,13 @@ void dump64_byte( ofstream& of,
     const char *s0, const char *s1, const char *s2, const char *s3,
     const char *s4, const char *s5, const char *s6, const char *s7 ) {
     ifstream f0(s0,ios_base::binary);
-    ifstream f1(s0,ios_base::binary);
-    ifstream f2(s0,ios_base::binary);
-    ifstream f3(s0,ios_base::binary);
-    ifstream f4(s0,ios_base::binary);
-    ifstream f5(s0,ios_base::binary);
-    ifstream f6(s0,ios_base::binary);
-    ifstream f7(s0,ios_base::binary);
+    ifstream f1(s1,ios_base::binary);
+    ifstream f2(s2,ios_base::binary);
+    ifstream f3(s3,ios_base::binary);
+    ifstream f4(s4,ios_base::binary);
+    ifstream f5(s5,ios_base::binary);
+    ifstream f6(s6,ios_base::binary);
+    ifstream f7(s7,ios_base::binary);
 
     while( !f0.eof() ) {
         char c[8];
