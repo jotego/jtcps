@@ -35,18 +35,19 @@ module jtcps1_tilemap(
     input              start,
     output reg         done,
 
-    output reg [23:0]  vram_addr,
+    output reg [23:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
 
     output reg [22:0]  rom_addr,    // up to 1 MB
+    output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output reg         rom_cs,
     input              rom_ok,
 
     output reg [ 8:0]  buf_addr,
-    output reg [ 7:0]  buf_data,
+    output reg [ 8:0]  buf_data,
     output reg         buf_wr
 );
 
@@ -54,7 +55,7 @@ parameter SIZE=8; // 8, 16 or 32
 
 reg [ 9:0] vn;
 reg [ 9:0] hn;
-reg [15:0] pxl_data;
+reg [31:0] pxl_data;
 
 reg [ 5:0] st;
 
@@ -81,8 +82,16 @@ endcase
 
 function [3:0] colour;
     input [31:0] c;
-    colour = { c[31], c[23], c[15], c[7] };
+    input        flip;
+    colour = flip ? { c[24], c[16], c[ 8], c[0] } : 
+                    { c[31], c[23], c[15], c[7] };
 endfunction
+
+wire     vflip = attr[6];
+wire     hflip = attr[5];
+wire [4:0] pal = attr[4:0];
+
+assign rom_half = hn[3] ^ hflip;
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
@@ -99,7 +108,9 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 vn       <= vpos + v;
-                hn       <= {hpos[9:3],3'd0};
+                hn       <= SIZE == 8 ? {hpos[9:3],3'd0} :
+                    ( SIZE==16 ? { hpos[9:4], 4'd0 } :
+                        { hpos [9:5], 5'd0 } );
                 buf_addr <= 9'd0-hpos[2:0];
                 buf_wr   <= 1'b0;
                 if(!start) begin
@@ -108,9 +119,9 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin
-                vram_addr <= { vram_base, 8'd0 } + { 11'd0, scan, 1'b0};
+                vram_addr <= { vram_base, 7'd0 } + { 11'd0, scan, 1'b0};
                 vram_cs   <= 1'b1;
-                if( buf_addr>= 9'd383 ) begin
+                if( buf_addr>= 9'd383+9'd64 ) begin
                     buf_wr <= 1'b0;
                     done   <= 1'b1;
                     st     <= 0;
@@ -118,7 +129,7 @@ always @(posedge clk or posedge rst) begin
             end
             3: if( vram_ok ) begin
                 code         <= vram_data;
-                vram_addr[0] <= 1'b1;
+                vram_addr[1] <= 1'b1;
                 st <= 50;
             end else st<=st;
             51: if( vram_ok ) begin
@@ -128,9 +139,13 @@ always @(posedge clk or posedge rst) begin
             end else st<=st;
             4: begin
                 case (SIZE)
-                    8:  rom_addr[19:0] <= { 1'b0, code, vn[2:0] };
-                    16: rom_addr[19:0] <= { code, vn[3:0] };
-                    32: rom_addr[19:0] <= { code[14:0], vn[3:0], buf_addr[3] };
+                    8:  begin
+                        rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
+                    end
+                    16: begin
+                        rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
+                    end
+                    32: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, buf_addr[3] ^ hflip };
                 endcase
                 rom_cs    <= 1'b1;
             end
@@ -144,8 +159,8 @@ always @(posedge clk or posedge rst) begin
             34,35,36,37, 38,39,40,41: begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
-                buf_data <= { 4'd0, colour(pxl_data) };
-                pxl_data <= pxl_data<<1;
+                buf_data <= { pal, colour(pxl_data, hflip) };
+                pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
             end
             15: begin
                 if( SIZE==8 ) begin
@@ -167,7 +182,7 @@ always @(posedge clk or posedge rst) begin
                 pxl_data <= rom_data;
                 hn <= hn + 9'd8; // pixels 24-31
             end
-            41: st <= 1; // end
+            42: st <= 1; // end
         endcase
     end
 end

@@ -8,14 +8,14 @@ reg  [ 7:0] v;
 reg  [15:0] vram_data;
 wire [15:0] hpos, vpos, vram_base;
 reg  [31:0] rom_data;
-wire        done, vram_cs, rom_cs, buf_wr;
+wire        done, vram_cs, rom_cs, buf_wr, rom_half;
 wire [22:0] rom_addr;
 reg  [22:0] last_rom;
-wire [23:0] vram_addr;
+wire [23:1] vram_addr;
 reg  [23:0] last_vram;
 wire [ 8:0] buf_addr;
-wire [ 7:0] buf_data;
-reg  [15:0] vram[0:98303]; // 17 bits
+wire [ 8:0] buf_data;
+reg  [15:0] vram[0:98303]; // a bit less than 17 bits
 reg  [16:0] vram_dec;
 wire [ 2:0] buf_cs;
 wire [ 4:1] gfx_cen;
@@ -26,21 +26,29 @@ assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
 assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
 
-//`define SNAP0
+`define SNAP1
 
 `ifdef SNAP0
-// snap 0
 assign      hpos = 16'hffc0;
 assign      vpos = 16'h0;
 assign      vram_base=16'h9000;
 localparam  SIZE=8;
-`else
-// snap 1
-assign      hpos = 16'h3c0;
+`endif
+
+`ifdef SNAP1
+assign      hpos = 16'h3c0; // 960
 assign      vpos = 16'h100;
 assign      vram_base=16'h9040;
 localparam  SIZE=16;
 `endif
+
+`ifdef SNAP2
+assign      hpos = 16'h7c0; // 960
+assign      vpos = 16'h700;
+assign      vram_base=16'h9080;
+localparam  SIZE=32;
+`endif
+
 
 always @(*) begin
     case( buf_cs )
@@ -48,18 +56,26 @@ always @(*) begin
         3'b010: vram_dec[16:15] = 2'b01;
         3'b100: vram_dec[16:15] = 2'b10;
     endcase    
-    vram_dec[14:0] = vram_addr[14:0];
+    vram_dec[14:0] = vram_addr[15:1];
 end
 
 
 // GFX ROM
-wire [19:0] gfx_addr = rom_addr[19:0];
-wire [63:0] gfx_long = gfx_rom[ rom_addr[19:0] ];
+reg  [19:0] gfx_addr;
+reg  [63:0] gfx_long;
+
+always @(*) begin
+    gfx_addr = rom_addr[19:0]; // + (gfx_cen[2]?20'h2_0000:20'h0);
+    gfx_long = gfx_rom[ gfx_addr ];
+end
 
 always @(posedge clk) begin
     last_rom <= rom_addr;
     //rom_data <= !gfx_cen[1] ? ~32'd0 : (rom_addr[0] ? gfx_long[63:32] : gfx_long[31:0]);
-    rom_data <= !gfx_cen[1] ? ~32'd0 : (1'b0 ? gfx_long[63:32] : gfx_long[31:0]);
+    if( |gfx_cen )
+        rom_data <= rom_half ? gfx_long[63:32] : gfx_long[31:0];
+    else
+        rom_data <= ~32'd0;
     rom_ok   <= last_rom == rom_addr;
 end
 
@@ -84,6 +100,7 @@ jtcps1_tilemap #(.SIZE(SIZE)) UUT(
     .rom_data   ( rom_data      ),
     .rom_cs     ( rom_cs        ),
     .rom_ok     ( rom_ok        ),
+    .rom_half   ( rom_half      ),
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),
     .buf_wr     ( buf_wr        )
@@ -112,7 +129,6 @@ end
 integer pxlcnt, framecnt;
 
 integer dumpcnt, fout;
-wire [31:0] video_dump = { 8'hff, {3{frame_buffer[dumpcnt]}} };
 
 always @(posedge clk, posedge rst) begin
     if(rst) begin
@@ -139,7 +155,7 @@ always @(posedge clk, posedge rst) begin
         if ( framecnt==2 ) begin
             fout=$fopen("video.raw","wb");
             for( dumpcnt=0; dumpcnt<512*256; dumpcnt=dumpcnt+1 ) begin
-                $fwrite(fout,"%u", video_dump);
+                $fwrite(fout,"%u", { 8'hff, {3{frame_buffer[dumpcnt]}} });
             end
             $finish;
         end
