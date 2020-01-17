@@ -34,14 +34,13 @@ module jtcps1_colmix(
     input              scr2_wr,
     input              scr3_wr,
 
-    input              scr1_done,
-    input              scr2_done,
-    input              scr3_done,
+    input   [3:1]      scr_done,
 
     // To frame buffer
     output reg [8:0]   line_data,
     output reg [8:0]   line_addr,
     output reg         line_wr,
+    input              line_wr_ok,
     output reg         line_done
 );
 
@@ -63,7 +62,7 @@ always @(*) begin
         pxl = scr3_rd;
 end
 
-reg wr_dly;
+reg wr_dly, ok_dly;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -77,23 +76,31 @@ always @(posedge clk, posedge rst) begin
             if( scr1_wr ) scr1_buf[scr1_addr] <= scr1_data;
             if( scr2_wr ) scr2_buf[scr2_addr] <= scr2_data;
             if( scr3_wr ) scr3_buf[scr3_addr] <= scr3_data;
-            dump <= scr1_done & scr2_done & scr3_done;
+            dump <= &scr_done;
             line_done <= 1'b0;
             wr_dly    <= 1'b0;
-            rd_addr   <= 9'd0;
+            ok_dly    <= 1'b1;
+            rd_addr   <= 9'd0;            
         end else begin
             dump <= start;
-            if( !line_done ) begin
+            if( !line_done ) begin                
                 // Read memory
-                rd_addr <= rd_addr + 9'd1;
-                scr1_rd <= scr1_buf[ rd_addr ];
-                scr2_rd <= scr2_buf[ rd_addr ];
-                scr3_rd <= scr3_buf[ rd_addr ];
-                wr_dly  <= 1'b1;
+                ok_dly <= line_wr_ok;
+                if( ok_dly ) begin
+                    rd_addr <= rd_addr + 9'd1;
+                    scr1_rd <= scr1_buf[ rd_addr ];
+                    scr2_rd <= scr2_buf[ rd_addr ];
+                    scr3_rd <= scr3_buf[ rd_addr ];
+                    wr_dly  <= 1'b1;
+                    line_wr <= 1'b0;
+                end
                 // Write line
-                line_wr <= wr_dly;
-                line_data <= pxl;
-                line_addr <= rd_addr;
+                if( wr_dly ) begin
+                    line_wr   <= 1'b1;
+                    line_data <= pxl;
+                    line_addr <= rd_addr;
+                    ok_dly    <= 1'b0;
+                end
             end
             line_done <= rd_addr>=9'd448;
         end        

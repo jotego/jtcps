@@ -22,9 +22,9 @@ wire [ 4:1] gfx_cen;
 reg  [63:0] gfx_rom[0:393218]; // 19 bits
 reg  [ 7:0] frame_buffer[0:131071];
 
-assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
-assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
-assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
+assign      buf_cs[0] = vram_addr[23:16] == 8'b1001_0000;
+assign      buf_cs[1] = vram_addr[23:16] == 8'b1001_0001;
+assign      buf_cs[2] = vram_addr[23:16] == 8'b1001_0010;
 
 `define SNAP1
 
@@ -51,11 +51,12 @@ localparam  SIZE=32;
 
 
 always @(*) begin
-    case( buf_cs )
-        3'b001: vram_dec[16:15] = 2'b00;
-        3'b010: vram_dec[16:15] = 2'b01;
-        3'b100: vram_dec[16:15] = 2'b10;
-    endcase    
+    //case( buf_cs )
+    //    3'b001: vram_dec[16:15] = 2'b00;
+    //    3'b010: vram_dec[16:15] = 2'b01;
+    //    3'b100: vram_dec[16:15] = 2'b10;
+    //endcase    
+    vram_dec[16:15] = vram_addr[17:16]; // no need for the PAL
     vram_dec[14:0] = vram_addr[15:1];
 end
 
@@ -112,8 +113,8 @@ jtcps1_tilemap #(.SIZE(SIZE)) UUT(
 );
 
 jtcps1_gfx_pal u_palb(
-    .a  ( rom_addr[22:10] ),
-    .cen( gfx_cen         )
+    .scr1 ( rom_addr[22:10] ),
+    .bank1( gfx_cen         )
 );
 
 initial begin

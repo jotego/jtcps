@@ -25,7 +25,12 @@
 module jtcps1_video(
     input              rst,
     input              clk,
+    input      [ 8:0]  v,
 
+    // Register configuration
+    input      [15:0]  vram1_base,
+    input      [15:0]  vram2_base,
+    input      [15:0]  vram3_base,
     // Video RAM interface
     output     [23:1]  vram1_addr,
     input      [15:0]  vram1_data,
@@ -42,19 +47,55 @@ module jtcps1_video(
     input              vram3_ok,
     output             vram3_cs,
 
+    // GFX ROM interface
+    output     [22:0]  rom1_addr,    // up to 1 MB
+    output             rom1_half,    // selects which half to read
+    input      [31:0]  rom1_data,
+    output             rom1_cs,
+    input              rom1_ok,
+
+    output     [22:0]  rom2_addr,    // up to 1 MB
+    output             rom2_half,    // selects which half to read
+    input      [31:0]  rom2_data,
+    output             rom2_cs,
+    input              rom2_ok,
+
+    output     [22:0]  rom3_addr,    // up to 1 MB
+    output             rom3_half,    // selects which half to read
+    input      [31:0]  rom3_data,
+    output             rom3_cs,
+    input              rom3_ok,
+    // To frame buffer
+    output     [8:0]   line_data,
+    output     [8:0]   line_addr,
+    output             line_wr,
+    input              line_wr_ok,
+    output             line_done
 );
 
-wire [ 8:0]     v;
+wire [ 8:0]     buf1_addr, buf2_addr, buf3_addr;
+wire [ 8:0]     buf1_data, buf2_data, buf3_data;
+wire            buf1_wr,   buf2_wr,   buf3_wr;
+wire [ 3:1]     scr_done;
+
+jtcps1_gfx_pal u_gfx_pal(
+    .scr1   ( rom1_addr ),
+    .scr2   ( rom2_addr ),
+    .scr3   ( rom3_addr ),
+    .bank1  ( rom1_bank ),
+    .bank2  ( rom2_bank ),
+    .bank3  ( rom3_bank )
+);
 
 jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          (               ),
+    .v          ( v             ),
     .vram_base  ( vram1_base    ),
     .hpos       ( hpos1         ),
     .vpos       ( vpos1         ),
     .start      ( start         ),
-    .done       ( done[1]       ),
+    .done       ( scr_done[1]   ),
     .vram_addr  ( vram1_addr    ),
     .vram_data  ( vram1_data    ),
     .vram_ok    ( vram1_ok      ),
@@ -77,7 +118,7 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .hpos       ( hpos2         ),
     .vpos       ( vpos2         ),
     .start      ( start         ),
-    .done       ( done[2]       ),
+    .done       ( scr_done[2]   ),
     .vram_addr  ( vram2_addr    ),
     .vram_data  ( vram2_data    ),
     .vram_ok    ( vram2_ok      ),
@@ -100,7 +141,7 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .hpos       ( hpos3         ),
     .vpos       ( vpos3         ),
     .start      ( start         ),
-    .done       ( done[2]       ),
+    .done       ( scr_done[3]   ),
     .vram_addr  ( vram3_addr    ),
     .vram_data  ( vram3_data    ),
     .vram_ok    ( vram3_ok      ),
@@ -115,5 +156,27 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .buf_wr     ( buf3_wr       )
 );
 
+jtcps1_colmix u_colmix(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .start      ( start     ),
+    // Scroll data
+    .scr1_data  ( buf1_data ),
+    .scr2_data  ( buf2_data ),
+    .scr3_data  ( buf3_data ),
+    .scr1_addr  ( buf1_addr ),
+    .scr2_addr  ( buf2_addr ),
+    .scr3_addr  ( buf3_addr ),
+    .scr1_wr    ( buf1_wr   ),
+    .scr2_wr    ( buf2_wr   ),
+    .scr3_wr    ( buf3_wr   ),
+    .scr_done   ( scr_done  ),
+    // To frame buffer
+    .line_data  ( line_data ),
+    .line_addr  ( line_addr ),
+    .line_wr    ( line_wr   ),
+    .line_wr_ok ( line_wr_ok),
+    .line_done  ( line_done )
+);
 
 endmodule
