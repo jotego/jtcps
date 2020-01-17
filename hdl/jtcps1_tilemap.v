@@ -53,7 +53,7 @@ module jtcps1_tilemap(
 parameter SIZE=8; // 8, 16 or 32
 
 reg [ 9:0] vn;
-reg [ 8:0] hn;
+reg [ 9:0] hn;
 reg [15:0] pxl_data;
 
 reg [ 5:0] st;
@@ -70,7 +70,7 @@ case(SIZE)
         assign rom_id = 3'b001;
     end
     16: begin
-        assign scan = { vn[8:7], hn[8:3], vn[6:3] };
+        assign scan = { vn[9:8], hn[9:4], vn[7:4] };
         assign rom_id = 3'b010;
     end
     32: begin
@@ -99,7 +99,7 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 vn       <= vpos + v;
-                hn       <= {hpos[8:3],3'd0};
+                hn       <= {hpos[9:3],3'd0};
                 buf_addr <= 9'd0-hpos[2:0];
                 buf_wr   <= 1'b0;
                 if(!start) begin

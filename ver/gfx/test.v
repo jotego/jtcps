@@ -5,7 +5,8 @@ module test;
 reg         rst, clk, start, vram_ok, rom_ok=1'b1;
 reg  [ 7:0] v;
 
-reg  [15:0] vram_base=16'h9000, hpos=16'hffc0, vpos=16'h0, vram_data;
+reg  [15:0] vram_data;
+wire [15:0] hpos, vpos, vram_base;
 reg  [31:0] rom_data;
 wire        done, vram_cs, rom_cs, buf_wr;
 wire [22:0] rom_addr;
@@ -24,6 +25,22 @@ reg  [ 7:0] frame_buffer[0:131071];
 assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
 assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
+
+//`define SNAP0
+
+`ifdef SNAP0
+// snap 0
+assign      hpos = 16'hffc0;
+assign      vpos = 16'h0;
+assign      vram_base=16'h9000;
+localparam  SIZE=8;
+`else
+// snap 1
+assign      hpos = 16'h3c0;
+assign      vpos = 16'h100;
+assign      vram_base=16'h9040;
+localparam  SIZE=16;
+`endif
 
 always @(*) begin
     case( buf_cs )
@@ -50,7 +67,7 @@ initial begin
     $readmemh( "gfx.hex", gfx_rom );
 end
 
-jtcps1_tilemap UUT(
+jtcps1_tilemap #(.SIZE(SIZE)) UUT(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .v          ( {1'b0, v }    ),
