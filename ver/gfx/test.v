@@ -26,7 +26,7 @@ assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
 assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
 
-`define SNAP2
+`define SNAP0
 
 `ifdef SNAP0
 assign      hpos = 16'hffc0;
@@ -37,7 +37,7 @@ localparam  SIZE=8;
 
 `ifdef SNAP1
 assign      hpos = 16'h3c0; // 960
-assign      vpos = 16'h300;
+assign      vpos = 16'h100;
 assign      vram_base=16'h9040;
 localparam  SIZE=16;
 `endif
@@ -91,7 +91,7 @@ end
 jtcps1_tilemap #(.SIZE(SIZE)) UUT(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( {1'b0, v }    ),
+    .v          ( v             ),
     .vram_base  ( vram_base     ),
     .hpos       ( hpos          ),
     .vpos       ( vpos          ),
@@ -129,6 +129,7 @@ end
 
 initial begin
     $readmemh("vram.hex",vram);
+    $display("INFO: VRAM loaded");
 end
 
 integer pxlcnt, framecnt;
@@ -155,6 +156,7 @@ always @(posedge clk, posedge rst) begin
             start <= 1;
             if(&v) begin
                 framecnt <= framecnt+1;
+                $display("FRAME");
             end
         end
         if ( framecnt==2 ) begin
@@ -174,7 +176,6 @@ always @(posedge clk) begin
     end
 end
 
-//`ifdef DUMP
 `ifndef NCVERILOG
     initial begin
         $dumpfile("test.lxt");
@@ -187,6 +188,5 @@ end
         $shm_probe(test,"AS");
     end
 `endif
-//`endif
 
 endmodule

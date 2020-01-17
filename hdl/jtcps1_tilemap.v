@@ -26,7 +26,7 @@ module jtcps1_tilemap(
     input              rst,
     input              clk,
 
-    input      [ 8:0]  v,
+    input      [ 7:0]  v,
     // control registers
     input      [15:0]  vram_base,
     input      [15:0]  hpos,
@@ -107,11 +107,11 @@ always @(posedge clk or posedge rst) begin
             0: begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
-                vn       <= vpos + v;
+                vn       <= vpos + {8'd0, v};
                 hn       <= SIZE == 8 ? {hpos[10:3],3'd0} :
                     ( SIZE==16 ? { hpos[10:4], 4'd0 } :
-                        { hpos [10:5], 5'd0 } );
-                buf_addr <= 9'd0-hpos[2:0];
+                        { hpos[10:5], 5'd0 } );
+                buf_addr <= 9'd0-{6'd0,hpos[2:0]};
                 buf_wr   <= 1'b0;
                 if(!start) begin
                     st   <= 0;
@@ -119,7 +119,7 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin
-                vram_addr <= { vram_base, 7'd0 } + { 11'd0, scan, 1'b0};
+                vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
                 vram_cs   <= 1'b1;
                 if( buf_addr>= 9'd383+9'd64 ) begin
                     buf_wr <= 1'b0;
