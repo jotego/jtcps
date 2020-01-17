@@ -26,7 +26,7 @@ assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
 assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
 
-`define SNAP0
+`define SNAP1
 
 `ifdef SNAP0
 assign      hpos = 16'hffc0;
@@ -65,7 +65,7 @@ reg  [19:0] gfx_addr;
 reg  [63:0] gfx_long;
 wire [19:0] gfx_offset = rom_addr[19:0];
 
-always @(*) begin
+always @(rom_addr) begin // using * here breaks iverilog
     if( !gfx_cen[2]) begin
         gfx_addr = rom_addr[19:0];
     end else begin

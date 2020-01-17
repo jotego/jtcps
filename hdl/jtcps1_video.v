@@ -1,0 +1,119 @@
+/*  This file is part of JTCPS1.
+    JTCPS1 program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    JTCPS1 program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with JTCPS1.  If not, see <http://www.gnu.org/licenses/>.
+
+    Author: Jose Tejada Gomez. Twitter: @topapate
+    Version: 1.0
+    Date: 13-1-2020 */
+    
+`timescale 1ns/1ps
+
+// Scroll 1 is 512x512, 8x8 tiles
+// Scroll 2 is 1024x1024 16x16 tiles
+// Scroll 3 is 2048x2048 32x32 tiles
+
+module jtcps1_video(
+    input              rst,
+    input              clk,
+
+    // Video RAM interface
+    output     [23:1]  vram1_addr,
+    input      [15:0]  vram1_data,
+    input              vram1_ok,
+    output             vram1_cs,
+
+    output     [23:1]  vram2_addr,
+    input      [15:0]  vram2_data,
+    input              vram2_ok,
+    output             vram2_cs,
+
+    output     [23:1]  vram3_addr,
+    input      [15:0]  vram3_data,
+    input              vram3_ok,
+    output             vram3_cs,
+
+);
+
+wire [ 8:0]     v;
+
+jtcps1_tilemap #(.SIZE(8)) u_scroll1(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .v          (               ),
+    .vram_base  ( vram1_base    ),
+    .hpos       ( hpos1         ),
+    .vpos       ( vpos1         ),
+    .start      ( start         ),
+    .done       ( done[1]       ),
+    .vram_addr  ( vram1_addr    ),
+    .vram_data  ( vram1_data    ),
+    .vram_ok    ( vram1_ok      ),
+    .vram_cs    ( vram1_cs      ),
+    .rom_addr   ( rom1_addr     ),
+    .rom_data   ( rom1_data     ),
+    .rom_cs     ( rom1_cs       ),
+    .rom_ok     ( rom1_ok       ),
+    .rom_half   ( rom1_half     ),
+    .buf_addr   ( buf1_addr     ),
+    .buf_data   ( buf1_data     ),
+    .buf_wr     ( buf1_wr       )
+);
+
+jtcps1_tilemap #(.SIZE(16)) u_scroll2(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .v          ( v             ),
+    .vram_base  ( vram2_base    ),
+    .hpos       ( hpos2         ),
+    .vpos       ( vpos2         ),
+    .start      ( start         ),
+    .done       ( done[2]       ),
+    .vram_addr  ( vram2_addr    ),
+    .vram_data  ( vram2_data    ),
+    .vram_ok    ( vram2_ok      ),
+    .vram_cs    ( vram2_cs      ),
+    .rom_addr   ( rom2_addr     ),
+    .rom_data   ( rom2_data     ),
+    .rom_cs     ( rom2_cs       ),
+    .rom_ok     ( rom2_ok       ),
+    .rom_half   ( rom2_half     ),
+    .buf_addr   ( buf2_addr     ),
+    .buf_data   ( buf2_data     ),
+    .buf_wr     ( buf2_wr       )
+);
+
+jtcps1_tilemap #(.SIZE(32)) u_scroll3(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .v          ( v             ),
+    .vram_base  ( vram3_base    ),
+    .hpos       ( hpos3         ),
+    .vpos       ( vpos3         ),
+    .start      ( start         ),
+    .done       ( done[2]       ),
+    .vram_addr  ( vram3_addr    ),
+    .vram_data  ( vram3_data    ),
+    .vram_ok    ( vram3_ok      ),
+    .vram_cs    ( vram3_cs      ),
+    .rom_addr   ( rom3_addr     ),
+    .rom_data   ( rom3_data     ),
+    .rom_cs     ( rom3_cs       ),
+    .rom_ok     ( rom3_ok       ),
+    .rom_half   ( rom3_half     ),
+    .buf_addr   ( buf3_addr     ),
+    .buf_data   ( buf3_data     ),
+    .buf_wr     ( buf3_wr       )
+);
+
+
+endmodule
