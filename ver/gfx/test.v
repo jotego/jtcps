@@ -19,14 +19,14 @@ reg  [15:0] vram[0:98303]; // a bit less than 17 bits
 reg  [16:0] vram_dec;
 wire [ 2:0] buf_cs;
 wire [ 4:1] gfx_cen;
-reg  [63:0] gfx_rom[0:393219];
+reg  [63:0] gfx_rom[0:393218]; // 19 bits
 reg  [ 7:0] frame_buffer[0:131071];
 
 assign      buf_cs[0] = &{ vram_addr[23:16] ^ 8'b0110_1111 };
 assign      buf_cs[1] = &{ vram_addr[23:16] ^ 8'b0110_1110 };
 assign      buf_cs[2] = &{ vram_addr[23:16] ^ 8'b0110_1101 };
 
-`define SNAP1
+`define SNAP2
 
 `ifdef SNAP0
 assign      hpos = 16'hffc0;
@@ -37,13 +37,13 @@ localparam  SIZE=8;
 
 `ifdef SNAP1
 assign      hpos = 16'h3c0; // 960
-assign      vpos = 16'h100;
+assign      vpos = 16'h300;
 assign      vram_base=16'h9040;
 localparam  SIZE=16;
 `endif
 
 `ifdef SNAP2
-assign      hpos = 16'h7c0; // 960
+assign      hpos = 16'h7c0;
 assign      vpos = 16'h700;
 assign      vram_base=16'h9080;
 localparam  SIZE=32;
@@ -63,9 +63,14 @@ end
 // GFX ROM
 reg  [19:0] gfx_addr;
 reg  [63:0] gfx_long;
+wire [19:0] gfx_offset = rom_addr[19:0];
 
 always @(*) begin
-    gfx_addr = rom_addr[19:0]; // + (gfx_cen[2]?20'h2_0000:20'h0);
+    if( !gfx_cen[2]) begin
+        gfx_addr = rom_addr[19:0];
+    end else begin
+        gfx_addr = rom_addr[17:0] + 20'h4_0000;
+    end
     gfx_long = gfx_rom[ gfx_addr ];
 end
 

@@ -49,8 +49,8 @@ module jtcps1_gfx_pal(
 // Ghouls'n Ghosts (dm620.2a)
 // jedutil -view dm620.2a  GAL16V8
 assign cen[4] = 1'b0;
-assign cen[3] = &({a[22:20],a[16]}^4'b1110); // /i2 & /i3 & /i4 & i8
-assign cen[2] = &({a[22:20],a[16]}^4'b1001); // /i2 & i3 & i4 & /i8
+assign cen[3] = {a[22:20],a[16]} == 4'b0001; // /i2 & /i3 & /i4 & i8
+assign cen[2] = {a[22:20],a[16]} == 4'b0110; // /i2 & i3 & i4 & /i8
 // /i2 & /i3 & i4 +
 // /i2 & /i4 & /i8 +
 // /i2 & i3 & /i4

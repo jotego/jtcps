@@ -53,8 +53,8 @@ module jtcps1_tilemap(
 
 parameter SIZE=8; // 8, 16 or 32
 
-reg [ 9:0] vn;
-reg [ 9:0] hn;
+reg [10:0] vn;
+reg [10:0] hn;
 reg [31:0] pxl_data;
 
 reg [ 5:0] st;
@@ -75,7 +75,7 @@ case(SIZE)
         assign rom_id = 3'b010;
     end
     32: begin
-        assign scan = { vn[8:6], hn[8:3], vn[5:3] };
+        assign scan = { vn[10:8], hn[10:5], vn[7:5] };
         assign rom_id = 3'b011;
     end
 endcase
@@ -108,9 +108,9 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 vn       <= vpos + v;
-                hn       <= SIZE == 8 ? {hpos[9:3],3'd0} :
-                    ( SIZE==16 ? { hpos[9:4], 4'd0 } :
-                        { hpos [9:5], 5'd0 } );
+                hn       <= SIZE == 8 ? {hpos[10:3],3'd0} :
+                    ( SIZE==16 ? { hpos[10:4], 4'd0 } :
+                        { hpos [10:5], 5'd0 } );
                 buf_addr <= 9'd0-hpos[2:0];
                 buf_wr   <= 1'b0;
                 if(!start) begin
@@ -145,13 +145,13 @@ always @(posedge clk or posedge rst) begin
                     16: begin
                         rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
                     end
-                    32: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, buf_addr[3] ^ hflip };
+                    32: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, ~hflip };
                 endcase
                 rom_cs    <= 1'b1;
             end
             6: if(rom_ok) begin
                 pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
-                hn <= hn + 9'd8;
+                hn <= hn + 10'd8;
             end else st<=6;
             7,8,9,10,    11,12,13,14, 
             16,17,18,19, 20,21,22,23,
@@ -167,7 +167,9 @@ always @(posedge clk or posedge rst) begin
                     st <= 1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
-                    hn <= hn + 9'd8;    // pixels 8-15
+                    hn <= hn + 10'd8;    // pixels 8-15
+                    if(SIZE==32)
+                        rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
                 end else st<=st;
             end
             24: begin
@@ -175,12 +177,12 @@ always @(posedge clk or posedge rst) begin
                     st <= 1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
-                    hn <= hn + 9'd8; // pixels 16-23
+                    hn <= hn + 10'd8; // pixels 16-23
                 end else st<=st;
             end
             33: begin
                 pxl_data <= rom_data;
-                hn <= hn + 9'd8; // pixels 24-31
+                hn <= hn + 10'd8; // pixels 24-31
             end
             42: st <= 1; // end
         endcase
