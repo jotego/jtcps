@@ -7,4 +7,4 @@ else
     sim -lxt
 fi
 
-# convert -size 512x256 -depth 8 RGBA:video.raw video.png
+convert -size 512x256 -depth 8 RGBA:video.raw video.png

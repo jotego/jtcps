@@ -139,6 +139,10 @@ wire [15:0] fbwr_data = { 7'd0, line_data };
 
 reg  [ 9:0] fbrd_addr;
 
+wire [20:0] gfx1_addr = {rom1_addr[19:0], rom1_half };
+wire [20:0] gfx2_addr = {rom2_addr[19:0], rom2_half };
+wire [20:0] gfx3_addr = {rom3_addr[19:0], rom3_half };
+
 jtframe_sdram_mux #(
     // Frame buffer, read access
     .SLOT2_AW   ( 18    ),  //8
@@ -151,11 +155,11 @@ jtframe_sdram_mux #(
     .SLOT5_AW   ( 18    ),  //5
     .SLOT5_DW   ( 16    ),
     // GFX ROM
-    .SLOT6_AW   ( 20    ),  //6
+    .SLOT6_AW   ( 21    ),  //6
     .SLOT6_DW   ( 32    ),
-    .SLOT7_AW   ( 20    ),  //7
+    .SLOT7_AW   ( 21    ),  //7
     .SLOT7_DW   ( 32    ),
-    .SLOT8_AW   ( 20    ),  //8
+    .SLOT8_AW   ( 21    ),  //8
     .SLOT8_DW   ( 32    ),
     // Frame buffer, write access
     .SLOT9_AW   ( 17    ),  //8
@@ -186,15 +190,15 @@ u_sdram_mux(
 
     // GFX ROM
     .slot6_offset   ( rom1_offset       ),
-    .slot6_addr     ( rom1_addr[19:0]   ),
+    .slot6_addr     ( gfx1_addr         ),
     .slot6_dout     ( rom1_data         ),
 
     .slot7_offset   ( rom2_offset       ),
-    .slot7_addr     ( rom2_addr[19:0]   ),
+    .slot7_addr     ( gfx2_addr         ),
     .slot7_dout     ( rom2_data         ),
 
     .slot8_offset   ( rom3_offset       ),
-    .slot8_addr     ( rom3_addr[19:0]   ),
+    .slot8_addr     ( gfx3_addr         ),
     .slot8_dout     ( rom3_data         ),
 
     // Frame buffer writes
@@ -253,7 +257,7 @@ always @(posedge clk, posedge rst) begin
         end
         if( sdram_st[SDRAM_STCNT-1] ) begin
             data_rdy <= 1'b1;
-            data_read  <= sdram[sdram_addr];
+            data_read  <= { sdram[sdram_addr+1], sdram[sdram_addr] };
             if( !sdram_rnw ) sdram[sdram_addr] <= data_write[15:0];
         end
     end
@@ -293,9 +297,17 @@ initial begin
     forever #(10.417/2) clk = ~clk;
 end
 
+// Dump output frame buffer
+integer dumpcnt, fout;
+
 // Line count
+reg [9:0] cpy_buf[0:(2**(8+9))-1];
 integer pxlcnt, framecnt;
-//integer dumpcnt, fout;
+
+always @(posedge clk) begin
+    if( line_wr )
+        cpy_buf[ {v, line_addr} ] <= line_data;
+end
 
 always @(posedge clk, posedge rst) begin
     if(rst) begin
@@ -310,21 +322,22 @@ always @(posedge clk, posedge rst) begin
             pxlcnt <= 0;
             v     <= v+1;
             start <= 1;
-            if( v[2:0]==0 ) $display("Line %d",v);
+            if( v[3:0]==0 ) $display("Line %d",v);
             if(&v) begin
                 framecnt <= framecnt+1;
                 $display("FRAME");
             end
         end
-        if(v==8'd999) begin
-            $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
-            $finish;
-        end
+        //if(v==8'd999) begin
+        //    $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
+        //    $finish;
+        //end
         if ( framecnt==1 ) begin
-            // fout=$fopen("video.raw","wb");
-            // for( dumpcnt=0; dumpcnt<512*256; dumpcnt=dumpcnt+1 ) begin
-            //     $fwrite(fout,"%u", { 8'hff, {3{frame_buffer[dumpcnt]}} });
-            // end
+            $display("Image dump");
+            fout=$fopen("video.raw","wb");
+            for( dumpcnt=0; dumpcnt<512*256; dumpcnt=dumpcnt+1 ) begin
+                $fwrite(fout,"%u", { 8'hff, {3{cpy_buf[dumpcnt][7:0]}} });
+            end
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

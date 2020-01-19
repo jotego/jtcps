@@ -54,12 +54,13 @@ reg [8:0] pxl, rd_addr, scr1_rd, scr2_rd, scr3_rd;
 
 // simple layer priority for now:
 always @(*) begin
-    if( scr1_rd[3:0] != 4'hf )
         pxl = scr1_rd;
-    else if(scr2_rd[3:0] != 4'hf )
-        pxl = scr2_rd;
-    else
-        pxl = scr3_rd;
+    //if( scr1_rd[3:0] != 4'hf )
+    //    pxl = scr1_rd;
+    //else if(scr2_rd[3:0] != 4'hf )
+    //    pxl = scr2_rd;
+    //else
+    //    pxl = scr3_rd;
 end
 
 reg pxl_ok, wait_ok;

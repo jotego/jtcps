@@ -26,7 +26,8 @@ assign      buf_cs[0] = vram_addr[23:16] == 8'b1001_0000;
 assign      buf_cs[1] = vram_addr[23:16] == 8'b1001_0001;
 assign      buf_cs[2] = vram_addr[23:16] == 8'b1001_0010;
 
-`define SNAP1
+//`define SNAP1
+`define SNAPVIDEO8
 
 `ifdef SNAP0
 assign      hpos = 16'hffc0;
@@ -48,6 +49,22 @@ assign      vpos = 16'h700;
 assign      vram_base=16'h9080;
 localparam  SIZE=32;
 `endif
+
+`ifdef SNAPVIDEO8
+assign      hpos = 16'hffc0;
+assign      vpos = 16'h00;
+assign      vram_base=16'h9000;
+localparam  SIZE=8;
+`endif
+//    .hpos1      ( 16'hffc0      ),
+//    .vpos1      ( 16'h0000      ),
+//    .hpos2      ( 16'h03c0      ),
+//    .vpos2      ( 16'h0300      ),
+//    .hpos3      ( 16'h07c0      ),
+//    .vpos3      ( 16'h0700      ),
+//    .vram1_base ( 16'h9000      ),
+//    .vram2_base ( 16'h9040      ),
+//    .vram3_base ( 16'h9080      ),
 
 
 always @(*) begin
