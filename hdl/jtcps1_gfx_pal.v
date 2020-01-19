@@ -42,19 +42,23 @@
 // 100        Star field
 
 module jtcps1_gfx_pal(
-    input      [22:10] scr1,   // pins 2-9, 11,13,15,17,18
-    input      [22:10] scr2,   // pins 2-9, 11,13,15,17,18
-    input      [22:10] scr3,   // pins 2-9, 11,13,15,17,18
-    output reg [ 4: 1] bank1,  // pins 12, 14, 16, 19
-    output reg [ 4: 1] bank2,  // pins 12, 14, 16, 19
-    output reg [ 4: 1] bank3   // pins 12, 14, 16, 19
+    input      [22:10] scr1,    // pins 2-9, 11,13,15,17,18
+    input      [22:10] scr2,    // pins 2-9, 11,13,15,17,18
+    input      [22:10] scr3,    // pins 2-9, 11,13,15,17,18
+    output reg [ 3: 0] offset1, // scr GFX offset
+    output reg [ 3: 0] offset2,
+    output reg [ 3: 0] offset3 
 );
+
+reg [ 4: 1] bank1;  // pins 12, 14, 16, 19
+reg [ 4: 1] bank2;  // pins 12, 14, 16, 19
+reg [ 4: 1] bank3;  // pins 12, 14, 16, 19
 
 // Ghouls'n Ghosts (dm620.2a)
 // jedutil -view dm620.2a  GAL16V8
-function [4:1] cen_fx;
+function [4:1] cen_gfx;
     input [22:10] a;    
-    cen_fx = {1'b0,
+    cen_gfx = {1'b0,
              {a[22:20],a[16]} == 4'b0001, // /i2 & /i3 & /i4 & i8
              {a[22:20],a[16]} == 4'b0110, // /i2 & i3 & i4 & /i8
             // /i2 & /i3 & i4 +
@@ -63,10 +67,23 @@ function [4:1] cen_fx;
              ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20])) };
 endfunction
 
+function [3:0] bank2offset;
+    input [4:1] cen;
+    case( cen )
+        4'd0: bank2offset = 4'h0;
+        4'd1: bank2offset = 4'h4;
+        4'd2: bank2offset = 4'h0;
+        4'd4: bank2offset = 4'h0;
+    endcase
+endfunction
+
 always @(*) begin
-    bank1 = cen_fx( scr1 );
-    bank2 = cen_fx( scr2 );
-    bank3 = cen_fx( scr3 );
+    bank1 = cen_gfx( scr1 );
+    bank2 = cen_gfx( scr2 );
+    bank3 = cen_gfx( scr3 );
+    offset1 = bank2offset( bank1 );
+    offset2 = bank2offset( bank2 );
+    offset3 = bank2offset( bank3 );
 end
 
 endmodule

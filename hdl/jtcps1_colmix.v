@@ -62,7 +62,7 @@ always @(*) begin
         pxl = scr3_rd;
 end
 
-reg wr_dly, ok_dly;
+reg pxl_ok, wait_ok;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -78,31 +78,36 @@ always @(posedge clk, posedge rst) begin
             if( scr3_wr ) scr3_buf[scr3_addr] <= scr3_data;
             dump <= &scr_done;
             line_done <= 1'b0;
-            wr_dly    <= 1'b0;
-            ok_dly    <= 1'b1;
+            line_wr   <= 1'b0;
+            wait_ok   <= 1'b0;
+            pxl_ok    <= 1'b0;
             rd_addr   <= 9'd0;            
         end else begin
-            dump <= start;
+            if(start) dump <= 1'b0;
             if( !line_done ) begin                
                 // Read memory
-                ok_dly <= line_wr_ok;
-                if( ok_dly ) begin
+                //ok_dly <= line_wr_ok;
+                if( !pxl_ok ) begin
                     rd_addr <= rd_addr + 9'd1;
                     scr1_rd <= scr1_buf[ rd_addr ];
                     scr2_rd <= scr2_buf[ rd_addr ];
                     scr3_rd <= scr3_buf[ rd_addr ];
-                    wr_dly  <= 1'b1;
-                    line_wr <= 1'b0;
+                    pxl_ok  <= 1'b1;
                 end
                 // Write line
-                if( wr_dly ) begin
+                if( pxl_ok && (!wait_ok || (wait_ok&&line_wr_ok))) begin
                     line_wr   <= 1'b1;
                     line_data <= pxl;
                     line_addr <= rd_addr;
-                    ok_dly    <= 1'b0;
+                    wait_ok   <= 1'b1;
+                    pxl_ok    <= 1'b0;
                 end
             end
-            line_done <= rd_addr>=9'd448;
+            if( rd_addr>=9'd448 ) begin
+                line_done <= 1'b1;
+                line_wr   <= 1'b0;
+                wait_ok   <= 1'b0;
+            end
         end        
     end
 end

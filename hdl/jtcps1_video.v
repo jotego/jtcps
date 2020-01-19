@@ -25,9 +25,18 @@
 module jtcps1_video(
     input              rst,
     input              clk,
-    input      [ 8:0]  v,
+    input      [ 7:0]  v,
+    input              start,
 
     // Register configuration
+    // Scroll
+    input      [15:0]  hpos1,
+    input      [15:0]  hpos2,
+    input      [15:0]  hpos3,
+    input      [15:0]  vpos1,
+    input      [15:0]  vpos2,
+    input      [15:0]  vpos3,
+    // VRAM position
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
     input      [15:0]  vram3_base,
@@ -49,18 +58,21 @@ module jtcps1_video(
 
     // GFX ROM interface
     output     [22:0]  rom1_addr,    // up to 1 MB
+    output     [ 3:0]  rom1_bank,
     output             rom1_half,    // selects which half to read
     input      [31:0]  rom1_data,
     output             rom1_cs,
     input              rom1_ok,
 
     output     [22:0]  rom2_addr,    // up to 1 MB
+    output     [ 3:0]  rom2_bank,
     output             rom2_half,    // selects which half to read
     input      [31:0]  rom2_data,
     output             rom2_cs,
     input              rom2_ok,
 
     output     [22:0]  rom3_addr,    // up to 1 MB
+    output     [ 3:0]  rom3_bank,
     output             rom3_half,    // selects which half to read
     input      [31:0]  rom3_data,
     output             rom3_cs,
@@ -79,12 +91,12 @@ wire            buf1_wr,   buf2_wr,   buf3_wr;
 wire [ 3:1]     scr_done;
 
 jtcps1_gfx_pal u_gfx_pal(
-    .scr1   ( rom1_addr ),
-    .scr2   ( rom2_addr ),
-    .scr3   ( rom3_addr ),
-    .bank1  ( rom1_bank ),
-    .bank2  ( rom2_bank ),
-    .bank3  ( rom3_bank )
+    .scr1       ( rom1_addr[22:10]  ),
+    .scr2       ( rom2_addr[22:10]  ),
+    .scr3       ( rom3_addr[22:10]  ),
+    .offset1    ( rom1_bank         ),
+    .offset2    ( rom2_bank         ),
+    .offset3    ( rom3_bank         )
 );
 
 jtcps1_tilemap #(.SIZE(8)) u_scroll1(

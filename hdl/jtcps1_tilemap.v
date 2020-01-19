@@ -113,9 +113,9 @@ always @(posedge clk or posedge rst) begin
                         { hpos[10:5], 5'd0 } );
                 buf_addr <= 9'd0-{6'd0,hpos[2:0]};
                 buf_wr   <= 1'b0;
+                if(start) done<=1'b0;
                 if(!start) begin
                     st   <= 0;
-                    done <= 1'b0;
                 end
             end
             1: begin

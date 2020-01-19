@@ -35,9 +35,6 @@ module jtframe_sdram_mux #(parameter
     SLOT0_AW = 8, SLOT1_AW = 8, SLOT2_AW = 8, SLOT3_AW = 8, SLOT4_AW = 8,
     SLOT5_AW = 8, SLOT6_AW = 8, SLOT7_AW = 8, SLOT8_AW = 8, SLOT9_AW = 8,
 
-    SLOT0_CACHE = 1, SLOT1_CACHE = 1, SLOT2_CACHE = 1, SLOT3_CACHE = 1, SLOT4_CACHE = 1,
-    SLOT5_CACHE = 1, SLOT6_CACHE = 1, SLOT7_CACHE = 1, SLOT8_CACHE = 1, SLOT9_CACHE = 1,
-
     SLOT0_TYPE = 0, SLOT1_TYPE = 0, SLOT2_TYPE = 0, SLOT3_TYPE = 0, SLOT4_TYPE = 0,
     SLOT5_TYPE = 0, SLOT6_TYPE = 0, SLOT7_TYPE = 0, SLOT8_TYPE = 0, SLOT9_TYPE = 0
 )(
@@ -56,16 +53,16 @@ module jtframe_sdram_mux #(parameter
     input  [SLOT8_AW-1:0] slot8_addr,
     input  [SLOT9_AW-1:0] slot9_addr,
 
-    input  [SLOT0_AW-1:0] slot0_offset,
-    input  [SLOT1_AW-1:0] slot1_offset,
-    input  [SLOT2_AW-1:0] slot2_offset,
-    input  [SLOT3_AW-1:0] slot3_offset,
-    input  [SLOT4_AW-1:0] slot4_offset,
-    input  [SLOT5_AW-1:0] slot5_offset,
-    input  [SLOT6_AW-1:0] slot6_offset,
-    input  [SLOT7_AW-1:0] slot7_offset,
-    input  [SLOT8_AW-1:0] slot8_offset,
-    input  [SLOT9_AW-1:0] slot9_offset,
+    input  [        21:0] slot0_offset,
+    input  [        21:0] slot1_offset,
+    input  [        21:0] slot2_offset,
+    input  [        21:0] slot3_offset,
+    input  [        21:0] slot4_offset,
+    input  [        21:0] slot5_offset,
+    input  [        21:0] slot6_offset,
+    input  [        21:0] slot7_offset,
+    input  [        21:0] slot8_offset,
+    input  [        21:0] slot9_offset,
 
     //  output data
     output [SLOT0_DW-1:0] slot0_dout,
@@ -94,10 +91,40 @@ module jtframe_sdram_mux #(parameter
 
     input  [9:0]        slot_cs,
     input  [9:0]        slot_wr,
-    output [9:0]        slot0_ok,
+    output [9:0]        slot_ok,
+
+    // SDRAM controller interface
+    input               downloading,
+    input               loop_rst,
+    input               sdram_ack,
+    output  reg         sdram_req,
+    output  reg         sdram_rnw,
+    output  reg         refresh_en,
+    output  reg [21:0]  sdram_addr,
+    input               data_rdy,
+    input       [31:0]  data_read,
+    output  reg [31:0]  data_write
 );
 
-jtframe_sdram_rq #(.AW(SLOT0_AW),.DW(SLOT0_DW),.TYPE(SLOT0_TYPE),.CACHE(SLOT0_CACHE)) u_slot0(
+reg  [ 3:0] ready_cnt;
+reg  [ 3:0] rd_state_last;
+wire [ 9:0] req, req_rnw;
+reg  [ 9:0] data_sel, slot_we;
+wire [ 9:0] active = ~data_sel & req;
+reg         wait_cycle;
+
+wire [21:0] slot0_addr_req,
+            slot1_addr_req,
+            slot2_addr_req,
+            slot3_addr_req,
+            slot4_addr_req,
+            slot5_addr_req,
+            slot6_addr_req,
+            slot7_addr_req,
+            slot8_addr_req,
+            slot9_addr_req;
+
+jtframe_sdram_rq #(.AW(SLOT0_AW),.DW(SLOT0_DW),.TYPE(SLOT0_TYPE)) u_slot0(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -112,11 +139,11 @@ jtframe_sdram_rq #(.AW(SLOT0_AW),.DW(SLOT0_DW),.TYPE(SLOT0_TYPE),.CACHE(SLOT0_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot0_dout             ),
     .req       ( req[0]                 ),
-    .data_ok   ( ok[0]                  ),
-    .we        ( data_sel[0]            )
+    .data_ok   ( slot_ok[0]             ),
+    .we        ( slot_we[0]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT1_AW),.DW(SLOT1_DW),.TYPE(SLOT1_TYPE),.CACHE(SLOT1_CACHE)) u_slot1(
+jtframe_sdram_rq #(.AW(SLOT1_AW),.DW(SLOT1_DW),.TYPE(SLOT1_TYPE)) u_slot1(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -131,11 +158,11 @@ jtframe_sdram_rq #(.AW(SLOT1_AW),.DW(SLOT1_DW),.TYPE(SLOT1_TYPE),.CACHE(SLOT1_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot1_dout             ),
     .req       ( req[1]                 ),
-    .data_ok   ( ok[1]                  ),
-    .we        ( data_sel[1]            )
+    .data_ok   ( slot_ok[1]             ),
+    .we        ( slot_we[1]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT2_AW),.DW(SLOT2_DW),.TYPE(SLOT2_TYPE),.CACHE(SLOT2_CACHE)) u_slot2(
+jtframe_sdram_rq #(.AW(SLOT2_AW),.DW(SLOT2_DW),.TYPE(SLOT2_TYPE)) u_slot2(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -150,11 +177,11 @@ jtframe_sdram_rq #(.AW(SLOT2_AW),.DW(SLOT2_DW),.TYPE(SLOT2_TYPE),.CACHE(SLOT2_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot2_dout             ),
     .req       ( req[2]                 ),
-    .data_ok   ( ok[2]                  ),
-    .we        ( data_sel[2]            )
+    .data_ok   ( slot_ok[2]             ),
+    .we        ( slot_we[2]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT3_AW),.DW(SLOT3_DW),.TYPE(SLOT3_TYPE),.CACHE(SLOT3_CACHE)) u_slot3(
+jtframe_sdram_rq #(.AW(SLOT3_AW),.DW(SLOT3_DW),.TYPE(SLOT3_TYPE)) u_slot3(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -169,11 +196,11 @@ jtframe_sdram_rq #(.AW(SLOT3_AW),.DW(SLOT3_DW),.TYPE(SLOT3_TYPE),.CACHE(SLOT3_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot3_dout             ),
     .req       ( req[3]                 ),
-    .data_ok   ( ok[3]                  ),
-    .we        ( data_sel[3]            )
+    .data_ok   ( slot_ok[3]             ),
+    .we        ( slot_we[3]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT4_AW),.DW(SLOT4_DW),.TYPE(SLOT4_TYPE),.CACHE(SLOT4_CACHE)) u_slot4(
+jtframe_sdram_rq #(.AW(SLOT4_AW),.DW(SLOT4_DW),.TYPE(SLOT4_TYPE)) u_slot4(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -188,11 +215,11 @@ jtframe_sdram_rq #(.AW(SLOT4_AW),.DW(SLOT4_DW),.TYPE(SLOT4_TYPE),.CACHE(SLOT4_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot4_dout             ),
     .req       ( req[4]                 ),
-    .data_ok   ( ok[4]                  ),
-    .we        ( data_sel[4]            )
+    .data_ok   ( slot_ok[4]             ),
+    .we        ( slot_we[4]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT5_AW),.DW(SLOT5_DW),.TYPE(SLOT5_TYPE),.CACHE(SLOT5_CACHE)) u_slot5(
+jtframe_sdram_rq #(.AW(SLOT5_AW),.DW(SLOT5_DW),.TYPE(SLOT5_TYPE)) u_slot5(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -207,11 +234,11 @@ jtframe_sdram_rq #(.AW(SLOT5_AW),.DW(SLOT5_DW),.TYPE(SLOT5_TYPE),.CACHE(SLOT5_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot5_dout             ),
     .req       ( req[5]                 ),
-    .data_ok   ( ok[5]                  ),
-    .we        ( data_sel[5]            )
+    .data_ok   ( slot_ok[5]             ),
+    .we        ( slot_we[5]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT6_AW),.DW(SLOT6_DW),.TYPE(SLOT6_TYPE),.CACHE(SLOT6_CACHE)) u_slot6(
+jtframe_sdram_rq #(.AW(SLOT6_AW),.DW(SLOT6_DW),.TYPE(SLOT6_TYPE)) u_slot6(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -226,11 +253,11 @@ jtframe_sdram_rq #(.AW(SLOT6_AW),.DW(SLOT6_DW),.TYPE(SLOT6_TYPE),.CACHE(SLOT6_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot6_dout             ),
     .req       ( req[6]                 ),
-    .data_ok   ( ok[6]                  ),
-    .we        ( data_sel[6]            )
+    .data_ok   ( slot_ok[6]             ),
+    .we        ( slot_we[6]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT7_AW),.DW(SLOT7_DW),.TYPE(SLOT7_TYPE),.CACHE(SLOT7_CACHE)) u_slot7(
+jtframe_sdram_rq #(.AW(SLOT7_AW),.DW(SLOT7_DW),.TYPE(SLOT7_TYPE)) u_slot7(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -245,11 +272,11 @@ jtframe_sdram_rq #(.AW(SLOT7_AW),.DW(SLOT7_DW),.TYPE(SLOT7_TYPE),.CACHE(SLOT7_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot7_dout             ),
     .req       ( req[7]                 ),
-    .data_ok   ( ok[7]                  ),
-    .we        ( data_sel[7]            )
+    .data_ok   ( slot_ok[7]             ),
+    .we        ( slot_we[7]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT8_AW),.DW(SLOT8_DW),.TYPE(SLOT8_TYPE),.CACHE(SLOT8_CACHE)) u_slot8(
+jtframe_sdram_rq #(.AW(SLOT8_AW),.DW(SLOT8_DW),.TYPE(SLOT8_TYPE)) u_slot8(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -264,11 +291,11 @@ jtframe_sdram_rq #(.AW(SLOT8_AW),.DW(SLOT8_DW),.TYPE(SLOT8_TYPE),.CACHE(SLOT8_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot8_dout             ),
     .req       ( req[8]                 ),
-    .data_ok   ( ok[8]                  ),
-    .we        ( data_sel[8]            )
+    .data_ok   ( slot_ok[8]             ),
+    .we        ( slot_we[8]             )
 );
 
-jtframe_sdram_rq #(.AW(SLOT9_AW),.DW(SLOT9_DW),.TYPE(SLOT9_TYPE),.CACHE(SLOT9_CACHE)) u_slot9(
+jtframe_sdram_rq #(.AW(SLOT9_AW),.DW(SLOT9_DW),.TYPE(SLOT9_TYPE)) u_slot9(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .cen       ( 1'b1                   ),
@@ -283,9 +310,132 @@ jtframe_sdram_rq #(.AW(SLOT9_AW),.DW(SLOT9_DW),.TYPE(SLOT9_TYPE),.CACHE(SLOT9_CA
     .din_ok    ( data_rdy               ),
     .dout      ( slot9_dout             ),
     .req       ( req[9]                 ),
-    .data_ok   ( ok[9]                  ),
-    .we        ( data_sel[9]            )
+    .data_ok   ( slot_ok[9]             ),
+    .we        ( slot_we[9]             )
 );
 
+always @(posedge clk)
+if( loop_rst || downloading ) begin
+    sdram_addr <= 22'd0;
+    ready_cnt <=  4'd0;
+    ready     <=  1'b0;
+    sdram_req <=  1'b0;
+    data_sel  <=  9'd0;
+end else begin
+    {ready, ready_cnt}  <= {ready_cnt, 1'b1};
+    if( sdram_ack ) sdram_req <= 1'b0;
+    refresh_en <= 1'b0;
+    // accept a new request
+    slot_we <= data_sel;
+    wait_cycle <= 1'b0;
+    if( data_sel==9'd0 || (data_rdy&&!wait_cycle) ) begin
+        sdram_req <= |active;
+        wait_cycle<= |active;
+        data_sel  <= 9'd0;
+        case( 1'b1 )
+            active[0]: begin
+                sdram_addr <= slot0_addr_req;
+                if( SLOT0_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot0_din;
+                    sdram_rnw  <= req_rnw[0];
+                end
+                data_sel[0] <= 1'b1;
+            end
+            active[1]: begin
+                sdram_addr <= slot1_addr_req;
+                if( SLOT1_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot1_din;
+                    sdram_rnw  <= req_rnw[1];
+                end
+                data_sel[1] <= 1'b1;
+            end
+            active[2]: begin
+                sdram_addr <= slot2_addr_req;
+                if( SLOT2_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot2_din;
+                    sdram_rnw  <= req_rnw[2];
+                end
+                data_sel[2] <= 1'b1;
+            end
+            active[3]: begin
+                sdram_addr <= slot3_addr_req;
+                if( SLOT3_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot3_din;
+                    sdram_rnw  <= req_rnw[3];
+                end
+                data_sel[3] <= 1'b1;
+            end
+            active[4]: begin
+                sdram_addr <= slot4_addr_req;
+                if( SLOT4_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot4_din;
+                    sdram_rnw  <= req_rnw[4];
+                end
+                data_sel[4] <= 1'b1;
+            end
+            active[5]: begin
+                sdram_addr <= slot5_addr_req;
+                if( SLOT5_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot5_din;
+                    sdram_rnw  <= req_rnw[5];
+                end
+                data_sel[5] <= 1'b1;
+            end
+            active[6]: begin
+                sdram_addr <= slot6_addr_req;
+                if( SLOT6_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot6_din;
+                    sdram_rnw  <= req_rnw[6];
+                end
+                data_sel[6] <= 1'b1;
+            end
+            active[7]: begin
+                sdram_addr <= slot7_addr_req;
+                if( SLOT7_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot7_din;
+                    sdram_rnw  <= req_rnw[7];
+                end
+                data_sel[7] <= 1'b1;
+            end
+            active[8]: begin
+                sdram_addr <= slot8_addr_req;
+                if( SLOT8_TYPE == 0)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot8_din;
+                    sdram_rnw  <= req_rnw[8];
+                end
+                data_sel[8] <= 1'b1;
+            end
+            active[9]: begin
+                sdram_addr <= slot9_addr_req;
+                if( SLOT0_TYPE == 9)
+                    sdram_rnw <= 1'b1;
+                else begin
+                    data_write <= slot9_din;
+                    sdram_rnw  <= req_rnw[9];
+                end
+                data_sel[9] <= 1'b1;
+            end
+            default: refresh_en <= vblank;
+        endcase
+    end
+end
 
 endmodule
