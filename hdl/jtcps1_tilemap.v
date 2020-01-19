@@ -53,6 +53,9 @@ module jtcps1_tilemap(
 
 parameter SIZE=8; // 8, 16 or 32
 
+localparam CACHE_AW  = SIZE==8 ? 9 : ( SIZE==16 ? 8 : 7 );
+localparam CACHE_XW  = SIZE==8 ? 3 : ( SIZE==16 ? 4 : 5 ); // ignore these bits from V
+
 reg [10:0] vn;
 reg [10:0] hn;
 reg [31:0] pxl_data;
@@ -90,8 +93,26 @@ endfunction
 wire     vflip = attr[6];
 wire     hflip = attr[5];
 wire [4:0] pal = attr[4:0];
-
 assign rom_half = hn[3] ^ hflip;
+
+wire [CACHE_AW-2:0] cache_addr;
+wire     cache_rd = v[CACHE_XW-1:0] !=0;
+reg      cache_half;
+assign cache_addr = hn[10:CACHE_XW];
+
+reg  [15:0] vram_cache[0:(2**CACHE_AW)-1];
+
+// initial begin
+//     $display("Size = %d, Cache = %d -> %d", SIZE, CACHE_AW, (2**CACHE_AW)-1);
+//     vram_cache[9'h38] = 16'hdead;
+//     $display("Test = %X ", vram_cache[9'h38] );
+//     $finish;
+// end
+
+// always @(posedge clk) begin
+//     if( cache_wr ) vram_cache[ cache_addr ] <= cache_din;
+//     cache_dout = vram_cache[ cache_addr ];
+// end
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
@@ -101,6 +122,7 @@ always @(posedge clk or posedge rst) begin
         done            <= 1'b0;
         st              <= 0;
         rom_addr[22:20] <= rom_id; // constant value
+        cache_half      <= 0;
     end else begin
         st <= st+1;
         case( st ) 
@@ -121,24 +143,48 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin
-                vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
-                vram_cs   <= 1'b1;
+                cache_half <= 0;
+                if( !cache_rd ) begin
+                    vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
+                    vram_cs   <= 1'b1;
+                end
                 if( buf_addr>= 9'd383+9'd64 ) begin
                     buf_wr <= 1'b0;
                     done   <= 1'b1;
                     st     <= 0;
                 end
             end
-            3: if( vram_ok ) begin
-                code         <= vram_data;
-                vram_addr[1] <= 1'b1;
-                st <= 50;
-            end else st<=st;
-            51: if( vram_ok ) begin
-                attr    <= vram_data;
-                vram_cs <= 1'b0;
-                st <= 4;
-            end else st<=st;
+            3: if(!cache_rd) begin
+                    if( vram_ok ) begin
+                        code         <= vram_data;
+                        vram_addr[1] <= 1'b1;
+                        st <= 50;
+                        // save the value for later
+                        //cache_wr   <= 1;
+                        //cache_din  <= vram_data;
+                        vram_cache[ { 1'b0, cache_addr} ] <= vram_data;
+                    end else st<=st;
+                end else begin
+                    code <= vram_cache[ {1'b0,cache_addr} ];// cache_dout;
+                    st <= 50;
+                end
+            50: begin
+                cache_half <= 1;
+            end
+            51: if(!cache_rd) begin
+                    if( vram_ok ) begin
+                        attr    <= vram_data;
+                        vram_cs <= 1'b0;
+                        st <= 4;
+                        // save to cache
+                        // cache_wr   <= 1;
+                        // cache_din  <= vram_data;
+                        vram_cache[ {1'b1,cache_addr} ] <= vram_data;
+                    end else st<=st;
+                end else begin
+                    attr <= vram_cache[ {1'b1,cache_addr} ]; // cache_dout;
+                    st <= 4;
+                end
             4: begin
                 case (SIZE)
                     8:  begin

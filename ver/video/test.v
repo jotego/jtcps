@@ -310,13 +310,13 @@ always @(posedge clk, posedge rst) begin
             pxlcnt <= 0;
             v     <= v+1;
             start <= 1;
-            $display("Line %d",v);
+            if( v[2:0]==0 ) $display("Line %d",v);
             if(&v) begin
                 framecnt <= framecnt+1;
                 $display("FRAME");
             end
         end
-        if(v==8'd100) begin
+        if(v==8'd999) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

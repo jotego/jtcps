@@ -112,10 +112,11 @@ jtcps1_tilemap #(.SIZE(SIZE)) UUT(
     .buf_wr     ( buf_wr        )
 );
 
-jtcps1_gfx_pal u_palb(
-    .scr1 ( rom_addr[22:10] ),
-    .bank1( gfx_cen         )
-);
+//jtcps1_gfx_pal u_palb(
+//    .scr1 ( rom_addr[22:10] ),
+//    .bank1( gfx_cen         )
+//);
+assign gfx_cen=1;
 
 initial begin
     rst = 1'b0;
