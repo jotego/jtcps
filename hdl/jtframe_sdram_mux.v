@@ -320,7 +320,7 @@ if( loop_rst || downloading ) begin
     ready_cnt <=  4'd0;
     ready     <=  1'b0;
     sdram_req <=  1'b0;
-    data_sel  <=  9'd0;
+    data_sel  <=  10'd0;
 end else begin
     {ready, ready_cnt}  <= {ready_cnt, 1'b1};
     if( sdram_ack ) sdram_req <= 1'b0;
@@ -328,10 +328,10 @@ end else begin
     // accept a new request
     slot_we <= data_sel;
     wait_cycle <= 1'b0;
-    if( data_sel==9'd0 || (data_rdy&&!wait_cycle) ) begin
+    if( data_sel==10'd0 || (data_rdy&&!wait_cycle) ) begin
         sdram_req <= |active;
         wait_cycle<= |active;
-        data_sel  <= 9'd0;
+        data_sel  <= 10'd0;
         case( 1'b1 )
             active[0]: begin
                 sdram_addr <= slot0_addr_req;

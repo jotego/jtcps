@@ -74,6 +74,7 @@ function [3:0] bank2offset;
         4'd1: bank2offset = 4'h4;
         4'd2: bank2offset = 4'h0;
         4'd4: bank2offset = 4'h0;
+        default: bank2offset = 4'h0;
     endcase
 endfunction
 

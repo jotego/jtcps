@@ -1,4 +1,3 @@
-test.v
 ../../hdl/jtframe_sdram_mux.v
 ../../hdl/jtframe_sdram_rq.v
 ../../hdl/jtcps1_video.v

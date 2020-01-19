@@ -55,7 +55,7 @@ reg [1:0]    subaddr;
 reg init;
 reg hit0, hit1;
 
-wire data_match = data_match == wrdata;
+wire data_match = dout === wrdata || init;
 
 always @(*) begin
     case(DW)
@@ -85,6 +85,8 @@ always @(posedge clk, posedge rst)
     if( rst ) begin
         init      <= 1'b1;
         deleterus <= 1'b0;  // signals which cached data is to be overwritten next time
+        cached_data0 <= 32'd0;
+        cached_data1 <= 32'd0;
     end else begin
         data_ok <= !init && addr_ok && ( hit0 || hit1 || (din_ok&&we));
         if( we && din_ok ) begin

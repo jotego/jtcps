@@ -107,7 +107,9 @@ always @(posedge clk or posedge rst) begin
             0: begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
+                /* verilator lint_off WIDTH */
                 vn       <= vpos + {8'd0, v};
+                /* verilator lint_on WIDTH */
                 hn       <= SIZE == 8 ? {hpos[10:3],3'd0} :
                     ( SIZE==16 ? { hpos[10:4], 4'd0 } :
                         { hpos[10:5], 5'd0 } );
