@@ -25,8 +25,12 @@
 module jtcps1_video(
     input              rst,
     input              clk,
-    input      [ 7:0]  v,
-    input              start,
+    input              cen8,        // pixel clock enable
+
+    output     [ 7:0]  vdump,
+    output     [ 7:0]  vrender,
+    output     [ 8:0]  hdump,
+    output             frame,
 
     // Register configuration
     // Scroll
@@ -59,6 +63,12 @@ module jtcps1_video(
     input              vram3_ok,
     output             vram3_cs,
 
+    // Video signal
+    output             HS,
+    output             VS,
+    output             HB,
+    output             VB,
+
     // GFX ROM interface
     output     [22:0]  rom1_addr,    // up to 1 MB
     output     [ 3:0]  rom1_bank,
@@ -84,14 +94,34 @@ module jtcps1_video(
     output     [11:0]  line_data,
     output     [ 8:0]  line_addr,
     output             line_wr,
-    input              line_wr_ok,
-    output             line_done
+    input              line_wr_ok
 );
 
 wire [ 8:0]     buf1_addr, buf2_addr, buf3_addr;
 wire [ 8:0]     buf1_data, buf2_data, buf3_data;
 wire            buf1_wr,   buf2_wr,   buf3_wr;
 wire [ 3:1]     scr_done;
+
+wire            line_start, line_done;
+
+jtcps1_timing u_timing(
+    .rst            ( rst               ),
+    .clk            ( clk               ),
+    .cen8           ( cen8              ),
+
+    .vdump          ( vdump             ),
+    .hdump          ( hdump             ),
+    .frame          ( frame             ),
+    // Render interface
+    .vrender        ( vrender           ),
+    .line_start     ( line_start        ),
+    .line_done      ( line_done         ),
+    // to video output
+    .HS             ( HS                ),
+    .VS             ( VS                ),
+    .VB             ( VB                ),
+    .HB             ( HB                )
+);
 
 jtcps1_gfx_pal u_gfx_pal(
     .scr1       ( rom1_addr[22:10]  ),
@@ -106,11 +136,11 @@ jtcps1_gfx_pal u_gfx_pal(
 jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( v             ),
+    .v          ( vrender       ),
     .vram_base  ( vram1_base    ),
     .hpos       ( hpos1         ),
     .vpos       ( vpos1         ),
-    .start      ( start         ),
+    .start      ( line_start    ),
     .done       ( scr_done[1]   ),
     .vram_addr  ( vram1_addr    ),
     .vram_data  ( vram1_data    ),
@@ -135,11 +165,11 @@ assign buf1_wr    = 0;
 jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( v             ),
+    .v          ( vrender       ),
     .vram_base  ( vram2_base    ),
     .hpos       ( hpos2         ),
     .vpos       ( vpos2         ),
-    .start      ( start         ),
+    .start      ( line_start    ),
     .done       ( scr_done[2]   ),
     .vram_addr  ( vram2_addr    ),
     .vram_data  ( vram2_data    ),
@@ -158,11 +188,11 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
 jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( v             ),
+    .v          ( vrender       ),
     .vram_base  ( vram3_base    ),
     .hpos       ( hpos3         ),
     .vpos       ( vpos3         ),
-    .start      ( start         ),
+    .start      ( line_start    ),
     .done       ( scr_done[3]   ),
     .vram_addr  ( vram3_addr    ),
     .vram_data  ( vram3_data    ),
@@ -181,7 +211,7 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
 jtcps1_colmix u_colmix(
     .rst        ( rst       ),
     .clk        ( clk       ),
-    .start      ( start     ),
+    .start      (line_start ),
     // Scroll data
     .scr1_data  ( buf1_data ),
     .scr2_data  ( buf2_data ),

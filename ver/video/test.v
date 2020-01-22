@@ -2,8 +2,11 @@
 
 module test;
 
-reg                rst, clk, start, HS, frame, new_frame;
-reg        [ 7:0]  v, vrender;
+reg                rst, clk, cen8;
+wire       [ 7:0]  vdump, vrender;
+wire       [ 8:0]  hdump;
+// video signals
+wire               HS, VS, HB, VB, frame;
 // Video RAM interface
 wire       [23:1]  vram1_addr, vram2_addr, vram3_addr;
 wire       [15:0]  vram1_data, vram2_data, vram3_data;
@@ -20,7 +23,7 @@ wire               rom1_ok, rom2_ok, rom3_ok;
 // To frame buffer
 wire       [11:0]  line_data;
 wire       [ 8:0]  line_addr;
-wire               line_wr, line_wr_ok, line_done;
+wire               line_wr, line_wr_ok;
 
 reg                downloading=1'b0, loop_rst=1'b0, sdram_ack;
 reg        [31:0]  data_read;
@@ -33,8 +36,18 @@ reg                data_rdy;
 jtcps1_video UUT (
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( vrender       ),
-    .start      ( start         ),
+    .cen8       ( cen8          ),
+
+    .hdump      ( hdump         ),
+    .vdump      ( vdump         ),
+    .vrender    ( vrender       ),
+    .frame      ( frame         ),
+
+    // Video signal
+    .HS         ( HS            ),
+    .VS         ( VS            ),
+    .HB         ( HB            ),
+    .VB         ( VB            ),
 
     // Register configuration
     .hpos1      ( 16'hffc0      ),
@@ -88,8 +101,7 @@ jtcps1_video UUT (
     .line_data  ( line_data     ),
     .line_addr  ( line_addr     ),
     .line_wr    ( line_wr       ),
-    .line_wr_ok ( line_wr_ok    ),
-    .line_done  ( line_done     )
+    .line_wr_ok ( line_wr_ok    )
 );
 
 //always @(posedge start) begin
@@ -141,7 +153,7 @@ assign rom3_offset   = gfx_offset;//+22'h10_0000;
 
 wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
-wire [16:0] fbwr_addr = { v, line_addr };
+wire [16:0] fbwr_addr = { vrender, line_addr };
 wire [15:0] fbwr_data = { 4'd0, line_data };
 
 reg  [ 9:0] fbrd_addr;
@@ -179,7 +191,7 @@ u_sdram_mux(
     .vblank         ( 1'b0          ),
     // Frame buffer reads
     .slot2_offset   ( frame_offset      ),
-    .slot2_addr     ( {v, fbrd_addr}    ),
+    .slot2_addr     ( {vdump, fbrd_addr}    ),
     //.slot2_dout     ( fbrd_data         ),
 
     // VRAM read access only
@@ -292,8 +304,10 @@ end
 
 localparam SDRAM_STCNT=6; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
-reg       last_st0;
+reg       last_st0, last_HS;
 integer  sdram_idle_cnt, total_cycles, line_idle;
+wire     HS_negedge = !HS &&  last_HS;
+wire     HS_posedge =  HS && !last_HS;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -306,11 +320,12 @@ always @(posedge clk, posedge rst) begin
         line_idle      <= 0;
     end else begin
         last_st0 <= sdram_st[0];
+        last_HS  <= HS;
         if( last_st0 && sdram_st[0] ) begin
             sdram_idle_cnt=sdram_idle_cnt+1;
             line_idle <= line_idle+1;
         end
-        if( start ) line_idle <= 0;
+        if( HS_negedge ) line_idle <= 0;
         total_cycles = total_cycles+1;
         if(sdram_st!=1 || sdram_req ) sdram_st <= { sdram_st[SDRAM_STCNT-2:0], sdram_st[SDRAM_STCNT-1] };
         sdram_ack  <= 1'b0;
@@ -326,25 +341,6 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-// render V counter
-reg last_line_done;
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        vrender <= 8'd0;
-        start   <= 1'b1;
-        last_line_done <= 1'b0;
-    end else begin
-        start <= 1'b0;
-        last_line_done <= line_done;
-        if( line_done && !last_line_done ) begin
-            if( ~&vrender ) begin
-                vrender <= vrender+8'd1;
-                start   <= 1'b1;
-            end
-        end
-        if( new_frame ) vrender <= 8'd0;        
-    end
-end
 // Frame buffer read
 reg fbread_wait, fbread_done;
 
@@ -355,7 +351,7 @@ always @(posedge clk, posedge rst) begin
         fbread_done <= 1'b0;
     end else begin
         fbread_wait <= 1'b0;
-        if( start ) begin
+        if( HS_negedge ) begin
             fbrd_addr   <= 1'd0;
             fbread_done <= 1'b0;
         end else if( fbread_ok && !fbread_wait && !fbread_done) begin
@@ -379,40 +375,33 @@ initial begin
     forever #(10.417/2) clk = ~clk;
 end
 
+integer cen_cnt=0;
+
+always @(posedge clk) begin
+    cen_cnt <= cen_cnt+1;
+    if(cen_cnt>=12) cen_cnt<=0;
+    cen8 <= cen_cnt==0;
+end
+
 // Line count
 reg [12:0] cpy_buf[0:(2**(8+9))-1];
-integer pxlcnt, framecnt;
+integer framecnt;
 
 always @(posedge clk) begin
     if( line_wr )
-        cpy_buf[ {v, line_addr} ] <= line_data;
+        cpy_buf[ {vrender, line_addr} ] <= line_data;
 end
 
-always @(posedge clk, posedge rst) begin
+always @(posedge HS, posedge rst) begin
     if(rst) begin
-        pxlcnt <= 0;
         framecnt <= 0;
-        v <= 8'd0;
-        HS     <= 1'b1;
-        frame     <= 1'b0;
-        new_frame <= 1'b0;
     end else begin
-        HS <= 1'b0;
-        pxlcnt <= pxlcnt+1;
-        new_frame <= 1'b0;
-        if(pxlcnt==3124*2) begin
-            pxlcnt <= 0;
-            v     <= v+1;
-            HS <= 1;
-            if( v[3:0]==0 ) $display("Line %d",v);
-            if(&v) begin
-                frame    <= ~frame;
-                new_frame<= 1'b1;
-                framecnt <= framecnt+1;
-                $display("FRAME");
-            end
+        if( vdump[3:0]==0 ) $display("Line %d",vdump);
+        if(&vdump) begin
+            framecnt <= framecnt+1;
+            $display("FRAME");
         end
-        if(v==8'd24 && 0) begin
+        if(vdump==8'd24 && 0) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

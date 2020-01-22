@@ -229,8 +229,10 @@ always @(posedge clk or posedge rst) begin
                 end else st<=st;
             end
             33: begin
-                pxl_data <= rom_data;
-                hn <= hn + 10'd8; // pixels 24-31
+                if(rom_ok) begin
+                    pxl_data <= rom_data;
+                    hn <= hn + 10'd8; // pixels 24-31
+                end else st<=st;
             end
             42: st <= 1; // end
         endcase
