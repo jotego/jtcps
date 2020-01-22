@@ -26,14 +26,15 @@ module jtcps1_tilemap(
     input              rst,
     input              clk,
 
-    input      [ 7:0]  v,
+    input      [ 7:0]  vrender, // 1 line ahead of vdump
+    input      [ 7:0]  vdump,
+    input      [ 8:0]  hdump,
     // control registers
     input      [15:0]  vram_base,
     input      [15:0]  hpos,
     input      [15:0]  vpos,
 
     input              start,
-    output reg         done,
 
     output reg [23:1]  vram_addr,
     input      [15:0]  vram_data,
@@ -46,27 +47,35 @@ module jtcps1_tilemap(
     output reg         rom_cs,
     input              rom_ok,
 
-    output reg [ 8:0]  buf_addr,
-    output reg [ 8:0]  buf_data,
-    output reg         buf_wr
+    output reg [ 8:0]  pxl
 );
 
 parameter SIZE=8; // 8, 16 or 32
 
-localparam CACHE_AW  = SIZE==8 ? 9 : ( SIZE==16 ? 8 : 7 );
-localparam CACHE_XW  = SIZE==8 ? 3 : ( SIZE==16 ? 4 : 5 ); // ignore these bits from V
+localparam CACHE_AW  = SIZE==8 ?  9 : ( SIZE==16 ? 8 : 7 );
+localparam CACHE_XW  = SIZE==8 ?  3 : ( SIZE==16 ? 4 : 5 ); // ignore these bits from V
+localparam TILECNTW  = SIZE==8 ?  6 : ( SIZE==16 ? 5 : 4 );
+localparam TILEMAX   = SIZE==8 ? 56 : ( SIZE==16 ? 28: 14);
 
 reg [10:0] vn;
 reg [10:0] hn;
 reg [31:0] pxl_data;
 
 reg [ 5:0] st;
+reg [TILECNTW-1:0] tilecnt;
 
 reg [21:0] tile_addr;
 reg [15:0] code,attr;
 
 wire [11:0] scan;
 wire [ 2:0] rom_id;
+
+reg [ 9:0]  buf_mem[0:(2**10)-1];
+reg [ 8:0]  buf_addr;
+reg [ 8:0]  buf_data;
+reg         buf_wr;
+
+reg         done;
 
 case(SIZE)
     8:  begin
@@ -83,6 +92,15 @@ case(SIZE)
     end
 endcase
 
+// Line buffer
+// writes
+always @(posedge clk) begin
+    if( buf_wr ) buf_mem[ {vrender[0], buf_addr} ] <= buf_data;
+    pxl <= hdump<9'd448 ? buf_mem[ {vdump[0], hdump} ] : 9'h1ff;
+end
+
+// reads
+
 function [3:0] colour;
     input [31:0] c;
     input        flip;
@@ -96,7 +114,7 @@ wire [4:0] pal = attr[4:0];
 assign rom_half = hn[3] ^ hflip;
 
 wire [CACHE_AW-2:0] cache_addr;
-wire     cache_rd = v[CACHE_XW-1:0] !=0;
+wire     cache_rd = vrender[CACHE_XW-1:0] !=0;
 reg      cache_half;
 assign cache_addr = hn[10:CACHE_XW];
 
@@ -130,12 +148,13 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 /* verilator lint_off WIDTH */
-                vn       <= vpos + {8'd0, v};
+                vn       <= vpos + {8'd0, vrender};
                 /* verilator lint_on WIDTH */
                 hn       <= SIZE == 8 ? {hpos[10:3],3'd0} :
                     ( SIZE==16 ? { hpos[10:4], 4'd0 } :
                         { hpos[10:5], 5'd0 } );
-                buf_addr <= 9'd0-{6'd0,hpos[2:0]};
+                buf_addr <= 9'h1ff-{6'd0,hpos[2:0]};
+                tilecnt  <= {TILECNTW{1'b0}};
                 buf_wr   <= 1'b0;
                 if(start) done<=1'b0;
                 if(!start) begin
@@ -148,7 +167,7 @@ always @(posedge clk or posedge rst) begin
                     vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
                     vram_cs   <= 1'b1;
                 end
-                if( buf_addr>= 9'd383+9'd64 ) begin
+                if( tilecnt==TILEMAX ) begin
                     buf_wr <= 1'b0;
                     done   <= 1'b1;
                     st     <= 0;
@@ -213,6 +232,7 @@ always @(posedge clk or posedge rst) begin
             15: begin
                 if( SIZE==8 ) begin
                     st <= 1; // scan again
+                    tilecnt <= tilecnt+1; // 8x tile done
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 10'd8;    // pixels 8-15
@@ -223,6 +243,7 @@ always @(posedge clk or posedge rst) begin
             24: begin
                 if( SIZE==16 ) begin
                     st <= 1; // scan again
+                    tilecnt <= tilecnt+1; // 16x tile done
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 10'd8; // pixels 16-23
@@ -234,7 +255,10 @@ always @(posedge clk or posedge rst) begin
                     hn <= hn + 10'd8; // pixels 24-31
                 end else st<=st;
             end
-            42: st <= 1; // end
+            42: begin
+                st      <= 1; // 32x tile done
+                tilecnt <= tilecnt+1;
+            end
         endcase
     end
 end

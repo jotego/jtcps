@@ -25,11 +25,8 @@ module jtcps1_timing(
 
     output reg [ 7:0]  vdump,
     output reg [ 8:0]  hdump,
-    output reg         frame,
-    // Render interface
     output reg [ 7:0]  vrender,
-    output reg         line_start,    // line line_start
-    input              line_done,     // line done
+    output reg         start,
     // to video output
     output reg         HS,
     output reg         VS,
@@ -37,49 +34,28 @@ module jtcps1_timing(
     output reg         HB
 );
 
-reg new_frame;
-
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         hdump     <= 9'd0;
-        vdump     <= 8'd0;
+        vdump     <= 8'hff;
+        vrender   <= 8'd0;
         HS        <= 1'b0;
         VS        <= 1'b0;
-        HB        <= 1'b0;
-        VB        <= 1'b0;
-        frame     <= 1'b0;
-        new_frame <= 1'b0;
+        HB        <= 1'b1;
+        VB        <= 1'b1;
+        start     <= 1'b1;  // start high for sims
     end else if(cen8) begin
         hdump     <= hdump+9'd1;
-        new_frame <= 1'b0;
-        VB     <= vdump>=8'd224;// || vdump<8'h08; // VB end relates to new_frame register
-        VS     <= vdump>=8'he8 && vdump<8'hf0;
+        VB     <= vdump>=8'd240;// || vdump<8'h08; // VB end relates to new_frame register
+        if ( vdump>=8'hf0 ) VB <= 1'b1;
+        if ( vdump==8'h7  ) VB <= 1'b0;
         HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
         HS     <= hdump>=9'h1da && hdump<9'h1f0;
+        start  <= hdump==9'h1ff;
         if(&hdump) begin
-            hdump <= 9'd0;
-            vdump <= vdump+1;
-            new_frame<= vdump==8'hff;   // do not start new rendering until VB end
-            if(&vdump) begin
-                frame    <= ~frame;
-            end
-        end
-    end
-end
-
-// render V counter
-reg last_done;
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        vrender      <= 8'd0;
-        line_start   <= 1'b1;
-        last_done    <= 1'b0;
-    end else begin
-        line_start <= 1'b0;
-        last_done  <= line_done;
-        if( (line_done && !last_done && vrender<8'hf8) || new_frame ) begin
-            vrender <= vrender+8'd1;
-            line_start   <= 1'b1;
+            hdump   <= 9'd0;
+            vrender <= vrender+1;
+            vdump   <= vrender;
         end
     end
 end
