@@ -18,8 +18,8 @@ wire               rom1_half, rom2_half, rom3_half;
 wire               rom1_cs, rom2_cs, rom3_cs;
 wire               rom1_ok, rom2_ok, rom3_ok;
 // To frame buffer
-wire       [8:0]   line_data;
-wire       [8:0]   line_addr;
+wire       [12:0]  line_data;
+wire       [ 8:0]  line_addr;
 wire               line_wr, line_wr_ok, line_done;
 
 reg                downloading=1'b0, loop_rst=1'b0, sdram_ack;
@@ -46,6 +46,7 @@ jtcps1_video UUT (
     .vram1_base ( 16'h9000      ),
     .vram2_base ( 16'h9040      ),
     .vram3_base ( 16'h9080      ),
+    .pal_base   ( 16'h9100      ),
     // Video RAM interface
     .vram1_addr ( vram1_addr    ),
     .vram1_data ( vram1_data    ),
@@ -91,6 +92,10 @@ jtcps1_video UUT (
     .line_done  ( line_done     )
 );
 
+always @(posedge start) begin
+    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
+end
+
 // JTFRAME_ROM_RW slot types
 // 0 = read only    ( default )
 // 1 = write only
@@ -132,16 +137,18 @@ localparam [21:0] vram_offset  = 22'h32_0000;
 localparam [21:0] frame_offset = 22'h36_0000;
 assign rom1_offset   = gfx_offset;
 assign rom2_offset   = gfx_offset;
-assign rom3_offset   = gfx_offset+22'h10_0000;
+assign rom3_offset   = gfx_offset;//+22'h10_0000;
+
+wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
 wire [16:0] fbwr_addr = { v, line_addr };
-wire [15:0] fbwr_data = { 7'd0, line_data };
+wire [15:0] fbwr_data = { 3'd0, line_data };
 
 reg  [ 9:0] fbrd_addr;
 
-wire [20:0] gfx1_addr = {rom1_addr[19:0], rom1_half };
-wire [20:0] gfx2_addr = {rom2_addr[19:0], rom2_half };
-wire [20:0] gfx3_addr = {rom3_addr[19:0], rom3_half };
+wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
+wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
+wire [21:0] gfx3_addr = {gfx3_addr_pre, rom3_half, 1'b0 };
 
 jtframe_sdram_mux #(
     // Frame buffer, read access
@@ -155,11 +162,11 @@ jtframe_sdram_mux #(
     .SLOT5_AW   ( 18    ),  //5
     .SLOT5_DW   ( 16    ),
     // GFX ROM
-    .SLOT6_AW   ( 21    ),  //6
+    .SLOT6_AW   ( 22    ),  //6
+    .SLOT7_AW   ( 22    ),  //7
+    .SLOT8_AW   ( 22    ),  //8
     .SLOT6_DW   ( 32    ),
-    .SLOT7_AW   ( 21    ),  //7
     .SLOT7_DW   ( 32    ),
-    .SLOT8_AW   ( 21    ),  //8
     .SLOT8_DW   ( 32    ),
     // Frame buffer, write access
     .SLOT9_AW   ( 17    ),  //8
@@ -224,12 +231,63 @@ u_sdram_mux(
     .data_write     ( data_write    )
 );
 
+// Dump output frame buffer
+integer dumpcnt=0, dump_start=0, dumpv=0, fout;
+
+// Palette
+reg [15:0] pal[0:(2**11)-1]; // 4096?
+reg [15:0] raw;
+reg [11:0] pal_idx;
+reg [ 3:0] raw_r, raw_g, raw_b, raw_br;
+
+always @(pal_idx) begin
+    raw    = pal[pal_idx];
+    raw_br = raw[15:12];
+    raw_r  = raw[11: 8];
+    raw_g  = raw[ 7: 4];
+    raw_b  = raw[ 3: 0];
+end
+
+initial begin
+    $readmemh("pal16.hex",pal);
+    fout<=$fopen("video.raw","wb");
+end
+
+reg dumpdly, dumplast;
+
+always @(posedge clk) begin
+    if( !dump_start ) begin
+        dumpv   <= 0;
+        dumpcnt <= 64;
+        dumpdly <= 0;
+        dumplast<= 0;
+    end else begin
+        dumpdly <= 1'b1;
+        pal_idx <= cpy_buf[{dumpv[7:0],dumpcnt[8:0]}];
+        dumpcnt <= dumpcnt+1;
+        if( dumpcnt==384+63 ) begin
+            dumpcnt <= 64;
+            dumpv   <= dumpv+1;
+            dumplast <= dumpv==255;
+        end
+        if( dumpdly ) begin
+            $fwrite(fout,"%u", { 8'hff, raw_b[3:0],4'd0, raw_g[3:0], 4'd0, raw_r[3:0], 4'd0 });
+            if(dumplast) $finish;
+        end
+    end
+end
+
 // SDRAM
 reg [15:0] sdram[0:(2**22)-1];
 
 initial begin
-    $readmemh( "gfx16.hex",  sdram, gfx_offset, gfx_offset+1572875  );
+    $readmemh( "gfx16.hex",  sdram, gfx_offset, gfx_offset+1_572_875  );
     $readmemh( "vram16.hex", sdram, vram_offset, vram_offset+98303 );
+    // fout=$fopen("sdram_dump.hex","w");
+    // for( dumpcnt=0; dumpcnt<vram_offset+98303; dumpcnt=dumpcnt+1 ) begin
+    //     $fdisplay(fout,"%X", sdram[dumpcnt]);
+    // end
+    // $finish;
 end
 
 localparam SDRAM_STCNT=6;
@@ -297,11 +355,8 @@ initial begin
     forever #(10.417/2) clk = ~clk;
 end
 
-// Dump output frame buffer
-integer dumpcnt, fout;
-
 // Line count
-reg [9:0] cpy_buf[0:(2**(8+9))-1];
+reg [12:0] cpy_buf[0:(2**(8+9))-1];
 integer pxlcnt, framecnt;
 
 always @(posedge clk) begin
@@ -328,18 +383,14 @@ always @(posedge clk, posedge rst) begin
                 $display("FRAME");
             end
         end
-        //if(v==8'd999) begin
-        //    $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
-        //    $finish;
-        //end
-        if ( framecnt==1 ) begin
-            $display("Image dump");
-            fout=$fopen("video.raw","wb");
-            for( dumpcnt=0; dumpcnt<512*256; dumpcnt=dumpcnt+1 ) begin
-                $fwrite(fout,"%u", { 8'hff, {3{cpy_buf[dumpcnt][7:0]}} });
-            end
+        if(v==8'd24 && 0) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
+        end
+        if ( framecnt==1 && !dump_start) begin
+            dump_start<=1;
+            $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
+            $display("Image dump");
         end
     end
 end

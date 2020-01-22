@@ -1,7 +1,7 @@
 wp 800102,2,w,1,{printf "SCROLL1 base = %X",wpdata; g}
 wp 800104,2,w,1,{printf "SCROLL2 base = %X",wpdata; g}
 wp 800106,2,w,1,{printf "SCROLL2 base = %X",wpdata; g}
-wp 80010A,2,w,1,{printf "Palette base = %X",wpdata; g}
+wp 80010A,2,w,1,{printf "Palette base = %X",wpdata; }
 wp 80010C,2,w,1,{printf "Scroll1 X    = %X",wpdata; g}
 wp 80010E,2,w,1,{printf "Scroll1 Y    = %X",wpdata; g}
 wp 800110,2,w,1,{printf "Scroll2 X    = %X",wpdata; g}

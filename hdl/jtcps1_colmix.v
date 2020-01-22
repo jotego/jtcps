@@ -37,30 +37,51 @@ module jtcps1_colmix(
     input   [3:1]      scr_done,
 
     // To frame buffer
-    output reg [8:0]   line_data,
-    output reg [8:0]   line_addr,
+    output reg [11:0]  line_data,
+    output reg [ 8:0]  line_addr,
     output reg         line_wr,
     input              line_wr_ok,
     output reg         line_done
 );
 
-reg [8:0] scr1_buf[0:511];
-reg [8:0] scr2_buf[0:511];
-reg [8:0] scr3_buf[0:511];
+// Scroll buffers
+reg [ 8:0] scr1_buf[0:511];
+reg [ 8:0] scr2_buf[0:511];
+reg [ 8:0] scr3_buf[0:511];
 
 reg       dump;
 
-reg [8:0] pxl, rd_addr, scr1_rd, scr2_rd, scr3_rd;
+reg [ 8:0] pxl, rd_addr, scr1_rd, scr2_rd, scr3_rd;
+reg [11:0] pal_addr;
+
+// These are the top four bits written by CPS-B to each
+// pixel of the frame buffer. These are likely sent by CPS-A
+// via pins XS[4:0] and CPS-B encodes them
+// 000 = OBJ ?
+// 001 = SCROLL 1
+// 010 = SCROLL 2
+// 011 = SCROLL 3
+// 000 = STAR FIELD?
+reg [2:0] pxl_type;
 
 // simple layer priority for now:
 always @(*) begin
-        pxl = scr1_rd;
-    //if( scr1_rd[3:0] != 4'hf )
-    //    pxl = scr1_rd;
-    //else if(scr2_rd[3:0] != 4'hf )
-    //    pxl = scr2_rd;
-    //else
-    //    pxl = scr3_rd;
+    //pxl      = scr1_rd;
+    //pxl_type = 3'b01;
+    //pxl      = scr2_rd;
+    //pxl_type = 3'b10;
+
+    if( scr1_rd[3:0] != 4'hf ) begin
+        pxl      = scr1_rd;
+        pxl_type = 3'b1;
+    end else if(scr2_rd[3:0] != 4'hf ) begin
+        pxl      = scr2_rd;
+        pxl_type = 3'b10;
+    end else begin
+        pxl = scr3_rd;
+        pxl_type = 3'b011;
+    end
+    pal_addr = { pxl_type, pxl };
 end
 
 reg pxl_ok, wait_ok;
@@ -90,7 +111,11 @@ always @(posedge clk, posedge rst) begin
                 //ok_dly <= line_wr_ok;
                 if( !pxl_ok ) begin
                     rd_addr <= rd_addr + 9'd1;
+                    `ifndef NOSCROLL1
                     scr1_rd <= scr1_buf[ rd_addr ];
+                    `else 
+                    scr1_rd <= 9'h1ff;
+                    `endif
                     scr2_rd <= scr2_buf[ rd_addr ];
                     scr3_rd <= scr3_buf[ rd_addr ];
                     pxl_ok  <= 1'b1;
@@ -98,7 +123,7 @@ always @(posedge clk, posedge rst) begin
                 // Write line
                 if( pxl_ok && (!wait_ok || (wait_ok&&line_wr_ok))) begin
                     line_wr   <= 1'b1;
-                    line_data <= pxl;
+                    line_data <= pal_addr;
                     line_addr <= rd_addr;
                     wait_ok   <= 1'b1;
                     pxl_ok    <= 1'b0;

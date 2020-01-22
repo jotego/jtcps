@@ -11,27 +11,25 @@ int dump64_word( ofstream& of, const char *s0, const char *s1, const char *s2, c
     ifstream f2(s2,ios_base::binary);
     ifstream f3(s3,ios_base::binary);
     while( !f0.eof() ) {
-        char a[4][2];
-        f0.read( a[0], 2 );
-        f1.read( a[1], 2 );
-        f2.read( a[2], 2 );
-        f3.read( a[3], 2 );
-        int64_t t[4];
-        for( int k=0; k<4; k++) {
-            int64_t x;
-            t[k] = a[k][0];
-            t[k] &= 0xff;
-            t[k] <<= 8;
-            x    = a[k][1];
-            x    &= 0xff;
-            t[k] |= x;
-            t[k] &= 0xffff; // redundant
-        }
-        int64_t all = (((((t[3] << 16)|t[2])<<16)|t[1])<<16)|t[0];
-        for( int k=0; k<4; k++) {
-            int16_t x = all &0xffff;
-            of << hex << x << '\n';
-            all >>=16;
+        char c[8];
+        // 0123
+        // 1032
+        // 3210
+        // 2301
+        char *c0=&c[0];
+        char *c1=&c[2];
+        char *c2=&c[4];
+        char *c3=&c[6];
+        f0.read( c0, 2 );
+        f1.read( c1, 2 );
+        f2.read( c2, 2 );
+        f3.read( c3, 2 );
+        of << setfill('0');
+        for( int k=0; k<8; k++) {
+            uint16_t x = c[k];
+            x&=0xff;
+            of << hex << setw(2) << x;
+            if(k&1) of << '\n';
         }
         n+=4;
     }
@@ -53,25 +51,20 @@ int dump64_byte( ofstream& of,
 
     while( !f0.eof() ) {
         char c[8];
-        f0.read( &c[0], 1 );
-        f1.read( &c[1], 1 );
-        f2.read( &c[2], 1 );
-        f3.read( &c[3], 1 );
-        f4.read( &c[4], 1 );
-        f5.read( &c[5], 1 );
-        f6.read( &c[6], 1 );
-        f7.read( &c[7], 1 );
-        int64_t t=0;
-        for( int k=0; k<8; k++) { 
-            int64_t a = c[k];
-            a &= 0xff;
-            t <<= 8;
-            t |= a;
-        }
-        for( int k=0; k<4; k++) {
-            int16_t x = t &0xffff;
-            of << hex << x << '\n';
-            t >>=16;
+        f0.read( &c[6], 1 );
+        f1.read( &c[7], 1 );
+        f2.read( &c[4], 1 );
+        f3.read( &c[5], 1 );
+        f4.read( &c[2], 1 );
+        f5.read( &c[3], 1 );
+        f6.read( &c[0], 1 );
+        f7.read( &c[1], 1 );
+        of << setfill('0');
+        for( int k=0; k<8; k++) {
+            uint16_t x = c[k];
+            x&=0xff;
+            of << hex << setw(2) << x;
+            if(k&1) of << '\n';
         }
         n+=4;
     }

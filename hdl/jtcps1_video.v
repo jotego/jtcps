@@ -40,6 +40,9 @@ module jtcps1_video(
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
     input      [15:0]  vram3_base,
+    // palette control
+    input      [15:0]  pal_base,
+    input      [ 5:0]  pal_page_en, // which palette pages to copy
     // Video RAM interface
     output     [23:1]  vram1_addr,
     input      [15:0]  vram1_data,
@@ -78,8 +81,8 @@ module jtcps1_video(
     output             rom3_cs,
     input              rom3_ok,
     // To frame buffer
-    output     [8:0]   line_data,
-    output     [8:0]   line_addr,
+    output     [12:0]  line_data,
+    output     [ 8:0]  line_addr,
     output             line_wr,
     input              line_wr_ok,
     output             line_done
@@ -99,6 +102,7 @@ jtcps1_gfx_pal u_gfx_pal(
     .offset3    ( rom3_bank         )
 );
 
+`ifndef NOSCROLL1
 jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -121,6 +125,12 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .buf_data   ( buf1_data     ),
     .buf_wr     ( buf1_wr       )
 );
+`else 
+assign vram1_addr = 0;
+assign rom1_addr  = 0;
+assign buf1_addr  = 0;
+assign buf1_wr    = 0;
+`endif
 
 jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .rst        ( rst           ),

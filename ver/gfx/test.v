@@ -27,7 +27,7 @@ assign      buf_cs[1] = vram_addr[23:16] == 8'b1001_0001;
 assign      buf_cs[2] = vram_addr[23:16] == 8'b1001_0010;
 
 //`define SNAP1
-`define SNAPVIDEO8
+`define SNAPVIDEO32
 
 `ifdef SNAP0
 assign      hpos = 16'hffc0;
@@ -55,6 +55,15 @@ assign      hpos = 16'hffc0;
 assign      vpos = 16'h00;
 assign      vram_base=16'h9000;
 localparam  SIZE=8;
+assign gfx_cen=1;
+`endif
+
+`ifdef SNAPVIDEO32
+assign      hpos = 16'h07c0;
+assign      vpos = 16'h0700;
+assign      vram_base=16'h9080;
+localparam  SIZE=32;
+assign gfx_cen=4;
 `endif
 //    .hpos1      ( 16'hffc0      ),
 //    .vpos1      ( 16'h0000      ),
@@ -81,7 +90,6 @@ end
 // GFX ROM
 reg  [19:0] gfx_addr;
 reg  [63:0] gfx_long;
-wire [19:0] gfx_offset = rom_addr[19:0];
 
 always @(rom_addr) begin // using * here breaks iverilog
     if( !gfx_cen[2]) begin
@@ -133,7 +141,6 @@ jtcps1_tilemap #(.SIZE(SIZE)) UUT(
 //    .scr1 ( rom_addr[22:10] ),
 //    .bank1( gfx_cen         )
 //);
-assign gfx_cen=1;
 
 initial begin
     rst = 1'b0;
