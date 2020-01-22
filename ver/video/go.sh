@@ -8,6 +8,6 @@ else
 fi
 
 #dd if=video.raw of=x.raw count=672
-convert -size 384x232 -depth 8 RGBA:video.raw video.png
+convert -size 384x248 -depth 8 RGBA:video.raw video.png
 # right aspect ratio:
 # convert video.png -resize 598x448 x.png
