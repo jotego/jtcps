@@ -99,13 +99,15 @@ always @(posedge clk, posedge rst) begin
             if( scr2_wr ) scr2_buf[scr2_addr] <= scr2_data;
             if( scr3_wr ) scr3_buf[scr3_addr] <= scr3_data;
             dump <= &scr_done;
-            line_done <= 1'b0;
             line_wr   <= 1'b0;
             wait_ok   <= 1'b0;
             pxl_ok    <= 1'b0;
             rd_addr   <= 9'd0;            
         end else begin
-            if(start) dump <= 1'b0;
+            if(start) begin
+                dump      <= 1'b0;
+                line_done <= 1'b0;
+            end
             if( !line_done ) begin                
                 // Read memory
                 //ok_dly <= line_wr_ok;
@@ -128,11 +130,11 @@ always @(posedge clk, posedge rst) begin
                     wait_ok   <= 1'b1;
                     pxl_ok    <= 1'b0;
                 end
-            end
-            if( rd_addr>=9'd448 ) begin
-                line_done <= 1'b1;
-                line_wr   <= 1'b0;
-                wait_ok   <= 1'b0;
+                if( rd_addr>=9'd448 ) begin
+                    line_done <= 1'b1;
+                    line_wr   <= 1'b0;
+                    wait_ok   <= 1'b0;
+                end
             end
         end        
     end

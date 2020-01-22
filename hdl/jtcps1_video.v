@@ -81,7 +81,7 @@ module jtcps1_video(
     output             rom3_cs,
     input              rom3_ok,
     // To frame buffer
-    output     [12:0]  line_data,
+    output     [11:0]  line_data,
     output     [ 8:0]  line_addr,
     output             line_wr,
     input              line_wr_ok,

@@ -2,8 +2,8 @@
 
 module test;
 
-reg                rst, clk, start;
-reg        [ 7:0]  v;
+reg                rst, clk, start, HS, frame, new_frame;
+reg        [ 7:0]  v, vrender;
 // Video RAM interface
 wire       [23:1]  vram1_addr, vram2_addr, vram3_addr;
 wire       [15:0]  vram1_data, vram2_data, vram3_data;
@@ -18,7 +18,7 @@ wire               rom1_half, rom2_half, rom3_half;
 wire               rom1_cs, rom2_cs, rom3_cs;
 wire               rom1_ok, rom2_ok, rom3_ok;
 // To frame buffer
-wire       [12:0]  line_data;
+wire       [11:0]  line_data;
 wire       [ 8:0]  line_addr;
 wire               line_wr, line_wr_ok, line_done;
 
@@ -33,7 +33,7 @@ reg                data_rdy;
 jtcps1_video UUT (
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .v          ( v             ),
+    .v          ( vrender       ),
     .start      ( start         ),
 
     // Register configuration
@@ -92,9 +92,9 @@ jtcps1_video UUT (
     .line_done  ( line_done     )
 );
 
-always @(posedge start) begin
-    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
-end
+//always @(posedge start) begin
+//    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
+//end
 
 // JTFRAME_ROM_RW slot types
 // 0 = read only    ( default )
@@ -142,7 +142,7 @@ assign rom3_offset   = gfx_offset;//+22'h10_0000;
 wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
 wire [16:0] fbwr_addr = { v, line_addr };
-wire [15:0] fbwr_data = { 3'd0, line_data };
+wire [15:0] fbwr_data = { 4'd0, line_data };
 
 reg  [ 9:0] fbrd_addr;
 
@@ -290,10 +290,10 @@ initial begin
     // $finish;
 end
 
-localparam SDRAM_STCNT=6;
+localparam SDRAM_STCNT=6; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
 reg       last_st0;
-integer  sdram_idle_cnt, total_cycles;
+integer  sdram_idle_cnt, total_cycles, line_idle;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -303,9 +303,14 @@ always @(posedge clk, posedge rst) begin
         last_st0 <= 1'b0;
         sdram_idle_cnt <= 0;
         total_cycles   <= 0;
+        line_idle      <= 0;
     end else begin
         last_st0 <= sdram_st[0];
-        if( last_st0 && sdram_st[0] ) sdram_idle_cnt=sdram_idle_cnt+1;
+        if( last_st0 && sdram_st[0] ) begin
+            sdram_idle_cnt=sdram_idle_cnt+1;
+            line_idle <= line_idle+1;
+        end
+        if( start ) line_idle <= 0;
         total_cycles = total_cycles+1;
         if(sdram_st!=1 || sdram_req ) sdram_st <= { sdram_st[SDRAM_STCNT-2:0], sdram_st[SDRAM_STCNT-1] };
         sdram_ack  <= 1'b0;
@@ -321,6 +326,25 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
+// render V counter
+reg last_line_done;
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        vrender <= 8'd0;
+        start   <= 1'b1;
+        last_line_done <= 1'b0;
+    end else begin
+        start <= 1'b0;
+        last_line_done <= line_done;
+        if( line_done && !last_line_done ) begin
+            if( ~&vrender ) begin
+                vrender <= vrender+8'd1;
+                start   <= 1'b1;
+            end
+        end
+        if( new_frame ) vrender <= 8'd0;        
+    end
+end
 // Frame buffer read
 reg fbread_wait, fbread_done;
 
@@ -369,16 +393,21 @@ always @(posedge clk, posedge rst) begin
         pxlcnt <= 0;
         framecnt <= 0;
         v <= 8'd0;
-        start     <= 1'b1;
+        HS     <= 1'b1;
+        frame     <= 1'b0;
+        new_frame <= 1'b0;
     end else begin
-        start <= 1'b0;
+        HS <= 1'b0;
         pxlcnt <= pxlcnt+1;
+        new_frame <= 1'b0;
         if(pxlcnt==3124*2) begin
             pxlcnt <= 0;
             v     <= v+1;
-            start <= 1;
+            HS <= 1;
             if( v[3:0]==0 ) $display("Line %d",v);
             if(&v) begin
+                frame    <= ~frame;
+                new_frame<= 1'b1;
                 framecnt <= framecnt+1;
                 $display("FRAME");
             end
