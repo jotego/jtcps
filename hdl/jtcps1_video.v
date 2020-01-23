@@ -68,9 +68,9 @@ module jtcps1_video(
     output             VS,
     output             HB,
     output             VB,
-    output     [ 4:0]  red,
-    output     [ 4:0]  green,
-    output     [ 4:0]  blue,
+    output     [ 7:0]  red,
+    output     [ 7:0]  green,
+    output     [ 7:0]  blue,
 
     // GFX ROM interface
     output     [22:0]  rom1_addr,    // up to 1 MB

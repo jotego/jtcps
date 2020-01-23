@@ -12,10 +12,7 @@ int dump64_word( ofstream& of, const char *s0, const char *s1, const char *s2, c
     ifstream f3(s3,ios_base::binary);
     while( !f0.eof() ) {
         char c[8];
-        // 0123
-        // 1032
-        // 3210
-        // 2301
+        int rev = 1; // reverse byte order within the word
         char *c0=&c[0];
         char *c1=&c[2];
         char *c2=&c[4];
@@ -26,7 +23,9 @@ int dump64_word( ofstream& of, const char *s0, const char *s1, const char *s2, c
         f3.read( c3, 2 );
         of << setfill('0');
         for( int k=0; k<8; k++) {
-            uint16_t x = c[k];
+            //int y= (k&~1) + ((rev+k)&1);
+            int y = k^rev;
+            uint16_t x = c[y];
             x&=0xff;
             of << hex << setw(2) << x;
             if(k&1) of << '\n';

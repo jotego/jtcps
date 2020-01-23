@@ -7,7 +7,7 @@ wire       [ 7:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
 wire               HS, VS, HB, VB, frame;
-wire       [ 4:0]  red, green, blue;
+wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
 wire       [23:1]  vram1_addr, vram2_addr, vram3_addr;
@@ -39,7 +39,7 @@ reg        [15:0]  hpos3 = 16'h07c0;
 reg        [15:0]  vpos3 = 16'h0700;
 
 always @(negedge VB) begin
-    vpos2<=vpos2+1;
+    // hpos2<=hpos2+1;
     //hpos3<=hpos3+1;
 end
 
@@ -240,7 +240,7 @@ reg dumpdly, dumplast;
 initial fout=$fopen("video.raw","wb");
 
 always @(posedge clk) if(cen8 && !HB && !VB) begin
-    $fwrite(fout,"%u", { 8'hff, blue[3:0],4'd0, green[3:0], 4'd0, red[3:0], 4'd0 });
+    $fwrite(fout,"%u", { 8'hff, blue, green, red });
 end
 
 // SDRAM
@@ -319,7 +319,7 @@ always @(negedge VB, posedge rst) begin
     end else begin
         framecnt <= framecnt+1;
         $display("FRAME %d", framecnt);
-        if ( framecnt==3 ) begin
+        if ( framecnt==1 ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

@@ -18,6 +18,12 @@
     
 `timescale 1ns/1ps
 
+// Brightness only affects the gain of the signal, not the offset
+// Depending on the impedance of the 74'07 device, the maximum
+// attenuation can be as much as 40% for brightness setting of 15
+// If NMOS RON is comparable to the R2R ladder, attenuation will be
+// lower (~27%)
+
 module jtcps1_colmix(
     input              rst,
     input              clk,
@@ -30,9 +36,9 @@ module jtcps1_colmix(
     input   [8:0]      scr2_pxl,
     input   [8:0]      scr3_pxl,
 
-    output reg [ 4:0]  red,
-    output reg [ 4:0]  green,
-    output reg [ 4:0]  blue
+    output reg [7:0]  red,
+    output reg [7:0]  green,
+    output reg [7:0]  blue
 );
 
 reg [ 8:0] pxl;
@@ -88,16 +94,36 @@ always @(posedge clk ) begin
     raw <= pal[pal_addr];
 end
 
+reg [7:0] mul_r, mul_g, mul_b;
+wire [3:0] inv_br = ~raw_br; // if operator ~ is mixed in the multiplication
+    // it seems to extend the sign or the bit width and
+    // the result is wrong
+
+// Use multiplier for brightness as these
+// are cheap in most FPGAs
 always @(posedge clk, posedge rst) begin
     if(rst) begin
-        red   <= 5'd0;
-        green <= 5'd0;
-        blue  <= 5'd0;
+        mul_r <= 8'd0;
+        mul_g <= 8'd0;
+        mul_b <= 8'd0;
+    end else begin
+        mul_r <= raw_r * inv_br; // mul = signal * 15
+        mul_g <= raw_g * inv_br;
+        mul_b <= raw_b * inv_br;
+    end
+end
+
+always @(posedge clk, posedge rst) begin
+    if(rst) begin
+        red   <= 8'd0;
+        green <= 8'd0;
+        blue  <= 8'd0;
     end else if(pxl_cen) begin
-        // no brightness processing for now
-        red   <= {1'b0, raw_r };
-        green <= {1'b0, raw_g };
-        blue  <= {1'b0, raw_b };
+        // signal * 17 - signal*15/4 = signal * (17-15/4-15/8)
+        // 33% max attenuation for brightness
+        red   <= {2{raw_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
+        green <= {2{raw_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
+        blue  <= {2{raw_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
     end
 end
 
