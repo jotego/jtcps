@@ -50,14 +50,15 @@ int dump64_byte( ofstream& of,
 
     while( !f0.eof() ) {
         char c[8];
-        f0.read( &c[6], 1 );
-        f1.read( &c[7], 1 );
-        f2.read( &c[4], 1 );
-        f3.read( &c[5], 1 );
-        f4.read( &c[2], 1 );
-        f5.read( &c[3], 1 );
-        f6.read( &c[0], 1 );
-        f7.read( &c[1], 1 );
+        // 45670123
+        f0.read( &c[5], 1 );
+        f1.read( &c[4], 1 );
+        f2.read( &c[7], 1 );
+        f3.read( &c[6], 1 );
+        f4.read( &c[1], 1 );
+        f5.read( &c[0], 1 );
+        f6.read( &c[3], 1 );
+        f7.read( &c[2], 1 );
         of << setfill('0');
         for( int k=0; k<8; k++) {
             uint16_t x = c[k];

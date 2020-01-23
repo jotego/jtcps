@@ -236,7 +236,7 @@ always @(posedge clk or posedge rst) begin
                     pxl_data <= rom_data;
                     hn <= hn + 10'd8;    // pixels 8-15
                     if(SIZE==32)
-                        rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
+                        rom_addr[0] <= ~rom_addr[0];
                 end else st<=st;
             end
             24: begin
