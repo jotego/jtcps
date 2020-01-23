@@ -55,7 +55,8 @@ parameter SIZE=8; // 8, 16 or 32
 localparam CACHE_AW  = SIZE==8 ?  9 : ( SIZE==16 ? 8 : 7 );
 localparam CACHE_XW  = SIZE==8 ?  3 : ( SIZE==16 ? 4 : 5 ); // ignore these bits from V
 localparam TILECNTW  = SIZE==8 ?  6 : ( SIZE==16 ? 5 : 4 );
-localparam TILEMAX   = SIZE==8 ? 56 : ( SIZE==16 ? 28: 14);
+localparam TILEMAX   = SIZE==8 ? 57 : ( SIZE==16 ? 29: 15);
+localparam SCRW      = CACHE_XW;
 
 reg [10:0] vn;
 reg [10:0] hn;
@@ -114,7 +115,7 @@ wire [4:0] pal = attr[4:0];
 assign rom_half = hn[3] ^ hflip;
 
 wire [CACHE_AW-2:0] cache_addr;
-wire     cache_rd = vrender[CACHE_XW-1:0] !=0;
+wire     cache_rd = vn[CACHE_XW-1:0] !=0;
 reg      cache_half;
 assign cache_addr = hn[10:CACHE_XW];
 
@@ -150,10 +151,8 @@ always @(posedge clk or posedge rst) begin
                 /* verilator lint_off WIDTH */
                 vn       <= vpos + {8'd0, vrender};
                 /* verilator lint_on WIDTH */
-                hn       <= SIZE == 8 ? {hpos[10:3],3'd0} :
-                    ( SIZE==16 ? { hpos[10:4], 4'd0 } :
-                        { hpos[10:5], 5'd0 } );
-                buf_addr <= 9'h1ff-{6'd0,hpos[2:0]};
+                hn       <= { hpos[10:SCRW], {SCRW{1'b0}} };
+                buf_addr <= 9'h1ff-hpos[SCRW-1:0];
                 tilecnt  <= {TILECNTW{1'b0}};
                 buf_wr   <= 1'b0;
                 if(start) done<=1'b0;

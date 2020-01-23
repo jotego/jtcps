@@ -31,6 +31,18 @@ reg        [ 3:0]  sdram_ok4;
 reg        [21:0]  last_sdram_addr;
 reg                data_rdy;
 
+reg        [15:0]  hpos1 = 16'hffc0;
+reg        [15:0]  vpos1 = 16'h0000;
+reg        [15:0]  hpos2 = 16'h03c0;
+reg        [15:0]  vpos2 = 16'h0303;
+reg        [15:0]  hpos3 = 16'h07c0;
+reg        [15:0]  vpos3 = 16'h0700;
+
+always @(negedge VB) begin
+    vpos2<=vpos2+1;
+    //hpos3<=hpos3+1;
+end
+
 jtcps1_video UUT (
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -51,12 +63,12 @@ jtcps1_video UUT (
     .blue       ( blue          ),
 
     // Register configuration
-    .hpos1      ( 16'hffc0      ),
-    .vpos1      ( 16'h0000      ),
-    .hpos2      ( 16'h03c0      ),
-    .vpos2      ( 16'h0300      ),
-    .hpos3      ( 16'h07c0      ),
-    .vpos3      ( 16'h0700      ),
+    .hpos1      ( hpos1         ),
+    .vpos1      ( vpos1         ),
+    .hpos2      ( hpos2         ),
+    .vpos2      ( vpos2         ),
+    .hpos3      ( hpos3         ),
+    .vpos3      ( vpos3         ),
     .vram1_base ( 16'h9000      ),
     .vram2_base ( 16'h9040      ),
     .vram3_base ( 16'h9080      ),
@@ -220,7 +232,7 @@ u_sdram_mux(
 );
 
 // Dump output frame buffer
-integer dumpcnt=0, dump_start=0, dumpv=0, fout;
+integer dumpcnt=0, dumpv=0, fout;
 
 
 reg dumpdly, dumplast;
@@ -239,7 +251,7 @@ initial begin
     $readmemh( "vram16.hex", sdram, vram_offset, vram_offset+98303 );
 end
 
-localparam SDRAM_STCNT=6; // 6 Realistic, 5 Possible, less than 5 unrealistic
+localparam SDRAM_STCNT=5; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
 reg       last_st0, last_HS;
 integer  sdram_idle_cnt, total_cycles, line_idle;
@@ -301,27 +313,29 @@ end
 
 integer framecnt;
 
-always @(posedge HS, posedge rst) begin
+always @(negedge VB, posedge rst) begin
     if(rst) begin
         framecnt <= 0;
     end else begin
-        if( vdump[3:0]==0 ) $display("Line %d",vdump);
-        if(&vdump) begin
-            framecnt <= framecnt+1;
-            $display("FRAME");
-        end
-        if(vdump==8'd24 && 0) begin
-            $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
-            $finish;
-        end
-        if ( framecnt==2 && !dump_start) begin
-            dump_start<=1;
+        framecnt <= framecnt+1;
+        $display("FRAME %d", framecnt);
+        if ( framecnt==3 ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end
     end
 end
 
+always @(posedge HS, posedge rst) begin
+    if( vdump[3:0]==0 ) $display("Line %d",vdump);
+    if(vdump==8'd24 && 0) begin
+        $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
+        $finish;
+    end
+end
+
+`define DUMP
+`ifdef DUMP
 `ifndef NCVERILOG
     initial begin
         $dumpfile("test.lxt");
@@ -333,6 +347,7 @@ end
         $shm_open("test.shm");
         $shm_probe(test,"AS");
     end
+`endif
 `endif
 
 endmodule
