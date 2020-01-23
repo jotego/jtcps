@@ -38,10 +38,10 @@ reg        [15:0]  vpos2 = 16'h0303;
 reg        [15:0]  hpos3 = 16'h07c0;
 reg        [15:0]  vpos3 = 16'h0700;
 
-always @(negedge VB) begin
-    // hpos2<=hpos2+1;
-    //hpos3<=hpos3+1;
-end
+//always @(negedge VB) begin
+//    // hpos2<=hpos2+1;
+//    vpos3<=vpos3+1;
+//end
 
 jtcps1_video UUT (
     .rst        ( rst           ),

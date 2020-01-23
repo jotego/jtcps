@@ -42,7 +42,7 @@ module jtcps1_tilemap(
     output reg         vram_cs,
 
     output reg [22:0]  rom_addr,    // up to 1 MB
-    output             rom_half,    // selects which half to read
+    output reg         rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output reg         rom_cs,
     input              rom_ok,
@@ -112,7 +112,7 @@ endfunction
 wire     vflip = attr[6];
 wire     hflip = attr[5];
 wire [4:0] pal = attr[4:0];
-assign rom_half = hn[3] ^ hflip;
+// assign rom_half = hn[3] ^ hflip;
 
 wire [CACHE_AW-2:0] cache_addr;
 wire     cache_rd = vn[CACHE_XW-1:0] !=0;
@@ -204,6 +204,7 @@ always @(posedge clk or posedge rst) begin
                     st <= 4;
                 end
             4: begin
+                rom_half <= hflip;
                 case (SIZE)
                     8:  begin
                         rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
@@ -218,6 +219,7 @@ always @(posedge clk or posedge rst) begin
             6: if(rom_ok) begin
                 pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
                 hn <= hn + 10'd8;
+                rom_half <= ~rom_half;
             end else st<=6;
             7,8,9,10,    11,12,13,14, 
             16,17,18,19, 20,21,22,23,
@@ -235,6 +237,7 @@ always @(posedge clk or posedge rst) begin
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 10'd8;    // pixels 8-15
+                    rom_half <= ~rom_half;
                     if(SIZE==32)
                         rom_addr[0] <= ~rom_addr[0];
                 end else st<=st;
@@ -246,11 +249,13 @@ always @(posedge clk or posedge rst) begin
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     hn <= hn + 10'd8; // pixels 16-23
+                    rom_half <= ~rom_half;
                 end else st<=st;
             end
             33: begin
                 if(rom_ok) begin
                     pxl_data <= rom_data;
+                    rom_half <= ~rom_half;
                     hn <= hn + 10'd8; // pixels 24-31
                 end else st<=st;
             end

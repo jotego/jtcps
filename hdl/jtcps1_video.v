@@ -129,6 +129,7 @@ jtcps1_gfx_pal u_gfx_pal(
     .offset3    ( rom3_bank         )
 );
 
+//`define NOSCROLL1
 `ifndef NOSCROLL1
 jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .rst        ( rst           ),
@@ -152,12 +153,11 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .pxl        ( scr1_pxl      )
 );
 `else 
-assign vram1_addr = 0;
-assign rom1_addr  = 0;
-assign buf1_addr  = 0;
-assign buf1_wr    = 0;
+assign scr1_pxl = 9'h1ff;
 `endif
 
+//`define NOSCROLL2
+`ifndef NOSCROLL2
 jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -179,6 +179,10 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .rom_half   ( rom2_half     ),
     .pxl        ( scr2_pxl      )
 );
+`else 
+assign scr2_pxl = 9'h1ff;
+`endif
+
 
 jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .rst        ( rst           ),
