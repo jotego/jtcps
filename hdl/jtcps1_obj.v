@@ -25,6 +25,7 @@
 module jtcps1_obj(
     input              rst,
     input              clk,
+    input              pxl_cen,
 
     // input              HB,
     input              VB,
@@ -71,17 +72,33 @@ jtcps1_obj_draw u_draw(
 
     .start      ( start         ),
     .vrender    ( vrender       ),
-    .vdump      ( vdump         ),
-    .hdump      ( hdump         ),
 
     .table_addr ( table_addr    ),
     .table_data ( table_data    ),
+
+    .buf_addr   ( buf_addr      ),
+    .buf_data   ( buf_data      ),
+    .buf_wr     ( buf_wr        ),
 
     .rom_addr   ( rom_addr      ),
     .rom_half   ( rom_half      ),
     .rom_data   ( rom_data      ),
     .rom_cs     ( rom_cs        ),
-    .rom_ok     ( rom_ok        ),
+    .rom_ok     ( rom_ok        )
+);
+
+jtcps1_obj_line u_line(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    .start      ( start         ),
+    .vdump      ( vdump         ),
+    .hdump      ( hdump         ),
+
+    .buf_addr   ( buf_addr      ),
+    .buf_data   ( buf_data      ),
+    .buf_wr     ( buf_wr        ),
 
     .pxl        ( pxl           )
 );
