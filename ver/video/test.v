@@ -32,7 +32,7 @@ reg        [21:0]  last_sdram_addr;
 reg                data_rdy;
 
 reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
-                   vram1_base, vram2_base, vram3_base, pal_base;
+                   obj_base, vram1_base, vram2_base, vram3_base, pal_base;
 
 //always @(negedge VB) begin
 //    // hpos2<=hpos2+1;
@@ -43,19 +43,20 @@ reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
 //`define MMR_FILE "ghouls_tree.hex"
 `define MMR_FILE "ghouls_start.hex"
 `endif
-reg [15:0] mmr_regs[0:9];
+reg [15:0] mmr_regs[0:10];
 initial begin
     $readmemh(`MMR_FILE,mmr_regs);
-    vram1_base = mmr_regs[0];
-    vram2_base = mmr_regs[1];
-    vram3_base = mmr_regs[2];
-    pal_base   = mmr_regs[3];
-    hpos1      = mmr_regs[4];
-    vpos1      = mmr_regs[5];
-    hpos2      = mmr_regs[6];
-    vpos2      = mmr_regs[7];
-    hpos3      = mmr_regs[8];
-    vpos3      = mmr_regs[9];
+    obj_base   = mmr_regs[0];
+    vram1_base = mmr_regs[1];
+    vram2_base = mmr_regs[2];
+    vram3_base = mmr_regs[3];
+    pal_base   = mmr_regs[4];
+    hpos1      = mmr_regs[5];
+    vpos1      = mmr_regs[6];
+    hpos2      = mmr_regs[7];
+    vpos2      = mmr_regs[8];
+    hpos3      = mmr_regs[9];
+    vpos3      = mmr_regs[10];
 end
 
 jtcps1_video UUT (

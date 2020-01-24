@@ -1,3 +1,4 @@
+wp 800100,2,w,1,{printf "OBJ     base = %X",wpdata; g}
 wp 800102,2,w,1,{printf "SCROLL1 base = %X",wpdata; g}
 wp 800104,2,w,1,{printf "SCROLL2 base = %X",wpdata; g}
 wp 800106,2,w,1,{printf "SCROLL2 base = %X",wpdata; g}
