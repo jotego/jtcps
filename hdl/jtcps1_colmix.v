@@ -35,6 +35,7 @@ module jtcps1_colmix(
     input   [8:0]      scr1_pxl,
     input   [8:0]      scr2_pxl,
     input   [8:0]      scr3_pxl,
+    input   [8:0]      obj_pxl,
 
     output reg [7:0]  red,
     output reg [7:0]  green,
@@ -71,7 +72,10 @@ always @(*) begin
     //pxl      = scr2_pxl;
     //pxl_type = 3'b10;
 
-    if( scr1_pxl[3:0] != 4'hf ) begin
+    if( obj_pxl[3:0] != 4'hf ) begin
+        pxl = obj_pxl;
+        pxl_type=3'b0;
+    end else if( scr1_pxl[3:0] != 4'hf ) begin
         pxl      = scr1_pxl;
         pxl_type = 3'b1;
     end else if(scr2_pxl[3:0] != 4'hf ) begin

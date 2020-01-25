@@ -5,3 +5,7 @@
 ../../hdl/jtcps1_tilemap.v
 ../../hdl/jtcps1_colmix.v
 ../../hdl/jtcps1_gfx_pal.v
+../../hdl/jtcps1_obj.v
+../../hdl/jtcps1_obj_draw.v
+../../hdl/jtcps1_obj_table.v
+../../hdl/jtcps1_obj_line.v

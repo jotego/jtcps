@@ -44,6 +44,7 @@ module jtcps1_video(
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
     input      [15:0]  vram3_base,
+    input      [15:0]  vram_obj_base,
     // palette control
     input      [15:0]  pal_base,
     input      [ 5:0]  pal_page_en, // which palette pages to copy
@@ -62,6 +63,11 @@ module jtcps1_video(
     input      [15:0]  vram3_data,
     input              vram3_ok,
     output             vram3_cs,
+
+    output     [23:1]  vram_obj_addr,
+    input      [15:0]  vram_obj_data,
+    input              vram_obj_ok,
+    output             vram_obj_cs,
 
     // Video signal
     output             HS,
@@ -92,7 +98,14 @@ module jtcps1_video(
     output             rom3_half,    // selects which half to read
     input      [31:0]  rom3_data,
     output             rom3_cs,
-    input              rom3_ok
+    input              rom3_ok,
+
+    output     [19:0]  obj_addr,    // up to 1 MB
+    output     [ 3:0]  obj_bank,
+    output             obj_half,    // selects which half to read
+    input      [31:0]  obj_data,
+    output             obj_cs,
+    input              obj_ok
     // To frame buffer
     // output     [11:0]  line_data,
     // output     [ 8:0]  line_addr,
@@ -100,7 +113,7 @@ module jtcps1_video(
     // input              line_wr_ok
 );
 
-wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl;
+wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
 
 wire            line_start;
 
@@ -153,6 +166,7 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .pxl        ( scr1_pxl      )
 );
 `else 
+assign rom1_cs  = 1'b0;
 assign scr1_pxl = 9'h1ff;
 `endif
 
@@ -180,10 +194,11 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .pxl        ( scr2_pxl      )
 );
 `else 
+assign rom2_cs  = 1'b0;
 assign scr2_pxl = 9'h1ff;
 `endif
 
-
+`ifndef NOSCROLL3
 jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -205,6 +220,39 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .rom_half   ( rom3_half     ),
     .pxl        ( scr3_pxl      )
 );
+`else 
+assign rom3_cs  = 1'b0;
+assign scr3_pxl = 9'h1ff;
+`endif
+
+// Objects
+jtcps1_obj u_obj(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    // input              HB,
+    .VB         ( VB            ),
+
+    .start      ( line_start    ),
+    .vrender    ( vrender       ),
+    .vdump      ( vdump         ),
+    .hdump      ( hdump         ),
+    // control registers
+    .vram_base  ( vram_obj_base ),
+    .vram_addr  ( vram_obj_addr ),
+    .vram_data  ( vram_obj_data ),
+    .vram_ok    ( vram_obj_ok   ),
+    .vram_cs    ( vram_obj_cs   ),
+
+    .rom_addr   ( obj_addr      ),
+    .rom_data   ( obj_data      ),
+    .rom_cs     ( obj_cs        ),
+    .rom_ok     ( obj_ok        ),
+    .rom_half   ( obj_half      ),
+
+    .pxl        ( obj_pxl       )
+);
 
 jtcps1_colmix u_colmix(
     .rst        ( rst           ),
@@ -216,6 +264,7 @@ jtcps1_colmix u_colmix(
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
     .scr3_pxl   ( scr3_pxl      ),
+    .obj_pxl    ( obj_pxl       ),
     // Video
     .red        ( red           ),
     .green      ( green         ),

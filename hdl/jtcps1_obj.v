@@ -18,10 +18,6 @@
     
 `timescale 1ns/1ps
 
-// Scroll 1 is 512x512, 8x8 tiles
-// Scroll 2 is 1024x1024 16x16 tiles
-// Scroll 3 is 2048x2048 32x32 tiles
-
 module jtcps1_obj(
     input              rst,
     input              clk,
@@ -35,12 +31,13 @@ module jtcps1_obj(
     input      [ 7:0]  vdump,
     input      [ 8:0]  hdump,
     // control registers
+    input      [15:0]  vram_base,
     output     [23:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output             vram_cs,
 
-    output     [22:0]  rom_addr,    // up to 1 MB
+    output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output             rom_cs,
@@ -48,6 +45,11 @@ module jtcps1_obj(
 
     output     [ 8:0]  pxl
 );
+
+wire [15:0] table_data;
+wire [ 9:0] table_addr;
+
+wire [ 8:0] buf_addr, buf_data;
 
 jtcps1_obj_table u_table(
     .rst        ( rst           ),
@@ -59,6 +61,7 @@ jtcps1_obj_table u_table(
     .table_data ( table_data    ),
 
     // VRAM
+    .vram_base  ( vram_base     ),
     .vram_addr  ( vram_addr     ),
     .vram_data  ( vram_data     ),
     .vram_ok    ( vram_ok       ),
@@ -88,12 +91,10 @@ jtcps1_obj_draw u_draw(
 );
 
 jtcps1_obj_line u_line(
-    .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
 
-    .start      ( start         ),
-    .vdump      ( vdump         ),
+    .vdump      ( vdump[0]      ),
     .hdump      ( hdump         ),
 
     .buf_addr   ( buf_addr      ),

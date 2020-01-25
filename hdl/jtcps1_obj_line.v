@@ -30,7 +30,7 @@ module jtcps1_obj_line(
     input      [ 8:0]  buf_data,
     input              buf_wr,
 
-    output     [ 8:0]  pxl
+    output reg [ 8:0]  pxl
 );
 
 reg [8:0] line_buffer[0:1023];

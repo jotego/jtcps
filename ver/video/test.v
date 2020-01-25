@@ -2,6 +2,8 @@
 
 module test;
 
+`define SIMULATION
+
 reg                rst, clk, cen8;
 wire       [ 7:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
@@ -10,18 +12,18 @@ wire               HS, VS, HB, VB, frame;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
-wire       [23:1]  vram1_addr, vram2_addr, vram3_addr;
-wire       [15:0]  vram1_data, vram2_data, vram3_data;
-wire               vram1_ok, vram2_ok, vram3_ok;
-wire               vram1_cs, vram2_cs, vram3_cs;
+wire       [23:1]  vram1_addr, vram2_addr, vram3_addr,  vram_obj_addr;
+wire       [15:0]  vram1_data, vram2_data, vram3_data,  vram_obj_data;
+wire               vram1_ok,   vram2_ok,   vram3_ok,    vram_obj_ok;
+wire               vram1_cs,   vram2_cs,   vram3_cs,    vram_obj_cs;
 
 // GFX ROM interface
-wire       [22:0]  rom1_addr, rom2_addr, rom3_addr;
-wire       [31:0]  rom1_data, rom2_data, rom3_data;
-wire       [ 3:0]  rom1_bank, rom2_bank, rom3_bank;
-wire               rom1_half, rom2_half, rom3_half;
-wire               rom1_cs, rom2_cs, rom3_cs;
-wire               rom1_ok, rom2_ok, rom3_ok;
+wire       [22:0]  rom1_addr, rom2_addr, rom3_addr, obj_addr;
+wire       [31:0]  rom1_data, rom2_data, rom3_data, obj_data;
+wire       [ 3:0]  rom1_bank, rom2_bank, rom3_bank, obj_bank;
+wire               rom1_half, rom2_half, rom3_half, obj_half;
+wire               rom1_cs, rom2_cs, rom3_cs, obj_cs;
+wire               rom1_ok, rom2_ok, rom3_ok, obj_ok;
 
 reg                downloading=1'b0, loop_rst=1'b0, sdram_ack;
 reg        [31:0]  data_read;
@@ -32,7 +34,7 @@ reg        [21:0]  last_sdram_addr;
 reg                data_rdy;
 
 reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
-                   obj_base, vram1_base, vram2_base, vram3_base, pal_base;
+                   vobj_base, vram1_base, vram2_base, vram3_base, pal_base;
 
 //always @(negedge VB) begin
 //    // hpos2<=hpos2+1;
@@ -46,7 +48,7 @@ reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
 reg [15:0] mmr_regs[0:10];
 initial begin
     $readmemh(`MMR_FILE,mmr_regs);
-    obj_base   = mmr_regs[0];
+    vobj_base  = mmr_regs[0];
     vram1_base = mmr_regs[1];
     vram2_base = mmr_regs[2];
     vram3_base = mmr_regs[3];
@@ -79,31 +81,37 @@ jtcps1_video UUT (
     .blue       ( blue          ),
 
     // Register configuration
-    .hpos1      ( hpos1         ),
-    .vpos1      ( vpos1         ),
-    .hpos2      ( hpos2         ),
-    .vpos2      ( vpos2         ),
-    .hpos3      ( hpos3         ),
-    .vpos3      ( vpos3         ),
-    .vram1_base ( vram1_base    ),
-    .vram2_base ( vram2_base    ),
-    .vram3_base ( vram3_base    ),
-    .pal_base   ( pal_base      ),
+    .hpos1          ( hpos1         ),
+    .vpos1          ( vpos1         ),
+    .hpos2          ( hpos2         ),
+    .vpos2          ( vpos2         ),
+    .hpos3          ( hpos3         ),
+    .vpos3          ( vpos3         ),
+    .vram1_base     ( vram1_base    ),
+    .vram2_base     ( vram2_base    ),
+    .vram3_base     ( vram3_base    ),
+    .vram_obj_base  ( vobj_base     ),
+    .pal_base       ( pal_base      ),
     // Video RAM interface
-    .vram1_addr ( vram1_addr    ),
-    .vram1_data ( vram1_data    ),
-    .vram1_ok   ( vram1_ok      ),
-    .vram1_cs   ( vram1_cs      ),
+    .vram1_addr     ( vram1_addr    ),
+    .vram1_data     ( vram1_data    ),
+    .vram1_ok       ( vram1_ok      ),
+    .vram1_cs       ( vram1_cs      ),
 
-    .vram2_addr ( vram2_addr    ),
-    .vram2_data ( vram2_data    ),
-    .vram2_ok   ( vram2_ok      ),
-    .vram2_cs   ( vram2_cs      ),
+    .vram2_addr     ( vram2_addr    ),
+    .vram2_data     ( vram2_data    ),
+    .vram2_ok       ( vram2_ok      ),
+    .vram2_cs       ( vram2_cs      ),
 
-    .vram3_addr ( vram3_addr    ),
-    .vram3_data ( vram3_data    ),
-    .vram3_ok   ( vram3_ok      ),
-    .vram3_cs   ( vram3_cs      ),
+    .vram3_addr     ( vram3_addr    ),
+    .vram3_data     ( vram3_data    ),
+    .vram3_ok       ( vram3_ok      ),
+    .vram3_cs       ( vram3_cs      ),
+
+    .vram_obj_addr  ( vram_obj_addr ),
+    .vram_obj_data  ( vram_obj_data ),
+    .vram_obj_ok    ( vram_obj_ok   ),
+    .vram_obj_cs    ( vram_obj_cs   ),
 
     // GFX ROM interface
     .rom1_addr  ( rom1_addr     ),
@@ -125,7 +133,14 @@ jtcps1_video UUT (
     .rom3_half  ( rom3_half     ),
     .rom3_data  ( rom3_data     ),
     .rom3_cs    ( rom3_cs       ),
-    .rom3_ok    ( rom3_ok       )
+    .rom3_ok    ( rom3_ok       ),
+
+    .obj_addr   ( obj_addr[19:0]),
+    .obj_bank   ( obj_bank      ),
+    .obj_half   ( obj_half      ),
+    .obj_data   ( obj_data      ),
+    .obj_cs     ( obj_cs        ),
+    .obj_ok     ( obj_ok        )
 );
 
 //always @(posedge start) begin
@@ -142,28 +157,29 @@ localparam WO=1;
 wire [9:0] slot_cs, slot_ok, slot_wr;
 assign slot_cs[0] = 1'b0;
 assign slot_cs[1] = 1'b0;
-assign slot_cs[2] = 1'b1;
+assign slot_cs[2] = obj_cs;
 assign slot_cs[3] = vram1_cs;
 assign slot_cs[4] = vram2_cs;
 assign slot_cs[5] = vram3_cs;
 assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = rom2_cs;
 assign slot_cs[8] = rom3_cs;
-assign slot_cs[9] = 1'b0;
+assign slot_cs[9] = vram_obj_cs;
 
-assign fbread_ok  = slot_ok[2];
-assign vram1_ok   = slot_ok[3];
-assign vram2_ok   = slot_ok[4];
-assign vram3_ok   = slot_ok[5];
-assign rom1_ok    = slot_ok[6];
-assign rom2_ok    = slot_ok[7];
-assign rom3_ok    = slot_ok[8];
+assign obj_ok      = slot_ok[2];
+assign vram1_ok    = slot_ok[3];
+assign vram2_ok    = slot_ok[4];
+assign vram3_ok    = slot_ok[5];
+assign rom1_ok     = slot_ok[6];
+assign rom2_ok     = slot_ok[7];
+assign rom3_ok     = slot_ok[8];
+assign vram_obj_ok = slot_ok[9];
 
 assign slot_wr[9:0] = 9'd0;
 
 wire [31:0] data_write;
 wire        sdram_rnw;
-wire [21:0] rom1_offset, rom2_offset, rom3_offset,
+wire [21:0] rom1_offset, rom2_offset, rom3_offset, obj_offset,
             frame0_offset, frame1_offset;
 
 localparam [21:0] gfx_offset   = 22'h10_0000;
@@ -172,28 +188,34 @@ localparam [21:0] frame_offset = 22'h36_0000;
 assign rom1_offset   = gfx_offset;
 assign rom2_offset   = gfx_offset;
 assign rom3_offset   = gfx_offset;//+22'h10_0000;
+assign obj_offset    = gfx_offset;//+22'h10_0000;
+assign obj_addr[22:20] = 3'd0;
 
 wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
-wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
-wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
-wire [21:0] gfx3_addr = {gfx3_addr_pre, rom3_half, 1'b0 };
+wire [21:0] gfx1_addr    = {rom1_addr[19:0], rom1_half, 1'b0 };
+wire [21:0] gfx2_addr    = {rom2_addr[19:0], rom2_half, 1'b0 };
+wire [21:0] gfx3_addr    = {gfx3_addr_pre, rom3_half, 1'b0 };
+wire [21:0] gfx_obj_addr = { obj_addr[19:0], obj_half, 1'b0 };
 
 jtframe_sdram_mux #(
-    // Frame buffer, read access
-    .SLOT2_AW   ( 18    ),  //8
-    .SLOT2_DW   ( 16    ),
     // VRAM read access:
     .SLOT3_AW   ( 18    ),
-    .SLOT3_DW   ( 16    ),
     .SLOT4_AW   ( 18    ),  //4
-    .SLOT4_DW   ( 16    ),
     .SLOT5_AW   ( 18    ),  //5
+    .SLOT9_AW   ( 18    ),  // OBJ VRAM
+
+    .SLOT3_DW   ( 16    ),
+    .SLOT4_DW   ( 16    ),
     .SLOT5_DW   ( 16    ),
+    .SLOT9_DW   ( 16    ),
     // GFX ROM
+    .SLOT2_AW   ( 22    ),  // OBJ VRAM
     .SLOT6_AW   ( 22    ),  //6
     .SLOT7_AW   ( 22    ),  //7
     .SLOT8_AW   ( 22    ),  //8
+
+    .SLOT2_DW   ( 32    ),
     .SLOT6_DW   ( 32    ),
     .SLOT7_DW   ( 32    ),
     .SLOT8_DW   ( 32    )
@@ -204,6 +226,10 @@ u_sdram_mux(
     .vblank         ( 1'b0          ),
 
     // VRAM read access only
+    .slot9_offset   ( vram_offset       ),
+    .slot9_addr     ( vram_obj_addr[18:1]  ),
+    .slot9_dout     ( vram_obj_data     ),
+
     .slot3_offset   ( vram_offset       ),
     .slot3_addr     ( vram1_addr[18:1]  ),
     .slot3_dout     ( vram1_data        ),
@@ -217,6 +243,10 @@ u_sdram_mux(
     .slot5_dout     ( vram3_data        ),
 
     // GFX ROM
+    .slot2_offset   ( obj_offset        ),
+    .slot2_addr     ( gfx_obj_addr      ),
+    .slot2_dout     ( obj_data          ),
+
     .slot6_offset   ( rom1_offset       ),
     .slot6_addr     ( gfx1_addr         ),
     .slot6_dout     ( rom1_data         ),
@@ -335,7 +365,7 @@ always @(negedge VB, posedge rst) begin
     end else begin
         framecnt <= framecnt+1;
         $display("FRAME %d", framecnt);
-        if ( framecnt==1 ) begin
+        if ( framecnt==2 ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

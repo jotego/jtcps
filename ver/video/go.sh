@@ -1,5 +1,19 @@
 #!/bin/bash
 
+MACROPREFIX=-D
+EXTRA=
+
+if which ncverilog; then
+    MACROPREFIX=+define+
+fi
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -d) shift; EXTRA=${MACROPREFIX}$1; shift;;
+        *) echo "ERROR: unknown argument $1"; exit 1;;
+    esac
+done
+
 if which ncverilog; then
     ncverilog test.v -f test.f  +access+r +define+SIMULATION +define+NCVERILOG $*
 else
