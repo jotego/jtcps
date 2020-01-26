@@ -31,7 +31,7 @@ reg         below, inzone;
 always @(*) begin
     vfinal = obj_y  + {OFFSET,4'd0};
     vfinal2= vfinal + 9'h10;
-    below  = vrender > vfinal;
+    below  = vrender >= vfinal;
     inzone = vrender <= vfinal2;
     match  = below && inzone && (tile_m>=OFFSET);
 end

@@ -104,7 +104,8 @@ localparam [21:0] frame_offset = 22'h36_0000;
 
 //wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
-wire [21:0] gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 };
+//wire [21:0] gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 }; // OBJ
+wire [21:0] gfx0_addr = { 5'b0,rom0_addr[14:0], rom0_half, 1'b0 }; // OBJ
 wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
 wire [21:0] gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
@@ -358,7 +359,7 @@ always @(negedge VB, posedge rst) begin
     end else begin
         framecnt <= framecnt+1;
         $display("FRAME %d", framecnt);
-        if ( framecnt==1 ) begin
+        if ( framecnt==2 ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

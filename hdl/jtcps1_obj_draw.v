@@ -52,7 +52,7 @@ wire [ 4:0] pal;
 wire        hflip, vflip;
 reg  [31:0] pxl_data;
 
-assign vsub   = obj_attr[10:7];
+assign vsub   = obj_attr[11:8];
 assign vflip  = obj_attr[6];
 assign hflip  = obj_attr[5];
 assign pal    = obj_attr[4:0];

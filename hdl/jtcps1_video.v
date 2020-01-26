@@ -150,8 +150,7 @@ jtcps1_gfx_pal u_gfx_pal(
 assign rom1_addr = { rom1_bank[3:0], scr1_addr[18:0] }; // 4+19=23
 assign rom2_addr = { rom2_bank[3:0], scr2_addr[18:0] };
 assign rom3_addr = { rom3_bank[3:0], scr3_addr[18:0] };
-//assign rom0_addr = { rom0_bank[3:0], obj_addr[16:0]  };
-assign rom0_addr = { 8'h0, obj_addr[18:0]  };
+assign rom0_addr = { rom0_bank[3:0], obj_addr[18:0]  };
 
 //`define NOSCROLL1
 `ifndef NOSCROLL1

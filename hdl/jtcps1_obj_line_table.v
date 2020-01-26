@@ -85,7 +85,7 @@ endgenerate
 
 always @(*) begin
     inzone = match!=16'd0;
-    vsub = vrender1 - obj_y;
+    vsub = vrender1-obj_y;
     vsub = vsub ^ {4{vflip}};
     // which m won?
     case( match )
