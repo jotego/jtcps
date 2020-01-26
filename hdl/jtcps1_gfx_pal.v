@@ -42,17 +42,17 @@
 // 100        Star field
 
 module jtcps1_gfx_pal(
+    input      [22:10] obj,     // pins 2-9, 11,13,15,17,18
     input      [22:10] scr1,    // pins 2-9, 11,13,15,17,18
     input      [22:10] scr2,    // pins 2-9, 11,13,15,17,18
     input      [22:10] scr3,    // pins 2-9, 11,13,15,17,18
+    output reg [ 3: 0] offset0, // Obj
     output reg [ 3: 0] offset1, // scr GFX offset
     output reg [ 3: 0] offset2,
-    output reg [ 3: 0] offset3 
+    output reg [ 3: 0] offset3
 );
 
-reg [ 4: 1] bank1;  // pins 12, 14, 16, 19
-reg [ 4: 1] bank2;  // pins 12, 14, 16, 19
-reg [ 4: 1] bank3;  // pins 12, 14, 16, 19
+reg [ 4: 1] bank1, bank2, bank3, bank0;  // pins 12, 14, 16, 19
 
 // Ghouls'n Ghosts (dm620.2a)
 // jedutil -view dm620.2a  GAL16V8
@@ -65,23 +65,26 @@ function [4:1] cen_gfx;
             // /i2 & /i4 & /i8 +
             // /i2 & i3 & /i4
              ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20])) };
+             // 4'b001_x | 4'b0x0_0 | 4'b010_x
 endfunction
 
 function [3:0] bank2offset;
     input [4:1] cen;
     case( cen )
-        4'd0: bank2offset = 4'h0;
         4'd1: bank2offset = 4'h4;
         4'd2: bank2offset = 4'h0;
         4'd4: bank2offset = 4'h0;
-        default: bank2offset = 4'h0;
+        4'd8: bank2offset = 4'h1; // ?
+        default: bank2offset = 4'hf;
     endcase
 endfunction
 
 always @(*) begin
+    bank0 = cen_gfx( obj  );
     bank1 = cen_gfx( scr1 );
     bank2 = cen_gfx( scr2 );
     bank3 = cen_gfx( scr3 );
+    offset0 = bank2offset( bank0 );
     offset1 = bank2offset( bank1 );
     offset2 = bank2offset( bank2 );
     offset3 = bank2offset( bank3 );

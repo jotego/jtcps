@@ -18,12 +18,12 @@ wire               vram1_ok,   vram2_ok,   vram3_ok,    vram_obj_ok;
 wire               vram1_cs,   vram2_cs,   vram3_cs,    vram_obj_cs;
 
 // GFX ROM interface
-wire       [22:0]  rom1_addr, rom2_addr, rom3_addr, obj_addr;
-wire       [31:0]  rom1_data, rom2_data, rom3_data, obj_data;
-wire       [ 3:0]  rom1_bank, rom2_bank, rom3_bank, obj_bank;
-wire               rom1_half, rom2_half, rom3_half, obj_half;
-wire               rom1_cs, rom2_cs, rom3_cs, obj_cs;
-wire               rom1_ok, rom2_ok, rom3_ok, obj_ok;
+wire       [22:0]  rom1_addr, rom2_addr, rom3_addr, rom0_addr;
+wire       [31:0]  rom1_data, rom2_data, rom3_data, rom0_data;
+wire       [ 3:0]  rom1_bank, rom2_bank, rom3_bank, rom0_bank;
+wire               rom1_half, rom2_half, rom3_half, rom0_half;
+wire               rom1_cs, rom2_cs, rom3_cs, rom0_cs;
+wire               rom1_ok, rom2_ok, rom3_ok, rom0_ok;
 
 reg                downloading=1'b0, loop_rst=1'b0, sdram_ack;
 reg        [31:0]  data_read;
@@ -60,6 +60,54 @@ initial begin
     hpos3      = mmr_regs[9];
     vpos3      = mmr_regs[10];
 end
+
+//always @(posedge start) begin
+//    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
+//end
+
+// JTFRAME_ROM_RW slot types
+// 0 = read only    ( default )
+// 1 = write only
+// 2 = R/W
+
+localparam WO=1;
+
+wire [9:0] slot_cs, slot_ok, slot_wr;
+assign slot_cs[0] = 1'b0;
+assign slot_cs[1] = 1'b0;
+assign slot_cs[2] = rom0_cs;
+assign slot_cs[3] = vram1_cs;
+assign slot_cs[4] = vram2_cs;
+assign slot_cs[5] = vram3_cs;
+assign slot_cs[6] = rom1_cs;
+assign slot_cs[7] = rom2_cs;
+assign slot_cs[8] = rom3_cs;
+assign slot_cs[9] = vram_obj_cs;
+
+assign rom0_ok      = slot_ok[2];
+assign vram1_ok    = slot_ok[3];
+assign vram2_ok    = slot_ok[4];
+assign vram3_ok    = slot_ok[5];
+assign rom1_ok     = slot_ok[6];
+assign rom2_ok     = slot_ok[7];
+assign rom3_ok     = slot_ok[8];
+assign vram_obj_ok = slot_ok[9];
+
+assign slot_wr[9:0] = 9'd0;
+
+wire [31:0] data_write;
+wire        sdram_rnw;
+
+localparam [21:0] gfx_offset   = 22'h10_0000;
+localparam [21:0] vram_offset  = 22'h32_0000;
+localparam [21:0] frame_offset = 22'h36_0000;
+
+//wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
+
+wire [21:0] gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 };
+wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
+wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
+wire [21:0] gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
 
 jtcps1_video UUT (
     .rst        ( rst           ),
@@ -135,68 +183,13 @@ jtcps1_video UUT (
     .rom3_cs    ( rom3_cs       ),
     .rom3_ok    ( rom3_ok       ),
 
-    .obj_addr   ( obj_addr[19:0]),
-    .obj_bank   ( obj_bank      ),
-    .obj_half   ( obj_half      ),
-    .obj_data   ( obj_data      ),
-    .obj_cs     ( obj_cs        ),
-    .obj_ok     ( obj_ok        )
+    .rom0_addr  ( rom0_addr      ),
+    .rom0_bank  ( rom0_bank      ),
+    .rom0_half  ( rom0_half      ),
+    .rom0_data  ( rom0_data      ),
+    .rom0_cs    ( rom0_cs        ),
+    .rom0_ok    ( rom0_ok        )
 );
-
-//always @(posedge start) begin
-//    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
-//end
-
-// JTFRAME_ROM_RW slot types
-// 0 = read only    ( default )
-// 1 = write only
-// 2 = R/W
-
-localparam WO=1;
-
-wire [9:0] slot_cs, slot_ok, slot_wr;
-assign slot_cs[0] = 1'b0;
-assign slot_cs[1] = 1'b0;
-assign slot_cs[2] = obj_cs;
-assign slot_cs[3] = vram1_cs;
-assign slot_cs[4] = vram2_cs;
-assign slot_cs[5] = vram3_cs;
-assign slot_cs[6] = rom1_cs;
-assign slot_cs[7] = rom2_cs;
-assign slot_cs[8] = rom3_cs;
-assign slot_cs[9] = vram_obj_cs;
-
-assign obj_ok      = slot_ok[2];
-assign vram1_ok    = slot_ok[3];
-assign vram2_ok    = slot_ok[4];
-assign vram3_ok    = slot_ok[5];
-assign rom1_ok     = slot_ok[6];
-assign rom2_ok     = slot_ok[7];
-assign rom3_ok     = slot_ok[8];
-assign vram_obj_ok = slot_ok[9];
-
-assign slot_wr[9:0] = 9'd0;
-
-wire [31:0] data_write;
-wire        sdram_rnw;
-wire [21:0] rom1_offset, rom2_offset, rom3_offset, obj_offset,
-            frame0_offset, frame1_offset;
-
-localparam [21:0] gfx_offset   = 22'h10_0000;
-localparam [21:0] vram_offset  = 22'h32_0000;
-localparam [21:0] frame_offset = 22'h36_0000;
-assign rom1_offset   = gfx_offset;
-assign rom2_offset   = gfx_offset;
-assign rom3_offset   = gfx_offset;//+22'h10_0000;
-assign obj_offset    = gfx_offset;//+22'h10_0000;
-assign obj_addr[22:20] = 3'd0;
-
-wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
-
-wire [21:0] gfx1_addr    = {rom1_addr[19:0], rom1_half, 1'b0 };
-wire [21:0] gfx2_addr    = {rom2_addr[19:0], rom2_half, 1'b0 };
-wire [21:0] gfx3_addr    = {gfx3_addr_pre, rom3_half, 1'b0 };
-wire [21:0] gfx_obj_addr = { obj_addr[19:0] + 20'h4_0000, obj_half, 1'b0 };
 
 jtframe_sdram_mux #(
     // VRAM read access:
@@ -243,19 +236,19 @@ u_sdram_mux(
     .slot5_dout     ( vram3_data        ),
 
     // GFX ROM
-    .slot2_offset   ( obj_offset        ),
-    .slot2_addr     ( gfx_obj_addr      ),
-    .slot2_dout     ( obj_data          ),
+    .slot2_offset   ( gfx_offset        ),
+    .slot2_addr     ( gfx0_addr         ),
+    .slot2_dout     ( rom0_data         ),
 
-    .slot6_offset   ( rom1_offset       ),
+    .slot6_offset   ( gfx_offset        ),
     .slot6_addr     ( gfx1_addr         ),
     .slot6_dout     ( rom1_data         ),
 
-    .slot7_offset   ( rom2_offset       ),
+    .slot7_offset   ( gfx_offset        ),
     .slot7_addr     ( gfx2_addr         ),
     .slot7_dout     ( rom2_data         ),
 
-    .slot8_offset   ( rom3_offset       ),
+    .slot8_offset   ( gfx_offset        ),
     .slot8_addr     ( gfx3_addr         ),
     .slot8_dout     ( rom3_data         ),
 
@@ -365,7 +358,7 @@ always @(negedge VB, posedge rst) begin
     end else begin
         framecnt <= framecnt+1;
         $display("FRAME %d", framecnt);
-        if ( framecnt==2 ) begin
+        if ( framecnt==1 ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

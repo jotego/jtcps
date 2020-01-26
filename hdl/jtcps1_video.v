@@ -100,12 +100,12 @@ module jtcps1_video(
     output             rom3_cs,
     input              rom3_ok,
 
-    output     [19:0]  obj_addr,    // up to 1 MB
-    output     [ 3:0]  obj_bank,
-    output             obj_half,    // selects which half to read
-    input      [31:0]  obj_data,
-    output             obj_cs,
-    input              obj_ok
+    output     [22:0]  rom0_addr,    // up to 1 MB
+    output     [ 3:0]  rom0_bank,
+    output             rom0_half,    // selects which half to read
+    input      [31:0]  rom0_data,
+    output             rom0_cs,
+    input              rom0_ok
     // To frame buffer
     // output     [11:0]  line_data,
     // output     [ 8:0]  line_addr,
@@ -114,6 +114,7 @@ module jtcps1_video(
 );
 
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
+wire [22:0]     scr1_addr, scr2_addr, scr3_addr, obj_addr;
 wire [ 7:0]     vrender1;
 
 wire            line_start;
@@ -136,13 +137,21 @@ jtcps1_timing u_timing(
 );
 
 jtcps1_gfx_pal u_gfx_pal(
-    .scr1       ( rom1_addr[22:10]  ),
-    .scr2       ( rom2_addr[22:10]  ),
-    .scr3       ( rom3_addr[22:10]  ),
+    .scr1       ( scr1_addr[22:10]  ),
+    .scr2       ( scr2_addr[22:10]  ),
+    .scr3       ( scr3_addr[22:10]  ),
+    .obj        ( obj_addr [22:10]  ),
+    .offset0    ( rom0_bank         ),
     .offset1    ( rom1_bank         ),
     .offset2    ( rom2_bank         ),
     .offset3    ( rom3_bank         )
 );
+
+assign rom1_addr = { rom1_bank[3:0], scr1_addr[18:0] }; // 4+19=23
+assign rom2_addr = { rom2_bank[3:0], scr2_addr[18:0] };
+assign rom3_addr = { rom3_bank[3:0], scr3_addr[18:0] };
+//assign rom0_addr = { rom0_bank[3:0], obj_addr[16:0]  };
+assign rom0_addr = { 8'h0, obj_addr[18:0]  };
 
 //`define NOSCROLL1
 `ifndef NOSCROLL1
@@ -160,7 +169,7 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
     .vram_data  ( vram1_data    ),
     .vram_ok    ( vram1_ok      ),
     .vram_cs    ( vram1_cs      ),
-    .rom_addr   ( rom1_addr     ),
+    .rom_addr   ( scr1_addr     ),
     .rom_data   ( rom1_data     ),
     .rom_cs     ( rom1_cs       ),
     .rom_ok     ( rom1_ok       ),
@@ -170,7 +179,7 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
 `else 
 assign rom1_cs  = 1'b0;
 assign scr1_pxl = 9'h1ff;
-assign rom1_addr= 23'd0;
+assign scr1_addr= 23'd0;
 `endif
 
 //`define NOSCROLL2
@@ -189,7 +198,7 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
     .vram_data  ( vram2_data    ),
     .vram_ok    ( vram2_ok      ),
     .vram_cs    ( vram2_cs      ),
-    .rom_addr   ( rom2_addr     ),
+    .rom_addr   ( scr2_addr     ),
     .rom_data   ( rom2_data     ),
     .rom_cs     ( rom2_cs       ),
     .rom_ok     ( rom2_ok       ),
@@ -199,7 +208,7 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
 `else 
 assign rom2_cs  = 1'b0;
 assign scr2_pxl = 9'h1ff;
-assign rom2_addr= 23'd0;
+assign scr2_addr= 23'd0;
 `endif
 
 `ifndef NOSCROLL3
@@ -217,7 +226,7 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
     .vram_data  ( vram3_data    ),
     .vram_ok    ( vram3_ok      ),
     .vram_cs    ( vram3_cs      ),
-    .rom_addr   ( rom3_addr     ),
+    .rom_addr   ( scr3_addr     ),
     .rom_data   ( rom3_data     ),
     .rom_cs     ( rom3_cs       ),
     .rom_ok     ( rom3_ok       ),
@@ -227,7 +236,7 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
 `else 
 assign rom3_cs  = 1'b0;
 assign scr3_pxl = 9'h1ff;
-assign rom3_addr= 23'd0;
+assign scr3_addr= 23'd0;
 `endif
 
 // Objects
@@ -252,10 +261,10 @@ jtcps1_obj u_obj(
     .vram_cs    ( vram_obj_cs   ),
 
     .rom_addr   ( obj_addr      ),
-    .rom_data   ( obj_data      ),
-    .rom_cs     ( obj_cs        ),
-    .rom_ok     ( obj_ok        ),
-    .rom_half   ( obj_half      ),
+    .rom_data   ( rom0_data     ),
+    .rom_cs     ( rom0_cs       ),
+    .rom_ok     ( rom0_ok       ),
+    .rom_half   ( rom0_half     ),
 
     .pxl        ( obj_pxl       )
 );

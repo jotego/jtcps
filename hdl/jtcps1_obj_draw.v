@@ -67,6 +67,25 @@ endfunction
 reg  [ 1:0] wait_cycle;
 reg         last_tile;
 
+`ifdef SIMULATION
+reg busy;
+reg busy_error;
+reg last_start;
+
+always @(posedge clk, posedge rst) begin
+    if(rst) begin
+        busy<=1'b0;
+        busy_error<=1'b0;
+        last_start<=1'b1;
+    end else begin
+        last_start <= start;
+        if( start ) busy<=1'b1;
+        if( done  ) busy<=1'b0;
+        busy_error <= start && busy && !last_start;
+    end
+end
+`endif
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         table_addr <= 9'd0;

@@ -61,8 +61,14 @@ assign      pal        = obj_attr[4:0];
 reg  [15:0] code_mn;
 reg  [ 4:0] st;
 
+wire [ 9:0] rd_addr = {~vrender1[0], line_addr};
+`ifdef SIMULATION
+wire [ 7:0] rd_cnt  = line_addr>>2;
+wire [ 1:0] rd_sub  = line_addr[1:0];
+`endif
+
 always @(posedge clk) begin
-    line_data <= line_buf[ {~vrender1[0], line_addr} ];
+    line_data <= line_buf[ rd_addr ];
 end
 
 generate
@@ -172,8 +178,8 @@ always @(posedge clk, posedge rst) begin
                 end
                 else first <= 1'b0;
             end
-            6: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= code_mn;
-            7: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= { 4'd0, vsub, obj_attr[7:0] };
+            6: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
+            7: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= code_mn;
             8: line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= obj_x + { 1'b0, n, 4'd0};
             9: begin
                 if( line_cnt==7'h7f ) begin
@@ -191,8 +197,8 @@ always @(posedge clk, posedge rst) begin
             // fill the rest of the table
             10: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= ~16'h0;
             11: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= ~16'h0;
-            12: line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= ~16'h0;
-            13: begin
+            12: begin
+                line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= ~16'h0;
                 line_cnt <= line_cnt+7'd1;
                 if( line_cnt==7'h7f ) begin
                     st   <= 0; // line full

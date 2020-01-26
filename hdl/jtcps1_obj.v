@@ -38,7 +38,7 @@ module jtcps1_obj(
     input              vram_ok,
     output             vram_cs,
 
-    output     [19:0]  rom_addr,    // up to 1 MB
+    output     [22:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output             rom_cs,
@@ -52,6 +52,8 @@ wire [ 9:0] frame_addr;
 wire [ 8:0] line_addr;
 
 wire [ 8:0] buf_addr, buf_data;
+
+assign rom_addr[22:20] = 3'd0;
 
 jtcps1_obj_table u_table(
     .rst        ( rst           ),
@@ -101,7 +103,7 @@ jtcps1_obj_draw u_draw(
     .buf_data   ( buf_data      ),
     .buf_wr     ( buf_wr        ),
 
-    .rom_addr   ( rom_addr      ),
+    .rom_addr   ( rom_addr[19:0]),
     .rom_half   ( rom_half      ),
     .rom_data   ( rom_data      ),
     .rom_cs     ( rom_cs        ),
