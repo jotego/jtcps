@@ -64,7 +64,7 @@ end
 jtcps1_video UUT (
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .cen8       ( cen8          ),
+    .pxl_cen    ( cen8          ),
 
     .hdump      ( hdump         ),
     .vdump      ( vdump         ),
@@ -196,7 +196,7 @@ wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 wire [21:0] gfx1_addr    = {rom1_addr[19:0], rom1_half, 1'b0 };
 wire [21:0] gfx2_addr    = {rom2_addr[19:0], rom2_half, 1'b0 };
 wire [21:0] gfx3_addr    = {gfx3_addr_pre, rom3_half, 1'b0 };
-wire [21:0] gfx_obj_addr = { obj_addr[19:0], obj_half, 1'b0 };
+wire [21:0] gfx_obj_addr = { obj_addr[19:0] + 20'h4_0000, obj_half, 1'b0 };
 
 jtframe_sdram_mux #(
     // VRAM read access:

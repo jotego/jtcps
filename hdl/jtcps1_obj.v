@@ -27,7 +27,8 @@ module jtcps1_obj(
     input              VB,
 
     input              start,
-    input      [ 7:0]  vrender, // 1 line ahead of vdump
+    input      [ 7:0]  vrender,  // 1 line  ahead of vdump
+    input      [ 7:0]  vrender1, // 2 lines ahead of vdump
     input      [ 7:0]  vdump,
     input      [ 8:0]  hdump,
     // control registers
@@ -46,8 +47,9 @@ module jtcps1_obj(
     output     [ 8:0]  pxl
 );
 
-wire [15:0] table_data;
-wire [ 9:0] table_addr;
+wire [15:0] frame_data, line_data;
+wire [ 9:0] frame_addr;
+wire [ 8:0] line_addr;
 
 wire [ 8:0] buf_addr, buf_data;
 
@@ -57,8 +59,8 @@ jtcps1_obj_table u_table(
     .VB         ( VB            ),
 
     // OBJ renderization
-    .table_addr ( table_addr    ),
-    .table_data ( table_data    ),
+    .table_addr ( frame_addr    ),
+    .table_data ( frame_data    ),
 
     // VRAM
     .vram_base  ( vram_base     ),
@@ -69,6 +71,22 @@ jtcps1_obj_table u_table(
 
 );
 
+jtcps1_obj_line_table u_line_table(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+
+    .start      ( start         ),
+    .vrender1   ( vrender1      ),
+
+    // interface with frame table
+    .frame_addr ( frame_addr    ),
+    .frame_data ( frame_data    ),
+
+    // interface with renderer
+    .line_addr  ( line_addr     ),
+    .line_data  ( line_data     )
+);
+
 jtcps1_obj_draw u_draw(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -76,8 +94,8 @@ jtcps1_obj_draw u_draw(
     .start      ( start         ),
     .vrender    ( vrender       ),
 
-    .table_addr ( table_addr    ),
-    .table_data ( table_data    ),
+    .table_addr ( line_addr     ),
+    .table_data ( line_data     ),
 
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),

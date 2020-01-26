@@ -58,7 +58,9 @@ end
 integer cnt;
 initial begin
     $display("OBJ table initialization OK");
-    for(cnt=0;cnt<2**11;cnt=cnt+1) table_buffer[cnt]=16'd0;
+    //for(cnt=0;cnt<2**11;cnt=cnt+1) table_buffer[cnt]=16'd0;
+    $readmemh("vram_obj16.hex",table_buffer,0,1023);
+    $readmemh("vram_obj16.hex",table_buffer,1024,2047);
 end
 `endif
 

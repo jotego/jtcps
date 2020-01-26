@@ -25,7 +25,7 @@
 module jtcps1_video(
     input              rst,
     input              clk,
-    input              cen8,        // pixel clock enable
+    input              pxl_cen,        // pixel clock enable
 
     output     [ 7:0]  vdump,
     output     [ 7:0]  vrender,
@@ -114,16 +114,18 @@ module jtcps1_video(
 );
 
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
+wire [ 7:0]     vrender1;
 
 wire            line_start;
 
 jtcps1_timing u_timing(
     .rst            ( rst               ),
     .clk            ( clk               ),
-    .cen8           ( cen8              ),
+    .cen8           ( pxl_cen           ),
 
     .vdump          ( vdump             ),
     .hdump          ( hdump             ),
+    .vrender1       ( vrender1          ),
     .vrender        ( vrender           ),
     .start          ( line_start        ),
     // to video output
@@ -168,6 +170,7 @@ jtcps1_tilemap #(.SIZE(8)) u_scroll1(
 `else 
 assign rom1_cs  = 1'b0;
 assign scr1_pxl = 9'h1ff;
+assign rom1_addr= 23'd0;
 `endif
 
 //`define NOSCROLL2
@@ -196,6 +199,7 @@ jtcps1_tilemap #(.SIZE(16)) u_scroll2(
 `else 
 assign rom2_cs  = 1'b0;
 assign scr2_pxl = 9'h1ff;
+assign rom2_addr= 23'd0;
 `endif
 
 `ifndef NOSCROLL3
@@ -223,6 +227,7 @@ jtcps1_tilemap #(.SIZE(32)) u_scroll3(
 `else 
 assign rom3_cs  = 1'b0;
 assign scr3_pxl = 9'h1ff;
+assign rom3_addr= 23'd0;
 `endif
 
 // Objects
@@ -236,6 +241,7 @@ jtcps1_obj u_obj(
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
+    .vrender1   ( vrender1      ),
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
     // control registers
@@ -257,7 +263,7 @@ jtcps1_obj u_obj(
 jtcps1_colmix u_colmix(
     .rst        ( rst           ),
     .clk        ( clk           ),
-    .pxl_cen    ( cen8          ),
+    .pxl_cen    ( pxl_cen       ),
     .HB         ( HB            ),
     .VB         ( VB            ),
     // Scroll data

@@ -25,7 +25,7 @@ module jtcps1_obj_draw(
     input      [ 7:0]  vrender, // 1 line ahead of vdump
     input              start,
 
-    output reg [ 9:0]  table_addr,
+    output reg [ 8:0]  table_addr,
     input      [15:0]  table_data,
 
     // Line buffer
@@ -44,27 +44,17 @@ module jtcps1_obj_draw(
 localparam [8:0] MAXH = 9'd448;
 
 integer st;
-reg [15:0] obj_x, obj_y, obj_code, obj_attr;
-reg [15:0] last_x, last_y, last_code, last_attr;
-
-wire  repeated = (obj_x==last_x) && (obj_y==last_y) && 
-                 (obj_code==last_code) && (obj_attr==last_attr);
+reg [15:0] obj_x, obj_code, obj_attr;
 
 reg         done, inzone;
-reg  [ 3:0] n, m;  // tile expansion n==horizontal, m==verital
-reg  [ 3:0] suby, vsub, vsubf;
-wire [ 3:0] tile_n, tile_m;
+wire [ 3:0] vsub;
 wire [ 4:0] pal;
 wire        hflip, vflip;
 reg  [31:0] pxl_data;
-reg  [ 3:0] v10, v20, v30, v40, v50, v60, v80, v90,
-            vA0, vB0, vC0, vD0, vE0, vF0;
-reg  [15:0] code_mn;
 
-assign tile_n = obj_attr[11: 9];
-assign tile_m = obj_attr[15:12];
-assign hflip  = obj_attr[5];
+assign vsub   = obj_attr[10:7];
 assign vflip  = obj_attr[6];
+assign hflip  = obj_attr[5];
 assign pal    = obj_attr[4:0];
 
 function [3:0] colour;
@@ -74,62 +64,12 @@ function [3:0] colour;
                     { c[31], c[23], c[15], c[7] };
 endfunction
 
-function check_msb;
-    input [3:0] obj_ymsb;
-    input [3:0] vrender_msb;
-    input [3:0] offset;
-    input [3:0] tile_m;
-    check_msb = (obj_ymsb+offset)==vrender_msb && (obj_ymsb<=vrender_msb)
-        && tile_m <= offset;
-endfunction
-
-reg  [15:0] inzone_msb;
-
-integer offset;
-
-always @(*) begin
-    for( offset=0; offset<16; offset=offset+1) begin
-        inzone_msb[offset] = check_msb( obj_y[7:4], vrender[7:4], offset, tile_m );
-    end
-    inzone = inzone_msb!=16'd0 && vrender[3:0] == obj_y[3:0];
-    // which m won?
-    case( inzone )
-        16'h1:     m = 0;
-        16'h2:     m = 1;
-        16'h4:     m = 2;
-        16'h8:     m = 3;
-
-        16'h10:    m = 4;
-        16'h20:    m = 5;
-        16'h40:    m = 6;
-        16'h80:    m = 7;
-
-        16'h100:   m = 8;
-        16'h200:   m = 9;
-        16'h400:   m = 10;
-        16'h800:   m = 11;
-
-        16'h10_00: m = 12;
-        16'h20_00: m = 13;
-        16'h40_00: m = 14;
-        16'h80_00: m = 15;
-        default: m=0;
-    endcase
-    vsub = vrender - obj_y;
-end
-
-always @(*) begin
-    case( {tile_m!=4'd0, tile_n!=4'd0 } )
-        2'b00: code_mn = obj_code;
-        2'b01: code_mn = { obj_code[15:4], n };
-        2'b10: code_mn = { obj_code[15:8], m, obj_code[3:0] };
-        2'b11: code_mn = { obj_code[15:8], m, n };
-    endcase
-end
+reg  [ 1:0] wait_cycle;
+reg         last_tile;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        table_addr <= ~10'd0;
+        table_addr <= 9'd0;
         rom_addr   <= 20'd0;
         rom_half   <= 1'd0;
         buf_wr     <= 1'b0;
@@ -142,82 +82,63 @@ always @(posedge clk, posedge rst) begin
         st <= st+1;
         case( st )
             0: begin
-                buf_wr <= 1'b0;
-                rom_cs <= 1'b0;
+                buf_wr   <= 1'b0;
+                rom_cs   <= 1'b0;
                 if( !start ) st<=0;
                 else begin
-                    table_addr <= table_addr-10'd1; // start reading out the table
+                    table_addr <= { 7'd0, 2'd0 };
+                    wait_cycle <= 2'b1;
+                    last_tile  <= 1'b0;
                     done       <= 0;
                 end
             end
             1: begin
-                if (table_addr==10'h3ff) begin
-                    done <= 1'b1;
-                    st   <= 0;
-                end else begin
-                    n          <= 4'd0;
-                    last_attr  <= obj_attr;
+                wait_cycle <= { 1'b0, wait_cycle[1] };
+                table_addr[1:0] <= table_addr[1:0]+2'd1;
+                if( !wait_cycle ) begin
                     obj_attr   <= table_data;
-                    table_addr <= table_addr-10'd1;
-                end           
+                    wait_cycle <= 2'b1; // leave it on for next round
+                end else st<=1;
             end
             2: begin
-                last_code  <= obj_code;
                 obj_code   <= table_data;
-                table_addr <= table_addr-10'd1;
+                //table_addr[1:0] <= table_addr[1:0]+2'd1;
+                rom_cs   <= 1'b1;
+                rom_addr <= { table_data, vsub };
+                rom_half <= hflip;
             end
             3: begin
-                last_y     <= obj_y;
-                obj_y      <= table_data;
-                suby       <= table_data-vrender;
-                vsubf      <= vsub ^ {4{vflip}};
-                inzone     <= table_data==vrender;
-                table_addr <= table_addr-10'd1;
-            end
-            4: begin
-                last_x     <= obj_x;
                 obj_x      <= table_data;
                 buf_addr   <= table_data[8:0]-9'd1;
-                table_addr <= table_addr-10'd1;
+                if( table_addr[8:2]==7'b111_1000 ) last_tile <= 1'b1; // some margin for SDRAM waits
+                table_addr[8:2] <= table_addr[8:2]+7'd1;
+                table_addr[1:0] <= 2'd0;
             end
-            5: begin // check whether sprite is visible
-                if( repeated || !inzone ) begin
-                    st<= 1; // try next one
-                end else begin // data request
-                    rom_cs   <= 1'b1;
-                    rom_addr <= { code_mn, vsubf };
-                    rom_half <= hflip;
-                end
-            end
-            6: begin
+            4: begin
                 if( rom_ok ) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
                 end else st<=st;
             end
-            7,8,9,10,    11,12,13,14,
-            16,17,18,19, 20,21,22,23: begin
+            5,6,7,8, 9,10,11,12,
+            14,15,16,17, 18,19,20,21: begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= { pal, colour(pxl_data, hflip) };
                 pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
             end
-            15: begin
+            13: begin
                 if(rom_ok) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
-                    n        <= n+1;
                 end else st<=st;
             end
-            24: begin
-                if( n > tile_n || buf_addr>=MAXH ) begin
-                    st <= 1; // next element
-                end else begin // prepare for next tile
-                    pxl_data <= rom_data;
-                    rom_half <= ~rom_half;
-                    rom_addr <= { code_mn, vsubf };
-                    st <= 6;
+            22: begin
+                if(last_tile) begin
+                    done <= 1'b1;
+                    st   <= 0;
                 end
+                else st<=1; // next element
             end
         endcase
 

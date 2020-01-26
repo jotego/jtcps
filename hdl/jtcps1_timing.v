@@ -26,6 +26,7 @@ module jtcps1_timing(
     output reg [ 7:0]  vdump,
     output reg [ 8:0]  hdump,
     output reg [ 7:0]  vrender,
+    output reg [ 7:0]  vrender1,
     output reg         start,
     // to video output
     output reg         HS,
@@ -39,6 +40,7 @@ always @(posedge clk, posedge rst) begin
         hdump     <= 9'd0;
         vdump     <= 8'hff;
         vrender   <= 8'd0;
+        vrender1  <= 8'd0;
         HS        <= 1'b0;
         VS        <= 1'b0;
         HB        <= 1'b1;
@@ -54,7 +56,8 @@ always @(posedge clk, posedge rst) begin
         start  <= hdump==9'h1ff;
         if(&hdump) begin
             hdump   <= 9'd0;
-            vrender <= vrender+1;
+            vrender1<= vrender1+1;
+            vrender <= vrender1;
             vdump   <= vrender;
         end
     end
