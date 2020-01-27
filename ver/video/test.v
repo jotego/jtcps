@@ -43,7 +43,8 @@ reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
 
 `ifndef MMR_FILE
 //`define MMR_FILE "ghouls_tree.hex"
-`define MMR_FILE "ghouls_start.hex"
+//`define MMR_FILE "ghouls_start.hex"
+`define MMR_FILE "ghouls_bird.hex"
 `endif
 reg [15:0] mmr_regs[0:10];
 initial begin
