@@ -115,9 +115,13 @@ end
 always @(*) begin
     case( {tile_m!=4'd0, tile_n!=4'd0 } )
         2'b00: code_mn = obj_code;
-        2'b01: code_mn = { obj_code[15:4], n^{4{hflip}} };
-        2'b10: code_mn = { obj_code[15:8], m, obj_code[3:0] ^ {4{vflip}} };
-        2'b11: code_mn = { obj_code[15:8], m, n^{4{hflip}} };
+        2'b01: code_mn = { obj_code[15:4], obj_code[3:0]+n };
+        2'b10: code_mn = { obj_code[15:8], 
+                           obj_code[7:4]+m,
+                           obj_code[3:0] };
+        2'b11: code_mn = { obj_code[15:8], 
+                           obj_code[7:4]+m, 
+                           obj_code[3:0]+n };
     endcase
 end
 
@@ -171,7 +175,7 @@ always @(posedge clk, posedge rst) begin
                 if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
             end
             5: begin // check whether sprite is visible
-                if( repeated || !inzone && !first) begin
+                if( (repeated || !inzone /*|| obj_x<9'he0 || obj_x>9'h140*/)&& !first) begin
                     //frame_addr <= frame_addr-10'd1;
                     //if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
                     st<= 1; // try next one

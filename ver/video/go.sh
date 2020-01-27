@@ -10,10 +10,6 @@ fi
 while [ $# -gt 0 ]; do
     case $1 in
         -d) shift; EXTRA="$EXTRA ${MACROPREFIX}$1"; shift;;
-        -f | -frame) 
-            shift
-            EXTRA="$EXTRA ${MACROPREFIX}FRAMES=$1"
-            shift;;
         *) echo "ERROR: unknown argument $1"; exit 1;;
     esac
 done

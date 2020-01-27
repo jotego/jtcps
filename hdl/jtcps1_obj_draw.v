@@ -46,7 +46,7 @@ localparam [8:0] MAXH = 9'd448;
 integer st;
 reg [15:0] obj_x, obj_code, obj_attr;
 
-reg         done, inzone;
+reg         done;
 wire [ 3:0] vsub;
 wire [ 4:0] pal;
 wire        hflip, vflip;
@@ -153,6 +153,7 @@ always @(posedge clk, posedge rst) begin
                 end else st<=st;
             end
             22: begin
+                buf_wr <= 1'b0;
                 if(last_tile) begin
                     done <= 1'b1;
                     st   <= 0;

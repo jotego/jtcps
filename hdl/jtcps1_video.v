@@ -239,6 +239,7 @@ assign scr3_addr= 23'd0;
 `endif
 
 // Objects
+`ifndef NOOBJ
 jtcps1_obj u_obj(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -267,6 +268,9 @@ jtcps1_obj u_obj(
 
     .pxl        ( obj_pxl       )
 );
+`else 
+assign obj_pxl = 9'h1ff;
+`endif
 
 jtcps1_colmix u_colmix(
     .rst        ( rst           ),

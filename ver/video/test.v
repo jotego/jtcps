@@ -36,15 +36,14 @@ reg                data_rdy;
 reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
                    vobj_base, vram1_base, vram2_base, vram3_base, pal_base;
 
-//always @(negedge VB) begin
-//    // hpos2<=hpos2+1;
-//    vpos3<=vpos3+1;
-//end
+always @(negedge VB) begin
+    // hpos2<=hpos2+1;
+    vpos3<=vpos3+1;
+end
 
 `ifndef MMR_FILE
 //`define MMR_FILE "ghouls_tree.hex"
-//`define MMR_FILE "ghouls_start.hex"
-`define MMR_FILE "ghouls_bird.hex"
+`define MMR_FILE "ghouls_start.hex"
 `endif
 reg [15:0] mmr_regs[0:10];
 initial begin
