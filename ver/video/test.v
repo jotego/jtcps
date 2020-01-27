@@ -105,7 +105,8 @@ localparam [21:0] frame_offset = 22'h36_0000;
 //wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
 //wire [21:0] gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 }; // OBJ
-wire [21:0] gfx0_addr = { 5'b0,rom0_addr[14:0], rom0_half, 1'b0 }; // OBJ
+// 4+16 bits = 4+12+4
+wire [21:0] gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
 wire [21:0] gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
@@ -237,7 +238,7 @@ u_sdram_mux(
     .slot5_dout     ( vram3_data        ),
 
     // GFX ROM
-    .slot2_offset   ( gfx_offset        ),
+    .slot2_offset   ( gfx_offset/*^(22'b01_111<<17) */       ),
     .slot2_addr     ( gfx0_addr         ),
     .slot2_dout     ( rom0_data         ),
 
@@ -353,13 +354,17 @@ end
 
 integer framecnt;
 
+`ifndef FRAMES
+`define FRAMES 1
+`endif
+
 always @(negedge VB, posedge rst) begin
     if(rst) begin
         framecnt <= 0;
     end else begin
         framecnt <= framecnt+1;
         $display("FRAME %d", framecnt);
-        if ( framecnt==2 ) begin
+        if ( framecnt==`FRAMES ) begin
             $display("%d%% SDRAM idle", (sdram_idle_cnt*100)/total_cycles);
             $finish;
         end

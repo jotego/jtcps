@@ -75,9 +75,9 @@ int main() {
     ofstream of("gfx16.hex");
     int os;
     os = dump64_word( of, "dm-05.3a", "dm-07.3f", "dm-06.3c", "dm-08.3g" );
-    cout << "Bank 1 starts at " << hex << os << '\n';
-    os += dump64_byte( of, "11.4c", "20.7c", "15.4g", "24.7g", "09.4a", "18.7a", "13.4e", "22.7e" );
+    //cout << "Bank 1 starts at " << hex << os << '\n';
     cout << "Bank 2 starts at " << hex << os << '\n';
+    os += dump64_byte( of, "11.4c", "20.7c", "15.4g", "24.7g", "09.4a", "18.7a", "13.4e", "22.7e" );
     os += dump64_byte( of, "12.4d", "21.7d", "16.4h", "25.7h", "10.4b", "19.7b", "14.4f", "23.7f" );
     return 0;
 }
