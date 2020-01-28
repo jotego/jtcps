@@ -90,8 +90,11 @@ module jtframe_sdram_mux #(parameter
     output  reg         ready=1'b0,
 
     input  [9:0]        slot_cs,
-    input  [9:0]        slot_wr,
+    input  [9:0]        slot_wr,    
     output [9:0]        slot_ok,
+
+    // Slot 1 accepts 16-bit writes
+    input  [1:0]        slot1_wrmask,
 
     // SDRAM controller interface
     input               downloading,
