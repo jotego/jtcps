@@ -31,6 +31,8 @@ module jtcps1_colmix(
 
     input              VB,
     input              HB,
+    output             LVBL_dly,
+    output             LHBL_dly,
 
     input   [8:0]      scr1_pxl,
     input   [8:0]      scr2_pxl,
@@ -117,17 +119,31 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
+reg vb1, hb1;
+
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         red   <= 8'd0;
         green <= 8'd0;
         blue  <= 8'd0;
+        vb1   <= 1'b1;
+        hb1   <= 1'b1;
     end else if(pxl_cen) begin
+        vb1   <= VB;
+        hb1   <= HB;
+        LVBL_dly <= ~vb1;
+        LHBL_dly <= ~hb1;
         // signal * 17 - signal*15/4 = signal * (17-15/4-15/8)
         // 33% max attenuation for brightness
-        red   <= {2{raw_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
-        green <= {2{raw_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
-        blue  <= {2{raw_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
+        if( vb1 || hb1 ) begin
+            red   <= 8'd0;
+            green <= 8'd0;
+            blue  <= 8'd0;
+        end else begin
+            red   <= {2{raw_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
+            green <= {2{raw_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
+            blue  <= {2{raw_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
+        end
     end
 end
 

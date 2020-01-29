@@ -1,0 +1,13 @@
+<misterromdescription>
+	<name>Ghouls'n Ghosts</name>
+	<setname>ghouls</setname>
+	<year>1988</year>
+	<manufacturer>Capcom</manufacturer>
+	<rbf>jtcps1</rbf>
+	<rom index="0" zip="ghouls.zip" md5="b034856e2abf228761a3828c8c883b4c" type="merged|nonmerged">
+		<part name="dme_29.10h"/>
+		<part name="dme_30.10j"/>
+		<part name="dme_27.9h"/>
+		<part name="dm-17.7j"/>
+	</rom>
+</misterromdescription>

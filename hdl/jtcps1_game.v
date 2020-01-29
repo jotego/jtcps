@@ -74,12 +74,14 @@ module jtcps1_game(
 wire        snd_cs, main_ram_cs, main_rom_cs,
             rom0_cs, rom1_cs, rom2_cs, rom3_cs,
             vram1_cs, vram2_cs, vram3_cs, vram_obj_cs;
+wire        HB, VB;
 wire [15:1] ram_addr;
 wire [23:1] main_addr; // common to RAM/ROM
 wire [15:0] main_ram_data, main_rom_data;
 wire        main_rom_ok, main_ram_ok;
+wire        ppu1_cs, ppu_rstn;
 
-wire        main_rnw;
+wire        main_rnw, busreq, busack;
 wire [ 7:0] snd0_latch, snd1_latch;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
@@ -112,9 +114,12 @@ assign slot_wr[9:2] = 7'd0;
 assign slot_wr[1]   = main_rnw;
 assign slot_wr[0]   = 1'd0;
 
+assign LVBL         = ~VB;
+assign LHBL         = ~HB;
+
 wire [31:0] data_write;
 wire        sdram_rnw;
-
+wire [ 1:0] dsn;
 wire        cen8, cen10, cen10b;
 
 // Timing
@@ -144,33 +149,33 @@ jtframe_frac_cen #(.W(1))u_cen10(
 );
 
 jtcps1_main(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .cen10      ( cen10         ),
-    .cen10b     ( cen10b        ),
+    .rst        ( rst               ),
+    .clk        ( clk               ),
+    .cen10      ( cen10             ),
+    .cen10b     ( cen10b            ),
     // Timing
-    input   [8:0]      V,
-    input              LVBL,
+    // input   [8:0]      V,
+    .LVBL       ( LVBL              ),
     // PPU
-    output reg         ppu1_cs,
-    output reg         ppu_rstn,
+    .ppu1_cs    ( ppu1_cs           ),
+    .ppu_rstn   ( ppu_rstn          ),
     // Sound
-    .snd0_latch ( snd0_latch    ),
-    .snd1_latch ( snd1_latch    ),
-    output             UDSWn,
-    output             LDSWn,
+    .snd0_latch ( snd0_latch        ),
+    .snd1_latch ( snd1_latch        ),
+    .UDSWn      ( dsn[1]            ),
+    .LDSWn      ( dsn[0]            ),
     // cabinet I/O
     // Cabinet input
-    .start_button( start_button ),
-    .coin_input  ( coin_input   ),
-    .joystick1   ( joystick1    ),
-    .joystick2   ( joystick2    ),
-    .service     ( 1'b1         ),
-    .tilt        ( 1'b1         ),
+    .start_button( start_button     ),
+    .coin_input  ( coin_input       ),
+    .joystick1   ( joystick1        ),
+    .joystick2   ( joystick2        ),
+    .service     ( 1'b1             ),
+    .tilt        ( 1'b1             ),
     // BUS sharing
-    input              busreq,
-    output             busack,
-    .RnW         ( main_rnw     ),
+    .busreq      ( busreq           ),
+    .busack      ( busack           ),
+    .RnW         ( main_rnw         ),
     // RAM/VRAM access
     .ram_cs      ( main_ram_cs      ),
     .ram_addr    ( ram_addr         ),
@@ -182,44 +187,44 @@ jtcps1_main(
     .rom_data    ( main_rom_data    ),
     .rom_ok      ( main_rom_ok      ),
     // DIP switches
-    .dip_pause   ( dip_pause    ),
-    .dip_test    ( dip_test     ),
-    .dipsw_a     ( dipsw_a      ),
-    .dipsw_b     ( dipsw_b      ),
-    .dipsw_c     ( dipsw_c      )
+    .dip_pause   ( dip_pause        ),
+    .dip_test    ( dip_test         ),
+    .dipsw_a     ( dipsw_a          ),
+    .dipsw_b     ( dipsw_b          ),
+    .dipsw_c     ( dipsw_c          )
 );
 
-jtcps1_video UUT (
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .pxl_cen    ( cen8          ),
+jtcps1_video u_video(
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .pxl_cen        ( cen8          ),
 
-    .hdump      ( hdump         ),
-    .vdump      ( vdump         ),
-    .vrender    ( vrender       ),
-    .frame      ( frame         ),
+    .hdump          ( hdump         ),
+    .vdump          ( vdump         ),
+    .vrender        ( vrender       ),
+    .frame          ( frame         ),
+
+
+    // CPU interface
+    .ppu_rstn       ( ppu_rstn      ),
+    .ppu1_cs        ( ppu1_cs       ),
+    .ppu2_cs        ( ppu2_cs       ),
+    .addr           ( addr          ),
+    .dsn            ( dsn           ),      // data select, active low
+    .cpu_dout       ( cpu_dout      ),
+    .mmr_dout       ( mmr_dout      ),
 
     // Video signal
-    .HS         ( HS            ),
-    .VS         ( VS            ),
-    .HB         ( HB            ),
-    .VB         ( VB            ),
-    .red        ( red           ),
-    .green      ( green         ),
-    .blue       ( blue          ),
+    .HS             ( HS            ),
+    .VS             ( VS            ),
+    .HB             ( HB            ),
+    .VB             ( VB            ),
+    .LHBL_dly       ( LHBL_dly      ),
+    .LVBL_dly       ( LVBL_dly      ),
+    .red            ( red           ),
+    .green          ( green         ),
+    .blue           ( blue          ),
 
-    // Register configuration
-    .hpos1          ( hpos1         ),
-    .vpos1          ( vpos1         ),
-    .hpos2          ( hpos2         ),
-    .vpos2          ( vpos2         ),
-    .hpos3          ( hpos3         ),
-    .vpos3          ( vpos3         ),
-    .vram1_base     ( vram1_base    ),
-    .vram2_base     ( vram2_base    ),
-    .vram3_base     ( vram3_base    ),
-    .vram_obj_base  ( vobj_base     ),
-    .pal_base       ( pal_base      ),
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),
     .vram1_data     ( vram1_data    ),

@@ -24,7 +24,7 @@ module jtcps1_main(
     input              cen10b,
     output             cpu_cen,
     // Timing
-    input   [8:0]      V,
+    //input   [8:0]      V,
     input              LVBL,
     // PPU
     output reg         ppu1_cs,
@@ -212,7 +212,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int2 <= 1'b1;
         end
         else if(dip_pause) begin
-            if( V[8] && !last_V256 ) int2 <= 1'b0;
+            //if( V[8] && !last_V256 ) int2 <= 1'b0;
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end
     end

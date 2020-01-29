@@ -32,22 +32,23 @@ module jtcps1_video(
     output     [ 8:0]  hdump,
     output             frame,
 
-    // Register configuration
-    // Scroll
-    input      [15:0]  hpos1,
-    input      [15:0]  hpos2,
-    input      [15:0]  hpos3,
-    input      [15:0]  vpos1,
-    input      [15:0]  vpos2,
-    input      [15:0]  vpos3,
-    // VRAM position
-    input      [15:0]  vram1_base,
-    input      [15:0]  vram2_base,
-    input      [15:0]  vram3_base,
-    input      [15:0]  vram_obj_base,
-    // palette control
-    input      [15:0]  pal_base,
-    input      [ 5:0]  pal_page_en, // which palette pages to copy
+    // CPU interface
+    input              ppu_rstn,
+    input              ppu1_cs,
+    input              ppu2_cs,
+    input   [ 5:1]     addr,
+    input   [ 1:0]     dsn,      // data select, active low
+    input   [15:0]     cpu_dout,
+    output  [15:0]     mmr_dout,
+
+    // CPS-B Registers
+    input      [ 5:1]  addr_layer,
+    input      [ 5:1]  addr_prio0,
+    input      [ 5:1]  addr_prio1,
+    input      [ 5:1]  addr_prio2,
+    input      [ 5:1]  addr_prio3,
+    input      [ 5:1]  addr_pal_page,
+
     // Video RAM interface
     output     [23:1]  vram1_addr,
     input      [15:0]  vram1_data,
@@ -74,6 +75,8 @@ module jtcps1_video(
     output             VS,
     output             HB,
     output             VB,
+    output             LHBL_dly,
+    output             LVBL_dly,
     output     [ 7:0]  red,
     output     [ 7:0]  green,
     output     [ 7:0]  blue,
@@ -119,6 +122,17 @@ wire [ 7:0]     vrender1;
 
 wire            line_start;
 
+// Register configuration
+// Scroll
+wire       [15:0]  hpos1, hpos2, hpos3, vpos1, vpos2, vpos3, hstar1, hstar2, vstar1, vstar2;
+// VRAM position
+wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_base, vram_star_base;
+// Layer priority
+wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
+// palette control
+wire       [15:0]  pal_base;
+wire       [ 5:0]  pal_page_en; // which palette pages to copy
+
 jtcps1_timing u_timing(
     .rst            ( rst               ),
     .clk            ( clk               ),
@@ -151,6 +165,56 @@ assign rom1_addr = { rom1_bank[3:0], scr1_addr[18:0] }; // 4+19=23
 assign rom2_addr = { rom2_bank[3:0], scr2_addr[18:0] };
 assign rom3_addr = { rom3_bank[3:0], scr3_addr[18:0] };
 assign rom0_addr = { rom0_bank[3:0], obj_addr[18:0]  };
+
+jtcps1_mmr u_mmr(
+    .rst        ( rst               ),
+    .clk        ( clk               ),
+    .ppu_rstn   ( ppu_rstn          ),  // controlled by CPU
+
+    .ppu1_cs    ( ppu1_cs           ),
+    .ppu2_cs    ( ppu2_cs           ),
+    .addr       ( addr              ),
+    .dsn        ( dsn               ),      // data select, active low
+    .cpu_dout   ( cpu_dout          ),
+    .mmr_dout   ( mmr_dout          ),
+    // registers
+    output reg [15:0]  ppu_ctrl,
+    // Scroll
+    .hpos1          ( hpos1             ),
+    .hpos2          ( hpos2             ),
+    .hpos3          ( hpos3             ),
+    .vpos1          ( vpos1             ),
+    .vpos2          ( vpos2             ),
+    .vpos3          ( vpos3             ),
+    .hstar1         ( hstar1            ),
+    .hstar2         ( hstar2            ),
+    .vstar1         ( vstar1            ),
+    .vstar2         ( vstar2            ),
+
+    // VRAM position
+    .vram1_base     ( vram1_base        ),
+    .vram2_base     ( vram2_base        ),
+    .vram3_base     ( vram3_base        ),
+    .vram_obj_base  ( vram_obj_base     ),
+    .vram_row_base  ( vram_row_base     ),
+    .vram_star_base ( vram_star_base    ),
+    .pal_base       ( pal_base          ),
+
+    // CPS-B Registers
+    .addr_layer     ( addr_layer        ),
+    .addr_prio0     ( addr_prio0        ),
+    .addr_prio1     ( addr_prio1        ),
+    .addr_prio2     ( addr_prio2        ),
+    .addr_prio3     ( addr_prio3        ),
+    .addr_pal_page  ( addr_pal_page     ),
+
+    .layer_ctrl     ( layer_ctrl        ),
+    .prio0          ( prio0             ),
+    .prio1          ( prio1             ),
+    .prio2          ( prio2             ),
+    .prio3          ( prio3             ),
+    .pal_page_en    ( pal_page_en       )
+);
 
 //`define NOSCROLL1
 `ifndef NOSCROLL1
@@ -278,6 +342,8 @@ jtcps1_colmix u_colmix(
     .pxl_cen    ( pxl_cen       ),
     .HB         ( HB            ),
     .VB         ( VB            ),
+    .LHBL_dly   ( LHBL_dly      ),
+    .LVBL_dly   ( LVBL_dly      ),
     // Scroll data
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
