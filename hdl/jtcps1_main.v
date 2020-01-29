@@ -45,19 +45,15 @@ module jtcps1_main(
     input              busreq,
     output             busack,
     output             RnW,
+    // For RAM/ROM:
+    output      [23:1] addr,
     // RAM access
     output  reg        ram_cs,
-    output      [15:1] ram_addr,
+    output  reg        vram_cs,
     input       [15:0] ram_data,
     input              ram_ok,
-    // Video RAM access
-    output  reg        vram_cs,
-    output      [23:1] vram_addr,
-    input       [15:0] vram_data,
-    input              vram_ok,    
     // ROM access
     output  reg        rom_cs,
-    output      [23:1] rom_addr,
     input       [15:0] rom_data,
     input              rom_ok,
     // DIP switches
@@ -77,18 +73,21 @@ wire [24:0] A_full = {ncA, A,1'b0};
 
 wire        BRn, BGACKn, BGn;
 wire        ASn;
-wire        rom_cs, ram_cs, vram_cs, dbus_cs, io_cs, joy_cs, 
+reg         rom_cs, dbus_cs, io_cs, joy_cs, 
             sys_cs, olatch_cs, snd1_cs, snd0_cs;
 
 assign cpu_cen   = cen10;
-assign rom_addr  = A[23:1];
-assign vram_addr = A[23:1];
-assign ram_addr  = A[15:1];
+assign addr      = A[23:1];
 
 // high during DMA transfer
 wire UDSn, LDSn;
 assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
+
+// PAL BUF1 16H
+// buf0 = A[23:16]==1001_0000 = 8'h90
+// buf1 = A[23:16]==1001_0001 = 8'h91
+// buf2 = A[23:16]==1001_0010 = 8'h92
 
 always @(*) begin
     rom_cs     = 1'b0;
@@ -108,6 +107,7 @@ always @(*) begin
         dbus_cs  = ~|A[23:18]; // all must be zero
         ram_cs   = &A[23:18];
         io_cs    = A[23:20] == 4'b1000;
+        vram_cs  = A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
         if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
             if( !RnW ) begin
                 joy_cs = ~|AB[8:3];
@@ -161,18 +161,17 @@ reg  [15:0] cpu_din;
 
 always @(*) begin
     cpu_din = 16'hffff;
-    case( { joy_cs | sys_cs, ram_cs, vram_cs, rom_cs } )
-        4'b1000:  cpu_din = sys_data;
-        4'b0100:  cpu_din = ram_data;
-        4'b0010:  cpu_din = vram_data;
-        4'b0001:  cpu_din = rom_data;
+    case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs } )
+        3'b100:  cpu_din = sys_data;
+        3'b010:  cpu_din = ram_data;
+        3'b001:  cpu_din = rom_data;
     endcase
 end
 
 // DTACKn generation
 wire       inta_n;
 wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok, ram_cs & ~ram_ok, vram_cs & ~vram_ok };
+wire       bus_busy = |{ rom_cs & ~rom_ok, ram_cs & ~ram_ok };
 reg DTACKn;
 
 always @(posedge clk, posedge rst) begin : dtack_gen

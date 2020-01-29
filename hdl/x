@@ -28,7 +28,7 @@ module jtframe_sdram_rq #(parameter AW=18, DW=8, TYPE=0 )(
     input               clk,
     input               cen,
     input [AW-1:0]      addr,
-    input [  21:0]      offset,     // It is not supposed to change during game play
+    input [AW-1:0]      offset,     // It is not supposed to change during game play
     input               addr_ok,    // signals that value in addr is valid
     input [31:0]        din,
     input               din_ok,
@@ -55,7 +55,6 @@ reg [1:0]    subaddr;
 reg init;
 reg hit0, hit1;
 
-wire data_match = dout === wrdata || init;
 
 always @(*) begin
     case(DW)
@@ -63,56 +62,36 @@ always @(*) begin
         16: addr_req = {addr[AW-1:1],1'b0};
         32: addr_req = addr;
     endcase
-    if( TYPE==1 ) begin
-        hit0 = (addr_req === cached_addr0) && data_match;
-        hit1 = (addr_req === cached_addr1) && data_match;    
-    end else begin
-        hit0 = addr_req === cached_addr0;
-        hit1 = addr_req === cached_addr1;    
-    end
-    case(TYPE)
-        0: begin // read only
-            req_rnw = 1'b1;
-            req = init || ( !(hit0 || hit1) && addr_ok && !we);
-        end
-        1: begin // write only
-            req_rnw = 1'b0;
-            req = addr_ok;  // ignores cache
-        end
-        2: begin // R/W
-            req_rnw = ~wrin; // writes thru. Cache only used for reads
-            req     = wrin || init || ( !(hit0 || hit1) && addr_ok && !we);
-        end
-    endcase
+    hit0 = addr_req === cached_addr0;
+    hit1 = addr_req === cached_addr1;
+    req = init || ( !(hit0 || hit1) && addr_ok && !we);
 end
 
-wire [31:0] cache_din = TYPE==0 ? din : wrdata;
+// reg [1:0] ok_sr;
 
 always @(posedge clk, posedge rst)
     if( rst ) begin
         init      <= 1'b1;
         deleterus <= 1'b0;  // signals which cached data is to be overwritten next time
-        cached_data0 <= 32'd0;
-        cached_data1 <= 32'd0;
     end else begin
         data_ok <= !init && addr_ok && ( hit0 || hit1 || (din_ok&&we));
         if( we && din_ok ) begin
             if( init ) begin
-                cached_data0 <= cache_din;
+                cached_data0 <= din;
                 cached_addr0 <= addr_req;
-                cached_data1 <= cache_din;
+                cached_data1 <= din;
                 cached_addr1 <= addr_req;
             end else begin
                 if( deleterus ) begin
-                    cached_data1 <= cache_din;
+                    cached_data1 <= din;
                     cached_addr1 <= addr_req;
                 end else begin
-                    cached_data0 <= cache_din;
+                    cached_data0 <= din;
                     cached_addr0 <= addr_req;
                 end
                 deleterus <= ~deleterus;
             end
-            init <= 1'b0;
+            init        <= 1'b0;
         end
     end
 
@@ -124,14 +103,8 @@ end
 // data_mux selects one of two cache registers
 // but if we are getting fresh data, it selects directly the new data
 // this saves one clock cycle at the expense of more LUTs
-wire [31:0] data_mux;
-
-if (TYPE==0) begin
-    assign data_mux = (we&&din_ok) ? din :
-        (hit0 ? cached_data0 : cached_data1);
-end else begin
-    assign data_mux = hit0 ? cached_data0 : cached_data1;
-end
+wire [31:0] data_mux = (we&&din_ok) ? din :
+    (hit0 ? cached_data0 : cached_data1);
 
 generate
     if(DW==8) begin
