@@ -73,7 +73,7 @@ wire [24:0] A_full = {ncA, A,1'b0};
 
 wire        BRn, BGACKn, BGn;
 wire        ASn;
-reg         rom_cs, dbus_cs, io_cs, joy_cs, 
+reg         dbus_cs, io_cs, joy_cs, 
             sys_cs, olatch_cs, snd1_cs, snd0_cs;
 
 assign cpu_cen   = cen10;

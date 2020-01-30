@@ -5,7 +5,7 @@ module test;
 `define SIMULATION
 
 reg                rst, clk, cen8;
-wire       [ 7:0]  vdump, vrender;
+wire       [ 8:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
 wire               HS, VS, HB, VB, frame, LHBL_dly, LVBL_dly;

@@ -22,9 +22,9 @@ module jtcps1_game(
     input           clk,
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
-    output   [4:0]  red,
-    output   [4:0]  green,
-    output   [4:0]  blue,
+    output   [7:0]  red,
+    output   [7:0]  green,
+    output   [7:0]  blue,
     output          LHBL,
     output          LVBL,
     output          LHBL_dly,
@@ -71,12 +71,15 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
+localparam [21:0] VRAM_OFFSET=22'h3b_0000;
+
 wire        snd_cs, main_ram_cs, main_rom_cs,
             rom0_cs, rom1_cs, rom2_cs, rom3_cs,
             vram1_cs, vram2_cs, vram3_cs, vram_obj_cs;
 wire        HB, VB;
 wire [15:1] ram_addr;
 wire [23:1] main_addr; // common to RAM/ROM
+wire [22:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu_rstn;
@@ -86,8 +89,16 @@ wire [ 7:0] snd0_latch, snd1_latch;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
 wire [9:0] slot_cs, slot_ok, slot_wr;
+wire [8:0] hdump;
+wire [7:0] vdump;
 
-assign snd_cs = 1'b0;
+wire        rom0_half, rom1_half, rom2_half, rom3_half;
+wire [21:0] gfx0_addr, gfx1_addr, gfx2_addr, gfx3_addr;
+
+assign prog_rd = 1'b0;
+
+assign snd_cs  = 1'b0;
+
 assign slot_cs[0] = main_rom_cs;
 assign slot_cs[1] = main_ram_cs;
 assign slot_cs[2] = rom0_cs;
@@ -98,6 +109,12 @@ assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = rom2_cs;
 assign slot_cs[8] = rom3_cs;
 assign slot_cs[9] = vram_obj_cs;
+
+assign gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
+assign gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
+assign gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
+assign gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
+
 
 assign main_rom_ok = slot_ok[0];
 assign main_ram_ok = slot_ok[1];
@@ -116,6 +133,8 @@ assign slot_wr[0]   = 1'd0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
+
+assign main_ram_offset = ram_cs ? 22'h3a_8000 : 22'h3b_0000; // selects RAM or VRAM
 
 wire [31:0] data_write;
 wire        sdram_rnw;
@@ -148,7 +167,19 @@ jtframe_frac_cen #(.W(1))u_cen10(
     .cenb       ( cen10b        ) // 180 shifted
 );
 
-jtcps1_main(
+jtcps1_prom_we u_game(
+    .clk            ( clk           ),
+    .downloading    ( downloading   ),
+    .ioctl_addr     ( ioctl_addr    ),
+    .ioctl_data     ( ioctl_data    ),
+    .ioctl_wr       ( ioctl_wr      ),
+    .prog_addr      ( prog_addr     ),
+    .prog_data      ( prog_data     ),
+    .prog_mask      ( prog_mask     ),
+    .prog_we        ( prog_we       )
+);
+
+jtcps1_main u_main(
     .rst        ( rst               ),
     .clk        ( clk               ),
     .cen10      ( cen10             ),
@@ -321,19 +352,19 @@ u_sdram_mux(
     .slot1_dout     ( main_ram_data     ),
 
     // VRAM read access only
-    .slot9_offset   ( vram_offset       ),
+    .slot9_offset   ( VRAM_OFFSET       ),
     .slot9_addr     ( vram_obj_addr[18:1]  ),
     .slot9_dout     ( vram_obj_data     ),
 
-    .slot3_offset   ( vram_offset       ),
+    .slot3_offset   ( VRAM_OFFSET       ),
     .slot3_addr     ( vram1_addr[18:1]  ),
     .slot3_dout     ( vram1_data        ),
 
-    .slot4_offset   ( vram_offset       ),
+    .slot4_offset   ( VRAM_OFFSET       ),
     .slot4_addr     ( vram2_addr[18:1]  ),
     .slot4_dout     ( vram2_data        ),
 
-    .slot5_offset   ( vram_offset       ),
+    .slot5_offset   ( VRAM_OFFSET       ),
     .slot5_addr     ( vram3_addr[18:1]  ),
     .slot5_dout     ( vram3_data        ),
 

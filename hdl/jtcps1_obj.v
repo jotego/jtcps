@@ -27,9 +27,9 @@ module jtcps1_obj(
     input              VB,
 
     input              start,
-    input      [ 7:0]  vrender,  // 1 line  ahead of vdump
-    input      [ 7:0]  vrender1, // 2 lines ahead of vdump
-    input      [ 7:0]  vdump,
+    input      [ 8:0]  vrender,  // 1 line  ahead of vdump
+    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
+    input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
     // control registers
     input      [15:0]  vram_base,
@@ -94,7 +94,6 @@ jtcps1_obj_draw u_draw(
     .clk        ( clk           ),
 
     .start      ( start         ),
-    .vrender    ( vrender       ),
 
     .table_addr ( line_addr     ),
     .table_data ( line_data     ),

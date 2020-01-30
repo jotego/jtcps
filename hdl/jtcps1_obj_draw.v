@@ -22,7 +22,6 @@ module jtcps1_obj_draw(
     input              rst,
     input              clk,
 
-    input      [ 7:0]  vrender, // 1 line ahead of vdump
     input              start,
 
     output reg [ 8:0]  table_addr,

@@ -22,7 +22,7 @@ module jtcps1_obj_line_table(
     input              rst,
     input              clk,
 
-    input      [ 7:0]  vrender1, // 2 lines ahead of vdump
+    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input              start,
 
     // interface with frame table

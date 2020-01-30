@@ -27,8 +27,8 @@ module jtcps1_video(
     input              clk,
     input              pxl_cen,        // pixel clock enable
 
-    output     [ 7:0]  vdump,
-    output     [ 7:0]  vrender,
+    output     [ 8:0]  vdump,
+    output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
     output             frame,
 
@@ -118,7 +118,7 @@ module jtcps1_video(
 
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
 wire [22:0]     scr1_addr, scr2_addr, scr3_addr, obj_addr;
-wire [ 7:0]     vrender1;
+wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start;
 

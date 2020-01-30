@@ -26,8 +26,8 @@ module jtcps1_tilemap(
     input              rst,
     input              clk,
 
-    input      [ 7:0]  vrender, // 1 line ahead of vdump
-    input      [ 7:0]  vdump,
+    input      [ 8:0]  vrender, // 1 line ahead of vdump
+    input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
     // control registers
     input      [15:0]  vram_base,
@@ -149,7 +149,7 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 /* verilator lint_off WIDTH */
-                vn       <= vpos + {8'd0, vrender};
+                vn       <= vpos + {7'd0, vrender};
                 /* verilator lint_on WIDTH */
                 hn       <= { hpos[10:SCRW], {SCRW{1'b0}} };
                 buf_addr <= 9'h1ff-hpos[SCRW-1:0];

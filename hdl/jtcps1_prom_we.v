@@ -14,26 +14,32 @@
 
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
-    Date: 13-1-2020 */
-    
+    Date: 30-1-2020 */
+
 `timescale 1ns/1ps
 
-module jtcps1_obj_match #(parameter [3:0] OFFSET=0)(
-    input      [3:0] tile_m,
-    input      [8:0] vrender,
-    input      [7:0] obj_y,
-    output reg       match
+module jtcps1_prom_we(
+    input                clk,
+    input                downloading,
+    input      [22:0]    ioctl_addr,
+    input      [ 7:0]    ioctl_data,
+    input                ioctl_wr,
+    output reg [21:0]    prog_addr,
+    output reg [ 7:0]    prog_data,
+    output reg [ 1:0]    prog_mask, // active low
+    output reg           prog_we
 );
 
-reg  [8:0]  vfinal, vfinal2;
-reg         below, inzone;
-
-always @(*) begin
-    vfinal = obj_y  + {OFFSET,4'd0};
-    vfinal2= vfinal + 9'h10;
-    below  = vrender >= vfinal;
-    inzone = vrender < vfinal2;
-    match  = below && inzone && (tile_m>=OFFSET);
+always @(posedge clk) begin
+    if ( ioctl_wr && downloading ) begin
+        prog_we   <= 1'b1;
+        prog_data <= ioctl_data;
+        prog_addr <= ioctl_addr>>1;
+        prog_mask <= ioctl_addr[0] ? 2'b10 : 2'b01;            
+    end
+    else begin
+        prog_we  <= 1'b0;
+    end
 end
 
 endmodule
