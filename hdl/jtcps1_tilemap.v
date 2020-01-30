@@ -212,7 +212,7 @@ always @(posedge clk or posedge rst) begin
                     16: begin
                         rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
                     end
-                    32: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, ~hflip };
+                    32: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
                 endcase
                 rom_cs    <= 1'b1;
             end
