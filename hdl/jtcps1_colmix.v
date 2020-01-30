@@ -91,8 +91,19 @@ always @(*) begin
 end
 
 `ifdef SIMULATION
+integer f, rd_cnt;
 initial begin
-    $readmemh("pal16.hex",pal);
+    //$readmemh("pal16.hex",pal);
+    f=$fopen("pal.bin","rb");
+    if(f==0) begin
+        $display("WARNING: cannot open file pal16.hex");
+    end else begin
+        rd_cnt = $fread(pal,f);
+        $display("INFO: read %d bytes from pal.bin",rd_cnt);
+        $fclose(f);
+        $display("INFO: pal 0 = %X", pal[0]);
+        //$finish;
+    end
 end
 `endif
 
