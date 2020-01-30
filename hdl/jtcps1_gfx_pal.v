@@ -56,16 +56,30 @@ reg [ 4: 1] bank1, bank2, bank3, bank0;  // pins 12, 14, 16, 19
 
 // Ghouls'n Ghosts (dm620.2a)
 // jedutil -view dm620.2a  GAL16V8
+// bank 0 = pin 19
+// bank 1 = pin 16
+// bank 2 = pin 14
+// bank 3 = pin 16
 function [4:1] cen_gfx;
     input [22:10] a;    
+    // cen_gfx = { pin19, pin 16, pin 14, pin 12}
     cen_gfx = {1'b0,
              {a[22:20],a[16]} == 4'b0001, // /i2 & /i3 & /i4 & i8
              {a[22:20],a[16]} == 4'b0110, // /i2 & i3 & i4 & /i8
-            // /i2 & /i3 & i4 +
-            // /i2 & /i4 & /i8 +
-            // /i2 & i3 & /i4
              ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20])) };
-             // 4'b001_x | 4'b0x0_0 | 4'b010_x
+             /*
+// SCR ADDR 22 21 20 19 18 17 16 15 14 13 12 11 10
+// PAL pin  2   3  4  5  6  7  8  9 11 13 15 17 18
+    cen_gfx = {
+        {a[22:16],a[14]}==8'b0110_0110, // pin 12
+        1'b0, // pin 14
+        {a[22:16],a[14]}==8'b0110_0110 ||
+        {a[22:16],a[14]}==8'b0110_0101 ||
+        {a[22:16],a[14]}==8'b0010_0111 ||
+         a[22:17]       ==6'b0000_00, // pin 16
+        1'b0 // pin 19
+    };
+    */
 endfunction
 
 function [3:0] bank2offset;
@@ -76,6 +90,11 @@ function [3:0] bank2offset;
         4'd4: bank2offset = 4'h0;
         4'd8: bank2offset = 4'h1; // ?
         default: bank2offset = 4'hf;
+//4'd1: bank2offset = 4'h0;   // bank 0
+//4'd2: bank2offset = 4'h0;
+//4'd4: bank2offset = 4'h4;   // bank 2
+//4'd8: bank2offset = 4'h0; // ?
+//default: bank2offset = 4'h0;
     endcase
 endfunction
 

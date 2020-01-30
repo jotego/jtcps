@@ -1,0 +1,40 @@
+<misterromdescription>
+	<name>Willow</name>
+	<setname>willow</setname>
+	<year>1988</year>
+	<manufacturer>Capcom</manufacturer>
+	<rbf>jtcps1</rbf>
+	<rom index="0" zip="willow.zip" md5="8267f4f96afe50e20b20f877cb9e54f5" type="merged|nonmerged">
+        <!-- Main CPU -->     
+        <part name="wle_30.11f"/>
+        <part name="wle_35.11h"/>
+        <part name="wlu_31.12f"/>
+        <part name="wlu_36.12h"/>
+        <!-- wlm-32.8h should be byte swapped -->
+        <part name="wlm-32.8h"/>
+        <!--Audio CPU-->
+        <part name="wl_09.12b"/>
+        <!-- ADPCM samples -->
+        <part name="wl_18.11c"/>
+        <part name="wl_19.12c"/>
+        <!-- GFX -->
+        <group width="64">
+            <!-- take two bytes from each file -->
+            <part name="wlm-7.7a" pattern="01"/>
+            <part name="wlm-5.9a" pattern="01"/>
+            <part name="wlm-3.3a" pattern="01"/>
+            <part name="wlm-1.5a" pattern="01"/>
+        </group>
+        <group width="64">
+            <!-- take one byte from each file -->
+            <part name="wl_24.7d"/>
+            <part name="wl_14.7c"/>
+            <part name="wl_26.9d"/>
+            <part name="wl_16.9c"/>
+            <part name="wl_20.3d"/>
+            <part name="wl_10.3c"/>
+            <part name="wl_22.5d"/>
+            <part name="wl_12.5c"/>
+        </group>
+	</rom>
+</misterromdescription>

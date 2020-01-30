@@ -259,7 +259,7 @@ reg [7:0] sdram[0:(2**23)-1];
 integer fsdram, sdram_cnt;
 initial begin
     // load game ROM
-    fsdram=$fopen("ghouls.rom","rb");
+    fsdram=$fopen("rom","rb");
     if(fsdram==0) begin
         $display("ERROR: cannot find ghouls.rom");
         $finish;
