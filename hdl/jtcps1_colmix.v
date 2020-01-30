@@ -101,7 +101,6 @@ initial begin
         rd_cnt = $fread(pal,f);
         $display("INFO: read %d bytes from pal.bin",rd_cnt);
         $fclose(f);
-        $display("INFO: pal 0 = %X", pal[0]);
         //$finish;
     end
 end

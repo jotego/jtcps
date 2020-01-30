@@ -6,7 +6,10 @@ MMR=ghouls_start.hex
 
 if [ -N vram.bin ]; then
     dd if=vram.bin of=vram_sw.bin conv=swab
+    # Palette
     dd if=vram.bin of=pal.bin count=$((8*1024)) skip=$((256*256)) iflag=count_bytes,skip_bytes
+    # Objects
+    dd if=vram.bin of=obj.bin count=$((256*4*2)) skip=$((2*256*256)) iflag=count_bytes,skip_bytes
 fi
 
 if which ncverilog; then

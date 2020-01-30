@@ -55,12 +55,22 @@ end
 
 `ifdef SIMULATION
 // avoid X's
-integer cnt;
+integer cnt, f;
 initial begin
-    $display("OBJ table initialization OK");
+    //$display("OBJ table initialization OK");
+    f=$fopen("obj.bin","rb");
+    if( f==0 ) begin
+        $display("WARNING: cannot open obj.bin");
+    end else begin
+        cnt=$fread(table_buffer,f);
+        cnt=$fseek(f,0,0); // rewind
+        cnt=$fread(table_buffer,f,1024 );
+        $display("INFO: read %d bytes from obj.bin", cnt);
+        $fclose(f);
+    end
     //for(cnt=0;cnt<2**11;cnt=cnt+1) table_buffer[cnt]=16'd0;
-    $readmemh("vram_obj16.hex",table_buffer,0,1023);
-    $readmemh("vram_obj16.hex",table_buffer,1024,2047);
+    // $readmemh("vram_obj16.hex",table_buffer,0,1023);
+    // $readmemh("vram_obj16.hex",table_buffer,1024,2047);
 end
 `endif
 
