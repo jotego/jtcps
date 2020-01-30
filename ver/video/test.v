@@ -73,9 +73,8 @@ assign slot_wr[9:0] = 9'd0;
 wire [31:0] data_write;
 wire        sdram_rnw;
 
-localparam [21:0] gfx_offset   = 22'h10_0000;
-localparam [21:0] vram_offset  = 22'h32_0000;
-localparam [21:0] frame_offset = 22'h36_0000;
+localparam [21:0] gfx_offset   = 22'h0A_8000;
+localparam [21:0] vram_offset  = 22'h3B_0000;
 
 //wire [19:0] gfx3_addr_pre = rom3_addr[17:0] + 20'h4_0000;
 
@@ -255,11 +254,30 @@ always @(posedge clk) if(cen8 && !HB && !VB) begin
 end
 
 // SDRAM
-reg [15:0] sdram[0:(2**22)-1];
+reg [7:0] sdram[0:(2**23)-1];
 
+integer fsdram, sdram_cnt;
 initial begin
-    $readmemh( "gfx16.hex",  sdram, gfx_offset, gfx_offset+1_572_875  );
-    $readmemh( "vram16.hex", sdram, vram_offset, vram_offset+98303 );
+    // load game ROM
+    fsdram=$fopen("ghouls.rom","rb");
+    if(fsdram==0) begin
+        $display("ERROR: cannot find ghouls.rom");
+        $finish;
+    end
+    sdram_cnt=$fread(sdram,fsdram);
+    $display("INFO: Read 0x%2x x 64 kBytes for game ROM",sdram_cnt>>16);
+    $fclose(fsdram);
+    // load VRAM
+    fsdram=$fopen("vram_sw.bin","rb");
+    if(fsdram==0) begin
+        $display("ERROR: cannot find vram_sw");
+        $finish;
+    end
+    sdram_cnt=$fread(sdram,fsdram, {vram_offset,1'b0}, 192*1024 );
+    $display("INFO Read %d kB for VRAM",sdram_cnt>>10);
+    $fclose(fsdram);
+    //$display("VRAM[0]=%X", {sdram[vram_offset+1], sdram[vram_offset]});
+    //$finish;
 end
 
 localparam SDRAM_STCNT=5; // 6 Realistic, 5 Possible, less than 5 unrealistic
@@ -268,6 +286,8 @@ reg       last_st0, last_HS;
 integer  sdram_idle_cnt, total_cycles, line_idle;
 wire     HS_negedge = !HS &&  last_HS;
 wire     HS_posedge =  HS && !last_HS;
+
+wire [22:0] sdram8_addr = { sdram_addr, 1'b0 };
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -295,8 +315,15 @@ always @(posedge clk, posedge rst) begin
         end
         if( sdram_st[SDRAM_STCNT-1] ) begin
             data_rdy <= 1'b1;
-            data_read  <= { sdram[sdram_addr+1], sdram[sdram_addr] };
-            if( !sdram_rnw ) sdram[sdram_addr] <= data_write[15:0];
+            data_read  <= { 
+                sdram[ sdram8_addr+23'h3 ], 
+                sdram[ sdram8_addr+23'h2 ],
+                sdram[ sdram8_addr+23'h1 ],
+                sdram[ sdram8_addr+23'h0 ] };
+            if( !sdram_rnw ) begin
+                sdram[{sdram_addr,1'b1}] <= data_write[15:8];
+                sdram[{sdram_addr,1'b0}] <= data_write[ 7:0];
+            end
         end
     end
 end

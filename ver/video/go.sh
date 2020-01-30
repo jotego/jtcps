@@ -4,6 +4,10 @@ MACROPREFIX=-D
 EXTRA=
 MMR=ghouls_start.hex
 
+if [ -N vram.bin ]; then
+    dd if=vram.bin of=vram_sw.bin conv=swab
+fi
+
 if which ncverilog; then
     MACROPREFIX=+define+
 fi
@@ -25,8 +29,9 @@ else
     sim -lxt
 fi
 
-rm video*.png
-convert -size 384x240 -depth 8 RGBA:video.raw -resize 200% video.png
+rm -f video*.png
+dd if=video.raw of=x.raw count=$((384*240*4)) iflag=count_bytes
+convert -size 384x240 -depth 8 RGBA:x.raw -resize 200% video.png
 #convert -size 384x240 -depth 8 RGBA:video.raw -resize 800x600 video.png
 #convert -size 384x240 -depth 8 RGBA:video.raw video.png
 # right aspect ratio:

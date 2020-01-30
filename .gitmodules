@@ -4,3 +4,6 @@
 [submodule "modules/jt51"]
 	path = modules/jt51
 	url = https://github.com/jotego/jt51
+[submodule "modules/jt6295"]
+	path = modules/jt6295
+	url = git@github.com:jotego/jt6295.git
