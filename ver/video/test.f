@@ -6,6 +6,7 @@
 ../../hdl/jtcps1_colmix.v
 ../../hdl/jtcps1_gfx_pal.v
 ../../hdl/jtcps1_obj.v
+../../hdl/jtcps1_mmr.v
 ../../hdl/jtcps1_obj_table.v
 ../../hdl/jtcps1_obj_line_table.v
 ../../hdl/jtcps1_obj_match.v

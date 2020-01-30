@@ -119,7 +119,7 @@ module jtcps1_video(
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
 wire [22:0]     scr1_addr, scr2_addr, scr3_addr, obj_addr;
 wire [ 7:0]     vrender1;
-
+wire [15:0]     ppu_ctrl;
 wire            line_start;
 
 // Register configuration
@@ -167,18 +167,18 @@ assign rom3_addr = { rom3_bank[3:0], scr3_addr[18:0] };
 assign rom0_addr = { rom0_bank[3:0], obj_addr[18:0]  };
 
 jtcps1_mmr u_mmr(
-    .rst        ( rst               ),
-    .clk        ( clk               ),
-    .ppu_rstn   ( ppu_rstn          ),  // controlled by CPU
+    .rst            ( rst               ),
+    .clk            ( clk               ),
+    .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
 
-    .ppu1_cs    ( ppu1_cs           ),
-    .ppu2_cs    ( ppu2_cs           ),
-    .addr       ( addr              ),
-    .dsn        ( dsn               ),      // data select, active low
-    .cpu_dout   ( cpu_dout          ),
-    .mmr_dout   ( mmr_dout          ),
+    .ppu1_cs        ( ppu1_cs           ),
+    .ppu2_cs        ( ppu2_cs           ),
+    .addr           ( addr              ),
+    .dsn            ( dsn               ),      // data select, active low
+    .cpu_dout       ( cpu_dout          ),
+    .mmr_dout       ( mmr_dout          ),
     // registers
-    output reg [15:0]  ppu_ctrl,
+    .ppu_ctrl       ( ppu_ctrl          ),
     // Scroll
     .hpos1          ( hpos1             ),
     .hpos2          ( hpos2             ),

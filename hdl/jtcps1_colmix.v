@@ -31,8 +31,8 @@ module jtcps1_colmix(
 
     input              VB,
     input              HB,
-    output             LVBL_dly,
-    output             LHBL_dly,
+    output  reg        LVBL_dly,
+    output  reg        LHBL_dly,
 
     input   [8:0]      scr1_pxl,
     input   [8:0]      scr2_pxl,

@@ -8,7 +8,7 @@ reg                rst, clk, cen8;
 wire       [ 7:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
-wire               HS, VS, HB, VB, frame;
+wire               HS, VS, HB, VB, frame, LHBL_dly, LVBL_dly;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
@@ -35,31 +35,6 @@ reg                data_rdy;
 
 reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
                    vobj_base, vram1_base, vram2_base, vram3_base, pal_base;
-
-always @(negedge VB) begin
-    // hpos2<=hpos2+1;
-    vpos3<=vpos3+1;
-end
-
-`ifndef MMR_FILE
-//`define MMR_FILE "ghouls_tree.hex"
-`define MMR_FILE "ghouls_start.hex"
-`endif
-reg [15:0] mmr_regs[0:10];
-initial begin
-    $readmemh(`MMR_FILE,mmr_regs);
-    vobj_base  = mmr_regs[0];
-    vram1_base = mmr_regs[1];
-    vram2_base = mmr_regs[2];
-    vram3_base = mmr_regs[3];
-    pal_base   = mmr_regs[4];
-    hpos1      = mmr_regs[5];
-    vpos1      = mmr_regs[6];
-    hpos2      = mmr_regs[7];
-    vpos2      = mmr_regs[8];
-    hpos3      = mmr_regs[9];
-    vpos3      = mmr_regs[10];
-end
 
 //always @(posedge start) begin
 //    if(!line_done) $display("WARNING: tilemap line did not complete at time %t", $time);
@@ -112,36 +87,31 @@ wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
 wire [21:0] gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
 
 jtcps1_video UUT (
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .pxl_cen    ( cen8          ),
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .pxl_cen        ( cen8          ),
 
-    .hdump      ( hdump         ),
-    .vdump      ( vdump         ),
-    .vrender    ( vrender       ),
-    .frame      ( frame         ),
+    .hdump          ( hdump         ),
+    .vdump          ( vdump         ),
+    .vrender        ( vrender       ),
+    .frame          ( frame         ),
 
     // Video signal
-    .HS         ( HS            ),
-    .VS         ( VS            ),
-    .HB         ( HB            ),
-    .VB         ( VB            ),
-    .red        ( red           ),
-    .green      ( green         ),
-    .blue       ( blue          ),
+    .HS             ( HS            ),
+    .VS             ( VS            ),
+    .HB             ( HB            ),
+    .VB             ( VB            ),
+    .LHBL_dly       ( LHBL_dly      ),
+    .LVBL_dly       ( LVBL_dly      ),
+    .red            ( red           ),
+    .green          ( green         ),
+    .blue           ( blue          ),
 
-    // Register configuration
-    .hpos1          ( hpos1         ),
-    .vpos1          ( vpos1         ),
-    .hpos2          ( hpos2         ),
-    .vpos2          ( vpos2         ),
-    .hpos3          ( hpos3         ),
-    .vpos3          ( vpos3         ),
-    .vram1_base     ( vram1_base    ),
-    .vram2_base     ( vram2_base    ),
-    .vram3_base     ( vram3_base    ),
-    .vram_obj_base  ( vobj_base     ),
-    .pal_base       ( pal_base      ),
+    // CPU interface
+    .ppu_rstn       ( 1'b1          ),
+    .ppu1_cs        ( 1'b0          ),
+    .ppu2_cs        ( 1'b0          ),
+
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),
     .vram1_data     ( vram1_data    ),

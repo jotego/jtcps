@@ -72,7 +72,7 @@ module jtcps1_mmr(
     output reg [15:0]  prio1,
     output reg [15:0]  prio2,
     output reg [15:0]  prio3,
-    output reg [ 5:0]  pal_page_en, // which palette pages to copy
+    output reg [ 5:0]  pal_page_en // which palette pages to copy
 );
 
 assign mmr_dout = 16'd0;
@@ -84,7 +84,37 @@ function [15:0] data_sel;
     data_sel = { dsn[1] ? olddata[15:8] : newdata[15:8], dsn[0] ? olddata[7:0] : newdata[7:0] };
 endfunction
 
-wire reg_rst = rst | ~ppu_rstn;
+wire reg_rst;
+
+// For quick simulation of the video alone
+// it is possible to load the regs from a file
+// defined by the macro MMR_FILE
+
+`ifndef SIMULATION
+`undef MMR_FILE
+`endif
+
+`ifdef MMR_FILE
+reg [15:0] mmr_regs[0:10];
+initial begin
+    $display("INFO: MMR initial values read from %s", `MMR_FILE );
+    $readmemh(`MMR_FILE,mmr_regs);
+    vram_obj_base  = mmr_regs[0];
+    vram1_base     = mmr_regs[1];
+    vram2_base     = mmr_regs[2];
+    vram3_base     = mmr_regs[3];
+    pal_base       = mmr_regs[4];
+    hpos1          = mmr_regs[5];
+    vpos1          = mmr_regs[6];
+    hpos2          = mmr_regs[7];
+    vpos2          = mmr_regs[8];
+    hpos3          = mmr_regs[9];
+    vpos3          = mmr_regs[10];
+end
+assign reg_rst = 1'b0;
+`else 
+assign reg_rst = rst | ~ppu_rstn;
+`endif
 
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
