@@ -11,7 +11,9 @@
         <part name="wlu_31.12f"/>
         <part name="wlu_36.12h"/>
         <!-- wlm-32.8h should be byte swapped -->
-        <part name="wlm-32.8h"/>
+        <group with="16">
+            <part name="wlm-32.8h" pattern="10"/>
+        </group>
         <!--Audio CPU-->
         <part name="wl_09.12b"/>
         <!-- ADPCM samples -->

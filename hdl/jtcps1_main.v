@@ -46,7 +46,7 @@ module jtcps1_main(
     output             busack,
     output             RnW,
     // For RAM/ROM:
-    output      [23:1] addr,
+    output      [17:1] addr,
     // RAM access
     output  reg        ram_cs,
     output  reg        vram_cs,
@@ -77,7 +77,7 @@ reg         dbus_cs, io_cs, joy_cs,
             sys_cs, olatch_cs, snd1_cs, snd0_cs;
 
 assign cpu_cen   = cen10;
-assign addr      = A[23:1];
+assign addr      = A[17:1];
 
 // high during DMA transfer
 wire UDSn, LDSn;

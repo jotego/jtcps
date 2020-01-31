@@ -71,26 +71,35 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
-localparam [21:0] VRAM_OFFSET=22'h3b_0000;
+localparam [21:0] GFX_OFFSET  = 22'h0A_8000;
+localparam [21:0] RAM_OFFSET  = 22'h3A_8000;
+localparam [21:0] VRAM_OFFSET = 22'h3B_0000;
 
-wire        snd_cs, main_ram_cs, main_rom_cs,
+wire        snd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs, rom2_cs, rom3_cs,
             vram1_cs, vram2_cs, vram3_cs, vram_obj_cs;
 wire        HB, VB;
-wire [15:1] ram_addr;
+wire [17:1] ram_addr;
 wire [23:1] main_addr; // common to RAM/ROM
-wire [22:0] main_ram_offset;
+wire [21:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu_rstn;
+wire [22:0] rom1_addr, rom2_addr, rom3_addr, rom0_addr;
+wire [31:0] rom0_data, rom1_data, rom2_data, rom3_data;
+// Video RAM interface
+wire [23:1] vram1_addr, vram2_addr, vram3_addr,  vram_obj_addr;
+wire [15:0] vram1_data, vram2_data, vram3_data,  vram_obj_data;
+wire        vram1_ok,   vram2_ok,   vram3_ok,    vram_obj_ok;
+wire [15:0] cpu_dout;
 
 wire        main_rnw, busreq, busack;
 wire [ 7:0] snd0_latch, snd1_latch;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire [9:0] slot_cs, slot_ok, slot_wr;
-wire [8:0] hdump;
-wire [7:0] vdump;
+wire [ 9:0] slot_cs, slot_ok, slot_wr;
+wire [ 8:0] hdump;
+wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half, rom2_half, rom3_half;
 wire [21:0] gfx0_addr, gfx1_addr, gfx2_addr, gfx3_addr;
@@ -100,7 +109,7 @@ assign prog_rd = 1'b0;
 assign snd_cs  = 1'b0;
 
 assign slot_cs[0] = main_rom_cs;
-assign slot_cs[1] = main_ram_cs;
+assign slot_cs[1] = main_ram_cs | main_vram_cs;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
 assign slot_cs[4] = vram2_cs;
@@ -134,7 +143,7 @@ assign slot_wr[0]   = 1'd0;
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
 
-assign main_ram_offset = ram_cs ? 22'h3a_8000 : 22'h3b_0000; // selects RAM or VRAM
+assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
 wire [31:0] data_write;
 wire        sdram_rnw;
@@ -209,7 +218,8 @@ jtcps1_main u_main(
     .RnW         ( main_rnw         ),
     // RAM/VRAM access
     .ram_cs      ( main_ram_cs      ),
-    .ram_addr    ( ram_addr         ),
+    .vram_cs     ( main_vram_cs     ),
+    .addr        ( ram_addr         ),
     .ram_data    ( main_ram_data    ),
     .ram_ok      ( main_ram_ok      ),
     // ROM access
@@ -317,10 +327,10 @@ jtframe_sdram_mux #(
 
     .SLOT1_TYPE ( 2     ), // R/W access
     // VRAM read access:
-    .SLOT3_AW   ( 18    ),
-    .SLOT4_AW   ( 18    ),  //4
-    .SLOT5_AW   ( 18    ),  //5
-    .SLOT9_AW   ( 18    ),  // OBJ VRAM
+    .SLOT3_AW   ( 17    ),
+    .SLOT4_AW   ( 17    ),  //4
+    .SLOT5_AW   ( 17    ),  //5
+    .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
     .SLOT4_DW   ( 16    ),
@@ -343,12 +353,12 @@ u_sdram_mux(
     .vblank         ( 1'b0          ),
 
     // Main CPU
-    .slot0_offset   ( main_rom_offset   ),
+    .slot0_offset   ( 22'd0             ),
     .slot0_addr     ( main_addr         ),
     .slot0_dout     ( main_rom_data     ),
 
     .slot1_offset   ( main_ram_offset   ),
-    .slot1_addr     ( main_addr         ),
+    .slot1_addr     ( ram_addr          ),
     .slot1_dout     ( main_ram_data     ),
 
     // VRAM read access only
@@ -369,19 +379,19 @@ u_sdram_mux(
     .slot5_dout     ( vram3_data        ),
 
     // GFX ROM
-    .slot2_offset   ( gfx_offset        ),
+    .slot2_offset   ( GFX_OFFSET        ),
     .slot2_addr     ( gfx0_addr         ),
     .slot2_dout     ( rom0_data         ),
 
-    .slot6_offset   ( gfx_offset        ),
+    .slot6_offset   ( GFX_OFFSET        ),
     .slot6_addr     ( gfx1_addr         ),
     .slot6_dout     ( rom1_data         ),
 
-    .slot7_offset   ( gfx_offset        ),
+    .slot7_offset   ( GFX_OFFSET        ),
     .slot7_addr     ( gfx2_addr         ),
     .slot7_dout     ( rom2_data         ),
 
-    .slot8_offset   ( gfx_offset        ),
+    .slot8_offset   ( GFX_OFFSET        ),
     .slot8_addr     ( gfx3_addr         ),
     .slot8_dout     ( rom3_data         ),
 
