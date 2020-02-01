@@ -24,7 +24,7 @@ module jtcps1_main(
     input              cen10b,
     output             cpu_cen,
     // Timing
-    //input   [8:0]      V,
+    input   [8:0]      V,
     input              LVBL,
     // PPU
     output reg         ppu1_cs,
@@ -47,6 +47,7 @@ module jtcps1_main(
     output             RnW,
     // For RAM/ROM:
     output      [17:1] addr,
+    output      [15:0] cpu_dout,
     // RAM access
     output  reg        ram_cs,
     output  reg        vram_cs,
@@ -54,6 +55,7 @@ module jtcps1_main(
     input              ram_ok,
     // ROM access
     output  reg        rom_cs,
+    output      [19:1] rom_addr,
     input       [15:0] rom_data,
     input              rom_ok,
     // DIP switches
@@ -64,25 +66,41 @@ module jtcps1_main(
     input    [7:0]     dipsw_c
 );
 
-wire [19:1] A;
-wire [ 3:0] ncA;
+wire [23:1] A;
+wire        BERRn = 1'b1;
 
 `ifdef SIMULATION
-wire [24:0] A_full = {ncA, A,1'b0};
+wire [24:0] A_full = {A,1'b0};
 `endif
 
 wire        BRn, BGACKn, BGn;
 wire        ASn;
 reg         dbus_cs, io_cs, joy_cs, 
             sys_cs, olatch_cs, snd1_cs, snd0_cs;
+reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
+reg         dsn_dly;
+reg         one_wait;
 
 assign cpu_cen   = cen10;
 assign addr      = A[17:1];
+assign rom_addr  = A[19:1];
 
 // high during DMA transfer
 wire UDSn, LDSn;
 assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
+
+// ram_cs and vram_cs signals go down before DSWn signals
+// that causes a false read request to the SDRAM. In order
+// to avoid that a little bit of logic is needed:
+assign ram_cs  = dsn_dly ? reg_ram_cs  : pre_ram_cs;
+assign vram_cs = dsn_dly ? reg_vram_cs : pre_vram_cs;
+
+always @(posedge clk) if(cen10) begin
+    reg_ram_cs  <= pre_ram_cs;
+    reg_vram_cs <= pre_vram_cs;
+    dsn_dly     <= &{UDSWn,LDSWn}; // low if any DSWn was low
+end
 
 // PAL BUF1 16H
 // buf0 = A[23:16]==1001_0000 = 8'h90
@@ -91,8 +109,8 @@ assign LDSWn = RnW | LDSn;
 
 always @(*) begin
     rom_cs     = 1'b0;
-    ram_cs     = 1'b0;
-    vram_cs    = 1'b0;
+    pre_ram_cs = 1'b0;
+    pre_vram_cs= 1'b0;
     dbus_cs    = 1'b0;
     io_cs      = 1'b0;
     joy_cs     = 1'b0;
@@ -102,21 +120,22 @@ always @(*) begin
     snd0_cs    = 1'b0;
     ppu1_cs    = 1'b0;
 
-    if( !ASn && !BGACKn ) begin // PAL PRG1 12H
-        one_wait = A[23] | !A[22];
-        dbus_cs  = ~|A[23:18]; // all must be zero
-        ram_cs   = &A[23:18];
-        io_cs    = A[23:20] == 4'b1000;
-        vram_cs  = A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
+    if( !ASn && BGACKn ) begin // PAL PRG1 12H
+        one_wait    = A[23] | !A[22];
+        dbus_cs     = ~|A[23:18]; // all must be zero
+        pre_ram_cs  = &A[23:18];
+        pre_vram_cs = A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
+        io_cs       = A[23:20] == 4'b1000;
+        rom_cs      = A[23:22] == 2'b00;
         if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
             if( !RnW ) begin
-                joy_cs = ~|AB[8:3];
-                sys_cs = AB[8:3] == 6'b00_0011;
+                joy_cs = ~|A[8:3];
+                sys_cs = A[8:3] == 6'b00_0011;
             end else begin // outputs
-                olatch_cs = !UDSWn && AB[8:3]==6'b00_0110;
-                snd1_cs   = !LDSWn && AB[8:3]==6'b11_0001;
-                snd0_cs   = !LDSWn && AB[8:3]==6'b11_0000;
-                ppu1_cs   = AB[8:6] == 3'b100;
+                olatch_cs = !UDSWn && A[8:3]==6'b00_0110;
+                snd1_cs   = !LDSWn && A[8:3]==6'b11_0001;
+                snd0_cs   = !LDSWn && A[8:3]==6'b11_0000;
+                ppu1_cs   = A[8:6] == 3'b100;
             end
         end
     end    
@@ -146,7 +165,7 @@ reg [15:0] sys_data;
 always @(posedge clk) if(cpu_cen) begin
     if( joy_cs ) sys_data <= { joystick2, joystick1 };
     else if(sys_cs) begin
-        case( AB[2:1] )
+        case( A[2:1] )
             2'b00: sys_data <= { tilt, dip_test, start_button,
                 1'b1, service, coin_input, 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
@@ -236,7 +255,7 @@ fx68k u_cpu(
     .enPhi2     ( cen10b      ),
 
     // Buses
-    .eab        ( { ncA, A }  ),
+    .eab        ( A           ),
     .iEdb       ( cpu_din     ),
     .oEdb       ( cpu_dout    ),
 

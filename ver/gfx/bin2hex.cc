@@ -5,12 +5,15 @@ using namespace std;
 
 int main() {
     while( true ) {
-        unsigned char b[2];
-        cin.read((char*)&b[1],1);
-        cin.read((char*)&b[0],1);
+        unsigned char b[1024];
+        cin.read( (char*) b,1024);
+        for( int k=0; k<1024; k+=2 ) {
+            unsigned c = b[k];
+            unsigned d = b[k+1];
+            c = (c<<8)|d;
+            cout << hex << c <<'\n';
+        }
         if(cin.eof()) break;
-        unsigned v = b[0] | (b[1]<<8);
-        cout << hex << v << '\n';
     }
     return 0;
 }

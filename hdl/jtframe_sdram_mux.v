@@ -106,7 +106,8 @@ module jtframe_sdram_mux #(parameter
     output  reg [21:0]  sdram_addr,
     input               data_rdy,
     input       [31:0]  data_read,
-    output  reg [31:0]  data_write
+    output  reg [15:0]  data_write,  // only 16-bit writes
+    output  reg [ 1:0]  sdram_wrmask // each bit is active low
 );
 
 reg  [ 3:0] ready_cnt;
@@ -335,6 +336,7 @@ end else begin
         sdram_req <= |active;
         wait_cycle<= |active;
         data_sel  <= 10'd0;
+        sdram_wrmask <= 2'b11;
         case( 1'b1 )
             active[0]: begin
                 sdram_addr <= slot0_addr_req;
@@ -351,8 +353,9 @@ end else begin
                 if( SLOT1_TYPE == 0)
                     sdram_rnw <= 1'b1;
                 else begin
-                    data_write <= slot1_din;
-                    sdram_rnw  <= req_rnw[1];
+                    data_write   <= slot1_din;
+                    sdram_rnw    <= req_rnw[1];
+                    sdram_wrmask <= slot1_wrmask;
                 end
                 data_sel[1] <= 1'b1;
             end

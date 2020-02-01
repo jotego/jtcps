@@ -43,11 +43,14 @@ module jtcps1_game(
     output          sdram_req,
     output  [21:0]  sdram_addr,
     input   [31:0]  data_read,
+    output  [ 1:0]  sdram_wrmask,
+    output          sdram_rnw,
+    output  [15:0]  data_write,
     input           data_rdy,
     input           sdram_ack,
     output          refresh_en,
     // ROM LOAD
-    input   [21:0]  ioctl_addr,
+    input   [22:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
     output  [21:0]  prog_addr,
@@ -80,13 +83,14 @@ wire        snd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             vram1_cs, vram2_cs, vram3_cs, vram_obj_cs;
 wire        HB, VB;
 wire [17:1] ram_addr;
-wire [23:1] main_addr; // common to RAM/ROM
+wire [19:1] main_rom_addr;
 wire [21:0] main_ram_offset;
-wire [15:0] main_ram_data, main_rom_data;
+wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu_rstn;
 wire [22:0] rom1_addr, rom2_addr, rom3_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data, rom2_data, rom3_data;
+wire [ 3:0] rom0_bank, rom1_bank, rom2_bank, rom3_bank;
 // Video RAM interface
 wire [23:1] vram1_addr, vram2_addr, vram3_addr,  vram_obj_addr;
 wire [15:0] vram1_data, vram2_data, vram3_data,  vram_obj_data;
@@ -104,7 +108,8 @@ wire [ 8:0] vdump, vrender;
 wire        rom0_half, rom1_half, rom2_half, rom3_half;
 wire [21:0] gfx0_addr, gfx1_addr, gfx2_addr, gfx3_addr;
 
-assign prog_rd = 1'b0;
+assign prog_rd    = 1'b0;
+assign dwnld_busy = 1'b0;
 
 assign snd_cs  = 1'b0;
 
@@ -137,7 +142,7 @@ assign rom3_ok     = slot_ok[8];
 assign vram_obj_ok = slot_ok[9];
 
 assign slot_wr[9:2] = 7'd0;
-assign slot_wr[1]   = main_rnw;
+assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
 assign LVBL         = ~VB;
@@ -145,8 +150,6 @@ assign LHBL         = ~HB;
 
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
-wire [31:0] data_write;
-wire        sdram_rnw;
 wire [ 1:0] dsn;
 wire        cen8, cen10, cen10b;
 
@@ -168,12 +171,14 @@ jtframe_cen48 u_cen48(
     .cen1p5b    (               )
 );
 
-jtframe_frac_cen #(.W(1))u_cen10(
+wire nc0, nc1;
+
+jtframe_frac_cen #(.W(2))u_cen10(
     .clk        ( clk           ),
     .n          ( 10'd5         ),
     .m          ( 10'd24        ),
-    .cen        ( cen10         ),
-    .cenb       ( cen10b        ) // 180 shifted
+    .cen        ( {nc0, cen10  }),
+    .cenb       ( {nc1, cen10b }) // 180 shifted
 );
 
 jtcps1_prom_we u_game(
@@ -194,7 +199,7 @@ jtcps1_main u_main(
     .cen10      ( cen10             ),
     .cen10b     ( cen10b            ),
     // Timing
-    // input   [8:0]      V,
+    .V          ( vdump             ),
     .LVBL       ( LVBL              ),
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
@@ -217,14 +222,15 @@ jtcps1_main u_main(
     .busack      ( busack           ),
     .RnW         ( main_rnw         ),
     // RAM/VRAM access
+    .addr        ( ram_addr         ),
+    .cpu_dout    ( main_dout        ),
     .ram_cs      ( main_ram_cs      ),
     .vram_cs     ( main_vram_cs     ),
-    .addr        ( ram_addr         ),
     .ram_data    ( main_ram_data    ),
     .ram_ok      ( main_ram_ok      ),
     // ROM access
     .rom_cs      ( main_rom_cs      ),
-    .rom_addr    ( main_addr        ),
+    .rom_addr    ( main_rom_addr    ),
     .rom_data    ( main_rom_data    ),
     .rom_ok      ( main_rom_ok      ),
     // DIP switches
@@ -250,7 +256,7 @@ jtcps1_video u_video(
     .ppu_rstn       ( ppu_rstn      ),
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( ppu2_cs       ),
-    .addr           ( addr          ),
+    .addr           ( ram_addr[5:1] ),
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( cpu_dout      ),
     .mmr_dout       ( mmr_dout      ),
@@ -327,10 +333,10 @@ jtframe_sdram_mux #(
 
     .SLOT1_TYPE ( 2     ), // R/W access
     // VRAM read access:
-    .SLOT3_AW   ( 17    ),
-    .SLOT4_AW   ( 17    ),  //4
-    .SLOT5_AW   ( 17    ),  //5
-    .SLOT9_AW   ( 17    ),  // OBJ VRAM
+    .SLOT3_AW   ( 18    ),
+    .SLOT4_AW   ( 18    ),  //4
+    .SLOT5_AW   ( 18    ),  //5
+    .SLOT9_AW   ( 18    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
     .SLOT4_DW   ( 16    ),
@@ -354,12 +360,14 @@ u_sdram_mux(
 
     // Main CPU
     .slot0_offset   ( 22'd0             ),
-    .slot0_addr     ( main_addr         ),
+    .slot0_addr     ( main_rom_addr     ),
     .slot0_dout     ( main_rom_data     ),
 
     .slot1_offset   ( main_ram_offset   ),
     .slot1_addr     ( ram_addr          ),
     .slot1_dout     ( main_ram_data     ),
+    .slot1_din      ( main_dout         ),
+    .slot1_wrmask   ( dsn               ),
 
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
@@ -408,6 +416,7 @@ u_sdram_mux(
     .refresh_en     ( refresh_en    ),
     .sdram_addr     ( sdram_addr    ),
     .sdram_rnw      ( sdram_rnw     ),
+    .sdram_wrmask   ( sdram_wrmask  ),
     .data_rdy       ( data_rdy      ),
     .data_read      ( data_read     ),   
     .data_write     ( data_write    )

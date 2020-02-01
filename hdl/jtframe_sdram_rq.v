@@ -38,7 +38,7 @@ module jtframe_sdram_rq #(parameter AW=18, DW=8, TYPE=0 )(
     output reg          req_rnw,
     output reg          data_ok,    // strobe that signals that data is ready
     output     [21:0]   sdram_addr,
-    input [DW-1:0]      wrdata ,
+    input [DW-1:0]      wrdata,
     output reg [DW-1:0] dout
 );
 
@@ -46,15 +46,16 @@ reg [AW-1:0] addr_req;
 wire  [21:0] size_ext   = { {22-AW{1'b0}}, addr_req };
 assign sdram_addr = (DW==8?(size_ext>>1):size_ext ) + offset;
 
-reg [AW-1:0] cached_addr0;
-reg [AW-1:0] cached_addr1;
-reg [31:0]   cached_data0;
-reg [31:0]   cached_data1;
-reg deleterus;
-reg [1:0]    subaddr;
-reg init;
-reg hit0, hit1;
+reg  [AW-1:0] cached_addr0;
+reg  [AW-1:0] cached_addr1;
+reg  [31:0]   cached_data0;
+reg  [31:0]   cached_data1;
+reg           deleterus;
+reg  [1:0]    subaddr;
+wire          init;
+reg  [1:0]    hit, valid;
 
+assign init = valid==2'b00;
 wire data_match = dout === wrdata || init;
 
 always @(*) begin
@@ -64,16 +65,16 @@ always @(*) begin
         32: addr_req = addr;
     endcase
     if( TYPE==1 ) begin
-        hit0 = (addr_req === cached_addr0) && data_match;
-        hit1 = (addr_req === cached_addr1) && data_match;    
+        hit[0] = (addr_req === cached_addr0) && data_match && valid[0];
+        hit[1] = (addr_req === cached_addr1) && data_match && valid[1];    
     end else begin
-        hit0 = addr_req === cached_addr0;
-        hit1 = addr_req === cached_addr1;    
+        hit[0] = addr_req === cached_addr0 && valid[0];
+        hit[1] = addr_req === cached_addr1 && valid[1];    
     end
     case(TYPE)
         0: begin // read only
             req_rnw = 1'b1;
-            req = init || ( !(hit0 || hit1) && addr_ok && !we);
+            req = init || ( !(hit[0] || hit[1]) && addr_ok && !we);
         end
         1: begin // write only
             req_rnw = 1'b0;
@@ -81,7 +82,10 @@ always @(*) begin
         end
         2: begin // R/W
             req_rnw = ~wrin; // writes thru. Cache only used for reads
-            req     = wrin || init || ( !(hit0 || hit1) && addr_ok && !we);
+            req     = init || ( // request at initialization
+                    addr_ok &&  // request only if address is valid
+                        ( wrin ||  // for write requests
+                        ( !(hit[0] || hit[1])  && !we))); // and non cached data
         end
     endcase
 end
@@ -90,29 +94,45 @@ wire [31:0] cache_din = TYPE==0 ? din : wrdata;
 
 always @(posedge clk, posedge rst)
     if( rst ) begin
-        init      <= 1'b1;
         deleterus <= 1'b0;  // signals which cached data is to be overwritten next time
         cached_data0 <= 32'd0;
         cached_data1 <= 32'd0;
+        valid        <= 2'b0;
     end else begin
-        data_ok <= !init && addr_ok && ( hit0 || hit1 || (din_ok&&we));
+        data_ok <= !init && addr_ok && ( hit[0] || hit[1] || (din_ok&&we));
         if( we && din_ok ) begin
             if( init ) begin
                 cached_data0 <= cache_din;
                 cached_addr0 <= addr_req;
                 cached_data1 <= cache_din;
                 cached_addr1 <= addr_req;
-            end else begin
-                if( deleterus ) begin
-                    cached_data1 <= cache_din;
-                    cached_addr1 <= addr_req;
-                end else begin
-                    cached_data0 <= cache_din;
-                    cached_addr0 <= addr_req;
+                valid        <= 2'b11;
+            end else begin // update cache
+                if( TYPE==0 || !wrin ) begin
+                    // only for read operations
+                    if( deleterus ) begin
+                        cached_data1 <= cache_din;
+                        cached_addr1 <= addr_req;
+                        valid[1]     <= 1'b1;
+                    end else begin
+                        cached_data0 <= cache_din;
+                        cached_addr0 <= addr_req;
+                        valid[0]     <= 1'b1;
+                    end
+                    deleterus <= ~deleterus;
                 end
-                deleterus <= ~deleterus;
+                if( wrin ) begin
+                    // only for write operations
+                    if(cached_addr0==addr_req) begin
+                        valid[0]  <= 1'b0;
+                        deleterus <= 1'b0;
+                    end
+                    if(cached_addr1==addr_req) begin
+                        valid[1]  <= 1'b0;
+                        deleterus <= 1'b1;
+                    end
+                end
             end
-            init <= 1'b0;
         end
     end
 
@@ -126,11 +146,11 @@ end
 // this saves one clock cycle at the expense of more LUTs
 wire [31:0] data_mux;
 
-if (TYPE==0) begin
+if (TYPE==0) begin // read only
     assign data_mux = (we&&din_ok) ? din :
-        (hit0 ? cached_data0 : cached_data1);
+        (hit[0] ? cached_data0 : cached_data1);
 end else begin
-    assign data_mux = hit0 ? cached_data0 : cached_data1;
+    assign data_mux = hit[0] ? cached_data0 : cached_data1;
 end
 
 generate
