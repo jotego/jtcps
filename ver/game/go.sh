@@ -1,15 +1,10 @@
 #!/bin/bash
-
-if [[ -N rom.bin || ! -e rom.hex ]]; then
-    if [ ! -e ../gfx/bin2hex ]; then
-        cd ../gfx
-        g++ bin2hex.cc -o bin2hex
-        cd -
-    fi
-    ../gfx/bin2hex < rom.bin > rom.hex
+if [[ -N rom.bin || ! -s sdram.hex ]]; then
+    #bin2hex is a JTFRAME file
+    bin2hex < rom.bin > sdram.hex
 fi
 
-export GAME_ROM_PATH=rom.hex
+export GAME_ROM_PATH=rom.bin
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
 export BIN2PNG_OPTIONS="--scale"

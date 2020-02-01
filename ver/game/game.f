@@ -14,8 +14,8 @@
 ../../hdl/jtcps1_main.v
 ../../hdl/jtcps1_game.v
 # SDRAM
-../../hdl/jtframe_sdram_mux.v
-../../hdl/jtframe_sdram_rq.v
+../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
+../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
 # Z80
 # ../../modules/jtframe/hdl/cpu/jtframe_z80.v
 # ../../modules/jtframe/hdl/jtframe_z80wait.v

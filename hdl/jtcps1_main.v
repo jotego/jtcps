@@ -49,8 +49,8 @@ module jtcps1_main(
     output      [17:1] addr,
     output      [15:0] cpu_dout,
     // RAM access
-    output  reg        ram_cs,
-    output  reg        vram_cs,
+    output             ram_cs,
+    output             vram_cs,
     input       [15:0] ram_data,
     input              ram_ok,
     // ROM access

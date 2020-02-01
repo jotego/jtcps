@@ -73,7 +73,7 @@ end
 
 generate
     genvar mgen;
-    for( mgen=0; mgen<16;mgen=mgen+1) begin
+    for( mgen=0; mgen<16;mgen=mgen+1) begin : obj_matches
         jtcps1_obj_match #(mgen) u_match(
             .tile_m ( tile_m        ),
             .vrender( vrender1      ),

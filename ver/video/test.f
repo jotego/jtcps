@@ -1,5 +1,5 @@
-../../hdl/jtframe_sdram_mux.v
-../../hdl/jtframe_sdram_rq.v
+../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
+../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
 ../../hdl/jtcps1_video.v
 ../../hdl/jtcps1_timing.v
 ../../hdl/jtcps1_tilemap.v

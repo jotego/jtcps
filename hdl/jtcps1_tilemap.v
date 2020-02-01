@@ -78,20 +78,22 @@ reg         buf_wr;
 
 reg         done;
 
-case(SIZE)
-    8:  begin
-        assign scan = { vn[8],   hn[8:3], vn[7:3] };
-        assign rom_id = 3'b001;
-    end
-    16: begin
-        assign scan = { vn[9:8], hn[9:4], vn[7:4] };
-        assign rom_id = 3'b010;
-    end
-    32: begin
-        assign scan = { vn[10:8], hn[10:5], vn[7:5] };
-        assign rom_id = 3'b011;
-    end
-endcase
+generate
+    case(SIZE)
+        8:  begin
+            assign scan = { vn[8],   hn[8:3], vn[7:3] };
+            assign rom_id = 3'b001;
+        end
+        16: begin
+            assign scan = { vn[9:8], hn[9:4], vn[7:4] };
+            assign rom_id = 3'b010;
+        end
+        32: begin
+            assign scan = { vn[10:8], hn[10:5], vn[7:5] };
+            assign rom_id = 3'b011;
+        end
+    endcase
+endgenerate
 
 // Line buffer
 // writes
