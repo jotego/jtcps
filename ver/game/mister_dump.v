@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module mist_dump(
+module mister_dump(
     input           VGA_VS,
     input           led,
     input   [31:0]  frame_cnt
@@ -16,7 +16,7 @@ module mist_dump(
     `ifdef LOADROM
     always @(negedge led) if( $time > 20000 ) begin // led = downloading signal
         $display("DUMP starts");
-        $dumpvars(0,mist_test);
+        $dumpvars(0,mister_test);
         $dumpon;
     end
     `else
@@ -27,14 +27,9 @@ module mist_dump(
         `endif
             $display("DUMP starts");
             `ifdef DEEPDUMP
-                $dumpvars(0,mist_test);
+                $dumpvars(0,mister_test);
             `else
-                $dumpvars(1,mist_test.UUT.u_game.u_main);
-                $dumpvars(1,mist_test.UUT.u_game);
-                $dumpvars(0,mist_test.UUT.u_game.u_sdram_mux);
-                $dumpvars(1,mist_test.UUT.u_game.u_video.u_mmr);
-                $dumpvars(0,mist_test.UUT.u_frame.u_board.u_sdram);
-                $dumpvars(1,mist_test.frame_cnt);
+                $dumpvars(1,mister_test.UUT.u_game.u_main);
             `endif
             $dumpon;
         end
@@ -45,13 +40,11 @@ module mist_dump(
     `else
     initial begin
     `endif
+        $display("NC Verilog: will dump all signals");
         $shm_open("test.shm");
         `ifdef DEEPDUMP
-            $display("NC Verilog: will dump all signals");
-            $shm_probe(mist_test,"AS");
+            $shm_probe(mister_test,"AS");
         `else
-            $display("NC Verilog: will dump selected signals");
-            $shm_probe(frame_cnt);
             $shm_probe(UUT.u_game.u_prom_we,"AS");
             $shm_probe(UUT.u_base.u_sdram,"AS");
         `endif

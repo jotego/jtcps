@@ -58,6 +58,7 @@ module jtcps1_mmr(
     output reg [15:0]  vram_row_base,
     output reg [15:0]  vram_star_base,
     output reg [15:0]  pal_base,
+    output reg         pal_copy,
 
     // CPS-B Registers
     input      [ 5:1]  addr_layer,
@@ -80,7 +81,7 @@ assign mmr_dout = 16'd0;
 function [15:0] data_sel;
     input [15:0] olddata;
     input [15:0] newdata;
-    input [ 1:0] ds;
+    input [ 1:0] dsn;
     data_sel = { dsn[1] ? olddata[15:8] : newdata[15:8], dsn[0] ? olddata[7:0] : newdata[7:0] };
 endfunction
 
@@ -137,7 +138,10 @@ always @(posedge clk, posedge reg_rst) begin
         prio3         <= ~16'h0;
         pal_page_en   <=  6'h3f;
         layer_ctrl    <=  16'd0;
+
+        pal_copy      <= 1'b0;
     end else begin
+        pal_copy      <= 1'b0;
         if( ppu1_cs ) begin
             case( addr[5:1] )
                 // CPS-A registers
@@ -146,7 +150,11 @@ always @(posedge clk, posedge reg_rst) begin
                 5'h02: vram2_base    <= data_sel(vram2_base    , cpu_dout, dsn);
                 5'h03: vram3_base    <= data_sel(vram3_base    , cpu_dout, dsn);
                 5'h04: vram_row_base <= data_sel(vram_row_base , cpu_dout, dsn);
-                5'h05: pal_base      <= data_sel(pal_base      , cpu_dout, dsn);
+                5'h05: begin
+                    pal_base      <= data_sel(pal_base      , cpu_dout, dsn);
+                    pal_copy      <= 1'b1;
+                    $display("PALETTE!");
+                end
                 5'h06: hpos1         <= data_sel(hpos1         , cpu_dout, dsn);
                 5'h07: vpos1         <= data_sel(vpos1         , cpu_dout, dsn);
                 5'h08: hpos2         <= data_sel(hpos2         , cpu_dout, dsn);

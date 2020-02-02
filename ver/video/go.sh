@@ -56,8 +56,9 @@ else
 fi
 
 rm -f video*.png
-dd if=video.raw of=x.raw count=$((384*240*4)) iflag=count_bytes
-convert -size 384x240 -depth 8 RGBA:x.raw -resize 200% video.png
+#dd if=video.raw of=x.raw count=$((384*240*4)) iflag=count_bytes
+#convert -size 384x240 -depth 8 RGBA:x.raw -resize 200% video.png
+convert -size 384x240 -depth 8 RGBA:video.raw -resize 200% video.png
 #convert -size 384x240 -depth 8 RGBA:video.raw -resize 800x600 video.png
 #convert -size 384x240 -depth 8 RGBA:video.raw video.png
 # right aspect ratio:

@@ -128,7 +128,7 @@ always @(*) begin
         io_cs       = A[23:20] == 4'b1000;
         rom_cs      = A[23:22] == 2'b00;
         if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
-            if( !RnW ) begin
+            if( RnW ) begin
                 joy_cs = ~|A[8:3];
                 sys_cs = A[8:3] == 6'b00_0011;
             end else begin // outputs
@@ -151,7 +151,7 @@ always @(posedge clk) begin
     else if(cpu_cen) begin
         if( olatch_cs ) begin
             // coin counters and lockers should go in here too
-            ppu_rstn <= cpu_dout[15];
+            ppu_rstn <= ~cpu_dout[15];
         end
         if( snd0_cs ) snd0_latch <= cpu_dout[7:0];
         if( snd1_cs ) snd1_latch <= cpu_dout[7:0];

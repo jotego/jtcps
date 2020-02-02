@@ -193,6 +193,7 @@ jtcps1_prom_we u_game(
     .prog_we        ( prog_we       )
 );
 
+`ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
     .clk        ( clk               ),
@@ -240,6 +241,14 @@ jtcps1_main u_main(
     .dipsw_b     ( dipsw_b          ),
     .dipsw_c     ( dipsw_c          )
 );
+`else 
+assign ram_addr = 17'd0;
+assign main_ram_cs = 1'b0;
+assign main_vram_cs = 1'b0;
+assign main_rom_cs = 1'b0;
+assign dsn = 2'b11;
+assign main_rnw = 1'b1;
+`endif
 
 jtcps1_video u_video(
     .rst            ( rst           ),
@@ -258,7 +267,7 @@ jtcps1_video u_video(
     .ppu2_cs        ( ppu2_cs       ),
     .addr           ( ram_addr[5:1] ),
     .dsn            ( dsn           ),      // data select, active low
-    .cpu_dout       ( cpu_dout      ),
+    .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
 
     // Video signal

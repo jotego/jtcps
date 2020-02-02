@@ -70,6 +70,17 @@ module jtcps1_video(
     input              vram_obj_ok,
     output             vram_obj_cs,
 
+    output     [23:1]  vpal_addr,
+    input      [15:0]  vpal_data,
+    input              vpal_ok,
+    output             vpal_cs,
+
+    // VRAM access
+    output reg [23:1]  vram_addr,
+    input      [15:0]  vram_data,
+    input              vram_ok,
+    output reg         vram_cs,
+
     // Video signal
     output             HS,
     output             VS,
@@ -116,6 +127,15 @@ module jtcps1_video(
     // input              line_wr_ok
 );
 
+// use for CPU only simulations:
+`ifdef NOVIDEO
+`define NOSCROLL1
+`define NOSCROLL2
+`define NOSCROLL3
+`define NOOBJ
+`define NOCOLMIX
+`endif
+
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
 wire [22:0]     scr1_addr, scr2_addr, scr3_addr, obj_addr;
 wire [ 8:0]     vrender1;
@@ -131,6 +151,7 @@ wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_b
 wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
 // palette control
 wire       [15:0]  pal_base;
+wire               pal_copy;
 wire       [ 5:0]  pal_page_en; // which palette pages to copy
 
 jtcps1_timing u_timing(
@@ -199,6 +220,7 @@ jtcps1_mmr u_mmr(
     .vram_row_base  ( vram_row_base     ),
     .vram_star_base ( vram_star_base    ),
     .pal_base       ( pal_base          ),
+    .pal_copy       ( pal_copy          ),
 
     // CPS-B Registers
     .addr_layer     ( addr_layer        ),
@@ -333,9 +355,12 @@ jtcps1_obj u_obj(
     .pxl        ( obj_pxl       )
 );
 `else 
+assign vram_obj_cs = 1'b0;
+assign rom0_cs = 1'b0;
 assign obj_pxl = 9'h1ff;
 `endif
 
+`ifndef NOCOLMIX
 jtcps1_colmix u_colmix(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -344,6 +369,17 @@ jtcps1_colmix u_colmix(
     .VB         ( VB            ),
     .LHBL_dly   ( LHBL_dly      ),
     .LVBL_dly   ( LVBL_dly      ),
+
+    // Palette copy
+    .pal_copy   ( pal_copy      ),
+    .pal_base   ( pal_base      ),
+
+    // VRAM access
+    .vram_addr  ( vpal_addr     ),
+    .vram_data  ( vpal_data     ),
+    .vram_ok    ( vpal_ok       ),
+    .vram_cs    ( vpal_cs       ),
+
     // Scroll data
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
@@ -354,5 +390,12 @@ jtcps1_colmix u_colmix(
     .green      ( green         ),
     .blue       ( blue          )    
 );
+`else
+assign red=8'b0;
+assign green=8'b0;
+assign blue=8'b0;
+assign LHBL_dly = ~HB;
+assign LVBL_dly = ~VB;
+`endif
 
 endmodule

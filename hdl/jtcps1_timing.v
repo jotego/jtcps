@@ -48,9 +48,10 @@ always @(posedge clk, posedge rst) begin
         start     <= 1'b1;  // start high for sims
     end else if(cen8) begin
         hdump     <= hdump+9'd1;
-        VB     <= vdump>=8'd240;// || vdump<8'h08; // VB end relates to new_frame register
-        if ( vdump>=8'hf0 ) VB <= 1'b1;
-        if ( vdump==8'h7  ) VB <= 1'b0;
+        if ( vdump>=9'hf8  ) VB <= 1'b1;
+        if ( vdump==9'h0F  ) VB <= 1'b0;
+        if ( vdump==9'h100 ) VS <= 1'b1;
+        if ( vdump==9'h001 ) VS <= 1'b0;
         HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
         HS     <= hdump>=9'h1da && hdump<9'h1f0;
         start  <= hdump==9'h1ff;
