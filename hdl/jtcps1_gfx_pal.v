@@ -44,15 +44,11 @@
 module jtcps1_gfx_pal(
     input      [22:10] obj,     // pins 2-9, 11,13,15,17,18
     input      [22:10] scr1,    // pins 2-9, 11,13,15,17,18
-    input      [22:10] scr2,    // pins 2-9, 11,13,15,17,18
-    input      [22:10] scr3,    // pins 2-9, 11,13,15,17,18
     output reg [ 3: 0] offset0, // Obj
-    output reg [ 3: 0] offset1, // scr GFX offset
-    output reg [ 3: 0] offset2,
-    output reg [ 3: 0] offset3
+    output reg [ 3: 0] offset1  // scr GFX offset
 );
 
-reg [ 4: 1] bank1, bank2, bank3, bank0;  // pins 12, 14, 16, 19
+reg [ 4: 1] bank1, bank0;  // pins 12, 14, 16, 19
 
 // Ghouls'n Ghosts (dm620.2a)
 // jedutil -view dm620.2a  GAL16V8
@@ -99,14 +95,10 @@ function [3:0] bank2offset;
 endfunction
 
 always @(*) begin
-    bank0 = cen_gfx( obj  );
-    bank1 = cen_gfx( scr1 );
-    bank2 = cen_gfx( scr2 );
-    bank3 = cen_gfx( scr3 );
+    bank0   = cen_gfx( obj  );
+    bank1   = cen_gfx( scr1 );
     offset0 = bank2offset( bank0 );
     offset1 = bank2offset( bank1 );
-    offset2 = bank2offset( bank2 );
-    offset3 = bank2offset( bank3 );
 end
 
 endmodule

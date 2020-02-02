@@ -52,20 +52,16 @@ assign slot_cs[0] = 1'b0;
 assign slot_cs[1] = 1'b0;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
-assign slot_cs[4] = vram2_cs;
-assign slot_cs[5] = vram3_cs;
+assign slot_cs[4] = 1'b0;
+assign slot_cs[5] = 1'b0;
 assign slot_cs[6] = rom1_cs;
-assign slot_cs[7] = rom2_cs;
-assign slot_cs[8] = rom3_cs;
+assign slot_cs[7] = 1'b0;
+assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
 
 assign rom0_ok      = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
-assign vram2_ok    = slot_ok[4];
-assign vram3_ok    = slot_ok[5];
 assign rom1_ok     = slot_ok[6];
-assign rom2_ok     = slot_ok[7];
-assign rom3_ok     = slot_ok[8];
 assign vram_obj_ok = slot_ok[9];
 
 assign slot_wr[9:0] = 9'd0;
@@ -82,8 +78,6 @@ localparam [21:0] vram_offset  = 22'h3B_0000;
 // 4+16 bits = 4+12+4
 wire [21:0] gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
-wire [21:0] gfx2_addr = {rom2_addr[19:0], rom2_half, 1'b0 };
-wire [21:0] gfx3_addr = {rom3_addr[19:0], rom3_half, 1'b0 };
 
 jtcps1_video UUT (
     .rst            ( rst           ),
@@ -117,16 +111,6 @@ jtcps1_video UUT (
     .vram1_ok       ( vram1_ok      ),
     .vram1_cs       ( vram1_cs      ),
 
-    .vram2_addr     ( vram2_addr    ),
-    .vram2_data     ( vram2_data    ),
-    .vram2_ok       ( vram2_ok      ),
-    .vram2_cs       ( vram2_cs      ),
-
-    .vram3_addr     ( vram3_addr    ),
-    .vram3_data     ( vram3_data    ),
-    .vram3_ok       ( vram3_ok      ),
-    .vram3_cs       ( vram3_cs      ),
-
     .vram_obj_addr  ( vram_obj_addr ),
     .vram_obj_data  ( vram_obj_data ),
     .vram_obj_ok    ( vram_obj_ok   ),
@@ -139,20 +123,6 @@ jtcps1_video UUT (
     .rom1_data  ( rom1_data     ),
     .rom1_cs    ( rom1_cs       ),
     .rom1_ok    ( rom1_ok       ),
-
-    .rom2_addr  ( rom2_addr     ),
-    .rom2_bank  ( rom2_bank     ),
-    .rom2_half  ( rom2_half     ),
-    .rom2_data  ( rom2_data     ),
-    .rom2_cs    ( rom2_cs       ),
-    .rom2_ok    ( rom2_ok       ),
-
-    .rom3_addr  ( rom3_addr     ),
-    .rom3_bank  ( rom3_bank     ),
-    .rom3_half  ( rom3_half     ),
-    .rom3_data  ( rom3_data     ),
-    .rom3_cs    ( rom3_cs       ),
-    .rom3_ok    ( rom3_ok       ),
 
     .rom0_addr  ( rom0_addr      ),
     .rom0_bank  ( rom0_bank      ),
@@ -198,14 +168,6 @@ u_sdram_mux(
     .slot3_addr     ( vram1_addr[18:1]  ),
     .slot3_dout     ( vram1_data        ),
 
-    .slot4_offset   ( vram_offset       ),
-    .slot4_addr     ( vram2_addr[18:1]  ),
-    .slot4_dout     ( vram2_data        ),
-
-    .slot5_offset   ( vram_offset       ),
-    .slot5_addr     ( vram3_addr[18:1]  ),
-    .slot5_dout     ( vram3_data        ),
-
     // GFX ROM
     .slot2_offset   ( gfx_offset/*^(22'b01_111<<17) */       ),
     .slot2_addr     ( gfx0_addr         ),
@@ -214,14 +176,6 @@ u_sdram_mux(
     .slot6_offset   ( gfx_offset        ),
     .slot6_addr     ( gfx1_addr         ),
     .slot6_dout     ( rom1_data         ),
-
-    .slot7_offset   ( gfx_offset        ),
-    .slot7_addr     ( gfx2_addr         ),
-    .slot7_dout     ( rom2_data         ),
-
-    .slot8_offset   ( gfx_offset        ),
-    .slot8_addr     ( gfx3_addr         ),
-    .slot8_dout     ( rom3_data         ),
 
     // bus signals
     .slot_cs        ( slot_cs       ),
