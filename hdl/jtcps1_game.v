@@ -146,7 +146,8 @@ assign LHBL         = ~HB;
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
 wire [ 1:0] dsn;
-wire        cen8, cen10, cen10b;
+wire        cen16, cen8, cen10b;
+reg         cen10, cen10x;
 
 // Timing
 jtframe_cen48 u_cen48(
@@ -168,13 +169,22 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
+assign pxl_cen  = cen8;
+assign pxl2_cen = cen16;
+
+// Fractional cen cannot provide an uniformly spaced cenb
 jtframe_frac_cen #(.W(2))u_cen10(
     .clk        ( clk           ),
     .n          ( 10'd5         ),
     .m          ( 10'd24        ),
-    .cen        ( {nc0, cen10  }),
-    .cenb       ( {nc1, cen10b }) // 180 shifted
+    .cen        ( {nc0, cen10b }),
+    .cenb       (               ) // 180 shifted
 );
+
+always @(posedge clk) begin
+    cen10x <= cen10b;
+    cen10  <= cen10x;
+end
 
 jtcps1_prom_we u_prom_we(
     .clk            ( clk           ),

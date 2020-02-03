@@ -190,14 +190,14 @@ end
 // DTACKn generation
 wire       inta_n;
 wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok, ram_cs & ~ram_ok };
+wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok };
 reg DTACKn;
 
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
         DTACKn <= 1'b1;
-    end else if(cen10b) begin
+    end else /*if(cen10b)*/ begin
         DTACKn   <= 1'b1;
         last_ASn <= ASn;
         if( !ASn  ) begin
