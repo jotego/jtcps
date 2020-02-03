@@ -1,7 +1,13 @@
 #!/bin/bash
 if [[ -N rom.bin || ! -s sdram.hex ]]; then
     #bin2hex is a JTFRAME file
-    bin2hex < rom.bin > sdram.hex
+    FAIL=0
+    bin2hex < rom.bin > sdram.hex || FAIL=1
+    if [ $FAIL = 1 ]; then
+        echo bin2hex not found
+        echo Compile JTFRAME cc tools and try again
+        exit 1;
+    fi
 fi
 
 export GAME_ROM_PATH=rom.bin
