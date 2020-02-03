@@ -24,6 +24,10 @@
 // If NMOS RON is comparable to the R2R ladder, attenuation will be
 // lower (~27%)
 
+// To do:
+// 1. Copy only the marked pages
+// 2. Bus arbitrion with main CPU --> check PCB
+
 module jtcps1_colmix(
     input              rst,
     input              clk,
@@ -44,7 +48,7 @@ module jtcps1_colmix(
     input   [15:0]     pal_base,
 
     // VRAM access
-    output reg [23:1]  vram_addr,
+    output reg [17:0]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
@@ -107,6 +111,8 @@ initial begin
     f=$fopen("pal.bin","rb");
     if(f==0) begin
         $display("WARNING: cannot open file pal16.hex");
+        // no palette file, initialize with zeros
+        for( rd_cnt = 0; rd_cnt<4096; rd_cnt=rd_cnt+1 ) pal[rd_cnt] <= 16'd0;
     end else begin
         rd_cnt = $fread(pal,f);
         $display("INFO: read %d bytes from pal.bin",rd_cnt);
@@ -118,7 +124,7 @@ end
 
 // Palette copy
 reg [11:0] pal_cnt;
-reg [ 3:0] pal_st;
+reg [ 4:0] pal_st;
 reg        wait_ok;
 
 always @(posedge clk, posedge rst) begin
@@ -136,21 +142,22 @@ always @(posedge clk, posedge rst) begin
             wait_ok <= 1'b0;
         end
         if( vram_cs ) begin
-            if(!wait_ok) pal_st <= { pal_st[2:0], pal_st[3] };
-        end else pal_st <= 4'b1;
+            pal_st <= { pal_st[3:0], pal_st[4] };
+        end else pal_st <= 5'b1;
         case( pal_st )
-            4'b0001: begin
-                vram_addr <= { pal_base[15:0], 7'd0 } + pal_cnt;
+            5'b0001: begin
+                vram_addr <= { pal_base[10:0], 7'd0 } + pal_cnt;
             end
-            4'b0010: wait_ok   <= 1'b1;
-            4'b0100: if(vram_ok) begin
+            // 4'b0010: wait for OK signal to go down in reaction to the change
+            // in vram_addr
+            5'b1000: if(vram_ok) begin
                 pal[pal_cnt] <= vram_data;
-                pal_cnt <= pal_cnt + 1;
                 wait_ok <= 1'b0;
                 if( &pal_cnt ) begin
                     vram_cs <= 1'b0;
                 end
-            end
+            end else pal_st <= pal_st;
+            5'b1_0000: pal_cnt <= pal_cnt + 1;
         endcase
 
     end

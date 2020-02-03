@@ -86,6 +86,7 @@ function [15:0] data_sel;
 endfunction
 
 wire reg_rst;
+reg  pre_copy;
 
 // For quick simulation of the video alone
 // it is possible to load the regs from a file
@@ -140,8 +141,16 @@ always @(posedge clk, posedge reg_rst) begin
         layer_ctrl    <=  16'd0;
 
         pal_copy      <= 1'b0;
+        pre_copy      <= 1'b0;
     end else begin
-        pal_copy      <= 1'b0;
+        if( !ppu1_cs && pre_copy ) begin
+            // The palette copy signal is delayed until after ppu1_cs has gone down
+            // otherwise it would get a wrong pal_base value as pal_base is written
+            // to a bit after ppu1_cs has gone high
+            pal_copy <= 1'b1;
+            pre_copy <= 1'b0;
+        end
+        else pal_copy <= 1'b0;
         if( ppu1_cs ) begin
             case( addr[5:1] )
                 // CPS-A registers
@@ -152,8 +161,7 @@ always @(posedge clk, posedge reg_rst) begin
                 5'h04: vram_row_base <= data_sel(vram_row_base , cpu_dout, dsn);
                 5'h05: begin
                     pal_base      <= data_sel(pal_base      , cpu_dout, dsn);
-                    pal_copy      <= 1'b1;
-                    $display("PALETTE!");
+                    pre_copy      <= 1'b1;
                 end
                 5'h06: hpos1         <= data_sel(hpos1         , cpu_dout, dsn);
                 5'h07: vpos1         <= data_sel(vpos1         , cpu_dout, dsn);

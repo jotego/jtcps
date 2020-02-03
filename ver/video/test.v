@@ -8,7 +8,7 @@ reg                rst, clk, cen8;
 wire       [ 8:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
-wire               HS, VS, HB, VB, frame, LHBL_dly, LVBL_dly;
+wire               HS, VS, HB, VB, LHBL_dly, LVBL_dly;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
@@ -87,7 +87,6 @@ jtcps1_video UUT (
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
-    .frame          ( frame         ),
 
     // Video signal
     .HS             ( HS            ),

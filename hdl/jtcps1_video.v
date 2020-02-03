@@ -30,7 +30,6 @@ module jtcps1_video(
     output     [ 8:0]  vdump,
     output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
-    output             frame,
 
     // CPU interface
     input              ppu_rstn,
@@ -60,7 +59,7 @@ module jtcps1_video(
     input              vram_obj_ok,
     output             vram_obj_cs,
 
-    output     [23:1]  vpal_addr,
+    output     [17:0]  vpal_addr,
     input      [15:0]  vpal_data,
     input              vpal_ok,
     output             vpal_cs,

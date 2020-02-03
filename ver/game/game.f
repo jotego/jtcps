@@ -1,4 +1,5 @@
 ../../hdl/jtcps1_video.v
+../../hdl/jtcps1_scroll.v
 ../../hdl/jtcps1_timing.v
 ../../hdl/jtcps1_tilemap.v
 ../../hdl/jtcps1_colmix.v
@@ -16,6 +17,7 @@
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
+../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
 # Z80
 # ../../modules/jtframe/hdl/cpu/jtframe_z80.v
 # ../../modules/jtframe/hdl/jtframe_z80wait.v
