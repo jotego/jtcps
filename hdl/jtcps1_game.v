@@ -87,7 +87,7 @@ wire [19:1] main_rom_addr;
 wire [21:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
-wire        ppu1_cs, ppu_rstn;
+wire        ppu1_cs, ppu2_cs, ppu_rstn;
 wire [22:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 wire [ 3:0] rom0_bank, rom1_bank;

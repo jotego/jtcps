@@ -121,7 +121,7 @@ always @(*) begin
     ppu1_cs    = 1'b0;
 
     if( !ASn && BGACKn ) begin // PAL PRG1 12H
-        one_wait    = A[23] | !A[22];
+        one_wait    = A[23] | ~A[22];
         dbus_cs     = ~|A[23:18]; // all must be zero
         pre_ram_cs  = &A[23:18];
         pre_vram_cs = A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
@@ -189,23 +189,34 @@ end
 
 // DTACKn generation
 wire       inta_n;
+reg [1:0]  wait_cycles;
 wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok };
-reg DTACKn;
+wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok,
+                          wait_cycles[0] };
+reg        DTACKn;
 
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
-        DTACKn <= 1'b1;
+        DTACKn      <= 1'b1;
+        wait_cycles <= 2'b11;
     end else /*if(cen10b)*/ begin
         DTACKn   <= 1'b1;
         last_ASn <= ASn;
         if( !ASn  ) begin
+            // The original hardware always waits for one or 
+            // two clock cycles on the bus, depending on
+            // the device accessed to.
+            if( cen10 ) begin
+                wait_cycles[1] <= 1'b0;
+                wait_cycles[0] <= wait_cycles[1] & ~one_wait;
+            end
             if( bus_cs ) begin
                 if (!bus_busy) DTACKn <= 1'b0;
             end
             else DTACKn <= 1'b0;
         end
+        else wait_cycles <= 2'b11;
         if( ASn && !last_ASn ) DTACKn <= 1'b1;
     end
 end 
@@ -271,6 +282,7 @@ fx68k u_cpu(
 
     .BERRn      ( BERRn       ),
     // Bus arbitrion
+    .HALTn      ( 1'b1        ),
     .BRn        ( BRn         ),
     .BGACKn     ( BGACKn      ),
     .BGn        ( BGn         ),
@@ -286,5 +298,17 @@ fx68k u_cpu(
     .VMAn       (             ),
     .E          (             )
 );
+
+`ifdef SIMULATION
+integer fdebug;
+
+initial begin
+    fdebug=$fopen("debug.log","w");
+end
+
+always @(posedge rom_cs) begin
+    $fdisplay(fdebug,"%X",A_full);
+end
+`endif
 
 endmodule

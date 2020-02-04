@@ -59,6 +59,14 @@ module jtcps1_scroll(
 );
 
 reg         pre_start, sub_start, busy, done;
+wire [ 8:0] buf_data;
+wire [ 8:0] buf_addr;
+wire        buf_wr;
+
+reg  [15:0] hpos, vpos, vram_base;
+reg  [ 2:0] st;
+wire        sub_done;
+
 
 wire [9:0] addr0 = {  vdump[0], buf_addr }; // write
 wire [9:0] addr1 = { ~vdump[0], hdump    }; // read
@@ -113,17 +121,6 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line3(
     .q1     ( pre3_pxl  )
 );
 
-
-wire [ 8:0] buf_data;
-wire [ 8:0] buf_addr;
-wire        buf_wr;
-
-reg  [15:0] hpos, vpos, vram_base;
-
-reg  [ 2:0] st;
-
-wire        sub_done;
-
 // Line buffers
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -134,7 +131,9 @@ always @(posedge clk, posedge rst) begin
         if( hdump>9'd63 && hdump<9'd448 ) begin // active area
             scr1_pxl <= pre1_pxl;
             scr2_pxl <= pre2_pxl;
+            `ifndef NOSCROLL3
             scr3_pxl <= pre3_pxl;
+            `endif
         end else begin
             scr1_pxl <= 9'h1ff;
             scr2_pxl <= 9'h1ff;

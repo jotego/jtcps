@@ -136,7 +136,11 @@ always @(posedge clk, posedge rst) begin
         vram_addr <= 23'd0;
         wait_ok   <= 1'b0;
     end else begin
+        `ifndef FORCE_GRAY
         raw <= pal[pal_addr];
+        `else
+        raw <= {4{pal_addr[3:0]}};
+        `endif
         if( pal_copy && pal_st[0] ) begin
             vram_cs <= 1'b1;
             wait_ok <= 1'b0;

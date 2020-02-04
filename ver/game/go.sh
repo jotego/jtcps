@@ -1,13 +1,11 @@
 #!/bin/bash
-if [[ -N rom.bin || ! -s sdram.hex ]]; then
-    #bin2hex is a JTFRAME file
-    FAIL=0
-    bin2hex < rom.bin > sdram.hex || FAIL=1
-    if [ $FAIL = 1 ]; then
-        echo bin2hex not found
-        echo Compile JTFRAME cc tools and try again
-        exit 1;
-    fi
+
+# Ghouls'n Ghosts
+# Game starts at address $400. It can be set to reset from it
+# ROM check starts at $61adc
+
+if [ rom.bin -nt ghouls.hex ]; then
+    apply_patches.sh
 fi
 
 export GAME_ROM_PATH=rom.bin
@@ -30,4 +28,5 @@ echo "Game ROM length: " $GAME_ROM_LEN
 ../../modules/jtframe/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
     -sysname cps1 -modules ../../modules -d SCANDOUBLER_DISABLE=1 \
     -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1\
+    -videow 384 -videoh 224 \
     -video $*

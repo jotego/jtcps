@@ -4,7 +4,7 @@
 	<year>1988</year>
 	<manufacturer>Capcom</manufacturer>
 	<rbf>jtcps1</rbf>
-	<rom index="0" zip="ghouls.zip" md5="8267f4f96afe50e20b20f877cb9e54f5" type="merged|nonmerged">
+	<rom index="0" zip="ghouls.zip" md5="7160d97a00efc5ea8d43ef9101c6627b" type="merged|nonmerged">
         <!-- Main CPU -->
         <group width="16">
             <!-- take one byte from each file -->
@@ -16,7 +16,10 @@
             <part name="dme_27.9h"/>
             <part name="dme_28.9j"/>
         </group>        
-        <part name="dm-17.7j"/>
+        <group width="16">
+            <!-- Reverse byte order -->
+            <part name="dm-17.7j" pattern="10"/>
+        </group>        
         <!--Audio CPU-->
         <part name="26.10a"/>
         <!-- ADPCM samples -->
