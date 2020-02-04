@@ -264,7 +264,7 @@ jtcps1_video u_video(
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
-
+    .gfx_en         ( gfx_en        ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

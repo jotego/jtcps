@@ -37,6 +37,7 @@ module jtcps1_colmix(
     input              HB,
     output  reg        LVBL_dly,
     output  reg        LHBL_dly,
+    input   [3:0]      gfx_en,
 
     input   [8:0]      scr1_pxl,
     input   [8:0]      scr2_pxl,
@@ -88,17 +89,21 @@ always @(*) begin
     //pxl      = scr2_pxl;
     //pxl_type = 3'b10;
 
-    if( obj_pxl[3:0] != 4'hf ) begin
+    if( obj_pxl[3:0] != 4'hf && gfx_en[3] ) begin
         pxl = obj_pxl;
         pxl_type=3'b0;
-    end else if( scr1_pxl[3:0] != 4'hf ) begin
+    end else if( scr1_pxl[3:0] != 4'hf && gfx_en[0] ) begin
         pxl      = scr1_pxl;
         pxl_type = 3'b1;
-    end else if(scr2_pxl[3:0] != 4'hf ) begin
+    end else if(scr2_pxl[3:0] != 4'hf && gfx_en[1] ) begin
         pxl      = scr2_pxl;
         pxl_type = 3'b10;
-    end else begin
+    end else if( gfx_en[2] ) begin
         pxl = scr3_pxl;
+        pxl_type = 3'b011;
+    end
+    else begin
+        pxl = 9'h1ff;
         pxl_type = 3'b011;
     end
     pal_addr = { pxl_type, pxl };

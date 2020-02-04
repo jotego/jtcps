@@ -30,6 +30,7 @@ module jtcps1_video(
     output     [ 8:0]  vdump,
     output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
+    input      [ 3:0]  gfx_en,
 
     // CPU interface
     input              ppu_rstn,
@@ -292,10 +293,12 @@ jtcps1_colmix u_colmix(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
+
     .HB         ( HB            ),
     .VB         ( VB            ),
     .LHBL_dly   ( LHBL_dly      ),
     .LVBL_dly   ( LVBL_dly      ),
+    .gfx_en     ( gfx_en        ),
 
     // Palette copy
     .pal_copy   ( pal_copy      ),
