@@ -55,5 +55,8 @@
             <part name="16.4h"/>
             <part name="25.7h"/>
         </group>
+        <!--
+        <part repeat=1933312>FF</part>
+        -->
 	</rom>
 </misterromdescription>

@@ -110,7 +110,7 @@ wire        rom0_half, rom1_half;
 wire [21:0] gfx0_addr, gfx1_addr;
 
 assign prog_rd    = 1'b0;
-assign dwnld_busy = 1'b0;
+assign dwnld_busy = downloading;
 
 assign snd_cs  = 1'b0;
 
