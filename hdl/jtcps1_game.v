@@ -152,6 +152,7 @@ reg         cen10, cen10x;
 // Timing
 jtframe_cen48 u_cen48(
     .clk        ( clk           ),
+    .cen16      ( cen16         ),
     .cen12      (               ),
     .cen8       ( cen8          ),
     .cen6       (               ),
