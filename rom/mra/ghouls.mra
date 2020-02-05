@@ -18,7 +18,7 @@
         </group>        
         <group width="16">
             <!-- Reverse byte order -->
-            <part name="dm-17.7j" pattern="10"/>
+            <part name="dm-17.7j" pattern="01"/>
         </group>        
         <!--Audio CPU-->
         <part name="26.10a"/>

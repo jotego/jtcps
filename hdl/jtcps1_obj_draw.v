@@ -43,16 +43,16 @@ module jtcps1_obj_draw(
 localparam [8:0] MAXH = 9'd448;
 
 integer st;
-reg [15:0] obj_x, obj_code, obj_attr;
+reg [15:0] obj_attr;
 
 reg         done;
 wire [ 3:0] vsub;
 wire [ 4:0] pal;
-wire        hflip, vflip;
+wire        hflip;
 reg  [31:0] pxl_data;
 
 assign vsub   = obj_attr[11:8];
-assign vflip  = obj_attr[6];
+//     vflip  = obj_attr[6];
 assign hflip  = obj_attr[5];
 assign pal    = obj_attr[4:0];
 
@@ -119,15 +119,14 @@ always @(posedge clk, posedge rst) begin
                 end else st<=1;
             end
             2: begin
-                obj_code   <= table_data;
+                // obj_code   <= table_data;
                 //table_addr[1:0] <= table_addr[1:0]+2'd1;
                 rom_cs   <= 1'b1;
                 rom_addr <= { table_data, vsub };
                 rom_half <= hflip;
             end
             3: begin
-                obj_x      <= table_data;
-                buf_addr   <= table_data[8:0]-9'd1;
+                buf_addr   <= table_data[8:0]-9'd1; // obj_x
                 if( table_addr[8:2]==7'b111_1000 ) last_tile <= 1'b1; // some margin for SDRAM waits
                 table_addr[8:2] <= table_addr[8:2]+7'd1;
                 table_addr[1:0] <= 2'd0;
@@ -159,6 +158,7 @@ always @(posedge clk, posedge rst) begin
                 end
                 else st<=1; // next element
             end
+            default:;
         endcase
 
     end

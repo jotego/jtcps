@@ -46,8 +46,7 @@ wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
 reg         first, done, inzone;
 wire [ 3:0] tile_n, tile_m;
 reg  [ 3:0] n, m, vsub;  // tile expansion n==horizontal, m==verital
-wire [ 4:0] pal;
-wire        hflip, vflip, inzone_lsb;
+wire        vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
@@ -55,8 +54,8 @@ reg         last_tile;
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
 assign      vflip      = obj_attr[6];
-assign      hflip      = obj_attr[5];
-assign      pal        = obj_attr[4:0];
+//          hflip      = obj_attr[5];
+//          pal        = obj_attr[4:0];
 
 reg  [15:0] code_mn;
 reg  [ 4:0] st;
@@ -132,10 +131,10 @@ always @(posedge clk, posedge rst) begin
         done       <= 1'b0;
         first      <= 1'b1;
     end else begin
-        st <= st+1;
+        st <= st+5'd1;
         case( st )
             0: begin
-                if( !start ) st<=0;
+                if( !start ) st<=5'd0;
                 else begin
                     frame_addr <= 10'd0;
                     wait_cycle <= 3'b011;

@@ -52,6 +52,7 @@ wire [ 9:0] frame_addr;
 wire [ 8:0] line_addr;
 
 wire [ 8:0] buf_addr, buf_data;
+wire        buf_wr;
 
 assign rom_addr[22:20] = 3'd0;
 

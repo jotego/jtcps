@@ -3,6 +3,7 @@
 # Ghouls'n Ghosts
 # Game starts at address $400. It can be set to reset from it
 # ROM check starts at $61adc
+# Boot up fails around frame 1520
 
 if [ rom.bin -nt ghouls.hex ]; then
     apply_patches.sh
@@ -14,7 +15,6 @@ export MEM_CHECK_TIME=310_000_000
 export BIN2PNG_OPTIONS="--scale"
 export CONVERT_OPTIONS="-resize 300%x300%"
 GAME_ROM_LEN=$(stat --dereference -c%s $GAME_ROM_PATH)
-GAME_ROM_LEN=$((GAME_ROM_LEN/8))
 export YM2151=1
 export MSM6295=1
 

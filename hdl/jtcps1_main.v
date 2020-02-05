@@ -119,6 +119,8 @@ always @(*) begin
     snd1_cs    = 1'b0;
     snd0_cs    = 1'b0;
     ppu1_cs    = 1'b0;
+    one_wait   = 1'b0;
+    one_wait   = 1'b0;
 
     if( !ASn && BGACKn ) begin // PAL PRG1 12H
         one_wait    = A[23] | ~A[22];
@@ -179,11 +181,11 @@ end
 reg  [15:0] cpu_din;
 
 always @(*) begin
-    cpu_din = 16'hffff;
     case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs } )
         3'b100:  cpu_din = sys_data;
         3'b010:  cpu_din = ram_data;
         3'b001:  cpu_din = rom_data;
+        default: cpu_din = 16'hffff;
     endcase
 end
 

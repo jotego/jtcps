@@ -130,7 +130,6 @@ end
 // Palette copy
 reg [11:0] pal_cnt;
 reg [ 4:0] pal_st;
-reg        wait_ok;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -139,7 +138,6 @@ always @(posedge clk, posedge rst) begin
         pal_st    <= 4'd1;
         vram_cs   <= 1'b0;
         vram_addr <= 23'd0;
-        wait_ok   <= 1'b0;
     end else begin
         `ifndef FORCE_GRAY
         raw <= pal[pal_addr];
@@ -148,25 +146,23 @@ always @(posedge clk, posedge rst) begin
         `endif
         if( pal_copy && pal_st[0] ) begin
             vram_cs <= 1'b1;
-            wait_ok <= 1'b0;
         end
         if( vram_cs ) begin
             pal_st <= { pal_st[3:0], pal_st[4] };
         end else pal_st <= 5'b1;
         case( pal_st )
             5'b0001: begin
-                vram_addr <= { pal_base[10:0], 7'd0 } + pal_cnt;
+                vram_addr <= { pal_base[6:0], 7'd0 } + pal_cnt;
             end
             // 4'b0010: wait for OK signal to go down in reaction to the change
             // in vram_addr
             5'b1000: if(vram_ok) begin
                 pal[pal_cnt] <= vram_data;
-                wait_ok <= 1'b0;
                 if( &pal_cnt ) begin
                     vram_cs <= 1'b0;
                 end
             end else pal_st <= pal_st;
-            5'b1_0000: pal_cnt <= pal_cnt + 1;
+            5'b1_0000: pal_cnt <= pal_cnt + 12'd1;
         endcase
 
     end

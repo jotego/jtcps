@@ -125,7 +125,7 @@ assign slot_cs[7] = 1'b0;
 assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
 
-assign gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
+assign gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 
 assign main_rom_ok = slot_ok[0];

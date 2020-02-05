@@ -57,8 +57,6 @@ reg [10:0] hn;
 reg [31:0] pxl_data;
 
 reg [ 5:0] st;
-reg [ 5:0] tilecnt;
-reg [ 5:0] tilemax;
 
 reg [21:0] tile_addr;
 reg [15:0] code,attr;
@@ -69,19 +67,20 @@ reg  [ 2:0] rom_id;
 always @(*) begin
     case(size)
         3'b1:  begin
-            scan    = { vn[8],   hn[8:3], vn[7:3] };
-            rom_id  = 3'b001;
-            tilemax = 6'd57; /* 8x8 tiles */
+            scan   = { vn[8],   hn[8:3], vn[7:3] };
+            rom_id = 3'b001;
         end
         3'b10: begin
-            scan    = { vn[9:8], hn[9:4], vn[7:4] };
-            rom_id  = 3'b010;
-            tilemax = 6'd29; /* 16x16 tiles */
+            scan   = { vn[9:8], hn[9:4], vn[7:4] };
+            rom_id = 3'b010;
         end
         3'b100: begin
-            scan = { vn[10:8], hn[10:5], vn[7:5] };
+            scan   = { vn[10:8], hn[10:5], vn[7:5] };
             rom_id = 3'b011;
-            tilemax = 6'd15; /* 32x32 tiles */
+        end
+        default: begin
+            scan   = 12'd0;
+            rom_id = 3'b000;
         end
     endcase
 end
@@ -104,11 +103,11 @@ always @(posedge clk or posedge rst) begin
         vram_cs         <= 1'b0;
         buf_wr          <= 1'b0;
         done            <= 1'b0;
-        st              <= 0;
+        st              <= 6'd0;
         rom_addr        <= 23'd0;
         code            <= 16'd0;
     end else begin
-        st <= st+1;
+        st <= st+6'd1;
         case( st ) 
             0: begin
                 rom_addr[22:20] <= rom_id;
@@ -122,7 +121,6 @@ always @(posedge clk or posedge rst) begin
                     ( size[1] ? { hpos[10:4], 4'b0 } : { hpos[10:5], 5'b0 } );
                 buf_addr <= 9'h1ff- (
                     size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) );
-                tilecnt  <= 6'b0;
                 buf_wr   <= 1'b0;
                 done     <= 1'b0;
                 if(!start) begin
@@ -148,10 +146,11 @@ always @(posedge clk or posedge rst) begin
                 end
             4: begin
                 rom_half <= hflip;
-                case (1'b1)
-                    size[0]: rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
-                    size[1]: rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
-                    size[2]: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
+                case (size)
+                    3'b001: rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
+                    3'b010: rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
+                    3'b100: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
+                    default:;
                 endcase
                 rom_cs    <= 1'b1;
                 hn <= hn + ( size[0] ? 10'h8 : (size[1] ? 10'h10 : 10'h20 ));
@@ -171,14 +170,13 @@ always @(posedge clk or posedge rst) begin
                 pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
                 if( buf_addr == 9'd447 ) begin
                     buf_wr <= 1'b0;
-                    done <= 1'b1;
-                    st <= 0;
+                    done   <= 1'b1;
+                    st     <= 6'd0;
                 end
             end
             15: begin
                 if( size[0] /*8*/) begin
-                    st <= 2; // scan again
-                    tilecnt <= tilecnt+1; // 8x tile done
+                    st <= 6'd2; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
@@ -189,7 +187,6 @@ always @(posedge clk or posedge rst) begin
             24: begin
                 if( size[1] /*16*/ ) begin
                     st <= 2; // scan again
-                    tilecnt <= tilecnt+1; // 16x tile done
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
@@ -202,8 +199,7 @@ always @(posedge clk or posedge rst) begin
                 end else st<=st;
             end
             42: begin
-                st      <= 2; // 32x tile done
-                tilecnt <= tilecnt+1;
+                st      <= 6'd2; // 32x tile done
             end
         endcase
     end
