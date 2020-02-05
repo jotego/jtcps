@@ -49,15 +49,15 @@ module jtcps1_main(
     output      [17:1] addr,
     output      [15:0] cpu_dout,
     // RAM access
-    output             ram_cs,
-    output             vram_cs,
-    input       [15:0] ram_data,
-    input              ram_ok,
+    (*keep*) output             ram_cs,
+    (*keep*) output             vram_cs,
+    (*keep*) input       [15:0] ram_data,
+    (*keep*) input              ram_ok,
     // ROM access
-    output  reg        rom_cs,
-    output      [19:1] rom_addr,
-    input       [15:0] rom_data,
-    input              rom_ok,
+    (*keep*) output  reg        rom_cs,
+    (*keep*) output      [19:1] rom_addr,
+    (*keep*) input       [15:0] rom_data,
+    (*keep*) input              rom_ok,
     // DIP switches
     input              dip_pause,
     input              dip_test,
@@ -69,12 +69,12 @@ module jtcps1_main(
 wire [23:1] A;
 wire        BERRn = 1'b1;
 
-`ifdef SIMULATION
-wire [24:0] A_full = {A,1'b0};
-`endif
+//`ifdef SIMULATION
+(*keep*) wire [24:0] A_full = {A,1'b0};
+//`endif
 
-wire        BRn, BGACKn, BGn;
-wire        ASn;
+(*keep*) wire        BRn, BGACKn, BGn;
+(*keep*) wire        ASn;
 reg         dbus_cs, io_cs, joy_cs, 
             sys_cs, olatch_cs, snd1_cs, snd0_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
@@ -119,7 +119,6 @@ always @(*) begin
     snd1_cs    = 1'b0;
     snd0_cs    = 1'b0;
     ppu1_cs    = 1'b0;
-    one_wait   = 1'b0;
     one_wait   = 1'b0;
 
     if( !ASn && BGACKn ) begin // PAL PRG1 12H
@@ -178,7 +177,7 @@ always @(posedge clk) if(cpu_cen) begin
 end
 
 // Data bus input
-reg  [15:0] cpu_din;
+(*keep*) reg  [15:0] cpu_din;
 
 always @(*) begin
     case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs } )
@@ -192,8 +191,8 @@ end
 // DTACKn generation
 wire       inta_n;
 reg [1:0]  wait_cycles;
-wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok,
+(*keep*) wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
+(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok,
                           wait_cycles[0] };
 reg        DTACKn;
 
@@ -203,9 +202,11 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         DTACKn      <= 1'b1;
         wait_cycles <= 2'b11;
     end else /*if(cen10b)*/ begin
-        DTACKn   <= 1'b1;
         last_ASn <= ASn;
-        if( !ASn  ) begin
+        if( !ASn && last_ASn ) begin // for falling edge of ASn
+            DTACKn <= 1'b1; 
+            wait_cycles <= 2'b11;
+        end else if( !ASn  ) begin
             // The original hardware always waits for one or 
             // two clock cycles on the bus, depending on
             // the device accessed to.
@@ -218,15 +219,13 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             end
             else DTACKn <= 1'b0;
         end
-        else wait_cycles <= 2'b11;
-        if( ASn && !last_ASn ) DTACKn <= 1'b1;
     end
 end 
 
 // interrupt generation
 reg        int1, // VBLANK
            int2; // ??
-wire [2:0] FC;
+(*keep*) wire [2:0] FC;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen
@@ -242,7 +241,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int1 <= 1'b1;
             int2 <= 1'b1;
         end
-        else if(dip_pause) begin
+        else /*if(dip_pause)*/ begin
             //if( V[8] && !last_V256 ) int2 <= 1'b0;
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end

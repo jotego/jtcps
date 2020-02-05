@@ -149,6 +149,8 @@ wire [ 1:0] dsn;
 wire        cen16, cen8, cen10b;
 reg         cen10, cen10x;
 
+(*keep*) wire cen20 = cen10 | cen10b;
+
 // Timing
 jtframe_cen48 u_cen48(
     .clk        ( clk           ),
@@ -225,7 +227,7 @@ jtcps1_main u_main(
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
-    .busreq      ( busreq           ),
+    .busreq      ( 1'b0             ),
     .busack      ( busack           ),
     .RnW         ( main_rnw         ),
     // RAM/VRAM access
@@ -327,7 +329,6 @@ jtframe_sdram_mux #(
     .SLOT1_DW   ( 16    ),
 
     .SLOT1_TYPE ( 2     ), // R/W access
-    .SLOT1_BIG  ( 1     ), // Endianness
     // VRAM read access:
     .SLOT3_AW   ( 18    ),  // Scroll VRAM
     .SLOT4_AW   ( 18    ),  // Palette VRAM

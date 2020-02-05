@@ -4,5 +4,5 @@
 // 01234567890123456789012345678901
 //           abcdefghijklmnopqrstuv
 
-`define CORE_OSD ,
+`define CORE_OSD 
 
