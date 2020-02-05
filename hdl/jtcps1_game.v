@@ -353,7 +353,7 @@ jtframe_sdram_mux #(
 u_sdram_mux(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .vblank         ( 1'b0          ),
+    .vblank         ( VB            ),
 
     // Main CPU
     .slot0_offset   ( 22'd0             ),
