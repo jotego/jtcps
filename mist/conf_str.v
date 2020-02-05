@@ -6,5 +6,3 @@
 
 `define CORE_OSD ,
 
-`define CORE_KEYMAP ,
-
