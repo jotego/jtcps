@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# The simulation can work loading a local .hex file
+# for SDRAM, but it has to be provided in a 8-bit per line format
+# use macro SDRAM_HEXFILE or argument -hex to enable this
+# The SDRAM file can be obtained from top level simulation in ver/game
+# but you need to convert it from 16-bit per line to 8-bit. You can
+# use the hex16to8.cc file in this folder to accomplish exactly that.
+
 MACROPREFIX=-D
 EXTRA=
 MMR=regs.hex
@@ -15,6 +22,7 @@ while [ $# -gt 0 ]; do
     case $1 in
         -g|-game) shift; GAME=$1; shift;;
         -s|-save) shift; SAVE=$1; shift;;
+        -hex) EXTRA="$EXTRA ${MACROPREFIX}SDRAM_HEXFILE";;
         -mmr) shift; MMR=$1; shift;;
         -f|-frame) shift; EXTRA="$EXTRA ${MACROPREFIX}FRAMES=$1"; shift;;
         -d) shift; EXTRA="$EXTRA ${MACROPREFIX}$1"; shift;;

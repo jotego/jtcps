@@ -66,7 +66,7 @@ assign vram_obj_ok = slot_ok[9];
 
 assign slot_wr[9:0] = 9'd0;
 
-wire [31:0] data_write;
+wire [15:0] data_write;
 wire        sdram_rnw;
 
 localparam [21:0] gfx_offset   = 22'h0A_8000;
@@ -87,6 +87,7 @@ jtcps1_video UUT (
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
+    .gfx_en         ( 4'b1111       ),
 
     // Video signal
     .HS             ( HS            ),
@@ -209,7 +210,13 @@ end
 // SDRAM
 reg [7:0] sdram[0:(2**23)-1];
 
-integer fsdram, sdram_cnt;
+`ifdef SDRAM_HEXFILE
+initial begin
+    $display("INFO: SDRAM read from sdram.hex");
+    $readmemh("sdram.hex",sdram);
+end
+`else
+integer fsdram, sdram_cnt, vram_offset_aux = vram_offset;
 initial begin
     // load game ROM
     fsdram=$fopen("rom","rb");
@@ -226,12 +233,15 @@ initial begin
         $display("ERROR: cannot find vram_sw");
         $finish;
     end
-    sdram_cnt=$fread(sdram,fsdram, {vram_offset,1'b0}, 192*1024 );
+    // not all simulator support a parameter used in the function arg list
+    // that's why I need vram_offset_aux
+    sdram_cnt=$fread(sdram,fsdram, vram_offset_aux<<1, 192*1024 );
     $display("INFO Read %d kB for VRAM",sdram_cnt>>10);
     $fclose(fsdram);
     //$display("VRAM[0]=%X", {sdram[vram_offset+1], sdram[vram_offset]});
-    //$finish;
+    $finish;
 end
+`endif
 
 localparam SDRAM_STCNT=5; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
