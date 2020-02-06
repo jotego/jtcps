@@ -190,7 +190,7 @@ end
 
 // DTACKn generation
 wire       inta_n;
-reg [1:0]  wait_cycles;
+reg [2:0]  wait_cycles;
 (*keep*) wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
 (*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
                           wait_cycles[0] };
@@ -200,20 +200,22 @@ always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
         DTACKn      <= 1'b1;
-        wait_cycles <= 2'b11;
+        wait_cycles <= 3'b111;
     end else /*if(cen10b)*/ begin
         last_ASn <= ASn;
         if( !ASn && last_ASn ) begin // for falling edge of ASn
             DTACKn <= 1'b1; 
-            wait_cycles <= 2'b11;
+            wait_cycles <= 3'b111;
         end else if( !ASn  ) begin
-            // The original hardware always waits for one or 
-            // two clock cycles on the bus, depending on
-            // the device accessed to.
+            // The original hardware always waits for 250ns
+            // on each bus access, except if one_wait signal is
+            // set low. Then it waits on a secondary input, which
+            // seems to be tied high on the schematics.
             if( cen10 ) begin
-                wait_cycles[1] <= 1'b0;
-                wait_cycles[0] <= wait_cycles[1] & ~one_wait;
+                wait_cycles[2] <= 1'b0;
+                wait_cycles[1] <= wait_cycles[2];
             end
+            if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
                 if (!bus_busy) DTACKn <= 1'b0;
             end
