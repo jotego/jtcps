@@ -33,7 +33,7 @@ module jtcps1_mmr(
     input   [ 5:1]     addr,
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
-    output  [15:0]     mmr_dout,
+    output  reg [15:0] mmr_dout,
     // registers
     output reg [15:0]  ppu_ctrl,
     // Scroll
@@ -76,8 +76,6 @@ module jtcps1_mmr(
     output reg [ 5:0]  pal_page_en // which palette pages to copy
 );
 
-assign mmr_dout = 16'd0;
-
 function [15:0] data_sel;
     input [15:0] olddata;
     input [15:0] newdata;
@@ -117,6 +115,13 @@ assign reg_rst = 1'b0;
 `else 
 assign reg_rst = rst | ~ppu_rstn;
 `endif
+
+wire [5:0] addrb = { addr == addr_layer,
+                     addr == addr_prio0,
+                     addr == addr_prio1,
+                     addr == addr_prio2,
+                     addr == addr_prio3,
+                     addr == addr_pal_page };
 
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
@@ -178,12 +183,32 @@ always @(posedge clk, posedge reg_rst) begin
             endcase
         end
         if( ppu2_cs ) begin
-            if( addr == addr_layer    ) layer_ctrl <= data_sel(layer_ctrl, cpu_dout, dsn);
-            if( addr == addr_prio0    ) prio0      <= data_sel(prio0,      cpu_dout, dsn);
-            if( addr == addr_prio1    ) prio1      <= data_sel(prio1,      cpu_dout, dsn);
-            if( addr == addr_prio2    ) prio2      <= data_sel(prio2,      cpu_dout, dsn);
-            if( addr == addr_prio3    ) prio3      <= data_sel(prio3,      cpu_dout, dsn);
-            if( addr == addr_pal_page ) pal_page_en<= data_sel(pal_page_en,cpu_dout, dsn);
+            case( addrb )
+                6'b000_001: begin 
+                    layer_ctrl <= data_sel(layer_ctrl, cpu_dout, dsn); 
+                    mmr_dout   <= layer_ctrl;
+                end
+                6'b000_010: begin 
+                    prio0      <= data_sel(prio0,      cpu_dout, dsn); 
+                    mmr_dout   <= prio0;
+                end
+                6'b000_100: begin 
+                    prio1      <= data_sel(prio1,      cpu_dout, dsn); 
+                    mmr_dout   <= prio1;
+                end
+                6'b001_000: begin 
+                    prio2      <= data_sel(prio2,      cpu_dout, dsn); 
+                    mmr_dout   <= prio2;
+                end
+                6'b010_000: begin 
+                    prio3      <= data_sel(prio3,      cpu_dout, dsn); 
+                    mmr_dout   <= prio3;
+                end
+                6'b100_000: begin 
+                    pal_page_en<= data_sel(pal_page_en,cpu_dout, dsn); 
+                    mmr_dout   <= pal_page_en;
+                end
+            endcase
         end
     end
 end

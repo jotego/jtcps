@@ -28,7 +28,9 @@ module jtcps1_main(
     input              LVBL,
     // PPU
     output reg         ppu1_cs,
+    output reg         ppu2_cs,
     output reg         ppu_rstn,
+    input   [15:0]     mmr_dout,
     // Sound
     output  reg  [7:0] snd0_latch,
     output  reg  [7:0] snd1_latch,
@@ -119,6 +121,7 @@ always @(*) begin
     snd1_cs    = 1'b0;
     snd0_cs    = 1'b0;
     ppu1_cs    = 1'b0;
+    ppu2_cs    = 1'b0;
     one_wait   = 1'b0;
 
     if( !ASn && BGACKn ) begin // PAL PRG1 12H
@@ -129,6 +132,8 @@ always @(*) begin
         io_cs       = A[23:20] == 4'b1000;
         rom_cs      = A[23:22] == 2'b00;
         if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
+            ppu1_cs  = A[8:6] == 3'b100; // 'h10x
+            ppu2_cs  = A[8:6] == 3'b101; // 'h14x
             if( RnW ) begin
                 joy_cs = ~|A[8:3];
                 sys_cs = A[8:3] == 6'b00_0011;
@@ -136,7 +141,6 @@ always @(*) begin
                 olatch_cs = !UDSWn && A[8:3]==6'b00_0110;
                 snd1_cs   = !LDSWn && A[8:3]==6'b11_0001;
                 snd0_cs   = !LDSWn && A[8:3]==6'b11_0000;
-                ppu1_cs   = A[8:6] == 3'b100;
             end
         end
     end    
@@ -180,11 +184,12 @@ end
 (*keep*) reg  [15:0] cpu_din;
 
 always @(*) begin
-    case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs } )
-        3'b100:  cpu_din = sys_data;
-        3'b010:  cpu_din = ram_data;
-        3'b001:  cpu_din = rom_data;
-        default: cpu_din = 16'hffff;
+    case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
+        3'b10_00: cpu_din = sys_data;
+        3'b01_00: cpu_din = ram_data;
+        3'b00_10: cpu_din = rom_data;
+        4'b00_01: cpu_din = mmr_dout;
+        default:  cpu_din = 16'hffff;
     endcase
 end
 
@@ -244,7 +249,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int2 <= 1'b1;
         end
         else /*if(dip_pause)*/ begin
-            //if( V[8] && !last_V256 ) int2 <= 1'b0;
+            if( V[8] && !last_V256 ) int2 <= 1'b0;
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end
     end

@@ -109,6 +109,13 @@ wire [ 8:0] vdump, vrender;
 wire        rom0_half, rom1_half;
 wire [21:0] gfx0_addr, gfx1_addr;
 
+wire [ 5:1] addr_layer = 6'h13;
+wire [ 5:1] addr_prio0 = 6'h14;
+wire [ 5:1] addr_prio1 = 6'h15;
+wire [ 5:1] addr_prio2 = 6'h16;
+wire [ 5:1] addr_prio3 = 6'h17;
+wire [ 5:1] addr_pal_page = 6'h18;
+
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
 
@@ -212,7 +219,9 @@ jtcps1_main u_main(
     .LVBL       ( LVBL              ),
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
+    .ppu2_cs    ( ppu2_cs           ),
     .ppu_rstn   ( ppu_rstn          ),
+    .mmr_dout   ( mmr_dout          ),
     // Sound
     .snd0_latch ( snd0_latch        ),
     .snd1_latch ( snd1_latch        ),
@@ -287,6 +296,14 @@ jtcps1_video u_video(
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
+
+    // CPS-B Registers
+    .addr_layer     ( addr_layer    ),
+    .addr_prio0     ( addr_prio0    ),
+    .addr_prio1     ( addr_prio1    ),
+    .addr_prio2     ( addr_prio2    ),
+    .addr_prio3     ( addr_prio3    ),
+    .addr_pal_page  ( addr_pal_page ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),
