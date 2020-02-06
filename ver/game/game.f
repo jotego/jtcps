@@ -17,6 +17,8 @@
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
+../../modules/jtframe/hdl/sdram/jtframe_ram_rq.v
+../../modules/jtframe/hdl/sdram/jtframe_romrq.v
 ../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
 # Z80
 # ../../modules/jtframe/hdl/cpu/jtframe_z80.v

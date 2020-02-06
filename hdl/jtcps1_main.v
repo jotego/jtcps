@@ -191,8 +191,8 @@ end
 // DTACKn generation
 wire       inta_n;
 reg [1:0]  wait_cycles;
-(*keep*) wire       bus_cs =   |{ rom_cs, ram_cs, vram_cs };
-(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok, (ram_cs|vram_cs) & ~ram_ok,
+(*keep*) wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
+(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
                           wait_cycles[0] };
 reg        DTACKn;
 
