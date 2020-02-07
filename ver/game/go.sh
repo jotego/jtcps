@@ -2,9 +2,11 @@
 
 # Ghouls'n Ghosts
 # Game starts at address $400. It can be set to reset from it
-# ROM check starts at $61adc
+# ROM check starts at PC=$61adc
+# ROM OK written just before PC=$61bd6
+# Game execution starts at PC=$400
 # First character display around frame 170
-# Boot up fails around frame 3024
+# Boot up fails around frame 3220
 
 if [ rom.bin -nt ghouls.hex ]; then
     apply_patches.sh
