@@ -33,7 +33,7 @@ module jtcps1_obj(
     input      [ 8:0]  hdump,
     // control registers
     input      [15:0]  vram_base,
-    output     [23:1]  vram_addr,
+    output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output             vram_cs,

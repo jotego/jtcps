@@ -28,3 +28,7 @@ In order to see the equations for Willow's PAL.
 
 5. While simulation is running, it is possible to update the output video
    files by running `raw2jpg.sh`
+
+Some Verilog macros:
+
+1. FORCE_GRAY ignore palette and use a 4-bit gray scale for everything

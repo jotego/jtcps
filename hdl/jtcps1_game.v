@@ -92,9 +92,8 @@ wire [22:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
-wire [23:1] vram1_addr, vram_obj_addr;
+wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
 wire [15:0] vram1_data, vram_obj_data, vpal_data;
-wire [17:0] vpal_addr;
 wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok;
 wire [15:0] cpu_dout;
 
@@ -347,10 +346,10 @@ jtframe_sdram_mux #(
 
     .SLOT1_TYPE ( 2     ), // R/W access
     // VRAM read access:
-    .SLOT3_AW   ( 18    ),  // Scroll VRAM
-    .SLOT4_AW   ( 18    ),  // Palette VRAM
-    .SLOT5_AW   ( 18    ),  //5
-    .SLOT9_AW   ( 18    ),  // OBJ VRAM
+    .SLOT3_AW   ( 17    ),  // Scroll VRAM
+    .SLOT4_AW   ( 17    ),  // Palette VRAM
+    .SLOT5_AW   ( 17    ),  //5
+    .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
     .SLOT4_DW   ( 16    ),
@@ -385,11 +384,11 @@ u_sdram_mux(
 
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
-    .slot9_addr     ( vram_obj_addr[18:1]  ),
+    .slot9_addr     ( vram_obj_addr     ),
     .slot9_dout     ( vram_obj_data     ),
 
     .slot3_offset   ( VRAM_OFFSET       ),
-    .slot3_addr     ( vram1_addr[18:1]  ),
+    .slot3_addr     ( vram1_addr        ),
     .slot3_dout     ( vram1_data        ),
 
     .slot4_offset   ( VRAM_OFFSET       ),

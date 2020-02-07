@@ -36,7 +36,7 @@ module jtcps1_tilemap(
     input              start,
     output reg         done,
 
-    output reg [23:1]  vram_addr,
+    output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
@@ -128,7 +128,7 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin
-                vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
+                vram_addr <= { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
                 vram_cs   <= 1'b1;
             end
             3: begin

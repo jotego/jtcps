@@ -49,7 +49,7 @@ module jtcps1_colmix(
     input   [15:0]     pal_base,
 
     // VRAM access
-    output reg [17:0]  vram_addr,
+    output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
@@ -152,7 +152,7 @@ always @(posedge clk, posedge rst) begin
         end else pal_st <= 5'b1;
         case( pal_st )
             5'b0001: begin
-                vram_addr <= { pal_base[6:0], 7'd0 } + pal_cnt;
+                vram_addr <= { pal_base[9:1], 8'd0 } + pal_cnt;
             end
             // 4'b0010: wait for OK signal to go down in reaction to the change
             // in vram_addr
@@ -208,9 +208,15 @@ always @(posedge clk, posedge rst) begin
             green <= 8'd0;
             blue  <= 8'd0;
         end else begin
+            `ifdef NOBRIGHT
+            red   <= {2{raw_r}};
+            green <= {2{raw_g}};
+            blue  <= {2{raw_b}};
+            `else
             red   <= {2{raw_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
             green <= {2{raw_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
             blue  <= {2{raw_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
+            `endif
         end
     end
 end

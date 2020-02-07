@@ -42,7 +42,7 @@ module jtcps1_scroll(
 
     input              start,
 
-    output     [23:1]  vram_addr,
+    output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output             vram_cs,

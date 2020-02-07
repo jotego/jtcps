@@ -50,26 +50,20 @@ module jtcps1_video(
     input      [ 5:1]  addr_pal_page,
 
     // Video RAM interface
-    output     [23:1]  vram1_addr,
+    output     [17:1]  vram1_addr,
     input      [15:0]  vram1_data,
     input              vram1_ok,
     output             vram1_cs,
 
-    output     [23:1]  vram_obj_addr,
+    output     [17:1]  vram_obj_addr,
     input      [15:0]  vram_obj_data,
     input              vram_obj_ok,
     output             vram_obj_cs,
 
-    output     [17:0]  vpal_addr,
+    output     [17:1]  vpal_addr,
     input      [15:0]  vpal_data,
     input              vpal_ok,
     output             vpal_cs,
-
-    // VRAM access
-    output reg [23:1]  vram_addr,
-    input      [15:0]  vram_data,
-    input              vram_ok,
-    output reg         vram_cs,
 
     // Video signal
     output             HS,

@@ -26,7 +26,7 @@ module jtcps1_obj_table(
 
     // control registers
     input      [15:0]  vram_base,
-    output reg [23:1]  vram_addr,
+    output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
@@ -80,12 +80,12 @@ always @(posedge clk, posedge rst) begin
         frame_n   <= 1'b1;
         st        <= 0;
         vram_cs   <= 1'b0;
-        vram_addr <= 23'd0;
+        vram_addr <= 17'd0;
     end else begin
         last_VB <= VB;
         case( st )
             0: begin
-                vram_addr  <= {vram_base[15:3], 10'd0};
+                vram_addr  <= {vram_base[9:1], 8'd0};
                 vram_cs    <= 1'b0;
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
@@ -100,12 +100,12 @@ always @(posedge clk, posedge rst) begin
             1: begin
                 wait_cycle <= 1'b0;
                 if(vram_ok && !wait_cycle) begin
-                    vram_addr[17:1]  <= vram_addr[17:1] + 17'd1;
-                    wr_addr          <= wr_addr + 10'd1;
-                    wr_data          <= vram_data;
-                    wr_en            <= 1'b1;
-                    wait_cycle       <= 1'b1;
-                    if( vram_addr[10:1]== 10'h3fe ) st<=0;
+                    vram_addr  <= vram_addr + 17'd1;
+                    wr_addr    <= wr_addr + 10'd1;
+                    wr_data    <= vram_data;
+                    wr_en      <= 1'b1;
+                    wait_cycle <= 1'b1;
+                    if( vram_addr[10:1]== 10'h3ff ) st<=0;
                 end
             end
         endcase

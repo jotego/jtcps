@@ -167,6 +167,7 @@ always @(posedge clk, posedge reg_rst) begin
                 5'h05: begin
                     pal_base      <= data_sel(pal_base      , cpu_dout, dsn);
                     pre_copy      <= 1'b1;
+                    //$display("PALETTE!");
                 end
                 5'h06: hpos1         <= data_sel(hpos1         , cpu_dout, dsn);
                 5'h07: vpos1         <= data_sel(vpos1         , cpu_dout, dsn);
