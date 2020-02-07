@@ -97,6 +97,8 @@ wire     hflip = attr[5];
 wire [4:0] pal = attr[4:0];
 // assign rom_half = hn[3] ^ hflip;
 
+wire [17:1] aux_addr = { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
+
 always @(posedge clk or posedge rst) begin
     if(rst) begin
         rom_cs          <= 1'b0;
@@ -128,7 +130,7 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin
-                vram_addr <= { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
+                vram_addr <= aux_addr;
                 vram_cs   <= 1'b1;
             end
             3: begin
@@ -153,10 +155,10 @@ always @(posedge clk or posedge rst) begin
                     default:;
                 endcase
                 rom_cs    <= 1'b1;
-                hn <= hn + ( size[0] ? 10'h8 : (size[1] ? 10'h10 : 10'h20 ));
+                hn <= hn + ( size[0] ? 11'h8 : (size[1] ? 11'h10 : 11'h20 ));
             end
             6: if(rom_ok) begin
-                vram_addr <= { vram_base, 7'd0 } + { 10'd0, scan, 1'b0};
+                vram_addr <= aux_addr;
                 pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
                 rom_half <= ~rom_half;
             end else st<=6;
@@ -175,8 +177,10 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             15: begin
+                buf_wr <= 1'b0;
                 if( size[0] /*8*/) begin
-                    st <= 6'd2; // scan again
+                    st <= 6'd2; // scan again. Jumps to 2 because vram_addr was already
+                        // updated at 6
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
@@ -185,6 +189,7 @@ always @(posedge clk or posedge rst) begin
                 end else st<=st;
             end
             24: begin
+                buf_wr <= 1'b0;
                 if( size[1] /*16*/ ) begin
                     st <= 2; // scan again
                 end else if(rom_ok) begin
@@ -199,7 +204,8 @@ always @(posedge clk or posedge rst) begin
                 end else st<=st;
             end
             42: begin
-                st      <= 6'd2; // 32x tile done
+                buf_wr <= 1'b0;
+                st     <= 6'd2; // 32x tile done
             end
         endcase
     end

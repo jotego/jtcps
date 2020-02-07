@@ -207,6 +207,7 @@ jtcps1_mmr u_mmr(
 jtcps1_scroll u_scroll(
     .rst        ( rst           ),
     .clk        ( clk           ),
+    .gfx_en     ( gfx_en        ),
 
     .vrender    ( vrender       ),
     .vdump      ( vdump         ),

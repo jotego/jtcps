@@ -66,6 +66,7 @@ reg [11:0] pal_addr;
 reg [15:0] pal[0:(2**12)-1]; // 4096?
 reg [15:0] raw;
 wire [3:0] raw_r, raw_g, raw_b, raw_br;
+reg  [3:0] dly_r, dly_g, dly_b;
 
 assign raw_br = raw[15:12];
 assign raw_r  = raw[11: 8];
@@ -184,6 +185,7 @@ always @(posedge clk, posedge rst) begin
         mul_r <= raw_r * inv_br; // mul = signal * 15
         mul_g <= raw_g * inv_br;
         mul_b <= raw_b * inv_br;
+        { dly_r, dly_g, dly_b } <= { raw_r, raw_g, raw_b };
     end
 end
 
@@ -213,9 +215,9 @@ always @(posedge clk, posedge rst) begin
             green <= {2{raw_g}};
             blue  <= {2{raw_b}};
             `else
-            red   <= {2{raw_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
-            green <= {2{raw_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
-            blue  <= {2{raw_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
+            red   <= {2{dly_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
+            green <= {2{dly_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
+            blue  <= {2{dly_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
             `endif
         end
     end
