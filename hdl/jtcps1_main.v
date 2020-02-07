@@ -84,7 +84,9 @@ reg         dsn_dly;
 reg         one_wait;
 
 assign cpu_cen   = cen10;
-assign addr      = A[17:1];
+// As RAM and VRAM share contiguous spaces in the SDRAM
+// it is important to prevent overlapping
+assign addr      = ram_cs ? {2'b0, A[15:1] } : A[17:1];
 assign rom_addr  = A[19:1];
 
 // high during DMA transfer
@@ -249,7 +251,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int2 <= 1'b1;
         end
         else /*if(dip_pause)*/ begin
-            if( V[8] && !last_V256 ) int2 <= 1'b0;
+            //if( V[8] && !last_V256 ) int2 <= 1'b0;
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end
     end
