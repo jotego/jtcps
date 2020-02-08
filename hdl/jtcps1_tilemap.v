@@ -161,7 +161,7 @@ always @(posedge clk or posedge rst) begin
             6: if(rom_ok) begin
                 vram_addr <= aux_addr;
                 pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
-                rom_half <= ~rom_half;
+                if(!size[0]) rom_half <= ~rom_half; // not needed for scroll1
             end else st<=6;
             7,8,9,10,    11,12,13,14, 
             16,17,18,19, 20,21,22,23,

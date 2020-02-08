@@ -108,7 +108,7 @@ wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
 wire [22:0]     scr1_addr, obj_addr;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
-wire            line_start;
+wire            line_start, preVB;
 
 // Register configuration
 // Scroll
@@ -136,6 +136,7 @@ jtcps1_timing u_timing(
     .HS             ( HS                ),
     .VS             ( VS                ),
     .VB             ( VB                ),
+    .preVB          ( preVB             ),
     .HB             ( HB                )
 );
 
@@ -219,7 +220,7 @@ jtcps1_scroll u_scroll(
     .vrender    ( vrender       ),
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
-    .vb         ( VB            ),
+    .preVB      ( preVB         ),
     
     .vram1_base ( vram1_base    ),
     .hpos1      ( hpos1         ),

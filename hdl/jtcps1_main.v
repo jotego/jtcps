@@ -137,8 +137,8 @@ always @(*) begin
             ppu1_cs  = A[8:6] == 3'b100; // 'h10x
             ppu2_cs  = A[8:6] == 3'b101; // 'h14x
             if( RnW ) begin
-                joy_cs = ~|A[8:3];
-                sys_cs = A[8:3] == 6'b00_0011;
+                joy_cs = A[8:3] == 6'b000_000;
+                sys_cs = A[8:3] == 6'b000_011;
             end else begin // outputs
                 olatch_cs = !UDSWn && A[8:3]==6'b00_0110;
                 snd1_cs   = !LDSWn && A[8:3]==6'b11_0001;
@@ -169,15 +169,15 @@ end
 // Cabinet input
 reg [15:0] sys_data;
 
-always @(posedge clk) if(cpu_cen) begin
+always @(posedge clk) begin
     if( joy_cs ) sys_data <= { joystick2, joystick1 };
     else if(sys_cs) begin
         case( A[2:1] )
             2'b00: sys_data <= { tilt, dip_test, start_button,
                 1'b1, service, coin_input, 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
-            2'b10: sys_data <= { dipsw_a, 8'hff };
-            2'b11: sys_data <= { dipsw_a, 8'hff };
+            2'b10: sys_data <= { dipsw_b, 8'hff };
+            2'b11: sys_data <= { dipsw_c, 8'hff };
         endcase
     end
 end
@@ -187,9 +187,9 @@ end
 
 always @(*) begin
     case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
-        3'b10_00: cpu_din = sys_data;
-        3'b01_00: cpu_din = ram_data;
-        3'b00_10: cpu_din = rom_data;
+        4'b10_00: cpu_din = sys_data;
+        4'b01_00: cpu_din = ram_data;
+        4'b00_10: cpu_din = rom_data;
         4'b00_01: cpu_din = mmr_dout;
         default:  cpu_din = 16'hffff;
     endcase

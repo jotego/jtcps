@@ -146,6 +146,10 @@ assign slot_wr[9:2] = 7'd0;
 assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
+assign dipsw_a      = 8'hff;
+assign dipsw_b      = 8'hff;
+assign dipsw_c      = 8'hff;
+
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
 

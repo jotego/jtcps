@@ -244,7 +244,7 @@ initial begin
 end
 `endif
 
-localparam SDRAM_STCNT=5; // 6 Realistic, 5 Possible, less than 5 unrealistic
+localparam SDRAM_STCNT=7; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
 reg       last_st0, last_HS;
 integer  sdram_idle_cnt, total_cycles, line_idle;
@@ -302,14 +302,14 @@ end
 
 initial begin
     clk = 1'b0;
-    forever #10.417 clk = ~clk;
+    forever #(10.417/2) clk = ~clk;
 end
 
 integer cen_cnt=0;
 
 always @(posedge clk) begin
     cen_cnt <= cen_cnt+1;
-    if(cen_cnt>=5) cen_cnt<=0;
+    if(cen_cnt>=10) cen_cnt<=0;
     cen8 <= cen_cnt==0;
 end
 

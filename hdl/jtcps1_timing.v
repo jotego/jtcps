@@ -32,6 +32,7 @@ module jtcps1_timing(
     output reg         HS,
     output reg         VS,
     output reg         VB,
+    output reg         preVB,
     output reg         HB
 );
 
@@ -55,7 +56,7 @@ always @(posedge clk) if(cen8) begin
     //if ( vdump==9'h0F  ) VB <= 1'b0;
     if ( vdump==9'h100 ) VS <= 1'b1;
     if ( vdump==9'h001 ) VS <= 1'b0;
-    VB     <= vdump<(9'd16) || vdump>9'd239; // 224 visible lines
+    VB     <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
     HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     HS     <= hdump>=9'h1cc && hdump<9'h1f0;    // 36 clock ticks
     start  <= hdump==9'h1ff;
@@ -64,6 +65,7 @@ always @(posedge clk) if(cen8) begin
         vrender1<= vrender1==9'd261 ? 9'd0 : vrender1+9'd1;
         vrender <= vrender1;
         vdump   <= vrender;
+        VB      <= preVB;
     end
 end
 

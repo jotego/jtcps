@@ -29,7 +29,7 @@ module jtcps1_scroll(
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
-    input              vb,
+    input              preVB,
     // control registers
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
@@ -164,7 +164,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         done      <= 1'b0;
         last_start <= start;
-        if( pedg_start && !vb ) begin
+        if( pedg_start && !preVB ) begin
             req_start <= 1'b1;
             rd_half   <= ~rd_half;
         end

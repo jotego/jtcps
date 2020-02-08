@@ -68,10 +68,10 @@ reg [15:0] raw;
 wire [3:0] raw_r, raw_g, raw_b, raw_br;
 reg  [3:0] dly_r, dly_g, dly_b;
 
-assign raw_br = raw[15:12];
-assign raw_r  = raw[11: 8];
-assign raw_g  = raw[ 7: 4];
-assign raw_b  = raw[ 3: 0];
+assign raw_br = raw[15:12]; // r
+assign raw_r  = raw[11: 8]; // br
+assign raw_g  = raw[ 7: 4]; // b
+assign raw_b  = raw[ 3: 0]; // g
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
