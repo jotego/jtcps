@@ -99,9 +99,7 @@ module jtcps1_video(
 
 // use for CPU only simulations:
 `ifdef NOVIDEO
-`define NOSCROLL1
-`define NOSCROLL2
-`define NOSCROLL3
+`define NOSCROLL
 `define NOOBJ
 `define NOCOLMIX
 `endif
@@ -221,6 +219,7 @@ jtcps1_scroll u_scroll(
     .vrender    ( vrender       ),
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
+    .vb         ( VB            ),
     
     .vram1_base ( vram1_base    ),
     .hpos1      ( hpos1         ),

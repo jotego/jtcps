@@ -29,6 +29,7 @@ module jtcps1_scroll(
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
+    input              vb,
     // control registers
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
@@ -69,9 +70,10 @@ reg  [15:0] hpos, vpos, vram_base;
 reg  [ 2:0] st;
 wire        sub_done;
 
+reg         rd_half, wr_half;
 
-wire [9:0] addr0 = {  vdump[0], buf_addr }; // write
-wire [9:0] addr1 = { ~vdump[0], hdump    }; // read
+wire [9:0] addr0 = { wr_half, buf_addr }; // write
+wire [9:0] addr1 = { rd_half, hdump    }; // read
 wire [8:0] pre1_pxl, pre2_pxl, pre3_pxl;
 
 wire       wr1 = buf_wr & st[0],
@@ -144,6 +146,9 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
+reg req_start, last_start;
+wire pedg_start = start & ~last_start;
+
 // Tilemap sequencer
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -151,10 +156,21 @@ always @(posedge clk, posedge rst) begin
         st        <= 3'b1;
         sub_start <= 1'b0;
         pre_start <= 1'b0;
+        req_start <= 1'b0;
         done      <= 1'b0;
+        last_start<= 1'b0;
+        rd_half   <= 1'b0;
+        wr_half   <= 1'b1;
     end else begin
         done      <= 1'b0;
-        if( start ) begin
+        last_start <= start;
+        if( pedg_start && !vb ) begin
+            req_start <= 1'b1;
+            rd_half   <= ~rd_half;
+        end
+        if( req_start  && !busy ) begin
+            wr_half   <= ~wr_half;
+            req_start <= 1'b0;
             busy      <= 1'b1;
             st        <= 3'b1;
             pre_start <= 1'b1;
@@ -206,6 +222,7 @@ jtcps1_tilemap u_tilemap(
     .vpos       ( vpos          ),
 
     .start      ( sub_start     ),
+    .stop       ( pedg_start    ),
     .done       ( sub_done      ),
 
     .vram_addr  ( vram_addr     ),

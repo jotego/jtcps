@@ -6,5 +6,8 @@ set_global_assignment -name VERILOG_MACRO "MISTER_NOHDMI=1"
 
 set_global_assignment -name VERILOG_MACRO "SDRAM_SHIFT=7291"
 
-# 6250
+## 128 MB memory:
 # 5729
+# 6250
+# 7291 ~ works but ROM OK often fails
+# 8246 ~ works but ROM OK often fails

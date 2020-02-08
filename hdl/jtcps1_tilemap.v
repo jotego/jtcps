@@ -34,6 +34,7 @@ module jtcps1_tilemap(
     input      [15:0]  vpos,
 
     input              start,
+    input              stop,
     output reg         done,
 
     output reg [17:1]  vram_addr,
@@ -208,6 +209,10 @@ always @(posedge clk or posedge rst) begin
                 st     <= 6'd2; // 32x tile done
             end
         endcase
+        if( stop ) begin
+            done <= 1'b1;
+            st   <= 6'd0;
+        end
     end
 end
 
