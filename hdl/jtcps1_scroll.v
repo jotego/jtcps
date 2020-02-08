@@ -55,9 +55,9 @@ module jtcps1_scroll(
 
     input      [ 3:0]  gfx_en,
 
-    output reg [ 8:0]  scr1_pxl,
-    output reg [ 8:0]  scr2_pxl,
-    output reg [ 8:0]  scr3_pxl
+    (*keep*)output reg [ 8:0]  scr1_pxl,
+    (*keep*)output reg [ 8:0]  scr2_pxl,
+    (*keep*)output reg [ 8:0]  scr3_pxl
 );
 
 reg         pre_start, sub_start, busy, done;
@@ -131,10 +131,10 @@ always @(posedge clk, posedge rst) begin
         scr3_pxl <= 9'h1ff;
     end else begin
         if( hdump>9'd63 && hdump<9'd448 ) begin // active area
-            scr1_pxl <= gfx_en[0] ? pre1_pxl : 9'h1ff;
-            scr2_pxl <= gfx_en[1] ? pre2_pxl : 9'h1ff;
+            scr1_pxl <= pre1_pxl;
+            scr2_pxl <= pre2_pxl;
             `ifndef NOSCROLL3
-            scr3_pxl <= gfx_en[2] ? pre3_pxl : 9'h1ff;
+            scr3_pxl <= pre3_pxl;
             `endif
         end else begin
             scr1_pxl <= 9'h1ff;
@@ -175,7 +175,7 @@ always @(posedge clk, posedge rst) begin
                     end
                 end
                 3'b010: begin
-                    if( sub_done || !gfx_en[1] ) begin
+                    if( sub_done ) begin
                         hpos      <= hpos3;
                         vpos      <= vpos3;
                         vram_base <= vram3_base;
@@ -184,7 +184,7 @@ always @(posedge clk, posedge rst) begin
                     end
                 end
                 3'b100: begin
-                    if( sub_done || !gfx_en[2] ) begin
+                    if( sub_done ) begin
                         done <= 1'b1;
                         busy <= 1'b0;
                     end

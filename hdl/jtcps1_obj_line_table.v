@@ -45,7 +45,7 @@ wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
 
 reg         first, done, inzone;
 wire [ 3:0] tile_n, tile_m;
-reg  [ 3:0] n, m, vsub;  // tile expansion n==horizontal, m==verital
+reg  [ 3:0] n, npos, m, vsub;  // tile expansion n==horizontal, m==verital
 wire        vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
@@ -54,7 +54,7 @@ reg         last_tile;
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
 assign      vflip      = obj_attr[6];
-//          hflip      = obj_attr[5];
+wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
 
 reg  [15:0] code_mn;
@@ -149,6 +149,9 @@ always @(posedge clk, posedge rst) begin
                 frame_addr <= frame_addr-10'd1;
                 if( !wait_cycle[0] ) begin
                     n          <= 4'd0;
+                    // npos is the X offset of the tile. When the sprite is flipped
+                    // npos order is reversed
+                    npos       <= frame_data[5] /* flip */ ? frame_data[11: 8] /* tile_n */ : 4'd0;
                     last_attr  <= obj_attr;
                     obj_attr   <= frame_data;
                     wait_cycle <= 3'b011; // leave it ready for next round
@@ -183,7 +186,7 @@ always @(posedge clk, posedge rst) begin
             end
             6: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
             7: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= code_mn;
-            8: line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= obj_x + { 1'b0, n, 4'd0};
+            8: line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= obj_x + { 1'b0, npos, 4'd0};
             9: begin
                 if( line_cnt==7'h7f ) begin
                     st   <= 0; // line full
@@ -193,6 +196,7 @@ always @(posedge clk, posedge rst) begin
                     if( n == tile_n ) st <= 1; // next element
                     else begin // prepare for next tile
                         n <= n + 4'd1;
+                        npos <= hflip ? npos-4'd1 : npos+4'd1;
                         st <= 6;
                     end
                 end

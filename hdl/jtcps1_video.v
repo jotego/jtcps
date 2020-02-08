@@ -77,14 +77,14 @@ module jtcps1_video(
     output     [ 7:0]  blue,
 
     // GFX ROM interface
-    output     [22:0]  rom1_addr,    // up to 1 MB
+    output     [19:0]  rom1_addr,
     output     [ 3:0]  rom1_bank,
     output             rom1_half,    // selects which half to read
     input      [31:0]  rom1_data,
     output             rom1_cs,
     input              rom1_ok,
 
-    output     [22:0]  rom0_addr,    // up to 1 MB
+    output reg [19:0]  rom0_addr,
     output     [ 3:0]  rom0_bank,
     output             rom0_half,    // selects which half to read
     input      [31:0]  rom0_data,
@@ -148,8 +148,17 @@ jtcps1_gfx_pal u_gfx_pal(
     .offset1    ( rom1_bank         )
 );
 
-assign rom0_addr = { rom0_bank[3:0], obj_addr[18:0]  };
-assign rom1_addr = { rom1_bank[3:0], scr1_addr[18:0] }; // 4+19=23
+always @(*) begin
+    case( rom0_bank )
+        default: rom0_addr = { 3'b0, obj_addr[16:0] } + 20'h4_0000;
+        4'h4   : rom0_addr = obj_addr[19:0];
+    endcase
+end
+assign rom1_addr = scr1_addr[19:0];
+
+// initial begin
+//     $display("OFFSET=%X",`OFFSET);
+// end
 
 jtcps1_mmr u_mmr(
     .rst            ( rst               ),

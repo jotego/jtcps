@@ -12,18 +12,18 @@ wire               HS, VS, HB, VB, LHBL_dly, LVBL_dly;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
-wire       [23:1]  vram1_addr, vram2_addr, vram3_addr,  vram_obj_addr;
-wire       [15:0]  vram1_data, vram2_data, vram3_data,  vram_obj_data;
-wire               vram1_ok,   vram2_ok,   vram3_ok,    vram_obj_ok;
-wire               vram1_cs,   vram2_cs,   vram3_cs,    vram_obj_cs;
+wire       [17:1]  vram1_addr, vram_obj_addr;
+wire       [15:0]  vram1_data, vram_obj_data;
+wire               vram1_ok,   vram_obj_ok;
+wire               vram1_cs,   vram_obj_cs;
 
 // GFX ROM interface
-wire       [22:0]  rom1_addr, rom2_addr, rom3_addr, rom0_addr;
-wire       [31:0]  rom1_data, rom2_data, rom3_data, rom0_data;
-wire       [ 3:0]  rom1_bank, rom2_bank, rom3_bank, rom0_bank;
-wire               rom1_half, rom2_half, rom3_half, rom0_half;
-wire               rom1_cs, rom2_cs, rom3_cs, rom0_cs;
-wire               rom1_ok, rom2_ok, rom3_ok, rom0_ok;
+wire       [19:0]  rom1_addr, rom0_addr;
+wire       [31:0]  rom1_data, rom0_data;
+wire       [ 3:0]  rom1_bank, rom0_bank;
+wire               rom1_half, rom0_half;
+wire               rom1_cs, rom0_cs;
+wire               rom1_ok, rom0_ok;
 
 reg                downloading=1'b0, loop_rst=1'b0, sdram_ack;
 reg        [31:0]  data_read;
@@ -134,10 +134,10 @@ jtcps1_video UUT (
 
 jtframe_sdram_mux #(
     // VRAM read access:
-    .SLOT3_AW   ( 18    ),
-    .SLOT4_AW   ( 18    ),  //4
-    .SLOT5_AW   ( 18    ),  //5
-    .SLOT9_AW   ( 18    ),  // OBJ VRAM
+    .SLOT3_AW   ( 17    ),
+    .SLOT4_AW   ( 17    ),  //4
+    .SLOT5_AW   ( 17    ),  //5
+    .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
     .SLOT4_DW   ( 16    ),
@@ -161,11 +161,11 @@ u_sdram_mux(
 
     // VRAM read access only
     .slot9_offset   ( vram_offset       ),
-    .slot9_addr     ( vram_obj_addr[18:1]  ),
+    .slot9_addr     ( vram_obj_addr     ),
     .slot9_dout     ( vram_obj_data     ),
 
     .slot3_offset   ( vram_offset       ),
-    .slot3_addr     ( vram1_addr[18:1]  ),
+    .slot3_addr     ( vram1_addr        ),
     .slot3_dout     ( vram1_data        ),
 
     // GFX ROM
@@ -225,7 +225,8 @@ initial begin
         $finish;
     end
     sdram_cnt=$fread(sdram,fsdram);
-    $display("INFO: Read 0x%2x x 64 kBytes for game ROM",sdram_cnt>>16);
+    $display("INFO: Read 0x%x x 64 kBytes for game ROM",sdram_cnt>>16);
+    $display("           (0x%x bytes)",sdram_cnt);
     $fclose(fsdram);
     // load VRAM
     fsdram=$fopen("vram_sw.bin","rb");
@@ -239,7 +240,7 @@ initial begin
     $display("INFO Read %d kB for VRAM",sdram_cnt>>10);
     $fclose(fsdram);
     //$display("VRAM[0]=%X", {sdram[vram_offset+1], sdram[vram_offset]});
-    $finish;
+    //$finish;
 end
 `endif
 
