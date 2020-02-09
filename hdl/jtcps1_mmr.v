@@ -60,7 +60,7 @@ module jtcps1_mmr(
     output reg [15:0]  pal_base,
     output reg         pal_copy,
 
-    // CPS-B Registers
+    // CPS-B Registers configuration
     input      [ 5:1]  addr_layer,
     input      [ 5:1]  addr_prio0,
     input      [ 5:1]  addr_prio1,

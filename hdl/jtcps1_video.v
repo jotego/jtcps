@@ -292,6 +292,17 @@ assign rom0_cs = 1'b0;
 assign obj_pxl = 9'h1ff;
 `endif
 
+`ifdef SIMULATION
+reg pal_copy2=1'b0;
+
+initial begin
+    pal_copy2=1'b0;
+    #50_000 pal_copy2=1'b1;
+    #50_040 pal_copy2=1'b0;
+end
+`endif
+
+
 `ifndef NOCOLMIX
 jtcps1_colmix u_colmix(
     .rst        ( rst           ),
@@ -305,7 +316,11 @@ jtcps1_colmix u_colmix(
     .gfx_en     ( gfx_en        ),
 
     // Palette copy
+    `ifdef SIMULATION
+    .pal_copy   ( pal_copy2     ), // runs a palette copy command at the beginning of the simulation
+    `else
     .pal_copy   ( pal_copy      ),
+    `endif
     .pal_base   ( pal_base      ),
 
     // VRAM access

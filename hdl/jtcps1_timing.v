@@ -46,6 +46,7 @@ initial begin
     VS        = 1'b0;
     HB        = 1'b1;
     VB        = 1'b1;
+    preVB     = 1'b0;
     start     = 1'b1;
 end
 `endif
@@ -56,7 +57,7 @@ always @(posedge clk) if(cen8) begin
     //if ( vdump==9'h0F  ) VB <= 1'b0;
     if ( vdump==9'h100 ) VS <= 1'b1;
     if ( vdump==9'h001 ) VS <= 1'b0;
-    VB     <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
+    preVB  <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
     HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     HS     <= hdump>=9'h1cc && hdump<9'h1f0;    // 36 clock ticks
     start  <= hdump==9'h1ff;

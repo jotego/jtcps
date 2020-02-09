@@ -12,10 +12,10 @@ wire               HS, VS, HB, VB, LHBL_dly, LVBL_dly;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
-wire       [17:1]  vram1_addr, vram_obj_addr;
-wire       [15:0]  vram1_data, vram_obj_data;
-wire               vram1_ok,   vram_obj_ok;
-wire               vram1_cs,   vram_obj_cs;
+wire       [17:1]  vram1_addr, vram_obj_addr, vpal_addr;
+wire       [15:0]  vram1_data, vram_obj_data, vpal_data;
+wire               vram1_ok,   vram_obj_ok, vpal_ok;
+wire               vram1_cs,   vram_obj_cs, vpal_cs;
 
 // GFX ROM interface
 wire       [19:0]  rom1_addr, rom0_addr;
@@ -52,15 +52,16 @@ assign slot_cs[0] = 1'b0;
 assign slot_cs[1] = 1'b0;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
-assign slot_cs[4] = 1'b0;
+assign slot_cs[4] = vpal_cs;
 assign slot_cs[5] = 1'b0;
 assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = 1'b0;
 assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
 
-assign rom0_ok      = slot_ok[2];
+assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
+assign vpal_ok     = slot_ok[4];
 assign rom1_ok     = slot_ok[6];
 assign vram_obj_ok = slot_ok[9];
 
@@ -116,6 +117,11 @@ jtcps1_video UUT (
     .vram_obj_ok    ( vram_obj_ok   ),
     .vram_obj_cs    ( vram_obj_cs   ),
 
+    .vpal_addr      ( vpal_addr     ),
+    .vpal_data      ( vpal_data     ),
+    .vpal_ok        ( vpal_ok       ),
+    .vpal_cs        ( vpal_cs       ),
+    
     // GFX ROM interface
     .rom1_addr  ( rom1_addr     ),
     .rom1_bank  ( rom1_bank     ),
@@ -167,6 +173,11 @@ u_sdram_mux(
     .slot3_offset   ( vram_offset       ),
     .slot3_addr     ( vram1_addr        ),
     .slot3_dout     ( vram1_data        ),
+
+
+    .slot4_offset   ( vram_offset       ),
+    .slot4_addr     ( vpal_addr         ),
+    .slot4_dout     ( vpal_data         ),
 
     // GFX ROM
     .slot2_offset   ( gfx_offset/*^(22'b01_111<<17) */       ),
@@ -244,7 +255,7 @@ initial begin
 end
 `endif
 
-localparam SDRAM_STCNT=7; // 6 Realistic, 5 Possible, less than 5 unrealistic
+localparam SDRAM_STCNT=6; // 6 Realistic, 5 Possible, less than 5 unrealistic
 reg [SDRAM_STCNT-1:0] sdram_st;
 reg       last_st0, last_HS;
 integer  sdram_idle_cnt, total_cycles, line_idle;
@@ -302,14 +313,14 @@ end
 
 initial begin
     clk = 1'b0;
-    forever #(10.417/2) clk = ~clk;
+    forever #(10.417) clk = ~clk;
 end
 
 integer cen_cnt=0;
 
 always @(posedge clk) begin
     cen_cnt <= cen_cnt+1;
-    if(cen_cnt>=10) cen_cnt<=0;
+    if(cen_cnt>=5) cen_cnt<=0;
     cen8 <= cen_cnt==0;
 end
 

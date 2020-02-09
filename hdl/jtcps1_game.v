@@ -93,7 +93,7 @@ wire [31:0] rom0_data, rom1_data;
 wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
 wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
-wire [15:0] vram1_data, vram_obj_data, vpal_data;
+(*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
 wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok;
 wire [15:0] cpu_dout;
 
@@ -148,7 +148,7 @@ assign slot_wr[0]   = 1'd0;
 
 assign dipsw_a      = 8'hff;
 assign dipsw_b      = 8'hff;
-assign dipsw_c      = 8'hff;
+assign dipsw_c      = { dip_test, 7'h7f };
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;

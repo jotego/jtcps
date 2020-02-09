@@ -54,13 +54,13 @@ module jtcps1_colmix(
     input              vram_ok,
     output reg         vram_cs,
 
-    output reg [7:0]  red,
-    output reg [7:0]  green,
-    output reg [7:0]  blue
+    (*keep*) output reg [7:0]  red,
+    (*keep*) output reg [7:0]  green,
+    (*keep*) output reg [7:0]  blue
 );
 
-reg [ 8:0] pxl;
-reg [11:0] pal_addr;
+reg  [ 8:0] pxl;
+wire [11:0] pal_addr;
 
 // Palette
 reg [15:0] pal[0:(2**12)-1]; // 4096?
@@ -68,10 +68,11 @@ reg [15:0] raw;
 wire [3:0] raw_r, raw_g, raw_b, raw_br;
 reg  [3:0] dly_r, dly_g, dly_b;
 
-assign raw_br = raw[15:12]; // r
-assign raw_r  = raw[11: 8]; // br
-assign raw_g  = raw[ 7: 4]; // b
-assign raw_b  = raw[ 3: 0]; // g
+assign raw_br   = raw[15:12]; // r
+assign raw_r    = raw[11: 8]; // br
+assign raw_g    = raw[ 7: 4]; // b
+assign raw_b    = raw[ 3: 0]; // g
+assign pal_addr = { pxl_type, pxl };
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
@@ -84,30 +85,29 @@ assign raw_b  = raw[ 3: 0]; // g
 reg [2:0] pxl_type;
 
 // simple layer priority for now:
-always @(*) begin
+always @(posedge clk) if(pxl_cen) begin
     //pxl      = scr1_pxl;
     //pxl_type = 3'b01;
     //pxl      = scr2_pxl;
     //pxl_type = 3'b10;
 
     if( obj_pxl[3:0] != 4'hf && gfx_en[3] ) begin
-        pxl = obj_pxl;
-        pxl_type=3'b0;
+        pxl      <= obj_pxl;
+        pxl_type <= 3'b0;
     end else if( scr1_pxl[3:0] != 4'hf && gfx_en[0] ) begin
-        pxl      = scr1_pxl;
-        pxl_type = 3'b1;
+        pxl      <= scr1_pxl;
+        pxl_type <= 3'b1;
     end else if(scr2_pxl[3:0] != 4'hf && gfx_en[1] ) begin
-        pxl      = scr2_pxl;
-        pxl_type = 3'b10;
+        pxl      <= scr2_pxl;
+        pxl_type <= 3'b10;
     end else if( gfx_en[2] ) begin
-        pxl = scr3_pxl;
-        pxl_type = 3'b011;
+        pxl      <= scr3_pxl;
+        pxl_type <= 3'b011;
     end
     else begin
-        pxl = 9'h1ff;
-        pxl_type = 3'b011;
+        pxl      <= 9'h1ff;
+        pxl_type <= 3'b011;
     end
-    pal_addr = { pxl_type, pxl };
 end
 
 `ifdef SIMULATION
@@ -132,6 +132,16 @@ end
 reg [11:0] pal_cnt;
 reg [ 4:0] pal_st;
 
+//wire pal_copy2;
+//
+//`ifdef SIMULATION
+//reg last_VB;
+//always @(posedge clk) last_VB <= VB;
+//assign pal_copy2 = VB && !last_VB;
+//`else
+
+(*keep*) reg [15:0] vram_data2;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         raw       <= 16'h0;
@@ -140,11 +150,20 @@ always @(posedge clk, posedge rst) begin
         vram_cs   <= 1'b0;
         vram_addr <= 23'd0;
     end else begin
-        `ifndef FORCE_GRAY
         raw <= pal[pal_addr];
-        `else
-        raw <= {4{pal_addr[3:0]}};
+        `ifdef FORCE_GRAY
+        raw <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
         `endif
+        `ifdef FORCE_RED
+        raw <= {4'hf,pal[pal_addr][11:8],8'h0};
+        `endif
+        `ifdef FORCE_GREEN
+        raw <= {4'hf,4'h0,pal[pal_addr][7:4],4'h0};
+        `endif
+        `ifdef FORCE_BLUE
+        raw <= {4'hf,8'h0,pal[pal_addr][3:0]};
+        `endif
+
         if( pal_copy && pal_st[0] ) begin
             vram_cs <= 1'b1;
         end
@@ -159,6 +178,7 @@ always @(posedge clk, posedge rst) begin
             // in vram_addr
             5'b1000: if(vram_ok) begin
                 pal[pal_cnt] <= vram_data;
+                vram_data2 <= vram_data;
                 if( &pal_cnt ) begin
                     vram_cs <= 1'b0;
                 end
