@@ -45,7 +45,7 @@ wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
 
 reg         first, done, inzone;
 wire [ 3:0] tile_n, tile_m;
-reg  [ 3:0] n, npos, m, vsub;  // tile expansion n==horizontal, m==verital
+reg  [ 3:0] n, npos, m, mflip, vsub;  // tile expansion n==horizontal, m==verital
 wire        vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
@@ -109,6 +109,7 @@ always @(*) begin
         16'h80_00: m = 15;
         default: m=0;
     endcase
+    mflip = tile_m-m;
 end
 
 always @(*) begin
@@ -116,10 +117,10 @@ always @(*) begin
         2'b00: code_mn = obj_code;
         2'b01: code_mn = { obj_code[15:4], obj_code[3:0]+n };
         2'b10: code_mn = { obj_code[15:8], 
-                           obj_code[7:4]+m,
+                           obj_code[7:4]+ (vflip ? mflip : m),
                            obj_code[3:0] };
         2'b11: code_mn = { obj_code[15:8], 
-                           obj_code[7:4]+m, 
+                           obj_code[7:4]+ (vflip ? mflip : m), 
                            obj_code[3:0]+n };
     endcase
 end
