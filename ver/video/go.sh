@@ -51,9 +51,9 @@ ln -s $ROM_FILE rom
 # Prepare bin files
 dd if=vram.bin of=vram_sw.bin conv=swab
 # Palette
-dd if=vram.bin of=pal.bin count=$((8*1024)) skip=$((256*256)) iflag=count_bytes,skip_bytes
+dd if=vram.bin of=pal.bin count=$((8*1024/512)) skip=$((256*256/512)) # iflag=count_bytes,skip_bytes
 # Objects
-dd if=vram.bin of=obj.bin count=$((256*4*2)) skip=$((2*256*256)) iflag=count_bytes,skip_bytes
+dd if=vram.bin of=obj.bin count=$((256*4*2/512)) skip=$((2*256*256/512)) #iflag=count_bytes,skip_bytes
 
 if which ncverilog; then
     ncverilog test.v -f test.f  +access+r +define+SIMULATION +define+NCVERILOG $EXTRA \

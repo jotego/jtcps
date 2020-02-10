@@ -76,7 +76,7 @@ generate
         jtcps1_obj_match #(mgen) u_match(
             .tile_m ( tile_m        ),
             .vrender( vrender1      ),
-            .obj_y  (   obj_y[7:0]  ),
+            .obj_y  (   obj_y[8:0]  ),
             .match  ( match[mgen]   )
         );
     end

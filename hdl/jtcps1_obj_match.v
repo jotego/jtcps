@@ -21,7 +21,7 @@
 module jtcps1_obj_match #(parameter [3:0] OFFSET=0)(
     input      [3:0] tile_m,
     input      [8:0] vrender,
-    input      [7:0] obj_y,
+    input      [8:0] obj_y,
     output reg       match
 );
 
@@ -29,7 +29,7 @@ reg  [8:0]  vfinal, vfinal2;
 reg         below, inzone;
 
 always @(*) begin
-    vfinal = obj_y  + {OFFSET,4'd0};
+    vfinal = obj_y  + {1'b0,OFFSET,4'd0};
     vfinal2= vfinal + 9'h10;
     below  = vrender >= vfinal;
     inzone = vrender < vfinal2;
