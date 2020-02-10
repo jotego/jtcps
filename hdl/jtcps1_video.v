@@ -294,7 +294,7 @@ assign obj_pxl = 9'h1ff;
 
 `ifdef SIMULATION
 reg pal_copy2=1'b0;
-
+wire pal_copy3 = pal_copy2 | pal_copy;
 initial begin
     pal_copy2=1'b0;
     #50_000 pal_copy2=1'b1;
@@ -317,7 +317,7 @@ jtcps1_colmix u_colmix(
 
     // Palette copy
     `ifdef SIMULATION
-    .pal_copy   ( pal_copy2     ), // runs a palette copy command at the beginning of the simulation
+    .pal_copy   ( pal_copy3     ), // runs a palette copy command at the beginning of the simulation
     `else
     .pal_copy   ( pal_copy      ),
     `endif

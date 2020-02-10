@@ -30,6 +30,7 @@ fi
 echo "Game ROM length: " $GAME_ROM_LEN
 ../../modules/jtframe/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
     -sysname cps1 -modules ../../modules -d SCANDOUBLER_DISABLE=1 \
-    -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1\
+    -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1 \
+    -d SCAN2X_TYPE=5\
     -videow 384 -videoh 224 \
     -video $*

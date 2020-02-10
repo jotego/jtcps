@@ -68,12 +68,6 @@ reg [15:0] raw;
 wire [3:0] raw_r, raw_g, raw_b, raw_br;
 reg  [3:0] dly_r, dly_g, dly_b;
 
-assign raw_br   = raw[15:12]; // r
-assign raw_r    = raw[11: 8]; // br
-assign raw_g    = raw[ 7: 4]; // b
-assign raw_b    = raw[ 3: 0]; // g
-assign pal_addr = { pxl_type, pxl };
-
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
 // via pins XS[4:0] and CPS-B encodes them
@@ -83,6 +77,12 @@ assign pal_addr = { pxl_type, pxl };
 // 011 = SCROLL 3
 // 000 = STAR FIELD?
 reg [2:0] pxl_type;
+
+assign raw_br   = raw[15:12]; // r
+assign raw_r    = raw[11: 8]; // br
+assign raw_g    = raw[ 7: 4]; // b
+assign raw_b    = raw[ 3: 0]; // g
+assign pal_addr = { pxl_type, pxl };
 
 // simple layer priority for now:
 always @(posedge clk) if(pxl_cen) begin
@@ -140,7 +140,14 @@ reg [ 4:0] pal_st;
 //assign pal_copy2 = VB && !last_VB;
 //`else
 
-(*keep*) reg [15:0] vram_data2;
+`ifdef SIMULATION
+reg [15:0] cur_pal;
+always @(pal_addr) begin
+    cur_pal = pal[pal_addr];
+end
+
+integer fpal,fpal_cnt;
+`endif
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -178,14 +185,20 @@ always @(posedge clk, posedge rst) begin
             // in vram_addr
             5'b1000: if(vram_ok) begin
                 pal[pal_cnt] <= vram_data;
-                vram_data2 <= vram_data;
                 if( &pal_cnt ) begin
                     vram_cs <= 1'b0;
+                    // `ifdef SIMULATION
+                    // $display("Palette base = %X",pal_base);
+                    // fpal=$fopen("pal_dump.hex","w");
+                    // for(fpal_cnt=0;fpal_cnt<4096;fpal_cnt=fpal_cnt+1) begin
+                    //     $fwrite(fpal,"%x\n",pal[fpal_cnt]);
+                    // end
+                    // $fclose(fpal);
+                    // `endif
                 end
             end else pal_st <= pal_st;
             5'b1_0000: pal_cnt <= pal_cnt + 12'd1;
         endcase
-
     end
 end
 
@@ -242,5 +255,25 @@ always @(posedge clk, posedge rst) begin
         end
     end
 end
+/*
+`ifdef SIMULATION
+integer fvideo;
+initial begin
+    fvideo = $fopen("video_colmix.raw","wb");
+end
 
+wire [31:0] video_dump = { 8'hff, {2{raw_r}}, {2{raw_g}}, {2{raw_b}} };
+
+// Define VIDEO_START with the first frame number for which
+// video will be dumped. If undefined, it will start from frame 0
+`ifndef VIDEO_START
+`define VIDEO_START 0
+`endif
+
+always @(posedge clk) if(pxl_cen) begin
+    if( LVBL_dly && LHBL_dly ) $fwrite(fvideo,"%u", video_dump);
+end
+
+`endif
+*/
 endmodule
