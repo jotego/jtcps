@@ -158,7 +158,7 @@ assign LHBL         = ~HB;
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
 wire [ 1:0] dsn;
-wire        cen16, cen8, cen10b, cen_fm, cen_fm2;
+wire        cen16, cen8, cen10b;
 reg         cen10, cen10x;
 
 (*keep*) wire cen20 = cen10 | cen10b;
@@ -193,14 +193,6 @@ jtframe_frac_cen #(.W(2))u_cen10(
     .n          ( 10'd5         ),
     .m          ( 10'd24        ),
     .cen        ( {nc0, cen10b }),
-    .cenb       (               ) // 180 shifted
-);
-
-jtframe_frac_cen #(.W(2))u_cenfm(
-    .clk        ( clk           ),
-    .n          ( 10'd61         ),
-    .m          ( 10'd818        ),
-    .cen        ( {cen_fm2, cen_fm }),
     .cenb       (               ) // 180 shifted
 );
 
@@ -354,8 +346,6 @@ jtcps1_video u_video(
 jtcps1_sound u_sound(
     .rst        ( rst           ),
     .clk        ( clk           ),    
-    .cen_fm     ( cen_fm        ),
-    .cen_fm2    ( cen_fm2       ),
 
     // Interface with main CPU
     .snd_latch0 ( snd_latch0    ),

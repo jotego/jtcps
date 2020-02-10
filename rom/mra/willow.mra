@@ -1,18 +1,23 @@
 <misterromdescription>
-	<name>Willow</name>
-	<setname>willow</setname>
+	<name>Final Fight</name>
+	<setname>ffight</setname>
 	<year>1988</year>
 	<manufacturer>Capcom</manufacturer>
 	<rbf>jtcps1</rbf>
-	<rom index="0" zip="willow.zip" md5="8267f4f96afe50e20b20f877cb9e54f5" type="merged|nonmerged">
-        <!-- Main CPU -->     
-        <part name="wle_30.11f"/>
-        <part name="wle_35.11h"/>
-        <part name="wlu_31.12f"/>
-        <part name="wlu_36.12h"/>
-        <!-- wlm-32.8h should be byte swapped -->
-        <group with="16">
-            <part name="wlm-32.8h" pattern="10"/>
+	<rom index="0" zip="ffight.zip" md5="bb78eee71ae19adcfd7d493e36d809aa" type="merged|nonmerged">
+        <!-- Main CPU -->
+        <group width="16">
+            <!-- take one byte from each file -->
+            <part name="wle_35.11h"/>
+            <part name="wle_30.11f"/>
+        </group>
+        <group width="16">
+            <!-- take one byte from each file -->
+            <part name="wlu_36.12h"/>
+            <part name="wlu_31.12f"/>
+        </group>
+        <group width="16">
+            <part name="wlm-32.8h" pattern="01"/>
         </group>
         <!--Audio CPU-->
         <part name="wl_09.12b"/>
@@ -28,7 +33,6 @@
             <part name="wlm-1.5a" pattern="01"/>
         </group>
         <group width="64">
-            <!-- take one byte from each file -->
             <part name="wl_24.7d"/>
             <part name="wl_14.7c"/>
             <part name="wl_26.9d"/>

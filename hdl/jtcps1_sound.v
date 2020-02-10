@@ -19,8 +19,6 @@
 module jtcps1_sound(
     input           rst,
     input           clk,    
-    input           cen_fm,
-    input           cen_fm2,
 
     // Interface with main CPU
     input   [7:0]   snd_latch0,
@@ -36,6 +34,14 @@ module jtcps1_sound(
     output  signed [15:0] left,
     output  signed [15:0] right,
     output                sample
+);
+
+wire cen_fm, cen_fm2;
+
+jtframe_cen3p57 u_fmcen(
+    .clk        (  clk       ),       // 48 MHz
+    .cen_3p57   (  cen_fm    ),
+    .cen_1p78   (  cen_fm2   )
 );
 
 (*keep*) wire [15:0] A;
