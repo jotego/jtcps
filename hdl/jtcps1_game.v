@@ -74,14 +74,17 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
-localparam [21:0] GFX_OFFSET  = 22'h0A_8000;
-localparam [21:0] RAM_OFFSET  = 22'h3A_8000;
-localparam [21:0] VRAM_OFFSET = 22'h3B_0000;
+localparam [21:0] SOUND_OFFSET = 22'h08_0000;
+localparam [21:0] GFX_OFFSET   = 22'h0A_8000;
+localparam [21:0] RAM_OFFSET   = 22'h3A_8000;
+localparam [21:0] VRAM_OFFSET  = 22'h3B_0000;
 
 wire        snd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram1_cs, vram_obj_cs, vpal_cs;
 wire        HB, VB;
+wire [15:0] snd_addr;
+wire [ 7:0] snd_data;
 wire [17:1] ram_addr;
 wire [19:1] main_rom_addr;
 wire [21:0] main_ram_offset;
@@ -94,11 +97,11 @@ wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
 wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
 (*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
-wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok;
+wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok, snd_ok;
 wire [15:0] cpu_dout;
 
 wire        main_rnw, busreq, busack;
-wire [ 7:0] snd0_latch, snd1_latch;
+wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
 wire [ 9:0] slot_cs, slot_ok, slot_wr;
@@ -118,8 +121,6 @@ wire [ 5:1] addr_pal_page = 6'h18;
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
 
-assign snd_cs  = 1'b0;
-
 assign slot_cs[0] = main_rom_cs;
 assign slot_cs[1] = main_ram_cs | main_vram_cs;
 assign slot_cs[2] = rom0_cs;
@@ -127,7 +128,7 @@ assign slot_cs[3] = vram1_cs;
 assign slot_cs[4] = vpal_cs;
 assign slot_cs[5] = 1'b0;
 assign slot_cs[6] = rom1_cs;
-assign slot_cs[7] = 1'b0;
+assign slot_cs[7] = snd_cs;
 assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
 
@@ -140,6 +141,7 @@ assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
 assign vpal_ok     = slot_ok[4];
 assign rom1_ok     = slot_ok[6];
+assign snd_ok      = slot_ok[7];
 assign vram_obj_ok = slot_ok[9];
 
 assign slot_wr[9:2] = 7'd0;
@@ -156,7 +158,7 @@ assign LHBL         = ~HB;
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
 wire [ 1:0] dsn;
-wire        cen16, cen8, cen10b;
+wire        cen16, cen8, cen10b, cen_fm, cen_fm2;
 reg         cen10, cen10x;
 
 (*keep*) wire cen20 = cen10 | cen10b;
@@ -194,6 +196,14 @@ jtframe_frac_cen #(.W(2))u_cen10(
     .cenb       (               ) // 180 shifted
 );
 
+jtframe_frac_cen #(.W(2))u_cenfm(
+    .clk        ( clk           ),
+    .n          ( 10'd61         ),
+    .m          ( 10'd818        ),
+    .cen        ( {cen_fm2, cen_fm }),
+    .cenb       (               ) // 180 shifted
+);
+
 always @(posedge clk) begin
     cen10x <= cen10b;
     cen10  <= cen10x;
@@ -226,8 +236,8 @@ jtcps1_main u_main(
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     // Sound
-    .snd0_latch ( snd0_latch        ),
-    .snd1_latch ( snd1_latch        ),
+    .snd_latch0 ( snd_latch0        ),
+    .snd_latch1 ( snd_latch1        ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
@@ -340,15 +350,50 @@ jtcps1_video u_video(
     .rom0_ok    ( rom0_ok        )
 );
 
+`ifndef NOSOUND
+jtcps1_sound u_sound(
+    .rst        ( rst           ),
+    .clk        ( clk           ),    
+    .cen_fm     ( cen_fm        ),
+    .cen_fm2    ( cen_fm2       ),
+
+    // Interface with main CPU
+    .snd_latch0 ( snd_latch0    ),
+    .snd_latch1 ( snd_latch1    ),
+    
+    // ROM
+    .rom_addr   ( snd_addr      ),
+    .rom_cs     ( snd_cs        ),
+    .rom_data   ( snd_data      ),
+    .rom_ok     ( snd_ok        ),
+
+    // Sound output
+    .left       ( snd_left      ),
+    .right      ( snd_right     ),
+    .sample     ( sample        )
+);
+`else 
+assign snd_addr = 16'd0;
+assign snd_cs   = 1'b0;
+assign snd_left = 16'd0;
+assign snd_right= 16'd0;
+assign sample   = 1'b0;
+`endif
+
 jtframe_sdram_mux #(
     // Main CPU
     .SLOT0_AW   ( 19    ),  // Max 1 Megabyte
     .SLOT1_AW   ( 17    ),  // 64 kB RAM, 192 kB VRAM
 
     .SLOT0_DW   ( 16    ),
-    .SLOT1_DW   ( 16    ),
+    .SLOT1_DW   ( 16    ),   
 
     .SLOT1_TYPE ( 2     ), // R/W access
+    
+    // Sound
+    .SLOT7_AW   ( 16    ),
+    .SLOT7_DW   (  8    ),
+
     // VRAM read access:
     .SLOT3_AW   ( 17    ),  // Scroll VRAM
     .SLOT4_AW   ( 17    ),  // Palette VRAM
@@ -362,12 +407,10 @@ jtframe_sdram_mux #(
     // GFX ROM
     .SLOT2_AW   ( 22    ),  // OBJ VRAM
     .SLOT6_AW   ( 22    ),  //6
-    .SLOT7_AW   ( 22    ),  //7
     .SLOT8_AW   ( 22    ),  //8
 
     .SLOT2_DW   ( 32    ),
     .SLOT6_DW   ( 32    ),
-    .SLOT7_DW   ( 32    ),
     .SLOT8_DW   ( 32    )
 )
 u_sdram_mux(
@@ -386,6 +429,10 @@ u_sdram_mux(
     .slot1_din      ( main_dout         ),
     .slot1_wrmask   ( dsn               ),
 
+    // Sound
+    .slot7_offset   ( SOUND_OFFSET      ),
+    .slot7_addr     ( snd_addr          ),
+    .slot7_dout     ( snd_data          ),
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
     .slot9_addr     ( vram_obj_addr     ),
@@ -409,22 +456,22 @@ u_sdram_mux(
     .slot6_dout     ( rom1_data         ),
 
     // bus signals
-    .slot_cs        ( slot_cs       ),
-    .slot_ok        ( slot_ok       ),
-    .slot_wr        ( slot_wr       ),
+    .slot_cs        ( slot_cs           ),
+    .slot_ok        ( slot_ok           ),
+    .slot_wr        ( slot_wr           ),
 
     // SDRAM controller interface
-    .downloading    ( downloading   ),
-    .loop_rst       ( loop_rst      ),
-    .sdram_ack      ( sdram_ack     ),
-    .sdram_req      ( sdram_req     ),
-    .refresh_en     ( refresh_en    ),
-    .sdram_addr     ( sdram_addr    ),
-    .sdram_rnw      ( sdram_rnw     ),
-    .sdram_wrmask   ( sdram_wrmask  ),
-    .data_rdy       ( data_rdy      ),
-    .data_read      ( data_read     ),   
-    .data_write     ( data_write    )
+    .downloading    ( downloading       ),
+    .loop_rst       ( loop_rst          ),
+    .sdram_ack      ( sdram_ack         ),
+    .sdram_req      ( sdram_req         ),
+    .refresh_en     ( refresh_en        ),
+    .sdram_addr     ( sdram_addr        ),
+    .sdram_rnw      ( sdram_rnw         ),
+    .sdram_wrmask   ( sdram_wrmask      ),
+    .data_rdy       ( data_rdy          ),
+    .data_read      ( data_read         ),   
+    .data_write     ( data_write        )
 );
 
 endmodule

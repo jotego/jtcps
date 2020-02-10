@@ -228,8 +228,6 @@ initial begin
 end
 `else
 integer fsdram, sdram_cnt, vram_offset_aux = vram_offset;
-integer swap_cnt;
-reg [7:0] swap_byte;
 
 initial begin
     // load game ROM
@@ -242,12 +240,6 @@ initial begin
     $display("INFO: Read 0x%x x 64 kBytes for game ROM",sdram_cnt>>16);
     $display("           (0x%x bytes)",sdram_cnt);
     $fclose(fsdram);
-    // swap byte order of ROM
-    for( swap_cnt=0; swap_cnt<sdram_cnt; swap_cnt=swap_cnt+2 ) begin
-        swap_byte = sdram[swap_cnt];
-        sdram[swap_cnt] = sdram[swap_cnt+1];
-        sdram[swap_cnt+1] = swap_byte;
-    end
     // load VRAM
     fsdram=$fopen("vram_sw.bin","rb");
     if(fsdram==0) begin

@@ -14,15 +14,17 @@
 ../../hdl/jtcps1_prom_we.v
 ../../hdl/jtcps1_main.v
 ../../hdl/jtcps1_game.v
+../../hdl/jtcps1_sound.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
 ../../modules/jtframe/hdl/sdram/jtframe_ram_rq.v
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
 ../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
+../../modules/jtframe/hdl/ram/jtframe_ram.v
 # Z80
-# ../../modules/jtframe/hdl/cpu/jtframe_z80.v
-# ../../modules/jtframe/hdl/jtframe_z80wait.v
+../../modules/jtframe/hdl/cpu/jtframe_z80.v
+../../modules/jtframe/hdl/jtframe_z80wait.v
 # 68000
 ../../modules/jtframe/hdl/cpu/jtframe_68kdma.v
 ../../modules/fx68k/fx68kAlu.sv

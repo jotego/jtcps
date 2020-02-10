@@ -32,8 +32,8 @@ module jtcps1_main(
     output reg         ppu_rstn,
     input   [15:0]     mmr_dout,
     // Sound
-    output  reg  [7:0] snd0_latch,
-    output  reg  [7:0] snd1_latch,
+    output  reg  [7:0] snd_latch0,
+    output  reg  [7:0] snd_latch1,
     output             UDSWn,
     output             LDSWn,
     // cabinet I/O
@@ -152,16 +152,16 @@ end
 always @(posedge clk) begin
     if( rst ) begin
         ppu_rstn   <= 1'b0;
-        snd0_latch <= 8'd0;
-        snd1_latch <= 8'd0;
+        snd_latch0 <= 8'd0;
+        snd_latch1 <= 8'd0;
     end
     else if(cpu_cen) begin
         if( olatch_cs ) begin
             // coin counters and lockers should go in here too
             ppu_rstn <= ~cpu_dout[15];
         end
-        if( snd0_cs ) snd0_latch <= cpu_dout[7:0];
-        if( snd1_cs ) snd1_latch <= cpu_dout[7:0];
+        if( snd0_cs ) snd_latch0 <= cpu_dout[7:0];
+        if( snd1_cs ) snd_latch1 <= cpu_dout[7:0];
     end
 end
 

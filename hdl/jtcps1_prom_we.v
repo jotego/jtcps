@@ -35,7 +35,7 @@ always @(posedge clk) begin
         prog_we   <= 1'b1;
         prog_data <= ioctl_data;
         prog_addr <= ioctl_addr[22:1];
-        prog_mask <= ioctl_addr[0] ? 2'b10 : 2'b01;            
+        prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
     end
     else begin
         prog_we  <= 1'b0;
