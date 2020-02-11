@@ -111,12 +111,8 @@ wire [ 8:0] vdump, vrender;
 wire        rom0_half, rom1_half;
 wire [21:0] gfx0_addr, gfx1_addr;
 
-wire [ 5:1] addr_layer = 6'h13;
-wire [ 5:1] addr_prio0 = 6'h14;
-wire [ 5:1] addr_prio1 = 6'h15;
-wire [ 5:1] addr_prio2 = 6'h16;
-wire [ 5:1] addr_prio3 = 6'h17;
-wire [ 5:1] addr_pal_page = 6'h18;
+wire        cfg_we;
+wire [ 7:0] cfg_data;
 
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
@@ -210,7 +206,9 @@ jtcps1_prom_we u_prom_we(
     .prog_addr      ( prog_addr     ),
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
-    .prog_we        ( prog_we       )
+    .prog_we        ( prog_we       ),
+    .cfg_we         ( cfg_we        ),
+    .cfg_data       ( cfg_data      )
 );
 
 `ifndef NOMAIN
@@ -303,12 +301,8 @@ jtcps1_video u_video(
     .blue           ( blue          ),
 
     // CPS-B Registers
-    .addr_layer     ( addr_layer    ),
-    .addr_prio0     ( addr_prio0    ),
-    .addr_prio1     ( addr_prio1    ),
-    .addr_prio2     ( addr_prio2    ),
-    .addr_prio3     ( addr_prio3    ),
-    .addr_pal_page  ( addr_pal_page ),
+    .cfg_we         ( cfg_we        ),
+    .cfg_data       ( cfg_data      ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),

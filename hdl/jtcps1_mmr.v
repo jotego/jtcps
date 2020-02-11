@@ -61,12 +61,8 @@ module jtcps1_mmr(
     output reg         pal_copy,
 
     // CPS-B Registers configuration
-    input      [ 5:1]  addr_layer,
-    input      [ 5:1]  addr_prio0,
-    input      [ 5:1]  addr_prio1,
-    input      [ 5:1]  addr_prio2,
-    input      [ 5:1]  addr_prio3,
-    input      [ 5:1]  addr_pal_page,
+    input              cfg_we,
+    input      [ 7:0]  cfg_data,
 
     output reg [15:0]  layer_ctrl,
     output reg [15:0]  prio0,
@@ -75,6 +71,42 @@ module jtcps1_mmr(
     output reg [15:0]  prio3,
     output reg [ 5:0]  pal_page_en // which palette pages to copy
 );
+
+// Shift register configuration
+localparam REGSIZE=16;
+reg [8*REGSIZE-1:0] regs;
+
+wire [ 5:1] addr_layer,
+            addr_prio0,
+            addr_prio1,
+            addr_prio2,
+            addr_prio3,
+            addr_pal_page;
+
+assign addr_layer    = regs[8*1-3:8*0];
+assign addr_prio0    = regs[8*2-3:8*1];
+assign addr_prio1    = regs[8*3-3:8*2];
+assign addr_prio2    = regs[8*4-3:8*3];
+assign addr_prio3    = regs[8*5-3:8*4];
+assign addr_pal_page = regs[8*6-3:8*5];
+
+
+always@(posedge clk, posedge rst) begin
+    if( rst ) begin
+        // Ghouls'n Ghosts values
+        regs[8*1-3:8*0] <= 6'h13;
+        regs[8*2-3:8*1] <= 6'h14;
+        regs[8*3-3:8*2] <= 6'h15;
+        regs[8*4-3:8*3] <= 6'h16;
+        regs[8*5-3:8*4] <= 6'h17;
+        regs[8*6-3:8*5] <= 6'h18;
+    end else begin
+        if( cfg_we ) begin
+            regs[7:0] <= cfg_data;
+            regs[8*REGSIZE-1:8] <= regs[8*(REGSIZE-1)-1:0];
+        end
+    end
+end
 
 function [15:0] data_sel;
     input [15:0] olddata;

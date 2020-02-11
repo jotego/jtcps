@@ -42,12 +42,8 @@ module jtcps1_video(
     output  [15:0]     mmr_dout,
 
     // CPS-B Registers
-    input      [ 5:1]  addr_layer,
-    input      [ 5:1]  addr_prio0,
-    input      [ 5:1]  addr_prio1,
-    input      [ 5:1]  addr_prio2,
-    input      [ 5:1]  addr_prio3,
-    input      [ 5:1]  addr_pal_page,
+    input              cfg_we,
+    input      [ 7:0]  cfg_data,
 
     // Video RAM interface
     output     [17:1]  vram1_addr,
@@ -195,12 +191,8 @@ jtcps1_mmr u_mmr(
     .pal_copy       ( pal_copy          ),
 
     // CPS-B Registers
-    .addr_layer     ( addr_layer        ),
-    .addr_prio0     ( addr_prio0        ),
-    .addr_prio1     ( addr_prio1        ),
-    .addr_prio2     ( addr_prio2        ),
-    .addr_prio3     ( addr_prio3        ),
-    .addr_pal_page  ( addr_pal_page     ),
+    .cfg_we         ( cfg_we            ),
+    .cfg_data       ( cfg_data          ),
 
     .layer_ctrl     ( layer_ctrl        ),
     .prio0          ( prio0             ),

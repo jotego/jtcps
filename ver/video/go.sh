@@ -44,7 +44,7 @@ fi
 
 # Link to simulation files
 rm -f vram.bin regs.hex rom
-ln -s $VRAM_FILE vram.bin
+cp $VRAM_FILE vram.bin # this file is not linked to avoid overwritting it with new saves from MAME
 ln -s $REGS_FILE regs.hex
 ln -s $ROM_FILE rom
 

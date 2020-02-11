@@ -5,7 +5,7 @@
     (at your option) any later version.
 
     JTCPS1 program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+(*keep*)     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
@@ -36,7 +36,7 @@ module jtcps1_sound(
     output                sample
 );
 
-wire cen_fm, cen_fm2;
+(*keep*) wire cen_fm, cen_fm2;
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
