@@ -4,7 +4,7 @@
 	<year>1988</year>
 	<manufacturer>Capcom</manufacturer>
 	<rbf>jtcps1</rbf>
-	<rom index="0" zip="ghouls.zip" md5="8b2ddb24c09d0f36d085ec79e90ee317" type="merged|nonmerged">
+	<rom index="0" zip="ghouls.zip" md5="2bfe5c07505dfaad8f4ab90b0a3218af" type="merged|nonmerged">
         <!-- Main CPU -->
         <group width="16">
             <!-- take one byte from each file -->
@@ -52,8 +52,8 @@
             <part name="23.7f"/>
             <part name="12.4d"/>
             <part name="21.7d"/>
-            <part name="25.7h"/>
             <part name="16.4h"/>
+            <part name="25.7h"/>
         </group>
         <!--
         <part repeat=1933312>FF</part>
