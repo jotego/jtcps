@@ -16,4 +16,5 @@ else
     HDL=$JTROOT/hdl
     ROM=$JTROOT/rom
     MRA=$ROM/mra
+    MODULUES=$JTROOT/modules
 fi

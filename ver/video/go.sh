@@ -17,17 +17,32 @@ fi
 
 GAME=ghouls
 SAVE=1
+RESIZE="-resize 200%"
 
 while [ $# -gt 0 ]; do
     case $1 in
-        -g|-game) shift; GAME=$1; shift;;
-        -s|-save) shift; SAVE=$1; shift;;
+        -g|-game) shift; GAME=$1;;
+        -s|-save) shift; SAVE=$1;;
         -hex) EXTRA="$EXTRA ${MACROPREFIX}SDRAM_HEXFILE";;
-        -mmr) shift; MMR=$1; shift;;
-        -f|-frame) shift; EXTRA="$EXTRA ${MACROPREFIX}FRAMES=$1"; shift;;
-        -d) shift; EXTRA="$EXTRA ${MACROPREFIX}$1"; shift;;
+        -mmr) shift; MMR=$1;;
+        -f|-frame) shift; EXTRA="$EXTRA ${MACROPREFIX}FRAMES=$1";;
+        -d) shift; EXTRA="$EXTRA ${MACROPREFIX}$1";;
+        -noscale)
+            RESIZE=
+            ;;
+        -ar)
+            RESIZE="-resize 768x576!";;            
+        -h|-help)
+            echo "-g|-game: selects the game. There must be a folder with the same name"
+            echo "-s|-save: selects the save state number"
+            echo "-f|-frame: number of frames to simulate"
+            echo "-noscale: keep pixel perfect output"
+            echo "-ar: resize for correct aspect ratio"
+            echo "-d: add verilog macro"
+            exit 0;;
         *) echo "ERROR: unknown argument $1"; exit 1;;
     esac
+    shift
 done
 
 # Does the game/snapshot exist?
@@ -65,9 +80,6 @@ fi
 
 rm -f video*.png
 #dd if=video.raw of=x.raw count=$((384*240*4)) iflag=count_bytes
-#convert -size 384x240 -depth 8 RGBA:x.raw -resize 200% video.png
-convert -size 384x240 -depth 8 RGBA:video.raw -resize 200% video.png
-#convert -size 384x240 -depth 8 RGBA:video.raw -resize 800x600 video.png
-#convert -size 384x240 -depth 8 RGBA:video.raw video.png
+convert -size 384x240 -depth 8 RGBA:video.raw $RESIZE video.png
 # right aspect ratio:
 # convert video.png -resize 598x448 x.png
