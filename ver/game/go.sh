@@ -12,6 +12,22 @@ if [ rom.bin -nt ghouls.hex ]; then
     apply_patches.sh
 fi
 
+GAME=ghouls
+PATCH=
+OTHER=
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -g|-game)  shift; GAME=$1;;
+        -p|-patch) shift; PATCH=$1;;
+        *) OTHER="$OTHER $1";;
+    esac
+    shift
+done
+
+ln -sf ../../rom/mra/$GAME.rom rom.bin
+ln -sf ${GAME}${PATCH}.hex sdram.hex
+
 export GAME_ROM_PATH=rom.bin
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
@@ -33,4 +49,4 @@ echo "Game ROM length: " $GAME_ROM_LEN
     -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1 \
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG\
     -videow 384 -videoh 224 \
-    -video $*
+    -video $OTHER

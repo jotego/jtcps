@@ -81,14 +81,20 @@ wire [ 5:1] addr_layer,
             addr_prio1,
             addr_prio2,
             addr_prio3,
-            addr_pal_page;
+            addr_pal_page,
+            addr_id;
 
-assign addr_layer    = regs[8*1-3:8*0];
-assign addr_prio0    = regs[8*2-3:8*1];
-assign addr_prio1    = regs[8*3-3:8*2];
-assign addr_prio2    = regs[8*4-3:8*3];
-assign addr_prio3    = regs[8*5-3:8*4];
-assign addr_pal_page = regs[8*6-3:8*5];
+wire [7:0]  cpsb_id0, cpbs_id1;
+
+assign addr_layer    = regs[8*1-2:8*0+1];
+assign addr_prio0    = regs[8*2-2:8*1+1];
+assign addr_prio1    = regs[8*3-2:8*2+1];
+assign addr_prio2    = regs[8*4-2:8*3+1];
+assign addr_prio3    = regs[8*5-2:8*4+1];
+assign addr_pal_page = regs[8*6-2:8*5+1];
+assign addr_id       = regs[8*7-2:8*6+1];
+assign cpsb_id1      = regs[8*8  :8*7  ];
+assign cpsb_id0      = regs[8*9  :8*8  ];
 
 
 always@(posedge clk, posedge rst) begin
@@ -100,6 +106,18 @@ always@(posedge clk, posedge rst) begin
         regs[8*4-3:8*3] <= 6'h16;
         regs[8*5-3:8*4] <= 6'h17;
         regs[8*6-3:8*5] <= 6'h18;
+        // Ffight values
+        /*
+        regs[8*1-1:8*0] <= 8'h26;
+        regs[8*2-1:8*1] <= 8'h28;
+        regs[8*3-1:8*2] <= 8'h2a;
+        regs[8*4-1:8*3] <= 8'h2c;
+        regs[8*5-1:8*4] <= 8'h2e;
+        regs[8*6-1:8*5] <= 8'h30;
+        regs[8*7-1:8*6] <= 8'h20;
+        regs[8*8-1:8*7] <= 8'h00; // id1
+        regs[8*9-1:8*8] <= 8'h04; // id0
+        */
     end else begin
         if( cfg_we ) begin
             regs[7:0] <= cfg_data;
@@ -148,12 +166,13 @@ assign reg_rst = 1'b0;
 assign reg_rst = rst | ~ppu_rstn;
 `endif
 
-wire [5:0] addrb = { addr == addr_layer,
+wire [6:0] addrb = { addr == addr_layer,
                      addr == addr_prio0,
                      addr == addr_prio1,
                      addr == addr_prio2,
                      addr == addr_prio3,
-                     addr == addr_pal_page };
+                     addr == addr_pal_page,
+                     addr == addr_id };
 
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
@@ -217,30 +236,31 @@ always @(posedge clk, posedge reg_rst) begin
         end
         if( ppu2_cs ) begin
             case( addrb )
-                6'b000_001: begin 
+                7'b000_001: begin 
                     layer_ctrl <= data_sel(layer_ctrl, cpu_dout, dsn); 
                     mmr_dout   <= layer_ctrl;
                 end
-                6'b000_010: begin 
+                7'b000_010: begin 
                     prio0      <= data_sel(prio0,      cpu_dout, dsn); 
                     mmr_dout   <= prio0;
                 end
-                6'b000_100: begin 
+                7'b000_100: begin 
                     prio1      <= data_sel(prio1,      cpu_dout, dsn); 
                     mmr_dout   <= prio1;
                 end
-                6'b001_000: begin 
+                7'b001_000: begin 
                     prio2      <= data_sel(prio2,      cpu_dout, dsn); 
                     mmr_dout   <= prio2;
                 end
-                6'b010_000: begin 
+                7'b010_000: begin 
                     prio3      <= data_sel(prio3,      cpu_dout, dsn); 
                     mmr_dout   <= prio3;
                 end
-                6'b100_000: begin 
+                7'b100_000: begin 
                     pal_page_en<= data_sel(pal_page_en,cpu_dout, dsn); 
                     mmr_dout   <= pal_page_en;
                 end
+                7'b1_000_000: mmr_dout <= { cpsb_id1, cpsb_id0 };
             endcase
         end
     end
