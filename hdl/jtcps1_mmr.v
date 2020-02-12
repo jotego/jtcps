@@ -69,60 +69,111 @@ module jtcps1_mmr(
     output reg [15:0]  prio1,
     output reg [15:0]  prio2,
     output reg [15:0]  prio3,
-    output reg [ 5:0]  pal_page_en // which palette pages to copy
+    output reg [ 5:0]  pal_page_en, // which palette pages to copy
+    output     [ 7:0]  layer_mask0,
+    output     [ 7:0]  layer_mask1,
+    output     [ 7:0]  layer_mask2,
+    output     [ 7:0]  layer_mask3,
+    output     [ 7:0]  layer_mask4
 );
 
 // Shift register configuration
 localparam REGSIZE=16;
 reg [8*REGSIZE-1:0] regs;
 
-wire [ 5:1] addr_layer,
-            addr_prio0,
-            addr_prio1,
-            addr_prio2,
-            addr_prio3,
-            addr_pal_page,
-            addr_id;
+wire [5:1] addr_id,      
+           addr_mult1,   
+           addr_mult2,   
+           addr_rslt0,   
+           addr_rslt1,   
+           addr_layer,   
+           addr_prio0,   
+           addr_prio1,   
+           addr_prio2,   
+           addr_prio3,   
+           addr_pal_page;
 
-wire [7:0]  cpsb_id0, cpbs_id1;
+wire [10:0] addrb = {
+           addr == addr_id,      // 0
+           addr == addr_mult1,   // 1   
+           addr == addr_mult2,   // 2
+           addr == addr_rslt0,   // 3  
+           addr == addr_rslt1,   // 4  
+           addr == addr_layer,   // 5  
+           addr == addr_prio0,   // 6  
+           addr == addr_prio1,   // 7  
+           addr == addr_prio2,   // 8  
+           addr == addr_prio3,   // 9  
+           addr == addr_pal_page // 10
+        };
 
-assign addr_layer    = regs[8*1-2:8*0+1];
-assign addr_prio0    = regs[8*2-2:8*1+1];
-assign addr_prio1    = regs[8*3-2:8*2+1];
-assign addr_prio2    = regs[8*4-2:8*3+1];
-assign addr_prio3    = regs[8*5-2:8*4+1];
-assign addr_pal_page = regs[8*6-2:8*5+1];
-assign addr_id       = regs[8*7-2:8*6+1];
-assign cpsb_id1      = regs[8*8  :8*7  ];
-assign cpsb_id0      = regs[8*9  :8*8  ];
+wire [7:0]  cpsb_id;
+reg  [15:0]  mult1, mult2;
+wire [15:0]  rslt1, rslt0;
 
+`define MMR(a) regs[8*(a+1)-1:8*a]
 
-always@(posedge clk, posedge rst) begin
-    if( rst ) begin
-        // Ghouls'n Ghosts values
-        regs[8*1-3:8*0] <= 6'h13;
-        regs[8*2-3:8*1] <= 6'h14;
-        regs[8*3-3:8*2] <= 6'h15;
-        regs[8*4-3:8*3] <= 6'h16;
-        regs[8*5-3:8*4] <= 6'h17;
-        regs[8*6-3:8*5] <= 6'h18;
-        // Ffight values
-        /*
-        regs[8*1-1:8*0] <= 8'h26;
-        regs[8*2-1:8*1] <= 8'h28;
-        regs[8*3-1:8*2] <= 8'h2a;
-        regs[8*4-1:8*3] <= 8'h2c;
-        regs[8*5-1:8*4] <= 8'h2e;
-        regs[8*6-1:8*5] <= 8'h30;
-        regs[8*7-1:8*6] <= 8'h20;
-        regs[8*8-1:8*7] <= 8'h00; // id1
-        regs[8*9-1:8*8] <= 8'h04; // id0
-        */
-    end else begin
-        if( cfg_we ) begin
-            regs[7:0] <= cfg_data;
-            regs[8*REGSIZE-1:8] <= regs[8*(REGSIZE-1)-1:0];
-        end
+assign addr_id       = `MMR(0)>>1;
+assign cpsb_id       = `MMR(1); // 16-bit value compressed in 8 bits
+assign addr_mult1    = `MMR(2)>>1;
+assign addr_mult2    = `MMR(3)>>1;
+assign addr_rslt0    = `MMR(4)>>1;
+assign addr_rslt1    = `MMR(5)>>1;
+assign addr_layer    = `MMR(6)>>1;
+assign addr_prio0    = `MMR(7)>>1;
+assign addr_prio1    = `MMR(8)>>1;
+assign addr_prio2    = `MMR(9)>>1;
+assign addr_prio3    = `MMR(10)>>1;
+assign addr_pal_page = `MMR(11)>>1;
+assign layer_mask0   = `MMR(12);
+assign layer_mask1   = `MMR(13);
+assign layer_mask2   = `MMR(14);
+assign layer_mask3   = `MMR(15);
+assign layer_mask4   = layer_mask3; // it is not well know what the
+// mask bits are for layer 4. MAME uses the same values for layers 3 and 4
+// so I just skip layer 4 from the configuration. This saves one MMR register
+// which is what I need to make the MMR length 16 bytes. The length must be
+// a multiple of 2 in order to work with the ROM downloading
+
+reg [15:0] pre_mux0, pre_mux1;
+reg [ 1:0] sel;
+
+always @(*) begin
+    case( addrb[5:0] )
+        6'b000_001: pre_mux0 = {4'd0, cpsb_id[7:4], 4'd0, cpsb_id[3:0]};
+        6'b000_010: pre_mux0 = mult1;
+        6'b000_100: pre_mux0 = mult2;
+        6'b001_000: pre_mux0 = rslt0;
+        6'b010_000: pre_mux0 = rslt1;
+        6'b100_000: pre_mux0 = layer_ctrl;
+    endcase
+    sel[0] = |addrb[5:0];
+    sel[1] = |addrb[10:6];
+    case( addrb[10:6] )
+        5'b00_001: pre_mux0 = prio0;
+        5'b00_010: pre_mux0 = prio1;
+        5'b00_100: pre_mux0 = prio2;
+        5'b01_000: pre_mux0 = prio3;
+        5'b10_000: pre_mux0 = { 10'd0, pal_page_en };
+    endcase    
+end
+
+`ifdef SIMULATION
+initial begin
+    // Ghouls'n Ghosts values
+    regs[8*1-3:8*0] <= 6'h13;
+    regs[8*2-3:8*1] <= 6'h14;
+    regs[8*3-3:8*2] <= 6'h15;
+    regs[8*4-3:8*3] <= 6'h16;
+    regs[8*5-3:8*4] <= 6'h17;
+    regs[8*6-3:8*5] <= 6'h18;
+end
+`endif
+
+always@(posedge clk) begin
+    if( cfg_we ) begin
+        regs[7:0] <= cfg_data;
+        regs[8*REGSIZE-1:8] <= regs[8*(REGSIZE-1)-1:0];
     end
 end
 
@@ -165,14 +216,6 @@ assign reg_rst = 1'b0;
 `else 
 assign reg_rst = rst | ~ppu_rstn;
 `endif
-
-wire [6:0] addrb = { addr == addr_layer,
-                     addr == addr_prio0,
-                     addr == addr_prio1,
-                     addr == addr_prio2,
-                     addr == addr_prio3,
-                     addr == addr_pal_page,
-                     addr == addr_id };
 
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
@@ -235,33 +278,15 @@ always @(posedge clk, posedge reg_rst) begin
             endcase
         end
         if( ppu2_cs ) begin
-            case( addrb )
-                7'b000_001: begin 
-                    layer_ctrl <= data_sel(layer_ctrl, cpu_dout, dsn); 
-                    mmr_dout   <= layer_ctrl;
-                end
-                7'b000_010: begin 
-                    prio0      <= data_sel(prio0,      cpu_dout, dsn); 
-                    mmr_dout   <= prio0;
-                end
-                7'b000_100: begin 
-                    prio1      <= data_sel(prio1,      cpu_dout, dsn); 
-                    mmr_dout   <= prio1;
-                end
-                7'b001_000: begin 
-                    prio2      <= data_sel(prio2,      cpu_dout, dsn); 
-                    mmr_dout   <= prio2;
-                end
-                7'b010_000: begin 
-                    prio3      <= data_sel(prio3,      cpu_dout, dsn); 
-                    mmr_dout   <= prio3;
-                end
-                7'b100_000: begin 
-                    pal_page_en<= data_sel(pal_page_en,cpu_dout, dsn); 
-                    mmr_dout   <= pal_page_en;
-                end
-                7'b1_000_000: mmr_dout <= { cpsb_id1, cpsb_id0 };
-            endcase
+            mmr_dout = sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
+            if( addrb[ 1] && !dsn) mult1      <= cpu_dout;
+            if( addrb[ 2] && !dsn) mult2      <= cpu_dout;
+            if( addrb[ 5] && !dsn) layer_ctrl <= cpu_dout;
+            if( addrb[ 6] && !dsn) prio0      <= cpu_dout;
+            if( addrb[ 7] && !dsn) prio1      <= cpu_dout;
+            if( addrb[ 8] && !dsn) prio2      <= cpu_dout;
+            if( addrb[ 9] && !dsn) prio3      <= cpu_dout;
+            if( addrb[10] && !dsn) pal_page_en<= cpu_dout;
         end
     end
 end

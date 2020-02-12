@@ -4,7 +4,7 @@
 	<year>1988</year>
 	<manufacturer>Capcom</manufacturer>
 	<rbf>jtcps1</rbf>
-	<rom index="0" zip="ffight.zip" md5="bb78eee71ae19adcfd7d493e36d809aa" type="merged|nonmerged">
+	<rom index="0" zip="ffight.zip" md5="0bb106ccc8c0e0176f8cfd615f758d42" type="merged|nonmerged">
         <!-- Main CPU -->
         <group width="16">
             <!-- take one byte from each file -->
@@ -33,5 +33,7 @@
             <part name="ff-1m.3a" pattern="01"/>
             <part name="ff-3m.5a" pattern="01"/>
         </group>
+        <!-- CPS-B config for ffight --> 
+        <part> 00 08 04 02 2a 32 28 30 26 2e ff ff ff ff 04 20 </part>        
 	</rom>
 </misterromdescription>

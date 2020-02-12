@@ -4,7 +4,7 @@
 	<year>1988</year>
 	<manufacturer>Capcom</manufacturer>
 	<rbf>jtcps1</rbf>
-	<rom index="0" zip="ghouls.zip" md5="2bfe5c07505dfaad8f4ab90b0a3218af" type="merged|nonmerged">
+	<rom index="0" zip="ghouls.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- Main CPU -->
         <group width="16">
             <!-- take one byte from each file -->
@@ -55,8 +55,7 @@
             <part name="16.4h"/>
             <part name="25.7h"/>
         </group>
-        <!--
-        <part repeat=1933312>FF</part>
-        -->
+        <!-- CPS-B config for ghouls --> 
+        <part> 30 08 04 02 30 2e 2c 2a 28 26 ff ff ff ff 00 ff </part>
 	</rom>
 </misterromdescription>

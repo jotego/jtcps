@@ -111,9 +111,6 @@ wire [ 8:0] vdump, vrender;
 wire        rom0_half, rom1_half;
 wire [21:0] gfx0_addr, gfx1_addr;
 
-wire        cfg_we;
-wire [ 7:0] cfg_data;
-
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
 
@@ -206,9 +203,7 @@ jtcps1_prom_we u_prom_we(
     .prog_addr      ( prog_addr     ),
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
-    .prog_we        ( prog_we       ),
-    .cfg_we         ( cfg_we        ),
-    .cfg_data       ( cfg_data      )
+    .prog_we        ( prog_we       )
 );
 
 `ifndef NOMAIN
@@ -301,8 +296,8 @@ jtcps1_video u_video(
     .blue           ( blue          ),
 
     // CPS-B Registers
-    .cfg_we         ( cfg_we        ),
-    .cfg_data       ( cfg_data      ),
+    .cfg_we         ( prog_we       ),
+    .cfg_data       ( prog_data     ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),

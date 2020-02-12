@@ -27,13 +27,8 @@ module jtcps1_prom_we(
     output reg [21:0]    prog_addr,
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
-    output reg           prog_we,
-    output               cfg_we,
-    output               cfg_data
+    output reg           prog_we
 );
-
-assign cfg_we   = 1'b0;
-assign cfg_data = 8'd0;
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
