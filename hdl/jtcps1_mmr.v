@@ -109,7 +109,9 @@ wire [10:0] addrb = {
 
 wire [7:0]  cpsb_id;
 reg  [15:0]  mult1, mult2;
-wire [15:0]  rslt1, rslt0;
+reg  [15:0]  rslt1, rslt0;
+
+always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
 `define MMR(a) regs[8*(a+1)-1:8*a]
 

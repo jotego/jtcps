@@ -15,6 +15,7 @@
 ../../hdl/jtcps1_main.v
 ../../hdl/jtcps1_game.v
 ../../hdl/jtcps1_sound.v
+../../hdl/jtcps1_gfx_mappers.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v

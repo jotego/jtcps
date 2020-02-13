@@ -151,6 +151,16 @@ always @(*) begin
 end
 assign rom1_addr = scr1_addr[19:0];
 
+`ifdef SIMULATION
+wire [19:10] scr1_addr_alt;
+wire [19: 0] rom1_addr_alt = { scr1_addr_alt, scr1_addr[9:0] };
+jtcps1_gfx_mappers u_mapper(
+    .layer  ( scr1_addr[22:20] ),
+    .cin    ( scr1_addr[19:10] ),
+    .cout   ( scr1_addr_alt    ) 
+);
+`endif
+
 // initial begin
 //     $display("OFFSET=%X",`OFFSET);
 // end
