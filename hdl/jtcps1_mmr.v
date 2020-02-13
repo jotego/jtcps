@@ -139,23 +139,27 @@ reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
 
 always @(*) begin
-    case( addrb[5:0] )
-        6'b000_001: pre_mux0 = {4'd0, cpsb_id[7:4], 4'd0, cpsb_id[3:0]};
-        6'b000_010: pre_mux0 = mult1;
-        6'b000_100: pre_mux0 = mult2;
-        6'b001_000: pre_mux0 = rslt0;
-        6'b010_000: pre_mux0 = rslt1;
-        6'b100_000: pre_mux0 = layer_ctrl;
-    endcase
-    sel[0] = |addrb[5:0];
-    sel[1] = |addrb[10:6];
-    case( addrb[10:6] )
-        5'b00_001: pre_mux0 = prio0;
-        5'b00_010: pre_mux0 = prio1;
-        5'b00_100: pre_mux0 = prio2;
-        5'b01_000: pre_mux0 = prio3;
-        5'b10_000: pre_mux0 = { 10'd0, pal_page_en };
-    endcase    
+    pre_mux0 = 16'hffff;
+    pre_mux1 = 16'hffff;
+    if( &addr ) sel=2'b00;
+    else begin
+        sel = { |addrb[10:6], |addrb[5:0] };
+        case( addrb[5:0] )
+            6'b000_001: pre_mux0 = {4'd0, cpsb_id[7:4], 4'd0, cpsb_id[3:0]};
+            6'b000_010: pre_mux0 = mult1;
+            6'b000_100: pre_mux0 = mult2;
+            6'b001_000: pre_mux0 = rslt0;
+            6'b010_000: pre_mux0 = rslt1;
+            6'b100_000: pre_mux0 = layer_ctrl;
+        endcase
+        case( addrb[10:6] )
+            5'b00_001: pre_mux1 = prio0;
+            5'b00_010: pre_mux1 = prio1;
+            5'b00_100: pre_mux1 = prio2;
+            5'b01_000: pre_mux1 = prio3;
+            5'b10_000: pre_mux1 = { 10'd0, pal_page_en };
+        endcase
+    end
 end
 
 `ifdef SIMULATION
@@ -241,6 +245,7 @@ always @(posedge clk, posedge reg_rst) begin
 
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
+        mmr_dout      <= 16'hffff;
     end else begin
         if( !ppu1_cs && pre_copy ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down
@@ -278,7 +283,7 @@ always @(posedge clk, posedge reg_rst) begin
             endcase
         end
         if( ppu2_cs ) begin
-            mmr_dout = sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
+            mmr_dout <= sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
             if( addrb[ 1] && !dsn) mult1      <= cpu_dout;
             if( addrb[ 2] && !dsn) mult2      <= cpu_dout;
             if( addrb[ 5] && !dsn) layer_ctrl <= cpu_dout;
