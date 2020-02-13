@@ -8,9 +8,6 @@
 # First character display around frame 170
 # Boot up fails around frame 3220
 
-if [ rom.bin -nt ghouls.hex ]; then
-    apply_patches.sh
-fi
 
 GAME=ghouls
 PATCH=
@@ -24,6 +21,8 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+apply_patches.sh $GAME
 
 ln -sf ../../rom/$GAME.rom rom.bin
 ln -sf ${GAME}${PATCH}.hex sdram.hex
