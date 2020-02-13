@@ -30,13 +30,24 @@ module jtcps1_sound(
     input       [ 7:0]  rom_data,
     input               rom_ok,
 
+    // ADPCM ROM
+    output      [17:0]  adpcm_addr,
+    output              adpcm_cs,
+    input       [ 7:0]  adpcm_data,
+    input               adpcm_ok,
+
     // Sound output
     output  signed [15:0] left,
     output  signed [15:0] right,
     output                sample
 );
 
-(*keep*) wire cen_fm, cen_fm2;
+(*keep*) wire cen_fm, cen_fm2, cen_oki, nc;
+wire signed [13:0] adpcm_snd;
+wire signed [15:0] fm_left, fm_right;
+
+assign left  = (fm_left >>>1) + (adpcm_snd<<<1);
+assign right = (fm_right>>>1) + (adpcm_snd<<<1);
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
@@ -44,12 +55,25 @@ jtframe_cen3p57 u_fmcen(
     .cen_1p78   (  cen_fm2   )
 );
 
+jtframe_frac_cen u_okicen(
+    .clk        (  clk              ),
+    .n          ( 10'd1             ),
+    .m          ( 10'd48            ),
+    .cen        ( { nc, cen_oki }   ),
+    .cenb       (                   )
+);
+
 (*keep*) wire [15:0] A;
 reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
+reg  oki7;
 wire mreq_n, rfsh_n, int_n;
-wire WRn;
+wire WRn, oki_wrn;
 
 reg  bank;
+
+wire [7:0] oki_dout;
+
+assign oki_wrn = ~(oki_cs & ~WRn);
 
 always @(*) begin
     rom_cs   = 1'b0;
@@ -94,8 +118,12 @@ assign WRn = wr_n | mreq_n;
 
 always @(posedge clk, posedge rst) begin
     if(rst) begin
-        bank=1'b0;
-    end else if(bank_cs) bank <= dout[0];
+        bank <= 1'b0;
+        oki7 <= 1'b0;
+    end else begin
+        if(bank_cs) bank <= dout[0];
+        if(oki7_cs) oki7 <= dout[0];
+    end
 end
 
 jtframe_ram #(.aw(11)) u_ram(
@@ -116,6 +144,7 @@ always @(*)
         latch1_cs: din = snd_latch1;
         ram_cs:    din = ram_dout;
         rom_cs:    din = rom_data;
+        oki_cs:    din = oki_dout;
         default:   din = 8'hff;
     endcase
 
@@ -163,11 +192,30 @@ jt51 u_jt51(
     .left       (           ),
     .right      (           ),
     // Full resolution output
-    .xleft      ( left      ),
-    .xright     ( right     ),
+    .xleft      ( fm_left   ),
+    .xright     ( fm_right  ),
     // unsigned outputs for sigma delta converters, full resolution
     .dacleft    (           ),
     .dacright   (           )
+);
+
+assign adpcm_cs = 1'b1;
+
+jt6295 u_adpcm(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .cen        ( cen_oki   ),
+    .ss         ( oki7      ),
+    // CPU interface
+    .wrn        ( oki_wrn   ),  // active low
+    .din        ( dout      ),
+    .dout       ( oki_dout  ),
+    // ROM interface
+    .rom_addr   ( adpcm_addr),
+    .rom_data   ( adpcm_data),
+    .rom_ok     ( adpcm_ok  ),
+    // Sound output
+    .sound      ( adpcm_snd )
 );
 
 endmodule

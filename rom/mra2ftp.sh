@@ -1,7 +1,7 @@
 #/bin/bash
 HOST=mr
 
-for i in *.mra; do mra $i; done
+#for i in *.mra; do mra $i; done
 bspatch ghouls.rom ghouls_notest.rom ghouls_notest.bspatch
 
 ftp -inv $HOST <<EOF

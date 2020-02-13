@@ -75,16 +75,18 @@ module jtcps1_game(
 );
 
 localparam [21:0] SOUND_OFFSET = 22'h08_0000;
+localparam [21:0] ADPCM_OFFSET = 22'h08_8000;
 localparam [21:0] GFX_OFFSET   = 22'h0A_8000;
 localparam [21:0] RAM_OFFSET   = 22'h3A_8000;
 localparam [21:0] VRAM_OFFSET  = 22'h3B_0000;
 
-wire        snd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
+wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram1_cs, vram_obj_cs, vpal_cs;
 wire        HB, VB;
 wire [15:0] snd_addr;
-wire [ 7:0] snd_data;
+wire [17:0] adpcm_addr;
+wire [ 7:0] snd_data, adpcm_data;
 wire [17:1] ram_addr;
 wire [19:1] main_rom_addr;
 wire [21:0] main_ram_offset;
@@ -97,7 +99,7 @@ wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
 wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
 (*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
-wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok, snd_ok;
+wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
 wire [15:0] cpu_dout;
 
 wire        main_rnw, busreq, busack;
@@ -119,7 +121,7 @@ assign slot_cs[1] = main_ram_cs | main_vram_cs;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
 assign slot_cs[4] = vpal_cs;
-assign slot_cs[5] = 1'b0;
+assign slot_cs[5] = adpcm_cs;
 assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = snd_cs;
 assign slot_cs[8] = 1'b0;
@@ -133,6 +135,7 @@ assign main_ram_ok = slot_ok[1];
 assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
 assign vpal_ok     = slot_ok[4];
+assign adpcm_ok    = slot_ok[5];
 assign rom1_ok     = slot_ok[6];
 assign snd_ok      = slot_ok[7];
 assign vram_obj_ok = slot_ok[9];
@@ -346,6 +349,12 @@ jtcps1_sound u_sound(
     .rom_data   ( snd_data      ),
     .rom_ok     ( snd_ok        ),
 
+    // ADPCM ROM
+    .adpcm_addr ( adpcm_addr    ),
+    .adpcm_cs   ( adpcm_cs      ),
+    .adpcm_data ( adpcm_data    ),
+    .adpcm_ok   ( adpcm_ok      ),
+
     // Sound output
     .left       ( snd_left      ),
     .right      ( snd_right     ),
@@ -370,18 +379,19 @@ jtframe_sdram_mux #(
     .SLOT1_TYPE ( 2     ), // R/W access
     
     // Sound
+    .SLOT5_AW   ( 17    ),  // ADPCM
+    .SLOT5_DW   (  8    ),
+
     .SLOT7_AW   ( 16    ),
     .SLOT7_DW   (  8    ),
 
     // VRAM read access:
     .SLOT3_AW   ( 17    ),  // Scroll VRAM
     .SLOT4_AW   ( 17    ),  // Palette VRAM
-    .SLOT5_AW   ( 17    ),  //5
     .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
     .SLOT4_DW   ( 16    ),
-    .SLOT5_DW   ( 16    ),
     .SLOT9_DW   ( 16    ),
     // GFX ROM
     .SLOT2_AW   ( 22    ),  // OBJ VRAM
@@ -412,6 +422,10 @@ u_sdram_mux(
     .slot7_offset   ( SOUND_OFFSET      ),
     .slot7_addr     ( snd_addr          ),
     .slot7_dout     ( snd_data          ),
+
+    .slot5_offset   ( ADPCM_OFFSET      ),
+    .slot5_addr     ( adpcm_addr        ),
+    .slot5_dout     ( adpcm_data        ),
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
     .slot9_addr     ( vram_obj_addr     ),

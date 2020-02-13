@@ -471,16 +471,19 @@ void generate_mra( game_entry* game ) {
 }
 
 int main(int argc, char *argv[]) {
+    bool game_list=false, parents_only=false;
+    for( int k=1; k<argc; k++ ) {
+        if( string(argv[k])=="-list" ) game_list=true;
+        if( string(argv[k])=="-parent" ) parents_only=true;
+    }
     for( auto game : gl ) {
-        //cout << game->name << '\n';
-        generate_mra( game );
+        if( game_list ) {
+            if( !parents_only || game->parent=="0" )
+                cout << game->name << '\n';
+        } else {
+            generate_mra( game );
+        }
     }
-    /*
-    if (argc!=2 ) {
-        cout << "Usage: mmr <game name>\n";
-        return 1;
-    }
-*/
 }
 
 

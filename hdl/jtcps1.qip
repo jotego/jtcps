@@ -33,7 +33,10 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modu
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../modules/jtframe/hdl/cpu/t80/T80.qip      ]
 
 # JT51 (YM2151)
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) ../modules/jt51/hdl/jt51.qip   ]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) ../modules/jt51/hdl/jt51.qip     ]
+
+# JT6295 (MSM6295)
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) ../modules/jt6295/hdl/jt6295.qip ]
 
 
 # 68000
