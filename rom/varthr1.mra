@@ -1,0 +1,40 @@
+<misterromdescription>
+    <name>Varth: Operation Thunderstorm (World 920612)</name>
+    <setname>varthr1</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=varthr1.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="vae_35a.11h" crc="35cf9509"/>
+            <part name="vae_30a.11f" crc="7fcd0091"/>
+       </group>
+        <group width="16">
+            <part name="vae_36a.12h" crc="153a201e"/>
+            <part name="vae_31a.12f" crc="15e5ee81"/>
+       </group>
+        <group width="16">
+            <part name="vae_33a.9h" crc="f2365922"/>
+            <part name="vae_28a.9f" crc="7a0e0d25"/>
+       </group>
+        <group width="16">
+            <part name="vae_34a.10h" crc="3d9bdf83"/>
+            <part name="vae_29a.10f" crc="5e2cd2c3"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="va_09.12b" crc="7a99446e"/>
+        <!-- oki -->
+        <part name="va_18.11c" crc="de30510e"/>
+        <part name="va_19.12c" crc="0610a4ac"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="va-5m.7a" crc="b1fb726e" pattern="01"/>
+            <part name="va-7m.9a" crc="4c6588cd" pattern="01"/>
+            <part name="va-1m.3a" crc="0b1ace37" pattern="01"/>
+            <part name="va-3m.5a" crc="44dfe706" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for varthr1 --> 
+    <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
+</misterromdescription>

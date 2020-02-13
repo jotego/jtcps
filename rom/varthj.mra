@@ -1,0 +1,54 @@
+<misterromdescription>
+    <name>Varth: Operation Thunderstorm (Japan 920714)</name>
+    <setname>varthj</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=varthj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="vaj_42b.12h" crc="0f720233"/>
+            <part name="vaj_36b.12f" crc="1d798d6a"/>
+       </group>
+        <group width="16">
+            <part name="vaj_43b.13h" crc="34b4b06c"/>
+            <part name="vaj_37b.13f" crc="24414b17"/>
+       </group>
+        <group width="16">
+            <part name="vaj_40b.10h" crc="210b4bd0"/>
+            <part name="vaj_34b.10f" crc="87c79aed"/>
+       </group>
+        <group width="16">
+            <part name="vaj_41b.11h" crc="6542c8a4"/>
+            <part name="vaj_35b.11f" crc="6b0da69f"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="va_23.13c" crc="7a99446e"/>
+        <!-- oki -->
+        <part name="va_30.12e" crc="de30510e"/>
+        <part name="va_31.13e" crc="0610a4ac"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="va_09.4b" crc="183dfaa8" />
+            <part name="va_01.4a" crc="c41312b5" />
+            <part name="va_13.9b" crc="45537e69" />
+            <part name="va_05.9a" crc="7065d4e9" />
+            <part name="va_24.5e" crc="57191ccf" />
+            <part name="va_17.5c" crc="054f5a5b" />
+            <part name="va_38.8h" crc="e117a17e" />
+            <part name="va_32.8f" crc="3b4f40b2" />
+       </group>
+        <group width="64">
+            <part name="va_10.5b" crc="d62750cd" />
+            <part name="va_02.5a" crc="11590325" />
+            <part name="va_14.10b" crc="dc2f4783" />
+            <part name="va_06.10a" crc="06e833ac" />
+            <part name="va_25.7e" crc="51d90690" />
+            <part name="va_18.7c" crc="a17817c0" />
+            <part name="va_39.9h" crc="b0b12f51" />
+            <part name="va_33.9f" crc="4b003af7" />
+       </group>
+    </rom>
+    <!-- CPS-B config for varthj --> 
+    <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
+</misterromdescription>

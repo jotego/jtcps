@@ -1,0 +1,25 @@
+<misterromdescription>
+    <name>Area 88 (Japan Resale Ver.)</name>
+    <setname>area88r</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=area88r.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="araj_23.8f" crc="7045d6cb" pattern ="10"/>
+        <part name="araj_22.7f" crc="9913002e" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ara_09.12a" crc="af88359c"/>
+        <!-- oki -->
+        <part name="ara_18.11c" crc="584b43a9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ara_01.3a" crc="bf4575d8" pattern="01"/>
+            <part name="ara_02.4a" crc="a02945f4" pattern="01"/>
+            <part name="ara_03.5a" crc="5965ca8d" pattern="01"/>
+            <part name="ara_04.6a" crc="ac6db17d" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for area88r --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

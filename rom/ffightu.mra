@@ -1,0 +1,33 @@
+<misterromdescription>
+    <name>Final Fight (USA, set 1)</name>
+    <setname>ffightu</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=ffightu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="ff_42.11h" crc="65f11215"/>
+            <part name="ff_36.11f" crc="f9a5ce83"/>
+       </group>
+        <group width="16">
+            <part name="ffu_43.12h" crc="4ca65947"/>
+            <part name="ff_37.12f" crc="e1033784"/>
+       </group>
+        <part name="ff-32m.8h" crc="c747696e" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ff_09.12b" crc="b8367eb5"/>
+        <!-- oki -->
+        <part name="ff_18.11c" crc="375c66e7"/>
+        <part name="ff_19.12c" crc="1ef137f9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ff-5m.7a" crc="9c284108" pattern="01"/>
+            <part name="ff-7m.9a" crc="a7584dfb" pattern="01"/>
+            <part name="ff-1m.3a" crc="0b605e44" pattern="01"/>
+            <part name="ff-3m.5a" crc="52291cd2" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for ffightu --> 
+    <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
+</misterromdescription>

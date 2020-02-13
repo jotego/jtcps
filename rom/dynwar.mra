@@ -1,0 +1,39 @@
+<misterromdescription>
+    <name>Dynasty Wars (USA, B-Board 89624B-?)</name>
+    <setname>dynwar</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=dynwar.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="35.11h" crc="e41fff2f"/>
+            <part name="30.11f" crc="f9ec6d68"/>
+       </group>
+        <group width="16">
+            <part name="36.12h" crc="7a13cfbf"/>
+            <part name="31.12f" crc="e3de76ff"/>
+       </group>
+        <part name="tkm-9.8h" crc="93654bcf" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="tke_17.12b" crc="b3b79d4f"/>
+        <!-- oki -->
+        <part name="tke_18.11c" crc="ac6e307d"/>
+        <part name="tke_19.12c" crc="068741db"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="tkm-5.7a" crc="f64bb6a0" pattern="01"/>
+            <part name="tkm-8.9a" crc="21fe6274" pattern="01"/>
+            <part name="tkm-6.3a" crc="0bf228cb" pattern="01"/>
+            <part name="tkm-7.5a" crc="1255dfb1" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="tkm-1.8a" crc="44f7661e" pattern="01"/>
+            <part name="tkm-4.10a" crc="a54c515d" pattern="01"/>
+            <part name="tkm-2.4a" crc="ca5c687c" pattern="01"/>
+            <part name="tkm-3.6a" crc="f9fe6591" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for dynwar --> 
+    <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
+</misterromdescription>

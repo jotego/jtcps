@@ -1,0 +1,27 @@
+<misterromdescription>
+    <name>Strider Hiryu (Japan Resale Ver.)</name>
+    <setname>striderjr</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=striderjr.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="sthj_23.8f" crc="046e7b12" pattern ="10"/>
+        <part name="sthj_22.7f" crc="9b3cfc08" pattern ="10"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="sth_01.3a" crc="4eee9aea" pattern="01"/>
+            <part name="sth_02.4a" crc="2d7f21e4" pattern="01"/>
+            <part name="sth_03.5a" crc="7705aa46" pattern="01"/>
+            <part name="sth_04.6a" crc="5b18b722" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sth_05.7a" crc="005f000b" pattern="01"/>
+            <part name="sth_06.8a" crc="b9441519" pattern="01"/>
+            <part name="sth_07.9a" crc="b7d04e8b" pattern="01"/>
+            <part name="sth_08.10a" crc="6b4713b4" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for striderjr --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

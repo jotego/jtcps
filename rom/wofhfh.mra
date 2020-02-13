@@ -1,0 +1,32 @@
+<misterromdescription>
+    <name>Huo Feng Huang (Chinese bootleg of Sangokushi II)</name>
+    <setname>wofhfh</setname>
+    <year>1999</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=wofhfh.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="23" crc="6ae4b312" pattern ="10"/>
+        <part name="22" crc="94e8d01a" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="9" crc="86fe8a97"/>
+        <!-- oki -->
+        <part name="18" crc="c04be720"/>
+        <part name="19" crc="fbb8d8c1"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="1" crc="0d9cb9bf" pattern="01"/>
+            <part name="2" crc="45227027" pattern="01"/>
+            <part name="3" crc="c5ca2460" pattern="01"/>
+            <part name="4" crc="e349551c" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="5" crc="34949d7b" pattern="01"/>
+            <part name="6" crc="dfa70971" pattern="01"/>
+            <part name="7" crc="073686a6" pattern="01"/>
+            <part name="8" crc="5300f8db" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for wofhfh --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

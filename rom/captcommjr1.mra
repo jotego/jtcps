@@ -1,0 +1,36 @@
+<misterromdescription>
+    <name>Captain Commando (Japan 910928)</name>
+    <setname>captcommjr1</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=captcommjr1.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="ccj_23b.8f" crc="e2a2d80e" pattern ="10"/>
+        <part name="ccj_22c.7f" crc="9b82a052" pattern ="10"/>
+        <group width="16">
+            <part name="ccj_28b.9f" crc="fbcec223"/>
+            <part name="ccj_24b.9e" crc="84ff99b2"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="ccj_09.12a" crc="698e8b58"/>
+        <!-- oki -->
+        <part name="ccj_18.11c" crc="6de2c2db"/>
+        <part name="ccj_19.12c" crc="b99091ae"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="cc_01.3a" crc="7261d8ba" pattern="01"/>
+            <part name="cc_02.4a" crc="6a60f949" pattern="01"/>
+            <part name="cc_03.5a" crc="00637302" pattern="01"/>
+            <part name="cc_04.6a" crc="cc87cf61" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="cc_05.7a" crc="28718bed" pattern="01"/>
+            <part name="cc_06.8a" crc="d4acc53a" pattern="01"/>
+            <part name="cc_07.9a" crc="0c69f151" pattern="01"/>
+            <part name="cc_08.10a" crc="1f9ebb97" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for captcommjr1 --> 
+    <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
+</misterromdescription>

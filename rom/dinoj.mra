@@ -1,0 +1,30 @@
+<misterromdescription>
+    <name>Cadillacs: Kyouryuu Shin Seiki (Japan 930201)</name>
+    <setname>dinoj</setname>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=dinoj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="cdj_23a.8f" crc="5f3ece96" pattern ="10"/>
+        <part name="cdj_22a.7f" crc="a0d8de29" pattern ="10"/>
+        <part name="cdj_21a.6f" crc="66d23de2" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="cd_q.5k" crc="605fdb0b"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="cd_01.3a" crc="8da4f917" pattern="01"/>
+            <part name="cd_02.4a" crc="6c40f603" pattern="01"/>
+            <part name="cd_03.5a" crc="09c8fc2d" pattern="01"/>
+            <part name="cd_04.6a" crc="637ff38f" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="cd_05.7a" crc="470befee" pattern="01"/>
+            <part name="cd_06.8a" crc="22bfb7a3" pattern="01"/>
+            <part name="cd_07.9a" crc="e7599ac4" pattern="01"/>
+            <part name="cd_08.10a" crc="211b4b15" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for dinoj --> 
+    <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
+</misterromdescription>

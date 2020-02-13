@@ -1,0 +1,33 @@
+<misterromdescription>
+    <name>Magic Sword: Heroic Fantasy (World 900725)</name>
+    <setname>msword</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=msword.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="mse_35.11h" crc="d5bf66cd"/>
+            <part name="mse_30.11f" crc="03fc8dbc"/>
+       </group>
+        <group width="16">
+            <part name="mse_36.12h" crc="8f7d6ce9"/>
+            <part name="mse_31.12f" crc="30332bcf"/>
+       </group>
+        <part name="ms-32m.8h" crc="2475ddfc" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ms_09.12b" crc="57b29519"/>
+        <!-- oki -->
+        <part name="ms_18.11c" crc="fb64e90d"/>
+        <part name="ms_19.12c" crc="74f892b9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ms-5m.7a" crc="c00fe7e2" pattern="01"/>
+            <part name="ms-7m.9a" crc="4ccacac5" pattern="01"/>
+            <part name="ms-1m.3a" crc="0d2bbe00" pattern="01"/>
+            <part name="ms-3m.5a" crc="3a1a5bf4" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for msword --> 
+    <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+</misterromdescription>

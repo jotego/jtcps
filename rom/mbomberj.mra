@@ -1,0 +1,37 @@
+<misterromdescription>
+    <name>Muscle Bomber: The Body Explosion (Japan 930713)</name>
+    <setname>mbomberj</setname>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=mbomberj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="mbj_23e.8f" crc="0d06036a" pattern ="10"/>
+        <part name="mbj_22b.7f" crc="acd38478" pattern ="10"/>
+        <part name="mbj_21a.6f" crc="d5007b05" pattern ="10"/>
+        <part name="mbj_20a.5f" crc="aeb557b0" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="mb_qa.5k" crc="e21a03c4"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="mb_01.3a" crc="a53b1c81" pattern="01"/>
+            <part name="mb_02.4a" crc="23fe10f6" pattern="01"/>
+            <part name="mb_03.5a" crc="cb866c2f" pattern="01"/>
+            <part name="mb_04.6a" crc="c9143e75" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="mb_05.7a" crc="506b9dc9" pattern="01"/>
+            <part name="mb_06.8a" crc="aff8c2fb" pattern="01"/>
+            <part name="mb_07.9a" crc="b76c70e9" pattern="01"/>
+            <part name="mb_08.10a" crc="e60c9556" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="mb_10.3c" crc="97976ff5" pattern="01"/>
+            <part name="mb_11.4c" crc="b350a840" pattern="01"/>
+            <part name="mb_12.5c" crc="8fb94743" pattern="01"/>
+            <part name="mb_13.6c" crc="da810d5f" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for mbomberj --> 
+    <part> 00 10 08 04 2C 2A 28 02 00 16 FF FF FF FF C1 2E </part>
+</misterromdescription>

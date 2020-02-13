@@ -1,0 +1,44 @@
+<misterromdescription>
+    <name>The Punisher (Hispanic 930422)</name>
+    <setname>punisherh</setname>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=punisherh.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="psh_30.11f" crc="058d3659"/>
+            <part name="psh_26.11e" crc="6ad2bb83"/>
+       </group>
+        <group width="16">
+            <part name="psh_31.12f" crc="2c9f70b5"/>
+            <part name="psh_27.12e" crc="579f4fd3"/>
+       </group>
+        <group width="16">
+            <part name="psh_28.9f" crc="5c5b1f20"/>
+            <part name="psh_24.9e" crc="faa14841"/>
+       </group>
+        <group width="16">
+            <part name="psh_29.10f" crc="779cf901"/>
+            <part name="psh_25.10e" crc="724fdfda"/>
+       </group>
+        <part name="ps_21.6f" crc="8affa5a9" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ps_q.5k" crc="49ff4446"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ps-1m.3a" crc="77b7ccab" pattern="01"/>
+            <part name="ps-3m.5a" crc="0122720b" pattern="01"/>
+            <part name="ps-2m.4a" crc="64fa58d4" pattern="01"/>
+            <part name="ps-4m.6a" crc="60da42c8" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="ps-5m.7a" crc="c54ea839" pattern="01"/>
+            <part name="ps-7m.9a" crc="04c5acbd" pattern="01"/>
+            <part name="ps-6m.8a" crc="a544f4cc" pattern="01"/>
+            <part name="ps-8m.10a" crc="8f02f436" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for punisherh --> 
+    <part> 00 20 02 04 0C 0A 08 16 14 12 FF FF FF FF C0 0E </part>
+</misterromdescription>

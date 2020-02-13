@@ -1,0 +1,64 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (World 910204, conversion)</name>
+    <setname>sf2en</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2en.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="epr-b-09.12h" crc="1c1266b3"/>
+            <part name="epr-b-05.12f" crc="bc02c14c"/>
+       </group>
+        <group width="16">
+            <part name="epr-b-10.13h" crc="2d42d82a"/>
+            <part name="epr-b-06.13f" crc="8b8221e6"/>
+       </group>
+        <group width="16">
+            <part name="epr-b-07.10h" crc="3b075de1"/>
+            <part name="epr-b-03.10f" crc="852e10ec"/>
+       </group>
+        <group width="16">
+            <part name="epr-b-08.11h" crc="db66b127"/>
+            <part name="epr-b-04.11f" crc="fdd0b5c1"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="27c512.13b" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="epr-b-01.12c" crc="7f162009"/>
+        <part name="epr-b-02.13c" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="epr-b-18.5e" crc="88f3485a" />
+            <part name="epr-b-13.5c" crc="63d63e0c" />
+            <part name="epr-b-24.8h" crc="25ae23bc" />
+            <part name="epr-b-23.8f" crc="e5819676" />
+            <part name="epr-b-07.4b" crc="84afb959" />
+            <part name="epr-b-01.4a" crc="ab21635d" />
+            <part name="epr-b-10.9b" crc="2ce56f9f" />
+            <part name="epr-b-04.9a" crc="0ad7fb2b" />
+       </group>
+        <group width="64">
+            <part name="epr-b-19.8e" crc="031525cc" />
+            <part name="epr-b-14.8c" crc="c97046a5" />
+            <part name="epr-b-21.10e" crc="acbbdb09" />
+            <part name="epr-b-16.10c" crc="fa6f32d9" />
+            <part name="epr-b-08.7b" crc="14756473" />
+            <part name="epr-b-02.7a" crc="ee3d878a" />
+            <part name="epr-b-11.11b" crc="dbbfd400" />
+            <part name="epr-b-05.11a" crc="37635e97" />
+       </group>
+        <group width="64">
+            <part name="epr-b-20.9e" crc="27cae573" />
+            <part name="epr-b-15.9c" crc="14e46ab1" />
+            <part name="epr-b-22.11e" crc="f241f0c7" />
+            <part name="epr-b-17.11c" crc="f187086b" />
+            <part name="epr-b-09.8b" crc="4894aa8f" />
+            <part name="epr-b-03.8a" crc="e8877e9d" />
+            <part name="epr-b-12.12b" crc="c9d4ed76" />
+            <part name="epr-b-06.12a" crc="67dcc295" />
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2en --> 
+    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+</misterromdescription>

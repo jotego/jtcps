@@ -1,0 +1,51 @@
+<misterromdescription>
+    <name>Muscle Bomber Duo: Ultimate Team Battle (World 931206)</name>
+    <setname>mbombrd</setname>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=mbombrd.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="mbde_30.11f" crc="a036dc16"/>
+            <part name="mbde_26.11e" crc="72b7451c"/>
+       </group>
+        <group width="16">
+            <part name="mbde_31.12f" crc="085f47f0"/>
+            <part name="mbde_27.12e" crc="4086f534"/>
+       </group>
+        <group width="16">
+            <part name="mbde_28.9f" crc="2618d5e1"/>
+            <part name="mbde_24.9e" crc="c20895a5"/>
+       </group>
+        <group width="16">
+            <part name="mbde_29.10f" crc="3f52d5e5"/>
+            <part name="mbde_25.10e" crc="9bdb6b11"/>
+       </group>
+        <part name="mbde_21.6f" crc="690c026a" pattern ="10"/>
+        <part name="mbde_20.5f" crc="b8b2139b" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="mb_q.5k" crc="d6fa76d1"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="mb-1m.3a" crc="41468e06" pattern="01"/>
+            <part name="mb-3m.5a" crc="f453aa9e" pattern="01"/>
+            <part name="mb-2m.4a" crc="2ffbfea8" pattern="01"/>
+            <part name="mb-4m.6a" crc="1eb9841d" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="mb-5m.7a" crc="506b9dc9" pattern="01"/>
+            <part name="mb-7m.9a" crc="aff8c2fb" pattern="01"/>
+            <part name="mb-6m.8a" crc="b76c70e9" pattern="01"/>
+            <part name="mb-8m.10a" crc="e60c9556" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="mb-10m.3c" crc="97976ff5" pattern="01"/>
+            <part name="mb-12m.5c" crc="b350a840" pattern="01"/>
+            <part name="mb-11m.4c" crc="8fb94743" pattern="01"/>
+            <part name="mb-13m.6c" crc="da810d5f" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for mbombrd --> 
+    <part> 00 10 08 04 1C 32 30 2E 2C 2A FF FF FF FF C2 1E </part>
+</misterromdescription>

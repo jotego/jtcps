@@ -1,0 +1,52 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (World 910129)</name>
+    <setname>sf2em</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2em.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="sf2e_37.11f" crc="f11b3d64"/>
+            <part name="sf2e_30.11e" crc="997bdac4"/>
+       </group>
+        <group width="16">
+            <part name="sf2e_38.12f" crc="5ff4dc81"/>
+            <part name="sf2e_31.12e" crc="53e54744"/>
+       </group>
+        <group width="16">
+            <part name="sf2_35.9f" crc="4b964478"/>
+            <part name="sf2_28.9e" crc="55d88c35"/>
+       </group>
+        <group width="16">
+            <part name="sf2_36.10f" crc="db66b127"/>
+            <part name="sf2_29.10e" crc="fdd0b5c1"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="sf2_9.12a" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="sf2_18.11c" crc="7f162009"/>
+        <part name="sf2_19.12c" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="sf2-5m.4a" crc="22c9cc8e" pattern="01"/>
+            <part name="sf2-7m.6a" crc="57213be8" pattern="01"/>
+            <part name="sf2-1m.3a" crc="ba529b4f" pattern="01"/>
+            <part name="sf2-3m.5a" crc="4b1b33a8" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2-6m.4c" crc="2c7e2229" pattern="01"/>
+            <part name="sf2-8m.6c" crc="b5548f17" pattern="01"/>
+            <part name="sf2-2m.3c" crc="14b84312" pattern="01"/>
+            <part name="sf2-4m.5c" crc="5e9cd89a" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2-13m.4d" crc="994bfa58" pattern="01"/>
+            <part name="sf2-15m.6d" crc="3e66ad9d" pattern="01"/>
+            <part name="sf2-9m.3d" crc="c1befaa8" pattern="01"/>
+            <part name="sf2-11m.5d" crc="0627c831" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2em --> 
+    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+</misterromdescription>

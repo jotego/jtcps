@@ -1,0 +1,52 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (Japan 911210, CPS-B-13)</name>
+    <setname>sf2j</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2j.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="sf2j37.bin" crc="516776ec"/>
+            <part name="sf2j30.bin" crc="79022b31"/>
+       </group>
+        <group width="16">
+            <part name="sf2j38.bin" crc="38614d70"/>
+            <part name="sf2j31.bin" crc="fe15cb39"/>
+       </group>
+        <group width="16">
+            <part name="sf2j35.bin" crc="d28158e4"/>
+            <part name="sf2j28.bin" crc="d283187a"/>
+       </group>
+        <group width="16">
+            <part name="sf2_36a.bin" crc="c02a13eb"/>
+            <part name="sf2_29a.bin" crc="bb4af315"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="sf2_09.bin" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="sf2_18.bin" crc="7f162009"/>
+        <part name="sf2_19.bin" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="sf2_06.8a" crc="22c9cc8e" pattern="01"/>
+            <part name="sf2_08.10a" crc="57213be8" pattern="01"/>
+            <part name="sf2_05.7a" crc="ba529b4f" pattern="01"/>
+            <part name="sf2_07.9a" crc="4b1b33a8" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2_15.8c" crc="2c7e2229" pattern="01"/>
+            <part name="sf2_17.10c" crc="b5548f17" pattern="01"/>
+            <part name="sf2_14.7c" crc="14b84312" pattern="01"/>
+            <part name="sf2_16.9c" crc="5e9cd89a" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2_25.8d" crc="994bfa58" pattern="01"/>
+            <part name="sf2_27.10d" crc="3e66ad9d" pattern="01"/>
+            <part name="sf2_24.7d" crc="c1befaa8" pattern="01"/>
+            <part name="sf2_26.9d" crc="0627c831" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2j --> 
+    <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+</misterromdescription>

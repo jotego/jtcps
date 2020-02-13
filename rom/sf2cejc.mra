@@ -1,0 +1,39 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (Japan 920803)</name>
+    <setname>sf2cejc</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2cejc.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="s92j_23c.8f" crc="f0120635" pattern ="10"/>
+        <part name="s92j_22c.7f" crc="8c0b2ed6" pattern ="10"/>
+        <part name="s92j_21a.6f" crc="925a7877" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="s92_09.12a" crc="08f6b60e"/>
+        <!-- oki -->
+        <part name="s92_18.11c" crc="7f162009"/>
+        <part name="s92_19.12c" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="s92_01.3a" crc="03b0d852" pattern="01"/>
+            <part name="s92_02.4a" crc="840289ec" pattern="01"/>
+            <part name="s92_03.5a" crc="cdb5f027" pattern="01"/>
+            <part name="s92_04.6a" crc="e2799472" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="s92_05.7a" crc="ba8a2761" pattern="01"/>
+            <part name="s92_06.8a" crc="e584bfb5" pattern="01"/>
+            <part name="s92_07.9a" crc="21e3f87d" pattern="01"/>
+            <part name="s92_08.10a" crc="befc47df" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="s92_10.3c" crc="960687d5" pattern="01"/>
+            <part name="s92_11.4c" crc="978ecd18" pattern="01"/>
+            <part name="s92_12.5c" crc="d6ec9a0a" pattern="01"/>
+            <part name="s92_13.6c" crc="ed2c67f6" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2cejc --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

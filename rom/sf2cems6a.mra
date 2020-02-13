@@ -1,0 +1,31 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 1)</name>
+    <setname>sf2cems6a</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2cems6a.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="ms6.u196" crc="596609d4" pattern ="10"/>
+        <part name="ms6.u10" crc="ed4186bd" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ms6.u191" crc="08f6b60e"/>
+        <!-- oki -->
+        <part name="ms6.u210" crc="6cfffb11"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ms6.u70" crc="baa0f81f" pattern="01"/>
+            <part name="ms6.u68" crc="8edff95a" pattern="01"/>
+            <part name="ms6.u69" crc="468962b1" pattern="01"/>
+            <part name="ms6.u64" crc="8165f536" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="ms6.u19" crc="39d763d3" pattern="01"/>
+            <part name="ms6.u18" crc="2ddfe46e" pattern="01"/>
+            <part name="ms6.u31" crc="35486f2d" pattern="01"/>
+            <part name="ms6.u29" crc="e4eca601" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2cems6a --> 
+    <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
+</misterromdescription>

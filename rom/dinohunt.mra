@@ -1,0 +1,34 @@
+<misterromdescription>
+    <name>Dinosaur Hunter (Chinese bootleg of Cadillacs and Dinosaurs)</name>
+    <setname>dinohunt</setname>
+    <year>1993</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=dinohunt.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="u23" crc="8d5ddc5d" pattern ="10"/>
+        <part name="u22" crc="f72cd219" pattern ="10"/>
+        <part name="u21" crc="bc275b76" pattern ="10"/>
+        <part name="u20" crc="8987c975" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="u9" crc="2eb16a83"/>
+        <!-- oki -->
+        <part name="u18" crc="8d2899ba"/>
+        <part name="u19" crc="b34a4b42"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="u1" crc="a01a9fb5" pattern="01"/>
+            <part name="u2" crc="bdf02c17" pattern="01"/>
+            <part name="u3" crc="058beefa" pattern="01"/>
+            <part name="u4" crc="5028a9f1" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="u5" crc="d77f89ea" pattern="01"/>
+            <part name="u6" crc="bfbcb034" pattern="01"/>
+            <part name="u7" crc="a2544d4e" pattern="01"/>
+            <part name="u8" crc="8869bbb1" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for dinohunt --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

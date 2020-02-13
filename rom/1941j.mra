@@ -1,0 +1,54 @@
+<misterromdescription>
+    <name>1941: Counter Attack (Japan)</name>
+    <setname>1941j</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=1941j.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="41_42.12h" crc="c7781f89"/>
+            <part name="41_36.12f" crc="7fbd42ab"/>
+       </group>
+        <group width="16">
+            <part name="41_43.13h" crc="440fc0b5"/>
+            <part name="41_37.13f" crc="c6464b0b"/>
+       </group>
+        <group width="16">
+            <part name="41_40.10h" crc="3979837d"/>
+            <part name="41_34.10f" crc="b5f341ec"/>
+       </group>
+        <group width="16">
+            <part name="41_41.11h" crc="57496819"/>
+            <part name="41_35.11f" crc="95cc979a"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="41_23.13b" crc="0f9d8527"/>
+        <!-- oki -->
+        <part name="41_30.12c" crc="d1f15aeb"/>
+        <part name="41_31.13c" crc="15aec3a6"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="41_09.4b" crc="be1b6bc2" />
+            <part name="41_01.4a" crc="d8946fc1" />
+            <part name="41_13.9b" crc="2e06d0ec" />
+            <part name="41_05.9a" crc="d8ba28e0" />
+            <part name="41_24.5e" crc="5aa43cee" />
+            <part name="41_17.5c" crc="bbeff902" />
+            <part name="41_38.8h" crc="8889c0aa" />
+            <part name="41_32.8f" crc="f0168249" />
+       </group>
+        <group width="64">
+            <part name="41_10.5b" crc="b7eb6a6d" />
+            <part name="41_02.5a" crc="802e8153" />
+            <part name="41_14.10b" crc="5a33f676" />
+            <part name="41_06.10a" crc="4e53650b" />
+            <part name="41_25.7e" crc="94add360" />
+            <part name="41_18.7c" crc="a5e1c1f3" />
+            <part name="41_39.9h" crc="5b5c3949" />
+            <part name="41_33.9f" crc="7a31b0e2" />
+       </group>
+    </rom>
+    <!-- CPS-B config for 1941j --> 
+    <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
+</misterromdescription>

@@ -1,0 +1,26 @@
+<misterromdescription>
+    <name>Varth: Operation Thunderstorm (USA 920612)</name>
+    <setname>varthu</setname>
+    <year>1992</year>
+    <manufacturer>Capcom (Romstar license)</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=varthu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="vau_23a.8f" crc="fbe68726" pattern ="10"/>
+        <part name="vau_22a.7f" crc="0ed71bbd" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="va_09.11a" crc="7a99446e"/>
+        <!-- oki -->
+        <part name="va_18.11c" crc="de30510e"/>
+        <part name="va_19.12c" crc="0610a4ac"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="va-5m.3a" crc="b1fb726e" pattern="01"/>
+            <part name="va-7m.5a" crc="4c6588cd" pattern="01"/>
+            <part name="va-1m.4a" crc="0b1ace37" pattern="01"/>
+            <part name="va-3m.6a" crc="44dfe706" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for varthu --> 
+    <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
+</misterromdescription>

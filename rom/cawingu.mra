@@ -1,0 +1,54 @@
+<misterromdescription>
+    <name>Carrier Air Wing (USA 901130)</name>
+    <setname>cawingu</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=cawingu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="cau_42.12h" crc="d89e00be"/>
+            <part name="cau_36.12f" crc="c2574c0c"/>
+       </group>
+        <group width="16">
+            <part name="cau_43.13h" crc="ece07955"/>
+            <part name="cau_37.13f" crc="8e6d4f8a"/>
+       </group>
+        <group width="16">
+            <part name="cau_40.10h" crc="736c1835"/>
+            <part name="cau_34.10f" crc="5fda906e"/>
+       </group>
+        <group width="16">
+            <part name="cau_41.11h" crc="2a44bfe5"/>
+            <part name="cau_35.11f" crc="74c2ddf0"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="cau_23.13b" crc="96fe7485"/>
+        <!-- oki -->
+        <part name="cau_30.12c" crc="4a613a2c"/>
+        <part name="cau_31.13c" crc="74584493"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="cau_09.4b" crc="d4b17c3a" />
+            <part name="cau_01.4a" crc="34c3094e" />
+            <part name="cau_13.9b" crc="9d5c7911" />
+            <part name="cau_05.9a" crc="f042cc7b" />
+            <part name="cau_24.5e" crc="0eac450f" />
+            <part name="cau_17.5c" crc="4fab0d0c" />
+            <part name="cau_38.8h" crc="cb96ed24" />
+            <part name="cau_32.8f" crc="433a0859" />
+       </group>
+        <group width="64">
+            <part name="cau_10.5b" crc="4af10ef2" />
+            <part name="cau_02.5a" crc="3e1f5b34" />
+            <part name="cau_14.10b" crc="2bef78c4" />
+            <part name="cau_06.10a" crc="3777ede1" />
+            <part name="cau_25.7e" crc="859ee531" />
+            <part name="cau_18.7c" crc="4c52edf1" />
+            <part name="cau_39.9h" crc="147be975" />
+            <part name="cau_33.9f" crc="8560c130" />
+       </group>
+    </rom>
+    <!-- CPS-B config for cawingu --> 
+    <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
+</misterromdescription>

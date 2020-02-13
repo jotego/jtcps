@@ -1,0 +1,26 @@
+<misterromdescription>
+    <name>Adventure Quiz Capcom World 2 (Japan 920611, B-Board 91634B-2)</name>
+    <setname>cworld2jb</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=cworld2jb.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="q5 - 23_91634b.8f" crc="709f577f" pattern ="10"/>
+        <part name="q5 - 22_91634b.7f" crc="93248458" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="q5 - 09_91634b.12a" crc="e14dc524"/>
+        <!-- oki -->
+        <part name="q5 - 18_91634b.11c" crc="d10c1b68"/>
+        <part name="q5 - 19_91634b.12c" crc="7d17e496"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="q5 - 01_91634b.3a" crc="09d0e7ce" pattern="01"/>
+            <part name="q5 - 02_91634b.4a" crc="22e4ce9a" pattern="01"/>
+            <part name="q5 - 03_91634b.5a" crc="f7b3aed6" pattern="01"/>
+            <part name="q5 - 04_91634b.6a" crc="520c6c88" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for cworld2jb --> 
+    <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+</misterromdescription>

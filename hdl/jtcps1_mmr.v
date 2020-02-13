@@ -94,17 +94,17 @@ wire [5:1] addr_id,
            addr_pal_page;
 
 wire [10:0] addrb = {
-           addr == addr_id,      // 0
-           addr == addr_mult1,   // 1   
-           addr == addr_mult2,   // 2
-           addr == addr_rslt0,   // 3  
-           addr == addr_rslt1,   // 4  
-           addr == addr_layer,   // 5  
-           addr == addr_prio0,   // 6  
-           addr == addr_prio1,   // 7  
-           addr == addr_prio2,   // 8  
+           addr == addr_pal_page,// 10
            addr == addr_prio3,   // 9  
-           addr == addr_pal_page // 10
+           addr == addr_prio2,   // 8  
+           addr == addr_prio1,   // 7  
+           addr == addr_prio0,   // 6  
+           addr == addr_layer,   // 5  
+           addr == addr_rslt1,   // 4  
+           addr == addr_rslt0,   // 3  
+           addr == addr_mult2,   // 2
+           addr == addr_mult1,   // 1   
+           addr == addr_id       // 0
         };
 
 wire [7:0]  cpsb_id;

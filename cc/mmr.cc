@@ -1,6 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <iomanip>
+
+#include "romsets.h"
 
 using namespace std;
 
@@ -322,22 +325,106 @@ static const struct CPS1config cps1_config_table[]=
     {nullptr}     /* End of table */
 };
 
-#define DUMP(a) cout << hex << setw(2) << setfill('0') << ((a)&0xff) << ' ';
+void xml_element( ofstream& of, const char *name, const string &content, int tab) {
+    while( tab-- ) of << "    ";
+    of << "<" << name << ">" << content << "</" << name << ">\n";
+}
 
-int main(int argc, char *argv[]) {
-    if (argc!=2 ) {
-        cout << "Usage: mmr <game name>\n";
-        return 1;
+void dump_region( ofstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap ) {
+    while( !(entry->flags&ROMENTRYTYPE_END) ) {
+        if( entry->flags & ROMENTRYTYPE_REGION ) {
+            if( region == entry->name ) {
+                const char *indent="        ";
+                of << indent << "<!-- " << region << " -->\n";
+                if( entry->flags&ROMREGION_ERASEMASK ) {
+                    of << indent << "<part repeat=\"";
+                    of << entry->length << "\">";
+                    int erase = entry->flags&ROMREGION_ERASEVALMASK;
+                    erase >>= 16;
+                    erase &=0xff;
+                    of << hex << uppercase << erase << "</part>\n";
+                    of << dec;
+                    return;
+                }                 
+                ++entry;
+                int done=0;
+                while( !(entry->flags&ROMENTRYTYPE_REGION) && !(entry->flags&ROMENTRYTYPE_END)) {
+                    if( entry->name ) { // avoid the ROM_CONTINUE case
+                        int file_width = (entry->flags & ROM_GROUPMASK) >> 7;
+                        if(file_width==0) file_width=1;
+                        of << indent;
+                        if( bits==8 ) {
+                            of << "<part name=\"" << entry->name << "\" ";
+                            of << "crc=\"" << entry->hashdata << "\"/>\n";
+                        }
+                        if( bits==16 ) {
+                            if( file_width==1 ) {
+                                const tiny_rom_entry* cur=entry;
+                                if( done==0 ) {
+                                    of << "<group width=\""<<bits<<"\">\n";
+                                    of << indent;
+                                    if(swap) cur++;
+                                } else if(swap) cur--;
+                                done+=file_width;
+                                of << "    ";
+                                of << "<part name=\"" << cur->name << "\" ";
+                                of << "crc=\"" << cur->hashdata << "\"/>\n";
+                                if( done==(bits>>3) ) {
+                                    of << "       </group>\n";
+                                    done=0;
+                                }
+                            }
+                            if( file_width==2 ) {
+                                of << "<part name=\"" << entry->name << "\" ";
+                                of << "crc=\"" << entry->hashdata << "\" ";
+                                if(swap) 
+                                    of << "pattern =\"10\"/>\n";
+                                else
+                                    of << "pattern =\"01\"/>\n";
+                            }
+                        }
+                        if( bits==64 ) {
+                            if( done==0 ) {
+                                of << "<group width=\""<<bits<<"\">\n";
+                                of << indent;
+                            }
+                            done+=file_width;
+                            of << "    ";
+                            of << "<part name=\"" << entry->name << "\" ";
+                            of << "crc=\"" << entry->hashdata << "\" ";
+                            if( file_width>1 ) {
+                                of << "pattern=\"";
+                                for( int k=0; k<file_width; k++)
+                                    of << k;
+                                of << "\"";
+                            }
+                            of << "/>\n";
+                            if( done==(bits>>3) ) {
+                                of << "       </group>\n";
+                                done=0;
+                            }
+                        }
+                    }
+                    entry++;
+                }
+                return;
+            }
+        }
+        entry++;
     }
+}
+
+#define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' ';
+
+void generate_cpsb(ofstream& of, const string& name) {
     for( int k=0; k<500; k++ ) {
         if( cps1_config_table[k].name == nullptr ) {
-            cout << "ERROR: cannot find game " << argv[1] << '\n';
-            return 1;
+            of << "ERROR: cannot find game " << name << '\n';
         }
-        if( strcmp( cps1_config_table[k].name, argv[1])==0 ) {
+        if( name == cps1_config_table[k].name ) {
             const CPS1config* x = &cps1_config_table[k];
-            cout << "<!-- CPS-B config for " << argv[1] << " --> \n";
-            cout << "<part> ";            
+            of << "    <!-- CPS-B config for " << name << " --> \n";
+            of << "    <part> ";            
             DUMP( x->layer_enable_mask[3] );
             DUMP( x->layer_enable_mask[2] );
             DUMP( x->layer_enable_mask[1] );
@@ -354,10 +441,44 @@ int main(int argc, char *argv[]) {
             DUMP( x->mult_factor1 );
             DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
             DUMP( x->cpsb_addr );
-            cout << "</part>\n";
+            of << "</part>\n";
             break;
         }
     }
+}
+
+void generate_mra( game_entry* game ) {
+    ofstream of( game->name+".mra" );
+    of << "<misterromdescription>\n";
+    xml_element(of,"name", game->full_name,1 );
+    xml_element(of,"setname", game->name,1 );
+    xml_element(of,"year", game->year,1 );
+    xml_element(of,"manufacturer", game->mfg,1 );
+    xml_element(of,"rbf", "jtcps1",1 );
+    // ROMs
+    of << "    <rom index=\"0\" zip=" << game->name << ".zip";
+    of << " md5=\"b3d6ca2a35aa8702e361ed06d23b77c4\" type=\"merged|nonmerged\">\n";
+    const tiny_rom_entry *entry = game->roms;
+    dump_region(of, entry,"maincpu",16,1);
+    dump_region(of, entry,"audiocpu",8,0);
+    dump_region(of, entry,"oki",8,0);
+    dump_region(of, entry,"gfx",64,0);
+    of << "    </rom>\n";
+    generate_cpsb( of, game->name );
+    of << "</misterromdescription>\n";
+}
+
+int main(int argc, char *argv[]) {
+    for( auto game : gl ) {
+        //cout << game->name << '\n';
+        generate_mra( game );
+    }
+    /*
+    if (argc!=2 ) {
+        cout << "Usage: mmr <game name>\n";
+        return 1;
+    }
+*/
 }
 
 

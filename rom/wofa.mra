@@ -1,0 +1,29 @@
+<misterromdescription>
+    <name>Sangokushi II (Asia 921005)</name>
+    <setname>wofa</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=wofa.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="tk2a_23c.8f" crc="2e024628" pattern ="10"/>
+        <part name="tk2a_22c.7f" crc="900ad4cd" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="tk2_qa.5k" crc="c9183a0d"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="tk2-1m.3a" crc="0d9cb9bf" pattern="01"/>
+            <part name="tk2-3m.5a" crc="45227027" pattern="01"/>
+            <part name="tk2-2m.4a" crc="c5ca2460" pattern="01"/>
+            <part name="tk2-4m.6a" crc="e349551c" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="tk2-5m.7a" crc="291f0f0b" pattern="01"/>
+            <part name="tk2-7m.9a" crc="3edeb949" pattern="01"/>
+            <part name="tk2-6m.8a" crc="1abd14d6" pattern="01"/>
+            <part name="tk2-8m.10a" crc="b27948e3" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for wofa --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

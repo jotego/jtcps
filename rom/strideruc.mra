@@ -1,0 +1,32 @@
+<misterromdescription>
+    <name>Strider (USA, B-Board 90629B-3, buggy Street Fighter II conversion)</name>
+    <setname>strideruc</setname>
+    <year>1989</year>
+    <manufacturer>bootleg (Capcom)</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=strideruc.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="34.8f" crc="e0fb5657" pattern ="10"/>
+        <part name="33.6f" crc="9b3cfc08" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="9.12a" crc="08d63519"/>
+        <!-- oki -->
+        <part name="18.11c" crc="4386bc80"/>
+        <part name="19.12c" crc="444536d7"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="6.8a" crc="4eee9aea" pattern="01"/>
+            <part name="8.10a" crc="2d7f21e4" pattern="01"/>
+            <part name="5.7a" crc="7705aa46" pattern="01"/>
+            <part name="7.9a" crc="5b18b722" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="15.8c" crc="005f000b" pattern="01"/>
+            <part name="17.10c" crc="b9441519" pattern="01"/>
+            <part name="14.7c" crc="b7d04e8b" pattern="01"/>
+            <part name="16.9c" crc="6b4713b4" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for strideruc --> 
+    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+</misterromdescription>

@@ -1,0 +1,53 @@
+<misterromdescription>
+    <name>Area 88 (Japan)</name>
+    <setname>area88</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=area88.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="ar_42.12h" crc="c48170de"/>
+            <part name="ar_36.12f" crc="65030392"/>
+       </group>
+        <group width="16">
+            <part name="ar_43.13h" crc="7cc8fb9e"/>
+            <part name="ar_37.13f" crc="33e9694b"/>
+       </group>
+        <group width="16">
+            <part name="ar_40.10h" crc="be36c145"/>
+            <part name="ar_34.10f" crc="f6e80386"/>
+       </group>
+        <group width="16">
+            <part name="ar_41.11h" crc="758893d3"/>
+            <part name="ar_35.11f" crc="86d98ff3"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="ar_23.13c" crc="f3dd1367"/>
+        <!-- oki -->
+        <part name="ar_30.12e" crc="584b43a9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ar_09.4b" crc="db9376f8" />
+            <part name="ar_01.4a" crc="392151b4" />
+            <part name="ar_13.9b" crc="81436481" />
+            <part name="ar_05.9a" crc="e246ed9f" />
+            <part name="ar_24.5e" crc="9cd6e2a3" />
+            <part name="ar_17.5c" crc="0b8e0df4" />
+            <part name="ar_38.8h" crc="8b9e75b9" />
+            <part name="ar_32.8f" crc="db6acdcf" />
+       </group>
+        <group width="64">
+            <part name="ar_10.5b" crc="4219b622" />
+            <part name="ar_02.5a" crc="bac5dec5" />
+            <part name="ar_14.10b" crc="e6bae179" />
+            <part name="ar_06.10a" crc="c8f04223" />
+            <part name="ar_25.7e" crc="15ccf981" />
+            <part name="ar_18.7c" crc="9336db6a" />
+            <part name="ar_39.9h" crc="9b8e1363" />
+            <part name="ar_33.9f" crc="3968f4b5" />
+       </group>
+    </rom>
+    <!-- CPS-B config for area88 --> 
+    <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
+</misterromdescription>

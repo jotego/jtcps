@@ -1,0 +1,31 @@
+<misterromdescription>
+    <name>Daimakaimura (Japan Resale Ver.)</name>
+    <setname>daimakair</setname>
+    <year>1988</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=daimakair.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="damj_23.8f" crc="c3b248ec" pattern ="10"/>
+        <part name="damj_22.7f" crc="595ff2f3" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="dam_09.12a" crc="0656ff53"/>
+        <!-- oki -->
+        <part repeat="262144">FF</part>
+        <!-- gfx -->
+        <group width="64">
+            <part name="dam_01.3a" crc="0ba9c0b0" pattern="01"/>
+            <part name="dam_02.4a" crc="5d760ab9" pattern="01"/>
+            <part name="dam_03.5a" crc="4ba90b59" pattern="01"/>
+            <part name="dam_04.6a" crc="4bdee9de" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="dam_05.7a" crc="7dc61b94" pattern="01"/>
+            <part name="dam_06.8a" crc="fde89758" pattern="01"/>
+            <part name="dam_07.9a" crc="ec351d78" pattern="01"/>
+            <part name="dam_08.10a" crc="ee2acc1e" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for daimakair --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

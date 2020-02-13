@@ -1,0 +1,26 @@
+<misterromdescription>
+    <name>Varth: Operation Thunderstorm (Japan Resale Ver. 920714)</name>
+    <setname>varthjr</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=varthjr.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="vaj_23b.8f" crc="ad3d3522" pattern ="10"/>
+        <part name="vaj_22b.7f" crc="034e3e55" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="va_09.12a" crc="7a99446e"/>
+        <!-- oki -->
+        <part name="va_18.11c" crc="de30510e"/>
+        <part name="va_19.12c" crc="0610a4ac"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="va_01.3a" crc="b1fb726e" pattern="01"/>
+            <part name="va_02.4a" crc="4c6588cd" pattern="01"/>
+            <part name="va_03.5a" crc="0b1ace37" pattern="01"/>
+            <part name="va_04.6a" crc="44dfe706" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for varthjr --> 
+    <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
+</misterromdescription>

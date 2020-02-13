@@ -1,0 +1,32 @@
+<misterromdescription>
+    <name>Tenchi wo Kurau (Japan Resale Ver.)</name>
+    <setname>dynwarjr</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=dynwarjr.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="tk1j_23.8f" crc="088a3009" pattern ="10"/>
+        <part name="tk1j_22.7f" crc="93654bcf" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="tk1_09.12a" crc="db77d899"/>
+        <!-- oki -->
+        <part name="tk1_18.11c" crc="7e5f6cb4"/>
+        <part name="tk1_19.12c" crc="4a30c737"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="tk1_01.3a" crc="f64bb6a0" pattern="01"/>
+            <part name="tk1_02.4a" crc="21fe6274" pattern="01"/>
+            <part name="tk1_03.5a" crc="0bf228cb" pattern="01"/>
+            <part name="tk1_04.6a" crc="1255dfb1" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="tk1_05.7a" crc="44f7661e" pattern="01"/>
+            <part name="tk1_06.8a" crc="a54c515d" pattern="01"/>
+            <part name="tk1_07.9a" crc="ca5c687c" pattern="01"/>
+            <part name="tk1_08.10a" crc="f9fe6591" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for dynwarjr --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

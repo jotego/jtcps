@@ -1,0 +1,46 @@
+<misterromdescription>
+    <name>The King of Dragons (World 910711)</name>
+    <setname>kodr1</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=kodr1.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="kde_37.11f" crc="a5bf40d2"/>
+            <part name="kde_30.11e" crc="c7414fd4"/>
+       </group>
+        <group width="16">
+            <part name="kde_38.12f" crc="89e57a82"/>
+            <part name="kde_31.12e" crc="1fffc7bd"/>
+       </group>
+        <group width="16">
+            <part name="kde_35.9f" crc="4ca6a48a"/>
+            <part name="kde_28.9e" crc="9367bcd9"/>
+       </group>
+        <group width="16">
+            <part name="kde_36.10f" crc="b509b39d"/>
+            <part name="kde_29.10e" crc="6a0ba878"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="kd_9.12a" crc="f5514510"/>
+        <!-- oki -->
+        <part name="kd_18.11c" crc="69ecb2c8"/>
+        <part name="kd_19.12c" crc="02d851c1"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="kd-5m.4a" crc="e45b8701" pattern="01"/>
+            <part name="kd-7m.6a" crc="a7750322" pattern="01"/>
+            <part name="kd-1m.3a" crc="5f74bf78" pattern="01"/>
+            <part name="kd-3m.5a" crc="5e5303bf" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="kd-6m.4c" crc="113358f3" pattern="01"/>
+            <part name="kd-8m.6c" crc="38853c44" pattern="01"/>
+            <part name="kd-2m.3c" crc="9ef36604" pattern="01"/>
+            <part name="kd-4m.5c" crc="402b9b4f" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for kodr1 --> 
+    <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
+</misterromdescription>

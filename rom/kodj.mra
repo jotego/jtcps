@@ -1,0 +1,39 @@
+<misterromdescription>
+    <name>The King of Dragons (Japan 910805, B-Board 90629B-3)</name>
+    <setname>kodj</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=kodj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="kdj_37a.11f" crc="e55c3529"/>
+            <part name="kdj_30a.11e" crc="ebc788ad"/>
+       </group>
+        <group width="16">
+            <part name="kdj_38a.12f" crc="57d6ed3a"/>
+            <part name="kdj_31a.12e" crc="c710d722"/>
+       </group>
+        <part name="kd_33.6f" crc="9bd7ad4b" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="kd_09.12a" crc="bac6ec26"/>
+        <!-- oki -->
+        <part name="kd_18.11c" crc="4c63181d"/>
+        <part name="kd_19.12c" crc="92941b80"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="kd_06.8a" crc="e45b8701" pattern="01"/>
+            <part name="kd_08.10a" crc="a7750322" pattern="01"/>
+            <part name="kd_05.7a" crc="5f74bf78" pattern="01"/>
+            <part name="kd_07.9a" crc="5e5303bf" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="kd_15.8c" crc="113358f3" pattern="01"/>
+            <part name="kd_17.10c" crc="38853c44" pattern="01"/>
+            <part name="kd_14.7c" crc="9ef36604" pattern="01"/>
+            <part name="kd_16.9c" crc="402b9b4f" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for kodj --> 
+    <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
+</misterromdescription>

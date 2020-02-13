@@ -1,0 +1,36 @@
+<misterromdescription>
+    <name>Quiz & Dragons: Capcom Quiz Game (USA 920701)</name>
+    <setname>qad</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=qad.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="qdu_42a.12h" crc="cfe36f0c"/>
+            <part name="qdu_36a.12f" crc="de9c24a0"/>
+       </group>
+        <group width="16">
+            <part name="qdu_43a.13h" crc="15e6beb9"/>
+            <part name="qdu_37a.13f" crc="10d22320"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="qd_23.13b" crc="cfb5264b"/>
+        <!-- oki -->
+        <part name="qdu_30.12c" crc="f190da84"/>
+        <part name="qdu_31.13c" crc="b7583f73"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="qd_09.4b" crc="8c3f9f44" />
+            <part name="qd_01.4a" crc="f688cf8f" />
+            <part name="qd_13.9b" crc="afbd551b" />
+            <part name="qd_05.9a" crc="c3db0910" />
+            <part name="qd_24.5e" crc="2f1bd0ec" />
+            <part name="qd_17.5c" crc="a812f9e2" />
+            <part name="qd_38.8h" crc="ccdddd1f" />
+            <part name="qd_32.8f" crc="a8d295d3" />
+       </group>
+    </rom>
+    <!-- CPS-B config for qad --> 
+    <part> 00 14 02 14 12 FF FF FF FF 2C FF FF FF FF FF FF </part>
+</misterromdescription>

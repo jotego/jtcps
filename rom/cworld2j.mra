@@ -1,0 +1,54 @@
+<misterromdescription>
+    <name>Adventure Quiz Capcom World 2 (Japan 920611)</name>
+    <setname>cworld2j</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=cworld2j.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="q5_42.12h" crc="4d29b3a4"/>
+            <part name="q5_36.12f" crc="38a08099"/>
+       </group>
+        <group width="16">
+            <part name="q5_43.13h" crc="3ef65ea8"/>
+            <part name="q5_37.13f" crc="eb547ebc"/>
+       </group>
+        <group width="16">
+            <part name="q5_40.10h" crc="7f14b7b4"/>
+            <part name="q5_34.10f" crc="7fcc1317"/>
+       </group>
+        <group width="16">
+            <part name="q5_41.11h" crc="d3654067"/>
+            <part name="q5_35.11f" crc="abacee26"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="q5_23.13b" crc="e14dc524"/>
+        <!-- oki -->
+        <part name="q5_30.12c" crc="d10c1b68"/>
+        <part name="q5_31.13c" crc="7d17e496"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="q5_09.4b" crc="48496d80" />
+            <part name="q5_01.4a" crc="c5453f56" />
+            <part name="q5_13.9b" crc="c741ac52" />
+            <part name="q5_05.9a" crc="143e068f" />
+            <part name="q5_24.5e" crc="b419d139" />
+            <part name="q5_17.5c" crc="bd3b4d11" />
+            <part name="q5_38.8h" crc="9c24670c" />
+            <part name="q5_32.8f" crc="3ef9c7c2" />
+       </group>
+        <group width="64">
+            <part name="q5_10.5b" crc="119e5e93" />
+            <part name="q5_02.5a" crc="a2cadcbe" />
+            <part name="q5_14.10b" crc="a8755f82" />
+            <part name="q5_06.10a" crc="c92a91fc" />
+            <part name="q5_25.7e" crc="979237cb" />
+            <part name="q5_18.7c" crc="c57da03c" />
+            <part name="q5_39.9h" crc="a5839b25" />
+            <part name="q5_33.9f" crc="04d03930" />
+       </group>
+    </rom>
+    <!-- CPS-B config for cworld2j --> 
+    <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+</misterromdescription>

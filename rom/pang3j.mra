@@ -1,0 +1,23 @@
+<misterromdescription>
+    <name>Pang! 3: Kaitou Tachi no Karei na Gogo (Japan 950511)</name>
+    <setname>pang3j</setname>
+    <year>1995</year>
+    <manufacturer>Mitchell</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=pang3j.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="pa3j_17.11l" crc="21f6e51f" pattern ="10"/>
+        <part name="pa3j_16.10l" crc="ca1d7897" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="pa3_11.11f" crc="cb1423a2"/>
+        <!-- oki -->
+        <part name="pa3_05.10d" crc="73a10d5d"/>
+        <part name="pa3_06.11d" crc="affa4f82"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="pa3-01m.2c" crc="068a152c" pattern="01"/>
+            <part name="pa3-07m.2f" crc="3a4a619d" pattern="01"/>
+    </rom>
+    <!-- CPS-B config for pang3j --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

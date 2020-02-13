@@ -1,0 +1,54 @@
+<misterromdescription>
+    <name>U.S. Navy (Japan 901012)</name>
+    <setname>cawingj</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=cawingj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="caj_42a.12h" crc="039f8362"/>
+            <part name="caj_36a.12f" crc="91fceacd"/>
+       </group>
+        <group width="16">
+            <part name="caj_43a.13h" crc="c73fd713"/>
+            <part name="caj_37a.13f" crc="e5b75caf"/>
+       </group>
+        <group width="16">
+            <part name="caj_40.10h" crc="2ab71ae1"/>
+            <part name="caj_34.10f" crc="51ea57f4"/>
+       </group>
+        <group width="16">
+            <part name="caj_41.11h" crc="3a43b538"/>
+            <part name="caj_35.11f" crc="01d71973"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="caj_23.13b" crc="96fe7485"/>
+        <!-- oki -->
+        <part name="caj_30.12c" crc="4a613a2c"/>
+        <part name="caj_31.13c" crc="74584493"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="caj_09.4b" crc="41b0f9a6" />
+            <part name="caj_01.4a" crc="1002d0b8" />
+            <part name="caj_13.9b" crc="6f3948b2" />
+            <part name="caj_05.9a" crc="207373d7" />
+            <part name="caj_24.5e" crc="e356aad7" />
+            <part name="caj_17.5c" crc="540f2fd8" />
+            <part name="caj_38.8h" crc="2464d4ab" />
+            <part name="caj_32.8f" crc="9b5836b3" />
+       </group>
+        <group width="64">
+            <part name="caj_10.5b" crc="bf8a5f52" />
+            <part name="caj_02.5a" crc="125b018d" />
+            <part name="caj_14.10b" crc="8458e7d7" />
+            <part name="caj_06.10a" crc="cf80e164" />
+            <part name="caj_25.7e" crc="cdd0204d" />
+            <part name="caj_18.7c" crc="29c1d4b1" />
+            <part name="caj_39.9h" crc="eea23b67" />
+            <part name="caj_33.9f" crc="dde3891f" />
+       </group>
+    </rom>
+    <!-- CPS-B config for cawingj --> 
+    <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
+</misterromdescription>

@@ -1,0 +1,26 @@
+<misterromdescription>
+    <name>Quiz & Dragons: Capcom Quiz Game (Japan Resale Ver. 940921)</name>
+    <setname>qadjr</setname>
+    <year>1994</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=qadjr.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="qad_23a.8f" crc="4d3553de" pattern ="10"/>
+        <part name="qad_22a.7f" crc="3191ddd0" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="qad_09.12a" crc="733161cc"/>
+        <!-- oki -->
+        <part name="qad_18.11c" crc="2bfe6f6a"/>
+        <part name="qad_19.12c" crc="13d3236b"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="qad_01.3a" crc="9d853b57" pattern="01"/>
+            <part name="qad_02.4a" crc="b35976c4" pattern="01"/>
+            <part name="qad_03.5a" crc="cea4ca8c" pattern="01"/>
+            <part name="qad_04.6a" crc="41b74d1b" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for qadjr --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

@@ -1,0 +1,74 @@
+<misterromdescription>
+    <name>Knights of the Round (Japan 911127, B-Board 89625B-1)</name>
+    <setname>knightsja</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=knightsja.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="krj_42.12h" crc="e694a491"/>
+            <part name="krj_36.12f" crc="ad3d1a8e"/>
+       </group>
+        <group width="16">
+            <part name="krj_43.13h" crc="9198bf8f"/>
+            <part name="krj_37.13f" crc="85596094"/>
+       </group>
+        <group width="16">
+            <part name="kr_40.10h" crc="1172806d"/>
+            <part name="kr_34.10f" crc="fe6eb08d"/>
+       </group>
+        <group width="16">
+            <part name="kr_41.11h" crc="eb52e78d"/>
+            <part name="kr_35.11f" crc="f854b020"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="kr_23.13b" crc="5e44d9ee"/>
+        <!-- oki -->
+        <part name="kr_30.12c" crc="da69d15f"/>
+        <part name="kr_31.13c" crc="bfc654e9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="kr_09.4b" crc="08b76e10" />
+            <part name="kr_01.4a" crc="40cecf5c" />
+            <part name="kr_13.9b" crc="435aaa03" />
+            <part name="kr_05.9a" crc="5b8a615b" />
+            <part name="kr_24.5e" crc="de65153e" />
+            <part name="kr_17.5c" crc="b171c968" />
+            <part name="kr_38.8h" crc="f4466bf4" />
+            <part name="kr_32.8f" crc="87380ddd" />
+       </group>
+        <group width="64">
+            <part name="kr_10.5b" crc="37006d66" />
+            <part name="kr_02.5a" crc="b54612e3" />
+            <part name="kr_14.10b" crc="0ae88766" />
+            <part name="kr_06.10a" crc="ecb1a09a" />
+            <part name="kr_25.7e" crc="9aace189" />
+            <part name="kr_18.7c" crc="09fa14a5" />
+            <part name="kr_39.9h" crc="fd8a9aeb" />
+            <part name="kr_33.9f" crc="11803e95" />
+       </group>
+        <group width="64">
+            <part name="kr_11.7b" crc="a967ceb3" />
+            <part name="kr_03.7a" crc="ea10db07" />
+            <part name="kr_15.11b" crc="8140b83b" />
+            <part name="kr_07.11a" crc="6af10648" />
+            <part name="kr_26.8e" crc="8865d86b" />
+            <part name="kr_19.8c" crc="029f4abe" />
+            <part name="kr_28.10e" crc="5f84f92f" />
+            <part name="kr_21.10c" crc="01b35065" />
+       </group>
+        <group width="64">
+            <part name="kr_12.8b" crc="03d945b1" />
+            <part name="kr_04.8a" crc="e30c8388" />
+            <part name="kr_16.12b" crc="40c39d1b" />
+            <part name="kr_08.12a" crc="d310c9e8" />
+            <part name="kr_27.9e" crc="3e041444" />
+            <part name="kr_20.9c" crc="bd4bffb8" />
+            <part name="kr_29.11e" crc="1387a076" />
+            <part name="kr_22.11c" crc="fd351922" />
+       </group>
+    </rom>
+    <!-- CPS-B config for knightsja --> 
+    <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
+</misterromdescription>

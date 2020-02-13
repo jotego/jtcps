@@ -1,0 +1,74 @@
+<misterromdescription>
+    <name>The King of Dragons (Japan 910805, B-Board 89625B-1)</name>
+    <setname>kodja</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=kodja.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="kdj_42a.12h" crc="e55c3529"/>
+            <part name="kdj_36a.12f" crc="ebc788ad"/>
+       </group>
+        <group width="16">
+            <part name="kdj_43a.13h" crc="57d6ed3a"/>
+            <part name="kdj_37a.13f" crc="c710d722"/>
+       </group>
+        <group width="16">
+            <part name="kd_40.10h" crc="4ca6a48a"/>
+            <part name="kd_34.10f" crc="9367bcd9"/>
+       </group>
+        <group width="16">
+            <part name="kd_41a.11h" crc="95a3cef8"/>
+            <part name="kd_35.11f" crc="0360fa72"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="kd_23.13b" crc="bac6ec26"/>
+        <!-- oki -->
+        <part name="kd_30.12c" crc="4c63181d"/>
+        <part name="kd_31.13c" crc="92941b80"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="kd_9.4b" crc="401a98e3" />
+            <part name="kd_1.4a" crc="5894399a" />
+            <part name="kd_13.9b" crc="b6685131" />
+            <part name="kd_5.9a" crc="c29b9ab3" />
+            <part name="kd_24.5e" crc="97008fdb" />
+            <part name="kd_17.5c" crc="dc9a83d3" />
+            <part name="kd_38.8h" crc="9c3dd2d1" />
+            <part name="kd_32.8f" crc="1b2a802a" />
+       </group>
+        <group width="64">
+            <part name="kd_10.5b" crc="e788ae96" />
+            <part name="kd_2.5a" crc="b022e3e3" />
+            <part name="kd_14.10b" crc="4840c5ef" />
+            <part name="kd_6.10a" crc="519faee4" />
+            <part name="kd_25.7e" crc="5d0fa853" />
+            <part name="kd_18.7c" crc="6ad3b2bb" />
+            <part name="kd_39.9h" crc="d7920213" />
+            <part name="kd_33.9f" crc="65c2bed6" />
+       </group>
+        <group width="64">
+            <part name="kd_11.7b" crc="147e3310" />
+            <part name="kd_3.7a" crc="5d18bc83" />
+            <part name="kd_15.11b" crc="57359746" />
+            <part name="kd_7.11a" crc="7fe03079" />
+            <part name="kd_26.8e" crc="57e5fab5" />
+            <part name="kd_19.8c" crc="b1f30f7c" />
+            <part name="kd_28.10e" crc="3a424135" />
+            <part name="kd_21.10c" crc="ce10d2c3" />
+       </group>
+        <group width="64">
+            <part name="kd_12.8b" crc="a6042aa2" />
+            <part name="kd_4.8a" crc="0ce0ba30" />
+            <part name="kd_16.12b" crc="63dcb7e0" />
+            <part name="kd_8.12a" crc="c69b77ae" />
+            <part name="kd_27.9e" crc="40d7bfed" />
+            <part name="kd_20.9c" crc="01c1f399" />
+            <part name="kd_29.11e" crc="a1eeac03" />
+            <part name="kd_22.11c" crc="5ade98eb" />
+       </group>
+    </rom>
+    <!-- CPS-B config for kodja --> 
+    <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
+</misterromdescription>

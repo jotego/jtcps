@@ -1,0 +1,34 @@
+<misterromdescription>
+    <name>Lost Worlds (Japan)</name>
+    <setname>lostwrld</setname>
+    <year>1988</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=lostwrld.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="lw_15c.14g" crc="402e2a46"/>
+            <part name="lw_11c.14f" crc="67e42546"/>
+       </group>
+        <group width="16">
+            <part name="lw_14c.13g" crc="97670f4a"/>
+            <part name="lw_10c.13f" crc="c46479d7"/>
+       </group>
+        <part name="lw-07.13e" crc="fd252a26" pattern ="10"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="lw-01.9d" crc="0318f298" pattern="01"/>
+            <part name="lw-08.9f" crc="25a8e43c" pattern="01"/>
+            <part name="lw-05.9e" crc="e4552fd7" pattern="01"/>
+            <part name="lw-12.9g" crc="8e6a832b" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="lw-02.12d" crc="43e6c5c8" pattern="01"/>
+            <part name="lw-09.12f" crc="899cb4ad" pattern="01"/>
+            <part name="lw-06.12e" crc="5b9edffc" pattern="01"/>
+            <part name="lw-13.12g" crc="8e058ef5" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for lostwrld --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
+</misterromdescription>

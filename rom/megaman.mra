@@ -1,0 +1,45 @@
+<misterromdescription>
+    <name>Mega Man: The Power Battle (CPS1, USA 951006)</name>
+    <setname>megaman</setname>
+    <year>1995</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=megaman.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="rcmu_23b.8f" crc="1cd33c7a" pattern ="10"/>
+        <part name="rcmu_22b.7f" crc="708268c4" pattern ="10"/>
+        <part name="rcmu_21a.6f" crc="4376ea95" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="rcm_09.11a" crc="22ac8f5f"/>
+        <!-- oki -->
+        <part name="rcm_18.11c" crc="80f1f8aa"/>
+        <part name="rcm_19.12c" crc="f257dbe1"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="rcm_01.3a" crc="6ecdf13f" pattern="01"/>
+            <part name="rcm_02.4a" crc="944d4f0f" pattern="01"/>
+            <part name="rcm_03.5a" crc="36f3073c" pattern="01"/>
+            <part name="rcm_04.6a" crc="54e622ff" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="rcm_05.7a" crc="5dd131fd" pattern="01"/>
+            <part name="rcm_06.8a" crc="f0faf813" pattern="01"/>
+            <part name="rcm_07.9a" crc="826de013" pattern="01"/>
+            <part name="rcm_08.10a" crc="fbff64cf" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="rcm_10.3c" crc="4dc8ada9" pattern="01"/>
+            <part name="rcm_11.4c" crc="f2b9ee06" pattern="01"/>
+            <part name="rcm_12.5c" crc="fed5f203" pattern="01"/>
+            <part name="rcm_13.6c" crc="5069d4a9" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="rcm_14.7c" crc="303be3bd" pattern="01"/>
+            <part name="rcm_15.8c" crc="4f2d372f" pattern="01"/>
+            <part name="rcm_16.9c" crc="93d97fde" pattern="01"/>
+            <part name="rcm_17.10c" crc="92371042" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for megaman --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

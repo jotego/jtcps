@@ -1,0 +1,64 @@
+<misterromdescription>
+    <name>Willow (Japan)</name>
+    <setname>willowj</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=willowj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="wl_42.12h" crc="1ac39615"/>
+            <part name="wl_36.12f" crc="2b0d7cbc"/>
+       </group>
+        <group width="16">
+            <part name="wl_43.13h" crc="d0dddc9e"/>
+            <part name="wl_37.13f" crc="30a717fa"/>
+       </group>
+        <group width="16">
+            <part name="wl_40.10h" crc="c7a0ed21"/>
+            <part name="wl_34.10f" crc="23a84f7a"/>
+       </group>
+        <group width="16">
+            <part name="wl_41.11h" crc="8d6477a3"/>
+            <part name="wl_35.11f" crc="5eff7951"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="wl_23.13c" crc="f6b3d060"/>
+        <!-- oki -->
+        <part name="wl_30.12e" crc="bde23d4d"/>
+        <part name="wl_31.13e" crc="683898f5"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="wl_09.4b" crc="05aa71b4" />
+            <part name="wl_01.4a" crc="08c2df12" />
+            <part name="wl_13.9b" crc="1f7c87cd" />
+            <part name="wl_05.9a" crc="f5254bf2" />
+            <part name="wl_24.5e" crc="d9d73ba1" />
+            <part name="wl_17.5c" crc="a652f30c" />
+            <part name="wl_38.8h" crc="f6f9111b" />
+            <part name="wl_32.8f" crc="10f64027" />
+       </group>
+        <group width="64">
+            <part name="wl_10.5b" crc="dbba0a3f" />
+            <part name="wl_02.5a" crc="86fba7a5" />
+            <part name="wl_14.10b" crc="7d5798b2" />
+            <part name="wl_06.10a" crc="1f052948" />
+            <part name="wl_25.7e" crc="857d17d2" />
+            <part name="wl_18.7c" crc="316c7fbc" />
+            <part name="wl_39.9h" crc="e6fce9b0" />
+            <part name="wl_33.9f" crc="a15d5517" />
+       </group>
+        <group width="64">
+            <part name="wl_11.7b" crc="6f0adee5" />
+            <part name="wl_03.7a" crc="9cf3027d" />
+            <part name="wl_15.11b" crc="f09c8ecf" />
+            <part name="wl_07.11a" crc="e35407aa" />
+            <part name="wl_26.8e" crc="84992350" />
+            <part name="wl_19.8c" crc="b87b5a36" />
+            <part name="wl_28.10e" crc="fd3f89f0" />
+            <part name="wl_21.10c" crc="7da49d69" />
+       </group>
+    </rom>
+    <!-- CPS-B config for willowj --> 
+    <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
+</misterromdescription>

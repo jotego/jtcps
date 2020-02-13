@@ -1,0 +1,32 @@
+<misterromdescription>
+    <name>Knights of the Round (World 911127)</name>
+    <setname>knights</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=knights.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <part name="kr_23e.8f" crc="1b3997eb" pattern ="10"/>
+        <part name="kr_22.7f" crc="d0b671a9" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="kr_09.11a" crc="5e44d9ee"/>
+        <!-- oki -->
+        <part name="kr_18.11c" crc="da69d15f"/>
+        <part name="kr_19.12c" crc="bfc654e9"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="kr-5m.3a" crc="9e36c1a4" pattern="01"/>
+            <part name="kr-7m.5a" crc="c5832cae" pattern="01"/>
+            <part name="kr-1m.4a" crc="f095be2d" pattern="01"/>
+            <part name="kr-3m.6a" crc="179dfd96" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="kr-6m.7a" crc="1f4298d2" pattern="01"/>
+            <part name="kr-8m.9a" crc="37fa8751" pattern="01"/>
+            <part name="kr-2m.8a" crc="0200bc3d" pattern="01"/>
+            <part name="kr-4m.10a" crc="0bb2b4e7" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for knights --> 
+    <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
+</misterromdescription>

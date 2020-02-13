@@ -1,0 +1,33 @@
+<misterromdescription>
+    <name>1941: Counter Attack (USA 900227)</name>
+    <setname>1941u</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=1941u.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="41u_35.11h" crc="6ac96595"/>
+            <part name="41u_30.11f" crc="be5439d0"/>
+       </group>
+        <group width="16">
+            <part name="41u_36.12h" crc="a87e6137"/>
+            <part name="41u_31.12f" crc="9811d6eb"/>
+       </group>
+        <part name="41-32m.8h" crc="4e9648ca" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="41_9.12b" crc="0f9d8527"/>
+        <!-- oki -->
+        <part name="41e_18.11c" crc="d1f15aeb"/>
+        <part name="41_19.12c" crc="15aec3a6"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="41-5m.7a" crc="01d1cb11" pattern="01"/>
+            <part name="41-7m.9a" crc="aeaa3509" pattern="01"/>
+            <part name="41-1m.3a" crc="ff77985a" pattern="01"/>
+            <part name="41-3m.5a" crc="983be58f" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for 1941u --> 
+    <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
+</misterromdescription>

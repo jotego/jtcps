@@ -1,0 +1,26 @@
+<misterromdescription>
+    <name>Knights of the Round (bootleg, World 911127)</name>
+    <setname>knightsb2</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=knightsb2.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="right.code.040" crc="5a9d0b64"/>
+            <part name="left.code.040" crc="95d00a7e"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="sound.code.512" crc="5e44d9ee"/>
+        <!-- oki -->
+        <part name="spe-e.japan9208d.snd.mask.020" crc="85f837a0"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="spe-a.japan9207d.mask1.801" crc="14a15fcd" />
+            <part name="spe-b.japan9207d.mask2.801" crc="250d2957" />
+            <part name="spe-c.japan9207d.mask4.801" crc="0721c26d" />
+            <part name="spe-d.japan9207d.mask3.801" crc="db97f56a" />
+    </rom>
+    <!-- CPS-B config for knightsb2 --> 
+    <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
+</misterromdescription>

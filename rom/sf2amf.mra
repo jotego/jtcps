@@ -1,0 +1,40 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (Alpha Magic-F, bootleg)</name>
+    <setname>sf2amf</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2amf.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="4.amf" crc="39f15a1e"/>
+            <part name="5.amf" crc="03991fba"/>
+       </group>
+        <group width="16">
+            <part name="prg part 4.amf" crc=""/>
+            <part name="prg part 3.amf" crc=""/>
+       </group>
+        <!-- audiocpu -->
+        <part name="3.amf" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="2.amf" crc="7f162009"/>
+        <part name="1.amf" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="y.c.e.c m.k.r-001" crc="a258de13" pattern="01"/>
+            <part name="y.c.e.c m.k.r-003" crc="c781bf87" pattern="01"/>
+            <part name="y.c.e.c m.k.r-002" crc="5726cab8" pattern="01"/>
+            <part name="y.c.e.c d.w.c-011" crc="bc90c12f" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="y.c.e.c d.w.c-012" crc="187667cc" pattern="01"/>
+            <part name="y.c.e.c d.w.c-013" crc="5b585071" pattern="01"/>
+            <part name="6.amf" crc="3a85a275" />
+            <part name="9.amf" crc="9156472f" />
+            <part name="8.amf" crc="ecdb083b" />
+            <part name="10.amf" crc="8fea8384" />
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2amf --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+</misterromdescription>

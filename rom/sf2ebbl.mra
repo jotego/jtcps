@@ -1,0 +1,49 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (TAB Austria, bootleg, set 1)</name>
+    <setname>sf2ebbl</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2ebbl.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="09.bin" crc="59ccd474"/>
+            <part name="12.bin" crc="a258b4d5"/>
+       </group>
+        <group width="16">
+            <part name="10.bin" crc="0c83844d"/>
+            <part name="11.bin" crc="82097d63"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="03.bin" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="02.bin" crc="7f162009"/>
+        <part name="01.bin" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="1b_yf082.bin" crc="22c9cc8e" pattern="01"/>
+            <part name="1d_yf028.bin" crc="57213be8" pattern="01"/>
+            <part name="1a_yf087.bin" crc="ba529b4f" pattern="01"/>
+            <part name="1c_yf088.bin" crc="4b1b33a8" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="1f_yf085.bin" crc="2c7e2229" pattern="01"/>
+            <part name="1h_yf115.bin" crc="b5548f17" pattern="01"/>
+            <part name="1e_yf111.bin" crc="14b84312" pattern="01"/>
+            <part name="1g_yf002.bin" crc="5e9cd89a" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="1j_yf117.bin" crc="994bfa58" pattern="01"/>
+            <part name="1l_ye040.bin" crc="3e66ad9d" pattern="01"/>
+            <part name="1i_yf038.bin" crc="c1befaa8" pattern="01"/>
+            <part name="1k_ye039.bin" crc="0627c831" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="05.bin" crc="a505621e" />
+            <part name="07.bin" crc="de6271fb" />
+            <part name="06.bin" crc="23775344" />
+            <part name="08.bin" crc="81c9550f" />
+    </rom>
+    <!-- CPS-B config for sf2ebbl --> 
+    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+</misterromdescription>

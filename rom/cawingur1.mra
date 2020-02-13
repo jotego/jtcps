@@ -1,0 +1,33 @@
+<misterromdescription>
+    <name>Carrier Air Wing (USA 901012)</name>
+    <setname>cawingur1</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=cawingur1.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="cau_35a.11h" crc="f090d9b2"/>
+            <part name="cau_30a.11f" crc="91fceacd"/>
+       </group>
+        <group width="16">
+            <part name="cau_36a.12h" crc="c73fd713"/>
+            <part name="cau_31a.12f" crc="e5b75caf"/>
+       </group>
+        <part name="ca-32m.8h" crc="0c4837d4" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="cau_09.12b" crc="96fe7485"/>
+        <!-- oki -->
+        <part name="cau_18.11c" crc="4a613a2c"/>
+        <part name="cau_19.12c" crc="74584493"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ca-5m.7a" crc="66d4cc37" pattern="01"/>
+            <part name="ca-7m.9a" crc="b6f896f2" pattern="01"/>
+            <part name="ca-1m.3a" crc="4d0620fd" pattern="01"/>
+            <part name="ca-3m.5a" crc="0b0341c3" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for cawingur1 --> 
+    <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
+</misterromdescription>

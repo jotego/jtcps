@@ -1,0 +1,74 @@
+<misterromdescription>
+    <name>Wonder 3 (Japan 910520)</name>
+    <setname>wonder3</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=wonder3.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="rtj_42.12h" crc="b4baa117"/>
+            <part name="rtj_36.12f" crc="e3741247"/>
+       </group>
+        <group width="16">
+            <part name="rtj_43.13h" crc="85337a47"/>
+            <part name="rtj_37.13f" crc="a1f677b0"/>
+       </group>
+        <group width="16">
+            <part name="rt_40.10h" crc="7264cb1b"/>
+            <part name="rt_34.10f" crc="054137c8"/>
+       </group>
+        <group width="16">
+            <part name="rtj_41.11h" crc="a11ee998"/>
+            <part name="rtj_35.11f" crc="e72f9ea3"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="rt_23.13b" crc="abfca165"/>
+        <!-- oki -->
+        <part name="rt_30.12c" crc="26b211ab"/>
+        <part name="rt_31.13c" crc="dbe64ad0"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="rt_09.4b" crc="2c40e480" />
+            <part name="rt_01.4a" crc="3e11f8cd" />
+            <part name="rt_13.9b" crc="51009117" />
+            <part name="rt_05.9a" crc="283fd470" />
+            <part name="rt_24.5e" crc="ee4484ce" />
+            <part name="rt_17.5c" crc="e5dcddeb" />
+            <part name="rt_38.8h" crc="b2940c2d" />
+            <part name="rt_32.8f" crc="08e2b758" />
+       </group>
+        <group width="64">
+            <part name="rt_10.5b" crc="e3f3ff94" />
+            <part name="rt_02.5a" crc="fcffd73c" />
+            <part name="rt_14.10b" crc="5c546d9a" />
+            <part name="rt_06.10a" crc="d9650bc4" />
+            <part name="rt_25.7e" crc="11b28831" />
+            <part name="rt_18.7c" crc="ce1afb7c" />
+            <part name="rt_39.9h" crc="ea7ac9ee" />
+            <part name="rt_33.9f" crc="d6a99384" />
+       </group>
+        <group width="64">
+            <part name="rt_11.7b" crc="04f3c298" />
+            <part name="rt_03.7a" crc="98087e08" />
+            <part name="rt_15.11b" crc="b6aba565" />
+            <part name="rt_07.11a" crc="c62defa1" />
+            <part name="rt_26.8e" crc="532f542e" />
+            <part name="rt_19.8c" crc="1f0f72bd" />
+            <part name="rt_28.10e" crc="6064e499" />
+            <part name="rt_21.10c" crc="20012ddc" />
+       </group>
+        <group width="64">
+            <part name="rt_12.8b" crc="e54664cc" />
+            <part name="rt_04.8a" crc="4d7b9a1a" />
+            <part name="rt_16.12b" crc="37c96cfc" />
+            <part name="rt_08.12a" crc="75f4975b" />
+            <part name="rt_27.9e" crc="ec6edc0f" />
+            <part name="rt_20.9c" crc="4fe52659" />
+            <part name="rt_29.11e" crc="8fa77f9f" />
+            <part name="rt_22.11c" crc="228a0d4a" />
+       </group>
+    </rom>
+    <!-- CPS-B config for wonder3 --> 
+    <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
+</misterromdescription>

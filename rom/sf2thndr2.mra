@@ -1,0 +1,52 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (Thunder Edition, bootleg, set 2)</name>
+    <setname>sf2thndr2</setname>
+    <year>1991</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2thndr2.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="38.bin" crc="1c0fc4e1"/>
+            <part name="31.bin" crc="eec8cbe3"/>
+       </group>
+        <group width="16">
+            <part name="37.bin" crc="4c2ccef7"/>
+            <part name="30.bin" crc="a673143d"/>
+       </group>
+        <group width="16">
+            <part name="35.bin" crc="8c1f3994"/>
+            <part name="28.bin" crc="4009955e"/>
+       </group>
+        <group width="16">
+            <part name="36.bin" crc="c02a13eb"/>
+            <part name="29.bin" crc="bb4af315"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="sf2_09.bin" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="sf2_18.bin" crc="7f162009"/>
+        <part name="sf2_19.bin" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="sf2_06.bin" crc="22c9cc8e" pattern="01"/>
+            <part name="sf2_08.bin" crc="57213be8" pattern="01"/>
+            <part name="sf2_05.bin" crc="ba529b4f" pattern="01"/>
+            <part name="sf2_07.bin" crc="4b1b33a8" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2_15.bin" crc="2c7e2229" pattern="01"/>
+            <part name="sf2_17.bin" crc="b5548f17" pattern="01"/>
+            <part name="sf2_14.bin" crc="14b84312" pattern="01"/>
+            <part name="sf2_16.bin" crc="5e9cd89a" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="sf2_25.bin" crc="994bfa58" pattern="01"/>
+            <part name="sf2_27.bin" crc="3e66ad9d" pattern="01"/>
+            <part name="sf2_24.bin" crc="c1befaa8" pattern="01"/>
+            <part name="sf2_26.bin" crc="0627c831" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2thndr2 --> 
+    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+</misterromdescription>

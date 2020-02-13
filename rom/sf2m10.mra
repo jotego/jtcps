@@ -1,0 +1,50 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (M10, bootleg)</name>
+    <setname>sf2m10</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=sf2m10.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="sf2h14.5" crc="66c91972"/>
+            <part name="sf2h14.7" crc="74803532"/>
+       </group>
+        <group width="16">
+            <part name="yyc-5.3" crc="924c6ce2"/>
+            <part name="yyc-4.1" crc="1073b7b6"/>
+       </group>
+        <!-- audiocpu -->
+        <part name="27c512.3" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="27c010.2" crc="7f162009"/>
+        <part name="27c010.1" crc="beade53f"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="s92-1m.3a" crc="03b0d852" pattern="01"/>
+            <part name="s92-3m.5a" crc="840289ec" pattern="01"/>
+            <part name="s92-2m.4a" crc="cdb5f027" pattern="01"/>
+            <part name="s92-4m.6a" crc="e2799472" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="s92-5m.7a" crc="ba8a2761" pattern="01"/>
+            <part name="s92-7m.9a" crc="e584bfb5" pattern="01"/>
+            <part name="s92-6m.8a" crc="21e3f87d" pattern="01"/>
+            <part name="s92-8m.10a" crc="befc47df" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="s92-10m.3c" crc="960687d5" pattern="01"/>
+            <part name="s92-12m.5c" crc="978ecd18" pattern="01"/>
+            <part name="s92-11m.4c" crc="d6ec9a0a" pattern="01"/>
+            <part name="s92-13m.6c" crc="ed2c67f6" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="27c1024.10" crc="84427d1b" pattern="01"/>
+            <part name="27c1024.12" crc="55bc790c" pattern="01"/>
+            <part name="27c1024.9" crc="f8725add" pattern="01"/>
+            <part name="27c1024.11" crc="c2a5373e" pattern="01"/>
+       </group>
+    </rom>
+    <!-- CPS-B config for sf2m10 --> 
+    <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
+</misterromdescription>

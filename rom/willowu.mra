@@ -1,0 +1,43 @@
+<misterromdescription>
+    <name>Willow (USA)</name>
+    <setname>willowu</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=willowu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="35.11h" crc="7a791e77"/>
+            <part name="wlu_30.11f" crc="d604dbb1"/>
+       </group>
+        <group width="16">
+            <part name="wlu_36.12h" crc="36100209"/>
+            <part name="wlu_31.12f" crc="0eb48a83"/>
+       </group>
+        <part name="wlm-32.8h" crc="dfd9f643" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="wl_09.12b" crc="f6b3d060"/>
+        <!-- oki -->
+        <part name="wl_18.11c" crc="bde23d4d"/>
+        <part name="wl_19.12c" crc="683898f5"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="wlm-7.7a" crc="afa74b73" pattern="01"/>
+            <part name="wlm-5.9a" crc="12a0dc0b" pattern="01"/>
+            <part name="wlm-3.3a" crc="c6f2abce" pattern="01"/>
+            <part name="wlm-1.5a" crc="4aa4c6d3" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="wl_24.7d" crc="6f0adee5" />
+            <part name="wl_14.7c" crc="9cf3027d" />
+            <part name="wl_26.9d" crc="f09c8ecf" />
+            <part name="wl_16.9c" crc="e35407aa" />
+            <part name="wl_20.3d" crc="84992350" />
+            <part name="wl_10.3c" crc="b87b5a36" />
+            <part name="wl_22.5d" crc="fd3f89f0" />
+            <part name="wl_12.5c" crc="7da49d69" />
+       </group>
+    </rom>
+    <!-- CPS-B config for willowu --> 
+    <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
+</misterromdescription>

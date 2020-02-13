@@ -1,0 +1,44 @@
+<misterromdescription>
+    <name>Forgotten Worlds (USA, B-Board 88621B-2, Rev. C)</name>
+    <setname>forgottnu</setname>
+    <year>1988</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip=forgottnu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+        <!-- maincpu -->
+        <group width="16">
+            <part name="lw15c.12h" crc="1b70f216"/>
+            <part name="lw11c.12f" crc="e62742b6"/>
+       </group>
+        <group width="16">
+            <part name="lw14c.13h" crc="708e7472"/>
+            <part name="lw10c.13f" crc="8f5ea3f5"/>
+       </group>
+        <part name="lw-07.10g" crc="fd252a26" pattern ="10"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="lw_2.2b" crc="4bd75fee" />
+            <part name="lw_1.2a" crc="65f41485" />
+            <part name="lw-08.9b" crc="25a8e43c" pattern="01"/>
+            <part name="lw-05.6d" crc="e4552fd7" pattern="01"/>
+            <part name="lw_30.8h" crc="b385954e" />
+            <part name="lw_29.8f" crc="7bda1ac6" />
+       </group>
+        <group width="64">
+            <part name="lw_4.3b" crc="50cf757f" />
+            <part name="lw_3.3a" crc="c03ef278" />
+            <part name="lw_32.9h" crc="30967a15" />
+            <part name="lw_31.9f" crc="c49d37fb" />
+            <part name="lw-02.6b" crc="43e6c5c8" pattern="01"/>
+            <part name="lw_14.10b" crc="82862cce" />
+            <part name="lw_13.10a" crc="b81c0e96" />
+       </group>
+        <group width="64">
+            <part name="lw-06.9d" crc="5b9edffc" pattern="01"/>
+            <part name="lw-13.10d" crc="8e058ef5" pattern="01"/>
+            <part name="lw_16.11b" crc="40b26554" />
+            <part name="lw_15.11a" crc="1b7d2e07" />
+    </rom>
+    <!-- CPS-B config for forgottnu --> 
+    <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
+</misterromdescription>
