@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=willowuo.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="willow.zip|willowuo.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="wlu_35.11h" crc="daee72fe"/>
@@ -37,7 +37,7 @@
             <part name="wl_22.5d" crc="fd3f89f0" />
             <part name="wl_12.5c" crc="7da49d69" />
        </group>
+       <!-- CPS-B config for willowuo --> 
+       <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
     </rom>
-    <!-- CPS-B config for willowuo --> 
-    <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
 </misterromdescription>

@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=cawingj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="cawing.zip|cawingj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="caj_42a.12h" crc="039f8362"/>
@@ -48,7 +48,7 @@
             <part name="caj_39.9h" crc="eea23b67" />
             <part name="caj_33.9f" crc="dde3891f" />
        </group>
+       <!-- CPS-B config for cawingj --> 
+       <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
     </rom>
-    <!-- CPS-B config for cawingj --> 
-    <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
 </misterromdescription>

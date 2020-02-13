@@ -4,7 +4,7 @@
     <year>2000</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=ganbare.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="ganbare.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="mrnj_23d.8f" crc="f929be72" pattern ="10"/>
         <!-- audiocpu -->
@@ -25,7 +25,7 @@
             <part name="mrnj_07.9a" crc="99afb6c7" pattern="01"/>
             <part name="mrnj_08.10a" crc="52882c20" pattern="01"/>
        </group>
+       <!-- CPS-B config for ganbare --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
-    <!-- CPS-B config for ganbare --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
 </misterromdescription>

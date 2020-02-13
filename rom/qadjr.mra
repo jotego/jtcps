@@ -4,7 +4,7 @@
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=qadjr.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="qad.zip|qadjr.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="qad_23a.8f" crc="4d3553de" pattern ="10"/>
         <part name="qad_22a.7f" crc="3191ddd0" pattern ="10"/>
@@ -20,7 +20,7 @@
             <part name="qad_03.5a" crc="cea4ca8c" pattern="01"/>
             <part name="qad_04.6a" crc="41b74d1b" pattern="01"/>
        </group>
+       <!-- CPS-B config for qadjr --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
-    <!-- CPS-B config for qadjr --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
 </misterromdescription>

@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=striderua.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="strider.zip|striderua.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="35.11h" crc="50e0e865"/>
@@ -28,7 +28,7 @@
             <part name="st-4.3a" crc="b7d04e8b" pattern="01"/>
             <part name="st-8.5a" crc="6b4713b4" pattern="01"/>
        </group>
+       <!-- CPS-B config for striderua --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>
-    <!-- CPS-B config for striderua --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
 </misterromdescription>

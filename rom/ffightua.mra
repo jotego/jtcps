@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=ffightua.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="ffight.zip|ffightua.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="ffu_42.11h" crc="f4bb480e"/>
@@ -27,7 +27,7 @@
             <part name="ff-1m.3a" crc="0b605e44" pattern="01"/>
             <part name="ff-3m.5a" crc="52291cd2" pattern="01"/>
        </group>
+       <!-- CPS-B config for ffightua --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>
-    <!-- CPS-B config for ffightua --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
 </misterromdescription>

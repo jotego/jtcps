@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=sf2rk.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2rk.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="w5.u196" crc="7e9c8c2f"/>
@@ -29,7 +29,7 @@
             <part name="w-2" crc="e8f14362" />
             <part name="w-4" crc="76f9f91f" />
        </group>
+       <!-- CPS-B config for sf2rk --> 
+       <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
     </rom>
-    <!-- CPS-B config for sf2rk --> 
-    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
 </misterromdescription>

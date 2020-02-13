@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=mswordr1.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="msword.zip|mswordr1.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="ms_35.11h" crc="a540a73a"/>
@@ -27,7 +27,7 @@
             <part name="ms-1m.3a" crc="0d2bbe00" pattern="01"/>
             <part name="ms-3m.5a" crc="3a1a5bf4" pattern="01"/>
        </group>
+       <!-- CPS-B config for mswordr1 --> 
+       <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
     </rom>
-    <!-- CPS-B config for mswordr1 --> 
-    <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
 </misterromdescription>

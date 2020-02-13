@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=knightsj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="knights.zip|knightsj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="kr_23j.8f" crc="eae7417f" pattern ="10"/>
         <part name="kr_22.7f" crc="d0b671a9" pattern ="10"/>
@@ -26,7 +26,7 @@
             <part name="kr_07.9a" crc="0200bc3d" pattern="01"/>
             <part name="kr_08.10a" crc="0bb2b4e7" pattern="01"/>
        </group>
+       <!-- CPS-B config for knightsj --> 
+       <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
     </rom>
-    <!-- CPS-B config for knightsj --> 
-    <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
 </misterromdescription>

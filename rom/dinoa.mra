@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=dinoa.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="dino.zip|dinoa.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="cdt_23.8f" crc="f477f7a0" pattern ="10"/>
         <part name="cdt_22.7f" crc="1e534ca5" pattern ="10"/>
@@ -24,7 +24,7 @@
             <part name="cd-6m.8a" crc="e7599ac4" pattern="01"/>
             <part name="cd-8m.10a" crc="211b4b15" pattern="01"/>
        </group>
+       <!-- CPS-B config for dinoa --> 
+       <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
     </rom>
-    <!-- CPS-B config for dinoa --> 
-    <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
 </misterromdescription>

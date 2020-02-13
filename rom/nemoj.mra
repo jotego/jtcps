@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=nemoj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="nemo.zip|nemoj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="nmj_42a.12h" crc="55024740"/>
@@ -48,7 +48,7 @@
             <part name="nm_39.9h" crc="6a274ecd" />
             <part name="nm_33.9f" crc="c469dc74" />
        </group>
+       <!-- CPS-B config for nemoj --> 
+       <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
     </rom>
-    <!-- CPS-B config for nemoj --> 
-    <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
 </misterromdescription>

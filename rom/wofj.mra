@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=wofj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="wof.zip|wofj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="tk2j_23c.8f" crc="9b215a68" pattern ="10"/>
         <part name="tk2j_22c.7f" crc="b74b09ac" pattern ="10"/>
@@ -23,7 +23,7 @@
             <part name="tk2_07.9a" crc="d706568e" pattern="01"/>
             <part name="tk2_08.10a" crc="d4a19a02" pattern="01"/>
        </group>
+       <!-- CPS-B config for wofj --> 
+       <part> 00 04 08 10 2C 2A 28 26 24 22 FF FF FF FF FF FF </part>
     </rom>
-    <!-- CPS-B config for wofj --> 
-    <part> 00 04 08 10 2C 2A 28 26 24 22 FF FF FF FF FF FF </part>
 </misterromdescription>

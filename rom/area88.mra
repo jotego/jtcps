@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=area88.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="unsquad.zip|area88.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="ar_42.12h" crc="c48170de"/>
@@ -47,7 +47,7 @@
             <part name="ar_39.9h" crc="9b8e1363" />
             <part name="ar_33.9f" crc="3968f4b5" />
        </group>
+       <!-- CPS-B config for area88 --> 
+       <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
     </rom>
-    <!-- CPS-B config for area88 --> 
-    <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
 </misterromdescription>

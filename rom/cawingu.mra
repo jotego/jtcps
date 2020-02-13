@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=cawingu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="cawing.zip|cawingu.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="cau_42.12h" crc="d89e00be"/>
@@ -48,7 +48,7 @@
             <part name="cau_39.9h" crc="147be975" />
             <part name="cau_33.9f" crc="8560c130" />
        </group>
+       <!-- CPS-B config for cawingu --> 
+       <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
     </rom>
-    <!-- CPS-B config for cawingu --> 
-    <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
 </misterromdescription>

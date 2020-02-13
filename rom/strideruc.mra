@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>bootleg (Capcom)</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=strideruc.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="strider.zip|strideruc.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="34.8f" crc="e0fb5657" pattern ="10"/>
         <part name="33.6f" crc="9b3cfc08" pattern ="10"/>
@@ -26,7 +26,7 @@
             <part name="14.7c" crc="b7d04e8b" pattern="01"/>
             <part name="16.9c" crc="6b4713b4" pattern="01"/>
        </group>
+       <!-- CPS-B config for strideruc --> 
+       <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
     </rom>
-    <!-- CPS-B config for strideruc --> 
-    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
 </misterromdescription>

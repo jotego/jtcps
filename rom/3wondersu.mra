@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=3wondersu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="3wonders.zip|3wondersu.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="rtu_35a.11h" crc="57350bf4"/>
@@ -40,7 +40,7 @@
             <part name="rt-2m.4a" crc="e9a034f4" pattern="01"/>
             <part name="rt-4m.6a" crc="df0eea8b" pattern="01"/>
        </group>
+       <!-- CPS-B config for 3wondersu --> 
+       <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
     </rom>
-    <!-- CPS-B config for 3wondersu --> 
-    <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
 </misterromdescription>

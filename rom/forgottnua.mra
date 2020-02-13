@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=forgottnua.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="forgottn.zip|forgottnua.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="lwu_15a.14g" crc="f7ce2097"/>
@@ -28,7 +28,7 @@
             <part name="lw-06.12e" crc="5b9edffc" pattern="01"/>
             <part name="lw-13.12g" crc="8e058ef5" pattern="01"/>
        </group>
+       <!-- CPS-B config for forgottnua --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>
-    <!-- CPS-B config for forgottnua --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
 </misterromdescription>

@@ -25,7 +25,7 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-ln -sf ../../rom/mra/$GAME.rom rom.bin
+ln -sf ../../rom/$GAME.rom rom.bin
 ln -sf ${GAME}${PATCH}.hex sdram.hex
 
 export GAME_ROM_PATH=rom.bin

@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=slammastu.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="slammast.zip|slammastu.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="mbu_23e.8f" crc="224f0062" pattern ="10"/>
         <group width="16">
@@ -38,7 +38,7 @@
             <part name="mb-11m.4c" crc="8fb94743" pattern="01"/>
             <part name="mb-13m.6c" crc="da810d5f" pattern="01"/>
        </group>
+       <!-- CPS-B config for slammastu --> 
+       <part> 00 10 08 04 2C 2A 28 02 00 16 FF FF FF FF C1 2E </part>
     </rom>
-    <!-- CPS-B config for slammastu --> 
-    <part> 00 10 08 04 2C 2A 28 02 00 16 FF FF FF FF C1 2E </part>
 </misterromdescription>

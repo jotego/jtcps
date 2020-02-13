@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=dynwara.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="dynwar.zip|dynwara.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="tke_42.12h" crc="c898d2e8"/>
@@ -68,7 +68,7 @@
             <part name="29.11e" crc="6b41f82d" />
             <part name="22.11c" crc="52145369" />
        </group>
+       <!-- CPS-B config for dynwara --> 
+       <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
     </rom>
-    <!-- CPS-B config for dynwara --> 
-    <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
 </misterromdescription>

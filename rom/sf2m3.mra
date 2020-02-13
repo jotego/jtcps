@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=sf2m3.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2ce.zip|sf2m3.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="u196chp" crc="95ea597e"/>
@@ -35,7 +35,7 @@
             <part name="s92_12.bin" crc="d6ec9a0a" pattern="01"/>
             <part name="s92_13.bin" crc="ed2c67f6" pattern="01"/>
        </group>
+       <!-- CPS-B config for sf2m3 --> 
+       <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
     </rom>
-    <!-- CPS-B config for sf2m3 --> 
-    <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
 </misterromdescription>

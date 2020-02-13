@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=punisherj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="punisher.zip|punisherj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="psj_23.8f" crc="6b2fda52" pattern ="10"/>
         <part name="psj_22.7f" crc="e01036bc" pattern ="10"/>
@@ -24,7 +24,7 @@
             <part name="ps_07.9a" crc="a544f4cc" pattern="01"/>
             <part name="ps_08.10a" crc="8f02f436" pattern="01"/>
        </group>
+       <!-- CPS-B config for punisherj --> 
+       <part> 00 20 02 04 0C 0A 08 16 14 12 FF FF FF FF C0 0E </part>
     </rom>
-    <!-- CPS-B config for punisherj --> 
-    <part> 00 20 02 04 0C 0A 08 16 14 12 FF FF FF FF C0 0E </part>
 </misterromdescription>

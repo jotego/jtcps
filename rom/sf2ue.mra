@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=sf2ue.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2ue.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="sf2u_37e.11f" crc="6c61a513"/>
@@ -46,7 +46,7 @@
             <part name="sf2-9m.3d" crc="c1befaa8" pattern="01"/>
             <part name="sf2-11m.5d" crc="0627c831" pattern="01"/>
        </group>
+       <!-- CPS-B config for sf2ue --> 
+       <part> 00 02 08 10 12 14 16 18 1A 1C FF FF FF FF 48 10 </part>
     </rom>
-    <!-- CPS-B config for sf2ue --> 
-    <part> 00 02 08 10 12 14 16 18 1A 1C FF FF FF FF 48 10 </part>
 </misterromdescription>

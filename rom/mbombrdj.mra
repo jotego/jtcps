@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=mbombrdj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="mbombrd.zip|mbombrdj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="mbdj_30.11f" crc="beff31cf"/>
@@ -45,7 +45,7 @@
             <part name="mb_12.5c" crc="8fb94743" pattern="01"/>
             <part name="mb_13.6c" crc="da810d5f" pattern="01"/>
        </group>
+       <!-- CPS-B config for mbombrdj --> 
+       <part> 00 10 08 04 1C 32 30 2E 2C 2A FF FF FF FF C2 1E </part>
     </rom>
-    <!-- CPS-B config for mbombrdj --> 
-    <part> 00 10 08 04 1C 32 30 2E 2C 2A FF FF FF FF C2 1E </part>
 </misterromdescription>

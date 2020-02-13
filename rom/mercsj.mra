@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=mercsj.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="mercs.zip|mercsj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="so2_42.12h" crc="2c3884c6"/>
@@ -58,7 +58,7 @@
             <part name="so2_28.10e" crc="fce9a377" />
             <part name="so2_21.10c" crc="b7df8a06" />
        </group>
+       <!-- CPS-B config for mercsj --> 
+       <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 42 20 </part>
     </rom>
-    <!-- CPS-B config for mercsj --> 
-    <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 42 20 </part>
 </misterromdescription>

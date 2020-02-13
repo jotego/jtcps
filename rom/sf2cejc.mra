@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=sf2cejc.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2ce.zip|sf2cejc.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <part name="s92j_23c.8f" crc="f0120635" pattern ="10"/>
         <part name="s92j_22c.7f" crc="8c0b2ed6" pattern ="10"/>
@@ -33,7 +33,7 @@
             <part name="s92_12.5c" crc="d6ec9a0a" pattern="01"/>
             <part name="s92_13.6c" crc="ed2c67f6" pattern="01"/>
        </group>
+       <!-- CPS-B config for sf2cejc --> 
+       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
-    <!-- CPS-B config for sf2cejc --> 
-    <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
 </misterromdescription>

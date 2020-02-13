@@ -423,8 +423,8 @@ void generate_cpsb(ofstream& of, const string& name) {
         }
         if( name == cps1_config_table[k].name ) {
             const CPS1config* x = &cps1_config_table[k];
-            of << "    <!-- CPS-B config for " << name << " --> \n";
-            of << "    <part> ";            
+            of << "       <!-- CPS-B config for " << name << " --> \n";
+            of << "       <part> ";            
             DUMP( x->layer_enable_mask[3] );
             DUMP( x->layer_enable_mask[2] );
             DUMP( x->layer_enable_mask[1] );
@@ -456,15 +456,17 @@ void generate_mra( game_entry* game ) {
     xml_element(of,"manufacturer", game->mfg,1 );
     xml_element(of,"rbf", "jtcps1",1 );
     // ROMs
-    of << "    <rom index=\"0\" zip=" << game->name << ".zip";
+    of << "    <rom index=\"0\" zip=\"";
+    if( game->parent!="0") of << game->parent <<".zip|";
+    of << game->name << ".zip\"";
     of << " md5=\"b3d6ca2a35aa8702e361ed06d23b77c4\" type=\"merged|nonmerged\">\n";
     const tiny_rom_entry *entry = game->roms;
     dump_region(of, entry,"maincpu",16,1);
     dump_region(of, entry,"audiocpu",8,0);
     dump_region(of, entry,"oki",8,0);
     dump_region(of, entry,"gfx",64,0);
-    of << "    </rom>\n";
     generate_cpsb( of, game->name );
+    of << "    </rom>\n";
     of << "</misterromdescription>\n";
 }
 

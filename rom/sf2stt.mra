@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip=sf2stt.zip md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2stt.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
         <!-- maincpu -->
         <group width="16">
             <part name="prg part 2.stt" crc=""/>
@@ -34,7 +34,7 @@
             <part name="6.stt" crc="23775344" />
             <part name="8.stt" crc="81c9550f" />
        </group>
+       <!-- CPS-B config for sf2stt --> 
+       <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
     </rom>
-    <!-- CPS-B config for sf2stt --> 
-    <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
 </misterromdescription>
