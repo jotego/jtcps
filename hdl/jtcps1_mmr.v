@@ -51,9 +51,9 @@ module jtcps1_mmr(
     output reg [15:0]  vstar2,
 
     // ROM banks
-    output     [ 5:0]  game,
-    output     [15:0]  bank_offset,
-    output     [15:0]  bank_mask,
+(*keep*)    output     [ 5:0]  game,
+(*keep*)    output     [15:0]  bank_offset,
+(*keep*)    output     [15:0]  bank_mask,
 
     // VRAM position
     output reg [15:0]  vram1_base,
@@ -176,7 +176,9 @@ end
 `ifdef SIMULATION
     `ifndef REGS_DEFAULT
     //`define REGS_DEFAULT {REGSIZE{8'b0}}
-    `define REGS_DEFAULT { 16'h0003, 16'h0540, 8'ha, {{16{8'b0}}} }
+    `define REGS_DEFAULT { 16'hff77, 16'h0040, 8'h1d, {{16{8'b0}}} }
+    // Ghouls  F1 17 65 40 0A
+    // Strider FF 77 00 40 1D 
     `endif
 
     initial begin

@@ -59,7 +59,6 @@ wire i17= cin[2];
 wire i18= cin[1];
 wire i19= cin[0];
 
-
 localparam
         game_1941     = 0,
         game_3wonders = 1,
@@ -96,11 +95,79 @@ localparam
         game_willow   = 32,
         game_wof      = 33;
 
+wire dino16 = (~i1 & ~i2 & ~i5 & i6 & ~i11) |
+                (i1 & ~i2 & ~i5 & i6 & i11);
+wire dino17 = (~i1 & ~i2 & ~i5 & i6 & ~i11) |(i1 & ~i2 & ~i5 & i6 & i11);
+wire dino18 = (~i1 & ~i2 & ~i5 & ~i6 & ~i11) | (i1 & ~i2 & ~i5 & ~i6 & i11);
+wire dino19 = (~i1 & ~i2 & ~i5 & ~i6 & ~i11) | (i1 & ~i2 & ~i5 & ~i6 & i11);
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         bank <= 4'd0;
     end else if(enable) begin
         case( game )
+            game_1941:
+                bank <= { 3'b0,
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i11              )|
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i8               )|
+                (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7 & i8               )|
+                (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i8            )|
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i9               )|
+                (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & ~i9 & ~i11 )
+                };
+            game_3wonders:
+              bank <= { 2'b0,
+                (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7                 )|
+                (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i8 & ~i11          )|
+                (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i8 & ~i9 & ~i13    )|
+                (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & i7 & i8 & i11         )|
+                (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & i8 & ~i11       )|
+                (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & i11 & i13 )|
+                (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & i9 & i11  ),
+
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7        )|
+                (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7        )|
+                (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & i8        )|
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i8 & i9   )|
+                (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & i11 & i13 )|
+                (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i8 & i11  )|
+                (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & i9 & i11  )
+                };
+            game_captcomm:
+                bank <= { 2'b0,
+                    (~i1 & ~i2 & ~i5 & i6 & ~i11) |
+                    (i1 & ~i2 & ~i5 & i6 & i11  ) ,
+                    (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & ~i11) |
+                    (i1 & ~i2 & ~i4 & ~i5 & ~i6 & i11  )
+                };
+            game_cawing:
+                bank <= {3'b0,
+                    (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & ~i9 & i11) |
+                    (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & ~i11      ) |
+                    (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7 & i8 & i11       ) |
+                    (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & ~i7 & ~i8 & ~i9 & i11    ) |
+                    (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & ~i8 & i9 & i11           ) |
+                    (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & ~i7 & ~i11               ) |
+                    (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & i8                  ) 
+                };
+            // game_cworld2j: no dump
+            game_dino: // unknown bit assignments
+                bank <= { 2'b0, dino17, dino19 };
+            game_dynwar:
+                bank <= {
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7),
+
+                   (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & i8) |
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & i7 & ~i8),
+
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7) |
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i8) |
+                   (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & i8),
+
+                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7) |
+                   (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7),
+                };
+            // game_ganbare: // not dumped
             game_ghouls:
                 bank <= { 1'b0,
                        ~i1 & ~i2 & ~i3 & ~i4 & i8,
@@ -147,28 +214,32 @@ always @(posedge clk, posedge rst) begin
                    (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & ~i7 & i8 & ~i11          ) |
                    (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i9 & i11          ) |
                    (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & ~i7 & i11 & ~i13         )  };
+
             game_strider:
                 bank <= { 2'b0, 
-                   (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & i8 & i11 ) |
-                   (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6                  ),
-                   (~i1 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i8 & ~i9 & ~i11 & ~i13 ) |
-                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & ~i9 & i11           ) |
-                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i8 & i9 & ~i11         ) |
-                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & ~i8 & i9            ) |
-                   (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & ~i8 & ~i9 & ~i11         ) |
-                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i8                  ) |
-                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7                     ) };
-            game_sf2:
+                   (~i1 & ~i2 & ~i3 & i4 &  ~i5 & ~i6 & i7 & i8 & i11) | // SCR1
+                   (~i1 & ~i2 &  i3 & i4 &  ~i5 & ~i6), // SCR3
+
+                   (~i1 & ~i2 & ~i4 & ~i5 & ~i6 & i7 & ~i8 & ~i9 & ~i11         )|
+                   (~i1 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i8 & ~i9 & ~i11 & ~i13 )|
+                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & ~i8 & i9            )|
+                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i8                  )|
+                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & ~i9 & i11           )|
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i8 & i9 & ~i11         )|
+                   (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7                     )
+                };
+
+            game_sf2: // GAL input pins renamed
                 bank <= { 2'b0,
-                   (~i2 & ~i3 & ~i4 & i5 & ~i6 & ~i7 & ~i8      ) |
-                   (~i2 & i3 & i4 & ~i5 & ~i6 & ~i7 & i8        ) |
-                   (~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & ~i8 & ~i9 ) |
-                   (~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & ~i8 & i9  ) |
-                   (~i2 & i3 & ~i4 & ~i5 & ~i6 & i7 & i8        ),
+                   (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & ~i7      ) |
+                   (~i1 & i2 & i3 & ~i4 & ~i5 & ~i6 & i7        ) |
+                   (~i1 & ~i2 & i3 & ~i4 & ~i5 & i6 & ~i7 & ~i8 ) |
+                   (~i1 & i2 & ~i3 & ~i4 & ~i5 & i6 & ~i7 & i8  ) |
+                   (~i1 & i2 & ~i3 & ~i4 & ~i5 & i6 & i7        ),
                    // bank 1
-                   ~i2 & ~i3 & ~i4 & ~i5 & i6,
+                   ~i1 & ~i2 & ~i3 & ~i4 & i5,
                    // bank 0
-                   ~i2 & ~i3 & ~i4 & ~i5 & ~i6 };
+                   ~i1 & ~i2 & ~i3 & ~i4 & ~i5 };
             game_unsquad:
                 bank <= { 3'b0, 
                    (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i11    ) |
@@ -178,9 +249,9 @@ always @(posedge clk, posedge rst) begin
                    (~i1 & ~i2 & ~i3 & ~i4 & ~i5 & ~i6 & ~i7 & ~i8     ) };
             game_forgottn:
                 bank <= { 2'b0,
-                   (~i1 & ~i2 & i3 & ~i4) +
+                   (~i1 & ~i2 & i3 & ~i4) |
                    (~i1 & i2 & ~i3 & ~i4),
-                   (~i1 & ~i2 & ~i3 & i4) +
+                   (~i1 & ~i2 & ~i3 & i4) |
                    (~i1 & ~i2 & ~i3 & ~i5 & ~i6) };
             default: bank <= 4'd0;
         endcase
@@ -200,8 +271,8 @@ end
 /*
 always @(*) begin
     case( bank )
-        4'b0100: cout={7'b0,cin[2:0]} + (16'ha000>>10); // bank 0
-        4'b0010: cout={7'b0,cin[2:0]} + (16'h8000>>10); // bank 1
+        4'b0100: cout={7'b0,cin[2:0]} | (16'ha000>>10); // bank 0
+        4'b0010: cout={7'b0,cin[2:0]} | (16'h8000>>10); // bank 1
         4'b0001: cout={1'b0,cin[8:0]};                  // bank 2
     endcase
 end

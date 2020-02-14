@@ -8,7 +8,7 @@ else
 
     PATH=$PATH:$JTFRAME/bin
     #unalias jtcore
-    alias jtcore="$JTFRAME/bin/jtcore"
+    alias jtcore="$JTFRAME/bin/jtcore cps1"
 
     # derived variables
     VER=$JTROOT/ver
