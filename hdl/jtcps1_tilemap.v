@@ -37,12 +37,17 @@ module jtcps1_tilemap(
     input              stop,
     output reg         done,
 
+    // ROM banks
+    input      [ 6:0]  game,
+    input      [15:0]  bank_offset,
+    input      [15:0]  bank_mask,
+
     output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
 
-    output reg [22:0]  rom_addr,    // up to 1 MB
+    output reg [19:0]  rom_addr,    // up to 1 MB
     output reg         rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output reg         rom_cs,
@@ -63,28 +68,58 @@ reg [21:0] tile_addr;
 reg [15:0] code,attr;
 
 reg  [11:0] scan;
-reg  [ 2:0] rom_id;
+reg  [ 2:0] layer;
+reg         mapper_en;
+wire [ 3:0] offset, mask;
+wire [15:0] code2;
 
 always @(*) begin
     case(size)
         3'b1:  begin
             scan   = { vn[8],   hn[8:3], vn[7:3] };
-            rom_id = 3'b001;
+            layer  = 3'b001;
         end
         3'b10: begin
             scan   = { vn[9:8], hn[9:4], vn[7:4] };
-            rom_id = 3'b010;
+            layer  = 3'b010;
         end
         3'b100: begin
             scan   = { vn[10:8], hn[10:5], vn[7:5] };
-            rom_id = 3'b011;
+            layer  = 3'b011;
         end
         default: begin
             scan   = 12'd0;
-            rom_id = 3'b000;
+            layer  = 3'b000;
         end
     endcase
 end
+
+jtcps1_gfx_mappers u_mapper(
+    .clk        ( clk             ),
+    .rst        ( rst             ),
+    .game       ( game            ),
+    .bank_offset( bank_offset     ),
+    .bank_mask  ( bank_mask       ),
+
+    .enable     ( mapper_en       ),
+    .layer      ( layer           ),
+    .cin        ( vram_data[15:6] ),    // pins 2-9, 11,13,15,17,18
+
+    .offset     ( offset          ),
+    .mask       ( mask            )
+);
+
+assign code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
+
+// always @(*) begin
+//     case( size )
+//         3'b001: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
+//             //rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
+//         3'b010: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
+//         3'b100: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
+//             //rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
+//     endcase
+// end
 
 function [3:0] colour;
     input [31:0] c;
@@ -109,11 +144,11 @@ always @(posedge clk or posedge rst) begin
         st              <= 6'd0;
         rom_addr        <= 23'd0;
         code            <= 16'd0;
+        mapper_en       <= 1'b0;
     end else begin
         st <= st+6'd1;
         case( st ) 
             0: begin
-                rom_addr[22:20] <= rom_id;
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 /* verilator lint_off WIDTH */
@@ -136,6 +171,7 @@ always @(posedge clk or posedge rst) begin
             end
             3: begin
                 if( vram_ok ) begin
+                    mapper_en    <= 1'b0;
                     code         <= vram_data;
                     vram_addr[1] <= 1'b1;
                     st <= 50;

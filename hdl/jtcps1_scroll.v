@@ -48,7 +48,11 @@ module jtcps1_scroll(
     input              vram_ok,
     output             vram_cs,
 
-    output     [22:0]  rom_addr,    // up to 1 MB
+    // Bank handling
+    input      [15:0]  bank_offset,
+    input      [15:0]  bank_mask,
+
+    output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output             rom_cs,
@@ -217,6 +221,10 @@ jtcps1_tilemap u_tilemap(
     .vrender    ( vrender       ),
     .size       ( st            ),
     // control registers
+    .game       ( game          ),
+    .bank_offset( bank_offset   ),
+    .bank_mask  ( bank_mask     ),
+
     .vram_base  ( vram_base     ),
     .hpos       ( hpos          ),
     .vpos       ( vpos          ),

@@ -26,18 +26,46 @@
 // 100        Star field
 
 module jtcps1_gfx_mappers(
+    input              clk,
+    input              rst,
+    input              enable,
+
+    input      [ 6:0]  game,
+    input      [15:0]  bank_offset,
+    input      [15:0]  bank_mask,
+
     input      [ 2:0]  layer,
     input      [ 9:0]  cin,    // pins 2-9, 11,13,15,17,18
-    output reg [ 9:0]  cout
+    
+    output     [ 3:0]  offset,
+    output     [ 3:0]  mask,
 );
 
+reg  [ 3:0]  bank;
 wire [22:10] a = {layer,cin};
 
-wire [3:0] bank = {1'b0,
-     {a[22:20],a[16]} == 4'b0001, // /i2 & /i3 & /i4 & i8
-     {a[22:20],a[16]} == 4'b0110, // /i2 & i3 & i4 & /i8
-     ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20])) };
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        bank <= 4'd0;
+    end else if(enable) begin
+        bank <= {1'b0,
+         {a[22:20],a[16]} == 4'b0001, // /i2 & /i3 & /i4 & i8
+         {a[22:20],a[16]} == 4'b0110, // /i2 & i3 & i4 & /i8
+         ~a[22] & ( (~a[21]&a[20]) | (~a[20]&~a[16]) | (a[21] & ~a[20])) };
+    end
+end
 
+always @(*) begin
+    case ( bank )
+        4'b0001: { offset, mask } = { bank_offset[ 3: 0], bank_mask[ 3: 0] };
+        4'b0010: { offset, mask } = { bank_offset[ 7: 4], bank_mask[ 7: 4] };
+        4'b0100: { offset, mask } = { bank_offset[11: 8], bank_mask[11: 8] };
+        4'b1000: { offset, mask } = { bank_offset[15:12], bank_mask[15:12] };
+        default: { offset, mask } = { 4'h0, 4'hf };
+    endcase
+end
+
+/*
 always @(*) begin
     case( bank )
         4'b0100: cout={7'b0,cin[2:0]} + (16'ha000>>10); // bank 0
@@ -45,5 +73,5 @@ always @(*) begin
         4'b0001: cout={1'b0,cin[8:0]};                  // bank 2
     endcase
 end
-
+*/
 endmodule

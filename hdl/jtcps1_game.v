@@ -379,7 +379,7 @@ jtframe_sdram_mux #(
     .SLOT1_TYPE ( 2     ), // R/W access
     
     // Sound
-    .SLOT5_AW   ( 17    ),  // ADPCM
+    .SLOT5_AW   ( 18    ),  // ADPCM
     .SLOT5_DW   (  8    ),
 
     .SLOT7_AW   ( 16    ),
