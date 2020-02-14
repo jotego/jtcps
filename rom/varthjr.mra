@@ -20,9 +20,9 @@
             <part name="va_03.5a" crc="0b1ace37" pattern="01"/>
             <part name="va_04.6a" crc="44dfe706" pattern="01"/>
        </group>
+       <!-- Mapper for varth --> 
+       <part> FF F7 44 40 1F </part>
        <!-- CPS-B config for varthjr --> 
        <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
-       <!-- Mapper for varth --> 
-       <part> CD AB 34 12 1F </part>
     </rom>
 </misterromdescription>

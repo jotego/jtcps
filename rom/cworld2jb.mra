@@ -20,9 +20,9 @@
             <part name="q5 - 03_91634b.5a" crc="f7b3aed6" pattern="01"/>
             <part name="q5 - 04_91634b.6a" crc="520c6c88" pattern="01"/>
        </group>
+       <!-- Mapper for cworld2j --> 
+       <part> FF F7 44 40 04 </part>
        <!-- CPS-B config for cworld2jb --> 
        <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
-       <!-- Mapper for cworld2j --> 
-       <part> CD AB 34 12 04 </part>
     </rom>
 </misterromdescription>

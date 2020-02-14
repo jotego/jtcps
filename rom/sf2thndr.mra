@@ -46,9 +46,9 @@
             <part name="sf2_24.bin" crc="c1befaa8" pattern="01"/>
             <part name="sf2_26.bin" crc="0627c831" pattern="01"/>
        </group>
+       <!-- Mapper for sf2 --> 
+       <part> F7 77 40 40 19 </part>
        <!-- CPS-B config for sf2thndr --> 
        <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
-       <!-- Mapper for sf2 --> 
-       <part> CD AB 34 12 19 </part>
     </rom>
 </misterromdescription>

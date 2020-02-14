@@ -68,9 +68,9 @@
             <part name="29.11e" crc="6b41f82d" />
             <part name="22.11c" crc="52145369" />
        </group>
+       <!-- Mapper for dynwar --> 
+       <part> 33 33 64 20 06 </part>
        <!-- CPS-B config for dynwara --> 
        <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
-       <!-- Mapper for dynwar --> 
-       <part> CD AB 34 12 06 </part>
     </rom>
 </misterromdescription>

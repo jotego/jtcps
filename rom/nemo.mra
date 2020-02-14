@@ -27,9 +27,9 @@
             <part name="nm-1m.3a" crc="9e878024" pattern="01"/>
             <part name="nm-3m.5a" crc="bb01e6b6" pattern="01"/>
        </group>
+       <!-- Mapper for nemo --> 
+       <part> FF F7 44 40 12 </part>
        <!-- CPS-B config for nemo --> 
        <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
-       <!-- Mapper for nemo --> 
-       <part> CD AB 34 12 12 </part>
     </rom>
 </misterromdescription>

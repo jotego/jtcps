@@ -68,9 +68,9 @@
             <part name="kd_29.11e" crc="a1eeac03" />
             <part name="kd_22.11c" crc="5ade98eb" />
        </group>
+       <!-- Mapper for kod --> 
+       <part> FF 77 00 40 0C </part>
        <!-- CPS-B config for kodja --> 
        <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
-       <!-- Mapper for kod --> 
-       <part> CD AB 34 12 0C </part>
     </rom>
 </misterromdescription>

@@ -37,9 +37,9 @@
             <part name="wl_22.5d" crc="fd3f89f0" />
             <part name="wl_12.5c" crc="7da49d69" />
        </group>
+       <!-- Mapper for willow --> 
+       <part> FF 77 00 40 20 </part>
        <!-- CPS-B config for willowu --> 
        <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
-       <!-- Mapper for willow --> 
-       <part> CD AB 34 12 20 </part>
     </rom>
 </misterromdescription>

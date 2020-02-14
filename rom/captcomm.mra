@@ -30,9 +30,9 @@
             <part name="cc-2m.8a" crc="0c69f151" pattern="01"/>
             <part name="cc-4m.10a" crc="1f9ebb97" pattern="01"/>
        </group>
+       <!-- Mapper for captcomm --> 
+       <part> FF 77 00 40 02 </part>
        <!-- CPS-B config for captcomm --> 
        <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
-       <!-- Mapper for captcomm --> 
-       <part> CD AB 34 12 02 </part>
     </rom>
 </misterromdescription>

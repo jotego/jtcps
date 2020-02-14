@@ -58,9 +58,9 @@
             <part name="so2_28.10e" crc="fce9a377" />
             <part name="so2_21.10c" crc="b7df8a06" />
        </group>
+       <!-- Mapper for mercs --> 
+       <part> FF 37 66 40 0F </part>
        <!-- CPS-B config for mercsj --> 
        <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 42 20 </part>
-       <!-- Mapper for mercs --> 
-       <part> CD AB 34 12 0F </part>
     </rom>
 </misterromdescription>

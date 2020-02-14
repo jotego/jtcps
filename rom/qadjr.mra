@@ -20,9 +20,9 @@
             <part name="qad_03.5a" crc="cea4ca8c" pattern="01"/>
             <part name="qad_04.6a" crc="41b74d1b" pattern="01"/>
        </group>
+       <!-- Mapper for qad --> 
+       <part> FF F7 44 40 17 </part>
        <!-- CPS-B config for qadjr --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for qad --> 
-       <part> CD AB 34 12 17 </part>
     </rom>
 </misterromdescription>

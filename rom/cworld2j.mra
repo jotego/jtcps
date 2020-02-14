@@ -48,9 +48,9 @@
             <part name="q5_39.9h" crc="a5839b25" />
             <part name="q5_33.9f" crc="04d03930" />
        </group>
+       <!-- Mapper for cworld2j --> 
+       <part> FF F7 44 40 04 </part>
        <!-- CPS-B config for cworld2j --> 
        <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
-       <!-- Mapper for cworld2j --> 
-       <part> CD AB 34 12 04 </part>
     </rom>
 </misterromdescription>

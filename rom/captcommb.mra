@@ -24,9 +24,9 @@
             <part name="c91e-02.bin" crc="4b03c308" />
             <part name="c91e-03.bin" crc="3383ea96" />
             <part name="c91e-04.bin" crc="b8e1f4cf" />
+       <!-- Mapper for captcomm --> 
+       <part> FF 77 00 40 02 </part>
        <!-- CPS-B config for captcommb --> 
        <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
-       <!-- Mapper for captcomm --> 
-       <part> CD AB 34 12 02 </part>
     </rom>
 </misterromdescription>

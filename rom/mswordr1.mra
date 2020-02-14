@@ -27,9 +27,9 @@
             <part name="ms-1m.3a" crc="0d2bbe00" pattern="01"/>
             <part name="ms-3m.5a" crc="3a1a5bf4" pattern="01"/>
        </group>
+       <!-- Mapper for msword --> 
+       <part> FF F7 44 40 10 </part>
        <!-- CPS-B config for mswordr1 --> 
        <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
-       <!-- Mapper for msword --> 
-       <part> CD AB 34 12 10 </part>
     </rom>
 </misterromdescription>

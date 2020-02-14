@@ -44,9 +44,9 @@
             <part name="27c1024.9" crc="f8725add" pattern="01"/>
             <part name="27c1024.11" crc="c2a5373e" pattern="01"/>
        </group>
+       <!-- Mapper for sf2ce --> 
+       <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2m10 --> 
        <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
-       <!-- Mapper for sf2ce --> 
-       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

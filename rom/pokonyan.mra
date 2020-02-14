@@ -40,9 +40,9 @@
             <part name="xmqq-9h.bin" crc="3cd8594b" />
             <part name="xmqq-9f.bin" crc="1ec10bed" />
        </group>
+       <!-- Mapper for pokonyan --> 
+       <part> F7 77 40 40 15 </part>
        <!-- CPS-B config for pokonyan --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for pokonyan --> 
-       <part> CD AB 34 12 15 </part>
     </rom>
 </misterromdescription>

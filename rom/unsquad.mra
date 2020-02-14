@@ -26,9 +26,9 @@
             <part name="ar-1m.3a" crc="5965ca8d" pattern="01"/>
             <part name="ar-3m.5a" crc="ac6db17d" pattern="01"/>
        </group>
+       <!-- Mapper for unsquad --> 
+       <part> FF F7 44 40 1E </part>
        <!-- CPS-B config for unsquad --> 
        <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
-       <!-- Mapper for unsquad --> 
-       <part> CD AB 34 12 1E </part>
     </rom>
 </misterromdescription>

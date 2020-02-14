@@ -8,9 +8,9 @@
         <!-- maincpu -->
         <part name="ms6b.u196" crc="435153d5" pattern ="10"/>
         <part name="ms6b.u10" crc="c812b7b2" pattern ="10"/>
+       <!-- Mapper for sf2ce --> 
+       <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2cems6b --> 
        <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
-       <!-- Mapper for sf2ce --> 
-       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

@@ -48,9 +48,9 @@
             <part name="caj_39.9h" crc="eea23b67" />
             <part name="caj_33.9f" crc="dde3891f" />
        </group>
+       <!-- Mapper for cawing --> 
+       <part> FF 33 44 20 03 </part>
        <!-- CPS-B config for cawingj --> 
        <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
-       <!-- Mapper for cawing --> 
-       <part> CD AB 34 12 03 </part>
     </rom>
 </misterromdescription>

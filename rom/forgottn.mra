@@ -46,9 +46,9 @@
         <group width="64">
             <part name="lw_28.11e" crc="a805ad30" />
             <part name="lw_27.11c" crc="103c1bd2" />
+       <!-- Mapper for forgottn --> 
+       <part> FF 77 00 40 08 </part>
        <!-- CPS-B config for forgottn --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
-       <!-- Mapper for forgottn --> 
-       <part> CD AB 34 12 08 </part>
     </rom>
 </misterromdescription>

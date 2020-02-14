@@ -33,9 +33,9 @@
             <part name="grp2.u30" crc="bf0cd819" />
             <part name="grp4.u28" crc="76f9f91f" />
        </group>
+       <!-- Mapper for sf2ce --> 
+       <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2amf2 --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for sf2ce --> 
-       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

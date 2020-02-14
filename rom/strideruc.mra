@@ -26,9 +26,9 @@
             <part name="14.7c" crc="b7d04e8b" pattern="01"/>
             <part name="16.9c" crc="6b4713b4" pattern="01"/>
        </group>
+       <!-- Mapper for strider --> 
+       <part> FF 77 00 40 1D </part>
        <!-- CPS-B config for strideruc --> 
        <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
-       <!-- Mapper for strider --> 
-       <part> CD AB 34 12 1D </part>
     </rom>
 </misterromdescription>

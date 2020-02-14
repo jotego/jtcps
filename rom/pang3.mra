@@ -17,9 +17,9 @@
         <group width="64">
             <part name="pa3-01m.2c" crc="068a152c" pattern="01"/>
             <part name="pa3-07m.2f" crc="3a4a619d" pattern="01"/>
+       <!-- Mapper for pang3 --> 
+       <part> FF 77 00 40 13 </part>
        <!-- CPS-B config for pang3 --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for pang3 --> 
-       <part> CD AB 34 12 13 </part>
     </rom>
 </misterromdescription>

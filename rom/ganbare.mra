@@ -25,9 +25,9 @@
             <part name="mrnj_07.9a" crc="99afb6c7" pattern="01"/>
             <part name="mrnj_08.10a" crc="52882c20" pattern="01"/>
        </group>
+       <!-- Mapper for ganbare --> 
+       <part> FF FF 00 00 09 </part>
        <!-- CPS-B config for ganbare --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for ganbare --> 
-       <part> CD AB 34 12 09 </part>
     </rom>
 </misterromdescription>

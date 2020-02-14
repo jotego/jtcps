@@ -19,9 +19,9 @@
             <part name="ara_03.5a" crc="5965ca8d" pattern="01"/>
             <part name="ara_04.6a" crc="ac6db17d" pattern="01"/>
        </group>
+       <!-- Mapper for unsquad --> 
+       <part> FF 33 44 20 1E </part>
        <!-- CPS-B config for area88r --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for unsquad --> 
-       <part> CD AB 34 12 1E </part>
     </rom>
 </misterromdescription>

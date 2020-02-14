@@ -40,9 +40,9 @@
             <part name="tn2-10m.3c" crc="a34ece70" pattern="01"/>
             <part name="tn2-12m.5c" crc="e04ff2f4" pattern="01"/>
        </group>
+       <!-- Mapper for qtono2j --> 
+       <part> FF 77 00 40 18 </part>
        <!-- CPS-B config for qtono2j --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for qtono2j --> 
-       <part> CD AB 34 12 18 </part>
     </rom>
 </misterromdescription>

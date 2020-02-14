@@ -27,9 +27,9 @@
             <part name="ff-1m.3a" crc="0b605e44" pattern="01"/>
             <part name="ff-3m.5a" crc="52291cd2" pattern="01"/>
        </group>
+       <!-- Mapper for ffight --> 
+       <part> FF F7 44 40 07 </part>
        <!-- CPS-B config for ffight --> 
        <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
-       <!-- Mapper for ffight --> 
-       <part> CD AB 34 12 07 </part>
     </rom>
 </misterromdescription>

@@ -30,9 +30,9 @@
             <part name="qd_38.8h" crc="ccdddd1f" />
             <part name="qd_32.8f" crc="a8d295d3" />
        </group>
+       <!-- Mapper for qad --> 
+       <part> FF F3 22 20 17 </part>
        <!-- CPS-B config for qad --> 
        <part> 00 14 02 14 12 FF FF FF FF 2C FF FF FF FF FF FF </part>
-       <!-- Mapper for qad --> 
-       <part> CD AB 34 12 17 </part>
     </rom>
 </misterromdescription>

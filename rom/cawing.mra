@@ -27,9 +27,9 @@
             <part name="ca-1m.3a" crc="4d0620fd" pattern="01"/>
             <part name="ca-3m.5a" crc="0b0341c3" pattern="01"/>
        </group>
+       <!-- Mapper for cawing --> 
+       <part> FF F7 44 40 03 </part>
        <!-- CPS-B config for cawing --> 
        <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
-       <!-- Mapper for cawing --> 
-       <part> CD AB 34 12 03 </part>
     </rom>
 </misterromdescription>

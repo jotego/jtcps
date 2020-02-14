@@ -43,9 +43,9 @@
             <part name="27010.11" crc="de6271fb" />
             <part name="27010.09lo" crc="23775344" />
             <part name="27010.06" crc="81c9550f" />
+       <!-- Mapper for sf2 --> 
+       <part> F7 77 40 40 19 </part>
        <!-- CPS-B config for sf2ebbl3 --> 
        <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
-       <!-- Mapper for sf2 --> 
-       <part> CD AB 34 12 19 </part>
     </rom>
 </misterromdescription>

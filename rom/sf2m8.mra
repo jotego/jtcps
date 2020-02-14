@@ -29,9 +29,9 @@
             <part name="yyc-7.10" crc="d1e452d3" />
             <part name="yyc-9.8" crc="155824a9" />
        </group>
+       <!-- Mapper for sf2ce --> 
+       <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2m8 --> 
        <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
-       <!-- Mapper for sf2ce --> 
-       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

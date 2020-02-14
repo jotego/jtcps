@@ -45,9 +45,9 @@
             <part name="mb-11m.4c" crc="8fb94743" pattern="01"/>
             <part name="mb-13m.6c" crc="da810d5f" pattern="01"/>
        </group>
+       <!-- Mapper for mbombrd --> 
+       <part> F7 77 40 40 0D </part>
        <!-- CPS-B config for mbombrd --> 
        <part> 00 10 08 04 1C 32 30 2E 2C 2A FF FF FF FF C2 1E </part>
-       <!-- Mapper for mbombrd --> 
-       <part> CD AB 34 12 0D </part>
     </rom>
 </misterromdescription>

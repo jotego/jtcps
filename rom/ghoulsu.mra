@@ -46,9 +46,9 @@
             <part name="16.4h" crc="f187ba1c" />
             <part name="25.7h" crc="29f79c78" />
        </group>
+       <!-- Mapper for ghouls --> 
+       <part> F1 17 65 40 0A </part>
        <!-- CPS-B config for ghoulsu --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
-       <!-- Mapper for ghouls --> 
-       <part> CD AB 34 12 0A </part>
     </rom>
 </misterromdescription>

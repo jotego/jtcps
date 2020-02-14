@@ -47,9 +47,9 @@
             <part name="ar_39.9h" crc="9b8e1363" />
             <part name="ar_33.9f" crc="3968f4b5" />
        </group>
+       <!-- Mapper for unsquad --> 
+       <part> FF 33 44 20 1E </part>
        <!-- CPS-B config for area88 --> 
        <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
-       <!-- Mapper for unsquad --> 
-       <part> CD AB 34 12 1E </part>
     </rom>
 </misterromdescription>

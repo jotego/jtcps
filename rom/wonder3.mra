@@ -68,9 +68,9 @@
             <part name="rt_29.11e" crc="8fa77f9f" />
             <part name="rt_22.11c" crc="228a0d4a" />
        </group>
+       <!-- Mapper for 3wonders --> 
+       <part> 33 33 64 20 01 </part>
        <!-- CPS-B config for wonder3 --> 
        <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
-       <!-- Mapper for 3wonders --> 
-       <part> CD AB 34 12 01 </part>
     </rom>
 </misterromdescription>

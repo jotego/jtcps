@@ -23,9 +23,9 @@
             <part name="tk2-6m.8a" crc="1abd14d6" pattern="01"/>
             <part name="tk2-8m.10a" crc="b27948e3" pattern="01"/>
        </group>
+       <!-- Mapper for wof --> 
+       <part> FF 77 00 40 21 </part>
        <!-- CPS-B config for wofa --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for wof --> 
-       <part> CD AB 34 12 21 </part>
     </rom>
 </misterromdescription>

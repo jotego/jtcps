@@ -48,9 +48,9 @@
             <part name="ms_39.9h" crc="01efce86" />
             <part name="ms_33.9f" crc="ce25defc" />
        </group>
+       <!-- Mapper for msword --> 
+       <part> FF F7 44 40 10 </part>
        <!-- CPS-B config for mswordj --> 
        <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
-       <!-- Mapper for msword --> 
-       <part> CD AB 34 12 10 </part>
     </rom>
 </misterromdescription>

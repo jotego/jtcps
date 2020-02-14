@@ -39,9 +39,9 @@
             <part name="rcm_16.9c" crc="93d97fde" pattern="01"/>
             <part name="rcm_17.10c" crc="92371042" pattern="01"/>
        </group>
+       <!-- Mapper for megaman --> 
+       <part> 77 77 40 40 0E </part>
        <!-- CPS-B config for megamana --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for megaman --> 
-       <part> CD AB 34 12 0E </part>
     </rom>
 </misterromdescription>

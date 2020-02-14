@@ -48,9 +48,9 @@
             <part name="nm_39.9h" crc="6a274ecd" />
             <part name="nm_33.9f" crc="c469dc74" />
        </group>
+       <!-- Mapper for nemo --> 
+       <part> FF F7 44 40 12 </part>
        <!-- CPS-B config for nemoj --> 
        <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
-       <!-- Mapper for nemo --> 
-       <part> CD AB 34 12 12 </part>
     </rom>
 </misterromdescription>

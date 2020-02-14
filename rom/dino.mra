@@ -24,9 +24,9 @@
             <part name="cd-6m.8a" crc="e7599ac4" pattern="01"/>
             <part name="cd-8m.10a" crc="211b4b15" pattern="01"/>
        </group>
+       <!-- Mapper for dino --> 
+       <part> FF 77 00 40 05 </part>
        <!-- CPS-B config for dino --> 
        <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
-       <!-- Mapper for dino --> 
-       <part> CD AB 34 12 05 </part>
     </rom>
 </misterromdescription>

@@ -34,9 +34,9 @@
             <part name="va-1m.3a" crc="0b1ace37" pattern="01"/>
             <part name="va-3m.5a" crc="44dfe706" pattern="01"/>
        </group>
+       <!-- Mapper for varth --> 
+       <part> FF F7 44 40 1F </part>
        <!-- CPS-B config for varthr1 --> 
        <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
-       <!-- Mapper for varth --> 
-       <part> CD AB 34 12 1F </part>
     </rom>
 </misterromdescription>

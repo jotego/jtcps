@@ -48,9 +48,9 @@
             <part name="ffj_39.9h" crc="9416b477" />
             <part name="ff_33.9f" crc="7369fa07" />
        </group>
+       <!-- Mapper for ffight --> 
+       <part> FF F7 44 40 07 </part>
        <!-- CPS-B config for ffightj4 --> 
        <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
-       <!-- Mapper for ffight --> 
-       <part> CD AB 34 12 07 </part>
     </rom>
 </misterromdescription>

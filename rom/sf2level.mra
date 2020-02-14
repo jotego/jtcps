@@ -31,9 +31,9 @@
             <part name="s92_12.5c" crc="d6ec9a0a" pattern="01"/>
             <part name="s92_13.6c" crc="ed2c67f6" pattern="01"/>
        </group>
+       <!-- Mapper for sf2ce --> 
+       <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2level --> 
        <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
-       <!-- Mapper for sf2ce --> 
-       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

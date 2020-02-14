@@ -28,9 +28,9 @@
             <part name="u7" crc="a2544d4e" pattern="01"/>
             <part name="u8" crc="8869bbb1" pattern="01"/>
        </group>
+       <!-- Mapper for dino --> 
+       <part> FF 77 00 40 05 </part>
        <!-- CPS-B config for dinohunt --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for dino --> 
-       <part> CD AB 34 12 05 </part>
     </rom>
 </misterromdescription>

@@ -68,9 +68,9 @@
             <part name="kr_29.11e" crc="1387a076" />
             <part name="kr_22.11c" crc="fd351922" />
        </group>
+       <!-- Mapper for knights --> 
+       <part> FF 77 00 40 0B </part>
        <!-- CPS-B config for knightsja --> 
        <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
-       <!-- Mapper for knights --> 
-       <part> CD AB 34 12 0B </part>
     </rom>
 </misterromdescription>

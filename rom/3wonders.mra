@@ -40,9 +40,9 @@
             <part name="rt-2m.4a" crc="e9a034f4" pattern="01"/>
             <part name="rt-4m.6a" crc="df0eea8b" pattern="01"/>
        </group>
+       <!-- Mapper for 3wonders --> 
+       <part> FF 77 00 40 01 </part>
        <!-- CPS-B config for 3wonders --> 
        <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
-       <!-- Mapper for 3wonders --> 
-       <part> CD AB 34 12 01 </part>
     </rom>
 </misterromdescription>

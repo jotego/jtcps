@@ -48,9 +48,9 @@
             <part name="va_39.9h" crc="b0b12f51" />
             <part name="va_33.9f" crc="4b003af7" />
        </group>
+       <!-- Mapper for varth --> 
+       <part> FF 33 44 20 1F </part>
        <!-- CPS-B config for varthj --> 
        <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
-       <!-- Mapper for varth --> 
-       <part> CD AB 34 12 1F </part>
     </rom>
 </misterromdescription>

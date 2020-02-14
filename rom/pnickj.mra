@@ -36,9 +36,9 @@
             <part name="pnij_39.9h" crc="70fbe579" />
             <part name="pnij_33.9f" crc="3ed2c680" />
        </group>
+       <!-- Mapper for pnickj --> 
+       <part> FF F7 44 40 14 </part>
        <!-- CPS-B config for pnickj --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-       <!-- Mapper for pnickj --> 
-       <part> CD AB 34 12 14 </part>
     </rom>
 </misterromdescription>

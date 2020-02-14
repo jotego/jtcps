@@ -28,9 +28,9 @@
             <part name="lw-06.12e" crc="5b9edffc" pattern="01"/>
             <part name="lw-13.12g" crc="8e058ef5" pattern="01"/>
        </group>
+       <!-- Mapper for forgottn --> 
+       <part> FF 77 00 40 08 </part>
        <!-- CPS-B config for forgottnuaa --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
-       <!-- Mapper for forgottn --> 
-       <part> CD AB 34 12 08 </part>
     </rom>
 </misterromdescription>

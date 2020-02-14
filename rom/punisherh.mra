@@ -38,9 +38,9 @@
             <part name="ps-6m.8a" crc="a544f4cc" pattern="01"/>
             <part name="ps-8m.10a" crc="8f02f436" pattern="01"/>
        </group>
+       <!-- Mapper for punisher --> 
+       <part> FF 77 00 40 16 </part>
        <!-- CPS-B config for punisherh --> 
        <part> 00 20 02 04 0C 0A 08 16 14 12 FF FF FF FF C0 0E </part>
-       <!-- Mapper for punisher --> 
-       <part> CD AB 34 12 16 </part>
     </rom>
 </misterromdescription>

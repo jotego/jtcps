@@ -31,9 +31,9 @@
             <part name="mb_12.5c" crc="8fb94743" pattern="01"/>
             <part name="mb_13.6c" crc="da810d5f" pattern="01"/>
        </group>
+       <!-- Mapper for slammast --> 
+       <part> F7 77 40 40 1C </part>
        <!-- CPS-B config for mbomberj --> 
        <part> 00 10 08 04 2C 2A 28 02 00 16 FF FF FF FF C1 2E </part>
-       <!-- Mapper for slammast --> 
-       <part> CD AB 34 12 1C </part>
     </rom>
 </misterromdescription>

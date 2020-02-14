@@ -176,7 +176,7 @@ end
 `ifdef SIMULATION
     `ifndef REGS_DEFAULT
     //`define REGS_DEFAULT {REGSIZE{8'b0}}
-    `define REGS_DEFAULT { 16'h0033, 16'h0500, 8'ha, {{16{8'b0}}} }
+    `define REGS_DEFAULT { 16'h0003, 16'h0540, 8'ha, {{16{8'b0}}} }
     `endif
 
     initial begin
