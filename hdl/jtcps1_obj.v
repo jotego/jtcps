@@ -31,6 +31,12 @@ module jtcps1_obj(
     input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
+
+    // ROM banks
+    input      [ 5:0]  game,
+    input      [15:0]  bank_offset,
+    input      [15:0]  bank_mask,
+
     // control registers
     input      [15:0]  vram_base,
     output     [17:1]  vram_addr,
@@ -38,7 +44,7 @@ module jtcps1_obj(
     input              vram_ok,
     output             vram_cs,
 
-    output     [22:0]  rom_addr,    // up to 1 MB
+    output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output             rom_cs,
@@ -53,8 +59,6 @@ wire [ 8:0] line_addr;
 
 wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
-
-assign rom_addr[22:20] = 3'd0;
 
 jtcps1_obj_table u_table(
     .rst        ( rst           ),
@@ -80,6 +84,11 @@ jtcps1_obj_line_table u_line_table(
 
     .start      ( start         ),
     .vrender1   ( vrender1      ),
+
+    // ROM banks
+    .game       ( game          ),
+    .bank_offset( bank_offset   ),
+    .bank_mask  ( bank_mask     ),
 
     // interface with frame table
     .frame_addr ( frame_addr    ),

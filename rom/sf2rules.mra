@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2rules.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2rules.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="prl1.u196" crc="65c28bc9"/>
@@ -31,5 +31,7 @@
        </group>
        <!-- CPS-B config for sf2rules --> 
        <part> 30 0E 0E 0E 0A 0C 0E 10 12 14 FF FF FF FF FF FF </part>
+       <!-- Mapper for sf2 --> 
+       <part> CD AB 34 12 19 </part>
     </rom>
 </misterromdescription>

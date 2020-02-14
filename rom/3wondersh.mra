@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="3wonders.zip|3wondersh.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="3wonders.zip|3wondersh.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="26.bin" crc="a28447b7"/>
@@ -50,5 +50,7 @@
        </group>
        <!-- CPS-B config for 3wondersh --> 
        <part> 12 08 04 20 22 20 22 24 26 28 08 0A 0C 0E FF FF </part>
+       <!-- Mapper for 3wonders --> 
+       <part> CD AB 34 12 01 </part>
     </rom>
 </misterromdescription>

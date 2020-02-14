@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="knights.zip|knightsb2.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="knights.zip|knightsb2.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="right.code.040" crc="5a9d0b64"/>
@@ -22,5 +22,7 @@
             <part name="spe-d.japan9207d.mask3.801" crc="db97f56a" />
        <!-- CPS-B config for knightsb2 --> 
        <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
+       <!-- Mapper for knights --> 
+       <part> CD AB 34 12 0B </part>
     </rom>
 </misterromdescription>

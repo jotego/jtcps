@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="dino.zip|dinou.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="dino.zip|dinou.zip">
         <!-- maincpu -->
         <part name="cdu_23a.8f" crc="7c2543cd" pattern ="10"/>
         <part name="cdu_22a.7f" crc="d19f981e" pattern ="10"/>
@@ -26,5 +26,7 @@
        </group>
        <!-- CPS-B config for dinou --> 
        <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
+       <!-- Mapper for dino --> 
+       <part> CD AB 34 12 05 </part>
     </rom>
 </misterromdescription>

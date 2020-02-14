@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="cworld2j.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="cworld2j.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="q5_42.12h" crc="4d29b3a4"/>
@@ -50,5 +50,7 @@
        </group>
        <!-- CPS-B config for cworld2j --> 
        <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+       <!-- Mapper for cworld2j --> 
+       <part> CD AB 34 12 04 </part>
     </rom>
 </misterromdescription>

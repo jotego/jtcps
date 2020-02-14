@@ -4,10 +4,12 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2dkot2.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2ce.zip|sf2dkot2.zip">
         <!-- maincpu -->
         <part name="turboii.23" crc="9bbfe420" pattern ="10"/>
        <!-- CPS-B config for sf2dkot2 --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for sf2ce --> 
+       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

@@ -4,7 +4,7 @@
     <year>1995</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="qtono2j.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="qtono2j.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="tn2j_37.11f" crc="d1d30da1"/>
@@ -42,5 +42,7 @@
        </group>
        <!-- CPS-B config for qtono2j --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for qtono2j --> 
+       <part> CD AB 34 12 18 </part>
     </rom>
 </misterromdescription>

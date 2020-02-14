@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="dino.zip|dinoj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="dino.zip|dinoj.zip">
         <!-- maincpu -->
         <part name="cdj_23a.8f" crc="5f3ece96" pattern ="10"/>
         <part name="cdj_22a.7f" crc="a0d8de29" pattern ="10"/>
@@ -26,5 +26,7 @@
        </group>
        <!-- CPS-B config for dinoj --> 
        <part> 00 16 16 16 04 02 00 0E 0C 0A FF FF FF FF FF FF </part>
+       <!-- Mapper for dino --> 
+       <part> CD AB 34 12 05 </part>
     </rom>
 </misterromdescription>

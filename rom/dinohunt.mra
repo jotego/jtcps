@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="dino.zip|dinohunt.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="dino.zip|dinohunt.zip">
         <!-- maincpu -->
         <part name="u23" crc="8d5ddc5d" pattern ="10"/>
         <part name="u22" crc="f72cd219" pattern ="10"/>
@@ -30,5 +30,7 @@
        </group>
        <!-- CPS-B config for dinohunt --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for dino --> 
+       <part> CD AB 34 12 05 </part>
     </rom>
 </misterromdescription>

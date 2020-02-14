@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="mtwins.zip|chikij.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="mtwins.zip|chikij.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="chj_42a.12h" crc="4ae13503"/>
@@ -50,5 +50,7 @@
        </group>
        <!-- CPS-B config for chikij --> 
        <part> 00 10 20 08 1C 1A 18 16 14 12 FF FF FF FF 44 1E </part>
+       <!-- Mapper for mtwins --> 
+       <part> CD AB 34 12 11 </part>
     </rom>
 </misterromdescription>

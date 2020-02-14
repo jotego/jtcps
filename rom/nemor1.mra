@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="nemo.zip|nemor1.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="nemo.zip|nemor1.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="nme_35.11h" crc="d153bc18"/>
@@ -29,5 +29,7 @@
        </group>
        <!-- CPS-B config for nemor1 --> 
        <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
+       <!-- Mapper for nemo --> 
+       <part> CD AB 34 12 12 </part>
     </rom>
 </misterromdescription>

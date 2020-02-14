@@ -4,7 +4,7 @@
     <year>1995</year>
     <manufacturer>Mitchell</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="pang3.zip|pang3j.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="pang3.zip|pang3j.zip">
         <!-- maincpu -->
         <part name="pa3j_17.11l" crc="21f6e51f" pattern ="10"/>
         <part name="pa3j_16.10l" crc="ca1d7897" pattern ="10"/>
@@ -19,5 +19,7 @@
             <part name="pa3-07m.2f" crc="3a4a619d" pattern="01"/>
        <!-- CPS-B config for pang3j --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for pang3 --> 
+       <part> CD AB 34 12 13 </part>
     </rom>
 </misterromdescription>

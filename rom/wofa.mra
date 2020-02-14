@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="wof.zip|wofa.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="wof.zip|wofa.zip">
         <!-- maincpu -->
         <part name="tk2a_23c.8f" crc="2e024628" pattern ="10"/>
         <part name="tk2a_22c.7f" crc="900ad4cd" pattern ="10"/>
@@ -25,5 +25,7 @@
        </group>
        <!-- CPS-B config for wofa --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for wof --> 
+       <part> CD AB 34 12 21 </part>
     </rom>
 </misterromdescription>

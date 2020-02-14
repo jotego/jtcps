@@ -38,7 +38,7 @@ module jtcps1_tilemap(
     output reg         done,
 
     // ROM banks
-    input      [ 6:0]  game,
+    input      [ 5:0]  game,
     input      [15:0]  bank_offset,
     input      [15:0]  bank_mask,
 
@@ -169,6 +169,7 @@ always @(posedge clk or posedge rst) begin
                 vram_addr <= aux_addr;
                 vram_cs   <= 1'b1;
             end
+            2:  mapper_en <= 1'b1;
             3: begin
                 if( vram_ok ) begin
                     mapper_en    <= 1'b0;
@@ -186,9 +187,9 @@ always @(posedge clk or posedge rst) begin
             4: begin
                 rom_half <= hflip;
                 case (size)
-                    3'b001: rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
-                    3'b010: rom_addr[19:0] <= { code, vn[3:0] ^{4{vflip}} };
-                    3'b100: rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
+                    3'b001: rom_addr[19:0] <= { 1'b0, code2, vn[2:0] ^ {3{vflip}} };
+                    3'b010: rom_addr[19:0] <= { code2, vn[3:0] ^{4{vflip}} };
+                    3'b100: rom_addr[19:0] <= { code2[13:0], vn[4:0] ^{5{vflip}}, hflip };
                     default:;
                 endcase
                 rom_cs    <= 1'b1;

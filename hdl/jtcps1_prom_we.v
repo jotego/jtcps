@@ -27,18 +27,23 @@ module jtcps1_prom_we(
     output reg [21:0]    prog_addr,
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
-    output reg           prog_we
+    output reg           prog_we,
+    output reg           cfg_we
 );
+
+parameter REGSIZE=21;
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
         prog_we   <= 1'b1;
+        cfg_we    <= ioctl_addr[4:0] < REGSIZE;
         prog_data <= ioctl_data;
         prog_addr <= ioctl_addr[22:1];
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
     end
     else begin
         prog_we  <= 1'b0;
+        cfg_we   <= 1'b0;
     end
 end
 

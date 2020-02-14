@@ -48,7 +48,7 @@ done
 # Does the game/snapshot exist?
 VRAM_FILE=$GAME/vram$SAVE.bin
 REGS_FILE=$GAME/regs$SAVE.hex
-ROM_FILE=$GAME/rom
+ROM_FILE=$JTROOT/rom/$GAME.rom
 if [[ ! -e $REGS_FILE || ! -e $VRAM_FILE || ! -e $ROM_FILE  ]]; then
     echo "ERROR: could not find the required snapshot files"
     echo $VRAM_FILE

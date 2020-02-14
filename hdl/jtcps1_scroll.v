@@ -48,7 +48,8 @@ module jtcps1_scroll(
     input              vram_ok,
     output             vram_cs,
 
-    // Bank handling
+    // ROM banks
+    input      [ 5:0]  game,
     input      [15:0]  bank_offset,
     input      [15:0]  bank_mask,
 

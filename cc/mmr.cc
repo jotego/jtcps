@@ -7,6 +7,44 @@
 
 using namespace std;
 
+const char *parents[] = {
+        "1941",     // 0
+        "3wonders", // 1
+        "captcomm", // 2
+        "cawing",   // 3
+        "cworld2j", // 4
+        "dino",     // 5
+        "dynwar",   // 6
+        "ffight",   // 7
+        "forgottn", // 8
+        "ganbare",  // 9
+        "ghouls",   // 10
+        "knights",  // 11
+        "kod",      // 12
+        "mbombrd",  // 13
+        "megaman",  // 14
+        "mercs",    // 15
+        "msword",   // 16
+        "mtwins",   // 17
+        "nemo",     // 18
+        "pang3",    // 19
+        "pnickj",   // 20
+        "pokonyan", // 21
+        "punisher", // 22
+        "qad",      // 23
+        "qtono2j",  // 24
+        "sf2",      // 25
+        "sf2ce",    // 26
+        "sf2hf",    // 27
+        "slammast", // 28
+        "strider",  // 29
+        "unsquad",  // 30
+        "varth",    // 31
+        "willow",   // 32
+        "wof",      // 33
+        nullptr
+};
+
 #define __not_applicable__  -1,-1,-1,-1,-1,-1,-1
 #define CPS_B_01      -1, 0x0000,          __not_applicable__,          0x26,{0x28,0x2a,0x2c,0x2e},0x30, {0x02,0x04,0x08,0x30,0x30}
 #define CPS_B_02     0x20,0x0002,          __not_applicable__,          0x2c,{0x2a,0x28,0x26,0x24},0x22, {0x02,0x04,0x08,0x00,0x00}
@@ -447,6 +485,30 @@ void generate_cpsb(ofstream& of, const string& name) {
     }
 }
 
+void generate_mapper(ofstream& of, const string& name) {
+    int mask=0xABCD, offset=0x1234;
+    int game=0;
+    bool found=false;
+    // find game code    
+    while( parents[game] ) {
+        if( name == parents[game] ) { found=true; break; }
+        game++;
+    }
+    if(!found) {
+        of << "ERROR: game parent not found\n";
+        cout << "ERROR: game parent not found\n";
+        return;
+    }
+    of << "       <!-- Mapper for " << name << " --> \n";
+    of << "       <part> ";            
+    DUMP( mask      );
+    DUMP( mask>>8   );
+    DUMP( offset    );
+    DUMP( offset>>8 );
+    DUMP( game      );
+    of << "</part>\n";
+}
+
 void generate_mra( game_entry* game ) {
     ofstream of( game->name+".mra" );
     of << "<misterromdescription>\n";
@@ -458,14 +520,14 @@ void generate_mra( game_entry* game ) {
     // ROMs
     of << "    <rom index=\"0\" zip=\"";
     if( game->parent!="0") of << game->parent <<".zip|";
-    of << game->name << ".zip\"";
-    of << " md5=\"b3d6ca2a35aa8702e361ed06d23b77c4\" type=\"merged|nonmerged\">\n";
+    of << game->name << ".zip\">\n";
     const tiny_rom_entry *entry = game->roms;
     dump_region(of, entry,"maincpu",16,1);
     dump_region(of, entry,"audiocpu",8,0);
     dump_region(of, entry,"oki",8,0);
     dump_region(of, entry,"gfx",64,0);
     generate_cpsb( of, game->name );
+    generate_mapper( of, game->parent=="0" ? game->name : game->parent );
     of << "    </rom>\n";
     of << "</misterromdescription>\n";
 }

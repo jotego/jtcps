@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="captcomm.zip|captcommb.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="captcomm.zip|captcommb.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="27.bin" crc="47cb2e87"/>
@@ -26,5 +26,7 @@
             <part name="c91e-04.bin" crc="b8e1f4cf" />
        <!-- CPS-B config for captcommb --> 
        <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
+       <!-- Mapper for captcomm --> 
+       <part> CD AB 34 12 02 </part>
     </rom>
 </misterromdescription>

@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="punisher.zip|punisherh.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="punisher.zip|punisherh.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="psh_30.11f" crc="058d3659"/>
@@ -40,5 +40,7 @@
        </group>
        <!-- CPS-B config for punisherh --> 
        <part> 00 20 02 04 0C 0A 08 16 14 12 FF FF FF FF C0 0E </part>
+       <!-- Mapper for punisher --> 
+       <part> CD AB 34 12 16 </part>
     </rom>
 </misterromdescription>

@@ -111,6 +111,7 @@ wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
+wire        cfg_we;
 wire [21:0] gfx0_addr, gfx1_addr;
 
 assign prog_rd    = 1'b0;
@@ -197,7 +198,9 @@ always @(posedge clk) begin
     cen10  <= cen10x;
 end
 
-jtcps1_prom_we u_prom_we(
+localparam REGSIZE=21;
+
+jtcps1_prom_we #(REGSIZE) u_prom_we(
     .clk            ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
@@ -206,7 +209,8 @@ jtcps1_prom_we u_prom_we(
     .prog_addr      ( prog_addr     ),
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
-    .prog_we        ( prog_we       )
+    .prog_we        ( prog_we       ),
+    .cfg_we         ( cfg_we        )
 );
 
 `ifndef NOMAIN
@@ -268,7 +272,7 @@ assign dsn = 2'b11;
 assign main_rnw = 1'b1;
 `endif
 
-jtcps1_video u_video(
+jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst           ),
     .clk            ( clk           ),
     .pxl_cen        ( cen8          ),
@@ -299,7 +303,7 @@ jtcps1_video u_video(
     .blue           ( blue          ),
 
     // CPS-B Registers
-    .cfg_we         ( prog_we       ),
+    .cfg_we         ( cfg_we        ),
     .cfg_data       ( prog_data     ),
 
     // Video RAM interface

@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2hf.zip|sf2hfu.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2hf.zip|sf2hfu.zip">
         <!-- maincpu -->
         <part name="s2tu_23.8f" crc="89a1fc38" pattern ="10"/>
         <part name="s2tu_22.7f" crc="aea6e035" pattern ="10"/>
@@ -35,5 +35,7 @@
        </group>
        <!-- CPS-B config for sf2hfu --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for sf2hf --> 
+       <part> CD AB 34 12 1B </part>
     </rom>
 </misterromdescription>

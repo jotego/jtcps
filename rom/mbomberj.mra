@@ -4,7 +4,7 @@
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="slammast.zip|mbomberj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="slammast.zip|mbomberj.zip">
         <!-- maincpu -->
         <part name="mbj_23e.8f" crc="0d06036a" pattern ="10"/>
         <part name="mbj_22b.7f" crc="acd38478" pattern ="10"/>
@@ -33,5 +33,7 @@
        </group>
        <!-- CPS-B config for mbomberj --> 
        <part> 00 10 08 04 2C 2A 28 02 00 16 FF FF FF FF C1 2E </part>
+       <!-- Mapper for slammast --> 
+       <part> CD AB 34 12 1C </part>
     </rom>
 </misterromdescription>

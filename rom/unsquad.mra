@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="unsquad.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="unsquad.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="aru_35.11h" crc="8b954b59"/>
@@ -28,5 +28,7 @@
        </group>
        <!-- CPS-B config for unsquad --> 
        <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
+       <!-- Mapper for unsquad --> 
+       <part> CD AB 34 12 1E </part>
     </rom>
 </misterromdescription>

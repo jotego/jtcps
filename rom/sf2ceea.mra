@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2ceea.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2ce.zip|sf2ceea.zip">
         <!-- maincpu -->
         <part name="s92e_23a.8f" crc="3f846b74" pattern ="10"/>
         <part name="s92_22a.7f" crc="99f1cca4" pattern ="10"/>
@@ -35,5 +35,7 @@
        </group>
        <!-- CPS-B config for sf2ceea --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for sf2ce --> 
+       <part> CD AB 34 12 1A </part>
     </rom>
 </misterromdescription>

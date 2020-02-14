@@ -4,7 +4,7 @@
     <year>1995</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="megaman.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="megaman.zip">
         <!-- maincpu -->
         <part name="rcmu_23b.8f" crc="1cd33c7a" pattern ="10"/>
         <part name="rcmu_22b.7f" crc="708268c4" pattern ="10"/>
@@ -41,5 +41,7 @@
        </group>
        <!-- CPS-B config for megaman --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <!-- Mapper for megaman --> 
+       <part> CD AB 34 12 0E </part>
     </rom>
 </misterromdescription>

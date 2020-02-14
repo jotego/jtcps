@@ -50,6 +50,11 @@ module jtcps1_mmr(
     output reg [15:0]  vstar1,
     output reg [15:0]  vstar2,
 
+    // ROM banks
+    output     [ 5:0]  game,
+    output     [15:0]  bank_offset,
+    output     [15:0]  bank_mask,
+
     // VRAM position
     output reg [15:0]  vram1_base,
     output reg [15:0]  vram2_base,
@@ -78,7 +83,7 @@ module jtcps1_mmr(
 );
 
 // Shift register configuration
-localparam REGSIZE=16;
+parameter REGSIZE=21;
 reg [8*REGSIZE-1:0] regs;
 
 wire [5:1] addr_id,      
@@ -137,6 +142,10 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 // which is what I need to make the MMR length 16 bytes. The length must be
 // a multiple of 2 in order to work with the ROM downloading
 
+assign game         = `MMR(16);
+assign bank_offset  = { `MMR(18), `MMR(17) };
+assign bank_mask    = { `MMR(20), `MMR(19) };
+
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
 
@@ -165,15 +174,14 @@ always @(*) begin
 end
 
 `ifdef SIMULATION
-initial begin
-    // Ghouls'n Ghosts values
-    regs[8*1-3:8*0] <= 6'h13;
-    regs[8*2-3:8*1] <= 6'h14;
-    regs[8*3-3:8*2] <= 6'h15;
-    regs[8*4-3:8*3] <= 6'h16;
-    regs[8*5-3:8*4] <= 6'h17;
-    regs[8*6-3:8*5] <= 6'h18;
-end
+    `ifndef REGS_DEFAULT
+    //`define REGS_DEFAULT {REGSIZE{8'b0}}
+    `define REGS_DEFAULT { 16'h0033, 16'h0500, 8'ha, {{16{8'b0}}} }
+    `endif
+
+    initial begin
+        regs = `REGS_DEFAULT;
+    end
 `endif
 
 always@(posedge clk) begin

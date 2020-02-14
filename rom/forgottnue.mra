@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="forgottn.zip|forgottnue.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="forgottn.zip|forgottnue.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="lw15e.14g" crc="fb1e2bd0"/>
@@ -30,5 +30,7 @@
        </group>
        <!-- CPS-B config for forgottnue --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
+       <!-- Mapper for forgottn --> 
+       <part> CD AB 34 12 08 </part>
     </rom>
 </misterromdescription>

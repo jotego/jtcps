@@ -80,7 +80,7 @@ module jtcps1_video(
     output             rom1_cs,
     input              rom1_ok,
 
-    output reg [19:0]  rom0_addr,
+    output     [19:0]  rom0_addr,
     output     [ 3:0]  rom0_bank,
     output             rom0_half,    // selects which half to read
     input      [31:0]  rom0_data,
@@ -93,6 +93,8 @@ module jtcps1_video(
     // input              line_wr_ok
 );
 
+parameter REGSIZE=21;
+
 // use for CPU only simulations:
 `ifdef NOVIDEO
 `define NOSCROLL
@@ -101,7 +103,6 @@ module jtcps1_video(
 `endif
 
 wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
-wire [22:0]     scr1_addr, obj_addr;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start, preVB;
@@ -117,6 +118,10 @@ wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
 wire       [15:0]  pal_base;
 wire               pal_copy;
 wire       [ 5:0]  pal_page_en; // which palette pages to copy
+// ROM banks
+wire       [ 5:0]  game;
+wire       [15:0]  bank_offset;
+wire       [15:0]  bank_mask;
 
 jtcps1_timing u_timing(
     .rst            ( rst               ),
@@ -136,36 +141,11 @@ jtcps1_timing u_timing(
     .HB             ( HB                )
 );
 
-jtcps1_gfx_pal u_gfx_pal(
-    .obj        ( obj_addr [22:10]  ),
-    .scr1       ( scr1_addr[22:10]  ),
-    .offset0    ( rom0_bank         ),
-    .offset1    ( rom1_bank         )
-);
-
-always @(*) begin
-    case( rom0_bank )
-        default: rom0_addr = { 3'b0, obj_addr[16:0] } + 20'h4_0000;
-        4'h4   : rom0_addr = obj_addr[19:0];
-    endcase
-end
-assign rom1_addr = scr1_addr[19:0];
-
-`ifdef SIMULATION
-wire [19:10] scr1_addr_alt;
-wire [19: 0] rom1_addr_alt = { scr1_addr_alt, scr1_addr[9:0] };
-jtcps1_gfx_mappers u_mapper(
-    .layer  ( scr1_addr[22:20] ),
-    .cin    ( scr1_addr[19:10] ),
-    .cout   ( scr1_addr_alt    ) 
-);
-`endif
-
 // initial begin
 //     $display("OFFSET=%X",`OFFSET);
 // end
 
-jtcps1_mmr u_mmr(
+jtcps1_mmr #(REGSIZE) u_mmr(
     .rst            ( rst               ),
     .clk            ( clk               ),
     .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
@@ -189,6 +169,11 @@ jtcps1_mmr u_mmr(
     .hstar2         ( hstar2            ),
     .vstar1         ( vstar1            ),
     .vstar2         ( vstar2            ),
+
+    // ROM banks
+    .game           ( game              ),
+    .bank_offset    ( bank_offset       ),
+    .bank_mask      ( bank_mask         ),
 
     // VRAM position
     .vram1_base     ( vram1_base        ),
@@ -236,13 +221,18 @@ jtcps1_scroll u_scroll(
     .hpos3      ( hpos3         ),
     .vpos3      ( vpos3         ),
 
+    // ROM banks
+    .game       ( game          ),
+    .bank_offset( bank_offset   ),
+    .bank_mask  ( bank_mask     ),
+
     .start      ( line_start    ),
 
     .vram_addr  ( vram1_addr    ),
     .vram_data  ( vram1_data    ),
     .vram_ok    ( vram1_ok      ),
     .vram_cs    ( vram1_cs      ),
-    .rom_addr   ( scr1_addr     ),
+    .rom_addr   ( rom1_addr     ),
     .rom_data   ( rom1_data     ),
     .rom_cs     ( rom1_cs       ),
     .rom_ok     ( rom1_ok       ),
@@ -254,8 +244,10 @@ jtcps1_scroll u_scroll(
 );
 `else 
 assign rom1_cs  = 1'b0;
+assign rom1_addr= 20'd0;
 assign scr1_pxl = 9'h1ff;
-assign scr1_addr= 23'd0;
+assign scr2_pxl = 9'h1ff;
+assign scr3_pxl = 9'h1ff;
 `endif
 
 // Objects
@@ -273,6 +265,12 @@ jtcps1_obj u_obj(
     .vrender1   ( vrender1      ),
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
+
+    // ROM banks
+    .game       ( game          ),
+    .bank_offset( bank_offset   ),
+    .bank_mask  ( bank_mask     ),
+
     // control registers
     .vram_base  ( vram_obj_base ),
     .vram_addr  ( vram_obj_addr ),
@@ -280,7 +278,7 @@ jtcps1_obj u_obj(
     .vram_ok    ( vram_obj_ok   ),
     .vram_cs    ( vram_obj_cs   ),
 
-    .rom_addr   ( obj_addr      ),
+    .rom_addr   ( rom0_addr     ),
     .rom_data   ( rom0_data     ),
     .rom_cs     ( rom0_cs       ),
     .rom_ok     ( rom0_ok       ),
@@ -290,8 +288,9 @@ jtcps1_obj u_obj(
 );
 `else 
 assign vram_obj_cs = 1'b0;
-assign rom0_cs = 1'b0;
-assign obj_pxl = 9'h1ff;
+assign rom0_cs     = 1'b0;
+assign rom0_addr   = 20'd0;
+assign obj_pxl     = 9'h1ff;
 `endif
 
 `ifdef SIMULATION

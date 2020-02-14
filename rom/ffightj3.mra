@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ffight.zip|ffightj3.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="ffight.zip|ffightj3.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="ffj_42.12h" crc="bca85263"/>
@@ -50,5 +50,7 @@
        </group>
        <!-- CPS-B config for ffightj3 --> 
        <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
+       <!-- Mapper for ffight --> 
+       <part> CD AB 34 12 07 </part>
     </rom>
 </misterromdescription>

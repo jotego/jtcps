@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="3wonders.zip|wonder3.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="3wonders.zip|wonder3.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="rtj_42.12h" crc="b4baa117"/>
@@ -70,5 +70,7 @@
        </group>
        <!-- CPS-B config for wonder3 --> 
        <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
+       <!-- Mapper for 3wonders --> 
+       <part> CD AB 34 12 01 </part>
     </rom>
 </misterromdescription>

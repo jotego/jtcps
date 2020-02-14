@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2thndr.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2thndr.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="17_37.11f" crc="e892716e"/>
@@ -48,5 +48,7 @@
        </group>
        <!-- CPS-B config for sf2thndr --> 
        <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
+       <!-- Mapper for sf2 --> 
+       <part> CD AB 34 12 19 </part>
     </rom>
 </misterromdescription>

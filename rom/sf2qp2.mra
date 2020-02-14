@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2qp2.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="sf2.zip|sf2qp2.zip">
         <!-- maincpu -->
         <part name="qkn.33" crc="43aa343d" pattern ="10"/>
         <part name="qkn.34" crc="d03b553f" pattern ="10"/>
@@ -34,5 +34,7 @@
        </group>
        <!-- CPS-B config for sf2qp2 --> 
        <part> 00 10 20 08 1C 1A 18 16 14 12 FF FF FF FF 44 1E </part>
+       <!-- Mapper for sf2 --> 
+       <part> CD AB 34 12 19 </part>
     </rom>
 </misterromdescription>

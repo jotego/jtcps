@@ -25,6 +25,11 @@ module jtcps1_obj_line_table(
     input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input              start,
 
+    // ROM banks
+    input      [ 5:0]  game,
+    input      [15:0]  bank_offset,
+    input      [15:0]  bank_mask,
+
     // interface with frame table
     output reg [ 9:0]  frame_addr,
     input      [15:0]  frame_data,
@@ -39,6 +44,7 @@ reg [ 6:0] line_cnt;
 
 reg [15:0] obj_x, obj_y, obj_code, obj_attr;
 reg [15:0] last_x, last_y, last_code, last_attr;
+reg [15:0] pre_code;
 
 wire  repeated = (obj_x==last_x) && (obj_y==last_y) && 
                  (obj_code==last_code) && (obj_attr==last_attr);
@@ -50,6 +56,8 @@ wire        vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
+wire [ 3:0] offset, mask;
+reg         mapper_en;
 
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
@@ -69,6 +77,21 @@ wire [ 1:0] rd_sub  = line_addr[1:0];
 always @(posedge clk) begin
     line_data <= line_buf[ rd_addr ];
 end
+
+jtcps1_gfx_mappers u_mapper(
+    .clk        ( clk             ),
+    .rst        ( rst             ),
+    .game       ( game            ),
+    .bank_offset( bank_offset     ),
+    .bank_mask  ( bank_mask       ),
+
+    .enable     ( mapper_en       ),
+    .layer      ( 3'b0            ),
+    .cin        ( frame_data[15:6]),    // pins 2-9, 11,13,15,17,18
+
+    .offset     ( offset          ),
+    .mask       ( mask            )
+);
 
 generate
     genvar mgen;
@@ -131,6 +154,7 @@ always @(posedge clk, posedge rst) begin
         st         <= 0;
         done       <= 1'b0;
         first      <= 1'b1;
+        mapper_en  <= 1'b1;
     end else begin
         st <= st+5'd1;
         case( st )
@@ -142,7 +166,7 @@ always @(posedge clk, posedge rst) begin
                     last_tile  <= 1'b0;
                     line_cnt   <= 7'd0;
                     done       <= 0;
-                    first      <= 1'b1;
+                    first      <= 1'b1;                    
                 end
             end
             1: begin
@@ -156,17 +180,20 @@ always @(posedge clk, posedge rst) begin
                     last_attr  <= obj_attr;
                     obj_attr   <= frame_data;
                     wait_cycle <= 3'b011; // leave it ready for next round
+                    mapper_en  <= 1'b1;
                 end else st<=1;
                 if(last_tile) begin                    
                     st   <= 10; // fill
                 end                    
             end
             2: begin
-                last_code  <= obj_code;
-                obj_code   <= frame_data;
+                last_code  <= pre_code;
+                pre_code   <= frame_data;
                 frame_addr <= frame_addr-10'd1;
+                mapper_en  <= 1'b0;
             end
             3: begin
+                obj_code   <= { (pre_code[15:12]&mask) + offset, pre_code[11:0] };
                 last_y     <= obj_y;
                 obj_y      <= frame_data;
                 //frame_addr <= frame_addr-10'd1;

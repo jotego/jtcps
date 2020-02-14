@@ -1,8 +1,10 @@
 `timescale 1ns/1ps
 
 module test;
-
+    
+`ifndef SIMULATION
 `define SIMULATION
+`endif
 
 reg                rst, clk, cen8;
 wire       [ 8:0]  vdump, vrender;
@@ -100,6 +102,10 @@ jtcps1_video UUT (
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
+
+    // CPS-B Registers
+    .cfg_we         ( 1'b0          ),
+    .cfg_data       ( 8'h0          ),
 
     // CPU interface
     .ppu_rstn       ( 1'b1          ),

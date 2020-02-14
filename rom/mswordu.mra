@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="msword.zip|mswordu.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="msword.zip|mswordu.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="msu_35.11h" crc="72f179b3"/>
@@ -29,5 +29,7 @@
        </group>
        <!-- CPS-B config for mswordu --> 
        <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+       <!-- Mapper for msword --> 
+       <part> CD AB 34 12 10 </part>
     </rom>
 </misterromdescription>

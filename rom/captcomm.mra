@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="captcomm.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="captcomm.zip">
         <!-- maincpu -->
         <part name="cce_23f.8f" crc="42c814c5" pattern ="10"/>
         <part name="cc_22f.7f" crc="0fd34195" pattern ="10"/>
@@ -32,5 +32,7 @@
        </group>
        <!-- CPS-B config for captcomm --> 
        <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
+       <!-- Mapper for captcomm --> 
+       <part> CD AB 34 12 02 </part>
     </rom>
 </misterromdescription>

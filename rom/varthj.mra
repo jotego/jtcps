@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="varth.zip|varthj.zip" md5="b3d6ca2a35aa8702e361ed06d23b77c4" type="merged|nonmerged">
+    <rom index="0" zip="varth.zip|varthj.zip">
         <!-- maincpu -->
         <group width="16">
             <part name="vaj_42b.12h" crc="0f720233"/>
@@ -50,5 +50,7 @@
        </group>
        <!-- CPS-B config for varthj --> 
        <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
+       <!-- Mapper for varth --> 
+       <part> CD AB 34 12 1F </part>
     </rom>
 </misterromdescription>
