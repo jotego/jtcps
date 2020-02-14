@@ -176,7 +176,9 @@ end
 `ifdef SIMULATION
     `ifndef REGS_DEFAULT
     //`define REGS_DEFAULT {REGSIZE{8'b0}}
-    `define REGS_DEFAULT { 16'hff77, 16'h0040, 8'h1d, {{16{8'b0}}} }
+    `define REGS_DEFAULT { 16'hfff7, 16'h4440, 8'h07, 128'h00_08_04_02_2A_32_28_30_26_2E_FF_FF_FF_FF_04_20 }
+        //{{16{8'b0}}} }
+    // Ffight  FF F7 44 40 07
     // Ghouls  F1 17 65 40 0A
     // Strider FF 77 00 40 1D 
     `endif

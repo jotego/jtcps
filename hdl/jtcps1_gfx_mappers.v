@@ -165,7 +165,7 @@ always @(posedge clk, posedge rst) begin
                    (~i1 & ~i2 & ~i3 & i4 & ~i5 & ~i6 & i7 & i8),
 
                    (~i1 & ~i2 & i3 & ~i4 & ~i5 & ~i6 & i7) |
-                   (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7),
+                   (~i1 & ~i2 & i3 & i4 & ~i5 & ~i6 & ~i7)
                 };
             // game_ganbare: // not dumped
             game_ghouls:
