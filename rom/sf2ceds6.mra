@@ -8,6 +8,23 @@
         <!-- maincpu -->
         <part name="6st-u196.2m1" crc="596609d4" pattern ="10"/>
         <part name="6st-u210.2m1" crc="ed4186bd" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="o.u191" crc="08f6b60e"/>
+        <!-- oki -->
+        <part name="fun-s3-j1.u210" crc="6cfffb11"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="6st.u70" crc="baa0f81f" pattern="01"/>
+            <part name="6st.u68" crc="8edff95a" pattern="01"/>
+            <part name="6st.u69" crc="468962b1" pattern="01"/>
+            <part name="6st.u64" crc="8165f536" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="6st.u19" crc="39d763d3" pattern="01"/>
+            <part name="6st.u18" crc="2ddfe46e" pattern="01"/>
+            <part name="6st.u31" crc="35486f2d" pattern="01"/>
+            <part name="6st.u29" crc="e4eca601" pattern="01"/>
+       </group>
        <!-- Mapper for sf2ce --> 
        <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2ceds6 --> 

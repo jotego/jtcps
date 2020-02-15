@@ -15,6 +15,11 @@
             <part name="lw_10.13f" crc="23bca4d5"/>
        </group>
         <part name="lw-07.13e" crc="fd252a26" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="lw_00b.14a" crc="59df2a63"/>
+        <!-- oki -->
+        <part name="lw-03.14c" crc="ce2159e7"/>
+        <part name="lw-04.13c" crc="39305536"/>
         <!-- gfx -->
         <group width="64">
             <part name="lw-01.9d" crc="0318f298" pattern="01"/>

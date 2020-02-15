@@ -22,6 +22,11 @@
             <part name="sth_41.11h" crc="50af457f"/>
             <part name="sth_35.11f" crc="5cc429da"/>
        </group>
+        <!-- audiocpu -->
+        <part name="sth_23.13c" crc="2ed403bc"/>
+        <!-- oki -->
+        <part name="sth_30.12e" crc="4386bc80"/>
+        <part name="sth_31.13e" crc="444536d7"/>
         <!-- gfx -->
         <group width="64">
             <part name="sth_09.4b" crc="1ef6bfbd" />

@@ -72,6 +72,7 @@ reg  [ 2:0] layer;
 reg         mapper_en;
 wire [ 3:0] offset, mask;
 wire [15:0] code2;
+wire        unmapped;
 
 always @(*) begin
     case(size)
@@ -106,10 +107,12 @@ jtcps1_gfx_mappers u_mapper(
     .cin        ( vram_data[15:6] ),    // pins 2-9, 11,13,15,17,18
 
     .offset     ( offset          ),
-    .mask       ( mask            )
+    .mask       ( mask            ),
+    .unmapped   ( unmapped        )
 );
 
-assign code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
+assign code2 = {code[15:12] & mask, code[11:0]};
+//assign code2 = (code & 16'hffff);
 
 // always @(*) begin
 //     case( size )
@@ -187,9 +190,9 @@ always @(posedge clk or posedge rst) begin
             4: begin
                 rom_half <= hflip;
                 case (size)
-                    3'b001: rom_addr[19:0] <= { 1'b0, code2, vn[2:0] ^ {3{vflip}} };
-                    3'b010: rom_addr[19:0] <= { code2, vn[3:0] ^{4{vflip}} };
-                    3'b100: rom_addr[19:0] <= { code2[13:0], vn[4:0] ^{5{vflip}}, hflip };
+                    3'b001: rom_addr[19:0] <= { offset, 16'd0 } | { 1'b0, code2, vn[2:0] ^ {3{vflip}} };
+                    3'b010: rom_addr[19:0] <= { offset, 16'd0 } | { code2, vn[3:0] ^{4{vflip}} };
+                    3'b100: rom_addr[19:0] <= { offset, 16'd0 } | { code2[13:0], vn[4:0] ^{5{vflip}}, hflip };
                     default:;
                 endcase
                 rom_cs    <= 1'b1;
@@ -197,7 +200,7 @@ always @(posedge clk or posedge rst) begin
             end
             6: if(rom_ok) begin
                 vram_addr <= aux_addr;
-                pxl_data <= rom_data;   // 32 bits = 32/4 = 8 pixels
+                pxl_data  <= rom_data;   // 32 bits = 32/4 = 8 pixels
                 if(!size[0]) rom_half <= ~rom_half; // not needed for scroll1
             end else st<=6;
             7,8,9,10,    11,12,13,14, 
@@ -206,7 +209,7 @@ always @(posedge clk or posedge rst) begin
             34,35,36,37, 38,39,40,41: begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
-                buf_data <= { pal, colour(pxl_data, hflip) };
+                buf_data <= { pal, unmapped ? 4'hf : colour(pxl_data, hflip) };
                 pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
                 if( buf_addr == 9'd447 ) begin
                     buf_wr <= 1'b0;

@@ -49,13 +49,17 @@ done
 VRAM_FILE=$GAME/vram$SAVE.bin
 REGS_FILE=$GAME/regs$SAVE.hex
 ROM_FILE=$JTROOT/rom/$(echo $GAME.rom | tr '[:lower:]' '[:upper:]')
-if [[ ! -e $REGS_FILE || ! -e $VRAM_FILE || ! -e $ROM_FILE  ]]; then
+CFG_FILE=cfg/${GAME}_cfg.hex
+if [[ ! -e $REGS_FILE || ! -e $VRAM_FILE || ! -e $ROM_FILE || ! -e $CFG_FILE ]]; then
     echo "ERROR: could not find the required snapshot files"
     ls $VRAM_FILE
     ls $REGS_FILE
     ls $ROM_FILE
+    ls $CFG_FILE
     exit 1
 fi
+
+CPSB_CONFIG=$(cat $CFG_FILE)
 
 # Link to simulation files
 rm -f vram.bin regs.hex rom
@@ -72,9 +76,10 @@ dd if=vram.bin of=obj.bin count=$((256*4*2/512)) skip=$((2*256*256/512)) #iflag=
 
 if which ncverilog; then
     ncverilog test.v -f test.f  +access+r +define+SIMULATION +define+NCVERILOG $EXTRA \
-    +define+MMR_FILE=\"$MMR\" $*
+    +define+MMR_FILE=\"$MMR\" +define+CPSB_CONFIG="$CPSB_CONFIG" $*
 else
-    iverilog test.v -f test.f -DSIMULATION $EXTRA -DMMR_FILE=\"$MMR\" $* -o sim || exit 1
+    iverilog test.v -f test.f -DSIMULATION $EXTRA -DMMR_FILE=\"$MMR\" -DCPSB_CONFIG="$CPSB_CONFIG" \
+        $* -o sim || exit 1
     sim -lxt
 fi
 

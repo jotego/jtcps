@@ -8,6 +8,11 @@
         <!-- maincpu -->
         <part name="sthj_23.8f" crc="046e7b12" pattern ="10"/>
         <part name="sthj_22.7f" crc="9b3cfc08" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="sth_09.12a" crc="08d63519"/>
+        <!-- oki -->
+        <part name="sth_18.11c" crc="4386bc80"/>
+        <part name="sth_19.12c" crc="444536d7"/>
         <!-- gfx -->
         <group width="64">
             <part name="sth_01.3a" crc="4eee9aea" pattern="01"/>

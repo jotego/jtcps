@@ -138,8 +138,12 @@ always @(posedge clk, posedge rst) begin
         scr3_pxl <= 9'h1ff;
     end else begin
         if( hdump>9'd63 && hdump<9'd448 ) begin // active area
+            `ifndef NOSCROLL1
             scr1_pxl <= pre1_pxl;
+            `endif
+            `ifndef NOSCROLL2
             scr2_pxl <= pre2_pxl;
+            `endif
             `ifndef NOSCROLL3
             scr3_pxl <= pre3_pxl;
             `endif

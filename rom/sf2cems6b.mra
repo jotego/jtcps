@@ -8,6 +8,23 @@
         <!-- maincpu -->
         <part name="ms6b.u196" crc="435153d5" pattern ="10"/>
         <part name="ms6b.u10" crc="c812b7b2" pattern ="10"/>
+        <!-- audiocpu -->
+        <part name="ms6.u191" crc="08f6b60e"/>
+        <!-- oki -->
+        <part name="ms6.u210" crc="6cfffb11"/>
+        <!-- gfx -->
+        <group width="64">
+            <part name="ms6.u70" crc="baa0f81f" pattern="01"/>
+            <part name="ms6.u68" crc="8edff95a" pattern="01"/>
+            <part name="ms6.u69" crc="468962b1" pattern="01"/>
+            <part name="ms6.u64" crc="8165f536" pattern="01"/>
+       </group>
+        <group width="64">
+            <part name="ms6.u19" crc="39d763d3" pattern="01"/>
+            <part name="ms6.u18" crc="2ddfe46e" pattern="01"/>
+            <part name="ms6.u31" crc="35486f2d" pattern="01"/>
+            <part name="ms6.u29" crc="e4eca601" pattern="01"/>
+       </group>
        <!-- Mapper for sf2ce --> 
        <part> F7 77 40 40 1A </part>
        <!-- CPS-B config for sf2cems6b --> 

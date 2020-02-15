@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <cstring>
 #include <iomanip>
@@ -409,13 +410,14 @@ static const struct CPS1config cps1_config_table[]=
     {nullptr}     /* End of table */
 };
 
-void xml_element( ofstream& of, const char *name, const string &content, int tab) {
+void xml_element( stringstream& of, const char *name, const string &content, int tab) {
     while( tab-- ) of << "    ";
     of << "<" << name << ">" << content << "</" << name << ">\n";
 }
 
-void dump_region( ofstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap ) {
+void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap ) {
     while( !(entry->flags&ROMENTRYTYPE_END) ) {
+        //if( entry->name != nullptr ) cout << "region=" << entry->name << '\n';
         if( entry->flags & ROMENTRYTYPE_REGION ) {
             if( region == entry->name ) {
                 const char *indent="        ";
@@ -496,11 +498,13 @@ void dump_region( ofstream& of, const tiny_rom_entry *entry, const string& regio
         }
         entry++;
     }
+    throw region;
 }
 
-#define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' ';
+#define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' '; \
+    simf << "8'h" << hex << ((a)&0xff) << ',';
 
-int find_cfg( ofstream& of, const string& name ) {
+int find_cfg( stringstream& of, const string& name ) {
     int k=0;
     while( cps1_config_table[k].name != nullptr ) {
         if( name == cps1_config_table[k].name ) return k;
@@ -511,7 +515,7 @@ int find_cfg( ofstream& of, const string& name ) {
     return -1;
 }
 
-void generate_cpsb(ofstream& of, const CPS1config* x) {
+void generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
     of << "       <!-- CPS-B config for " << x->name << " --> \n";
     of << "       <part> ";            
     DUMP( x->layer_enable_mask[3] );
@@ -533,7 +537,7 @@ void generate_cpsb(ofstream& of, const CPS1config* x) {
     of << "</part>\n";
 }
 
-void generate_mapper(ofstream& of, game_entry* game, const CPS1config* x) {
+void generate_mapper(stringstream& of, stringstream& simf, game_entry* game, const CPS1config* x) {
     int mask=0xABCD, offset=0x1234;
     int id=0;
     bool found=false;
@@ -576,42 +580,60 @@ void generate_mapper(ofstream& of, game_entry* game, const CPS1config* x) {
 }
 
 void generate_mra( game_entry* game ) {
-    ofstream of( game->name+".mra" );
-    of << "<misterromdescription>\n";
-    xml_element(of,"name", game->full_name,1 );
-    xml_element(of,"setname", game->name,1 );
-    xml_element(of,"year", game->year,1 );
-    xml_element(of,"manufacturer", game->mfg,1 );
-    xml_element(of,"rbf", "jtcps1",1 );
+    //ofstream simf( game->name+".hex");
+    stringstream mras, simf;
+    mras << "<misterromdescription>\n";
+    xml_element(mras,"name", game->full_name,1 );
+    xml_element(mras,"setname", game->name,1 );
+    xml_element(mras,"year", game->year,1 );
+    xml_element(mras,"manufacturer", game->mfg,1 );
+    xml_element(mras,"rbf", "jtcps1",1 );
     // ROMs
-    of << "    <rom index=\"0\" zip=\"";
-    if( game->parent!="0") of << game->parent <<".zip|";
-    of << game->name << ".zip\">\n";
+    mras << "    <rom index=\"0\" zip=\"";
+    if( game->parent!="0") mras << game->parent <<".zip|";
+    mras << game->name << ".zip\">\n";
     const tiny_rom_entry *entry = game->roms;
-    dump_region(of, entry,"maincpu",16,1);
-    dump_region(of, entry,"audiocpu",8,0);
-    dump_region(of, entry,"oki",8,0);
-    dump_region(of, entry,"gfx",64,0);
-    int cfg_id = find_cfg( of, game->name );
+    try{
+        dump_region(mras, entry,"maincpu",16,1);
+        dump_region(mras, entry,"audiocpu",8,0);
+        dump_region(mras, entry,"oki",8,0);
+        dump_region(mras, entry,"gfx",64,0);
+    } catch( const string& reg ) {
+        cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
+        return;
+    }
+    int cfg_id = find_cfg( mras, game->name );
     const CPS1config* x = &cps1_config_table[cfg_id];
-    generate_mapper( of, game, x );
-    generate_cpsb( of, x );
-    of << "    </rom>\n";
-    of << "</misterromdescription>\n";
+    generate_mapper( mras, simf, game, x );
+    generate_cpsb( mras, simf, x );
+    mras << "    </rom>\n";
+    mras << "</misterromdescription>\n";
+    // hex file for simulation
+    string s = simf.str();
+    s = s.substr(0,s.length()-1);
+    // dump files
+    ofstream ofhex(game->name+"_cfg.hex");
+    ofhex << s;
+    ofhex.close();
+    ofhex.open( game->name+".mra" );
+    ofhex << mras.str();
 }
 
 int main(int argc, char *argv[]) {
     bool game_list=false, parents_only=false;
+    string game_name;
     for( int k=1; k<argc; k++ ) {
-        if( string(argv[k])=="-list" ) game_list=true;
-        if( string(argv[k])=="-parent" ) parents_only=true;
+        if( string(argv[k])=="-list" )  { game_list=true; continue; }
+        if( string(argv[k])=="-parent" ) { parents_only=true; continue; }
+        game_name = argv[k];
     }
     for( auto game : gl ) {
         if( game_list ) {
             if( !parents_only || game->parent=="0" )
                 cout << game->name << '\n';
         } else {
-            generate_mra( game );
+            if( !game_name.length() || game->name == game_name )
+                generate_mra( game );            
         }
     }
 }

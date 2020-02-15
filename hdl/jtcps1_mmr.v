@@ -174,9 +174,9 @@ always @(*) begin
 end
 
 `ifdef SIMULATION
-    `ifndef REGS_DEFAULT
-    //`define REGS_DEFAULT {REGSIZE{8'b0}}
-    `define REGS_DEFAULT { 16'hfff7, 16'h4440, 8'h07, 128'h00_08_04_02_2A_32_28_30_26_2E_FF_FF_FF_FF_04_20 }
+    `ifndef CPSB_CONFIG
+    //`define CPSB_CONFIG {REGSIZE{8'b0}}
+    `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 128'h00_08_04_02_2A_32_28_30_26_2E_FF_FF_FF_FF_04_20
         //{{16{8'b0}}} }
     // Ffight  FF F7 44 40 07
     // Ghouls  F1 17 65 40 0A
@@ -184,7 +184,7 @@ end
     `endif
 
     initial begin
-        regs = `REGS_DEFAULT;
+        regs = { `CPSB_CONFIG };
     end
 `endif
 
