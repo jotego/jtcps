@@ -229,6 +229,9 @@ initial begin
     vpos2          = mmr_regs[8];
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
+    layer_ctrl     = 16'h12ce; // default
+    //layer_ctrl     = 16'h138e; // strider
+    //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
 end
 assign reg_rst = 1'b0;
 `else 
@@ -255,7 +258,7 @@ always @(posedge clk, posedge reg_rst) begin
         prio2         <= ~16'h0;
         prio3         <= ~16'h0;
         pal_page_en   <=  6'h3f;
-        layer_ctrl    <=  16'd0;
+        layer_ctrl    <=  {2'b0,2'b11,2'b10,2'b01,2'b00,5'd0};
 
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;

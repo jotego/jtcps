@@ -114,6 +114,7 @@ wire       [15:0]  hpos1, hpos2, hpos3, vpos1, vpos2, vpos3, hstar1, hstar2, vst
 wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_base, vram_star_base;
 // Layer priority
 wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
+wire       [ 7:0]  layer_mask0, layer_mask1, layer_mask2, layer_mask3, layer_mask4;
 // palette control
 wire       [15:0]  pal_base;
 wire               pal_copy;
@@ -190,6 +191,11 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .cfg_data       ( cfg_data          ),
 
     .layer_ctrl     ( layer_ctrl        ),
+    .layer_mask0    ( layer_mask0       ),
+    .layer_mask1    ( layer_mask1       ),
+    .layer_mask2    ( layer_mask2       ),
+    .layer_mask3    ( layer_mask3       ),
+    .layer_mask4    ( layer_mask4       ),
     .prio0          ( prio0             ),
     .prio1          ( prio1             ),
     .prio2          ( prio2             ),
@@ -323,6 +329,14 @@ jtcps1_colmix u_colmix(
     .pal_copy   ( pal_copy      ),
     `endif
     .pal_base   ( pal_base      ),
+
+    // Layer priority
+    .layer_ctrl ( layer_ctrl    ),
+    .layer_mask0( layer_mask0   ),
+    .layer_mask1( layer_mask1   ),
+    .layer_mask2( layer_mask2   ),
+    .layer_mask3( layer_mask3   ),
+    .layer_mask4( layer_mask4   ),
 
     // VRAM access
     .vram_addr  ( vpal_addr     ),

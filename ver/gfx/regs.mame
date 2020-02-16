@@ -9,3 +9,4 @@ wp 800110,2,w,1,{printf "Scroll2 X    = %X",wpdata; g}
 wp 800112,2,w,1,{printf "Scroll2 Y    = %X",wpdata; g}
 wp 800114,2,w,1,{printf "Scroll3 X    = %X",wpdata; g}
 wp 800116,2,w,1,{printf "Scroll3 Y    = %X",wpdata; g}
+wp 800140,40,w,1,{printf "CPS-B %X <- %X ",wpaddr-800140,wpdata;g}

@@ -15,6 +15,7 @@
             <part name="dme_27.9h" crc="f734b2be"/>
        </group>
         <part name="dm-17.7j" crc="3ea1b0f2" pattern ="10"/>
+        <patch offset="4">00 00 04 00</patch>
         <!-- audiocpu -->
         <part name="26.10a" crc="3692f6e5"/>
         <!-- oki -->

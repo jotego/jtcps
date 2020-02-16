@@ -37,13 +37,20 @@ module jtcps1_colmix(
     input              HB,
     output  reg        LVBL_dly,
     output  reg        LHBL_dly,
-    input   [3:0]      gfx_en,
+    input   [ 3:0]     gfx_en,
 
-    input   [8:0]      scr1_pxl,
-    input   [8:0]      scr2_pxl,
-    input   [8:0]      scr3_pxl,
-    input   [8:0]      obj_pxl,
+    input   [ 8:0]     scr1_pxl,
+    input   [ 8:0]     scr2_pxl,
+    input   [ 8:0]     scr3_pxl,
+    input   [ 8:0]     obj_pxl,
 
+    // Layer priority
+    input   [15:0]     layer_ctrl,
+    input   [ 7:0]     layer_mask0, // mask for enable bits
+    input   [ 7:0]     layer_mask1,
+    input   [ 7:0]     layer_mask2,
+    input   [ 7:0]     layer_mask3,
+    input   [ 7:0]     layer_mask4,
     // Palette copy
     input              pal_copy,
     input   [15:0]     pal_base,
@@ -59,7 +66,7 @@ module jtcps1_colmix(
     (*keep*) output reg [7:0]  blue
 );
 
-reg  [ 8:0] pxl;
+reg  [11:0] pxl;
 wire [11:0] pal_addr;
 
 // Palette
@@ -76,37 +83,54 @@ reg  [3:0] dly_r, dly_g, dly_b;
 // 010 = SCROLL 2
 // 011 = SCROLL 3
 // 000 = STAR FIELD?
-reg [2:0] pxl_type;
 
 assign raw_br   = raw[15:12]; // r
 assign raw_r    = raw[11: 8]; // br
 assign raw_g    = raw[ 7: 4]; // b
 assign raw_b    = raw[ 3: 0]; // g
-assign pal_addr = { pxl_type, pxl };
+assign pal_addr = pxl;
 
-// simple layer priority for now:
+function [11:0] layer_mux;
+    input [ 8:0] obj;
+    input [ 8:0] scr1;
+    input [ 8:0] scr2;
+    input [ 8:0] scr3;
+    input [ 1:0] sel;
+
+    layer_mux =  sel==2'b00 ? { 3'b000, obj }   :
+                (sel==2'b01 ? { 3'b001, scr1}   :
+                (sel==2'b10 ? { 3'b010, scr2}   :
+                (sel==2'b11 ? { 3'b011, scr3}   : 9'h1ff )));
+endfunction
+
+wire [4:0] lyren = {
+    |(layer_mask4[5:0] & layer_ctrl[5:0]), // Star layer 1
+    |(layer_mask3[5:0] & layer_ctrl[5:0]), // Star layer 0
+    |(layer_mask2[5:0] & layer_ctrl[5:0]),
+    |(layer_mask1[5:0] & layer_ctrl[5:0]),
+    |(layer_mask0[5:0] & layer_ctrl[5:0])
+};
+
+// OBJ layer cannot be disabled by hardware
+wire [8:0] obj_mask  = { obj_pxl[8:4],  obj_pxl[3:0]  | {4{~gfx_en[3]}} };
+wire [8:0] scr1_mask = { scr1_pxl[8:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
+wire [8:0] scr2_mask = { scr2_pxl[8:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
+wire [8:0] scr3_mask = { scr3_pxl[8:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
+
+wire [11:0] lyr3 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
+wire [11:0] lyr2 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
+wire [11:0] lyr1 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
+wire [11:0] lyr0 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[13:12] );
+
 always @(posedge clk) if(pxl_cen) begin
-    //pxl      = scr1_pxl;
-    //pxl_type = 3'b01;
-    //pxl      = scr2_pxl;
-    //pxl_type = 3'b10;
-
-    if( obj_pxl[3:0] != 4'hf && gfx_en[3] ) begin
-        pxl      <= obj_pxl;
-        pxl_type <= 3'b0;
-    end else if( scr1_pxl[3:0] != 4'hf && gfx_en[0] ) begin
-        pxl      <= scr1_pxl;
-        pxl_type <= 3'b1;
-    end else if(scr2_pxl[3:0] != 4'hf && gfx_en[1] ) begin
-        pxl      <= scr2_pxl;
-        pxl_type <= 3'b10;
-    end else if( gfx_en[2] ) begin
-        pxl      <= scr3_pxl;
-        pxl_type <= 3'b011;
-    end
-    else begin
-        pxl      <= 9'h1ff;
-        pxl_type <= 3'b011;
+    if( lyr0[3:0] != 4'hf ) begin
+        pxl      <= lyr0;
+    end else if( lyr1[3:0] != 4'hf ) begin
+        pxl      <= lyr1;
+    end else if( lyr2[3:0] != 4'hf ) begin
+        pxl      <= lyr2;
+    end else  begin
+        pxl      <= lyr3;
     end
 end
 
