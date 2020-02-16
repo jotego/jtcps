@@ -135,6 +135,11 @@ always @(posedge clk, posedge rst) begin
                 if( rom_ok ) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
+                    if( &rom_data ) begin
+                        st <= 11;// skip blank pixels but waste two clock cycles for rom_ok
+                        // to renew
+                        buf_addr <= buf_addr + 9'd5;
+                    end
                 end else st<=st;
             end
             5,6,7,8, 9,10,11,12,
@@ -148,6 +153,7 @@ always @(posedge clk, posedge rst) begin
                 if(rom_ok) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
+                    if( &rom_data ) st <= 22; // skip blank pixels
                 end else st<=st;
             end
             22: begin
