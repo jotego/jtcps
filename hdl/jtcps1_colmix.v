@@ -86,7 +86,9 @@ reg  [3:0] dly_r, dly_g, dly_b;
 // 001 = SCROLL 1
 // 010 = SCROLL 2
 // 011 = SCROLL 3
-// 000 = STAR FIELD?
+// 100 = STAR FIELD
+
+localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3;
 
 assign raw_br   = raw[15:12]; // r
 assign raw_r    = raw[11: 8]; // br
@@ -94,17 +96,17 @@ assign raw_g    = raw[ 7: 4]; // b
 assign raw_b    = raw[ 3: 0]; // g
 assign pal_addr = pxl;
 
-function [11:0] layer_mux;
+function [13:0] layer_mux;
     input [ 8:0] obj;
     input [ 8:0] scr1;
     input [ 8:0] scr2;
     input [ 8:0] scr3;
     input [ 1:0] sel;
 
-    layer_mux =  sel==2'b00 ? { 3'b000, obj }   :
-                (sel==2'b01 ? { 3'b001, scr1}   :
-                (sel==2'b10 ? { 3'b010, scr2}   :
-                (sel==2'b11 ? { 3'b011, scr3}   : 9'h1ff )));
+    layer_mux =  sel==2'b00 ? {      2'b00,  OBJ, obj }   :
+                (sel==2'b01 ? { scr1[10:9], SCR1, scr1[8:0]}   :
+                (sel==2'b10 ? { scr2[10:9], SCR2, scr2[8:0]}   :
+                (sel==2'b11 ? { scr3[10:9], SCR3, scr3[8:0]}   : 9'h1ff )));
 endfunction
 
 wire [4:0] lyren = {
@@ -121,12 +123,42 @@ wire [8:0] scr1_mask = { scr1_pxl[8:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0]
 wire [8:0] scr2_mask = { scr2_pxl[8:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
 wire [8:0] scr3_mask = { scr3_pxl[8:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
 
-wire [11:0] lyr3 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
-wire [11:0] lyr2 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
-wire [11:0] lyr1 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
-wire [11:0] lyr0 = layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[13:12] );
+localparam QW = 14*3;
+reg [13:0] lyr3, lyr2, lyr1, lyr0;
+reg [QW-1:0] lyr_queue;
+reg [11:0] pre_pxl;
+reg [ 1:0] group;
 
 always @(posedge clk) if(pxl_cen) begin
+    lyr3 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
+    lyr2 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
+    lyr1 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
+    lyr0 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[13:12] );
+    pxl  <= pre_pxl;
+end
+
+reg has_priority;
+
+always @(*) begin
+    case( group )
+        2'd0: has_priority = prio0[ pre_pxl[3:0] ];
+        2'd1: has_priority = prio1[ pre_pxl[3:0] ];
+        2'd2: has_priority = prio2[ pre_pxl[3:0] ];
+        2'd3: has_priority = prio3[ pre_pxl[3:0] ];
+    endcase
+end
+
+// This take 6 clock cycles to process the 6 layers
+always @(posedge clk) begin
+    if(pxl_cen) begin
+        {group, pre_pxl } <= lyr3;
+        lyr_queue <= { lyr0, lyr1, lyr2 };
+    end else begin
+        if( !(lyr_queue[11:9]==OBJ && has_priority ) && lyr_queue[3:0] != 4'hf )
+            { group, pre_pxl } <= lyr_queue[13:0];
+        lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
+    end
+    /*
     if( lyr0[3:0] != 4'hf ) begin
         pxl      <= lyr0;
     end else if( lyr1[3:0] != 4'hf ) begin
@@ -135,7 +167,7 @@ always @(posedge clk) if(pxl_cen) begin
         pxl      <= lyr2;
     end else  begin
         pxl      <= lyr3;
-    end
+    end*/
 end
 
 `ifdef SIMULATION
