@@ -39,9 +39,9 @@ module jtcps1_colmix(
     output  reg        LHBL_dly,
     input   [ 3:0]     gfx_en,
 
-    input   [ 8:0]     scr1_pxl,
-    input   [ 8:0]     scr2_pxl,
-    input   [ 8:0]     scr3_pxl,
+    input   [10:0]     scr1_pxl,
+    input   [10:0]     scr2_pxl,
+    input   [10:0]     scr3_pxl,
     input   [ 8:0]     obj_pxl,
 
     // Layer priority
@@ -51,6 +51,10 @@ module jtcps1_colmix(
     input   [ 7:0]     layer_mask2,
     input   [ 7:0]     layer_mask3,
     input   [ 7:0]     layer_mask4,
+    input   [15:0]     prio0,
+    input   [15:0]     prio1,
+    input   [15:0]     prio2,
+    input   [15:0]     prio3,
     // Palette copy
     input              pal_copy,
     input   [15:0]     pal_base,

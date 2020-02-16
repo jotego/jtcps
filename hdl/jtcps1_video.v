@@ -102,7 +102,8 @@ parameter REGSIZE=21;
 `define NOCOLMIX
 `endif
 
-wire [ 8:0]     scr1_pxl, scr2_pxl, scr3_pxl, obj_pxl;
+wire [10:0]     scr1_pxl, scr2_pxl, scr3_pxl;
+wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start, preVB;
@@ -251,9 +252,9 @@ jtcps1_scroll u_scroll(
 `else 
 assign rom1_cs  = 1'b0;
 assign rom1_addr= 20'd0;
-assign scr1_pxl = 9'h1ff;
-assign scr2_pxl = 9'h1ff;
-assign scr3_pxl = 9'h1ff;
+assign scr1_pxl = 11'h1ff;
+assign scr2_pxl = 11'h1ff;
+assign scr3_pxl = 11'h1ff;
 `endif
 
 // Objects
@@ -337,6 +338,10 @@ jtcps1_colmix u_colmix(
     .layer_mask2( layer_mask2   ),
     .layer_mask3( layer_mask3   ),
     .layer_mask4( layer_mask4   ),
+    .prio0      ( prio0         ),
+    .prio1      ( prio1         ),
+    .prio2      ( prio2         ),
+    .prio3      ( prio3         ),
 
     // VRAM access
     .vram_addr  ( vpal_addr     ),

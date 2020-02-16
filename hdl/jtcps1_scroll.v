@@ -61,13 +61,13 @@ module jtcps1_scroll(
 
     input      [ 3:0]  gfx_en,
 
-    (*keep*)output reg [ 8:0]  scr1_pxl,
-    (*keep*)output reg [ 8:0]  scr2_pxl,
-    (*keep*)output reg [ 8:0]  scr3_pxl
+    (*keep*)output reg [10:0]  scr1_pxl,
+    (*keep*)output reg [10:0]  scr2_pxl,
+    (*keep*)output reg [10:0]  scr3_pxl
 );
 
 reg         pre_start, sub_start, busy, done;
-wire [ 8:0] buf_data;
+wire [10:0] buf_data;
 wire [ 8:0] buf_addr;
 wire        buf_wr;
 
@@ -77,15 +77,16 @@ wire        sub_done;
 
 reg         rd_half, wr_half;
 
-wire [9:0] addr0 = { wr_half, buf_addr }; // write
-wire [9:0] addr1 = { rd_half, hdump    }; // read
-wire [8:0] pre1_pxl, pre2_pxl, pre3_pxl;
+wire [ 9:0] addr0 = { wr_half, buf_addr }; // write
+wire [ 9:0] addr1 = { rd_half, hdump    }; // read
+wire [10:0] pre1_pxl, pre2_pxl, pre3_pxl;
 
 wire       wr1 = buf_wr & st[0],
            wr2 = buf_wr & st[1],
            wr3 = buf_wr & st[2];
 
-jtframe_dual_ram #(.dw(9), .aw(10)) u_line1(
+
+jtframe_dual_ram #(.dw(11), .aw(10)) u_line1(
     .clk0   ( clk       ),
     .clk1   ( clk       ),
     // Port 0: write
@@ -100,7 +101,7 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line1(
     .q1     ( pre1_pxl  )
 );
 
-jtframe_dual_ram #(.dw(9), .aw(10)) u_line2(
+jtframe_dual_ram #(.dw(11), .aw(10)) u_line2(
     .clk0   ( clk       ),
     .clk1   ( clk       ),
     // Port 0: write
@@ -115,7 +116,7 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line2(
     .q1     ( pre2_pxl  )
 );
 
-jtframe_dual_ram #(.dw(9), .aw(10)) u_line3(
+jtframe_dual_ram #(.dw(11), .aw(10)) u_line3(
     .clk0   ( clk       ),
     .clk1   ( clk       ),
     // Port 0: write
@@ -133,9 +134,9 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line3(
 // Line buffers
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        scr1_pxl <= 9'h1ff;
-        scr2_pxl <= 9'h1ff;
-        scr3_pxl <= 9'h1ff;
+        scr1_pxl <= 11'h1ff;
+        scr2_pxl <= 11'h1ff;
+        scr3_pxl <= 11'h1ff;
     end else begin
         if( hdump>9'd63 && hdump<9'd448 ) begin // active area
             `ifndef NOSCROLL1
@@ -148,9 +149,9 @@ always @(posedge clk, posedge rst) begin
             scr3_pxl <= pre3_pxl;
             `endif
         end else begin
-            scr1_pxl <= 9'h1ff;
-            scr2_pxl <= 9'h1ff;
-            scr3_pxl <= 9'h1ff;
+            scr1_pxl <= 11'h1ff;
+            scr2_pxl <= 11'h1ff;
+            scr3_pxl <= 11'h1ff;
         end
     end
 end

@@ -54,7 +54,7 @@ module jtcps1_tilemap(
     input              rom_ok,
 
     output reg [ 8:0]  buf_addr,
-    output reg [ 8:0]  buf_data,
+    output reg [10:0]  buf_data,
     output reg         buf_wr
 );
 
@@ -130,9 +130,10 @@ function [3:0] colour;
                     { c[31], c[23], c[15], c[7] };
 endfunction
 
-wire     vflip = attr[6];
-wire     hflip = attr[5];
-wire [4:0] pal = attr[4:0];
+wire [1:0] group = attr[8:7];
+wire       vflip = attr[6];
+wire       hflip = attr[5];
+wire [4:0] pal   = attr[4:0];
 // assign rom_half = hn[3] ^ hflip;
 
 wire [17:1] aux_addr = { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
@@ -203,7 +204,7 @@ always @(posedge clk or posedge rst) begin
             34,35,36,37, 38,39,40,41: begin
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
-                buf_data <= { pal, unmapped ? 4'hf : colour(pxl_data, hflip) };
+                buf_data <= { group, pal, unmapped ? 4'hf : colour(pxl_data, hflip) };
                 pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
                 if( buf_addr == 9'd447 ) begin
                     buf_wr <= 1'b0;
