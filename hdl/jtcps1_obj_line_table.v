@@ -194,7 +194,7 @@ always @(posedge clk, posedge rst) begin
             end
             3: begin
                 //obj_code   <= { (pre_code[15:12]&{1'b0,mask[3:1]}) + offset, pre_code[11:0] };
-                obj_code   <= { (pre_code[15:12]&mask) + offset, pre_code[11:0] };
+                obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
                 last_y     <= obj_y;
                 obj_y      <= frame_data;
                 //frame_addr <= frame_addr-10'd1;

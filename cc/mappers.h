@@ -87,7 +87,8 @@ static const struct gfx_range mapper_DM620_table[] =
 
     { GFXTYPE_SPRITES, 0x2000, 0x3fff, 2 },
 
-    { GFXTYPE_STARS | GFXTYPE_SPRITES | GFXTYPE_SCROLL1 | GFXTYPE_SCROLL2 | GFXTYPE_SCROLL3, 0x00000, 0x1ffff, 0 },
+    { GFXTYPE_STARS | GFXTYPE_SCROLL1 | GFXTYPE_SCROLL2 | GFXTYPE_SCROLL3, 0x00000, 0x1ffff, 0 },
+    { GFXTYPE_SPRITES, 0x00000, 0x1fff, 0 },
     { 0 }
 };
 

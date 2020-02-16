@@ -71,7 +71,6 @@ reg  [11:0] scan;
 reg  [ 2:0] layer;
 reg         mapper_en;
 wire [ 3:0] offset, mask;
-wire [15:0] code2;
 wire        unmapped;
 
 always @(*) begin
@@ -111,18 +110,18 @@ jtcps1_gfx_mappers u_mapper(
     .unmapped   ( unmapped        )
 );
 
-assign code2 = {code[15:12] & mask, code[11:0]};
-//assign code2 = (code & 16'hffff);
+reg [19:0] rom_pre_addr, rom_masked_addr, rom_offset_addr;
 
-// always @(*) begin
-//     case( size )
-//         3'b001: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
-//             //rom_addr[19:0] <= { 1'b0, code, vn[2:0] ^ {3{vflip}} };
-//         3'b010: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
-//         3'b100: code2 = {code[15:12] & mask, code[11:0]} + {offset,12'b0};
-//             //rom_addr[19:0] <= { code[13:0], vn[4:0] ^{5{vflip}}, hflip };
-//     endcase
-// end
+always @(*) begin
+    case (size)
+        3'b001: rom_pre_addr = { 1'b0, code, vn[2:0] ^ {3{vflip}} };
+        3'b010: rom_pre_addr = { code, vn[3:0] ^{4{vflip}} };
+        default: rom_pre_addr = { code[13:0], vn[4:0] ^{5{vflip}}, hflip }; // 3'b100
+    endcase
+    rom_masked_addr = { mask, ~16'h0 } & rom_pre_addr;
+    rom_offset_addr = { offset, 16'h0} | rom_masked_addr;
+end
+
 
 function [3:0] colour;
     input [31:0] c;
@@ -189,13 +188,8 @@ always @(posedge clk or posedge rst) begin
                 end
             4: begin
                 rom_half <= hflip;
-                case (size)
-                    3'b001: rom_addr[19:0] <= { offset, 16'd0 } | { 1'b0, code2, vn[2:0] ^ {3{vflip}} };
-                    3'b010: rom_addr[19:0] <= { offset, 16'd0 } | { code2, vn[3:0] ^{4{vflip}} };
-                    3'b100: rom_addr[19:0] <= { offset, 16'd0 } | { code2[13:0], vn[4:0] ^{5{vflip}}, hflip };
-                    default:;
-                endcase
-                rom_cs    <= 1'b1;
+                rom_addr <= rom_offset_addr;
+                rom_cs   <= 1'b1;
                 hn <= hn + ( size[0] ? 11'h8 : (size[1] ? 11'h10 : 11'h20 ));
             end
             6: if(rom_ok) begin
