@@ -110,6 +110,12 @@ jtcps1_gfx_mappers u_mapper(
     .unmapped   ( unmapped        )
 );
 
+wire [1:0] group = attr[8:7];
+wire       vflip = attr[6];
+wire       hflip = attr[5];
+wire [4:0] pal   = attr[4:0];
+// assign rom_half = hn[3] ^ hflip;
+
 reg [19:0] rom_pre_addr, rom_masked_addr, rom_offset_addr;
 
 always @(*) begin
@@ -129,12 +135,6 @@ function [3:0] colour;
     colour = flip ? { c[24], c[16], c[ 8], c[0] } : 
                     { c[31], c[23], c[15], c[7] };
 endfunction
-
-wire [1:0] group = attr[8:7];
-wire       vflip = attr[6];
-wire       hflip = attr[5];
-wire [4:0] pal   = attr[4:0];
-// assign rom_half = hn[3] ^ hflip;
 
 wire [17:1] aux_addr = { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
 

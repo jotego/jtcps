@@ -339,6 +339,23 @@ jtcps1_video #(REGSIZE) u_video(
 );
 
 `ifndef NOSOUND
+`ifdef FAKE_LATCH
+integer snd_frame_cnt=0;
+reg [7:0] fake_latch = 8'hff;
+assign snd_latch1 = 8'd0;
+assign snd_latch0 = fake_latch;
+localparam FAKE0=10;
+always @(posedge VB) begin
+    snd_frame_cnt <= snd_frame_cnt+1;
+    case( snd_frame_cnt )
+        FAKE0: fake_latch <= 8'hf0;
+        FAKE0+5+2: fake_latch <= 8'hf7;
+        FAKE0+5+4: fake_latch <= 8'hf2;
+        FAKE0+5+6: fake_latch <= 8'h55;
+        default: fake_latch <= 8'hff;
+    endcase
+end
+`endif
 jtcps1_sound u_sound(
     .rst        ( rst           ),
     .clk        ( clk           ),    
