@@ -141,10 +141,10 @@ reg has_priority;
 
 always @(*) begin
     case( group )
-        2'd0: has_priority = ~prio0[ pre_pxl[3:0] ];
-        2'd1: has_priority = ~prio1[ pre_pxl[3:0] ];
-        2'd2: has_priority = ~prio2[ pre_pxl[3:0] ];
-        2'd3: has_priority = ~prio3[ pre_pxl[3:0] ];
+        2'd0: has_priority = prio0[ pre_pxl[3:0] ];
+        2'd1: has_priority = prio1[ pre_pxl[3:0] ];
+        2'd2: has_priority = prio2[ pre_pxl[3:0] ];
+        2'd3: has_priority = prio3[ pre_pxl[3:0] ];
     endcase
 end
 
