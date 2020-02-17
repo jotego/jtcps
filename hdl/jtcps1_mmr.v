@@ -232,6 +232,10 @@ initial begin
     layer_ctrl     = 16'h12ce; // default
     //layer_ctrl     = 16'h138e; // strider
     //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
+    prio0 = ~16'h0;
+    prio1 = ~16'h7e01;
+    prio2 = ~16'h7fff;
+    prio3 = ~16'h7e02;
 end
 assign reg_rst = 1'b0;
 `else 

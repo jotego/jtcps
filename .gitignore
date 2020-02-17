@@ -1,0 +1,6 @@
+cc/*.mra
+rom/*.rom
+*.bak
+*.7z
+*.tar.gz
+sim

@@ -98,9 +98,9 @@ assign pal_addr = pxl;
 
 function [13:0] layer_mux;
     input [ 8:0] obj;
-    input [ 8:0] scr1;
-    input [ 8:0] scr2;
-    input [ 8:0] scr3;
+    input [10:0] scr1;
+    input [10:0] scr2;
+    input [10:0] scr3;
     input [ 1:0] sel;
 
     layer_mux =  sel==2'b00 ? {      2'b00,  OBJ, obj }   :
@@ -118,10 +118,10 @@ wire [4:0] lyren = {
 };
 
 // OBJ layer cannot be disabled by hardware
-wire [8:0] obj_mask  = { obj_pxl[8:4],  obj_pxl[3:0]  | {4{~gfx_en[3]}} };
-wire [8:0] scr1_mask = { scr1_pxl[8:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
-wire [8:0] scr2_mask = { scr2_pxl[8:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
-wire [8:0] scr3_mask = { scr3_pxl[8:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
+wire [8:0] obj_mask   = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
+wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
+wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
+wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
 
 localparam QW = 14*3;
 reg [13:0] lyr3, lyr2, lyr1, lyr0;
@@ -141,10 +141,10 @@ reg has_priority;
 
 always @(*) begin
     case( group )
-        2'd0: has_priority = prio0[ pre_pxl[3:0] ];
-        2'd1: has_priority = prio1[ pre_pxl[3:0] ];
-        2'd2: has_priority = prio2[ pre_pxl[3:0] ];
-        2'd3: has_priority = prio3[ pre_pxl[3:0] ];
+        2'd0: has_priority = ~prio0[ pre_pxl[3:0] ];
+        2'd1: has_priority = ~prio1[ pre_pxl[3:0] ];
+        2'd2: has_priority = ~prio2[ pre_pxl[3:0] ];
+        2'd3: has_priority = ~prio3[ pre_pxl[3:0] ];
     endcase
 end
 
