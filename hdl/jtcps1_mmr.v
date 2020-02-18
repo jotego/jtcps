@@ -230,6 +230,8 @@ initial begin
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
     layer_ctrl     = 16'h12ce; // default
+    // Default layer order = 4B = 01 00 10 11
+    // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider
     //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
     prio0 = ~16'h0;

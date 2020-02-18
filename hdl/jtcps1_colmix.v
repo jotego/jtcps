@@ -106,7 +106,7 @@ function [13:0] layer_mux;
     layer_mux =  sel==2'b00 ? {      2'b00,  OBJ, obj }   :
                 (sel==2'b01 ? { scr1[10:9], SCR1, scr1[8:0]}   :
                 (sel==2'b10 ? { scr2[10:9], SCR2, scr2[8:0]}   :
-                (sel==2'b11 ? { scr3[10:9], SCR3, scr3[8:0]}   : 9'h1ff )));
+                (sel==2'b11 ? { scr3[10:9], SCR3, scr3[8:0]}   : 13'h1fff )));
 endfunction
 
 wire [4:0] lyren = {
@@ -154,7 +154,7 @@ always @(posedge clk) begin
         {group, pre_pxl } <= lyr3;
         lyr_queue <= { lyr0, lyr1, lyr2 };
     end else begin
-        if( !(lyr_queue[11:9]==OBJ && has_priority ) && lyr_queue[3:0] != 4'hf )
+        if( pre_pxl[3:0]==4'hf ||  ( !(lyr_queue[11:9]==OBJ && has_priority ) && lyr_queue[3:0] != 4'hf) )
             { group, pre_pxl } <= lyr_queue[13:0];
         lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
     end
