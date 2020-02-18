@@ -25,6 +25,7 @@
 module jtcps1_scroll(
     input              rst,
     input              clk,
+    input              pxl_cen,
 
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input      [ 8:0]  vdump,
@@ -85,6 +86,18 @@ wire       wr1 = buf_wr & st[0],
            wr2 = buf_wr & st[1],
            wr3 = buf_wr & st[2];
 
+reg [3:0]  clrsh;
+wire       wrclr, pxl_latch;
+
+assign     pxl_latch = clrsh[2];
+assign     wrclr     = clrsh[3];
+
+always @(posedge clk, posedge rst) begin
+    if ( rst ) clrsh <= 4'b1;
+    else begin
+        if( pxl_cen || !clrsh[0] ) clrsh <= { clrsh[2:0], clrsh[3] };
+    end
+end
 
 jtframe_dual_ram #(.dw(11), .aw(10)) u_line1(
     .clk0   ( clk       ),
@@ -95,9 +108,9 @@ jtframe_dual_ram #(.dw(11), .aw(10)) u_line1(
     .we0    ( wr1       ),
     .q0     (           ),
     // Port 1: read
-    .data1  (           ),
+    .data1  ( ~11'd0    ),
     .addr1  ( addr1     ),
-    .we1    ( 1'b0      ),
+    .we1    ( wrclr     ),
     .q1     ( pre1_pxl  )
 );
 
@@ -110,9 +123,9 @@ jtframe_dual_ram #(.dw(11), .aw(10)) u_line2(
     .we0    ( wr2       ),
     .q0     (           ),
     // Port 1: read
-    .data1  (           ),
+    .data1  ( ~11'd0    ),
     .addr1  ( addr1     ),
-    .we1    ( 1'b0      ),
+    .we1    ( wrclr     ),
     .q1     ( pre2_pxl  )
 );
 
@@ -125,9 +138,9 @@ jtframe_dual_ram #(.dw(11), .aw(10)) u_line3(
     .we0    ( wr3       ),
     .q0     (           ),
     // Port 1: read
-    .data1  (           ),
+    .data1  ( ~11'd0    ),
     .addr1  ( addr1     ),
-    .we1    ( 1'b0      ),
+    .we1    ( wrclr     ),
     .q1     ( pre3_pxl  )
 );
 
@@ -137,7 +150,7 @@ always @(posedge clk, posedge rst) begin
         scr1_pxl <= 11'h1ff;
         scr2_pxl <= 11'h1ff;
         scr3_pxl <= 11'h1ff;
-    end else begin
+    end else if(pxl_latch) begin
         if( hdump>9'd63 && hdump<9'd448 ) begin // active area
             `ifndef NOSCROLL1
             scr1_pxl <= pre1_pxl;

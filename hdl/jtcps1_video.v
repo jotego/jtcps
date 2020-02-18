@@ -209,6 +209,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
 jtcps1_scroll u_scroll(
     .rst        ( rst           ),
     .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
     .gfx_en     ( gfx_en        ),
 
     .vrender    ( vrender       ),
