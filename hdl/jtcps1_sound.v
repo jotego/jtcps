@@ -46,8 +46,8 @@ module jtcps1_sound(
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-assign left  = (fm_left >>>1) + (adpcm_snd<<<1);
-assign right = (fm_right>>>1) + (adpcm_snd<<<1);
+assign left  =  { {1{fm_left[15]}}, fm_left[15:1]  } + { {1{adpcm_snd[13]}}, adpcm_snd, adpcm_snd[12] };
+assign right =  { {1{fm_left[15]}}, fm_right[15:1] } + { {1{adpcm_snd[13]}}, adpcm_snd, adpcm_snd[12] };
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz

@@ -89,8 +89,8 @@ wire       wr1 = buf_wr & st[0],
 reg [3:0]  clrsh;
 wire       wrclr, pxl_latch;
 
-assign     pxl_latch = clrsh[2];
-assign     wrclr     = clrsh[3];
+assign     pxl_latch = pxl_cen; //clrsh[2];
+assign     wrclr     = 1'b0; //clrsh[3];
 
 always @(posedge clk, posedge rst) begin
     if ( rst ) clrsh <= 4'b1;

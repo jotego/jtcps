@@ -210,6 +210,7 @@ jtcps1_prom_we #(REGSIZE) u_prom_we(
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
     .prog_we        ( prog_we       ),
+    .sdram_ack      ( sdram_ack     ),
     .cfg_we         ( cfg_we        )
 );
 
