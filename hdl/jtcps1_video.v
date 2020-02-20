@@ -251,11 +251,13 @@ jtcps1_scroll u_scroll(
     .scr3_pxl   ( scr3_pxl      )
 );
 `else 
-assign rom1_cs  = 1'b0;
-assign rom1_addr= 20'd0;
-assign scr1_pxl = 11'h1ff;
-assign scr2_pxl = 11'h1ff;
-assign scr3_pxl = 11'h1ff;
+assign rom1_cs    = 1'b0;
+assign rom1_addr  = 20'd0;
+assign vram1_cs   = 1'b0;
+assign vram1_addr = 17'd0;
+assign scr1_pxl   = 11'h1ff;
+assign scr2_pxl   = 11'h1ff;
+assign scr3_pxl   = 11'h1ff;
 `endif
 
 // Objects
@@ -331,6 +333,7 @@ jtcps1_colmix u_colmix(
     .pal_copy   ( pal_copy      ),
     `endif
     .pal_base   ( pal_base      ),
+    .pal_page_en( pal_page_en   ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),
@@ -366,6 +369,8 @@ assign green=8'b0;
 assign blue=8'b0;
 assign LHBL_dly = ~HB;
 assign LVBL_dly = ~VB;
+assign vpal_cs   = 1'b0;
+assign vpal_addr = 17'd0;
 `endif
 
 endmodule
