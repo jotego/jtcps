@@ -254,18 +254,20 @@ always @(posedge clk, posedge rst) begin
             end
             // 4'b0010: wait for OK signal to go down in reaction to the change
             // in vram_addr
-            5'b0_1000: if(vram_ok) begin
+            5'b0_0100: if(vram_ok) begin
                 pal[ {pal_wr_page,pal_cnt} ] <= vram_data;
+            end else pal_st <= pal_st;
+            5'b0_1000: begin
                 if( &pal_cnt ) begin                    
                     pal_wr_page <= pal_wr_page + 3'd1;
                     pal_rd_page <= pal_rd_page + 3'd1;
                     if( pal_wr_page==3'b101 ) vram_cs <= 1'b0; // done
                 end
-            end else pal_st <= pal_st;
+            end
             5'b1_0000: begin
                 if( pal_page_en[pal_wr_page] ) begin
                     pal_cnt <= pal_cnt + 9'd1;
-                end
+                end else pal_st <= 5'b0_1000;
             end
         endcase
     end

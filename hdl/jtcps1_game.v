@@ -93,7 +93,7 @@ wire [21:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu2_cs, ppu_rstn;
-wire [22:0] rom1_addr, rom0_addr;
+wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
@@ -128,8 +128,8 @@ assign slot_cs[7] = snd_cs;
 assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
 
-assign gfx0_addr = {rom0_addr[19:0], rom0_half, 1'b0 }; // OBJ
-assign gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
+assign gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
+assign gfx1_addr = {rom1_addr, rom1_half, 1'b0 };
 
 assign main_rom_ok = slot_ok[0];
 assign main_ram_ok = slot_ok[1];
