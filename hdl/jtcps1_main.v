@@ -148,6 +148,14 @@ always @(*) begin
     end    
 end
 
+/*
+`ifdef SIMULATION
+always @(posedge one_wait) begin
+    $display("one_wait went high at %t",$time());
+    #1000 $finish;
+end
+`endif
+*/
 // special registers
 always @(posedge clk) begin
     if( rst ) begin

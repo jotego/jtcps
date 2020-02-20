@@ -383,10 +383,12 @@ jtcps1_sound u_sound(
     .sample     ( sample        )
 );
 `else 
-assign snd_addr = 16'd0;
-assign snd_cs   = 1'b0;
-assign snd_left = 16'd0;
-assign snd_right= 16'd0;
+assign snd_addr   = 16'd0;
+assign snd_cs     = 1'b0;
+assign snd_left   = 16'd0;
+assign snd_right  = 16'd0;
+assign adpcm_addr = 18'd0;
+assign adpcm_cs   = 1'b0;
 assign sample   = 1'b0;
 `endif
 
