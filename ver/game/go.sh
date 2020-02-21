@@ -22,7 +22,17 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-apply_patches.sh $GAME
+function make_main {
+    # Binary ROM file has bytes swapped because bin2hex 
+    # has fixed endianness
+    dd if=../../rom/$1.rom conv=swab | bin2hex  > $1.hex || exit 1
+    # Fill the rest of the space
+    hexlen=$(wc -l $1.hex | cut -f 1 -d " ")
+    yes FFFF | head -n $((4194304-hexlen)) >> $1.hex
+    echo $1.hex created
+}
+
+make_main $GAME
 
 ln -sf ../../rom/$GAME.rom rom.bin
 ln -sf ${GAME}${PATCH}.hex sdram.hex

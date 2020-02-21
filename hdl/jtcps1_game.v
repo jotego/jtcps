@@ -346,13 +346,26 @@ reg [7:0] fake_latch = 8'hff;
 assign snd_latch1 = 8'd0;
 assign snd_latch0 = fake_latch;
 localparam FAKE0=10;
+localparam FAKE1=1000;
 always @(posedge VB) begin
     snd_frame_cnt <= snd_frame_cnt+1;
     case( snd_frame_cnt )
+        /* ffight
         FAKE0: fake_latch <= 8'hf0;
         FAKE0+5+2: fake_latch <= 8'hf7;
         FAKE0+5+4: fake_latch <= 8'hf2;
         FAKE0+5+6: fake_latch <= 8'h55;
+        default: fake_latch <= 8'hff;
+        */
+        // Nemo
+        FAKE0: fake_latch <= 8'h0;
+        FAKE0+1: fake_latch <= 8'h2;
+        FAKE0+2: fake_latch <= 8'h0;
+
+        FAKE1: fake_latch <= 8'h0;
+        FAKE1+1: fake_latch <= 8'h4;
+        FAKE1+2: fake_latch <= 8'h0;
+
         default: fake_latch <= 8'hff;
     endcase
 end

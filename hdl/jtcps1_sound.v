@@ -45,7 +45,8 @@ module jtcps1_sound(
     output                   sample
 );
 
-(*keep*) wire cen_fm, cen_fm2, cen_oki, nc;
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+reg  cen_fm, cen_fm2;
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
@@ -65,8 +66,8 @@ end
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
-    .cen_3p57   (  cen_fm    ),
-    .cen_1p78   (  cen_fm2   )
+    .cen_3p57   (  pre_fm    ),
+    .cen_1p78   (  pre_fm2   )
 );
 
 jtframe_frac_cen u_okicen(
@@ -77,10 +78,15 @@ jtframe_frac_cen u_okicen(
     .cenb       (                   )
 );
 
+// Make JT51 clock enable happen at the same time than the CPU's
+always @(posedge clk) begin
+    { cen_fm, cen_fm2 } <= { pre_fm, pre_fm2 };
+end
+
 (*keep*) wire [15:0] A;
 reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
 reg  oki7;
-(*keep*) wire mreq_n, rfsh_n, int_n;
+(*keep*) wire mreq_n, int_n;
 wire WRn, oki_wrn;
 
 reg  bank;
@@ -149,18 +155,26 @@ jtframe_ram #(.aw(11)) u_ram(
     .q      ( ram_dout )
 );
 
-reg [7:0] din;
+// As we operate much faster than cen_fm, the input data mux is done
+// in two clock cycles. Data will always be ready before next cen_fm pulse
+// 
+reg [7:0] din, cmd_latch, dev_latch, mem_latch;
+reg       latch_cs, dev_cs, mem_cs;
 
-always @(*)
+always @(posedge clk) begin
+    cmd_latch <= latch0_cs ? snd_latch0 : snd_latch1;
+    latch_cs  <= latch1_cs | latch0_cs;
+    dev_latch <= fm_cs ? fm_dout : oki_dout;
+    dev_cs    <= fm_cs | oki_cs;
+    mem_latch <= ram_cs ? ram_dout : rom_data;
+    mem_cs    <= ram_cs | rom_cs;
     case( 1'b1 )
-        fm_cs:     din = fm_dout;
-        latch0_cs: din = snd_latch0;
-        latch1_cs: din = snd_latch1;
-        ram_cs:    din = ram_dout;
-        rom_cs:    din = rom_data;
-        oki_cs:    din = oki_dout;
-        default:   din = 8'hff;
+        dev_cs:    din <= dev_latch;
+        latch_cs:  din <= cmd_latch;
+        mem_cs:    din <= mem_latch;
+        default:   din <= 8'hff;
     endcase
+end
 
 wire iorq_n, m1_n;
 (*keep*) wire irq_ack = !iorq_n && !m1_n;
@@ -168,7 +182,8 @@ wire iorq_n, m1_n;
 jtframe_z80_wait u_cpu(
     .rst_n      ( ~rst        ),
     .clk        ( clk         ),
-    .cen        ( cen_fm      ),
+    .cen        ( pre_fm      ),
+    .cpu_cen    ( cpu_cen     ),
     .int_n      ( int_n       ),
     .nmi_n      ( 1'b1        ),
     .busrq_n    ( 1'b1        ),
@@ -177,7 +192,7 @@ jtframe_z80_wait u_cpu(
     .iorq_n     ( iorq_n      ),
     .rd_n       ( rd_n        ),
     .wr_n       ( wr_n        ),
-    .rfsh_n     ( rfsh_n      ),
+    .rfsh_n     (             ),
     .halt_n     (             ),
     .busak_n    (             ),
     .A          ( A           ),

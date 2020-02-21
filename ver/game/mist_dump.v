@@ -56,9 +56,11 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_prom_we, "A");
             //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
-            $shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
+            `ifdef FAKE_LATCH
+            //$shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_jt51.timers, "AS");
+            `endif
             //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux, "A");
@@ -67,7 +69,7 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot4, "AS");
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             //$shm_probe(UUT.u_game,"A");
-            $shm_probe(UUT.u_game.u_sdram_mux,"A");
+            //$shm_probe(UUT.u_game.u_sdram_mux,"A");
         `endif
     end
 `endif
