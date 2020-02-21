@@ -24,30 +24,44 @@ module jtcps1_sound(
     input   [7:0]   snd_latch0,
     input   [7:0]   snd_latch1,
 
+    input            enable_adpcm,
+    input            enable_fm,
+
     // ROM
     output  reg [15:0]  rom_addr,
-    output  reg         rom_cs,
+(*keep*)    output  reg         rom_cs,
     input       [ 7:0]  rom_data,
-    input               rom_ok,
+(*keep*)    input               rom_ok,
 
     // ADPCM ROM
-    output      [17:0]  adpcm_addr,
-    output              adpcm_cs,
-    input       [ 7:0]  adpcm_data,
-    input               adpcm_ok,
+    output      [17:0]       adpcm_addr,
+    output                   adpcm_cs,
+    input       [ 7:0]       adpcm_data,
+    input                    adpcm_ok,
 
     // Sound output
-    output  signed [15:0] left,
-    output  signed [15:0] right,
-    output                sample
+    output reg signed [15:0] left,
+    output reg signed [15:0] right,
+    output                   sample
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc;
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-assign left  =  { {1{fm_left[15]}}, fm_left[15:1]  } + { {1{adpcm_snd[13]}}, adpcm_snd, adpcm_snd[12] };
-assign right =  { {1{fm_left[15]}}, fm_right[15:1] } + { {1{adpcm_snd[13]}}, adpcm_snd, adpcm_snd[12] };
+function signed [15:0] sum_snd;
+    input               enable_fm;
+    input               enable_adpcm;
+    input signed [15:0] fm;
+    input signed [15:0] adpcm;
+    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
+        (enable_adpcm ? { {1{adpcm[13]}}, adpcm, adpcm[12] } : 16'd0 );
+endfunction
+
+always @(posedge clk) begin
+    left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
+    right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+end
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
@@ -66,7 +80,7 @@ jtframe_frac_cen u_okicen(
 (*keep*) wire [15:0] A;
 reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
 reg  oki7;
-wire mreq_n, rfsh_n, int_n;
+(*keep*) wire mreq_n, rfsh_n, int_n;
 wire WRn, oki_wrn;
 
 reg  bank;

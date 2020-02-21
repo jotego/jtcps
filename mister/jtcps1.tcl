@@ -1,5 +1,5 @@
 set_global_assignment -name VERILOG_MACRO "MISTER_NOHDMI=1"
-set_global_assignment -name VERILOG_MACRO "SCAN2X_TYPE=5"
+set_global_assignment -name VERILOG_MACRO "SCAN2X_TYPE=4"
 
 #set_global_assignment -name VERILOG_MACRO "JTFRAME_SDRAM_REPACK=1"
 # 0 260 520 729 1041 1250 1475 1736 1996 2256 2500 2734 2994 3255 3515 3750 3993 

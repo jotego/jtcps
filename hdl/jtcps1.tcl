@@ -1,6 +1,7 @@
 set_global_assignment -name VERILOG_MACRO "CORENAME=\"JTCPS1\""
 set_global_assignment -name VERILOG_MACRO "GAMETOP=jtcps1_game"
 set_global_assignment -name VERILOG_MACRO "JT51=1"
+set_global_assignment -name VERILOG_MACRO "JTFRAME_ADPCM=1"
 #set_global_assignment -name VERILOG_MACRO "AVATARS=1"
 set_global_assignment -name VERILOG_MACRO "VIDEO_WIDTH=384"
 set_global_assignment -name VERILOG_MACRO "THREE_BUTTONS=1"

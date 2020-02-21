@@ -358,29 +358,32 @@ always @(posedge VB) begin
 end
 `endif
 jtcps1_sound u_sound(
-    .rst        ( rst           ),
-    .clk        ( clk           ),    
+    .rst            ( rst           ),
+    .clk            ( clk           ),    
+
+    .enable_adpcm   ( enable_psg    ),
+    .enable_fm      ( enable_fm     ),
 
     // Interface with main CPU
-    .snd_latch0 ( snd_latch0    ),
-    .snd_latch1 ( snd_latch1    ),
+    .snd_latch0     ( snd_latch0    ),
+    .snd_latch1     ( snd_latch1    ),
     
     // ROM
-    .rom_addr   ( snd_addr      ),
-    .rom_cs     ( snd_cs        ),
-    .rom_data   ( snd_data      ),
-    .rom_ok     ( snd_ok        ),
+    .rom_addr       ( snd_addr      ),
+    .rom_cs         ( snd_cs        ),
+    .rom_data       ( snd_data      ),
+    .rom_ok         ( snd_ok        ),
 
     // ADPCM ROM
-    .adpcm_addr ( adpcm_addr    ),
-    .adpcm_cs   ( adpcm_cs      ),
-    .adpcm_data ( adpcm_data    ),
-    .adpcm_ok   ( adpcm_ok      ),
+    .adpcm_addr     ( adpcm_addr    ),
+    .adpcm_cs       ( adpcm_cs      ),
+    .adpcm_data     ( adpcm_data    ),
+    .adpcm_ok       ( adpcm_ok      ),
 
     // Sound output
-    .left       ( snd_left      ),
-    .right      ( snd_right     ),
-    .sample     ( sample        )
+    .left           ( snd_left      ),
+    .right          ( snd_right     ),
+    .sample         ( sample        )
 );
 `else 
 assign snd_addr   = 16'd0;
