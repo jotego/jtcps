@@ -190,9 +190,8 @@ end
 `endif
 
 // Palette copy
-reg [2:0] pal_rd_page, pal_wr_page;
-reg [8:0] pal_cnt;
-reg [4:0] pal_st;
+reg [11:0] pal_cnt;
+reg [ 4:0] pal_st;
 
 //wire pal_copy2;
 //
@@ -208,12 +207,13 @@ always @(pal_addr) begin
     cur_pal = pal[pal_addr];
 end
 
-integer fpal,fpal_rd_cnt;
+integer fpal,fpal_cnt;
 `endif
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         raw       <= 16'h0;
+        pal_cnt   <= 12'd0;
         pal_st    <= 4'd1;
         vram_cs   <= 1'b0;
         vram_addr <= 23'd0;
@@ -233,42 +233,32 @@ always @(posedge clk, posedge rst) begin
         `endif
 
         if( pal_copy && pal_st[0] ) begin
-            vram_cs     <= 1'b1;
-            pal_rd_page <= 3'd0;
-            pal_cnt     <= 9'd0;
-            casez( pal_page_en )
-                6'b???_??1: pal_wr_page <= 3'b000; // OBJ
-                6'b???_?10: pal_wr_page <= 3'b001; // SCR1
-                6'b???_100: pal_wr_page <= 3'b010; // SCR2
-                6'b??1_000: pal_wr_page <= 3'b011; // SCR3
-                6'b?10_000: pal_wr_page <= 3'b100; // STARS 1
-                6'b100_000: pal_wr_page <= 3'b101; // STARS 2
-            endcase            
+            vram_cs <= 1'b1;
         end
         if( vram_cs ) begin
             pal_st <= { pal_st[3:0], pal_st[4] };
         end else pal_st <= 5'b1;
         case( pal_st )
-            5'b0_0001: begin
-                vram_addr <= { pal_base[9:1], 8'd0 } + { pal_rd_page, pal_cnt };
+            5'b0001: begin
+                vram_addr <= { pal_base[9:1], 8'd0 } + pal_cnt;
             end
             // 4'b0010: wait for OK signal to go down in reaction to the change
             // in vram_addr
-            5'b0_0100: if(vram_ok) begin
-                pal[ {pal_wr_page,pal_cnt} ] <= vram_data;
-            end else pal_st <= pal_st;
-            5'b0_1000: begin
-                if( &pal_cnt ) begin                    
-                    pal_wr_page <= pal_wr_page + 3'd1;
-                    pal_rd_page <= pal_rd_page + 3'd1;
-                    if( pal_wr_page==3'b101 ) vram_cs <= 1'b0; // done
+            5'b1000: if(vram_ok) begin
+                pal[pal_cnt] <= vram_data;
+                if( &pal_cnt ) begin
+                    vram_cs <= 1'b0;
+                    // `ifdef SIMULATION
+                    // $display("Palette base = %X",pal_base);
+                    // fpal=$fopen("pal_dump.hex","w");
+                    // for(fpal_cnt=0;fpal_cnt<4096;fpal_cnt=fpal_cnt+1) begin
+                    //     $fwrite(fpal,"%x\n",pal[fpal_cnt]);
+                    // end
+                    // $fclose(fpal);
+                    // `endif
                 end
-            end
-            5'b1_0000: begin
-                if( pal_page_en[pal_wr_page] ) begin
-                    pal_cnt <= pal_cnt + 9'd1;
-                end else pal_st <= 5'b0_1000;
-            end
+            end else pal_st <= pal_st;
+            5'b1_0000: pal_cnt <= pal_cnt + 12'd1;
         endcase
     end
 end
