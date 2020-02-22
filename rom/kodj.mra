@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="kod.zip|kodj.zip">
+    <rom index="0" zip="kod.zip|kodj.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="kdj_37a.11f" crc="e55c3529"/>
@@ -14,7 +14,9 @@
             <part name="kdj_38a.12f" crc="57d6ed3a"/>
             <part name="kdj_31a.12e" crc="c710d722"/>
        </group>
-        <part name="kd_33.6f" crc="9bd7ad4b" pattern ="10"/>
+        <group width="16">
+            <part name="kd_33.6f" crc="9bd7ad4b" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="kd_09.12a" crc="bac6ec26"/>
         <!-- oki -->
@@ -34,7 +36,7 @@
             <part name="kd_16.9c" crc="402b9b4f" pattern="01"/>
        </group>
        <!-- Mapper for kod --> 
-       <part> FF 77 00 40 0C </part>
+       <part> FF 73 88 40 0C </part>
        <!-- CPS-B config for kodj --> 
        <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
     </rom>

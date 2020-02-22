@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="willow.zip|willowuo.zip">
+    <rom index="0" zip="willow.zip|willowuo.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="wlu_35.11h" crc="daee72fe"/>
@@ -14,7 +14,9 @@
             <part name="wlu_36.12h" crc="36100209"/>
             <part name="wlu_31.12f" crc="0eb48a83"/>
        </group>
-        <part name="wlm-32.8h" crc="dfd9f643" pattern ="10"/>
+        <group width="16">
+            <part name="wlm-32.8h" crc="dfd9f643" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="wl_09.12b" crc="f6b3d060"/>
         <!-- oki -->
@@ -38,7 +40,7 @@
             <part name="wl_12.5c" crc="7da49d69" />
        </group>
        <!-- Mapper for willow --> 
-       <part> FF 77 00 40 20 </part>
+       <part> FF 73 88 40 20 </part>
        <!-- CPS-B config for willowuo --> 
        <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
     </rom>

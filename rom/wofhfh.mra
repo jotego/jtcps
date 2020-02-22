@@ -4,10 +4,14 @@
     <year>1999</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="wof.zip|wofhfh.zip">
+    <rom index="0" zip="wof.zip|wofhfh.zip" md5="none">
         <!-- maincpu -->
-        <part name="23" crc="6ae4b312" pattern ="10"/>
-        <part name="22" crc="94e8d01a" pattern ="10"/>
+        <group width="16">
+            <part name="23" crc="6ae4b312" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="22" crc="94e8d01a" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="9" crc="86fe8a97"/>
         <!-- oki -->
@@ -27,7 +31,7 @@
             <part name="8" crc="5300f8db" pattern="01"/>
        </group>
        <!-- Mapper for wof --> 
-       <part> FF 77 00 40 21 </part>
+       <part> FF 73 88 40 21 </part>
        <!-- CPS-B config for wofhfh --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

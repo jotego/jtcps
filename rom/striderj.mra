@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="strider.zip|striderj.zip">
+    <rom index="0" zip="strider.zip|striderj.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="sth_42.12h" crc="4037f65f"/>
@@ -69,7 +69,7 @@
             <part name="sth_22.11c" crc="78dd9c48" />
        </group>
        <!-- Mapper for strider --> 
-       <part> 33 33 64 20 1D </part>
+       <part> 33 31 64 20 1D </part>
        <!-- CPS-B config for striderj --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

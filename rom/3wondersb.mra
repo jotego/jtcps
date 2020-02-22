@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="3wonders.zip|3wondersb.zip">
+    <rom index="0" zip="3wonders.zip|3wondersb.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="274001.3" crc="e79eacb3"/>
@@ -26,7 +26,7 @@
             <part name="274001.5" crc="3f765ae8" />
        </group>
        <!-- Mapper for 3wonders --> 
-       <part> FF 77 00 40 01 </part>
+       <part> FF 73 88 40 01 </part>
        <!-- CPS-B config for 3wondersb --> 
        <part> 12 08 04 20 30 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
     </rom>

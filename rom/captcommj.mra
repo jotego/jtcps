@@ -4,10 +4,14 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="captcomm.zip|captcommj.zip">
+    <rom index="0" zip="captcomm.zip|captcommj.zip" md5="none">
         <!-- maincpu -->
-        <part name="ccj_23f.8f" crc="5b482b62" pattern ="10"/>
-        <part name="ccj_22f.7f" crc="0fd34195" pattern ="10"/>
+        <group width="16">
+            <part name="ccj_23f.8f" crc="5b482b62" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="ccj_22f.7f" crc="0fd34195" pattern ="01"/>
+        </group>
         <group width="16">
             <part name="ccj_28f.9f" crc="fc3c2906"/>
             <part name="ccj_24f.9e" crc="3a794f25"/>
@@ -31,7 +35,7 @@
             <part name="cc_08.10a" crc="1f9ebb97" pattern="01"/>
        </group>
        <!-- Mapper for captcomm --> 
-       <part> FF 77 00 40 02 </part>
+       <part> FF 73 88 40 02 </part>
        <!-- CPS-B config for captcommj --> 
        <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
     </rom>

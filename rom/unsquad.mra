@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="unsquad.zip">
+    <rom index="0" zip="unsquad.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="aru_35.11h" crc="8b954b59"/>
@@ -14,7 +14,9 @@
             <part name="aru_36.12h" crc="7cc8fb9e"/>
             <part name="aru_31.12f" crc="33e9694b"/>
        </group>
-        <part name="ar-32m.8h" crc="ae1d7fb0" pattern ="10"/>
+        <group width="16">
+            <part name="ar-32m.8h" crc="ae1d7fb0" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="ar_09.12b" crc="f3dd1367"/>
         <!-- oki -->
@@ -27,7 +29,7 @@
             <part name="ar-3m.5a" crc="ac6db17d" pattern="01"/>
        </group>
        <!-- Mapper for unsquad --> 
-       <part> FF F7 44 40 1E </part>
+       <part> FF F3 44 40 1E </part>
        <!-- CPS-B config for unsquad --> 
        <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
     </rom>

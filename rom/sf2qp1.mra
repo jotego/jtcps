@@ -4,10 +4,14 @@
     <year>1991</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2qp1.zip">
+    <rom index="0" zip="sf2.zip|sf2qp1.zip" md5="none">
         <!-- maincpu -->
-        <part name="stfii-qkn-cps-17.33" crc="3a9458ee" pattern ="10"/>
-        <part name="stfii-qkn-cps-17.34" crc="4ed215d8" pattern ="10"/>
+        <group width="16">
+            <part name="stfii-qkn-cps-17.33" crc="3a9458ee" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="stfii-qkn-cps-17.34" crc="4ed215d8" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="sf2_09.bin" crc="a4823a1b"/>
         <!-- oki -->
@@ -33,7 +37,7 @@
             <part name="sf2_26.bin" crc="0627c831" pattern="01"/>
        </group>
        <!-- Mapper for sf2 --> 
-       <part> F7 77 40 40 19 </part>
+       <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2qp1 --> 
        <part> 00 02 14 08 0A 0C 0E 10 12 14 FF FF FF FF 47 08 </part>
     </rom>

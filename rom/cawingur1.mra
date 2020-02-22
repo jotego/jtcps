@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="cawing.zip|cawingur1.zip">
+    <rom index="0" zip="cawing.zip|cawingur1.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="cau_35a.11h" crc="f090d9b2"/>
@@ -14,7 +14,9 @@
             <part name="cau_36a.12h" crc="c73fd713"/>
             <part name="cau_31a.12f" crc="e5b75caf"/>
        </group>
-        <part name="ca-32m.8h" crc="0c4837d4" pattern ="10"/>
+        <group width="16">
+            <part name="ca-32m.8h" crc="0c4837d4" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="cau_09.12b" crc="96fe7485"/>
         <!-- oki -->
@@ -28,7 +30,7 @@
             <part name="ca-3m.5a" crc="0b0341c3" pattern="01"/>
        </group>
        <!-- Mapper for cawing --> 
-       <part> FF F7 44 40 03 </part>
+       <part> FF F3 44 40 03 </part>
        <!-- CPS-B config for cawingur1 --> 
        <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
     </rom>

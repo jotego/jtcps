@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="strider.zip">
+    <rom index="0" zip="strider.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="35.11h" crc="5463aaa3"/>
@@ -14,7 +14,9 @@
             <part name="36.12h" crc="21aa2863"/>
             <part name="31.12f" crc="d20786db"/>
        </group>
-        <part name="st-14.8h" crc="9b3cfc08" pattern ="10"/>
+        <group width="16">
+            <part name="st-14.8h" crc="9b3cfc08" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="09.12b" crc="2ed403bc"/>
         <!-- oki -->
@@ -34,7 +36,7 @@
             <part name="st-8.5a" crc="6b4713b4" pattern="01"/>
        </group>
        <!-- Mapper for strider --> 
-       <part> FF 77 00 40 1D </part>
+       <part> FF 73 88 40 1D </part>
        <!-- CPS-B config for strider --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

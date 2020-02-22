@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="1941.zip|1941r1.zip">
+    <rom index="0" zip="1941.zip|1941r1.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="41e_35.11h" crc="d63942b3"/>
@@ -14,7 +14,9 @@
             <part name="41e_36.12h" crc="816a818f"/>
             <part name="41e_31.12f" crc="df201112"/>
        </group>
-        <part name="41-32m.8h" crc="4e9648ca" pattern ="10"/>
+        <group width="16">
+            <part name="41-32m.8h" crc="4e9648ca" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="41_9.12b" crc="0f9d8527"/>
         <!-- oki -->
@@ -28,7 +30,7 @@
             <part name="41-3m.5a" crc="983be58f" pattern="01"/>
        </group>
        <!-- Mapper for 1941 --> 
-       <part> FF F7 44 40 00 </part>
+       <part> FF F3 44 40 00 </part>
        <!-- CPS-B config for 1941r1 --> 
        <part> 14 20 08 02 32 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
     </rom>

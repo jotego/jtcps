@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="kod.zip|kodr1.zip">
+    <rom index="0" zip="kod.zip|kodr1.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="kde_37.11f" crc="a5bf40d2"/>
@@ -41,7 +41,7 @@
             <part name="kd-4m.5c" crc="402b9b4f" pattern="01"/>
        </group>
        <!-- Mapper for kod --> 
-       <part> FF 77 00 40 0C </part>
+       <part> FF 73 88 40 0C </part>
        <!-- CPS-B config for kodr1 --> 
        <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
     </rom>

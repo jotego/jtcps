@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ffight.zip|ffightua.zip">
+    <rom index="0" zip="ffight.zip|ffightua.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="ffu_42.11h" crc="f4bb480e"/>
@@ -14,7 +14,9 @@
             <part name="ffu_43.12h" crc="2f5771f9"/>
             <part name="ffu_37.12f" crc="c371c667"/>
        </group>
-        <part name="ff-32m.8h" crc="c747696e" pattern ="10"/>
+        <group width="16">
+            <part name="ff-32m.8h" crc="c747696e" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="ff_09.12b" crc="b8367eb5"/>
         <!-- oki -->
@@ -28,7 +30,7 @@
             <part name="ff-3m.5a" crc="52291cd2" pattern="01"/>
        </group>
        <!-- Mapper for ffight --> 
-       <part> FF F7 44 40 07 </part>
+       <part> FF F3 44 40 07 </part>
        <!-- CPS-B config for ffightua --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

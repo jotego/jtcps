@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="qad.zip">
+    <rom index="0" zip="qad.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="qdu_42a.12h" crc="cfe36f0c"/>
@@ -31,7 +31,7 @@
             <part name="qd_32.8f" crc="a8d295d3" />
        </group>
        <!-- Mapper for qad --> 
-       <part> FF F3 22 20 17 </part>
+       <part> FF F1 22 20 17 </part>
        <!-- CPS-B config for qad --> 
        <part> 00 14 02 14 12 FF FF FF FF 2C FF FF FF FF FF FF </part>
     </rom>

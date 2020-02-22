@@ -59,12 +59,15 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                                 }
                             }
                             if( file_width==2 ) {
-                                of << "<part name=\"" << entry->name << "\" ";
-                                of << "crc=\"" << entry->hashdata << "\" ";
-                                if(swap) 
-                                    of << "pattern =\"10\"/>\n";
+                                of << "<group width=\"16\">\n";
+                                of << indent << "    <part name=\"" << entry->name << "\" ";
+                                of << "crc=\"" << entry->hashdata << "\"";
+                                int file_swap = (entry->flags & ROM_REVERSE)!=0;
+                                if( swap != file_swap ) 
+                                    of << " pattern =\"10\"/>\n";
                                 else
-                                    of << "pattern =\"01\"/>\n";
+                                    of << " pattern =\"01\"/>\n";
+                                of << indent << "</group>\n";
                             }
                         }
                         if( bits==64 ) {

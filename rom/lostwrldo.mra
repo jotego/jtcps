@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="forgottn.zip|lostwrldo.zip">
+    <rom index="0" zip="forgottn.zip|lostwrldo.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="lw_15.14g" crc="8a0c18d3"/>
@@ -14,7 +14,9 @@
             <part name="lw_14.13g" crc="3a023771"/>
             <part name="lw_10.13f" crc="23bca4d5"/>
        </group>
-        <part name="lw-07.13e" crc="fd252a26" pattern ="10"/>
+        <group width="16">
+            <part name="lw-07.13e" crc="fd252a26" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="lw_00b.14a" crc="59df2a63"/>
         <!-- oki -->
@@ -34,7 +36,7 @@
             <part name="lw-13.12g" crc="8e058ef5" pattern="01"/>
        </group>
        <!-- Mapper for forgottn --> 
-       <part> FF 77 00 40 08 </part>
+       <part> FF 73 88 40 08 </part>
        <!-- CPS-B config for lostwrldo --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

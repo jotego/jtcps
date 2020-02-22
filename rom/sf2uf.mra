@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2uf.zip">
+    <rom index="0" zip="sf2.zip|sf2uf.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="sf2u_37f.11f" crc="169e7388"/>
@@ -47,7 +47,7 @@
             <part name="sf2-11m.5d" crc="0627c831" pattern="01"/>
        </group>
        <!-- Mapper for sf2 --> 
-       <part> F7 77 40 40 19 </part>
+       <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2uf --> 
        <part> 00 20 02 04 0C 0A 08 06 04 02 FF FF FF FF 45 0E </part>
     </rom>

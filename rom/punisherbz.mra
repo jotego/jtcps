@@ -4,12 +4,20 @@
     <year>1993</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="punisher.zip|punisherbz.zip">
+    <rom index="0" zip="punisher.zip|punisherbz.zip" md5="none">
         <!-- maincpu -->
-        <part name="23.096" crc="bfa45d23" pattern ="10"/>
-        <part name="22.096" crc="092578a4" pattern ="10"/>
-        <part name="21.096" crc="d21ccddb" pattern ="10"/>
-        <part name="20.096" crc="f9f334ce" pattern ="10"/>
+        <group width="16">
+            <part name="23.096" crc="bfa45d23" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="22.096" crc="092578a4" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="21.096" crc="d21ccddb" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="20.096" crc="f9f334ce" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="9.512" crc="b8367eb5"/>
         <!-- oki -->
@@ -29,7 +37,7 @@
             <part name="ps_gfx8.rom" crc="8f02f436" pattern="01"/>
        </group>
        <!-- Mapper for punisher --> 
-       <part> FF 77 00 40 16 </part>
+       <part> FF 73 88 40 16 </part>
        <!-- CPS-B config for punisherbz --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

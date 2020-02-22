@@ -4,7 +4,7 @@
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="pnickj.zip">
+    <rom index="0" zip="pnickj.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="pnij_42.12h" crc="c085dfaf"/>
@@ -37,7 +37,7 @@
             <part name="pnij_33.9f" crc="3ed2c680" />
        </group>
        <!-- Mapper for pnickj --> 
-       <part> FF F7 44 40 14 </part>
+       <part> FF F3 44 40 14 </part>
        <!-- CPS-B config for pnickj --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

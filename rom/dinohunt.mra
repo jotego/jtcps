@@ -4,12 +4,20 @@
     <year>1993</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="dino.zip|dinohunt.zip">
+    <rom index="0" zip="dino.zip|dinohunt.zip" md5="none">
         <!-- maincpu -->
-        <part name="u23" crc="8d5ddc5d" pattern ="10"/>
-        <part name="u22" crc="f72cd219" pattern ="10"/>
-        <part name="u21" crc="bc275b76" pattern ="10"/>
-        <part name="u20" crc="8987c975" pattern ="10"/>
+        <group width="16">
+            <part name="u23" crc="8d5ddc5d" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="u22" crc="f72cd219" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="u21" crc="bc275b76" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="u20" crc="8987c975" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="u9" crc="2eb16a83"/>
         <!-- oki -->
@@ -29,7 +37,7 @@
             <part name="u8" crc="8869bbb1" pattern="01"/>
        </group>
        <!-- Mapper for dino --> 
-       <part> FF 77 00 40 05 </part>
+       <part> FF 73 88 40 05 </part>
        <!-- CPS-B config for dinohunt --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

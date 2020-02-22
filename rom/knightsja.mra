@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="knights.zip|knightsja.zip">
+    <rom index="0" zip="knights.zip|knightsja.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="krj_42.12h" crc="e694a491"/>
@@ -69,7 +69,7 @@
             <part name="kr_22.11c" crc="fd351922" />
        </group>
        <!-- Mapper for knights --> 
-       <part> FF 77 00 40 0B </part>
+       <part> FF 73 88 40 0B </part>
        <!-- CPS-B config for knightsja --> 
        <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
     </rom>

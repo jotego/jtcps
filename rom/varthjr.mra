@@ -4,10 +4,14 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="varth.zip|varthjr.zip">
+    <rom index="0" zip="varth.zip|varthjr.zip" md5="none">
         <!-- maincpu -->
-        <part name="vaj_23b.8f" crc="ad3d3522" pattern ="10"/>
-        <part name="vaj_22b.7f" crc="034e3e55" pattern ="10"/>
+        <group width="16">
+            <part name="vaj_23b.8f" crc="ad3d3522" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="vaj_22b.7f" crc="034e3e55" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="va_09.12a" crc="7a99446e"/>
         <!-- oki -->
@@ -21,7 +25,7 @@
             <part name="va_04.6a" crc="44dfe706" pattern="01"/>
        </group>
        <!-- Mapper for varth --> 
-       <part> FF F7 44 40 1F </part>
+       <part> FF F3 44 40 1F </part>
        <!-- CPS-B config for varthjr --> 
        <part> 00 02 04 20 30 28 2A 2C 2E 20 08 0A 0C 0E FF 32 </part>
     </rom>

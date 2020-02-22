@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="dynwar.zip|dynwarj.zip">
+    <rom index="0" zip="dynwar.zip|dynwarj.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="42.12h" crc="12a290a0"/>
@@ -69,7 +69,7 @@
             <part name="22.11c" crc="52145369" />
        </group>
        <!-- Mapper for dynwar --> 
-       <part> 33 33 64 20 06 </part>
+       <part> 33 31 64 20 06 </part>
        <!-- CPS-B config for dynwarj --> 
        <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
     </rom>

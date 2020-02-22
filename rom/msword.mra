@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="msword.zip">
+    <rom index="0" zip="msword.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="mse_35.11h" crc="d5bf66cd"/>
@@ -14,7 +14,9 @@
             <part name="mse_36.12h" crc="8f7d6ce9"/>
             <part name="mse_31.12f" crc="30332bcf"/>
        </group>
-        <part name="ms-32m.8h" crc="2475ddfc" pattern ="10"/>
+        <group width="16">
+            <part name="ms-32m.8h" crc="2475ddfc" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="ms_09.12b" crc="57b29519"/>
         <!-- oki -->
@@ -28,7 +30,7 @@
             <part name="ms-3m.5a" crc="3a1a5bf4" pattern="01"/>
        </group>
        <!-- Mapper for msword --> 
-       <part> FF F7 44 40 10 </part>
+       <part> FF F3 44 40 10 </part>
        <!-- CPS-B config for msword --> 
        <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
     </rom>

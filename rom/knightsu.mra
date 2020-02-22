@@ -4,10 +4,14 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="knights.zip|knightsu.zip">
+    <rom index="0" zip="knights.zip|knightsu.zip" md5="none">
         <!-- maincpu -->
-        <part name="kr_23u.8f" crc="252bc2ba" pattern ="10"/>
-        <part name="kr_22.7f" crc="d0b671a9" pattern ="10"/>
+        <group width="16">
+            <part name="kr_23u.8f" crc="252bc2ba" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="kr_22.7f" crc="d0b671a9" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="kr_09.11a" crc="5e44d9ee"/>
         <!-- oki -->
@@ -27,7 +31,7 @@
             <part name="kr-4m.10a" crc="0bb2b4e7" pattern="01"/>
        </group>
        <!-- Mapper for knights --> 
-       <part> FF 77 00 40 0B </part>
+       <part> FF 73 88 40 0B </part>
        <!-- CPS-B config for knightsu --> 
        <part> 00 02 10 20 30 20 22 24 26 28 00 02 04 06 FF FF </part>
     </rom>

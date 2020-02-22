@@ -4,7 +4,7 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="varth.zip|varthr1.zip">
+    <rom index="0" zip="varth.zip|varthr1.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="vae_35a.11h" crc="35cf9509"/>
@@ -35,7 +35,7 @@
             <part name="va-3m.5a" crc="44dfe706" pattern="01"/>
        </group>
        <!-- Mapper for varth --> 
-       <part> FF F7 44 40 1F </part>
+       <part> FF F3 44 40 1F </part>
        <!-- CPS-B config for varthr1 --> 
        <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
     </rom>

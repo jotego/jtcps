@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="unsquad.zip|area88.zip">
+    <rom index="0" zip="unsquad.zip|area88.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="ar_42.12h" crc="c48170de"/>
@@ -48,7 +48,7 @@
             <part name="ar_33.9f" crc="3968f4b5" />
        </group>
        <!-- Mapper for unsquad --> 
-       <part> FF 33 44 20 1E </part>
+       <part> FF 31 44 20 1E </part>
        <!-- CPS-B config for area88 --> 
        <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
     </rom>

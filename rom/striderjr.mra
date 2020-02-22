@@ -4,10 +4,14 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="strider.zip|striderjr.zip">
+    <rom index="0" zip="strider.zip|striderjr.zip" md5="none">
         <!-- maincpu -->
-        <part name="sthj_23.8f" crc="046e7b12" pattern ="10"/>
-        <part name="sthj_22.7f" crc="9b3cfc08" pattern ="10"/>
+        <group width="16">
+            <part name="sthj_23.8f" crc="046e7b12" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="sthj_22.7f" crc="9b3cfc08" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="sth_09.12a" crc="08d63519"/>
         <!-- oki -->
@@ -27,7 +31,7 @@
             <part name="sth_08.10a" crc="6b4713b4" pattern="01"/>
        </group>
        <!-- Mapper for strider --> 
-       <part> FF 77 00 40 1D </part>
+       <part> FF 73 88 40 1D </part>
        <!-- CPS-B config for striderjr --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

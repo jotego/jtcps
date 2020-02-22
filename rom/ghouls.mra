@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ghouls.zip">
+    <rom index="0" zip="ghouls.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="dme_30.10j" crc="7ac8407a"/>
@@ -14,7 +14,9 @@
             <part name="dme_28.9j" crc="03d3e714"/>
             <part name="dme_27.9h" crc="f734b2be"/>
        </group>
-        <part name="dm-17.7j" crc="3ea1b0f2" pattern ="10"/>
+        <group width="16">
+            <part name="dm-17.7j" crc="3ea1b0f2" pattern ="10"/>
+        </group>
         <!-- audiocpu -->
         <part name="26.10a" crc="3692f6e5"/>
         <!-- oki -->

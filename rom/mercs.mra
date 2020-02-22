@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="mercs.zip">
+    <rom index="0" zip="mercs.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="so2_35e.11h" crc="78e63575"/>
@@ -14,7 +14,9 @@
             <part name="so2_36e.12h" crc="9cfba8b4"/>
             <part name="so2_31e.12f" crc="51204d36"/>
        </group>
-        <part name="so2-32m.8h" crc="2eb5cf0c" pattern ="10"/>
+        <group width="16">
+            <part name="so2-32m.8h" crc="2eb5cf0c" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="so2_09.12b" crc="d09d7c7a"/>
         <!-- oki -->
@@ -38,7 +40,7 @@
             <part name="so2_12.5c" crc="b7df8a06" />
        </group>
        <!-- Mapper for mercs --> 
-       <part> FF 37 66 40 0F </part>
+       <part> FF 33 66 40 0F </part>
        <!-- CPS-B config for mercs --> 
        <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 42 20 </part>
     </rom>

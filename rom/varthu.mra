@@ -4,10 +4,14 @@
     <year>1992</year>
     <manufacturer>Capcom (Romstar license)</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="varth.zip|varthu.zip">
+    <rom index="0" zip="varth.zip|varthu.zip" md5="none">
         <!-- maincpu -->
-        <part name="vau_23a.8f" crc="fbe68726" pattern ="10"/>
-        <part name="vau_22a.7f" crc="0ed71bbd" pattern ="10"/>
+        <group width="16">
+            <part name="vau_23a.8f" crc="fbe68726" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="vau_22a.7f" crc="0ed71bbd" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="va_09.11a" crc="7a99446e"/>
         <!-- oki -->
@@ -21,7 +25,7 @@
             <part name="va-3m.6a" crc="44dfe706" pattern="01"/>
        </group>
        <!-- Mapper for varth --> 
-       <part> FF F7 44 40 1F </part>
+       <part> FF F3 44 40 1F </part>
        <!-- CPS-B config for varthu --> 
        <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
     </rom>

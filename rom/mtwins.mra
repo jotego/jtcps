@@ -4,7 +4,7 @@
     <year>1990</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="mtwins.zip">
+    <rom index="0" zip="mtwins.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="che_35.11h" crc="a7f96b02"/>
@@ -14,7 +14,9 @@
             <part name="che_36.12h" crc="0fa00c39"/>
             <part name="che_31.12f" crc="bbff8a99"/>
        </group>
-        <part name="ck-32m.8h" crc="9b70bd41" pattern ="10"/>
+        <group width="16">
+            <part name="ck-32m.8h" crc="9b70bd41" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="ch_09.12b" crc="4d4255b7"/>
         <!-- oki -->
@@ -28,7 +30,7 @@
             <part name="ck-3m.5a" crc="0ba2047f" pattern="01"/>
        </group>
        <!-- Mapper for mtwins --> 
-       <part> FF F7 44 40 11 </part>
+       <part> FF F3 44 40 11 </part>
        <!-- CPS-B config for mtwins --> 
        <part> 00 10 20 08 1C 1A 18 16 14 12 FF FF FF FF 44 1E </part>
     </rom>

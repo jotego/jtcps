@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ghouls.zip|daimakai.zip">
+    <rom index="0" zip="ghouls.zip|daimakai.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="dmj_39.12h" crc="35366ccc"/>
@@ -68,7 +68,7 @@
             <part name="dm_27.11c" crc="29f79c78" />
        </group>
        <!-- Mapper for ghouls --> 
-       <part> 11 33 54 20 0A </part>
+       <part> 11 31 54 20 0A </part>
        <!-- CPS-B config for daimakai --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

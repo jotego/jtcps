@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ghouls.zip|ghoulsu.zip">
+    <rom index="0" zip="ghouls.zip|ghoulsu.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="dmu_30.10j" crc="cee8ceb5"/>
@@ -14,7 +14,9 @@
             <part name="dmu_28.9j" crc="94aae205"/>
             <part name="dmu_27.9h" crc="4a524140"/>
        </group>
-        <part name="dm-17.7j" crc="3ea1b0f2" pattern ="10"/>
+        <group width="16">
+            <part name="dm-17.7j" crc="3ea1b0f2" pattern ="10"/>
+        </group>
         <!-- audiocpu -->
         <part name="26.10a" crc="3692f6e5"/>
         <!-- oki -->
@@ -47,7 +49,7 @@
             <part name="25.7h" crc="29f79c78" />
        </group>
        <!-- Mapper for ghouls --> 
-       <part> F1 17 65 40 0A </part>
+       <part> F1 13 65 40 0A </part>
        <!-- CPS-B config for ghoulsu --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>

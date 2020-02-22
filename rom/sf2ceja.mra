@@ -4,11 +4,17 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2ceja.zip">
+    <rom index="0" zip="sf2ce.zip|sf2ceja.zip" md5="none">
         <!-- maincpu -->
-        <part name="s92j_23a.8f" crc="4f42bb5a" pattern ="10"/>
-        <part name="s92j_22a.7f" crc="c4f64bcd" pattern ="10"/>
-        <part name="s92_21a.6f" crc="925a7877" pattern ="10"/>
+        <group width="16">
+            <part name="s92j_23a.8f" crc="4f42bb5a" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="s92j_22a.7f" crc="c4f64bcd" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="s92_21a.6f" crc="925a7877" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="s92_09.12a" crc="08f6b60e"/>
         <!-- oki -->
@@ -34,7 +40,7 @@
             <part name="s92_13.6c" crc="ed2c67f6" pattern="01"/>
        </group>
        <!-- Mapper for sf2ce --> 
-       <part> F7 77 40 40 1A </part>
+       <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2ceja --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

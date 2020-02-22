@@ -4,11 +4,17 @@
     <year>1995</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="megaman.zip|megamana.zip">
+    <rom index="0" zip="megaman.zip|megamana.zip" md5="none">
         <!-- maincpu -->
-        <part name="rcma_23b.8f" crc="61e4a397" pattern ="10"/>
-        <part name="rcma_22b.7f" crc="708268c4" pattern ="10"/>
-        <part name="rcma_21a.6f" crc="4376ea95" pattern ="10"/>
+        <group width="16">
+            <part name="rcma_23b.8f" crc="61e4a397" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="rcma_22b.7f" crc="708268c4" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="rcma_21a.6f" crc="4376ea95" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="rcm_09.12a" crc="9632d6ef"/>
         <!-- oki -->
@@ -40,7 +46,7 @@
             <part name="rcm_17.10c" crc="92371042" pattern="01"/>
        </group>
        <!-- Mapper for megaman --> 
-       <part> 77 77 40 40 0E </part>
+       <part> 77 73 C8 40 0E </part>
        <!-- CPS-B config for megamana --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

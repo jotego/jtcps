@@ -4,7 +4,7 @@
     <year>1989</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="willow.zip|willowj.zip">
+    <rom index="0" zip="willow.zip|willowj.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="wl_42.12h" crc="1ac39615"/>
@@ -59,7 +59,7 @@
             <part name="wl_21.10c" crc="7da49d69" />
        </group>
        <!-- Mapper for willow --> 
-       <part> FF 77 00 40 20 </part>
+       <part> FF 73 88 40 20 </part>
        <!-- CPS-B config for willowj --> 
        <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
     </rom>

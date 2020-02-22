@@ -4,10 +4,14 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="cworld2j.zip|cworld2ja.zip">
+    <rom index="0" zip="cworld2j.zip|cworld2ja.zip" md5="none">
         <!-- maincpu -->
-        <part name="q5 - 34_90629b.8f" crc="de54487f" pattern ="10"/>
-        <part name="q5 - 33_90629b.6f" crc="93248458" pattern ="10"/>
+        <group width="16">
+            <part name="q5 - 34_90629b.8f" crc="de54487f" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="q5 - 33_90629b.6f" crc="93248458" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="q5 - 09_90629b.12a" crc="e14dc524"/>
         <!-- oki -->
@@ -21,7 +25,7 @@
             <part name="q5 - 07_90629b.9a" crc="520c6c88" pattern="01"/>
        </group>
        <!-- Mapper for cworld2j --> 
-       <part> FF F7 44 40 04 </part>
+       <part> FF F3 44 40 04 </part>
        <!-- CPS-B config for cworld2ja --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

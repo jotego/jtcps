@@ -4,7 +4,7 @@
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="pokonyan.zip">
+    <rom index="0" zip="pokonyan.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="xmqq-12h.bin" crc="2d7ee2e9"/>
@@ -41,7 +41,7 @@
             <part name="xmqq-9f.bin" crc="1ec10bed" />
        </group>
        <!-- Mapper for pokonyan --> 
-       <part> F7 77 40 40 15 </part>
+       <part> F7 73 C8 40 15 </part>
        <!-- CPS-B config for pokonyan --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>

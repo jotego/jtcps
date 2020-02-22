@@ -4,7 +4,7 @@
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="kod.zip|kodja.zip">
+    <rom index="0" zip="kod.zip|kodja.zip" md5="none">
         <!-- maincpu -->
         <group width="16">
             <part name="kdj_42a.12h" crc="e55c3529"/>
@@ -69,7 +69,7 @@
             <part name="kd_22.11c" crc="5ade98eb" />
        </group>
        <!-- Mapper for kod --> 
-       <part> FF 77 00 40 0C </part>
+       <part> FF 73 88 40 0C </part>
        <!-- CPS-B config for kodja --> 
        <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
     </rom>

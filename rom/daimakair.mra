@@ -4,10 +4,14 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="ghouls.zip|daimakair.zip">
+    <rom index="0" zip="ghouls.zip|daimakair.zip" md5="none">
         <!-- maincpu -->
-        <part name="damj_23.8f" crc="c3b248ec" pattern ="10"/>
-        <part name="damj_22.7f" crc="595ff2f3" pattern ="10"/>
+        <group width="16">
+            <part name="damj_23.8f" crc="c3b248ec" pattern ="01"/>
+        </group>
+        <group width="16">
+            <part name="damj_22.7f" crc="595ff2f3" pattern ="01"/>
+        </group>
         <!-- audiocpu -->
         <part name="dam_09.12a" crc="0656ff53"/>
         <!-- oki -->
@@ -26,7 +30,7 @@
             <part name="dam_08.10a" crc="ee2acc1e" pattern="01"/>
        </group>
        <!-- Mapper for ghouls --> 
-       <part> FF 77 00 40 0A </part>
+       <part> FF 73 88 40 0A </part>
        <!-- CPS-B config for daimakair --> 
        <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
