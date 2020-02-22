@@ -274,7 +274,7 @@ void generate_mra( game_entry* game ) {
     // ROMs
     mras << "    <rom index=\"0\" zip=\"";
     if( game->parent!="0") mras << game->parent <<".zip|";
-    mras << game->name << ".zip\">\n";
+    mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
     try{
         dump_region(mras, entry,"maincpu",16,1);

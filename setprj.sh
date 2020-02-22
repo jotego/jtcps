@@ -17,4 +17,6 @@ else
     ROM=$JTROOT/rom
     MRA=$ROM/mra
     MODULES=$JTROOT/modules
+    JT51=$MODULES/jt51
+    OKI=$MODULES/jt6295
 fi
