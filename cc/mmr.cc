@@ -45,49 +45,61 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                             if( file_width==1 ) {
                                 const tiny_rom_entry* cur=entry;
                                 if( done==0 ) {
-                                    of << "<group width=\""<<bits<<"\">\n";
+                                    of << "<interleave output=\""<<bits<<"\">\n";
                                     of << indent;
-                                    if(swap) cur++;
-                                } else if(swap) cur--;
-                                done+=file_width;
+                                }
                                 of << "    ";
                                 of << "<part name=\"" << cur->name << "\" ";
-                                of << "crc=\"" << cur->hashdata << "\"/>\n";
+                                of << "crc=\"" << cur->hashdata << "\" map=\"";
+                                if(done==0) {
+                                    if( swap ) of << "10\""; else of << "01\"";
+                                }
+                                else {
+                                    if( swap ) of << "01\""; else of << "10\"";
+                                }
+                                of << "/>\n";
+                                done+=file_width;
                                 if( done==(bits>>3) ) {
-                                    of << "       </group>\n";
+                                    of << "       </interleave>\n";
                                     done=0;
                                 }
                             }
                             if( file_width==2 ) {
-                                of << "<group width=\"16\">\n";
+                                of << "<interleave output=\"16\">\n";
                                 of << indent << "    <part name=\"" << entry->name << "\" ";
                                 of << "crc=\"" << entry->hashdata << "\"";
                                 int file_swap = (entry->flags & ROM_REVERSE)!=0;
                                 if( swap != file_swap ) 
-                                    of << " pattern =\"10\"/>\n";
+                                    of << " map=\"12\"/>\n";
                                 else
-                                    of << " pattern =\"01\"/>\n";
-                                of << indent << "</group>\n";
+                                    of << " map=\"21\"/>\n";
+                                of << indent << "</interleave>\n";
                             }
                         }
                         if( bits==64 ) {
                             if( done==0 ) {
-                                of << "<group width=\""<<bits<<"\">\n";
+                                of << "<interleave output=\""<<bits<<"\">\n";
                                 of << indent;
                             }
-                            done+=file_width;
                             of << "    ";
                             of << "<part name=\"" << entry->name << "\" ";
                             of << "crc=\"" << entry->hashdata << "\" ";
-                            if( file_width>1 ) {
-                                of << "pattern=\"";
-                                for( int k=0; k<file_width; k++)
-                                    of << k;
-                                of << "\"";
+                            of << " map=\"";
+                            if( file_width==2 ) {
+                                for( int k=done;k<6;k++ ) of << '0';
+                                of << "21";
+                                for( int k=done;k>0;k--) of << '0';
                             }
+                            else {
+                                for( int k=done;k<7;k++ ) of << '0';
+                                of << '1';
+                                for( int k=done;k>0;k--) of << '0';
+                            }
+                            of << '\"';
                             of << "/>\n";
+                            done+=file_width;
                             if( done==(bits>>3) ) {
-                                of << "       </group>\n";
+                                of << "       </interleave>\n";
                                 done=0;
                             }
                         }
