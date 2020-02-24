@@ -67,6 +67,7 @@ Some Verilog macros:
 1. FORCE_GRAY ignore palette and use a 4-bit gray scale for everything
 
 # Support
+
 You can show your appreciation through
     * Patreon: https://patreon.com/topapate
     * Paypal: https://paypal.me/topapate
