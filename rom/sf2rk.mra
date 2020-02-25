@@ -4,31 +4,31 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2rk.zip" md5="none">
+    <rom index="0" zip="sf2hack.zip|sf2rk.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="w5.u196" crc="7e9c8c2f"/>
-            <part name="w6.u222" crc="49422b6f"/>
-       </group>
+        <interleave output="16">
+            <part name="w6.u222" crc="49422b6f" map="10"/>
+            <part name="w5.u196" crc="7e9c8c2f" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="1.rk" crc="a4823a1b"/>
         <!-- oki -->
         <part name="w7.u210" crc="6cfffb11"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="01 rk098" crc="4296de4d" pattern="01"/>
-            <part name="03 rk097" crc="16cf11d0" pattern="01"/>
-            <part name="02 rk037" crc="68ca7fce" pattern="01"/>
-            <part name="04 rk033" crc="9f46f926" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="05 rk116" crc="4c161fa9" pattern="01"/>
-            <part name="06 rk077" crc="ec949f8c" pattern="01"/>
-            <part name="w-1" crc="6de44671" />
-            <part name="w-3" crc="bf0cd819" />
-            <part name="w-2" crc="e8f14362" />
-            <part name="w-4" crc="76f9f91f" />
-       </group>
+        <interleave output="64">
+            <part name="01 rk098" crc="4296de4d"  map="00000021"/>
+            <part name="03 rk097" crc="16cf11d0"  map="00002100"/>
+            <part name="02 rk037" crc="68ca7fce"  map="00210000"/>
+            <part name="04 rk033" crc="9f46f926"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="05 rk116" crc="4c161fa9"  map="00000021"/>
+            <part name="06 rk077" crc="ec949f8c"  map="00002100"/>
+            <part name="w-1" crc="6de44671"  map="00010000"/>
+            <part name="w-3" crc="bf0cd819"  map="00100000"/>
+            <part name="w-2" crc="e8f14362"  map="01000000"/>
+            <part name="w-4" crc="76f9f91f"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2rk --> 

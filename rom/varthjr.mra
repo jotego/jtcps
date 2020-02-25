@@ -6,24 +6,24 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="varth.zip|varthjr.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="vaj_23b.8f" crc="ad3d3522" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="vaj_22b.7f" crc="034e3e55" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="vaj_23b.8f" crc="ad3d3522" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vaj_22b.7f" crc="034e3e55" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="va_09.12a" crc="7a99446e"/>
         <!-- oki -->
         <part name="va_18.11c" crc="de30510e"/>
         <part name="va_19.12c" crc="0610a4ac"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="va_01.3a" crc="b1fb726e" pattern="01"/>
-            <part name="va_02.4a" crc="4c6588cd" pattern="01"/>
-            <part name="va_03.5a" crc="0b1ace37" pattern="01"/>
-            <part name="va_04.6a" crc="44dfe706" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="va_01.3a" crc="b1fb726e"  map="00000021"/>
+            <part name="va_02.4a" crc="4c6588cd"  map="00002100"/>
+            <part name="va_03.5a" crc="0b1ace37"  map="00210000"/>
+            <part name="va_04.6a" crc="44dfe706"  map="21000000"/>
+       </interleave>
        <!-- Mapper for varth --> 
        <part> FF F3 44 40 1F </part>
        <!-- CPS-B config for varthjr --> 

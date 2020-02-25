@@ -6,30 +6,30 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="knights.zip|knightsj.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="kr_23j.8f" crc="eae7417f" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="kr_22.7f" crc="d0b671a9" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="kr_23j.8f" crc="eae7417f" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="kr_22.7f" crc="d0b671a9" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="kr_09.12a" crc="5e44d9ee"/>
         <!-- oki -->
         <part name="kr_18.11c" crc="da69d15f"/>
         <part name="kr_19.12c" crc="bfc654e9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="kr_01.3a" crc="9e36c1a4" pattern="01"/>
-            <part name="kr_02.4a" crc="c5832cae" pattern="01"/>
-            <part name="kr_03.5a" crc="f095be2d" pattern="01"/>
-            <part name="kr_04.6a" crc="179dfd96" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="kr_05.7a" crc="1f4298d2" pattern="01"/>
-            <part name="kr_06.8a" crc="37fa8751" pattern="01"/>
-            <part name="kr_07.9a" crc="0200bc3d" pattern="01"/>
-            <part name="kr_08.10a" crc="0bb2b4e7" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="kr_01.3a" crc="9e36c1a4"  map="00000021"/>
+            <part name="kr_02.4a" crc="c5832cae"  map="00002100"/>
+            <part name="kr_03.5a" crc="f095be2d"  map="00210000"/>
+            <part name="kr_04.6a" crc="179dfd96"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="kr_05.7a" crc="1f4298d2"  map="00000021"/>
+            <part name="kr_06.8a" crc="37fa8751"  map="00002100"/>
+            <part name="kr_07.9a" crc="0200bc3d"  map="00210000"/>
+            <part name="kr_08.10a" crc="0bb2b4e7"  map="21000000"/>
+       </interleave>
        <!-- Mapper for knights --> 
        <part> FF 73 88 40 0B </part>
        <!-- CPS-B config for knightsj --> 

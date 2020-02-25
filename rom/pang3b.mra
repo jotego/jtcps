@@ -4,23 +4,23 @@
     <year>1995</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="pang3.zip|pang3b.zip" md5="none">
+    <rom index="0" zip="pang3b.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="pa3w_17.11l" crc="12138234" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="pa3w_16.10l" crc="d1ba585c" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="pa3w_17.11l" crc="12138234" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pa3w_16.10l" crc="d1ba585c" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="pa3_11.11f" crc="90a08c46"/>
         <!-- oki -->
         <part name="pa3_05.10d" crc="73a10d5d"/>
         <part name="pa3_06.11d" crc="affa4f82"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="pa3-01m.2c" crc="068a152c" pattern="01"/>
-            <part name="pa3-07m.2f" crc="3a4a619d" pattern="01"/>
+        <interleave output="64">
+            <part name="pa3-01m.2c" crc="068a152c"  map="00000021"/>
+            <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100"/>
        <!-- Mapper for pang3 --> 
        <part> FF 73 88 40 13 </part>
        <!-- CPS-B config for pang3b --> 

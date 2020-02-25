@@ -6,24 +6,24 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="cworld2j.zip|cworld2jb.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="q5 - 23_91634b.8f" crc="709f577f" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="q5 - 22_91634b.7f" crc="93248458" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="q5 - 23_91634b.8f" crc="709f577f" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="q5 - 22_91634b.7f" crc="93248458" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="q5 - 09_91634b.12a" crc="e14dc524"/>
         <!-- oki -->
         <part name="q5 - 18_91634b.11c" crc="d10c1b68"/>
         <part name="q5 - 19_91634b.12c" crc="7d17e496"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="q5 - 01_91634b.3a" crc="09d0e7ce" pattern="01"/>
-            <part name="q5 - 02_91634b.4a" crc="22e4ce9a" pattern="01"/>
-            <part name="q5 - 03_91634b.5a" crc="f7b3aed6" pattern="01"/>
-            <part name="q5 - 04_91634b.6a" crc="520c6c88" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="q5 - 01_91634b.3a" crc="09d0e7ce"  map="00000021"/>
+            <part name="q5 - 02_91634b.4a" crc="22e4ce9a"  map="00002100"/>
+            <part name="q5 - 03_91634b.5a" crc="f7b3aed6"  map="00210000"/>
+            <part name="q5 - 04_91634b.6a" crc="520c6c88"  map="21000000"/>
+       </interleave>
        <!-- Mapper for cworld2j --> 
        <part> FF F3 44 40 04 </part>
        <!-- CPS-B config for cworld2jb --> 

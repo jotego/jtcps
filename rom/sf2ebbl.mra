@@ -4,45 +4,45 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2ebbl.zip" md5="none">
+    <rom index="0" zip="sf2hack.zip|sf2ebbl.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="09.bin" crc="59ccd474"/>
-            <part name="12.bin" crc="a258b4d5"/>
-       </group>
-        <group width="16">
-            <part name="10.bin" crc="0c83844d"/>
-            <part name="11.bin" crc="82097d63"/>
-       </group>
+        <interleave output="16">
+            <part name="12.bin" crc="a258b4d5" map="10"/>
+            <part name="09.bin" crc="59ccd474" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="11.bin" crc="82097d63" map="10"/>
+            <part name="10.bin" crc="0c83844d" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="03.bin" crc="a4823a1b"/>
         <!-- oki -->
         <part name="02.bin" crc="7f162009"/>
         <part name="01.bin" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="1b_yf082.bin" crc="22c9cc8e" pattern="01"/>
-            <part name="1d_yf028.bin" crc="57213be8" pattern="01"/>
-            <part name="1a_yf087.bin" crc="ba529b4f" pattern="01"/>
-            <part name="1c_yf088.bin" crc="4b1b33a8" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="1f_yf085.bin" crc="2c7e2229" pattern="01"/>
-            <part name="1h_yf115.bin" crc="b5548f17" pattern="01"/>
-            <part name="1e_yf111.bin" crc="14b84312" pattern="01"/>
-            <part name="1g_yf002.bin" crc="5e9cd89a" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="1j_yf117.bin" crc="994bfa58" pattern="01"/>
-            <part name="1l_ye040.bin" crc="3e66ad9d" pattern="01"/>
-            <part name="1i_yf038.bin" crc="c1befaa8" pattern="01"/>
-            <part name="1k_ye039.bin" crc="0627c831" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="05.bin" crc="a505621e" />
-            <part name="07.bin" crc="de6271fb" />
-            <part name="06.bin" crc="23775344" />
-            <part name="08.bin" crc="81c9550f" />
+        <interleave output="64">
+            <part name="1b_yf082.bin" crc="22c9cc8e"  map="00000021"/>
+            <part name="1d_yf028.bin" crc="57213be8"  map="00002100"/>
+            <part name="1a_yf087.bin" crc="ba529b4f"  map="00210000"/>
+            <part name="1c_yf088.bin" crc="4b1b33a8"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="1f_yf085.bin" crc="2c7e2229"  map="00000021"/>
+            <part name="1h_yf115.bin" crc="b5548f17"  map="00002100"/>
+            <part name="1e_yf111.bin" crc="14b84312"  map="00210000"/>
+            <part name="1g_yf002.bin" crc="5e9cd89a"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="1j_yf117.bin" crc="994bfa58"  map="00000021"/>
+            <part name="1l_ye040.bin" crc="3e66ad9d"  map="00002100"/>
+            <part name="1i_yf038.bin" crc="c1befaa8"  map="00210000"/>
+            <part name="1k_ye039.bin" crc="0627c831"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="05.bin" crc="a505621e"  map="00000001"/>
+            <part name="07.bin" crc="de6271fb"  map="00000010"/>
+            <part name="06.bin" crc="23775344"  map="00000100"/>
+            <part name="08.bin" crc="81c9550f"  map="00001000"/>
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2ebbl --> 

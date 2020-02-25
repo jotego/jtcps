@@ -4,36 +4,36 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2amf.zip" md5="none">
+    <rom index="0" zip="sf2amf.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="4.amf" crc="39f15a1e"/>
-            <part name="5.amf" crc="03991fba"/>
-       </group>
-        <group width="16">
-            <part name="prg part 4.amf" crc=""/>
-            <part name="prg part 3.amf" crc=""/>
-       </group>
+        <interleave output="16">
+            <part name="5.amf" crc="03991fba" map="10"/>
+            <part name="4.amf" crc="39f15a1e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="prg part 3.amf" crc="" map="10"/>
+            <part name="prg part 4.amf" crc="" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="3.amf" crc="a4823a1b"/>
         <!-- oki -->
         <part name="2.amf" crc="7f162009"/>
         <part name="1.amf" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="y.c.e.c m.k.r-001" crc="a258de13" pattern="01"/>
-            <part name="y.c.e.c m.k.r-003" crc="c781bf87" pattern="01"/>
-            <part name="y.c.e.c m.k.r-002" crc="5726cab8" pattern="01"/>
-            <part name="y.c.e.c d.w.c-011" crc="bc90c12f" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="y.c.e.c d.w.c-012" crc="187667cc" pattern="01"/>
-            <part name="y.c.e.c d.w.c-013" crc="5b585071" pattern="01"/>
-            <part name="6.amf" crc="3a85a275" />
-            <part name="9.amf" crc="9156472f" />
-            <part name="8.amf" crc="ecdb083b" />
-            <part name="10.amf" crc="8fea8384" />
-       </group>
+        <interleave output="64">
+            <part name="y.c.e.c m.k.r-001" crc="a258de13"  map="00000021"/>
+            <part name="y.c.e.c m.k.r-003" crc="c781bf87"  map="00002100"/>
+            <part name="y.c.e.c m.k.r-002" crc="5726cab8"  map="00210000"/>
+            <part name="y.c.e.c d.w.c-011" crc="bc90c12f"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="y.c.e.c d.w.c-012" crc="187667cc"  map="00000021"/>
+            <part name="y.c.e.c d.w.c-013" crc="5b585071"  map="00002100"/>
+            <part name="6.amf" crc="3a85a275"  map="00010000"/>
+            <part name="9.amf" crc="9156472f"  map="00100000"/>
+            <part name="8.amf" crc="ecdb083b"  map="01000000"/>
+            <part name="10.amf" crc="8fea8384"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2amf --> 

@@ -4,31 +4,31 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2m8.zip" md5="none">
+    <rom index="0" zip="sf2.zip|sf2m8.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="yyc-3.4" crc="95ea597e"/>
-            <part name="yyc-2.2" crc="db567b66"/>
-       </group>
-        <group width="16">
-            <part name="yyc-5.3" crc="924c6ce2"/>
-            <part name="yyc-4.1" crc="1073b7b6"/>
-       </group>
+        <interleave output="16">
+            <part name="yyc-2.2" crc="db567b66" map="10"/>
+            <part name="yyc-3.4" crc="95ea597e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="yyc-4.1" crc="1073b7b6" map="10"/>
+            <part name="yyc-5.3" crc="924c6ce2" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="a-15.5" crc="6f07d2cb"/>
         <!-- oki -->
         <part name="b-16.6" crc="6cfffb11"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="yyc-a" crc="8242621f" />
-            <part name="yyc-c" crc="0793a960" />
-            <part name="yyc-b" crc="b0159973" />
-            <part name="yyc-d" crc="92a8b572" />
-            <part name="yyc-6.1" crc="94778332" />
-            <part name="yyc-8.9" crc="f95bc505" />
-            <part name="yyc-7.10" crc="d1e452d3" />
-            <part name="yyc-9.8" crc="155824a9" />
-       </group>
+        <interleave output="64">
+            <part name="yyc-a" crc="8242621f"  map="00000001"/>
+            <part name="yyc-c" crc="0793a960"  map="00000010"/>
+            <part name="yyc-b" crc="b0159973"  map="00000100"/>
+            <part name="yyc-d" crc="92a8b572"  map="00001000"/>
+            <part name="yyc-6.1" crc="94778332"  map="00010000"/>
+            <part name="yyc-8.9" crc="f95bc505"  map="00100000"/>
+            <part name="yyc-7.10" crc="d1e452d3"  map="01000000"/>
+            <part name="yyc-9.8" crc="155824a9"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2m8 --> 

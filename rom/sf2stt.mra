@@ -4,36 +4,36 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2stt.zip" md5="none">
+    <rom index="0" zip="sf2hack.zip|sf2stt.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="prg part 2.stt" crc=""/>
-            <part name="prg part 1.stt" crc=""/>
-       </group>
-        <group width="16">
-            <part name="ce91e-a" crc="0c83844d"/>
-            <part name="ce91e-b" crc="0862386e"/>
-       </group>
+        <interleave output="16">
+            <part name="prg part 1.stt" crc="" map="10"/>
+            <part name="prg part 2.stt" crc="" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ce91e-b" crc="0862386e" map="10"/>
+            <part name="ce91e-a" crc="0c83844d" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="3.stt" crc="a4823a1b"/>
         <!-- oki -->
         <part name="2.stt" crc="7f162009"/>
         <part name="1.stt" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="stt-a" crc="10a7036d" pattern="01"/>
-            <part name="stt-d" crc="3580b124" pattern="01"/>
-            <part name="stt-b" crc="7a09224e" pattern="01"/>
-            <part name="stt-e" crc="382a612c" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="stt-c" crc="11701b8f" pattern="01"/>
-            <part name="stt-f" crc="101a0b72" pattern="01"/>
-            <part name="5.stt" crc="a505621e" />
-            <part name="7.stt" crc="de6271fb" />
-            <part name="6.stt" crc="23775344" />
-            <part name="8.stt" crc="81c9550f" />
-       </group>
+        <interleave output="64">
+            <part name="stt-a" crc="10a7036d"  map="00000021"/>
+            <part name="stt-d" crc="3580b124"  map="00002100"/>
+            <part name="stt-b" crc="7a09224e"  map="00210000"/>
+            <part name="stt-e" crc="382a612c"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="stt-c" crc="11701b8f"  map="00000021"/>
+            <part name="stt-f" crc="101a0b72"  map="00002100"/>
+            <part name="5.stt" crc="a505621e"  map="00010000"/>
+            <part name="7.stt" crc="de6271fb"  map="00100000"/>
+            <part name="6.stt" crc="23775344"  map="01000000"/>
+            <part name="8.stt" crc="81c9550f"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2stt --> 

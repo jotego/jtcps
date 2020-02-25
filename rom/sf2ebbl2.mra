@@ -4,37 +4,37 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2.zip|sf2ebbl2.zip" md5="none">
+    <rom index="0" zip="sf2hack.zip|sf2ebbl2.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="27c020.5" crc="59ccd474"/>
-            <part name="27c020.7" crc="a258b4d5"/>
-       </group>
-        <group width="16">
-            <part name="27c020.4" crc="0c83844d"/>
-            <part name="27c020.6" crc="82097d63"/>
-       </group>
+        <interleave output="16">
+            <part name="27c020.7" crc="a258b4d5" map="10"/>
+            <part name="27c020.5" crc="59ccd474" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="27c020.6" crc="82097d63" map="10"/>
+            <part name="27c020.4" crc="0c83844d" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="27c512.3" crc="a4823a1b"/>
         <!-- oki -->
         <part name="27c010.2" crc="7f162009"/>
         <part name="27c010.1" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="a-se235.bin" crc="a258de13" pattern="01"/>
-            <part name="c-se005.bin" crc="c781bf87" pattern="01"/>
-            <part name="b-se194.bin" crc="5726cab8" pattern="01"/>
-            <part name="d-se064.bin" crc="4dd24197" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="e-sf004.bin" crc="187667cc" pattern="01"/>
-            <part name="f-sf001.bin" crc="5b585071" pattern="01"/>
-            <part name="27c1024.10" crc="84427d1b" pattern="01"/>
-            <part name="27c1024.12" crc="55bc790c" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="27c1024.9" crc="f8725add" pattern="01"/>
-            <part name="27c1024.11" crc="c2a5373e" pattern="01"/>
+        <interleave output="64">
+            <part name="a-se235.bin" crc="a258de13"  map="00000021"/>
+            <part name="c-se005.bin" crc="c781bf87"  map="00002100"/>
+            <part name="b-se194.bin" crc="5726cab8"  map="00210000"/>
+            <part name="d-se064.bin" crc="4dd24197"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="e-sf004.bin" crc="187667cc"  map="00000021"/>
+            <part name="f-sf001.bin" crc="5b585071"  map="00002100"/>
+            <part name="27c1024.10" crc="84427d1b"  map="00210000"/>
+            <part name="27c1024.12" crc="55bc790c"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="27c1024.9" crc="f8725add"  map="00000021"/>
+            <part name="27c1024.11" crc="c2a5373e"  map="00002100"/>
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2ebbl2 --> 

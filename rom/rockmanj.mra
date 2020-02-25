@@ -4,47 +4,47 @@
     <year>1995</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="megaman.zip|rockmanj.zip" md5="none">
+    <rom index="0" zip="rockmanj.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="rcm_23a.8f" crc="efd96cb2" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="rcm_22a.7f" crc="8729a689" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="rcm_21a.6f" crc="517ccde2" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="rcm_23a.8f" crc="efd96cb2" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="rcm_22a.7f" crc="8729a689" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="rcm_21a.6f" crc="517ccde2" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="rcm_09.12a" crc="9632d6ef"/>
         <!-- oki -->
         <part name="rcm_18.11c" crc="80f1f8aa"/>
         <part name="rcm_19.12c" crc="f257dbe1"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="rcm_01.3a" crc="6ecdf13f" pattern="01"/>
-            <part name="rcm_02.4a" crc="944d4f0f" pattern="01"/>
-            <part name="rcm_03.5a" crc="36f3073c" pattern="01"/>
-            <part name="rcm_04.6a" crc="54e622ff" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="rcm_05.7a" crc="5dd131fd" pattern="01"/>
-            <part name="rcm_06.8a" crc="f0faf813" pattern="01"/>
-            <part name="rcm_07.9a" crc="826de013" pattern="01"/>
-            <part name="rcm_08.10a" crc="fbff64cf" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="rcm_10.3c" crc="4dc8ada9" pattern="01"/>
-            <part name="rcm_11.4c" crc="f2b9ee06" pattern="01"/>
-            <part name="rcm_12.5c" crc="fed5f203" pattern="01"/>
-            <part name="rcm_13.6c" crc="5069d4a9" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="rcm_14.7c" crc="303be3bd" pattern="01"/>
-            <part name="rcm_15.8c" crc="4f2d372f" pattern="01"/>
-            <part name="rcm_16.9c" crc="93d97fde" pattern="01"/>
-            <part name="rcm_17.10c" crc="92371042" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="rcm_01.3a" crc="6ecdf13f"  map="00000021"/>
+            <part name="rcm_02.4a" crc="944d4f0f"  map="00002100"/>
+            <part name="rcm_03.5a" crc="36f3073c"  map="00210000"/>
+            <part name="rcm_04.6a" crc="54e622ff"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="rcm_05.7a" crc="5dd131fd"  map="00000021"/>
+            <part name="rcm_06.8a" crc="f0faf813"  map="00002100"/>
+            <part name="rcm_07.9a" crc="826de013"  map="00210000"/>
+            <part name="rcm_08.10a" crc="fbff64cf"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="rcm_10.3c" crc="4dc8ada9"  map="00000021"/>
+            <part name="rcm_11.4c" crc="f2b9ee06"  map="00002100"/>
+            <part name="rcm_12.5c" crc="fed5f203"  map="00210000"/>
+            <part name="rcm_13.6c" crc="5069d4a9"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="rcm_14.7c" crc="303be3bd"  map="00000021"/>
+            <part name="rcm_15.8c" crc="4f2d372f"  map="00002100"/>
+            <part name="rcm_16.9c" crc="93d97fde"  map="00210000"/>
+            <part name="rcm_17.10c" crc="92371042"  map="21000000"/>
+       </interleave>
        <!-- Mapper for megaman --> 
        <part> 77 73 C8 40 0E </part>
        <!-- CPS-B config for rockmanj --> 

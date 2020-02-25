@@ -6,40 +6,40 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="qtono2j.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="tn2j_37.11f" crc="d1d30da1"/>
-            <part name="tn2j_30.11e" crc="9226eb5e"/>
-       </group>
-        <group width="16">
-            <part name="tn2j_38.12f" crc="1f139bcc"/>
-            <part name="tn2j_31.12e" crc="015e6a8a"/>
-       </group>
-        <group width="16">
-            <part name="tn2j_35.9f" crc="7a1ab87d"/>
-            <part name="tn2j_28.9e" crc="86d27f71"/>
-       </group>
-        <group width="16">
-            <part name="tn2j_36.10f" crc="4c4b2a0a"/>
-            <part name="tn2j_29.10e" crc="9c384e99"/>
-       </group>
+        <interleave output="16">
+            <part name="tn2j_30.11e" crc="9226eb5e" map="10"/>
+            <part name="tn2j_37.11f" crc="d1d30da1" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="tn2j_31.12e" crc="015e6a8a" map="10"/>
+            <part name="tn2j_38.12f" crc="1f139bcc" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="tn2j_28.9e" crc="86d27f71" map="10"/>
+            <part name="tn2j_35.9f" crc="7a1ab87d" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="tn2j_29.10e" crc="9c384e99" map="10"/>
+            <part name="tn2j_36.10f" crc="4c4b2a0a" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="tn2j_09.12a" crc="e464b969"/>
         <!-- oki -->
         <part name="tn2j_18.11c" crc="a40bf9a7"/>
         <part name="tn2j_19.12c" crc="5b3b931e"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="tn2-02m.4a" crc="f2016a34" pattern="01"/>
-            <part name="tn2-04m.6a" crc="094e0fb1" pattern="01"/>
-            <part name="tn2-01m.3a" crc="cb950cf9" pattern="01"/>
-            <part name="tn2-03m.5a" crc="18a5bf59" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="tn2-11m.4c" crc="d0edd30b" pattern="01"/>
-            <part name="tn2-13m.6c" crc="426621c3" pattern="01"/>
-            <part name="tn2-10m.3c" crc="a34ece70" pattern="01"/>
-            <part name="tn2-12m.5c" crc="e04ff2f4" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="tn2-02m.4a" crc="f2016a34"  map="00000021"/>
+            <part name="tn2-04m.6a" crc="094e0fb1"  map="00002100"/>
+            <part name="tn2-01m.3a" crc="cb950cf9"  map="00210000"/>
+            <part name="tn2-03m.5a" crc="18a5bf59"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="tn2-11m.4c" crc="d0edd30b"  map="00000021"/>
+            <part name="tn2-13m.6c" crc="426621c3"  map="00002100"/>
+            <part name="tn2-10m.3c" crc="a34ece70"  map="00210000"/>
+            <part name="tn2-12m.5c" crc="e04ff2f4"  map="21000000"/>
+       </interleave>
        <!-- Mapper for qtono2j --> 
        <part> FF 73 88 40 18 </part>
        <!-- CPS-B config for qtono2j --> 

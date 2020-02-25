@@ -6,29 +6,29 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="mtwins.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="che_35.11h" crc="a7f96b02"/>
-            <part name="che_30.11f" crc="9a2a2db1"/>
-       </group>
-        <group width="16">
-            <part name="che_36.12h" crc="0fa00c39"/>
-            <part name="che_31.12f" crc="bbff8a99"/>
-       </group>
-        <group width="16">
-            <part name="ck-32m.8h" crc="9b70bd41" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="che_30.11f" crc="9a2a2db1" map="10"/>
+            <part name="che_35.11h" crc="a7f96b02" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="che_31.12f" crc="bbff8a99" map="10"/>
+            <part name="che_36.12h" crc="0fa00c39" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ck-32m.8h" crc="9b70bd41" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="ch_09.12b" crc="4d4255b7"/>
         <!-- oki -->
         <part name="ch_18.11c" crc="f909e8de"/>
         <part name="ch_19.12c" crc="fc158cf7"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ck-5m.7a" crc="4ec75f15" pattern="01"/>
-            <part name="ck-7m.9a" crc="d85d00d6" pattern="01"/>
-            <part name="ck-1m.3a" crc="f33ca9d4" pattern="01"/>
-            <part name="ck-3m.5a" crc="0ba2047f" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="ck-5m.7a" crc="4ec75f15"  map="00000021"/>
+            <part name="ck-7m.9a" crc="d85d00d6"  map="00002100"/>
+            <part name="ck-1m.3a" crc="f33ca9d4"  map="00210000"/>
+            <part name="ck-3m.5a" crc="0ba2047f"  map="21000000"/>
+       </interleave>
        <!-- Mapper for mtwins --> 
        <part> FF F3 44 40 11 </part>
        <!-- CPS-B config for mtwins --> 

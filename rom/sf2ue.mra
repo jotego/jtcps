@@ -6,46 +6,46 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="sf2.zip|sf2ue.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="sf2u_37e.11f" crc="6c61a513"/>
-            <part name="sf2u_30e.11e" crc="f37cd088"/>
-       </group>
-        <group width="16">
-            <part name="sf2u_38e.12f" crc="a4bd0cd9"/>
-            <part name="sf2u_31e.12e" crc="7c4771b4"/>
-       </group>
-        <group width="16">
-            <part name="sf2u_35e.9f" crc="3648769a"/>
-            <part name="sf2u_28e.9e" crc="e3b95625"/>
-       </group>
-        <group width="16">
-            <part name="sf2_36b.10f" crc="c02a13eb"/>
-            <part name="sf2_29b.10e" crc="bb4af315"/>
-       </group>
+        <interleave output="16">
+            <part name="sf2u_30e.11e" crc="f37cd088" map="10"/>
+            <part name="sf2u_37e.11f" crc="6c61a513" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="sf2u_31e.12e" crc="7c4771b4" map="10"/>
+            <part name="sf2u_38e.12f" crc="a4bd0cd9" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="sf2u_28e.9e" crc="e3b95625" map="10"/>
+            <part name="sf2u_35e.9f" crc="3648769a" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="sf2_29b.10e" crc="bb4af315" map="10"/>
+            <part name="sf2_36b.10f" crc="c02a13eb" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="sf2_9.12a" crc="a4823a1b"/>
         <!-- oki -->
         <part name="sf2_18.11c" crc="7f162009"/>
         <part name="sf2_19.12c" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="sf2-5m.4a" crc="22c9cc8e" pattern="01"/>
-            <part name="sf2-7m.6a" crc="57213be8" pattern="01"/>
-            <part name="sf2-1m.3a" crc="ba529b4f" pattern="01"/>
-            <part name="sf2-3m.5a" crc="4b1b33a8" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="sf2-6m.4c" crc="2c7e2229" pattern="01"/>
-            <part name="sf2-8m.6c" crc="b5548f17" pattern="01"/>
-            <part name="sf2-2m.3c" crc="14b84312" pattern="01"/>
-            <part name="sf2-4m.5c" crc="5e9cd89a" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="sf2-13m.4d" crc="994bfa58" pattern="01"/>
-            <part name="sf2-15m.6d" crc="3e66ad9d" pattern="01"/>
-            <part name="sf2-9m.3d" crc="c1befaa8" pattern="01"/>
-            <part name="sf2-11m.5d" crc="0627c831" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="sf2-5m.4a" crc="22c9cc8e"  map="00000021"/>
+            <part name="sf2-7m.6a" crc="57213be8"  map="00002100"/>
+            <part name="sf2-1m.3a" crc="ba529b4f"  map="00210000"/>
+            <part name="sf2-3m.5a" crc="4b1b33a8"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="sf2-6m.4c" crc="2c7e2229"  map="00000021"/>
+            <part name="sf2-8m.6c" crc="b5548f17"  map="00002100"/>
+            <part name="sf2-2m.3c" crc="14b84312"  map="00210000"/>
+            <part name="sf2-4m.5c" crc="5e9cd89a"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="sf2-13m.4d" crc="994bfa58"  map="00000021"/>
+            <part name="sf2-15m.6d" crc="3e66ad9d"  map="00002100"/>
+            <part name="sf2-9m.3d" crc="c1befaa8"  map="00210000"/>
+            <part name="sf2-11m.5d" crc="0627c831"  map="21000000"/>
+       </interleave>
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2ue --> 

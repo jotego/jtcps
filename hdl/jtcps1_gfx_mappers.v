@@ -84,7 +84,9 @@ localparam
         game_unsquad  = 30,
         game_varth    = 31,
         game_willow   = 32,
-        game_wof      = 33;
+        game_wof      = 33,
+        game_daimakai = 34,
+        game_daimakair= 35;
 
 always @(*) begin
     case ( bank )

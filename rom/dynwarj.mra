@@ -6,68 +6,68 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="dynwar.zip|dynwarj.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="42.12h" crc="12a290a0"/>
-            <part name="36.12f" crc="1a516657"/>
-       </group>
-        <group width="16">
-            <part name="43.13h" crc="872ad76d"/>
-            <part name="37.13f" crc="932fc943"/>
-       </group>
-        <group width="16">
-            <part name="40.10h" crc="1586dbf3"/>
-            <part name="34.10f" crc="8f663d00"/>
-       </group>
-        <group width="16">
-            <part name="41.11h" crc="1aae69a4"/>
-            <part name="35.11f" crc="9db93d7a"/>
-       </group>
+        <interleave output="16">
+            <part name="36.12f" crc="1a516657" map="10"/>
+            <part name="42.12h" crc="12a290a0" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="37.13f" crc="932fc943" map="10"/>
+            <part name="43.13h" crc="872ad76d" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="34.10f" crc="8f663d00" map="10"/>
+            <part name="40.10h" crc="1586dbf3" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="35.11f" crc="9db93d7a" map="10"/>
+            <part name="41.11h" crc="1aae69a4" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="23.13c" crc="b3b79d4f"/>
         <!-- oki -->
         <part name="30.12e" crc="7e5f6cb4"/>
         <part name="31.13e" crc="4a30c737"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="09.4b" crc="c3e83c69" />
-            <part name="01.4a" crc="187b2886" />
-            <part name="13.9b" crc="0273d87d" />
-            <part name="05.9a" crc="339378b8" />
-            <part name="24.5e" crc="c6909b6f" />
-            <part name="17.5c" crc="2e2f8320" />
-            <part name="38.8h" crc="cd7923ed" />
-            <part name="32.8f" crc="21a0a453" />
-       </group>
-        <group width="64">
-            <part name="10.5b" crc="ff28f8d0" />
-            <part name="02.5a" crc="cc83c02f" />
-            <part name="14.10b" crc="18fb232c" />
-            <part name="06.10a" crc="6f9edd75" />
-            <part name="25.7e" crc="152ea74a" />
-            <part name="18.7c" crc="1833f932" />
-            <part name="39.9h" crc="bc09b360" />
-            <part name="33.9f" crc="89de1533" />
-       </group>
-        <group width="64">
-            <part name="11.7b" crc="29eaf490" />
-            <part name="03.7a" crc="7bf51337" />
-            <part name="15.11b" crc="d36cdb91" />
-            <part name="07.11a" crc="e04af054" />
-            <part name="26.8e" crc="07fc714b" />
-            <part name="19.8c" crc="7114e5c6" />
-            <part name="28.10e" crc="af62bf07" />
-            <part name="21.10c" crc="523f462a" />
-       </group>
-        <group width="64">
-            <part name="12.8b" crc="38652339" />
-            <part name="04.8a" crc="4951bc0f" />
-            <part name="16.12b" crc="381608ae" />
-            <part name="08.12a" crc="b475d4e9" />
-            <part name="27.9e" crc="a27e81fa" />
-            <part name="20.9c" crc="002796dc" />
-            <part name="29.11e" crc="6b41f82d" />
-            <part name="22.11c" crc="52145369" />
-       </group>
+        <interleave output="64">
+            <part name="09.4b" crc="c3e83c69"  map="00000001"/>
+            <part name="01.4a" crc="187b2886"  map="00000010"/>
+            <part name="13.9b" crc="0273d87d"  map="00000100"/>
+            <part name="05.9a" crc="339378b8"  map="00001000"/>
+            <part name="24.5e" crc="c6909b6f"  map="00010000"/>
+            <part name="17.5c" crc="2e2f8320"  map="00100000"/>
+            <part name="38.8h" crc="cd7923ed"  map="01000000"/>
+            <part name="32.8f" crc="21a0a453"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="10.5b" crc="ff28f8d0"  map="00000001"/>
+            <part name="02.5a" crc="cc83c02f"  map="00000010"/>
+            <part name="14.10b" crc="18fb232c"  map="00000100"/>
+            <part name="06.10a" crc="6f9edd75"  map="00001000"/>
+            <part name="25.7e" crc="152ea74a"  map="00010000"/>
+            <part name="18.7c" crc="1833f932"  map="00100000"/>
+            <part name="39.9h" crc="bc09b360"  map="01000000"/>
+            <part name="33.9f" crc="89de1533"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="11.7b" crc="29eaf490"  map="00000001"/>
+            <part name="03.7a" crc="7bf51337"  map="00000010"/>
+            <part name="15.11b" crc="d36cdb91"  map="00000100"/>
+            <part name="07.11a" crc="e04af054"  map="00001000"/>
+            <part name="26.8e" crc="07fc714b"  map="00010000"/>
+            <part name="19.8c" crc="7114e5c6"  map="00100000"/>
+            <part name="28.10e" crc="af62bf07"  map="01000000"/>
+            <part name="21.10c" crc="523f462a"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="12.8b" crc="38652339"  map="00000001"/>
+            <part name="04.8a" crc="4951bc0f"  map="00000010"/>
+            <part name="16.12b" crc="381608ae"  map="00000100"/>
+            <part name="08.12a" crc="b475d4e9"  map="00001000"/>
+            <part name="27.9e" crc="a27e81fa"  map="00010000"/>
+            <part name="20.9c" crc="002796dc"  map="00100000"/>
+            <part name="29.11e" crc="6b41f82d"  map="01000000"/>
+            <part name="22.11c" crc="52145369"  map="10000000"/>
+       </interleave>
        <!-- Mapper for dynwar --> 
        <part> 33 31 64 20 06 </part>
        <!-- CPS-B config for dynwarj --> 

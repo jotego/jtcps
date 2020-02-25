@@ -6,45 +6,45 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="forgottn.zip|forgottnu.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="lw15c.12h" crc="1b70f216"/>
-            <part name="lw11c.12f" crc="e62742b6"/>
-       </group>
-        <group width="16">
-            <part name="lw14c.13h" crc="708e7472"/>
-            <part name="lw10c.13f" crc="8f5ea3f5"/>
-       </group>
-        <group width="16">
-            <part name="lw-07.10g" crc="fd252a26" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="lw11c.12f" crc="e62742b6" map="10"/>
+            <part name="lw15c.12h" crc="1b70f216" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="lw10c.13f" crc="8f5ea3f5" map="10"/>
+            <part name="lw14c.13h" crc="708e7472" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="lw-07.10g" crc="fd252a26" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="lw_00.13c" crc="59df2a63"/>
         <!-- oki -->
         <part name="lw-03u.12e" crc="807d051f"/>
         <part name="lw-04u.13e" crc="e6cd098e"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="lw_2.2b" crc="4bd75fee" />
-            <part name="lw_1.2a" crc="65f41485" />
-            <part name="lw-08.9b" crc="25a8e43c" pattern="01"/>
-            <part name="lw-05.6d" crc="e4552fd7" pattern="01"/>
-            <part name="lw_30.8h" crc="b385954e" />
-            <part name="lw_29.8f" crc="7bda1ac6" />
-       </group>
-        <group width="64">
-            <part name="lw_4.3b" crc="50cf757f" />
-            <part name="lw_3.3a" crc="c03ef278" />
-            <part name="lw_32.9h" crc="30967a15" />
-            <part name="lw_31.9f" crc="c49d37fb" />
-            <part name="lw-02.6b" crc="43e6c5c8" pattern="01"/>
-            <part name="lw_14.10b" crc="82862cce" />
-            <part name="lw_13.10a" crc="b81c0e96" />
-       </group>
-        <group width="64">
-            <part name="lw-06.9d" crc="5b9edffc" pattern="01"/>
-            <part name="lw-13.10d" crc="8e058ef5" pattern="01"/>
-            <part name="lw_16.11b" crc="40b26554" />
-            <part name="lw_15.11a" crc="1b7d2e07" />
+        <interleave output="64">
+            <part name="lw_2.2b" crc="4bd75fee"  map="00000001"/>
+            <part name="lw_1.2a" crc="65f41485"  map="00000010"/>
+            <part name="lw-08.9b" crc="25a8e43c"  map="00002100"/>
+            <part name="lw-05.6d" crc="e4552fd7"  map="00210000"/>
+            <part name="lw_30.8h" crc="b385954e"  map="01000000"/>
+            <part name="lw_29.8f" crc="7bda1ac6"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="lw_4.3b" crc="50cf757f"  map="00000001"/>
+            <part name="lw_3.3a" crc="c03ef278"  map="00000010"/>
+            <part name="lw_32.9h" crc="30967a15"  map="00000100"/>
+            <part name="lw_31.9f" crc="c49d37fb"  map="00001000"/>
+            <part name="lw-02.6b" crc="43e6c5c8"  map="00210000"/>
+            <part name="lw_14.10b" crc="82862cce"  map="01000000"/>
+            <part name="lw_13.10a" crc="b81c0e96"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="lw-06.9d" crc="5b9edffc"  map="00000021"/>
+            <part name="lw-13.10d" crc="8e058ef5"  map="00002100"/>
+            <part name="lw_16.11b" crc="40b26554"  map="00010000"/>
+            <part name="lw_15.11a" crc="1b7d2e07"  map="00100000"/>
        <!-- Mapper for forgottn --> 
        <part> FF 73 88 40 08 </part>
        <!-- CPS-B config for forgottnu --> 

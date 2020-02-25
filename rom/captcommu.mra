@@ -6,34 +6,34 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="captcomm.zip|captcommu.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="ccu_23b.8f" crc="03da44fd" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="ccu_22c.7f" crc="9b82a052" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="ccu_28b.9f" crc="fbcec223"/>
-            <part name="ccu_24b.9e" crc="84ff99b2"/>
-       </group>
+        <interleave output="16">
+            <part name="ccu_23b.8f" crc="03da44fd" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ccu_22c.7f" crc="9b82a052" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ccu_24b.9e" crc="84ff99b2" map="10"/>
+            <part name="ccu_28b.9f" crc="fbcec223" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="ccu_09.11a" crc="698e8b58"/>
         <!-- oki -->
         <part name="ccu_18.11c" crc="6de2c2db"/>
         <part name="ccu_19.12c" crc="b99091ae"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="cc-5m.3a" crc="7261d8ba" pattern="01"/>
-            <part name="cc-7m.5a" crc="6a60f949" pattern="01"/>
-            <part name="cc-1m.4a" crc="00637302" pattern="01"/>
-            <part name="cc-3m.6a" crc="cc87cf61" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="cc-6m.7a" crc="28718bed" pattern="01"/>
-            <part name="cc-8m.9a" crc="d4acc53a" pattern="01"/>
-            <part name="cc-2m.8a" crc="0c69f151" pattern="01"/>
-            <part name="cc-4m.10a" crc="1f9ebb97" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="cc-5m.3a" crc="7261d8ba"  map="00000021"/>
+            <part name="cc-7m.5a" crc="6a60f949"  map="00002100"/>
+            <part name="cc-1m.4a" crc="00637302"  map="00210000"/>
+            <part name="cc-3m.6a" crc="cc87cf61"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="cc-6m.7a" crc="28718bed"  map="00000021"/>
+            <part name="cc-8m.9a" crc="d4acc53a"  map="00002100"/>
+            <part name="cc-2m.8a" crc="0c69f151"  map="00210000"/>
+            <part name="cc-4m.10a" crc="1f9ebb97"  map="21000000"/>
+       </interleave>
        <!-- Mapper for captcomm --> 
        <part> FF 73 88 40 02 </part>
        <!-- CPS-B config for captcommu --> 

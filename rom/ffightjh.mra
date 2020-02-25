@@ -6,24 +6,24 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="ffight.zip|ffightjh.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="ff_23.8f" crc="ae3dda7f" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="ff_22.7f" crc="b2d5a3aa" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="ff_23.8f" crc="ae3dda7f" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ff_22.7f" crc="b2d5a3aa" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="ff_9.12a" crc="b8367eb5"/>
         <!-- oki -->
         <part name="ff_18.11c" crc="375c66e7"/>
         <part name="ff_19.12c" crc="1ef137f9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ff_1.3a" crc="969d18e2" pattern="01"/>
-            <part name="ff_2.4a" crc="02b59f99" pattern="01"/>
-            <part name="ff_3.5a" crc="01d507ae" pattern="01"/>
-            <part name="ff_4.6a" crc="f7c4ceb0" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="ff_1.3a" crc="969d18e2"  map="00000021"/>
+            <part name="ff_2.4a" crc="02b59f99"  map="00002100"/>
+            <part name="ff_3.5a" crc="01d507ae"  map="00210000"/>
+            <part name="ff_4.6a" crc="f7c4ceb0"  map="21000000"/>
+       </interleave>
        <!-- Mapper for ffight --> 
        <part> FF F3 44 40 07 </part>
        <!-- CPS-B config for ffightjh --> 

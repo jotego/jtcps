@@ -6,48 +6,48 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="3wonders.zip|3wondersh.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="26.bin" crc="a28447b7"/>
-            <part name="22.bin" crc="e6071884"/>
-       </group>
-        <group width="16">
-            <part name="27.bin" crc="999cba3d"/>
-            <part name="23.bin" crc="fd3d6509"/>
-       </group>
-        <group width="16">
-            <part name="rt_33a.9h" crc="7264cb1b"/>
-            <part name="rt_28a.9f" crc="054137c8"/>
-       </group>
-        <group width="16">
-            <part name="rte_34a.10h" crc="ed52e7e5"/>
-            <part name="rte_29a.10f" crc="cddaa919"/>
-       </group>
+        <interleave output="16">
+            <part name="22.bin" crc="e6071884" map="10"/>
+            <part name="26.bin" crc="a28447b7" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="23.bin" crc="fd3d6509" map="10"/>
+            <part name="27.bin" crc="999cba3d" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="rt_28a.9f" crc="054137c8" map="10"/>
+            <part name="rt_33a.9h" crc="7264cb1b" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="rte_29a.10f" crc="cddaa919" map="10"/>
+            <part name="rte_34a.10h" crc="ed52e7e5" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="rt_9.12b" crc="abfca165"/>
         <!-- oki -->
         <part name="rt_18.11c" crc="26b211ab"/>
         <part name="rt_19.12c" crc="dbe64ad0"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="16.bin" crc="c997bca2" />
-            <part name="6.bin" crc="3eea321a" />
-            <part name="18.bin" crc="98acdfd4" />
-            <part name="8.bin" crc="dc9ca6f9" />
-            <part name="12.bin" crc="0d8a6007" />
-            <part name="2.bin" crc="d75563b9" />
-            <part name="14.bin" crc="84369a28" />
-            <part name="4.bin" crc="d4831578" />
-       </group>
-        <group width="64">
-            <part name="17.bin" crc="040edff5" />
-            <part name="7.bin" crc="c7c0468c" />
-            <part name="19.bin" crc="9fef114f" />
-            <part name="9.bin" crc="48cbfba5" />
-            <part name="13.bin" crc="8fc3d7d1" />
-            <part name="3.bin" crc="c65e9a86" />
-            <part name="15.bin" crc="f239341a" />
-            <part name="5.bin" crc="947ac944" />
-       </group>
+        <interleave output="64">
+            <part name="16.bin" crc="c997bca2"  map="00000001"/>
+            <part name="6.bin" crc="3eea321a"  map="00000010"/>
+            <part name="18.bin" crc="98acdfd4"  map="00000100"/>
+            <part name="8.bin" crc="dc9ca6f9"  map="00001000"/>
+            <part name="12.bin" crc="0d8a6007"  map="00010000"/>
+            <part name="2.bin" crc="d75563b9"  map="00100000"/>
+            <part name="14.bin" crc="84369a28"  map="01000000"/>
+            <part name="4.bin" crc="d4831578"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="17.bin" crc="040edff5"  map="00000001"/>
+            <part name="7.bin" crc="c7c0468c"  map="00000010"/>
+            <part name="19.bin" crc="9fef114f"  map="00000100"/>
+            <part name="9.bin" crc="48cbfba5"  map="00001000"/>
+            <part name="13.bin" crc="8fc3d7d1"  map="00010000"/>
+            <part name="3.bin" crc="c65e9a86"  map="00100000"/>
+            <part name="15.bin" crc="f239341a"  map="01000000"/>
+            <part name="5.bin" crc="947ac944"  map="10000000"/>
+       </interleave>
        <!-- Mapper for 3wonders --> 
        <part> FF 73 88 40 01 </part>
        <!-- CPS-B config for 3wondersh --> 

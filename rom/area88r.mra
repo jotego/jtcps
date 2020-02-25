@@ -6,23 +6,23 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="unsquad.zip|area88r.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="araj_23.8f" crc="7045d6cb" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="araj_22.7f" crc="9913002e" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="araj_23.8f" crc="7045d6cb" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="araj_22.7f" crc="9913002e" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="ara_09.12a" crc="af88359c"/>
         <!-- oki -->
         <part name="ara_18.11c" crc="584b43a9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ara_01.3a" crc="bf4575d8" pattern="01"/>
-            <part name="ara_02.4a" crc="a02945f4" pattern="01"/>
-            <part name="ara_03.5a" crc="5965ca8d" pattern="01"/>
-            <part name="ara_04.6a" crc="ac6db17d" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="ara_01.3a" crc="bf4575d8"  map="00000021"/>
+            <part name="ara_02.4a" crc="a02945f4"  map="00002100"/>
+            <part name="ara_03.5a" crc="5965ca8d"  map="00210000"/>
+            <part name="ara_04.6a" crc="ac6db17d"  map="21000000"/>
+       </interleave>
        <!-- Mapper for unsquad --> 
        <part> FF 31 44 20 1E </part>
        <!-- CPS-B config for area88r --> 

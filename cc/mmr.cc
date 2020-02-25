@@ -288,7 +288,7 @@ void generate_mra( game_entry* game ) {
     xml_element(mras,"rbf", "jtcps1",1 );
     // ROMs
     mras << "    <rom index=\"0\" zip=\"";
-    if( game->parent!="0") mras << game->parent <<".zip|";
+    if( game->zipfile != game->name ) mras << game->zipfile <<".zip|";
     mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
     try{

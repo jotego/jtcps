@@ -4,41 +4,41 @@
     <year>1992</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2cejb.zip" md5="none">
+    <rom index="0" zip="sf2.zip|sf2cejb.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="s92j_23b.8f" crc="140876c5" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="s92j_22b.7f" crc="2fbb3bfe" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="s92_21a.6f" crc="925a7877" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="s92j_23b.8f" crc="140876c5" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="s92j_22b.7f" crc="2fbb3bfe" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="s92_21a.6f" crc="925a7877" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="s92_09.12a" crc="08f6b60e"/>
         <!-- oki -->
         <part name="s92_18.11c" crc="7f162009"/>
         <part name="s92_19.12c" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="s92_01.3a" crc="03b0d852" pattern="01"/>
-            <part name="s92_02.4a" crc="840289ec" pattern="01"/>
-            <part name="s92_03.5a" crc="cdb5f027" pattern="01"/>
-            <part name="s92_04.6a" crc="e2799472" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="s92_05.7a" crc="ba8a2761" pattern="01"/>
-            <part name="s92_06.8a" crc="e584bfb5" pattern="01"/>
-            <part name="s92_07.9a" crc="21e3f87d" pattern="01"/>
-            <part name="s92_08.10a" crc="befc47df" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="s92_10.3c" crc="960687d5" pattern="01"/>
-            <part name="s92_11.4c" crc="978ecd18" pattern="01"/>
-            <part name="s92_12.5c" crc="d6ec9a0a" pattern="01"/>
-            <part name="s92_13.6c" crc="ed2c67f6" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="s92_01.3a" crc="03b0d852"  map="00000021"/>
+            <part name="s92_02.4a" crc="840289ec"  map="00002100"/>
+            <part name="s92_03.5a" crc="cdb5f027"  map="00210000"/>
+            <part name="s92_04.6a" crc="e2799472"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="s92_05.7a" crc="ba8a2761"  map="00000021"/>
+            <part name="s92_06.8a" crc="e584bfb5"  map="00002100"/>
+            <part name="s92_07.9a" crc="21e3f87d"  map="00210000"/>
+            <part name="s92_08.10a" crc="befc47df"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="s92_10.3c" crc="960687d5"  map="00000021"/>
+            <part name="s92_11.4c" crc="978ecd18"  map="00002100"/>
+            <part name="s92_12.5c" crc="d6ec9a0a"  map="00210000"/>
+            <part name="s92_13.6c" crc="ed2c67f6"  map="21000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2cejb --> 

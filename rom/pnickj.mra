@@ -6,36 +6,36 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="pnickj.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="pnij_42.12h" crc="c085dfaf"/>
-            <part name="pnij_36.12f" crc="2d4ffb2b"/>
-       </group>
+        <interleave output="16">
+            <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
+            <part name="pnij_42.12h" crc="c085dfaf" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="pnij_17.13b" crc="e86f787a"/>
         <!-- oki -->
         <part name="pnij_24.12c" crc="5092257d"/>
         <part name="pnij_25.13c" crc="22109aaa"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="pnij_09.4b" crc="48177b0a" />
-            <part name="pnij_01.4a" crc="01a0f311" />
-            <part name="pnij_13.9b" crc="406451b0" />
-            <part name="pnij_05.9a" crc="8c515dc0" />
-            <part name="pnij_26.5e" crc="e2af981e" />
-            <part name="pnij_18.5c" crc="f17a0e56" />
-            <part name="pnij_38.8h" crc="eb75bd8c" />
-            <part name="pnij_32.8f" crc="84560bef" />
-       </group>
-        <group width="64">
-            <part name="pnij_10.5b" crc="c2acc171" />
-            <part name="pnij_02.5a" crc="0e21fc33" />
-            <part name="pnij_14.10b" crc="7fe59b19" />
-            <part name="pnij_06.10a" crc="79f4bfe3" />
-            <part name="pnij_27.7e" crc="83d5cb0e" />
-            <part name="pnij_19.7c" crc="af08b230" />
-            <part name="pnij_39.9h" crc="70fbe579" />
-            <part name="pnij_33.9f" crc="3ed2c680" />
-       </group>
+        <interleave output="64">
+            <part name="pnij_09.4b" crc="48177b0a"  map="00000001"/>
+            <part name="pnij_01.4a" crc="01a0f311"  map="00000010"/>
+            <part name="pnij_13.9b" crc="406451b0"  map="00000100"/>
+            <part name="pnij_05.9a" crc="8c515dc0"  map="00001000"/>
+            <part name="pnij_26.5e" crc="e2af981e"  map="00010000"/>
+            <part name="pnij_18.5c" crc="f17a0e56"  map="00100000"/>
+            <part name="pnij_38.8h" crc="eb75bd8c"  map="01000000"/>
+            <part name="pnij_32.8f" crc="84560bef"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="pnij_10.5b" crc="c2acc171"  map="00000001"/>
+            <part name="pnij_02.5a" crc="0e21fc33"  map="00000010"/>
+            <part name="pnij_14.10b" crc="7fe59b19"  map="00000100"/>
+            <part name="pnij_06.10a" crc="79f4bfe3"  map="00001000"/>
+            <part name="pnij_27.7e" crc="83d5cb0e"  map="00010000"/>
+            <part name="pnij_19.7c" crc="af08b230"  map="00100000"/>
+            <part name="pnij_39.9h" crc="70fbe579"  map="01000000"/>
+            <part name="pnij_33.9f" crc="3ed2c680"  map="10000000"/>
+       </interleave>
        <!-- Mapper for pnickj --> 
        <part> FF F3 44 40 14 </part>
        <!-- CPS-B config for pnickj --> 

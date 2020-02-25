@@ -6,29 +6,29 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="1941.zip|1941r1.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="41e_35.11h" crc="d63942b3"/>
-            <part name="41e_30.11f" crc="9deb1e75"/>
-       </group>
-        <group width="16">
-            <part name="41e_36.12h" crc="816a818f"/>
-            <part name="41e_31.12f" crc="df201112"/>
-       </group>
-        <group width="16">
-            <part name="41-32m.8h" crc="4e9648ca" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="41e_30.11f" crc="9deb1e75" map="10"/>
+            <part name="41e_35.11h" crc="d63942b3" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="41e_31.12f" crc="df201112" map="10"/>
+            <part name="41e_36.12h" crc="816a818f" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="41-32m.8h" crc="4e9648ca" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="41_9.12b" crc="0f9d8527"/>
         <!-- oki -->
         <part name="41_18.11c" crc="d1f15aeb"/>
         <part name="41_19.12c" crc="15aec3a6"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="41-5m.7a" crc="01d1cb11" pattern="01"/>
-            <part name="41-7m.9a" crc="aeaa3509" pattern="01"/>
-            <part name="41-1m.3a" crc="ff77985a" pattern="01"/>
-            <part name="41-3m.5a" crc="983be58f" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="41-5m.7a" crc="01d1cb11"  map="00000021"/>
+            <part name="41-7m.9a" crc="aeaa3509"  map="00002100"/>
+            <part name="41-1m.3a" crc="ff77985a"  map="00210000"/>
+            <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
+       </interleave>
        <!-- Mapper for 1941 --> 
        <part> FF F3 44 40 00 </part>
        <!-- CPS-B config for 1941r1 --> 

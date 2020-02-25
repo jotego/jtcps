@@ -6,28 +6,28 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="unsquad.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="aru_35.11h" crc="8b954b59"/>
-            <part name="aru_30.11f" crc="24d8f88d"/>
-       </group>
-        <group width="16">
-            <part name="aru_36.12h" crc="7cc8fb9e"/>
-            <part name="aru_31.12f" crc="33e9694b"/>
-       </group>
-        <group width="16">
-            <part name="ar-32m.8h" crc="ae1d7fb0" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="aru_30.11f" crc="24d8f88d" map="10"/>
+            <part name="aru_35.11h" crc="8b954b59" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="aru_31.12f" crc="33e9694b" map="10"/>
+            <part name="aru_36.12h" crc="7cc8fb9e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ar-32m.8h" crc="ae1d7fb0" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="ar_09.12b" crc="f3dd1367"/>
         <!-- oki -->
         <part name="aru_18.11c" crc="584b43a9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ar-5m.7a" crc="bf4575d8" pattern="01"/>
-            <part name="ar-7m.9a" crc="a02945f4" pattern="01"/>
-            <part name="ar-1m.3a" crc="5965ca8d" pattern="01"/>
-            <part name="ar-3m.5a" crc="ac6db17d" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="ar-5m.7a" crc="bf4575d8"  map="00000021"/>
+            <part name="ar-7m.9a" crc="a02945f4"  map="00002100"/>
+            <part name="ar-1m.3a" crc="5965ca8d"  map="00210000"/>
+            <part name="ar-3m.5a" crc="ac6db17d"  map="21000000"/>
+       </interleave>
        <!-- Mapper for unsquad --> 
        <part> FF F3 44 40 1E </part>
        <!-- CPS-B config for unsquad --> 

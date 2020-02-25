@@ -4,26 +4,26 @@
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="qad.zip|qadjr.zip" md5="none">
+    <rom index="0" zip="qadjr.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="qad_23a.8f" crc="4d3553de" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="qad_22a.7f" crc="3191ddd0" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="qad_23a.8f" crc="4d3553de" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="qad_22a.7f" crc="3191ddd0" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="qad_09.12a" crc="733161cc"/>
         <!-- oki -->
         <part name="qad_18.11c" crc="2bfe6f6a"/>
         <part name="qad_19.12c" crc="13d3236b"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="qad_01.3a" crc="9d853b57" pattern="01"/>
-            <part name="qad_02.4a" crc="b35976c4" pattern="01"/>
-            <part name="qad_03.5a" crc="cea4ca8c" pattern="01"/>
-            <part name="qad_04.6a" crc="41b74d1b" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="qad_01.3a" crc="9d853b57"  map="00000021"/>
+            <part name="qad_02.4a" crc="b35976c4"  map="00002100"/>
+            <part name="qad_03.5a" crc="cea4ca8c"  map="00210000"/>
+            <part name="qad_04.6a" crc="41b74d1b"  map="21000000"/>
+       </interleave>
        <!-- Mapper for qad --> 
        <part> FF F3 44 40 17 </part>
        <!-- CPS-B config for qadjr --> 

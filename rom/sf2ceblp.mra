@@ -4,60 +4,60 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2ceblp.zip" md5="none">
+    <rom index="0" zip="sf2.zip|sf2ceblp.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="se.36.j13" crc="d30c263e"/>
-            <part name="1k.31.e13" crc="ea78f9b4"/>
-       </group>
-        <group width="16">
-            <part name="de.35.j11" crc="c184d26d"/>
-            <part name="0e.30.e11" crc="005b54cc"/>
-       </group>
-        <group width="16">
-            <part name="ff.34.j10" crc="f06a12f2"/>
-            <part name="bk.29.e10" crc="524f5c55"/>
-       </group>
-        <group width="16">
-            <part name="tf.33.j9" crc="6340b914"/>
-            <part name="8k.28.e9" crc="b7ad5214"/>
-       </group>
+        <interleave output="16">
+            <part name="1k.31.e13" crc="ea78f9b4" map="10"/>
+            <part name="se.36.j13" crc="d30c263e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="0e.30.e11" crc="005b54cc" map="10"/>
+            <part name="de.35.j11" crc="c184d26d" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="bk.29.e10" crc="524f5c55" map="10"/>
+            <part name="ff.34.j10" crc="f06a12f2" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="8k.28.e9" crc="b7ad5214" map="10"/>
+            <part name="tf.33.j9" crc="6340b914" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="snd.9.b13" crc="08f6b60e"/>
         <!-- oki -->
         <part name="9k.18.c11" crc="7f162009"/>
         <part name="lk.19.c13" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="24.e7" crc="a8b5633a" />
-            <part name="14.c7" crc="5db24ca7" />
-            <part name="26.e9" crc="82e8e384" />
-            <part name="16.c9" crc="1fd98ad0" />
-            <part name="20.e3" crc="8d5d0045" />
-            <part name="10.c3" crc="eb48f7f2" />
-            <part name="22.e5" crc="4109d637" />
-            <part name="12.c5" crc="5d21d8b3" />
-       </group>
-        <group width="64">
-            <part name="25.e8" crc="72e923df" />
-            <part name="15.c8" crc="9a96be48" />
-            <part name="27.e10" crc="4a3a8d09" />
-            <part name="17.c10" crc="a917a922" />
-            <part name="21.e4" crc="55c2b455" />
-            <part name="11.c4" crc="ff36859e" />
-            <part name="23.e6" crc="ef9c2d4d" />
-            <part name="13.c6" crc="bc937c96" />
-       </group>
-        <group width="64">
-            <part name="6.a8" crc="023baa18" />
-            <part name="5.a7" crc="a6ad6ef3" />
-            <part name="8.a10" crc="26fb340c" />
-            <part name="7.a9" crc="f56085ba" />
-            <part name="1.a3" crc="877b2b18" />
-            <part name="2.a4" crc="144aa4c9" />
-            <part name="4.a6" crc="f2c400b4" />
-            <part name="3.a5" crc="8053335d" />
-       </group>
+        <interleave output="64">
+            <part name="24.e7" crc="a8b5633a"  map="00000001"/>
+            <part name="14.c7" crc="5db24ca7"  map="00000010"/>
+            <part name="26.e9" crc="82e8e384"  map="00000100"/>
+            <part name="16.c9" crc="1fd98ad0"  map="00001000"/>
+            <part name="20.e3" crc="8d5d0045"  map="00010000"/>
+            <part name="10.c3" crc="eb48f7f2"  map="00100000"/>
+            <part name="22.e5" crc="4109d637"  map="01000000"/>
+            <part name="12.c5" crc="5d21d8b3"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="25.e8" crc="72e923df"  map="00000001"/>
+            <part name="15.c8" crc="9a96be48"  map="00000010"/>
+            <part name="27.e10" crc="4a3a8d09"  map="00000100"/>
+            <part name="17.c10" crc="a917a922"  map="00001000"/>
+            <part name="21.e4" crc="55c2b455"  map="00010000"/>
+            <part name="11.c4" crc="ff36859e"  map="00100000"/>
+            <part name="23.e6" crc="ef9c2d4d"  map="01000000"/>
+            <part name="13.c6" crc="bc937c96"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="6.a8" crc="023baa18"  map="00000001"/>
+            <part name="5.a7" crc="a6ad6ef3"  map="00000010"/>
+            <part name="8.a10" crc="26fb340c"  map="00000100"/>
+            <part name="7.a9" crc="f56085ba"  map="00001000"/>
+            <part name="1.a3" crc="877b2b18"  map="00010000"/>
+            <part name="2.a4" crc="144aa4c9"  map="00100000"/>
+            <part name="4.a6" crc="f2c400b4"  map="01000000"/>
+            <part name="3.a5" crc="8053335d"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2ceblp --> 

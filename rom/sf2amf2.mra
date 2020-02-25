@@ -4,35 +4,35 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2amf2.zip" md5="none">
+    <rom index="0" zip="sf2amfx.zip|sf2amf2.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="m5m27c401.u196" crc="39f15a1e"/>
-            <part name="m5m27c401.u222" crc="03991fba"/>
-       </group>
-        <group width="16">
-            <part name="27020.u195" crc="2bffa6f9"/>
-            <part name="27020.u221" crc="aa4d55a6"/>
-       </group>
+        <interleave output="16">
+            <part name="m5m27c401.u222" crc="03991fba" map="10"/>
+            <part name="m5m27c401.u196" crc="39f15a1e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="27020.u221" crc="aa4d55a6" map="10"/>
+            <part name="27020.u195" crc="2bffa6f9" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="27512.u191" crc="a4823a1b"/>
         <!-- oki -->
         <part name="fun-u210.bin" crc="6cfffb11"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="fun-u70.bin" crc="a94a8b19" pattern="01"/>
-            <part name="fun-u68.bin" crc="0405f21f" pattern="01"/>
-            <part name="fun-u69.bin" crc="05dc2043" pattern="01"/>
-            <part name="fun-u67.bin" crc="055b64f1" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="fun-u19.bin" crc="1a518609" pattern="01"/>
-            <part name="fun-u18.bin" crc="84f9354f" pattern="01"/>
-            <part name="grp1.u31" crc="6de44671" />
-            <part name="grp3.u29" crc="e8f14362" />
-            <part name="grp2.u30" crc="bf0cd819" />
-            <part name="grp4.u28" crc="76f9f91f" />
-       </group>
+        <interleave output="64">
+            <part name="fun-u70.bin" crc="a94a8b19"  map="00000021"/>
+            <part name="fun-u68.bin" crc="0405f21f"  map="00002100"/>
+            <part name="fun-u69.bin" crc="05dc2043"  map="00210000"/>
+            <part name="fun-u67.bin" crc="055b64f1"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="fun-u19.bin" crc="1a518609"  map="00000021"/>
+            <part name="fun-u18.bin" crc="84f9354f"  map="00002100"/>
+            <part name="grp1.u31" crc="6de44671"  map="00010000"/>
+            <part name="grp3.u29" crc="e8f14362"  map="00100000"/>
+            <part name="grp2.u30" crc="bf0cd819"  map="01000000"/>
+            <part name="grp4.u28" crc="76f9f91f"  map="10000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2amf2 --> 

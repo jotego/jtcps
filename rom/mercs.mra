@@ -6,39 +6,39 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="mercs.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="so2_35e.11h" crc="78e63575"/>
-            <part name="so2_30e.11f" crc="e17f9bf7"/>
-       </group>
-        <group width="16">
-            <part name="so2_36e.12h" crc="9cfba8b4"/>
-            <part name="so2_31e.12f" crc="51204d36"/>
-       </group>
-        <group width="16">
-            <part name="so2-32m.8h" crc="2eb5cf0c" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="so2_30e.11f" crc="e17f9bf7" map="10"/>
+            <part name="so2_35e.11h" crc="78e63575" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="so2_31e.12f" crc="51204d36" map="10"/>
+            <part name="so2_36e.12h" crc="9cfba8b4" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="so2-32m.8h" crc="2eb5cf0c" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="so2_09.12b" crc="d09d7c7a"/>
         <!-- oki -->
         <part name="so2_18.11c" crc="bbea1643"/>
         <part name="so2_19.12c" crc="ac58aa71"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="so2-6m.8a" crc="aa6102af" pattern="01"/>
-            <part name="so2-8m.10a" crc="839e6869" pattern="01"/>
-            <part name="so2-2m.4a" crc="597c2875" pattern="01"/>
-            <part name="so2-4m.6a" crc="912a9ca0" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="so2_24.7d" crc="3f254efe" />
-            <part name="so2_14.7c" crc="f5a8905e" />
-            <part name="so2_26.9d" crc="f3aa5a4a" />
-            <part name="so2_16.9c" crc="b43cd1a8" />
-            <part name="so2_20.3d" crc="8ca751a3" />
-            <part name="so2_10.3c" crc="e9f569fd" />
-            <part name="so2_22.5d" crc="fce9a377" />
-            <part name="so2_12.5c" crc="b7df8a06" />
-       </group>
+        <interleave output="64">
+            <part name="so2-6m.8a" crc="aa6102af"  map="00000021"/>
+            <part name="so2-8m.10a" crc="839e6869"  map="00002100"/>
+            <part name="so2-2m.4a" crc="597c2875"  map="00210000"/>
+            <part name="so2-4m.6a" crc="912a9ca0"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="so2_24.7d" crc="3f254efe"  map="00000001"/>
+            <part name="so2_14.7c" crc="f5a8905e"  map="00000010"/>
+            <part name="so2_26.9d" crc="f3aa5a4a"  map="00000100"/>
+            <part name="so2_16.9c" crc="b43cd1a8"  map="00001000"/>
+            <part name="so2_20.3d" crc="8ca751a3"  map="00010000"/>
+            <part name="so2_10.3c" crc="e9f569fd"  map="00100000"/>
+            <part name="so2_22.5d" crc="fce9a377"  map="01000000"/>
+            <part name="so2_12.5c" crc="b7df8a06"  map="10000000"/>
+       </interleave>
        <!-- Mapper for mercs --> 
        <part> FF 33 66 40 0F </part>
        <!-- CPS-B config for mercs --> 

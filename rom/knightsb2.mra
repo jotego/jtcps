@@ -6,20 +6,20 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="knights.zip|knightsb2.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="right.code.040" crc="5a9d0b64"/>
-            <part name="left.code.040" crc="95d00a7e"/>
-       </group>
+        <interleave output="16">
+            <part name="left.code.040" crc="95d00a7e" map="10"/>
+            <part name="right.code.040" crc="5a9d0b64" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="sound.code.512" crc="5e44d9ee"/>
         <!-- oki -->
         <part name="spe-e.japan9208d.snd.mask.020" crc="85f837a0"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="spe-a.japan9207d.mask1.801" crc="14a15fcd" />
-            <part name="spe-b.japan9207d.mask2.801" crc="250d2957" />
-            <part name="spe-c.japan9207d.mask4.801" crc="0721c26d" />
-            <part name="spe-d.japan9207d.mask3.801" crc="db97f56a" />
+        <interleave output="64">
+            <part name="spe-a.japan9207d.mask1.801" crc="14a15fcd"  map="00000001"/>
+            <part name="spe-b.japan9207d.mask2.801" crc="250d2957"  map="00000010"/>
+            <part name="spe-c.japan9207d.mask4.801" crc="0721c26d"  map="00000100"/>
+            <part name="spe-d.japan9207d.mask3.801" crc="db97f56a"  map="00001000"/>
        <!-- Mapper for knights --> 
        <part> FF 73 88 40 0B </part>
        <!-- CPS-B config for knightsb2 --> 

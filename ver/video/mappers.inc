@@ -123,7 +123,7 @@ game_ghouls: begin
          ( layer==OBJ   && code[15:11]<=5'h1) /* 0 - 1fff */ ;
         bank[3] <= 1'b0;
     end
-game_ghouls: begin
+game_daimakai: begin
         // Bank 0 size 0x04000
         bank[0] <=  ( layer==OBJ   && code[15:11]<=5'h1) /* 0 - 1fff */  ||
          ( layer==SCR1  && code[15:12]>=5'h2 && code[15:12]<=5'h3) /* 2000 - 3fff */ ;
@@ -134,7 +134,7 @@ game_ghouls: begin
         // Bank 3 size 0x02000
         bank[3] <=  ( layer==OBJ   && code[15:11]>=5'h2 && code[15:11]<=5'h3) /* 2000 - 3fff */ ;
     end
-game_ghouls: begin
+game_daimakair: begin
         // Bank 0 size 0x08000
         bank[0] <=  ( layer==OBJ   && code[15:11]<=5'h1) /* 0 - 1fff */  ||
          ( layer==SCR1  && code[15:12]>=5'h2 && code[15:12]<=5'h2) /* 2000 - 2fff */  ||

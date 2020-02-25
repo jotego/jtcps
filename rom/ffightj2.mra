@@ -6,48 +6,48 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="ffight.zip|ffightj2.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="ffj_42a.12h" crc="c4c491e6"/>
-            <part name="ffj_36a.12f" crc="088ed1c9"/>
-       </group>
-        <group width="16">
-            <part name="ffj_43a.13h" crc="c004004a"/>
-            <part name="ffj_37a.13f" crc="708557ff"/>
-       </group>
-        <group width="16">
-            <part name="ff_40.10h" crc="8075bab9"/>
-            <part name="ff_34.10f" crc="0c8dc3fc"/>
-       </group>
-        <group width="16">
-            <part name="ff_41.11h" crc="2af68154"/>
-            <part name="ff_35.11f" crc="4a934121"/>
-       </group>
+        <interleave output="16">
+            <part name="ffj_36a.12f" crc="088ed1c9" map="10"/>
+            <part name="ffj_42a.12h" crc="c4c491e6" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ffj_37a.13f" crc="708557ff" map="10"/>
+            <part name="ffj_43a.13h" crc="c004004a" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ff_34.10f" crc="0c8dc3fc" map="10"/>
+            <part name="ff_40.10h" crc="8075bab9" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ff_35.11f" crc="4a934121" map="10"/>
+            <part name="ff_41.11h" crc="2af68154" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="ff_23.13c" crc="b8367eb5"/>
         <!-- oki -->
         <part name="ff_30.12e" crc="375c66e7"/>
         <part name="ff_31.13e" crc="1ef137f9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ff_09.4b" crc="5b116d0d" />
-            <part name="ff_01.4a" crc="815b1797" />
-            <part name="ff_13.9b" crc="8721a7da" />
-            <part name="ff_05.9a" crc="d0fcd4b5" />
-            <part name="ff_24.5e" crc="a1ab607a" />
-            <part name="ff_17.5c" crc="2dc18cf4" />
-            <part name="ff_38.8h" crc="6535a57f" />
-            <part name="ff_32.8f" crc="c8bc4a57" />
-       </group>
-        <group width="64">
-            <part name="ff_10.5b" crc="624a924a" />
-            <part name="ff_02.5a" crc="5d91f694" />
-            <part name="ff_14.10b" crc="0a2e9101" />
-            <part name="ff_06.10a" crc="1c18f042" />
-            <part name="ff_25.7e" crc="6e8181ea" />
-            <part name="ff_18.7c" crc="b19ede59" />
-            <part name="ff_39.9h" crc="9416b477" />
-            <part name="ff_33.9f" crc="7369fa07" />
-       </group>
+        <interleave output="64">
+            <part name="ff_09.4b" crc="5b116d0d"  map="00000001"/>
+            <part name="ff_01.4a" crc="815b1797"  map="00000010"/>
+            <part name="ff_13.9b" crc="8721a7da"  map="00000100"/>
+            <part name="ff_05.9a" crc="d0fcd4b5"  map="00001000"/>
+            <part name="ff_24.5e" crc="a1ab607a"  map="00010000"/>
+            <part name="ff_17.5c" crc="2dc18cf4"  map="00100000"/>
+            <part name="ff_38.8h" crc="6535a57f"  map="01000000"/>
+            <part name="ff_32.8f" crc="c8bc4a57"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="ff_10.5b" crc="624a924a"  map="00000001"/>
+            <part name="ff_02.5a" crc="5d91f694"  map="00000010"/>
+            <part name="ff_14.10b" crc="0a2e9101"  map="00000100"/>
+            <part name="ff_06.10a" crc="1c18f042"  map="00001000"/>
+            <part name="ff_25.7e" crc="6e8181ea"  map="00010000"/>
+            <part name="ff_18.7c" crc="b19ede59"  map="00100000"/>
+            <part name="ff_39.9h" crc="9416b477"  map="01000000"/>
+            <part name="ff_33.9f" crc="7369fa07"  map="10000000"/>
+       </interleave>
        <!-- Mapper for ffight --> 
        <part> FF F3 44 40 07 </part>
        <!-- CPS-B config for ffightj2 --> 

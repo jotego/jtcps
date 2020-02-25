@@ -4,43 +4,43 @@
     <year>1992</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="sf2ce.zip|sf2m7.zip" md5="none">
+    <rom index="0" zip="sf2hack.zip|sf2m7.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="u196-2i" crc="f758408c"/>
-            <part name="u222-2i" crc="1ca7adbd"/>
-       </group>
-        <group width="16">
-            <part name="u196-2s" crc="9932832c"/>
-            <part name="u222-2s" crc="720cea3e"/>
-       </group>
-        <group width="16">
-            <part name="s92_21a.bin" crc="925a7877" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="u222-2i" crc="1ca7adbd" map="10"/>
+            <part name="u196-2i" crc="f758408c" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="u222-2s" crc="720cea3e" map="10"/>
+            <part name="u196-2s" crc="9932832c" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="s92_21a.bin" crc="925a7877" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="s92_09.bin" crc="08f6b60e"/>
         <!-- oki -->
         <part name="s92_18.bin" crc="7f162009"/>
         <part name="s92_19.bin" crc="beade53f"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="s92_01.bin" crc="03b0d852" pattern="01"/>
-            <part name="s92_02.bin" crc="840289ec" pattern="01"/>
-            <part name="s92_03.bin" crc="cdb5f027" pattern="01"/>
-            <part name="s92_04.bin" crc="e2799472" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="s92_05.bin" crc="ba8a2761" pattern="01"/>
-            <part name="s92_06.bin" crc="e584bfb5" pattern="01"/>
-            <part name="s92_07.bin" crc="21e3f87d" pattern="01"/>
-            <part name="s92_08.bin" crc="befc47df" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="s92_10.bin" crc="960687d5" pattern="01"/>
-            <part name="s92_11.bin" crc="978ecd18" pattern="01"/>
-            <part name="s92_12.bin" crc="d6ec9a0a" pattern="01"/>
-            <part name="s92_13.bin" crc="ed2c67f6" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="s92_01.bin" crc="03b0d852"  map="00000021"/>
+            <part name="s92_02.bin" crc="840289ec"  map="00002100"/>
+            <part name="s92_03.bin" crc="cdb5f027"  map="00210000"/>
+            <part name="s92_04.bin" crc="e2799472"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="s92_05.bin" crc="ba8a2761"  map="00000021"/>
+            <part name="s92_06.bin" crc="e584bfb5"  map="00002100"/>
+            <part name="s92_07.bin" crc="21e3f87d"  map="00210000"/>
+            <part name="s92_08.bin" crc="befc47df"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="s92_10.bin" crc="960687d5"  map="00000021"/>
+            <part name="s92_11.bin" crc="978ecd18"  map="00002100"/>
+            <part name="s92_12.bin" crc="d6ec9a0a"  map="00210000"/>
+            <part name="s92_13.bin" crc="ed2c67f6"  map="21000000"/>
+       </interleave>
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2m7 --> 

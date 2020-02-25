@@ -6,47 +6,47 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="unsquad.zip|area88.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="ar_42.12h" crc="c48170de"/>
-            <part name="ar_36.12f" crc="65030392"/>
-       </group>
-        <group width="16">
-            <part name="ar_43.13h" crc="7cc8fb9e"/>
-            <part name="ar_37.13f" crc="33e9694b"/>
-       </group>
-        <group width="16">
-            <part name="ar_40.10h" crc="be36c145"/>
-            <part name="ar_34.10f" crc="f6e80386"/>
-       </group>
-        <group width="16">
-            <part name="ar_41.11h" crc="758893d3"/>
-            <part name="ar_35.11f" crc="86d98ff3"/>
-       </group>
+        <interleave output="16">
+            <part name="ar_36.12f" crc="65030392" map="10"/>
+            <part name="ar_42.12h" crc="c48170de" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ar_37.13f" crc="33e9694b" map="10"/>
+            <part name="ar_43.13h" crc="7cc8fb9e" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ar_34.10f" crc="f6e80386" map="10"/>
+            <part name="ar_40.10h" crc="be36c145" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="ar_35.11f" crc="86d98ff3" map="10"/>
+            <part name="ar_41.11h" crc="758893d3" map="01"/>
+       </interleave>
         <!-- audiocpu -->
         <part name="ar_23.13c" crc="f3dd1367"/>
         <!-- oki -->
         <part name="ar_30.12e" crc="584b43a9"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="ar_09.4b" crc="db9376f8" />
-            <part name="ar_01.4a" crc="392151b4" />
-            <part name="ar_13.9b" crc="81436481" />
-            <part name="ar_05.9a" crc="e246ed9f" />
-            <part name="ar_24.5e" crc="9cd6e2a3" />
-            <part name="ar_17.5c" crc="0b8e0df4" />
-            <part name="ar_38.8h" crc="8b9e75b9" />
-            <part name="ar_32.8f" crc="db6acdcf" />
-       </group>
-        <group width="64">
-            <part name="ar_10.5b" crc="4219b622" />
-            <part name="ar_02.5a" crc="bac5dec5" />
-            <part name="ar_14.10b" crc="e6bae179" />
-            <part name="ar_06.10a" crc="c8f04223" />
-            <part name="ar_25.7e" crc="15ccf981" />
-            <part name="ar_18.7c" crc="9336db6a" />
-            <part name="ar_39.9h" crc="9b8e1363" />
-            <part name="ar_33.9f" crc="3968f4b5" />
-       </group>
+        <interleave output="64">
+            <part name="ar_09.4b" crc="db9376f8"  map="00000001"/>
+            <part name="ar_01.4a" crc="392151b4"  map="00000010"/>
+            <part name="ar_13.9b" crc="81436481"  map="00000100"/>
+            <part name="ar_05.9a" crc="e246ed9f"  map="00001000"/>
+            <part name="ar_24.5e" crc="9cd6e2a3"  map="00010000"/>
+            <part name="ar_17.5c" crc="0b8e0df4"  map="00100000"/>
+            <part name="ar_38.8h" crc="8b9e75b9"  map="01000000"/>
+            <part name="ar_32.8f" crc="db6acdcf"  map="10000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="ar_10.5b" crc="4219b622"  map="00000001"/>
+            <part name="ar_02.5a" crc="bac5dec5"  map="00000010"/>
+            <part name="ar_14.10b" crc="e6bae179"  map="00000100"/>
+            <part name="ar_06.10a" crc="c8f04223"  map="00001000"/>
+            <part name="ar_25.7e" crc="15ccf981"  map="00010000"/>
+            <part name="ar_18.7c" crc="9336db6a"  map="00100000"/>
+            <part name="ar_39.9h" crc="9b8e1363"  map="01000000"/>
+            <part name="ar_33.9f" crc="3968f4b5"  map="10000000"/>
+       </interleave>
        <!-- Mapper for unsquad --> 
        <part> FF 31 44 20 1E </part>
        <!-- CPS-B config for area88 --> 

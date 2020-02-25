@@ -4,32 +4,32 @@
     <year>1999</year>
     <manufacturer>bootleg</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="wof.zip|wofhfh.zip" md5="none">
+    <rom index="0" zip="wofhfh.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="23" crc="6ae4b312" pattern ="01"/>
-        </group>
-        <group width="16">
-            <part name="22" crc="94e8d01a" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="23" crc="6ae4b312" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="22" crc="94e8d01a" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="9" crc="86fe8a97"/>
         <!-- oki -->
         <part name="18" crc="c04be720"/>
         <part name="19" crc="fbb8d8c1"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="1" crc="0d9cb9bf" pattern="01"/>
-            <part name="2" crc="45227027" pattern="01"/>
-            <part name="3" crc="c5ca2460" pattern="01"/>
-            <part name="4" crc="e349551c" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="5" crc="34949d7b" pattern="01"/>
-            <part name="6" crc="dfa70971" pattern="01"/>
-            <part name="7" crc="073686a6" pattern="01"/>
-            <part name="8" crc="5300f8db" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="1" crc="0d9cb9bf"  map="00000021"/>
+            <part name="2" crc="45227027"  map="00002100"/>
+            <part name="3" crc="c5ca2460"  map="00210000"/>
+            <part name="4" crc="e349551c"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="5" crc="34949d7b"  map="00000021"/>
+            <part name="6" crc="dfa70971"  map="00002100"/>
+            <part name="7" crc="073686a6"  map="00210000"/>
+            <part name="8" crc="5300f8db"  map="21000000"/>
+       </interleave>
        <!-- Mapper for wof --> 
        <part> FF 73 88 40 21 </part>
        <!-- CPS-B config for wofhfh --> 

@@ -42,23 +42,25 @@ struct tiny_rom_entry
 
 class game_entry{
 public:
-    std::string year, name, parent, full_name, mfg;
+    std::string year, name, parent, full_name, mfg, zipfile;
     const tiny_rom_entry *roms;
-    game_entry( const char * y, const char * n, const char *p, const char *fn, const char *m, const tiny_rom_entry *_roms);
+    game_entry( const char * y, const char * n, const char *p, const char *zf, const char *fn, const char *m, const tiny_rom_entry *_roms);
 };
 
-game_entry::game_entry( const char * y, const char * n, const char *p, const char *fn, const char *m, const tiny_rom_entry *_roms) {
+game_entry::game_entry( const char * y, const char * n, const char *p, const char *zf, const char *fn, const char *m, const tiny_rom_entry *_roms) {
     year = y;
     name = n;
     parent = p;
+    zipfile = zf;
     mfg = m;
     full_name = fn;
     roms =_roms;
     gl.push_back( this );
 }
 
-//GAME( 1988, forgottn,    0,        forgottn,   forgottn, cps_state, init_cps1,     ROT0,   "Capcom", "Forgotten Worlds (World, newer)", MACHINE_SUPPORTS_SAVE )  // (c) Capcom U.S.A. but World "warning"
-#define GAME( year, name,  parent,        ignore0,   ignore1, ignore2, ignore3,     orientation,   mfg, full_name, ignore4 ) game_entry game_##name ( #year, #name, #parent, full_name, mfg, rom_##name );
+//GAME(       1988, forgottn,  0,        forgottn,   forgottn, cps_state, init_cps1,     ROT0,   "Capcom", "Forgotten Worlds (World, newer)", MACHINE_SUPPORTS_SAVE )  // (c) Capcom U.S.A. but World "warning"
+//GAME(       1988, daimakai,  ghouls,   cps1_10MHz, daimakai, cps_state, init_cps1,     ROT0,   "Capcom", "Daimakaimura (Japan)", MACHINE_SUPPORTS_SAVE )              // Wed.26.10.1988 in the ROMs
+#define GAME( year, name,      parent,   ignore0,   zipfile, ignore2, ignore3,     orientation,   mfg, full_name, ignore4 ) game_entry game_##name ( #year, #name, #parent, #zipfile, full_name, mfg, rom_##name );
 
 /***************************************************************************
 CONSTANTS

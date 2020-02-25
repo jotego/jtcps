@@ -6,35 +6,35 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="strider.zip" md5="none">
         <!-- maincpu -->
-        <group width="16">
-            <part name="35.11h" crc="5463aaa3"/>
-            <part name="30.11f" crc="da997474"/>
-       </group>
-        <group width="16">
-            <part name="36.12h" crc="21aa2863"/>
-            <part name="31.12f" crc="d20786db"/>
-       </group>
-        <group width="16">
-            <part name="st-14.8h" crc="9b3cfc08" pattern ="01"/>
-        </group>
+        <interleave output="16">
+            <part name="30.11f" crc="da997474" map="10"/>
+            <part name="35.11h" crc="5463aaa3" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="31.12f" crc="d20786db" map="10"/>
+            <part name="36.12h" crc="21aa2863" map="01"/>
+       </interleave>
+        <interleave output="16">
+            <part name="st-14.8h" crc="9b3cfc08" map="21"/>
+        </interleave>
         <!-- audiocpu -->
         <part name="09.12b" crc="2ed403bc"/>
         <!-- oki -->
         <part name="18.11c" crc="4386bc80"/>
         <part name="19.12c" crc="444536d7"/>
         <!-- gfx -->
-        <group width="64">
-            <part name="st-2.8a" crc="4eee9aea" pattern="01"/>
-            <part name="st-11.10a" crc="2d7f21e4" pattern="01"/>
-            <part name="st-5.4a" crc="7705aa46" pattern="01"/>
-            <part name="st-9.6a" crc="5b18b722" pattern="01"/>
-       </group>
-        <group width="64">
-            <part name="st-1.7a" crc="005f000b" pattern="01"/>
-            <part name="st-10.9a" crc="b9441519" pattern="01"/>
-            <part name="st-4.3a" crc="b7d04e8b" pattern="01"/>
-            <part name="st-8.5a" crc="6b4713b4" pattern="01"/>
-       </group>
+        <interleave output="64">
+            <part name="st-2.8a" crc="4eee9aea"  map="00000021"/>
+            <part name="st-11.10a" crc="2d7f21e4"  map="00002100"/>
+            <part name="st-5.4a" crc="7705aa46"  map="00210000"/>
+            <part name="st-9.6a" crc="5b18b722"  map="21000000"/>
+       </interleave>
+        <interleave output="64">
+            <part name="st-1.7a" crc="005f000b"  map="00000021"/>
+            <part name="st-10.9a" crc="b9441519"  map="00002100"/>
+            <part name="st-4.3a" crc="b7d04e8b"  map="00210000"/>
+            <part name="st-8.5a" crc="6b4713b4"  map="21000000"/>
+       </interleave>
        <!-- Mapper for strider --> 
        <part> FF 73 88 40 1D </part>
        <!-- CPS-B config for strider --> 
