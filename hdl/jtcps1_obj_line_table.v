@@ -181,6 +181,7 @@ always @(posedge clk, posedge rst) begin
                     obj_attr   <= frame_data;
                     wait_cycle <= 3'b011; // leave it ready for next round
                     mapper_en  <= 1'b1;
+                    if( frame_data == 16'hff00 ) st<=10; // end of valid table entries
                 end else st<=1;
                 if(last_tile) begin                    
                     st   <= 10; // fill
