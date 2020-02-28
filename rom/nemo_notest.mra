@@ -17,6 +17,7 @@
         <interleave output="16">
             <part name="nm-32m.8h" crc="d6d1add3" map="21"/>
         </interleave>
+        <patch offset="0x63c"> C6 01 </patch>
         <!-- audiocpu -->
         <part name="nme_09.12b" crc="0f4b0581"/>
         <!-- oki -->

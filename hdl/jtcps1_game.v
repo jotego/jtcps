@@ -358,9 +358,9 @@ always @(posedge VB) begin
         default: fake_latch <= 8'hff;
         */
         // Nemo
-        FAKE0: fake_latch <= 8'h0;
-        FAKE0+1: fake_latch <= 8'h2;
-        FAKE0+2: fake_latch <= 8'h0;
+        FAKE0: fake_latch <= 8'h2;
+        //FAKE0+1: fake_latch <= 8'h2;
+        //FAKE0+2: fake_latch <= 8'h0;
 
         FAKE1: fake_latch <= 8'h0;
         FAKE1+1: fake_latch <= 8'h4;

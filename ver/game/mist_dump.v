@@ -52,17 +52,24 @@ module mist_dump(
         `else
             $display("NC Verilog: will dump selected signals");
             $shm_probe(frame_cnt);
-            //$shm_probe(UUT.u_game.u_main, "A");
             //$shm_probe(UUT.u_game.u_prom_we, "A");
             //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
             `ifdef FAKE_LATCH
-            //$shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
+            $shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_rom, "A");
+            $shm_probe(UUT.u_game.u_sound.u_adpcm.u_ctrl, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_serial, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
-            //$shm_probe(UUT.u_game.u_sound.u_jt51.timers, "AS");
+            $shm_probe(UUT.u_game.u_sound.u_cpu, "A");
+            $shm_probe(UUT.u_game.u_sound.u_cpu.u_wait, "A");
+            $shm_probe(UUT.u_game.u_sound.u_jt51.timers, "AS");
+            $shm_probe(UUT.u_game.u_sound.u_jt51.u_mmr, "AS");
+            `else
+            $shm_probe(UUT.u_game.u_main, "A");
+            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
+            $shm_probe(UUT.u_game.u_video.u_colmix, "A");
             `endif
-            //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
-            //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
