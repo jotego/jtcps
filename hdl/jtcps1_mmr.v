@@ -182,10 +182,6 @@ end
     // Ghouls  F1 17 65 40 0A
     // Strider FF 77 00 40 1D 
     `endif
-
-    initial begin
-        regs = { `CPSB_CONFIG };
-    end
 `endif
 
 always@(posedge clk) begin
@@ -214,8 +210,12 @@ reg  pre_copy;
 `endif
 
 `ifdef MMR_FILE
-reg [15:0] mmr_regs[0:10];
+reg [15:0] mmr_regs[0:12];
 initial begin
+    regs = { `CPSB_CONFIG };
+    // $display("CPSB_CONFIG = %X", regs );
+    $display("Layer control address: %X", `MMR(6) );
+    $display("Palette page  address: %X", `MMR(11));    
     $display("INFO: MMR initial values read from %s", `MMR_FILE );
     $readmemh(`MMR_FILE,mmr_regs);
     vram_obj_base  = mmr_regs[0];
@@ -229,7 +229,8 @@ initial begin
     vpos2          = mmr_regs[8];
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
-    layer_ctrl     = 16'h12ce; // default
+    layer_ctrl     = mmr_regs[11]; //16'h12ce; // default
+    pal_page_en    = mmr_regs[12];
     // Default layer order = 4B = 01 00 10 11
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider

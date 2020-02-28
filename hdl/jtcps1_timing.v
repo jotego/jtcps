@@ -60,9 +60,8 @@ always @(posedge clk) if(cen8) begin
     preVB  <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
     HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     // original HS reported to last for 36 clock ticks
-    // I'm using 32 for simplicity
-    if( hdump== 9'h1E0 ) HS <= 1'b1;
-    if( hdump== 9'h020 ) HS <= 1'b0;
+    if( hdump== 9'h1dc ) HS <= 1'b1;
+    if( hdump== 9'h000 ) HS <= 1'b0;
     start  <= hdump==9'h1ff;
     if(&hdump) begin
         hdump   <= 9'd0;
