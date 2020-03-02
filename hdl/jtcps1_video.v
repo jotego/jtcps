@@ -125,6 +125,8 @@ wire       [ 5:0]  game;
 wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
+wire               obj_dma_ok, obj_dma_clr;
+
 jtcps1_timing u_timing(
     .rst            ( rst               ),
     .clk            ( clk               ),
@@ -171,6 +173,10 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .hstar2         ( hstar2            ),
     .vstar1         ( vstar1            ),
     .vstar2         ( vstar2            ),
+
+    // OBJ DMA
+    .obj_dma_ok    ( obj_dma_ok       ),
+    .obj_dma_clr   ( obj_dma_clr      ),
 
     // ROM banks
     .game           ( game              ),
@@ -268,7 +274,10 @@ jtcps1_obj u_obj(
     .pxl_cen    ( pxl_cen       ),
 
     // input              HB,
-    .VB         ( VB            ),
+    //.VB         ( VB            ),
+
+    .obj_dma_ok    ( obj_dma_ok   ),
+    .obj_dma_clr   ( obj_dma_clr  ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),

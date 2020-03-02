@@ -22,7 +22,8 @@ module jtcps1_obj_table(
     input              rst,
     input              clk,
 
-    input              VB,
+    output reg         obj_dma_clr,
+    input              obj_dma_ok,
 
     // control registers
     input      [15:0]  vram_base,
@@ -36,7 +37,7 @@ module jtcps1_obj_table(
     output reg [15:0]  table_data
 );
 
-reg frame, frame_n, last_VB, st;
+reg frame, frame_n, st;
 reg [ 9:0] wr_addr;
 reg [15:0] wr_data;
 reg        wr_en;
@@ -81,8 +82,8 @@ always @(posedge clk, posedge rst) begin
         st        <= 0;
         vram_cs   <= 1'b0;
         vram_addr <= 17'd0;
+        obj_dma_clr <= 1'b0;
     end else begin
-        last_VB <= VB;
         case( st )
             0: begin
                 vram_addr  <= {vram_base[9:1], 8'd0};
@@ -90,14 +91,16 @@ always @(posedge clk, posedge rst) begin
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
                 wait_cycle <= 1'b1;
-                if( !VB && last_VB ) begin // start of new frame, after blanking
+                if( obj_dma_ok ) begin // start of new frame, after blanking
                     vram_cs   <= 1'b1;
                     frame     <= ~frame;
                     frame_n   <=  frame;
                     st        <= 1;
+                    obj_dma_clr <= 1'b1;
                 end else st<=0;
             end
             1: begin
+                obj_dma_clr <= 1'b0;
                 wait_cycle <= 1'b0;
                 if(vram_ok && !wait_cycle) begin
                     vram_addr  <= vram_addr + 17'd1;

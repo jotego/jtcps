@@ -36,6 +36,8 @@ module jtcps1_mmr(
     output  reg [15:0] mmr_dout,
     // registers
     output reg [15:0]  ppu_ctrl,
+    input              obj_dma_clr,
+    output reg         obj_dma_ok,
     // Scroll
     output reg [15:0]  hpos1,
     output reg [15:0]  hpos2,
@@ -270,6 +272,7 @@ always @(posedge clk, posedge reg_rst) begin
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
         mmr_dout      <= 16'hffff;
+        obj_dma_ok    <= 1'b0;
     end else begin
         if( !ppu1_cs && pre_copy ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down
@@ -279,10 +282,14 @@ always @(posedge clk, posedge reg_rst) begin
             pre_copy <= 1'b0;
         end
         else pal_copy <= 1'b0;
+        if( obj_dma_clr ) obj_dma_ok <= 1'b0;
         if( ppu1_cs ) begin
             case( addr[5:1] )
                 // CPS-A registers
-                5'h00: vram_obj_base <= data_sel(vram_obj_base , cpu_dout, dsn);
+                5'h00: begin
+                    vram_obj_base <= data_sel(vram_obj_base , cpu_dout, dsn);
+                    obj_dma_ok   <= 1'b1;
+                end
                 5'h01: vram1_base    <= data_sel(vram1_base    , cpu_dout, dsn);
                 5'h02: vram2_base    <= data_sel(vram2_base    , cpu_dout, dsn);
                 5'h03: vram3_base    <= data_sel(vram3_base    , cpu_dout, dsn);

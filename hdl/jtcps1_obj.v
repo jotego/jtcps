@@ -24,7 +24,9 @@ module jtcps1_obj(
     input              pxl_cen,
 
     // input              HB,
-    input              VB,
+
+    output             obj_dma_clr,
+    input              obj_dma_ok,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
@@ -61,13 +63,13 @@ wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
 
 jtcps1_obj_table u_table(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .VB         ( VB            ),
-
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .obj_dma_clr    ( obj_dma_clr   ), 
+    .obj_dma_ok     ( obj_dma_ok    ), 
     // OBJ renderization
-    .table_addr ( frame_addr    ),
-    .table_data ( frame_data    ),
+    .table_addr     ( frame_addr    ),
+    .table_data     ( frame_data    ),
 
     // VRAM
     .vram_base  ( vram_base     ),

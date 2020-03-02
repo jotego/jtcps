@@ -36,6 +36,7 @@ module jtcps1_game(
     input   [ 1:0]  coin_input,
     input   [ 7:0]  joystick1,
     input   [ 7:0]  joystick2,
+    //input   [ 7:0]  joystick3,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
