@@ -56,15 +56,15 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
             `ifdef FAKE_LATCH
-            $shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_rom, "A");
             $shm_probe(UUT.u_game.u_sound.u_adpcm.u_ctrl, "A");
-            //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_serial, "A");
+            $shm_probe(UUT.u_game.u_sound.u_adpcm.u_serial, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
             $shm_probe(UUT.u_game.u_sound.u_cpu, "A");
-            $shm_probe(UUT.u_game.u_sound.u_cpu.u_wait, "A");
-            $shm_probe(UUT.u_game.u_sound.u_jt51.timers, "AS");
-            $shm_probe(UUT.u_game.u_sound.u_jt51.u_mmr, "AS");
+            //$shm_probe(UUT.u_game.u_sound.u_cpu.u_wait, "AS");
+            //$shm_probe(UUT.u_game.u_sound.u_jt51.u_timers, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_jt51.u_mmr, "A");
             `else
             $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_video.u_mmr, "A");

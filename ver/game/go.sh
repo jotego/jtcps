@@ -70,4 +70,4 @@ echo "Game ROM length: " $GAME_ROM_LEN
     -d BUTTONS=4 \
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \
     -videow 384 -videoh 224 \
-    $OTHER -video 
+    $OTHER
