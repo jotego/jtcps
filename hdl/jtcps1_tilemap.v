@@ -181,13 +181,10 @@ always @(posedge clk or posedge rst) begin
             60:;
             61: begin
                 if( vram_ok) begin
-                    hn       <= 
-                          size[0] ? { vram_data[10:3], 3'b0 } :
-                        ( size[1] ? { vram_data[10:4], 4'b0 } : { vram_data[10:5], 5'b0 } );
-                    buf_addr <= 9'h1ff- (
-                        size[0] ? {2'b0, vram_data[2:0]} : (size[1] ? {1'b0,vram_data[3:0]} : vram_data[4:0]) );
-                    vram_cs <= 1'b0;
-                    st <= 1; // continue with normal operation
+                    hn       <= { vram_data[10:4], 4'b0 };
+                    buf_addr <= 9'h1ff- {1'b0,vram_data[3:0]};
+                    vram_cs  <= 1'b0;
+                    st       <= 1; // continue with normal operation
                 end else st<=st;
             end
             ///////////////////////
