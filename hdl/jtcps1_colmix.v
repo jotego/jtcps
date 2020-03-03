@@ -319,25 +319,5 @@ always @(posedge clk, posedge rst) begin
         end
     end
 end
-/*
-`ifdef SIMULATION
-integer fvideo;
-initial begin
-    fvideo = $fopen("video_colmix.raw","wb");
-end
 
-wire [31:0] video_dump = { 8'hff, {2{raw_r}}, {2{raw_g}}, {2{raw_b}} };
-
-// Define VIDEO_START with the first frame number for which
-// video will be dumped. If undefined, it will start from frame 0
-`ifndef VIDEO_START
-`define VIDEO_START 0
-`endif
-
-always @(posedge clk) if(pxl_cen) begin
-    if( LVBL_dly && LHBL_dly ) $fwrite(fvideo,"%u", video_dump);
-end
-
-`endif
-*/
 endmodule

@@ -170,7 +170,7 @@ always @(posedge clk or posedge rst) begin
                 done     <= 1'b0;
                 if(!start) begin
                     st   <= 0;
-                end else if( row_en ) begin
+                end else if( row_en && size[1] ) begin
                     vram_addr <= vram_row;
                     vram_cs   <= 1'b1;
                     st        <= 60;
@@ -181,6 +181,9 @@ always @(posedge clk or posedge rst) begin
             60:;
             61: begin
                 if( vram_ok) begin
+                    //`ifdef SIMULATION
+                    //$display("Row scroll: %X -> %X", vram_row, vram_data );
+                    //`endif
                     hn       <= { vram_data[10:4], 4'b0 };
                     buf_addr <= 9'h1ff- {1'b0,vram_data[3:0]};
                     vram_cs  <= 1'b0;
@@ -226,11 +229,6 @@ always @(posedge clk or posedge rst) begin
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= { group, pal, unmapped ? 4'hf : colour(pxl_data, hflip) };
                 pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
-                if( buf_addr == 9'd447 ) begin
-                    buf_wr <= 1'b0;
-                    done   <= 1'b1;
-                    st     <= 6'd0;
-                end
             end
             15: begin
                 buf_wr <= 1'b0;
@@ -264,9 +262,17 @@ always @(posedge clk or posedge rst) begin
                 st     <= 6'd2; // 32x tile done
             end
         endcase
-        if( stop ) begin
-            done <= 1'b1;
-            st   <= 6'd0;
+        if( stop || buf_addr == 9'd447 ) begin
+            // it is important to set vram_cs as soon as possible
+            // in order to avoid the SDRAM controller to be processing
+            // a request at the time the scroll controller moves to
+            // the SCROLL 2 layer, as this could prevent the row scroll
+            // values from reading correctly
+            buf_addr<= 9'd0;
+            buf_wr  <= 1'b0;
+            done    <= 1'b1;
+            st      <= 6'd0;
+            vram_cs <= 1'b0;
         end
     end
 end

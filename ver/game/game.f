@@ -34,3 +34,5 @@
 # Clocking
 ../../modules/jtframe/hdl/clocking/jtframe_cen48.v
 ../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v
+# Other
+../../modules/jtframe/hdl/jtframe_sh.v

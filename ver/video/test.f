@@ -3,6 +3,7 @@
 ../../modules/jtframe/hdl/sdram/jtframe_ram_rq.v
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
 ../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
+../../modules/jtframe/hdl/jtframe_sh.v
 ../../hdl/jtcps1_video.v
 ../../hdl/jtcps1_timing.v
 ../../hdl/jtcps1_scroll.v

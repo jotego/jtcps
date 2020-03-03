@@ -213,7 +213,7 @@ always @(posedge clk, posedge rst) begin
             case( st )
                 3'b001: begin
                     if( sub_done ) begin
-                        vram_row  <= { vram_row_base[9:1], 8'd0 } + { 2'd0, row_offset[15:1] } + { 7'd0, vrender, 1'b0 };
+                        vram_row  <= { vram_row_base[9:1], 8'd0 } + { 7'd0, row_offset[9:0] + vrender };
                         hpos      <= hpos2;
                         vpos      <= vpos2;
                         vram_base <= vram2_base;

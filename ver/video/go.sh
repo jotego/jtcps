@@ -39,6 +39,7 @@ while [ $# -gt 0 ]; do
             echo "-noscale: keep pixel perfect output"
             echo "-ar: resize for correct aspect ratio"
             echo "-d: add verilog macro"
+            echo -e "\nExample:\n\tgo.sh -g sf2 -s 2"
             exit 0;;
         *) echo "ERROR: unknown argument $1"; exit 1;;
     esac

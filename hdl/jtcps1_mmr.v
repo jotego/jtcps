@@ -212,7 +212,7 @@ reg  pre_copy;
 `endif
 
 `ifdef MMR_FILE
-reg [15:0] mmr_regs[0:12];
+reg [15:0] mmr_regs[0:15];
 initial begin
     regs = { `CPSB_CONFIG };
     // $display("CPSB_CONFIG = %X", regs );
@@ -233,6 +233,9 @@ initial begin
     vpos3          = mmr_regs[10];
     layer_ctrl     = mmr_regs[11]; //16'h12ce; // default
     pal_page_en    = mmr_regs[12];
+    vram_row_base  = mmr_regs[13];
+    row_offset     = mmr_regs[14];
+    ppu_ctrl       = mmr_regs[15];
     // Default layer order = 4B = 01 00 10 11
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider
