@@ -141,6 +141,7 @@ function [3:0] colour;
 endfunction
 
 wire [17:1] aux_addr = { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
+wire [15:0] row_hpos = hpos + vram_data;
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
@@ -171,21 +172,24 @@ always @(posedge clk or posedge rst) begin
                 if(!start) begin
                     st   <= 0;
                 end else if( row_en && size[1] ) begin
-                    vram_addr <= vram_row;
-                    vram_cs   <= 1'b1;
-                    st        <= 60;
+                    st <= 53;
                 end
             end
             ///////////////////////
             // Row scroll
-            60:;
-            61: begin
+            53:; // give extra time in case the SDRAM controller is processing
+            // a request from the previous scroll layer
+            62: begin
+                vram_addr <= vram_row;
+                vram_cs   <= 1'b1;
+            end
+            63: begin
                 if( vram_ok) begin
                     //`ifdef SIMULATION
                     //$display("Row scroll: %X -> %X", vram_row, vram_data );
                     //`endif
-                    hn       <= { vram_data[10:4], 4'b0 };
-                    buf_addr <= 9'h1ff- {1'b0,vram_data[3:0]};
+                    hn       <= { row_hpos[10:4], 4'b0 };
+                    buf_addr <= 9'h1ff- {1'b0,row_hpos[3:0]};
                     vram_cs  <= 1'b0;
                     st       <= 1; // continue with normal operation
                 end else st<=st;

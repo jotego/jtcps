@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <iomanip>
+#include <algorithm>
 
 #include "config.h"
 
@@ -319,7 +320,12 @@ void generate_mra( game_entry* game ) {
     ofhex << s;
     ofhex.close();
     
-    ofhex.open( game->name+".mra" );
+    string mra_name=game->full_name;
+    replace(mra_name.begin(),mra_name.end(),'(','-');
+    replace(mra_name.begin(),mra_name.end(),')','-');
+    replace(mra_name.begin(),mra_name.end(),':',' ');
+    replace(mra_name.begin(),mra_name.end(),'?',' ');
+    ofhex.open( mra_name+".mra" );
     ofhex << mras.str();
     ofhex.close();
 
