@@ -283,18 +283,21 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-reg vb1, hb1;
+wire vb1, hb1;
+
+jtframe_sh #(.width(2),.stages(3)) u_sh(
+    .clk    ( clk           ),
+    .clk_en ( pxl_cen       ),
+    .din    ( {VB, HB}      ),
+    .drop   ( {vb1, hb1}    )
+);
 
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         red   <= 8'd0;
         green <= 8'd0;
         blue  <= 8'd0;
-        vb1   <= 1'b1;
-        hb1   <= 1'b1;
     end else if(pxl_cen) begin
-        vb1   <= VB;
-        hb1   <= HB;
         LVBL_dly <= ~vb1;
         LHBL_dly <= ~hb1;
         // signal * 17 - signal*15/4 = signal * (17-15/4-15/8)

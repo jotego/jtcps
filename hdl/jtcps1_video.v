@@ -112,7 +112,7 @@ wire            line_start, preVB;
 // Scroll
 wire       [15:0]  hpos1, hpos2, hpos3, vpos1, vpos2, vpos3, hstar1, hstar2, vstar1, vstar2;
 // VRAM position
-wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_base, vram_star_base;
+wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_base, row_offset;
 // Layer priority
 wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
 wire       [ 7:0]  layer_mask0, layer_mask1, layer_mask2, layer_mask3, layer_mask4;
@@ -189,7 +189,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .vram3_base     ( vram3_base        ),
     .vram_obj_base  ( vram_obj_base     ),
     .vram_row_base  ( vram_row_base     ),
-    .vram_star_base ( vram_star_base    ),
+    .row_offset     ( row_offset        ),
     .pal_base       ( pal_base          ),
     .pal_copy       ( pal_copy          ),
 
@@ -234,6 +234,11 @@ jtcps1_scroll u_scroll(
     .vram3_base ( vram3_base    ),
     .hpos3      ( hpos3         ),
     .vpos3      ( vpos3         ),
+
+    // Row Scroll
+    .vram_row_base  ( vram_row_base ),
+    .row_offset     ( row_offset    ),
+    .row_en         ( ppu_ctrl[0]   ),
 
     // ROM banks
     .game       ( game          ),

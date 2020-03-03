@@ -63,7 +63,7 @@ module jtcps1_mmr(
     output reg [15:0]  vram3_base,
     output reg [15:0]  vram_obj_base,
     output reg [15:0]  vram_row_base,
-    output reg [15:0]  vram_star_base,
+    output reg [15:0]  row_offset,
     output reg [15:0]  pal_base,
     output reg         pal_copy,
 
@@ -299,18 +299,18 @@ always @(posedge clk, posedge reg_rst) begin
                     pre_copy      <= 1'b1;
                     //$display("PALETTE!");
                 end
-                5'h06: hpos1         <= data_sel(hpos1         , cpu_dout, dsn);
-                5'h07: vpos1         <= data_sel(vpos1         , cpu_dout, dsn);
-                5'h08: hpos2         <= data_sel(hpos2         , cpu_dout, dsn);
-                5'h09: vpos2         <= data_sel(vpos2         , cpu_dout, dsn);
-                5'h0a: hpos3         <= data_sel(hpos3         , cpu_dout, dsn);
-                5'h0b: vpos3         <= data_sel(vpos3         , cpu_dout, dsn);
-                5'h0c: hstar1        <= data_sel(hstar1        , cpu_dout, dsn);
-                5'h0d: vstar1        <= data_sel(vstar1        , cpu_dout, dsn);
-                5'h0e: hstar2        <= data_sel(hstar2        , cpu_dout, dsn);
-                5'h0f: vstar2        <= data_sel(vstar2        , cpu_dout, dsn);
-                5'h10: vram_star_base<= data_sel(vram_star_base, cpu_dout, dsn);
-                5'h11: ppu_ctrl      <= data_sel(ppu_ctrl      , cpu_dout, dsn);
+                5'h06: hpos1      <= data_sel(hpos1     , cpu_dout, dsn);
+                5'h07: vpos1      <= data_sel(vpos1     , cpu_dout, dsn);
+                5'h08: hpos2      <= data_sel(hpos2     , cpu_dout, dsn);
+                5'h09: vpos2      <= data_sel(vpos2     , cpu_dout, dsn);
+                5'h0a: hpos3      <= data_sel(hpos3     , cpu_dout, dsn);
+                5'h0b: vpos3      <= data_sel(vpos3     , cpu_dout, dsn);
+                5'h0c: hstar1     <= data_sel(hstar1    , cpu_dout, dsn);
+                5'h0d: vstar1     <= data_sel(vstar1    , cpu_dout, dsn);
+                5'h0e: hstar2     <= data_sel(hstar2    , cpu_dout, dsn);
+                5'h0f: vstar2     <= data_sel(vstar2    , cpu_dout, dsn);
+                5'h10: row_offset <= data_sel(row_offset, cpu_dout, dsn);
+                5'h11: ppu_ctrl   <= data_sel(ppu_ctrl  , cpu_dout, dsn);
             endcase
         end
         if( ppu2_cs ) begin

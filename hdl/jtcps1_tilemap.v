@@ -33,6 +33,10 @@ module jtcps1_tilemap(
     input      [15:0]  hpos,
     input      [15:0]  vpos,
 
+    // Row scroll
+    input      [17:1]  vram_row,
+    input              row_en,
+
     input              start,
     input              stop,
     output reg         done,
@@ -166,8 +170,27 @@ always @(posedge clk or posedge rst) begin
                 done     <= 1'b0;
                 if(!start) begin
                     st   <= 0;
+                end else if( row_en ) begin
+                    vram_addr <= vram_row;
+                    vram_cs   <= 1'b1;
+                    st        <= 60;
                 end
             end
+            ///////////////////////
+            // Row scroll
+            60:;
+            61: begin
+                if( vram_ok) begin
+                    hn       <= 
+                          size[0] ? { vram_data[10:3], 3'b0 } :
+                        ( size[1] ? { vram_data[10:4], 4'b0 } : { vram_data[10:5], 5'b0 } );
+                    buf_addr <= 9'h1ff- (
+                        size[0] ? {2'b0, vram_data[2:0]} : (size[1] ? {1'b0,vram_data[3:0]} : vram_data[4:0]) );
+                    vram_cs <= 1'b0;
+                    st <= 1; // continue with normal operation
+                end else st<=st;
+            end
+            ///////////////////////
             1: begin
                 vram_addr <= aux_addr;
                 vram_cs   <= 1'b1;
