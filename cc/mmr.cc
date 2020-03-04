@@ -336,22 +336,37 @@ void generate_mra( game_entry* game ) {
 }
 
 int main(int argc, char *argv[]) {
-    bool game_list=false, parents_only=false;
+    bool game_list=false, parents_only=true;
     string game_name;
     for( int k=1; k<argc; k++ ) {
         if( string(argv[k])=="-list" )  { game_list=true; continue; }
         if( string(argv[k])=="-parent" ) { parents_only=true; continue; }
+        if( string(argv[k])=="-alt" ) { parents_only=false; continue; }
+        if( string(argv[k])=="-h" ) {
+            cout << "-list      to produce only the game list\n";
+            cout << "-parent    to produce only output for parent games (default)\n";
+            cout << "-alt       to produce output for all games\n";
+            cout << "-h         shows this message\n";
+            return 0;
+        }
+        if( argv[k][0] == '-' ) {
+            cout << "ERROR: unknown argument " << argv[k] << '\n';
+            return 1;
+        }
         game_name = argv[k];
     }
+    int cnt=0;
     for( auto game : gl ) {
+        if( parents_only && game->parent!="0" ) continue;
         if( game_list ) {
-            if( !parents_only || game->parent=="0" )
                 cout << game->name << '\n';
         } else {
             if( !game_name.length() || game->name == game_name )
-                generate_mra( game );            
+                generate_mra( game );
+                cnt++;
         }
     }
+    cout << cnt << " games.\n";
 }
 
 
