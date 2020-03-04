@@ -82,6 +82,16 @@ localparam [21:0] vram_offset  = 22'h3B_0000;
 wire [21:0] gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 
+reg  last_VB;
+wire ppu1_cs = !last_VB && VB; // produce an OBJ DMA event at VB flank
+// The first frame will start with the OBJ data from VRAM without filtering
+// as read from the obj.bin file. From the second frame on, the DMA process
+// decides the contents of the OBJ buffer.
+
+always @(posedge clk) begin
+    last_VB <= VB;
+end
+
 jtcps1_video UUT (
     .rst            ( rst           ),
     .clk            ( clk           ),
@@ -109,8 +119,12 @@ jtcps1_video UUT (
 
     // CPU interface
     .ppu_rstn       ( 1'b1          ),
-    .ppu1_cs        ( 1'b0          ),
+    .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( 1'b0          ),
+    .addr           ( 5'd0          ),
+    .dsn            ( 2'b10         ),      // data select, active low
+    .cpu_dout       ( 16'h0         ),
+
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),

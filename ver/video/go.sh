@@ -73,13 +73,17 @@ dd if=vram.bin of=vram_sw.bin conv=swab
 # Palette
 dd if=vram.bin of=pal.bin count=$((8*1024/512)) skip=$((256*256/512)) # iflag=count_bytes,skip_bytes
 # Objects
-dd if=vram.bin of=obj.bin count=$((256*4*2/512)) skip=$((2*256*256/512)) #iflag=count_bytes,skip_bytes
+dd if=vram.bin of=obj.bin count=$((256*4*2/512)) skip=$((1*256*256/512)) #iflag=count_bytes,skip_bytes
 
 if which ncverilog; then
-    ncverilog test.v -f test.f  +access+r +define+SIMULATION +define+NCVERILOG $EXTRA \
+    ncverilog test.v -f test.f  +access+r +define+SIMULATION \
+    +define+VIDEOSIMULATION \
+    +define+NCVERILOG $EXTRA \
     +define+MMR_FILE=\"$MMR\" +define+CPSB_CONFIG="$CPSB_CONFIG" $*
 else
-    iverilog test.v -f test.f -DSIMULATION $EXTRA -DMMR_FILE=\"$MMR\" -DCPSB_CONFIG="$CPSB_CONFIG" \
+    iverilog test.v -f test.f -DSIMULATION $EXTRA -DMMR_FILE=\"$MMR\" \
+        -DCPSB_CONFIG="$CPSB_CONFIG" \
+        -DVIDEOSIMULATION \
         $* -o sim || exit 1
     sim -lxt
 fi

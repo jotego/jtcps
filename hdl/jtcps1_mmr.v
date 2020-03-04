@@ -244,9 +244,11 @@ initial begin
     prio1 = ~16'h7e01;
     prio2 = ~16'h7fff;
     prio3 = ~16'h7e02;
+    obj_dma_ok = 1'b1; // so data is copied at the beginning of sim.
 end
-assign reg_rst = 1'b0;
-`else 
+assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
+`else
+// Normal synthesis:
 assign reg_rst = rst | ~ppu_rstn;
 `endif
 
@@ -275,7 +277,6 @@ always @(posedge clk, posedge reg_rst) begin
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
         mmr_dout      <= 16'hffff;
-        obj_dma_ok    <= 1'b0;
     end else begin
         if( !ppu1_cs && pre_copy ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down

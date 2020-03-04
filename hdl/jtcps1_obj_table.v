@@ -18,6 +18,15 @@
     
 `timescale 1ns/1ps
 
+// DMA copying OBJ table data from video RAM to internal RAM
+// Copying stops if 8'hFF is detected in the attributes word
+// Because attributes are checked first, data is read in 3,2,1,0 order
+// instead of the natural 0,1,2,3 order. Counters do count in the natural
+// sequence but the lower 2 bits of the address registers are inverted
+// the inversion applies both to the VRAM address and to the internal
+// buffer address
+// The rest of the table is filled with zeros, which seems the safest value
+
 module jtcps1_obj_table(
     input              rst,
     input              clk,
@@ -27,7 +36,7 @@ module jtcps1_obj_table(
 
     // control registers
     input      [15:0]  vram_base,
-    output reg [17:1]  vram_addr,
+    output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
@@ -37,7 +46,8 @@ module jtcps1_obj_table(
     output reg [15:0]  table_data
 );
 
-reg frame, frame_n, st;
+reg frame, frame_n;
+reg [ 1:0] st;
 reg [ 9:0] wr_addr;
 reg [15:0] wr_data;
 reg        wr_en;
@@ -47,7 +57,7 @@ reg        wait_cycle;
 reg [15:0] table_buffer[0:(2**11)-1];
 
 always @(posedge clk) begin
-    if( wr_en ) table_buffer[ {frame_n, wr_addr} ] <= wr_data;
+    if( wr_en ) table_buffer[ {frame_n, wr_addr[9:2], ~wr_addr[1:0]} ] <= wr_data;
 end
 
 always @(posedge clk) begin
@@ -75,18 +85,21 @@ initial begin
 end
 `endif
 
+reg [17:1] vram_cnt;
+assign vram_addr = { vram_cnt[17:3], ~vram_cnt[2:1] };
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         frame     <= 1'b0;
         frame_n   <= 1'b1;
-        st        <= 0;
+        st        <= 2'd0;
         vram_cs   <= 1'b0;
-        vram_addr <= 17'd0;
+        vram_cnt <= 17'd0;
         obj_dma_clr <= 1'b0;
     end else begin
         case( st )
-            0: begin
-                vram_addr  <= {vram_base[9:1], 8'd0};
+            2'd0: begin
+                vram_cnt  <= {vram_base[9:1], 8'd0};
                 vram_cs    <= 1'b0;
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
@@ -95,21 +108,34 @@ always @(posedge clk, posedge rst) begin
                     vram_cs   <= 1'b1;
                     frame     <= ~frame;
                     frame_n   <=  frame;
-                    st        <= 1;
+                    st        <= 2'd1;
                     obj_dma_clr <= 1'b1;
                 end else st<=0;
             end
-            1: begin
+            2'd1: begin
                 obj_dma_clr <= 1'b0;
                 wait_cycle <= 1'b0;
                 if(vram_ok && !wait_cycle) begin
-                    vram_addr  <= vram_addr + 17'd1;
-                    wr_addr    <= wr_addr + 10'd1;
-                    wr_data    <= vram_data;
-                    wr_en      <= 1'b1;
-                    wait_cycle <= 1'b1;
-                    if( vram_addr[10:1]== 10'h3ff ) st<=0;
+                    if( vram_data[15:8]==8'hff && vram_cnt[2:1]==2'b00 ) begin
+                        st<=2'd2; // fill
+                    end else begin                   
+                        vram_cnt  <= vram_cnt + 17'd1;
+                        wr_addr    <= wr_addr + 10'd1;
+                        wr_data    <= vram_data;
+                        wr_en      <= 1'b1;
+                        wait_cycle <= 1'b1;
+                        if( vram_cnt[10:1]== 10'h3ff ) st<=2'd0;
+                    end
                 end
+            end
+            2'd2: begin
+                wait_cycle <= 1'b0;
+                wr_addr    <= wr_addr + 10'd1;
+                wr_data    <= 16'h0000;
+                wr_en      <= 1'b1;
+                vram_cs    <= 1'b0;
+                vram_cnt  <= vram_cnt + 17'd1;
+                if( vram_cnt[10:1]== 10'h3ff ) st<=2'd0;
             end
         endcase
     end
