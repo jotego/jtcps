@@ -9,12 +9,15 @@
 
 using namespace std;
 
+bool verbose=false;
+
 void xml_element( stringstream& of, const char *name, const string &content, int tab) {
     while( tab-- ) of << "    ";
     of << "<" << name << ">" << content << "</" << name << ">\n";
 }
 
-void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap ) {
+void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap, int min_length=0 ) {
+    int length=0;
     while( !(entry->flags&ROMENTRYTYPE_END) ) {
         //if( entry->name != nullptr ) cout << "region=" << entry->name << '\n';
         if( entry->flags & ROMENTRYTYPE_REGION ) {
@@ -22,8 +25,8 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                 const char *indent="        ";
                 of << indent << "<!-- " << region << " -->\n";
                 if( entry->flags&ROMREGION_ERASEMASK ) {
-                    of << indent << "<part repeat=\"";
-                    of << entry->length << "\">";
+                    of << indent << "<part repeat=\"0x";
+                    of << hex << entry->length << "\">" << dec;
                     int erase = entry->flags&ROMREGION_ERASEVALMASK;
                     erase >>= 16;
                     erase &=0xff;
@@ -38,6 +41,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                         int file_width = (entry->flags & ROM_GROUPMASK) >> 7;
                         if(file_width==0) file_width=1;
                         of << indent;
+                        if(verbose) cout << entry->name << ' ';
                         if( bits==8 ) {
                             of << "<part name=\"" << entry->name << "\" ";
                             of << "crc=\"" << entry->hashdata << "\"/>\n";
@@ -105,7 +109,16 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                             }
                         }
                     }
+                    length += entry->length;
                     entry++;
+                }
+                if(verbose) cout <<  " - " << length << " - " << min_length << '\n';
+                if( length < min_length ) {
+                    // used to ensure that each ROM section falls where it should
+                    of << "       <part repeat=\"0x" << hex << (min_length-length) << "\">FF</part>\n" << dec;
+                }
+                if( min_length!=0 && length>min_length ) {
+                    cout << "ERROR: unexpected region size!\n";
                 }
                 return;
             }
@@ -288,14 +301,15 @@ void generate_mra( game_entry* game ) {
     xml_element(mras,"manufacturer", game->mfg,1 );
     xml_element(mras,"rbf", "jtcps1",1 );
     // ROMs
+    if(verbose) cout << '\n' << game->name << '\n';
     mras << "    <rom index=\"0\" zip=\"";
     if( game->zipfile != game->name ) mras << game->zipfile <<".zip|";
     mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
     try{
-        dump_region(mras, entry,"maincpu",16,1);
-        dump_region(mras, entry,"audiocpu",8,0);
-        dump_region(mras, entry,"oki",8,0);
+        dump_region(mras, entry,"maincpu",16,1,1024*1024);
+        dump_region(mras, entry,"audiocpu",8,0,64*1024);
+        dump_region(mras, entry,"oki",8,0,256*1024);
         dump_region(mras, entry,"gfx",64,0);
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
@@ -342,10 +356,12 @@ int main(int argc, char *argv[]) {
         if( string(argv[k])=="-list" )  { game_list=true; continue; }
         if( string(argv[k])=="-parent" ) { parents_only=true; continue; }
         if( string(argv[k])=="-alt" ) { parents_only=false; continue; }
+        if( string(argv[k])=="-v" )   { verbose=true; continue; }
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
             cout << "-parent    to produce only output for parent games (default)\n";
             cout << "-alt       to produce output for all games\n";
+            cout << "-v         verbose\n";
             cout << "-h         shows this message\n";
             return 0;
         }
