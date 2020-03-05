@@ -32,6 +32,6 @@
        <!-- Mapper for unsquad --> 
        <part> FF F3 44 40 1E </part>
        <!-- CPS-B config for unsquad --> 
-       <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
+       <part> 00 20 10 08 30 00 00 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
     </rom>
 </misterromdescription>

@@ -49,6 +49,6 @@
        <!-- Mapper for sf2 --> 
        <part> F7 73 C8 40 19 </part>
        <!-- CPS-B config for sf2 --> 
-       <part> 00 20 10 08 30 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
+       <part> 00 20 10 08 30 00 36 2E 2C 2A 28 26 FF FF FF FF 41 32 </part>
     </rom>
 </misterromdescription>

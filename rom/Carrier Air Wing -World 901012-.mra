@@ -32,6 +32,6 @@
        <!-- Mapper for cawing --> 
        <part> FF F3 44 40 03 </part>
        <!-- CPS-B config for cawing --> 
-       <part> 00 0A 0A 10 02 04 06 08 0A 0C FF FF FF FF 46 00 </part>
+       <part> 00 0A 0A 10 02 00 00 04 06 08 0A 0C FF FF FF FF 46 00 </part>
     </rom>
 </misterromdescription>

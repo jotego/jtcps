@@ -40,6 +40,6 @@
        <!-- Mapper for pnickj --> 
        <part> FF F3 44 40 14 </part>
        <!-- CPS-B config for pnickj --> 
-       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>

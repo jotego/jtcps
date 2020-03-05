@@ -43,6 +43,6 @@
        <!-- Mapper for qtono2j --> 
        <part> FF 73 88 40 18 </part>
        <!-- CPS-B config for qtono2j --> 
-       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <part> 30 08 04 02 30 38 36 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>

@@ -43,6 +43,6 @@
        <!-- Mapper for kod --> 
        <part> FF 73 88 40 0C </part>
        <!-- CPS-B config for kod --> 
-       <part> 00 30 08 30 30 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
+       <part> 00 30 08 30 30 00 36 28 2A 2C 2E 20 18 1A 1C 1E FF FF </part>
     </rom>
 </misterromdescription>

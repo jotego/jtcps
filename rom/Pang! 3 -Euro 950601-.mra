@@ -25,6 +25,6 @@
        <!-- Mapper for pang3 --> 
        <part> FF 73 88 40 13 </part>
        <!-- CPS-B config for pang3 --> 
-       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>

@@ -45,6 +45,12 @@ module jtcps1_video(
     input              cfg_we,
     input      [ 7:0]  cfg_data,
 
+    // Extra inputs read through the C-Board
+    input   [ 3:0]  start_button,
+    input   [ 3:0]  coin_input,
+    input   [ 7:0]  joystick3,
+    input   [ 7:0]  joystick4,
+
     // Video RAM interface
     output     [17:1]  vram1_addr,
     input      [15:0]  vram1_data,
@@ -93,7 +99,7 @@ module jtcps1_video(
     // input              line_wr_ok
 );
 
-parameter REGSIZE=21;
+parameter REGSIZE=23;
 
 // use for CPU only simulations:
 `ifdef NOVIDEO

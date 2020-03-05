@@ -32,6 +32,6 @@
        <!-- Mapper for ffight --> 
        <part> FF F3 44 40 07 </part>
        <!-- CPS-B config for ffight --> 
-       <part> 00 08 04 02 2A 32 28 30 26 2E FF FF FF FF 04 20 </part>
+       <part> 00 08 04 02 2A 00 00 32 28 30 26 2E FF FF FF FF 04 20 </part>
     </rom>
 </misterromdescription>

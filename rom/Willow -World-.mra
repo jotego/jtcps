@@ -42,6 +42,6 @@
        <!-- Mapper for willow --> 
        <part> FF 73 88 40 20 </part>
        <!-- CPS-B config for willow --> 
-       <part> 00 08 10 20 26 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
+       <part> 00 08 10 20 26 00 00 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
     </rom>
 </misterromdescription>

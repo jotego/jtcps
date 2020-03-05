@@ -32,10 +32,12 @@ module jtcps1_game(
     output          HS,
     output          VS,
     // cabinet I/O
-    input   [ 1:0]  start_button,
-    input   [ 1:0]  coin_input,
+    input   [ 3:0]  start_button,
+    input   [ 3:0]  coin_input,
     input   [ 7:0]  joystick1,
     input   [ 7:0]  joystick2,
+    input   [ 7:0]  joystick3,
+    input   [ 7:0]  joystick4,
     //input   [ 7:0]  joystick3,
     // SDRAM interface
     input           downloading,
@@ -199,7 +201,7 @@ always @(posedge clk) begin
     cen10  <= cen10x;
 end
 
-localparam REGSIZE=21;
+localparam REGSIZE=23;
 
 jtcps1_prom_we #(REGSIZE) u_prom_we(
     .clk            ( clk           ),
@@ -292,6 +294,12 @@ jtcps1_video #(REGSIZE) u_video(
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
+
+    // Extra inputs read through the C-Board
+    .start_button   ( start_button  ),
+    .coin_input     ( coin_input    ),
+    .joystick3      ( joystick3     ),
+    .joystick4      ( joystick4     ),
 
     // Video signal
     .HS             ( HS            ),

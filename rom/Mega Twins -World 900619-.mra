@@ -32,6 +32,6 @@
        <!-- Mapper for mtwins --> 
        <part> FF F3 44 40 11 </part>
        <!-- CPS-B config for mtwins --> 
-       <part> 00 10 20 08 1C 1A 18 16 14 12 FF FF FF FF 44 1E </part>
+       <part> 00 10 20 08 1C 00 00 1A 18 16 14 12 FF FF FF FF 44 1E </part>
     </rom>
 </misterromdescription>

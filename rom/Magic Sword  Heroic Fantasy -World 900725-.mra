@@ -32,6 +32,6 @@
        <!-- Mapper for msword --> 
        <part> FF F3 44 40 10 </part>
        <!-- CPS-B config for msword --> 
-       <part> 00 04 02 20 2C 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+       <part> 00 04 02 20 2C 00 00 2A 28 26 24 22 FF FF FF FF 43 2E </part>
     </rom>
 </misterromdescription>

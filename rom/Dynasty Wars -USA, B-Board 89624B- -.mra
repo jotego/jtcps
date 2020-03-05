@@ -38,6 +38,6 @@
        <!-- Mapper for dynwar --> 
        <part> 33 31 64 20 06 </part>
        <!-- CPS-B config for dynwar --> 
-       <part> 00 08 04 02 22 24 26 28 2A 2C FF FF FF FF 02 20 </part>
+       <part> 00 08 04 02 22 00 00 24 26 28 2A 2C FF FF FF FF 02 20 </part>
     </rom>
 </misterromdescription>

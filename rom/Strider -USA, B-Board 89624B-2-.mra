@@ -38,6 +38,6 @@
        <!-- Mapper for strider --> 
        <part> FF 73 88 40 1D </part>
        <!-- CPS-B config for strider --> 
-       <part> 30 08 04 02 30 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
+       <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
     </rom>
 </misterromdescription>

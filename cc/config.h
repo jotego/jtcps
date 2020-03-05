@@ -107,6 +107,12 @@ struct CPS1config
     int layer_enable_mask[5];
     int bank_size[4];
     const gfx_range *ranges;
+    /* some C-boards have additional I/O for extra buttons/extra players */
+    int in2_addr;
+    int in3_addr;
+    int out2_addr;
+
+    int bootleg_kludge;
 };
 
 static const struct CPS1config cps1_config_table[]=
@@ -158,10 +164,10 @@ static const struct CPS1config cps1_config_table[]=
     {"unsquad",     CPS_B_11,      mapper_AR24B },
     {"area88",      CPS_B_11,      mapper_AR22B },   // equivalent to AR24B
     {"area88r",     CPS_B_21_DEF,  mapper_AR22B },   // wrong, this set uses ARA63B, still not dumped
-    {"mercs",       CPS_B_12,      mapper_O224B }, //   0x36, 0, 0x34 },
-    {"mercsu",      CPS_B_12,      mapper_O224B }, //   0x36, 0, 0x34 },
-    {"mercsur1",    CPS_B_12,      mapper_O224B }, //   0x36, 0, 0x34 },
-    {"mercsj",      CPS_B_12,      mapper_O224B }, //   0x36, 0, 0x34 },   // wrong, this set uses O222B, still not dumped
+    {"mercs",       CPS_B_12,      mapper_O224B, 0x36, 0, 0x34 },
+    {"mercsu",      CPS_B_12,      mapper_O224B, 0x36, 0, 0x34 },
+    {"mercsur1",    CPS_B_12,      mapper_O224B, 0x36, 0, 0x34 },
+    {"mercsj",      CPS_B_12,      mapper_O224B, 0x36, 0, 0x34 },   // wrong, this set uses O222B, still not dumped
     {"msword",      CPS_B_13,      mapper_MS24B },
     {"mswordr1",    CPS_B_13,      mapper_MS24B },
     {"mswordu",     CPS_B_13,      mapper_MS24B },
@@ -177,39 +183,39 @@ static const struct CPS1config cps1_config_table[]=
     {"cawingur1",   CPS_B_16,      mapper_CA24B },
     {"cawingj",     CPS_B_16,      mapper_CA22B },   // equivalent to CA24B
     {"cawingbl",    CPS_B_16,      mapper_CA22B },   // equivalent to CA24B
-    {"sf2",         CPS_B_11,      mapper_STF29 }, //   0x36 },
-    {"sf2ea",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2eb",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2ed",       CPS_B_05,      mapper_STF29 }, //   0x36 },
-    {"sf2ee",       CPS_B_18,      mapper_STF29 }, //   0x3c },
-    {"sf2em",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2en",       CPS_B_17,      mapper_STF29 }, //   0x36 },
+    {"sf2",         CPS_B_11,      mapper_STF29,   0x36 },
+    {"sf2ea",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2eb",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2ed",       CPS_B_05,      mapper_STF29,   0x36 },
+    {"sf2ee",       CPS_B_18,      mapper_STF29,   0x3c },
+    {"sf2em",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2en",       CPS_B_17,      mapper_STF29,   0x36 },
     {"sf2ebbl",     CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1  },
     {"sf2ebbl2",    CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1  },
     {"sf2ebbl3",    CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1  },
     {"sf2stt",      CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1  },
     {"sf2rk",       CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1  },
-    {"sf2ua",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2ub",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2uc",       CPS_B_12,      mapper_STF29 }, //   0x36 },
-    {"sf2ud",       CPS_B_05,      mapper_STF29 }, //   0x36 },
-    {"sf2ue",       CPS_B_18,      mapper_STF29 }, //   0x3c },
-    {"sf2uf",       CPS_B_15,      mapper_STF29 }, //   0x36 },
-    {"sf2ug",       CPS_B_11,      mapper_STF29 }, //   0x36 },
-    {"sf2uh",       CPS_B_13,      mapper_STF29 }, //   0x36 },
-    {"sf2ui",       CPS_B_14,      mapper_STF29 }, //   0x36 },
-    {"sf2uk",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2j",        CPS_B_13,      mapper_STF29 }, //   0x36 },
-    {"sf2j17",      CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2ja",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2jc",       CPS_B_12,      mapper_STF29 }, //   0x36 },
-    {"sf2jf",       CPS_B_15,      mapper_STF29 }, //   0x36 },
-    {"sf2jh",       CPS_B_13,      mapper_STF29 }, //   0x36 },
-    {"sf2jl",       CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2qp1",      CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2qp2",      CPS_B_14,      mapper_STF29 }, //   0x36 },
-    {"sf2thndr",    CPS_B_17,      mapper_STF29 }, //   0x36 },
-    {"sf2thndr2",   CPS_B_17,      mapper_STF29 }, //   0x36 },
+    {"sf2ua",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2ub",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2uc",       CPS_B_12,      mapper_STF29,   0x36 },
+    {"sf2ud",       CPS_B_05,      mapper_STF29,   0x36 },
+    {"sf2ue",       CPS_B_18,      mapper_STF29,   0x3c },
+    {"sf2uf",       CPS_B_15,      mapper_STF29,   0x36 },
+    {"sf2ug",       CPS_B_11,      mapper_STF29,   0x36 },
+    {"sf2uh",       CPS_B_13,      mapper_STF29,   0x36 },
+    {"sf2ui",       CPS_B_14,      mapper_STF29,   0x36 },
+    {"sf2uk",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2j",        CPS_B_13,      mapper_STF29,   0x36 },
+    {"sf2j17",      CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2ja",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2jc",       CPS_B_12,      mapper_STF29,   0x36 },
+    {"sf2jf",       CPS_B_15,      mapper_STF29,   0x36 },
+    {"sf2jh",       CPS_B_13,      mapper_STF29,   0x36 },
+    {"sf2jl",       CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2qp1",      CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2qp2",      CPS_B_14,      mapper_STF29,   0x36 },
+    {"sf2thndr",    CPS_B_17,      mapper_STF29,   0x36 },
+    {"sf2thndr2",   CPS_B_17,      mapper_STF29,   0x36 },
 
     /* from here onwards the CPS-B board has suicide battery and multiply protection */
 
@@ -217,97 +223,97 @@ static const struct CPS1config cps1_config_table[]=
     {"3wondersr1",  CPS_B_21_BT1,  mapper_RT24B },
     {"3wondersu",   CPS_B_21_BT1,  mapper_RT24B },
     {"wonder3",     CPS_B_21_BT1,  mapper_RT22B },   // equivalent to RT24B
-    {"3wondersb",   CPS_B_21_BT1,  mapper_RT24B }, //   0x36, 0, 0, 0x88 }, // same as 3wonders except some registers are hard wired rather than written to
+    {"3wondersb",   CPS_B_21_BT1,  mapper_RT24B, 0x36, 0, 0, 0x88 }, // same as 3wonders except some registers are hard wired rather than written to
     {"3wondersh",   HACK_B_2,      mapper_RT24B },  // one port is changed from 3wonders, and no protection
-    {"kod",         CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },
-    {"kodr1",       CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },
-    {"kodr2",       CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },
-    {"kodu",        CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },
-    {"kodj",        CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },
-    {"kodja",       CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },   // wrong, this set uses KD22B, still not dumped
-    {"kodb",        CPS_B_21_BT2,  mapper_KD29B }, //   0x36, 0, 0x34 },   /* bootleg, doesn't use multiply protection */
-    {"captcomm",    CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34 },
-    {"captcommr1",  CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34 },
-    {"captcommu",   CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34 },
-    {"captcommj",   CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34 },
-    {"captcommjr1", CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34 },
-    {"captcommb",   CPS_B_21_BT3,  mapper_CC63B }, //   0x36, 0x38, 0x34, 3 },
+    {"kod",         CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },
+    {"kodr1",       CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },
+    {"kodr2",       CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },
+    {"kodu",        CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },
+    {"kodj",        CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },
+    {"kodja",       CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },   // wrong, this set uses KD22B, still not dumped
+    {"kodb",        CPS_B_21_BT2,  mapper_KD29B, 0x36, 0, 0x34 },   /* bootleg, doesn't use multiply protection */
+    {"captcomm",    CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34 },
+    {"captcommr1",  CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34 },
+    {"captcommu",   CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34 },
+    {"captcommj",   CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34 },
+    {"captcommjr1", CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34 },
+    {"captcommb",   CPS_B_21_BT3,  mapper_CC63B, 0x36, 0x38, 0x34, 3 },
     {"captcommb2",  CPS_B_21_BT4,  mapper_CC63B },  // junk around health bar with default cps2 mapper, uses BT4(knights) config
-    {"knights",     CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },
-    {"knightsu",    CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },
-    {"knightsj",    CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },
-    {"knightsja",   CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },   // wrong, this set uses KR22B, still not dumped
-    {"knightsb2",   CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
+    {"knights",     CPS_B_21_BT4,  mapper_KR63B, 0x36, 0, 0x34 },
+    {"knightsu",    CPS_B_21_BT4,  mapper_KR63B, 0x36, 0, 0x34 },
+    {"knightsj",    CPS_B_21_BT4,  mapper_KR63B, 0x36, 0, 0x34 },
+    {"knightsja",   CPS_B_21_BT4,  mapper_KR63B, 0x36, 0, 0x34 },   // wrong, this set uses KR22B, still not dumped
+    {"knightsb2",   CPS_B_21_BT4,  mapper_KR63B, 0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
     //{"knightsb",    CPS_B_21_BT4,  mapper_KR63B }, //   0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
     {"knightsb3",   CPS_B_21_BT4,  mapper_KR63B },
-    {"pokonyan",    CPS_B_21_DEF,  mapper_pokonyan }, //  0x36 },
-    {"sf2ce",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceea",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceua",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceub",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceuc",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2cet",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceja",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2cejb",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2cejc",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2bhh",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2rb",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2rb2",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2rb3",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2red",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2redp2",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2v004",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2acc",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2ceblp",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2cebltw",   CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2acca",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2accp2",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2amf",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 }, // probably wrong but this set is not completely dumped anyway
-    {"sf2amf2",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2amf3",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2dkot2",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2level",    HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2m1",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2m2",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2m3",       HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2m4",       HACK_B_1,      mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2m5",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2m6",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2m7",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2m8",       HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2m9",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2m10",      HACK_B_1,      mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2dongb",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2yyc",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2koryu",    CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2mdt",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2mdta",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2mdtb",     CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2ceb",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2b",        CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1 },
-    {"sf2b2",       CPS_B_17,      mapper_STF29 }, //   0x36, 0, 0, 1 },
-    {"sf2ceupl",    HACK_B_1,      mapper_S9263B }, //  0x36, 0, 0, 1 },
-    {"sf2rules",    HACK_B_1,      mapper_S9263B }, //  0x36, 0, 0, 2 },
-    {"sf2ceds6",    HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2cems6a",   HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2cems6b",   HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2cems6c",   HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
-    {"sf2re",       HACK_B_1,      mapper_S9263B }, //  0,    0, 0, 2 },
+    {"pokonyan",    CPS_B_21_DEF,  mapper_pokonyan,  0x36 },
+    {"sf2ce",       CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceea",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceua",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceub",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceuc",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2cet",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceja",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2cejb",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2cejc",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2bhh",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2rb",       CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2rb2",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2rb3",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2red",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2redp2",    CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2v004",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2acc",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2ceblp",    CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2cebltw",   CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2acca",     CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2accp2",    CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2amf",      CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 }, // probably wrong but this set is not completely dumped anyway
+    {"sf2amf2",     CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2amf3",     CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2dkot2",    CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2level",    HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2m1",       CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2m2",       CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2m3",       HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2m4",       HACK_B_1,      mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2m5",       CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2m6",       CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2m7",       CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2m8",       HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2m9",       CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2m10",      HACK_B_1,      mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2dongb",    CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2yyc",      CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2koryu",    CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2mdt",      CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2mdta",     CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2mdtb",     CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2ceb",      CPS_B_21_DEF,  mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2b",        CPS_B_17,      mapper_STF29 ,  0x36, 0, 0, 1 },
+    {"sf2b2",       CPS_B_17,      mapper_STF29 ,  0x36, 0, 0, 1 },
+    {"sf2ceupl",    HACK_B_1,      mapper_S9263B,  0x36, 0, 0, 1 },
+    {"sf2rules",    HACK_B_1,      mapper_S9263B,  0x36, 0, 0, 2 },
+    {"sf2ceds6",    HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2cems6a",   HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2cems6b",   HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2cems6c",   HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
+    {"sf2re",       HACK_B_1,      mapper_S9263B,  0,    0, 0, 2 },
     {"varth",       CPS_B_04,      mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */  // wrong, this set uses VA24B, dumped but equations still not added
     {"varthb",      CPS_B_04,      mapper_VA63B }, //  0, 0, 0, 0x0F },
     {"varthr1",     CPS_B_04,      mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */  // wrong, this set uses VA24B, dumped but equations still not added
     {"varthu",      CPS_B_04,      mapper_VA63B },   /* CPSB test has been patched out (60=0008) register is also written to, possibly leftover from development */
     {"varthj",      CPS_B_21_BT5,  mapper_VA22B },   /* CPSB test has been patched out (72=0001) register is also written to, possibly leftover from development */
     {"varthjr",     CPS_B_21_BT5,  mapper_VA63B },   /* CPSB test has been patched out (72=0001) register is also written to, possibly leftover from development */
-    {"cworld2j",    CPS_B_21_BT6,  mapper_Q522B }, //   0x36, 0, 0x34 },   /* (ports 36, 34 probably leftover input code from another game) */
+    {"cworld2j",    CPS_B_21_BT6,  mapper_Q522B, 0x36, 0, 0x34 },   /* (ports 36, 34 probably leftover input code from another game) */
     {"cworld2ja",   CPS_B_21_DEF,  mapper_Q522B }, // patched set, no battery, could be desuicided // wrong, this set uses Q529B, still not dumped
-    {"cworld2jb",   CPS_B_21_BT6,  mapper_Q522B }, //   0x36, 0, 0x34 }, // wrong, this set uses Q563B, still not dumped
+    {"cworld2jb",   CPS_B_21_BT6,  mapper_Q522B, 0x36, 0, 0x34 }, // wrong, this set uses Q563B, still not dumped
     {"wof",         CPS_B_21_QS1,  mapper_TK263B },
     {"wofr1",       CPS_B_21_DEF,  mapper_TK263B },
     {"wofa",        CPS_B_21_DEF,  mapper_TK263B },  // patched set coming from a desuicided board?
     {"wofu",        CPS_B_21_QS1,  mapper_TK263B },
     {"wofj",        CPS_B_21_QS1,  mapper_TK263B },
-    {"wofhfh",      CPS_B_21_DEF,  mapper_TK263B }, //  0x36 },    /* Chinese bootleg */
+    {"wofhfh",      CPS_B_21_DEF,  mapper_TK263B, 0x36 },    /* Chinese bootleg */
     {"dino",        CPS_B_21_QS2,  mapper_CD63B },   /* layer enable never used */
     {"dinou",       CPS_B_21_QS2,  mapper_CD63B },   /* layer enable never used */
     {"dinoj",       CPS_B_21_QS2,  mapper_CD63B },   /* layer enable never used */
@@ -330,12 +336,12 @@ static const struct CPS1config cps1_config_table[]=
     {"mbomberj",    CPS_B_21_QS4,  mapper_MB63B },
     {"mbombrd",     CPS_B_21_QS5,  mapper_MB63B },
     {"mbombrdj",    CPS_B_21_QS5,  mapper_MB63B },
-    {"sf2hf",       CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2hfu",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"sf2hfj",      CPS_B_21_DEF,  mapper_S9263B }, //  0x36 },
-    {"qad",         CPS_B_21_BT7,  mapper_QD22B }, //   0x36 },    /* TODO: layer enable (port 36 probably leftover input code from another game) */
-    {"qadjr",       CPS_B_21_DEF,  mapper_QAD63B }, //  0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
-    {"qtono2j",     CPS_B_21_DEF,  mapper_TN2292 }, //  0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
+    {"sf2hf",       CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2hfu",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"sf2hfj",      CPS_B_21_DEF,  mapper_S9263B,  0x36 },
+    {"qad",         CPS_B_21_BT7,  mapper_QD22B,   0x36 },    /* TODO: layer enable (port 36 probably leftover input code from another game) */
+    {"qadjr",       CPS_B_21_DEF,  mapper_QAD63B,  0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
+    {"qtono2j",     CPS_B_21_DEF,  mapper_TN2292,  0x36, 0x38, 0x34 },    /* (ports 36, 38, 34 probably leftover input code from another game) */
     {"megaman",     CPS_B_21_DEF,  mapper_RCM63B },
     {"megamana",    CPS_B_21_DEF,  mapper_RCM63B },
     {"rockmanj",    CPS_B_21_DEF,  mapper_RCM63B },

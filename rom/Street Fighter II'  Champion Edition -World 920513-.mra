@@ -42,6 +42,6 @@
        <!-- Mapper for sf2ce --> 
        <part> F7 73 C8 40 1A </part>
        <!-- CPS-B config for sf2ce --> 
-       <part> 30 08 04 02 30 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+       <part> 30 08 04 02 30 00 36 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>
