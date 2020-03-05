@@ -7,12 +7,12 @@
     <rom index="0" zip="1941.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="41em_30.11f" crc="4249ec61" map="10"/>
             <part name="41em_35.11h" crc="ddbee5eb" map="01"/>
+            <part name="41em_30.11f" crc="4249ec61" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="41em_31.12f" crc="584e88e5" map="10"/>
             <part name="41em_36.12h" crc="3cfc31d0" map="01"/>
+            <part name="41em_31.12f" crc="584e88e5" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="41-32m.8h" crc="4e9648ca" map="21"/>

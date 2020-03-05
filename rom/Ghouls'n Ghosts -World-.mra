@@ -7,12 +7,12 @@
     <rom index="0" zip="ghouls.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="dme_29.10h" crc="166a58a2" map="10"/>
             <part name="dme_30.10j" crc="7ac8407a" map="01"/>
+            <part name="dme_29.10h" crc="166a58a2" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="dme_27.9h" crc="f734b2be" map="10"/>
             <part name="dme_28.9j" crc="03d3e714" map="01"/>
+            <part name="dme_27.9h" crc="f734b2be" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="dm-17.7j" crc="3ea1b0f2" map="12"/>

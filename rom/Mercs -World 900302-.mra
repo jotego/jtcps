@@ -7,12 +7,12 @@
     <rom index="0" zip="mercs.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="so2_30e.11f" crc="e17f9bf7" map="10"/>
             <part name="so2_35e.11h" crc="78e63575" map="01"/>
+            <part name="so2_30e.11f" crc="e17f9bf7" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="so2_31e.12f" crc="51204d36" map="10"/>
             <part name="so2_36e.12h" crc="9cfba8b4" map="01"/>
+            <part name="so2_31e.12f" crc="51204d36" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="so2-32m.8h" crc="2eb5cf0c" map="21"/>

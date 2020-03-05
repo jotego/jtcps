@@ -7,8 +7,8 @@
     <rom index="0" zip="pnickj.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
             <part name="pnij_42.12h" crc="c085dfaf" map="01"/>
+            <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
        </interleave>
        <part repeat="0xc0000">FF</part>
         <!-- audiocpu -->

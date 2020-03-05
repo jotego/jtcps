@@ -48,19 +48,29 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                         }
                         if( bits==16 ) {
                             if( file_width==1 ) {
-                                const tiny_rom_entry* cur=entry;
+                                const tiny_rom_entry* cur= entry;
+                                // For swapped ROMs the map content (01 or 10)
+                                // does not match the file order. That is
+                                // ok with MiSTer but not with the MiST mra tool
+                                // thus the little pointer arithmetic needed.
+                                if( swap ) {
+                                    if( done==0 )
+                                        cur++;
+                                    else
+                                        cur--;
+                                }
                                 if( done==0 ) {
                                     of << "<interleave output=\""<<bits<<"\">\n";
                                     of << indent;
-                                }
+                                }                                
                                 of << "    ";
                                 of << "<part name=\"" << cur->name << "\" ";
                                 of << "crc=\"" << cur->hashdata << "\" map=\"";
                                 if(done==0) {
-                                    if( swap ) of << "10\""; else of << "01\"";
+                                    of << "01\"";
                                 }
                                 else {
-                                    if( swap ) of << "01\""; else of << "10\"";
+                                    of << "10\"";
                                 }
                                 of << "/>\n";
                                 done+=file_width;

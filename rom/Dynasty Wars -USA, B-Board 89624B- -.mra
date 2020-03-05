@@ -7,12 +7,12 @@
     <rom index="0" zip="dynwar.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="30.11f" crc="f9ec6d68" map="10"/>
             <part name="35.11h" crc="e41fff2f" map="01"/>
+            <part name="30.11f" crc="f9ec6d68" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="31.12f" crc="e3de76ff" map="10"/>
             <part name="36.12h" crc="7a13cfbf" map="01"/>
+            <part name="31.12f" crc="e3de76ff" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="tkm-9.8h" crc="93654bcf" map="21"/>

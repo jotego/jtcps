@@ -7,12 +7,12 @@
     <rom index="0" zip="nemo.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="nme_30a.11f" crc="d2c03e56" map="10"/>
             <part name="nme_35a.11h" crc="5fd31661" map="01"/>
+            <part name="nme_30a.11f" crc="d2c03e56" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="nme_31a.12f" crc="b2bd4f6f" map="10"/>
             <part name="nme_36a.12h" crc="ee9450e3" map="01"/>
+            <part name="nme_31a.12f" crc="b2bd4f6f" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="nm-32m.8h" crc="d6d1add3" map="21"/>

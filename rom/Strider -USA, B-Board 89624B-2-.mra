@@ -7,12 +7,12 @@
     <rom index="0" zip="strider.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="30.11f" crc="da997474" map="10"/>
             <part name="35.11h" crc="5463aaa3" map="01"/>
+            <part name="30.11f" crc="da997474" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="31.12f" crc="d20786db" map="10"/>
             <part name="36.12h" crc="21aa2863" map="01"/>
+            <part name="31.12f" crc="d20786db" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="st-14.8h" crc="9b3cfc08" map="21"/>

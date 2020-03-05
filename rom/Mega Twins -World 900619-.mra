@@ -7,12 +7,12 @@
     <rom index="0" zip="mtwins.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="che_30.11f" crc="9a2a2db1" map="10"/>
             <part name="che_35.11h" crc="a7f96b02" map="01"/>
+            <part name="che_30.11f" crc="9a2a2db1" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="che_31.12f" crc="bbff8a99" map="10"/>
             <part name="che_36.12h" crc="0fa00c39" map="01"/>
+            <part name="che_31.12f" crc="bbff8a99" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="ck-32m.8h" crc="9b70bd41" map="21"/>

@@ -7,12 +7,12 @@
     <rom index="0" zip="unsquad.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="aru_30.11f" crc="24d8f88d" map="10"/>
             <part name="aru_35.11h" crc="8b954b59" map="01"/>
+            <part name="aru_30.11f" crc="24d8f88d" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="aru_31.12f" crc="33e9694b" map="10"/>
             <part name="aru_36.12h" crc="7cc8fb9e" map="01"/>
+            <part name="aru_31.12f" crc="33e9694b" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="ar-32m.8h" crc="ae1d7fb0" map="21"/>

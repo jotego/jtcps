@@ -13,8 +13,8 @@
             <part name="cc_22f.7f" crc="0fd34195" map="21"/>
         </interleave>
         <interleave output="16">
-            <part name="cc_24f.9e" crc="3a794f25" map="10"/>
             <part name="cc_28f.9f" crc="fc3c2906" map="01"/>
+            <part name="cc_24f.9e" crc="3a794f25" map="10"/>
        </interleave>
         <!-- audiocpu -->
         <part name="cc_09.11a" crc="698e8b58"/>

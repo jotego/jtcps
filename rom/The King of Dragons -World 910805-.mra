@@ -7,20 +7,20 @@
     <rom index="0" zip="kod.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="kde_30a.11e" crc="fcb5efe2" map="10"/>
             <part name="kde_37a.11f" crc="f22e5266" map="01"/>
+            <part name="kde_30a.11e" crc="fcb5efe2" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="kde_31a.12e" crc="c710d722" map="10"/>
             <part name="kde_38a.12f" crc="57d6ed3a" map="01"/>
+            <part name="kde_31a.12e" crc="c710d722" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="kd_28.9e" crc="9367bcd9" map="10"/>
             <part name="kd_35.9f" crc="4ca6a48a" map="01"/>
+            <part name="kd_28.9e" crc="9367bcd9" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="kd_29.10e" crc="0360fa72" map="10"/>
             <part name="kd_36a.10f" crc="95a3cef8" map="01"/>
+            <part name="kd_29.10e" crc="0360fa72" map="10"/>
        </interleave>
         <!-- audiocpu -->
         <part name="kd_9.12a" crc="bac6ec26"/>

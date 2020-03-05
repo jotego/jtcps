@@ -7,12 +7,12 @@
     <rom index="0" zip="cawing.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="cae_30a.11f" crc="91fceacd" map="10"/>
             <part name="cae_35a.11h" crc="3ef03083" map="01"/>
+            <part name="cae_30a.11f" crc="91fceacd" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="cae_31a.12f" crc="e5b75caf" map="10"/>
             <part name="cae_36a.12h" crc="c73fd713" map="01"/>
+            <part name="cae_31a.12f" crc="e5b75caf" map="10"/>
        </interleave>
         <interleave output="16">
             <part name="ca-32m.8h" crc="0c4837d4" map="21"/>

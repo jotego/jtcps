@@ -7,12 +7,12 @@
     <rom index="0" zip="pokonyan.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="xmqq-12f.bin" crc="196297bf" map="10"/>
             <part name="xmqq-12h.bin" crc="2d7ee2e9" map="01"/>
+            <part name="xmqq-12f.bin" crc="196297bf" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="xmqq-13f.bin" crc="8f6abf26" map="10"/>
             <part name="xmqq-13h.bin" crc="3fefe432" map="01"/>
+            <part name="xmqq-13f.bin" crc="8f6abf26" map="10"/>
        </interleave>
        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->

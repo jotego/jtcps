@@ -7,20 +7,20 @@
     <rom index="0" zip="cworld2j.zip" md5="none">
         <!-- maincpu -->
         <interleave output="16">
-            <part name="q5_36.12f" crc="38a08099" map="10"/>
             <part name="q5_42.12h" crc="4d29b3a4" map="01"/>
+            <part name="q5_36.12f" crc="38a08099" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="q5_37.13f" crc="eb547ebc" map="10"/>
             <part name="q5_43.13h" crc="3ef65ea8" map="01"/>
+            <part name="q5_37.13f" crc="eb547ebc" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="q5_34.10f" crc="7fcc1317" map="10"/>
             <part name="q5_40.10h" crc="7f14b7b4" map="01"/>
+            <part name="q5_34.10f" crc="7fcc1317" map="10"/>
        </interleave>
         <interleave output="16">
-            <part name="q5_35.11f" crc="abacee26" map="10"/>
             <part name="q5_41.11h" crc="d3654067" map="01"/>
+            <part name="q5_35.11f" crc="abacee26" map="10"/>
        </interleave>
         <!-- audiocpu -->
         <part name="q5_23.13b" crc="e14dc524"/>
