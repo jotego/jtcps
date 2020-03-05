@@ -4,3 +4,4 @@ rom/*.rom
 *.7z
 *.tar.gz
 sim
+modules/fx68k

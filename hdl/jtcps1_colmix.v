@@ -138,7 +138,7 @@ always @(posedge clk) if(pxl_cen) begin
     pxl  <= pre_pxl;
 end
 
-reg has_priority;
+reg has_priority, check_prio;
 
 always @(*) begin
     case( group )
@@ -154,9 +154,13 @@ always @(posedge clk) begin
     if(pxl_cen) begin
         {group, pre_pxl } <= lyr3;
         lyr_queue <= { lyr0, lyr1, lyr2 };
+        check_prio <= 1'b1;
     end else begin
-        if( pre_pxl[3:0]==4'hf ||  ( !(lyr_queue[11:9]==OBJ && has_priority ) && lyr_queue[3:0] != 4'hf) )
+        if( pre_pxl[3:0]==4'hf ||  ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) && lyr_queue[3:0] != 4'hf) ) begin
             { group, pre_pxl } <= lyr_queue[13:0];
+            check_prio <= 1'b1;
+        end
+        else check_prio <= 1'b0;
         lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
     end
     /*

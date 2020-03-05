@@ -262,10 +262,10 @@ initial begin
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider
     //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
-    prio0 = ~16'h0;
-    prio1 = ~16'h7e01;
-    prio2 = ~16'h7fff;
-    prio3 = ~16'h7e02;
+    prio0 = 16'h0;
+    prio1 = 16'h7e;
+    prio2 = 16'h3fe;
+    prio3 = 16'h7fff;
     obj_dma_ok = 1'b1; // so data is copied at the beginning of sim.
 end
 assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
