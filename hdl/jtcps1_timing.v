@@ -55,12 +55,15 @@ always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
     //if ( vdump>=9'hf8  ) VB <= 1'b1;
     //if ( vdump==9'h0F  ) VB <= 1'b0;
-    if ( vdump==9'h100 ) VS <= 1'b1;
-    if ( vdump==9'h001 ) VS <= 1'b0;
     preVB  <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
     HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     // original HS reported to last for 36 clock ticks
-    if( hdump== 9'h1dc ) HS <= 1'b1;
+    if( hdump== 9'h1dc ) begin
+        HS <= 1'b1;
+        // VS must occur synchronized with HS for better compatibility
+        if ( vdump==9'h100 ) VS <= 1'b1;
+        if ( vdump==9'h001 ) VS <= 1'b0;
+    end
     if( hdump== 9'h000 ) HS <= 1'b0;
     start  <= hdump==9'h1ff;
     if(&hdump) begin
