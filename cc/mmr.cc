@@ -155,24 +155,24 @@ int find_cfg( stringstream& of, const string& name ) {
 void generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
     of << "       <!-- CPS-B config for " << x->name << " --> \n";
     of << "       <part> ";            
-    DUMP( x->layer_enable_mask[3] );
-    DUMP( x->layer_enable_mask[2] );
-    DUMP( x->layer_enable_mask[1] );
-    DUMP( x->layer_enable_mask[0] );
-    DUMP( x->palette_control );
-    DUMP( x->in3_addr        );
-    DUMP( x->in2_addr        );
-    DUMP( x->priority[3]     );
-    DUMP( x->priority[2]     );
-    DUMP( x->priority[1]     );
-    DUMP( x->priority[0]     );
-    DUMP( x->layer_control   );
-    DUMP( x->mult_result_hi  );
-    DUMP( x->mult_result_lo  );
-    DUMP( x->mult_factor2    );
-    DUMP( x->mult_factor1    );
-    DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
-    DUMP( x->cpsb_addr );
+    /* 17*/ DUMP( x->layer_enable_mask[3] );
+    /* 16*/ DUMP( x->layer_enable_mask[2] );
+    /* 15*/ DUMP( x->layer_enable_mask[1] );
+    /* 14*/ DUMP( x->layer_enable_mask[0] );
+    /* 13*/ DUMP( x->palette_control );
+    /* 12*/ DUMP( x->in3_addr        );
+    /* 11*/ DUMP( x->in2_addr        );
+    /* 10*/ DUMP( x->priority[3]     );
+    /*  9*/ DUMP( x->priority[2]     );
+    /*  8*/ DUMP( x->priority[1]     );
+    /*  7*/ DUMP( x->priority[0]     );
+    /*  6*/ DUMP( x->layer_control   );
+    /*  5*/ DUMP( x->mult_result_hi  );
+    /*  4*/ DUMP( x->mult_result_lo  );
+    /*  3*/ DUMP( x->mult_factor2    );
+    /*  2*/ DUMP( x->mult_factor1    );
+    /*  1*/ DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
+    /*  0*/ DUMP( x->cpsb_addr );
     of << "</part>\n";
 }
 
