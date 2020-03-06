@@ -184,6 +184,12 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .obj_dma_ok    ( obj_dma_ok       ),
     .obj_dma_clr   ( obj_dma_clr      ),
 
+
+    .start_button   ( start_button      ),
+    .coin_input     ( coin_input        ),
+    .joystick3      ( joystick3         ),
+    .joystick4      ( joystick4         ),
+
     // ROM banks
     .game           ( game              ),
     .bank_offset    ( bank_offset       ),

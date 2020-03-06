@@ -38,7 +38,6 @@ module jtcps1_game(
     input   [ 7:0]  joystick2,
     input   [ 7:0]  joystick3,
     input   [ 7:0]  joystick4,
-    //input   [ 7:0]  joystick3,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -295,12 +294,6 @@ jtcps1_video #(REGSIZE) u_video(
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
 
-    // Extra inputs read through the C-Board
-    .start_button   ( start_button  ),
-    .coin_input     ( coin_input    ),
-    .joystick3      ( joystick3     ),
-    .joystick4      ( joystick4     ),
-
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
@@ -315,6 +308,12 @@ jtcps1_video #(REGSIZE) u_video(
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),
     .cfg_data       ( prog_data     ),
+
+    // Extra inputs read through the C-Board
+    .start_button   ( start_button  ),
+    .coin_input     ( coin_input    ),
+    .joystick3      ( joystick3     ),
+    .joystick4      ( joystick4     ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),

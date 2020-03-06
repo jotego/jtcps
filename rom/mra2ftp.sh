@@ -8,7 +8,8 @@ ftp -inv $HOST <<EOF
 user root 1
 cd /media/fat/games/JTCPS1
 mput *.rom
-mput *.ROM
+rename ffight.rom JTCPS1.rom
+mput ffight.rom
 bye
 EOF
 

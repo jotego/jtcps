@@ -175,7 +175,7 @@ always @(*) begin
     pre_mux1 = 16'hffff;
     if( &addr ) sel=2'b00;
     else begin
-        sel = { |addrb[10:6], |addrb[5:0] };
+        sel = { |addrb[12:6], |addrb[5:0] };
         case( addrb[5:0] )
             6'b000_001: pre_mux0 = {4'd0, cpsb_id[7:4], 4'd0, cpsb_id[3:0]};
             6'b000_010: pre_mux0 = mult1;
