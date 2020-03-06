@@ -163,16 +163,6 @@ always @(posedge clk) begin
         else check_prio <= 1'b0;
         lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
     end
-    /*
-    if( lyr0[3:0] != 4'hf ) begin
-        pxl      <= lyr0;
-    end else if( lyr1[3:0] != 4'hf ) begin
-        pxl      <= lyr1;
-    end else if( lyr2[3:0] != 4'hf ) begin
-        pxl      <= lyr2;
-    end else  begin
-        pxl      <= lyr3;
-    end*/
 end
 
 `ifdef SIMULATION

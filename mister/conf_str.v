@@ -7,6 +7,6 @@
 `define CORE_OSD 
 
 `define CORE_KEYMAP \
-    "J1,B0,B1,B2,B3,1P Start,2P Start,Coin,Credits;", \
-    "jn,A,B,X,Y,L,R,Select,Start;",
+    "J1,B0,B1,B2,B3,1P Start,Coin,Pause;", \
+    "jn,A,B,X,Y,L,R,Start;",
 
