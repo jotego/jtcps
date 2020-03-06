@@ -37,6 +37,6 @@
        <!-- Mapper for captcomm --> 
        <part> FF 73 88 40 02 </part>
        <!-- CPS-B config for captcomm --> 
-       <part> 00 12 12 20 30 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
+       <part> 00 12 12 20 30 38 36 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
     </rom>
 </misterromdescription>

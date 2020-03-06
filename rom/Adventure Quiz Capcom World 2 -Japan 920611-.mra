@@ -51,6 +51,6 @@
        <!-- Mapper for cworld2j --> 
        <part> FF F3 44 40 04 </part>
        <!-- CPS-B config for cworld2j --> 
-       <part> 00 14 14 20 30 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+       <part> 00 14 14 20 30 00 36 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
     </rom>
 </misterromdescription>

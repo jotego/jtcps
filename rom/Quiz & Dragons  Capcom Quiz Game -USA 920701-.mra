@@ -34,6 +34,6 @@
        <!-- Mapper for qad --> 
        <part> FF F1 22 20 17 </part>
        <!-- CPS-B config for qad --> 
-       <part> 00 14 02 14 12 FF FF FF FF 2C FF FF FF FF FF FF </part>
+       <part> 00 14 02 14 12 00 36 FF FF FF FF 2C FF FF FF FF FF FF </part>
     </rom>
 </misterromdescription>

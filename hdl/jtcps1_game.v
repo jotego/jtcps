@@ -199,7 +199,7 @@ always @(posedge clk) begin
     cen10  <= cen10x;
 end
 
-localparam REGSIZE=21;
+localparam REGSIZE=23;
 
 jtcps1_prom_we #(REGSIZE) u_prom_we(
     .clk            ( clk           ),
