@@ -98,7 +98,10 @@ wire [5:1] addr_id,
            addr_prio1,   
            addr_prio2,   
            addr_prio3,   
-           addr_pal_page;
+           addr_pal_page,
+           addr_in2,
+           addr_in3;
+
 
 wire [10:0] addrb = {
            addr == addr_pal_page,// 10
@@ -133,20 +136,38 @@ assign addr_prio0    = `MMR(7)>>1;
 assign addr_prio1    = `MMR(8)>>1;
 assign addr_prio2    = `MMR(9)>>1;
 assign addr_prio3    = `MMR(10)>>1;
-assign addr_pal_page = `MMR(11)>>1;
-assign layer_mask0   = `MMR(12);
-assign layer_mask1   = `MMR(13);
-assign layer_mask2   = `MMR(14);
-assign layer_mask3   = `MMR(15);
+assign addr_in2      = `MMR(11)>>1;
+assign addr_in3      = `MMR(12)>>1;
+assign addr_pal_page = `MMR(13)>>1;
+assign layer_mask0   = `MMR(14);
+assign layer_mask1   = `MMR(15);
+assign addr_mult1    = `MMR(2)>>1;
+assign addr_mult2    = `MMR(3)>>1;
+assign addr_rslt0    = `MMR(4)>>1;
+assign addr_rslt1    = `MMR(5)>>1;
+assign addr_layer    = `MMR(6)>>1;
+assign addr_prio0    = `MMR(7)>>1;
+assign addr_prio1    = `MMR(8)>>1;
+assign addr_prio2    = `MMR(9)>>1;
+assign addr_prio3    = `MMR(10)>>1;
+assign addr_in2      = `MMR(11)>>1;
+assign addr_in3      = `MMR(12)>>1;
+assign addr_pal_page = `MMR(13)>>1;
+assign layer_mask0   = `MMR(14);
+assign layer_mask1   = `MMR(15);
+assign layer_mask2   = `MMR(16);
+assign layer_mask3   = `MMR(17);
 assign layer_mask4   = layer_mask3; // it is not well know what the
 // mask bits are for layer 4. MAME uses the same values for layers 3 and 4
 // so I just skip layer 4 from the configuration. This saves one MMR register
 // which is what I need to make the MMR length 16 bytes. The length must be
 // a multiple of 2 in order to work with the ROM downloading
 
-assign game         = `MMR(16);
-assign bank_offset  = { `MMR(18), `MMR(17) };
-assign bank_mask    = { `MMR(20), `MMR(19) };
+// Mapper, last 5 bytes
+assign game         = `MMR(18);
+assign bank_offset  = { `MMR(20), `MMR(19) };
+assign bank_mask    = { `MMR(22), `MMR(21) };
+
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
