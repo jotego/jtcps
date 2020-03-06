@@ -18,9 +18,7 @@
     
 `timescale 1ns/1ps
 
-// Scroll 1 is 512x512, 8x8 tiles
-// Scroll 2 is 1024x1024 16x16 tiles
-// Scroll 3 is 2048x2048 32x32 tiles
+// This module represents the register logic of both CPS-A and CPS-B chips
 
 module jtcps1_mmr(
     input              rst,
@@ -38,6 +36,13 @@ module jtcps1_mmr(
     output reg [15:0]  ppu_ctrl,
     input              obj_dma_clr,
     output reg         obj_dma_ok,
+
+    // Extra inputs read through the C-Board
+    input   [ 3:0]  start_button,
+    input   [ 3:0]  coin_input,
+    input   [ 7:0]  joystick3,
+    input   [ 7:0]  joystick4,
+
     // Scroll
     output reg [15:0]  hpos1,
     output reg [15:0]  hpos2,
@@ -85,7 +90,7 @@ module jtcps1_mmr(
 );
 
 // Shift register configuration
-parameter REGSIZE=21;
+parameter REGSIZE=23; // This is defined at _game level
 reg [8*REGSIZE-1:0] regs;
 
 wire [5:1] addr_id,      
@@ -102,8 +107,9 @@ wire [5:1] addr_id,
            addr_in2,
            addr_in3;
 
-
-wire [10:0] addrb = {
+wire [12:0] addrb = {
+           addr == addr_in3,     // 12
+           addr == addr_in2,     // 11
            addr == addr_pal_page,// 10
            addr == addr_prio3,   // 9  
            addr == addr_prio2,   // 8  
@@ -120,6 +126,7 @@ wire [10:0] addrb = {
 wire [7:0]  cpsb_id;
 reg  [15:0]  mult1, mult2;
 reg  [15:0]  rslt1, rslt0;
+reg  [ 7:0]  in2, in3;
 
 always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
@@ -127,20 +134,6 @@ always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
 assign addr_id       = `MMR(0)>>1;
 assign cpsb_id       = `MMR(1); // 16-bit value compressed in 8 bits
-assign addr_mult1    = `MMR(2)>>1;
-assign addr_mult2    = `MMR(3)>>1;
-assign addr_rslt0    = `MMR(4)>>1;
-assign addr_rslt1    = `MMR(5)>>1;
-assign addr_layer    = `MMR(6)>>1;
-assign addr_prio0    = `MMR(7)>>1;
-assign addr_prio1    = `MMR(8)>>1;
-assign addr_prio2    = `MMR(9)>>1;
-assign addr_prio3    = `MMR(10)>>1;
-assign addr_in2      = `MMR(11)>>1;
-assign addr_in3      = `MMR(12)>>1;
-assign addr_pal_page = `MMR(13)>>1;
-assign layer_mask0   = `MMR(14);
-assign layer_mask1   = `MMR(15);
 assign addr_mult1    = `MMR(2)>>1;
 assign addr_mult2    = `MMR(3)>>1;
 assign addr_rslt0    = `MMR(4)>>1;
@@ -168,16 +161,21 @@ assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
 
-
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
+
+// extra inputs
+always @(*) begin
+    in2 = { start_button[2], coin_input[2], joystick3[5:0] };
+    in3 = { start_button[3], coin_input[3], joystick4[5:0] };
+end
 
 always @(*) begin
     pre_mux0 = 16'hffff;
     pre_mux1 = 16'hffff;
     if( &addr ) sel=2'b00;
     else begin
-        sel = { |addrb[10:6], |addrb[5:0] };
+        sel = { |addrb[12:6], |addrb[5:0] };
         case( addrb[5:0] )
             6'b000_001: pre_mux0 = {4'd0, cpsb_id[7:4], 4'd0, cpsb_id[3:0]};
             6'b000_010: pre_mux0 = mult1;
@@ -186,12 +184,15 @@ always @(*) begin
             6'b010_000: pre_mux0 = rslt1;
             6'b100_000: pre_mux0 = layer_ctrl;
         endcase
-        case( addrb[10:6] )
-            5'b00_001: pre_mux1 = prio0;
-            5'b00_010: pre_mux1 = prio1;
-            5'b00_100: pre_mux1 = prio2;
-            5'b01_000: pre_mux1 = prio3;
-            5'b10_000: pre_mux1 = { 10'd0, pal_page_en };
+        case( addrb[12:6] )
+            7'b0_000_001: pre_mux1 = prio0;
+            7'b0_000_010: pre_mux1 = prio1;
+            7'b0_000_100: pre_mux1 = prio2;
+            7'b0_001_000: pre_mux1 = prio3;
+            7'b0_010_000: pre_mux1 = { 10'd0, pal_page_en };
+            // extra inputs
+            7'b0_100_000: pre_mux1 = { in2, in2 };
+            7'b1_000_000: pre_mux1 = { in3, in3 };
         endcase
     end
 end
@@ -199,7 +200,7 @@ end
 `ifdef SIMULATION
     `ifndef CPSB_CONFIG
     //`define CPSB_CONFIG {REGSIZE{8'b0}}
-    `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 128'h00_08_04_02_2A_32_28_30_26_2E_FF_FF_FF_FF_04_20
+    `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 8'hff,8'hf3,8'h44,8'h40,8'h0,8'h14,8'h20,8'h8,8'h2,8'h32,8'h0,8'h0,8'h30,8'h2e,8'h2c,8'h2a,8'h28,8'hff,8'hff,8'hff,8'hff,8'h5,8'h20
         //{{16{8'b0}}} }
     // Ffight  FF F7 44 40 07
     // Ghouls  F1 17 65 40 0A

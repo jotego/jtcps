@@ -32,11 +32,12 @@ module jtcps1_game(
     output          HS,
     output          VS,
     // cabinet I/O
-    input   [ 1:0]  start_button,
-    input   [ 1:0]  coin_input,
+    input   [ 3:0]  start_button,
+    input   [ 3:0]  coin_input,
     input   [ 7:0]  joystick1,
     input   [ 7:0]  joystick2,
-    //input   [ 7:0]  joystick3,
+    input   [ 7:0]  joystick3,
+    input   [ 7:0]  joystick4,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -307,6 +308,11 @@ jtcps1_video #(REGSIZE) u_video(
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),
     .cfg_data       ( prog_data     ),
+
+    .start_button   ( start_button  ),
+    .coin_input     ( coin_input    ),
+    .joystick3      ( joystick3     ),
+    .joystick4      ( joystick4     ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),
