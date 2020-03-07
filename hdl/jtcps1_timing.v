@@ -32,7 +32,7 @@ module jtcps1_timing(
     output reg         HS,
     output reg         VS,
     output reg         VB,
-    output reg         preVB,
+    output             preVB,
     output reg         HB
 );
 
@@ -51,11 +51,15 @@ initial begin
 end
 `endif
 
+reg [1:0] VBsh;
+
+assign    preVB = VBsh[0];
+
 always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
     //if ( vdump>=9'hf8  ) VB <= 1'b1;
     //if ( vdump==9'h0F  ) VB <= 1'b0;
-    preVB  <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
+    VBsh[0]<= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
     HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     // original HS reported to last for 36 clock ticks
     if( hdump== 9'h1dc ) begin
@@ -71,7 +75,7 @@ always @(posedge clk) if(cen8) begin
         vrender1<= vrender1==9'd261 ? 9'd0 : vrender1+9'd1;
         vrender <= vrender1;
         vdump   <= vrender;
-        VB      <= preVB;
+        {VB, VBsh[1]} <= { VBsh[1], VBsh[0] };
     end
 end
 

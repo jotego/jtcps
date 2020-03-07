@@ -13,6 +13,7 @@ else
     # derived variables
     VER=$JTROOT/ver
     GAME=$VER/game
+    VIDEO=$VER/video
     HDL=$JTROOT/hdl
     ROM=$JTROOT/rom
     MRA=$ROM/mra

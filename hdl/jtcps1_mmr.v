@@ -108,18 +108,20 @@ wire [5:1] addr_id,
            addr_in3;
 
 wire [12:0] addrb = {
-           addr == addr_in3,     // 12
-           addr == addr_in2,     // 11
+           addr == addr_in3 && addr_in3!=5'h0,     // 12
+           addr == addr_in2 && addr_in2!=5'h0,     // 11
            addr == addr_pal_page,// 10
-           addr == addr_prio3,   // 9  
-           addr == addr_prio2,   // 8  
-           addr == addr_prio1,   // 7  
-           addr == addr_prio0,   // 6  
+           // priority masks cannot be modified if the address is all '1
+           addr == addr_prio3 && addr_prio3!=5'h1f,   // 9  
+           addr == addr_prio2 && addr_prio2!=5'h1f,   // 8  
+           addr == addr_prio1 && addr_prio1!=5'h1f,   // 7  
+           addr == addr_prio0 && addr_prio0!=5'h1f,   // 6  
            addr == addr_layer,   // 5  
-           addr == addr_rslt1,   // 4  
-           addr == addr_rslt0,   // 3  
-           addr == addr_mult2,   // 2
-           addr == addr_mult1,   // 1   
+           // multiply registers only valid if different from '1
+           addr == addr_rslt1 && addr_rslt1!=5'h1f,   // 4  
+           addr == addr_rslt0 && addr_rslt0!=5'h1f,   // 3  
+           addr == addr_mult2 && addr_mult2!=5'h1f,   // 2
+           addr == addr_mult1 && addr_mult1!=5'h1f,   // 1   
            addr == addr_id       // 0
         };
 
@@ -234,13 +236,17 @@ reg  pre_copy;
 `endif
 
 `ifdef MMR_FILE
-reg [15:0] mmr_regs[0:15];
+reg [15:0] mmr_regs[0:19];
+integer aux;
 initial begin
     regs = { `CPSB_CONFIG };
     // $display("CPSB_CONFIG = %X", regs );
     $display("Layer control address: %X", `MMR(6) );
     $display("Palette page  address: %X", `MMR(11));    
     $display("INFO: MMR initial values read from %s", `MMR_FILE );
+    // clear the content in case the MMR file does not
+    // contain values for all
+    for( aux=0; aux<20; aux=aux+1 ) mmr_regs[aux]=16'd0;
     $readmemh(`MMR_FILE,mmr_regs);
     vram_obj_base  = mmr_regs[0];
     vram1_base     = mmr_regs[1];
@@ -258,14 +264,14 @@ initial begin
     vram_row_base  = mmr_regs[13];
     row_offset     = mmr_regs[14];
     ppu_ctrl       = mmr_regs[15];
+    prio0          = mmr_regs[16];
+    prio1          = mmr_regs[17];
+    prio2          = mmr_regs[18];
+    prio3          = mmr_regs[19];
     // Default layer order = 4B = 01 00 10 11
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider
     //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
-    prio0 = 16'h0;
-    prio1 = 16'h7e;
-    prio2 = 16'h3fe;
-    prio3 = 16'h7fff;
     obj_dma_ok = 1'b1; // so data is copied at the beginning of sim.
 end
 assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
@@ -287,14 +293,13 @@ always @(posedge clk, posedge reg_rst) begin
         vram3_base    <= 16'd0;
         vram_obj_base <= 16'd0;
         pal_base      <= 16'd0;
-        pal_page_en   <= 6'h3f;
 
-        prio0         <= ~16'h0;
-        prio1         <= ~16'h0;
-        prio2         <= ~16'h0;
-        prio3         <= ~16'h0;
-        pal_page_en   <=  6'h3f;
-        layer_ctrl    <=  {2'b0,2'b11,2'b10,2'b01,2'b00,5'd0};
+        prio0         <= 16'h0;
+        prio1         <= 16'h0;
+        prio2         <= 16'h0;
+        prio3         <= 16'h0;
+        pal_page_en   <= 6'h3f;
+        layer_ctrl    <= {2'b0,2'b11,2'b10,2'b01,2'b00,5'd0};
 
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
