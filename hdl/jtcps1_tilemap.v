@@ -143,6 +143,11 @@ endfunction
 wire [17:1] aux_addr = { vram_base[9:1], 8'd0 } + { 4'd0, scan, 1'b0 };
 wire [15:0] row_hpos = hpos + vram_data;
 
+// pixels in the blank area are not visible but it takes time to draw them
+// so the start position is offset to avoid blanking
+wire [10:0] hn0  = size[0] ? 11'h40 : (size[1] ? 11'h30 : 11'h20 );
+wire [ 8:0] buf0 = size[0] ?  9'h40 : (size[1] ?  9'h30 :  9'h20 );
+
 always @(posedge clk or posedge rst) begin
     if(rst) begin
         rom_cs          <= 1'b0;
@@ -162,10 +167,10 @@ always @(posedge clk or posedge rst) begin
                 /* verilator lint_off WIDTH */
                 vn       <= vpos + {7'd0, vrender};
                 /* verilator lint_on WIDTH */
-                hn       <= 
+                hn       <= hn0 + (
                       size[0] ? { hpos[10:3], 3'b0 } :
-                    ( size[1] ? { hpos[10:4], 4'b0 } : { hpos[10:5], 5'b0 } );
-                buf_addr <= 9'h1ff- (
+                    ( size[1] ? { hpos[10:4], 4'b0 } : { hpos[10:5], 5'b0 } ));
+                buf_addr <= buf0+9'h1ff- (
                     size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) );
                 buf_wr   <= 1'b0;
                 done     <= 1'b0;
