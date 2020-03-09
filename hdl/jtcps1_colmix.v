@@ -184,31 +184,17 @@ end
 `endif
 
 // Palette copy
-reg [11:0] pal_cnt;
-reg [ 4:0] pal_st;
-
-//wire pal_copy2;
-//
-//`ifdef SIMULATION
-//reg last_VB;
-//always @(posedge clk) last_VB <= VB;
-//assign pal_copy2 = VB && !last_VB;
-//`else
-
-`ifdef SIMULATION
-reg [15:0] cur_pal;
-always @(pal_addr) begin
-    cur_pal = pal[pal_addr];
-end
-
-integer fpal,fpal_cnt;
-`endif
+reg [8:0] pal_cnt;
+reg [2:0] pal_st;
+reg [2:0] rdpage, wrpage;
+reg [5:0] pal_en;
+//reg       pal_fist;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         raw       <= 16'h0;
-        pal_cnt   <= 12'd0;
-        pal_st    <= 4'd1;
+        pal_cnt   <= 9'd0;
+        pal_st    <= 0;
         vram_cs   <= 1'b0;
         vram_addr <= 23'd0;
     end else begin
@@ -216,43 +202,48 @@ always @(posedge clk, posedge rst) begin
         `ifdef FORCE_GRAY
         raw <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
         `endif
-        `ifdef FORCE_RED
-        raw <= {4'hf,pal[pal_addr][11:8],8'h0};
-        `endif
-        `ifdef FORCE_GREEN
-        raw <= {4'hf,4'h0,pal[pal_addr][7:4],4'h0};
-        `endif
-        `ifdef FORCE_BLUE
-        raw <= {4'hf,8'h0,pal[pal_addr][3:0]};
-        `endif
 
-        if( pal_copy && pal_st[0] ) begin
-            vram_cs <= 1'b1;
-        end
-        if( vram_cs ) begin
-            pal_st <= { pal_st[3:0], pal_st[4] };
-        end else pal_st <= 5'b1;
         case( pal_st )
-            5'b0001: begin
-                vram_addr <= { pal_base[9:1], 8'd0 } + pal_cnt;
-            end
-            // 4'b0010: wait for OK signal to go down in reaction to the change
-            // in vram_addr
-            5'b1000: if(vram_ok) begin
-                pal[pal_cnt] <= vram_data;
-                if( &pal_cnt ) begin
-                    vram_cs <= 1'b0;
-                    // `ifdef SIMULATION
-                    // $display("Palette base = %X",pal_base);
-                    // fpal=$fopen("pal_dump.hex","w");
-                    // for(fpal_cnt=0;fpal_cnt<4096;fpal_cnt=fpal_cnt+1) begin
-                    //     $fwrite(fpal,"%x\n",pal[fpal_cnt]);
-                    // end
-                    // $fclose(fpal);
-                    // `endif
+            0: begin
+                if( pal_copy ) begin
+                    vram_cs   <= 1'b0;
+                    rdpage    <= 3'd0;
+                    pal_en    <= pal_page_en;
+                    wrpage    <= 3'd0;
+                    pal_st    <= 1;
                 end
-            end else pal_st <= pal_st;
-            5'b1_0000: pal_cnt <= pal_cnt + 12'd1;
+            end
+            1: begin
+                if( wrpage >= 3'd6 ) begin
+                    pal_st  <= 0; // done
+                    vram_cs <= 1'b0;
+                end else begin
+                    pal_en <= pal_en>>1;
+                    if( !pal_en[0] ) begin
+                        if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
+                        wrpage <= wrpage + 3'd1;
+                    end else begin
+                        pal_cnt   <= 9'd0;
+                        vram_cs   <= 1'b1;
+                        vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
+                        pal_st <= 2;
+                    end
+                end
+            end
+            2: pal_st <= 3; // wait state
+            3: if(vram_ok) begin
+                pal[ {wrpage , pal_cnt } ] <= vram_data;
+                pal_cnt <= pal_cnt + 9'd1;
+                if( &pal_cnt ) begin
+                    rdpage <= rdpage + 3'd1;
+                    wrpage <= wrpage + 3'd1;
+                    pal_st <= 1;
+                end
+                else begin
+                    vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
+                    pal_st <= 2;
+                end
+            end
         endcase
     end
 end
