@@ -140,8 +140,9 @@ always @(posedge clk, posedge rst) begin
                         // to renew
                         buf_addr <= buf_addr + 9'd5;
                     end
-                    if( buf_addr == ~9'h0 ) begin // do not draw this one
-                        st <= 22;
+                    if( buf_addr == ~9'h0 ) begin // this marks the end
+                        done <= 1'b1;
+                        st   <= 0;
                     end
                 end else st<=st;
             end
