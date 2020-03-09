@@ -58,6 +58,7 @@ reg  [ 2:0] wait_cycle;
 reg         last_tile;
 wire [ 3:0] offset, mask;
 reg         mapper_en;
+reg         no_line_cnt_inc;
 
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
@@ -212,7 +213,14 @@ always @(posedge clk, posedge rst) begin
                     //if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
                     st<= 1; // try next one
                 end
-                else first <= 1'b0;
+                else begin
+                    first <= 1'b0;
+                    if( obj_x<=9'h30 || obj_x>= 9'd448) begin // Tiles outside the screen width
+                        no_line_cnt_inc <= 1'b1;
+                        st <= 9;
+                    end
+                    else no_line_cnt_inc <= 1'b0;
+                end
             end
             6: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
             7: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= code_mn;
@@ -222,7 +230,7 @@ always @(posedge clk, posedge rst) begin
                     st   <= 0; // line full
                     done <= 1;
                 end else begin
-                    line_cnt <= line_cnt+7'd1;
+                    if(!no_line_cnt_inc) line_cnt <= line_cnt+7'd1;
                     if( n == tile_n ) st <= 1; // next element
                     else begin // prepare for next tile
                         n <= n + 4'd1;

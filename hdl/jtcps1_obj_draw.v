@@ -127,7 +127,7 @@ always @(posedge clk, posedge rst) begin
             end
             3: begin
                 buf_addr   <= table_data[8:0]-9'd1; // obj_x
-                if( table_addr[8:2]==7'b111_0000 ) last_tile <= 1'b1; // some margin for SDRAM waits
+                if( table_addr[8:2]==7'd112  ) last_tile <= 1'b1; // some margin for SDRAM waits
                 table_addr[8:2] <= table_addr[8:2]+7'd1;
                 table_addr[1:0] <= 2'd0;
             end
@@ -139,6 +139,9 @@ always @(posedge clk, posedge rst) begin
                         st <= 10;// skip blank pixels but waste two clock cycles for rom_ok
                         // to renew
                         buf_addr <= buf_addr + 9'd5;
+                    end
+                    if( buf_addr == ~9'h0 ) begin // do not draw this one
+                        st <= 22;
                     end
                 end else st<=st;
             end
