@@ -32,9 +32,11 @@ module jtcps1_timing(
     output reg         HS,
     output reg         VS,
     output reg         VB,
-    output reg         preVB,
+    output             preVB,
     output reg         HB
 );
+
+reg [1:0] shVB;
 
 `ifdef SIMULATION
 initial begin
@@ -46,17 +48,19 @@ initial begin
     VS        = 1'b0;
     HB        = 1'b1;
     VB        = 1'b1;
-    preVB     = 1'b0;
+    shVB      = 1'b0;
     start     = 1'b1;
 end
 `endif
+
+assign preVB = shVB[0];
 
 always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
     //if ( vdump>=9'hf8  ) VB <= 1'b1;
     //if ( vdump==9'h0F  ) VB <= 1'b0;
-    preVB  <= vdump<(9'd15) || vdump>9'd238; // 224 visible lines
-    HB     <= hdump>=(9'd384+9'd64) || hdump<9'd64;
+    shVB[0] <= vdump<(9'd14) || vdump>9'd237; // 224 visible lines
+    HB      <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     // original HS reported to last for 36 clock ticks
     if( hdump== 9'h1dc ) begin
         HS <= 1'b1;
@@ -71,7 +75,7 @@ always @(posedge clk) if(cen8) begin
         vrender1<= vrender1==9'd261 ? 9'd0 : vrender1+9'd1;
         vrender <= vrender1;
         vdump   <= vrender;
-        VB      <= preVB;
+        { VB, shVB[1] } <= shVB;
     end
 end
 
