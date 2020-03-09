@@ -34,7 +34,6 @@ module jtcps1_mmr(
     output  reg [15:0] mmr_dout,
     // registers
     output reg [15:0]  ppu_ctrl,
-    input              obj_dma_clr,
     output reg         obj_dma_ok,
 
     // Extra inputs read through the C-Board
@@ -280,6 +279,8 @@ assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
 assign reg_rst = rst | ~ppu_rstn;
 `endif
 
+reg pre_dma_ok, last_pre_dma_ok;
+
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
         hpos1         <= 16'd0;
@@ -313,13 +314,15 @@ always @(posedge clk, posedge reg_rst) begin
             pre_copy <= 1'b0;
         end
         else pal_copy <= 1'b0;
-        if( obj_dma_clr ) obj_dma_ok <= 1'b0;
+        pre_dma_ok      <= 1'b0;
+        last_pre_dma_ok <= pre_dma_ok;
+        obj_dma_ok <= last_pre_dma_ok && !pre_dma_ok;
         if( ppu1_cs ) begin
             case( addr[5:1] )
                 // CPS-A registers
                 5'h00: begin
                     vram_obj_base <= data_sel(vram_obj_base , cpu_dout, dsn);
-                    obj_dma_ok   <= 1'b1;
+                    pre_dma_ok   <= 1'b1;
                 end
                 5'h01: vram1_base    <= data_sel(vram1_base    , cpu_dout, dsn);
                 5'h02: vram2_base    <= data_sel(vram2_base    , cpu_dout, dsn);

@@ -31,7 +31,6 @@ module jtcps1_obj_table(
     input              rst,
     input              clk,
 
-    output reg         obj_dma_clr,
     input              obj_dma_ok,
 
     // control registers
@@ -40,6 +39,7 @@ module jtcps1_obj_table(
     input      [15:0]  vram_data,
     input              vram_ok,
     output reg         vram_cs,
+    output reg         vram_clr,
 
     // interface with renderer
     input      [ 9:0]  table_addr,
@@ -90,30 +90,35 @@ assign vram_addr = { vram_cnt[17:3], ~vram_cnt[2:1] };
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        frame     <= 1'b0;
-        frame_n   <= 1'b1;
-        st        <= 2'd0;
-        vram_cs   <= 1'b0;
-        vram_cnt <= 17'd0;
-        obj_dma_clr <= 1'b0;
+        frame       <= 1'b0;
+        frame_n     <= 1'b1;
+        vram_cs     <= 1'b0;
+        vram_cnt    <= 17'd0;
+        vram_clr    <= 1'b0;
+        // start by clearing the memory. Not very useful as it only clears one half of it, though.
+        st          <= 2'd2;
+        wr_addr     <= ~10'd0;
+        wait_cycle  <= 1'b1; // this signals st'2 not to finish when wr_addr==~10'd0
     end else begin
         case( st )
             2'd0: begin
-                vram_cnt  <= {vram_base[9:1], 8'd0};
                 vram_cs    <= 1'b0;
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
                 wait_cycle <= 1'b1;
                 if( obj_dma_ok ) begin // start of new frame, after blanking
-                    vram_cs   <= 1'b1;
+                    vram_cnt  <= {vram_base[9:1], 8'd0};
+                    // VRAM cache needs be cleared because otherwise if a sprite buffer end
+                    // value was cached in the previous frame, this will be read and no
+                    // objects will be displayed. The circuit would become locked in this state
+                    // as the cache contents would stay fixed
+                    vram_clr  <= 1'b1;      // clear cache
                     frame     <= ~frame;
                     frame_n   <=  frame;
-                    st        <= 2'd1;
-                    obj_dma_clr <= 1'b1;
-                end else st<=0;
+                    st        <= 2'd3;      // one clock cycle to let cache clear propagate
+                end
             end
             2'd1: begin
-                obj_dma_clr <= 1'b0;
                 wait_cycle <= 1'b0;
                 if(vram_ok && !wait_cycle) begin
                     if( vram_data[15:8]==8'hff && vram_cnt[2:1]==2'b00 ) begin
@@ -135,7 +140,12 @@ always @(posedge clk, posedge rst) begin
                 wr_en      <= 1'b1;
                 vram_cs    <= 1'b0;
                 vram_cnt  <= vram_cnt + 17'd1;
-                if( vram_cnt[10:1]== 10'h3ff ) st<=2'd0;
+                if( vram_cnt[10:1]== 10'h3ff && !wait_cycle) st<=2'd0;
+            end
+            2'd3: begin
+                vram_clr <= 1'b0;
+                vram_cs  <= 1'b1;
+                st       <= 2'd1;
             end
         endcase
     end

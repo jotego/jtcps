@@ -108,7 +108,7 @@ wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire [ 9:0] slot_cs, slot_ok, slot_wr;
+wire [ 9:0] slot_cs, slot_ok, slot_wr, slot_clr;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
@@ -118,6 +118,7 @@ wire [21:0] gfx0_addr, gfx1_addr;
 
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
+assign slot_clr[8:0] = 9'd0;
 
 assign slot_cs[0] = main_rom_cs;
 assign slot_cs[1] = main_ram_cs | main_vram_cs;
@@ -325,6 +326,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vram_obj_data  ( vram_obj_data ),
     .vram_obj_ok    ( vram_obj_ok   ),
     .vram_obj_cs    ( vram_obj_cs   ),
+    .vram_obj_clr   ( slot_clr[9]   ),
 
     .vpal_addr      ( vpal_addr     ),
     .vpal_data      ( vpal_data     ),
@@ -502,6 +504,7 @@ u_sdram_mux(
     .slot_cs        ( slot_cs           ),
     .slot_ok        ( slot_ok           ),
     .slot_wr        ( slot_wr           ),
+    .slot_clr       ( slot_clr          ),
 
     // SDRAM controller interface
     .downloading    ( downloading       ),

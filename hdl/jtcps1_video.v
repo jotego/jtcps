@@ -61,6 +61,7 @@ module jtcps1_video(
     input      [15:0]  vram_obj_data,
     input              vram_obj_ok,
     output             vram_obj_cs,
+    output             vram_obj_clr,
 
     output     [17:1]  vpal_addr,
     input      [15:0]  vpal_data,
@@ -131,7 +132,7 @@ wire       [ 5:0]  game;
 wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
-wire               obj_dma_ok, obj_dma_clr;
+wire               obj_dma_ok;
 
 jtcps1_timing u_timing(
     .rst            ( rst               ),
@@ -181,9 +182,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .vstar2         ( vstar2            ),
 
     // OBJ DMA
-    .obj_dma_ok    ( obj_dma_ok       ),
-    .obj_dma_clr   ( obj_dma_clr      ),
-
+    .obj_dma_ok     ( obj_dma_ok        ),
 
     .start_button   ( start_button      ),
     .coin_input     ( coin_input        ),
@@ -294,7 +293,6 @@ jtcps1_obj u_obj(
     //.VB         ( VB            ),
 
     .obj_dma_ok    ( obj_dma_ok   ),
-    .obj_dma_clr   ( obj_dma_clr  ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
@@ -313,6 +311,7 @@ jtcps1_obj u_obj(
     .vram_data  ( vram_obj_data ),
     .vram_ok    ( vram_obj_ok   ),
     .vram_cs    ( vram_obj_cs   ),
+    .vram_clr   ( vram_obj_clr  ),
 
     .rom_addr   ( rom0_addr     ),
     .rom_data   ( rom0_data     ),

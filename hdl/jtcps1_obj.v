@@ -24,8 +24,6 @@ module jtcps1_obj(
     input              pxl_cen,
 
     // input              HB,
-
-    output             obj_dma_clr,
     input              obj_dma_ok,
 
     input              start,
@@ -45,6 +43,7 @@ module jtcps1_obj(
     input      [15:0]  vram_data,
     input              vram_ok,
     output             vram_cs,
+    output             vram_clr,
 
     output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
@@ -65,7 +64,6 @@ wire        buf_wr;
 jtcps1_obj_table u_table(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .obj_dma_clr    ( obj_dma_clr   ), 
     .obj_dma_ok     ( obj_dma_ok    ), 
     // OBJ renderization
     .table_addr     ( frame_addr    ),
@@ -76,8 +74,8 @@ jtcps1_obj_table u_table(
     .vram_addr  ( vram_addr     ),
     .vram_data  ( vram_data     ),
     .vram_ok    ( vram_ok       ),
-    .vram_cs    ( vram_cs       )
-
+    .vram_cs    ( vram_cs       ),
+    .vram_clr   ( vram_clr      )
 );
 
 jtcps1_obj_line_table u_line_table(
