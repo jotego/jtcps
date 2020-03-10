@@ -25,6 +25,9 @@ module jtcps1_obj(
 
     // input              HB,
     input              obj_dma_ok,
+    // BUS sharing
+    output             busreq,
+    input              busack,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
@@ -64,7 +67,10 @@ wire        buf_wr;
 jtcps1_obj_table u_table(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .obj_dma_ok     ( obj_dma_ok    ), 
+    .obj_dma_ok     ( obj_dma_ok    ),
+    // BUS sharing
+    .busreq         ( busreq        ),
+    .busack         ( busack        ),
     // OBJ renderization
     .table_addr     ( frame_addr    ),
     .table_data     ( frame_data    ),

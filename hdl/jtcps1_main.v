@@ -269,10 +269,13 @@ assign busack = ~BGACKn;
 
 jtframe_68kdma #(.BW(1)) u_arbitration(
     .clk        (  clk          ),
+    .cen        ( cen10b        ),
     .rst        (  rst          ),
     .cpu_BRn    (  BRn          ),
     .cpu_BGACKn (  BGACKn       ),
     .cpu_BGn    (  BGn          ),
+    .cpu_ASn    (  ASn          ),
+    .cpu_DTACKn (  DTACKn       ),
     .dev_br     (  busreq       )
 );
 

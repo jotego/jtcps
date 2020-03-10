@@ -40,6 +40,9 @@ module jtcps1_video(
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  [15:0]     mmr_dout,
+    // BUS sharing
+    output             busreq,
+    input              busack,
 
     // CPS-B Registers
     input              cfg_we,
@@ -293,6 +296,9 @@ jtcps1_obj u_obj(
     //.VB         ( VB            ),
 
     .obj_dma_ok    ( obj_dma_ok   ),
+    // BUS sharing
+    .busreq     ( busreq        ),
+    .busack     ( busack        ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),

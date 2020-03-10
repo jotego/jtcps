@@ -32,6 +32,9 @@ module jtcps1_obj_table(
     input              clk,
 
     input              obj_dma_ok,
+    // BUS sharing
+    output reg         busreq,
+    input              busack,
 
     // control registers
     input      [15:0]  vram_base,
@@ -99,6 +102,7 @@ always @(posedge clk, posedge rst) begin
         st          <= 2'd2;
         wr_addr     <= ~10'd0;
         wait_cycle  <= 1'b1; // this signals st'2 not to finish when wr_addr==~10'd0
+        busreq      <= 1'b0;
     end else begin
         case( st )
             2'd0: begin
@@ -106,12 +110,14 @@ always @(posedge clk, posedge rst) begin
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
                 wait_cycle <= 1'b1;
+                busreq     <= 1'b0;
                 if( obj_dma_ok ) begin // start of new frame, after blanking
                     vram_cnt  <= {vram_base[9:1], 8'd0};
                     // VRAM cache needs be cleared because otherwise if a sprite buffer end
                     // value was cached in the previous frame, this will be read and no
                     // objects will be displayed. The circuit would become locked in this state
                     // as the cache contents would stay fixed
+                    busreq    <= 1'b1;
                     vram_clr  <= 1'b1;      // clear cache
                     frame     <= ~frame;
                     frame_n   <=  frame;
@@ -145,7 +151,7 @@ always @(posedge clk, posedge rst) begin
             2'd3: begin
                 vram_clr <= 1'b0;
                 vram_cs  <= 1'b1;
-                st       <= 2'd1;
+                if(busack) st <= 2'd1;
             end
         endcase
     end

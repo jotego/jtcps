@@ -245,7 +245,7 @@ jtcps1_main u_main(
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
-    .busreq      ( 1'b0             ),
+    .busreq      ( busreq           ),
     .busack      ( busack           ),
     .RnW         ( main_rnw         ),
     // RAM/VRAM access
@@ -294,6 +294,9 @@ jtcps1_video #(REGSIZE) u_video(
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
+    // BUS sharing
+    .busreq      ( busreq           ),
+    .busack      ( busack           ),
 
     // Video signal
     .HS             ( HS            ),
