@@ -135,7 +135,9 @@ wire       [ 5:0]  game;
 wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
-wire               obj_dma_ok;
+wire               obj_dma_ok, busreq_obj, busreq_pal;
+
+assign             busreq = busreq_pal | busreq_obj;
 
 jtcps1_timing u_timing(
     .rst            ( rst               ),
@@ -297,7 +299,7 @@ jtcps1_obj u_obj(
 
     .obj_dma_ok    ( obj_dma_ok   ),
     // BUS sharing
-    .busreq     ( busreq        ),
+    .busreq     ( busreq_obj    ),
     .busack     ( busack        ),
 
     .start      ( line_start    ),
@@ -365,6 +367,8 @@ jtcps1_colmix u_colmix(
     `endif
     .pal_base   ( pal_base      ),
     .pal_page_en( pal_page_en   ),
+    .busreq     ( busreq_pal    ),
+    .busack     ( busack        ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),

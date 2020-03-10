@@ -59,6 +59,9 @@ module jtcps1_colmix(
     input              pal_copy,
     input   [15:0]     pal_base,
     input   [ 5:0]     pal_page_en, // which palette pages to copy
+    // BUS sharing
+    output reg         busreq,
+    input              busack,
 
     // VRAM access
     output reg [17:1]  vram_addr,
@@ -205,16 +208,19 @@ always @(posedge clk, posedge rst) begin
 
         case( pal_st )
             0: begin
+
                 if( pal_copy ) begin
                     vram_cs   <= 1'b0;
                     rdpage    <= 3'd0;
                     pal_en    <= pal_page_en;
                     wrpage    <= 3'd0;
-                    pal_st    <= 1;
+                    busreq    <= 1;
+                    pal_st    <= 4;
                 end
             end
             1: begin
                 if( wrpage >= 3'd6 ) begin
+                    busreq  <= 1'b0;
                     pal_st  <= 0; // done
                     vram_cs <= 1'b0;
                 end else begin
@@ -244,6 +250,7 @@ always @(posedge clk, posedge rst) begin
                     pal_st <= 2;
                 end
             end
+            4: if( busack ) pal_st <= 1;
         endcase
     end
 end
