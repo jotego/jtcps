@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="41em_35.11h" crc="ddbee5eb" map="01"/>
             <part name="41em_30.11f" crc="4249ec61" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="41em_36.12h" crc="3cfc31d0" map="01"/>
             <part name="41em_31.12f" crc="584e88e5" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="41-32m.8h" crc="4e9648ca" map="21"/>
         </interleave>
@@ -41,6 +41,6 @@
             <part name="41-7m.9a" crc="aeaa3509"  map="00002100"/>
             <part name="41-1m.3a" crc="ff77985a"  map="00210000"/>
             <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

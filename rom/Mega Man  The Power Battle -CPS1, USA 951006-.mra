@@ -39,24 +39,24 @@
             <part name="rcm_02.4a" crc="944d4f0f"  map="00002100"/>
             <part name="rcm_03.5a" crc="36f3073c"  map="00210000"/>
             <part name="rcm_04.6a" crc="54e622ff"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="rcm_05.7a" crc="5dd131fd"  map="00000021"/>
             <part name="rcm_06.8a" crc="f0faf813"  map="00002100"/>
             <part name="rcm_07.9a" crc="826de013"  map="00210000"/>
             <part name="rcm_08.10a" crc="fbff64cf"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="rcm_10.3c" crc="4dc8ada9"  map="00000021"/>
             <part name="rcm_11.4c" crc="f2b9ee06"  map="00002100"/>
             <part name="rcm_12.5c" crc="fed5f203"  map="00210000"/>
             <part name="rcm_13.6c" crc="5069d4a9"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="rcm_14.7c" crc="303be3bd"  map="00000021"/>
             <part name="rcm_15.8c" crc="4f2d372f"  map="00002100"/>
             <part name="rcm_16.9c" crc="93d97fde"  map="00210000"/>
             <part name="rcm_17.10c" crc="92371042"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

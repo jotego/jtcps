@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="xmqq-12h.bin" crc="2d7ee2e9" map="01"/>
             <part name="xmqq-12f.bin" crc="196297bf" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="xmqq-13h.bin" crc="3fefe432" map="01"/>
             <part name="xmqq-13f.bin" crc="8f6abf26" map="10"/>
-       </interleave>
+        </interleave>
        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->
         <part name="xmqq-13b.bin" crc="4e8b81a8"/>
@@ -43,7 +43,7 @@
             <part name="xmqq-5c.bin" crc="e2169bb5"  map="00100000"/>
             <part name="xmqq-8h.bin" crc="113121f5"  map="01000000"/>
             <part name="xmqq-8f.bin" crc="beb00e07"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="xmqq-5b.bin" crc="05354905"  map="00000001"/>
             <part name="xmqq-5a.bin" crc="bd40215e"  map="00000010"/>
@@ -53,6 +53,6 @@
             <part name="xmqq-7c.bin" crc="d91cda18"  map="00100000"/>
             <part name="xmqq-9h.bin" crc="3cd8594b"  map="01000000"/>
             <part name="xmqq-9f.bin" crc="1ec10bed"  map="10000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

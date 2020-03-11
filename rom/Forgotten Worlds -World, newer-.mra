@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="lw41.12h" crc="58210b9e" map="01"/>
             <part name="lw40.12f" crc="73e920b7" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="lw43.13h" crc="539b2339" map="01"/>
             <part name="lw42.13f" crc="bea45994" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="lw-07.10g" crc="fd252a26" map="21"/>
         </interleave>
@@ -44,7 +44,7 @@
             <part name="lw_17.5c" crc="c5eea115"  map="00100000"/>
             <part name="lw_30.8h" crc="b385954e"  map="01000000"/>
             <part name="lw_29.8f" crc="7bda1ac6"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="lw_4.3b" crc="50cf757f"  map="00000001"/>
             <part name="lw_3.3a" crc="c03ef278"  map="00000010"/>
@@ -53,7 +53,7 @@
             <part name="lw_32.9h" crc="30967a15"  map="00010000"/>
             <part name="lw_31.9f" crc="c49d37fb"  map="00100000"/>
             <part name="lw-02.6b" crc="43e6c5c8"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="lw_14.10b" crc="82862cce"  map="00000001"/>
             <part name="lw_13.10a" crc="b81c0e96"  map="00000010"/>
@@ -62,7 +62,7 @@
             <part name="lw_25.10c" crc="bac91554"  map="00100000"/>
             <part name="lw_16.11b" crc="40b26554"  map="01000000"/>
             <part name="lw_15.11a" crc="1b7d2e07"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="lw_28.11e" crc="a805ad30"  map="00000001"/>
             <part name="lw_27.11c" crc="103c1bd2"  map="00000010"/>

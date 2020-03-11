@@ -22,19 +22,19 @@
         <interleave output="16">
             <part name="q5_42.12h" crc="4d29b3a4" map="01"/>
             <part name="q5_36.12f" crc="38a08099" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="q5_43.13h" crc="3ef65ea8" map="01"/>
             <part name="q5_37.13f" crc="eb547ebc" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="q5_40.10h" crc="7f14b7b4" map="01"/>
             <part name="q5_34.10f" crc="7fcc1317" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="q5_41.11h" crc="d3654067" map="01"/>
             <part name="q5_35.11f" crc="abacee26" map="10"/>
-       </interleave>
+        </interleave>
         <!-- audiocpu -->
         <part name="q5_23.13b" crc="e14dc524"/>
         <!-- oki -->
@@ -50,7 +50,7 @@
             <part name="q5_17.5c" crc="bd3b4d11"  map="00100000"/>
             <part name="q5_38.8h" crc="9c24670c"  map="01000000"/>
             <part name="q5_32.8f" crc="3ef9c7c2"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="q5_10.5b" crc="119e5e93"  map="00000001"/>
             <part name="q5_02.5a" crc="a2cadcbe"  map="00000010"/>
@@ -60,6 +60,6 @@
             <part name="q5_18.7c" crc="c57da03c"  map="00100000"/>
             <part name="q5_39.9h" crc="a5839b25"  map="01000000"/>
             <part name="q5_33.9f" crc="04d03930"  map="10000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

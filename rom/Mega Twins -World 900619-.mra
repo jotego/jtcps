@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="che_35.11h" crc="a7f96b02" map="01"/>
             <part name="che_30.11f" crc="9a2a2db1" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="che_36.12h" crc="0fa00c39" map="01"/>
             <part name="che_31.12f" crc="bbff8a99" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="ck-32m.8h" crc="9b70bd41" map="21"/>
         </interleave>
@@ -41,6 +41,6 @@
             <part name="ck-7m.9a" crc="d85d00d6"  map="00002100"/>
             <part name="ck-1m.3a" crc="f33ca9d4"  map="00210000"/>
             <part name="ck-3m.5a" crc="0ba2047f"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

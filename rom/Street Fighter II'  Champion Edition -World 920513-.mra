@@ -39,18 +39,18 @@
             <part name="s92-3m.5a" crc="840289ec"  map="00002100"/>
             <part name="s92-2m.4a" crc="cdb5f027"  map="00210000"/>
             <part name="s92-4m.6a" crc="e2799472"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="s92-5m.7a" crc="ba8a2761"  map="00000021"/>
             <part name="s92-7m.9a" crc="e584bfb5"  map="00002100"/>
             <part name="s92-6m.8a" crc="21e3f87d"  map="00210000"/>
             <part name="s92-8m.10a" crc="befc47df"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="s92-10m.3c" crc="960687d5"  map="00000021"/>
             <part name="s92-12m.5c" crc="978ecd18"  map="00002100"/>
             <part name="s92-11m.4c" crc="d6ec9a0a"  map="00210000"/>
             <part name="s92-13m.6c" crc="ed2c67f6"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

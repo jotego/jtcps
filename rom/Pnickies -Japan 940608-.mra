@@ -22,7 +22,7 @@
         <interleave output="16">
             <part name="pnij_42.12h" crc="c085dfaf" map="01"/>
             <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
-       </interleave>
+        </interleave>
        <part repeat="0xC0000">FF</part>
         <!-- audiocpu -->
         <part name="pnij_17.13b" crc="e86f787a"/>
@@ -39,7 +39,7 @@
             <part name="pnij_18.5c" crc="f17a0e56"  map="00100000"/>
             <part name="pnij_38.8h" crc="eb75bd8c"  map="01000000"/>
             <part name="pnij_32.8f" crc="84560bef"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="pnij_10.5b" crc="c2acc171"  map="00000001"/>
             <part name="pnij_02.5a" crc="0e21fc33"  map="00000010"/>
@@ -49,6 +49,6 @@
             <part name="pnij_19.7c" crc="af08b230"  map="00100000"/>
             <part name="pnij_39.9h" crc="70fbe579"  map="01000000"/>
             <part name="pnij_33.9f" crc="3ed2c680"  map="10000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

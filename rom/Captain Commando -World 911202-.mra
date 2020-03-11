@@ -28,7 +28,7 @@
         <interleave output="16">
             <part name="cc_28f.9f" crc="fc3c2906" map="01"/>
             <part name="cc_24f.9e" crc="3a794f25" map="10"/>
-       </interleave>
+        </interleave>
         <!-- audiocpu -->
         <part name="cc_09.11a" crc="698e8b58"/>
         <!-- oki -->
@@ -40,12 +40,12 @@
             <part name="cc-7m.5a" crc="6a60f949"  map="00002100"/>
             <part name="cc-1m.4a" crc="00637302"  map="00210000"/>
             <part name="cc-3m.6a" crc="cc87cf61"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="cc-6m.7a" crc="28718bed"  map="00000021"/>
             <part name="cc-8m.9a" crc="d4acc53a"  map="00002100"/>
             <part name="cc-2m.8a" crc="0c69f151"  map="00210000"/>
             <part name="cc-4m.10a" crc="1f9ebb97"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

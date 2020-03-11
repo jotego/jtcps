@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="nme_35a.11h" crc="5fd31661" map="01"/>
             <part name="nme_30a.11f" crc="d2c03e56" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="nme_36a.12h" crc="ee9450e3" map="01"/>
             <part name="nme_31a.12f" crc="b2bd4f6f" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="nm-32m.8h" crc="d6d1add3" map="21"/>
         </interleave>
@@ -41,6 +41,6 @@
             <part name="nm-7m.9a" crc="203dc8c6"  map="00002100"/>
             <part name="nm-1m.3a" crc="9e878024"  map="00210000"/>
             <part name="nm-3m.5a" crc="bb01e6b6"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

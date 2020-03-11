@@ -22,19 +22,19 @@
         <interleave output="16">
             <part name="kde_37a.11f" crc="f22e5266" map="01"/>
             <part name="kde_30a.11e" crc="fcb5efe2" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="kde_38a.12f" crc="57d6ed3a" map="01"/>
             <part name="kde_31a.12e" crc="c710d722" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="kd_35.9f" crc="4ca6a48a" map="01"/>
             <part name="kd_28.9e" crc="9367bcd9" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="kd_36a.10f" crc="95a3cef8" map="01"/>
             <part name="kd_29.10e" crc="0360fa72" map="10"/>
-       </interleave>
+        </interleave>
         <!-- audiocpu -->
         <part name="kd_9.12a" crc="bac6ec26"/>
         <!-- oki -->
@@ -46,12 +46,12 @@
             <part name="kd-7m.6a" crc="a7750322"  map="00002100"/>
             <part name="kd-1m.3a" crc="5f74bf78"  map="00210000"/>
             <part name="kd-3m.5a" crc="5e5303bf"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="kd-6m.4c" crc="113358f3"  map="00000021"/>
             <part name="kd-8m.6c" crc="38853c44"  map="00002100"/>
             <part name="kd-2m.3c" crc="9ef36604"  map="00210000"/>
             <part name="kd-4m.5c" crc="402b9b4f"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

@@ -35,12 +35,12 @@
             <part name="dam_02.4a" crc="5d760ab9"  map="00002100"/>
             <part name="dam_03.5a" crc="4ba90b59"  map="00210000"/>
             <part name="dam_04.6a" crc="4bdee9de"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="dam_05.7a" crc="7dc61b94"  map="00000021"/>
             <part name="dam_06.8a" crc="fde89758"  map="00002100"/>
             <part name="dam_07.9a" crc="ec351d78"  map="00210000"/>
             <part name="dam_08.10a" crc="ee2acc1e"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

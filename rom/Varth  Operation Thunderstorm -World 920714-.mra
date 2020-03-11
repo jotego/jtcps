@@ -22,19 +22,19 @@
         <interleave output="16">
             <part name="vae_35b.11h" crc="44e5548f" map="01"/>
             <part name="vae_30b.11f" crc="adb8d391" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="vae_36b.12h" crc="5f2e2450" map="01"/>
             <part name="vae_31b.12f" crc="1749a71c" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="vae_33b.9h" crc="c0bbf8c9" map="01"/>
             <part name="vae_28b.9f" crc="e524ca50" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="vae_34b.10h" crc="fa59be8a" map="01"/>
             <part name="vae_29b.10f" crc="6640996a" map="10"/>
-       </interleave>
+        </interleave>
         <!-- audiocpu -->
         <part name="va_09.12b" crc="7a99446e"/>
         <!-- oki -->
@@ -46,6 +46,6 @@
             <part name="va-7m.9a" crc="4c6588cd"  map="00002100"/>
             <part name="va-1m.3a" crc="0b1ace37"  map="00210000"/>
             <part name="va-3m.5a" crc="44dfe706"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

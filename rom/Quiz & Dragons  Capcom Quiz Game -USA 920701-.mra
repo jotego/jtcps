@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="qdu_42a.12h" crc="cfe36f0c" map="01"/>
             <part name="qdu_36a.12f" crc="de9c24a0" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="qdu_43a.13h" crc="15e6beb9" map="01"/>
             <part name="qdu_37a.13f" crc="10d22320" map="10"/>
-       </interleave>
+        </interleave>
        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->
         <part name="qd_23.13b" crc="cfb5264b"/>
@@ -43,6 +43,6 @@
             <part name="qd_17.5c" crc="a812f9e2"  map="00100000"/>
             <part name="qd_38.8h" crc="ccdddd1f"  map="01000000"/>
             <part name="qd_32.8f" crc="a8d295d3"  map="10000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

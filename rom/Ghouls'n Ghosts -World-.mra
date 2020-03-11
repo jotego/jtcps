@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="dme_30.10j" crc="7ac8407a" map="01"/>
             <part name="dme_29.10h" crc="166a58a2" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="dme_28.9j" crc="03d3e714" map="01"/>
             <part name="dme_27.9h" crc="f734b2be" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="dm-17.7j" crc="3ea1b0f2" map="12"/>
         </interleave>
@@ -40,7 +40,7 @@
             <part name="dm-07.3f" crc="5d760ab9"  map="00002100"/>
             <part name="dm-06.3c" crc="4ba90b59"  map="00210000"/>
             <part name="dm-08.3g" crc="4bdee9de"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="09.4a" crc="ae24bb19"  map="00000001"/>
             <part name="18.7a" crc="d34e271a"  map="00000010"/>
@@ -50,7 +50,7 @@
             <part name="20.7c" crc="2f1345b4"  map="00100000"/>
             <part name="15.4g" crc="3c2a212a"  map="01000000"/>
             <part name="24.7g" crc="889aac05"  map="10000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="10.4b" crc="bcc0f28c"  map="00000001"/>
             <part name="19.7b" crc="2a40166a"  map="00000010"/>
@@ -60,6 +60,6 @@
             <part name="21.7d" crc="17e11df0"  map="00100000"/>
             <part name="16.4h" crc="f187ba1c"  map="01000000"/>
             <part name="25.7h" crc="29f79c78"  map="10000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>

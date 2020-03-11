@@ -79,7 +79,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                                 of << "/>\n";
                                 done+=file_width;
                                 if( done==(bits>>3) ) {
-                                    of << "       </interleave>\n";
+                                    of << indent << "</interleave>\n";
                                     done=0;
                                 }
                             }
@@ -118,7 +118,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                             of << "/>\n";
                             done+=file_width;
                             if( done==(bits>>3) ) {
-                                of << "       </interleave>\n";
+                                of << indent << "</interleave>\n";
                                 done=0;
                             }
                         }

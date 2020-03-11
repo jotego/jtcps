@@ -22,11 +22,11 @@
         <interleave output="16">
             <part name="35.11h" crc="e41fff2f" map="01"/>
             <part name="30.11f" crc="f9ec6d68" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="36.12h" crc="7a13cfbf" map="01"/>
             <part name="31.12f" crc="e3de76ff" map="10"/>
-       </interleave>
+        </interleave>
         <interleave output="16">
             <part name="tkm-9.8h" crc="93654bcf" map="21"/>
         </interleave>
@@ -41,12 +41,12 @@
             <part name="tkm-8.9a" crc="21fe6274"  map="00002100"/>
             <part name="tkm-6.3a" crc="0bf228cb"  map="00210000"/>
             <part name="tkm-7.5a" crc="1255dfb1"  map="21000000"/>
-       </interleave>
+        </interleave>
         <interleave output="64">
             <part name="tkm-1.8a" crc="44f7661e"  map="00000021"/>
             <part name="tkm-4.10a" crc="a54c515d"  map="00002100"/>
             <part name="tkm-2.4a" crc="ca5c687c"  map="00210000"/>
             <part name="tkm-3.6a" crc="f9fe6591"  map="21000000"/>
-       </interleave>
+        </interleave>
     </rom>
 </misterromdescription>
