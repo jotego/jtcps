@@ -10,6 +10,8 @@ cd /media/fat/games/JTCPS1
 mput *.rom
 rename ffight.rom JTCPS1.rom
 mput ffight.rom
+cd /media/fat/_CPS
+mput *.mra
 bye
 EOF
 

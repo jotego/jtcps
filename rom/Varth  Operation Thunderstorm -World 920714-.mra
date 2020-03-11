@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="varth.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for varth --> 
+        <part> FF F3 44 40 1F </part>
+        <!-- CPS-B config for varth --> 
+        <part> 00 08 04 02 2A 00 00 32 28 30 26 2E FF FF FF FF 04 20 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="vae_35b.11h" crc="44e5548f" map="01"/>
@@ -34,9 +47,5 @@
             <part name="va-1m.3a" crc="0b1ace37"  map="00210000"/>
             <part name="va-3m.5a" crc="44dfe706"  map="21000000"/>
        </interleave>
-       <!-- Mapper for varth --> 
-       <part> FF F3 44 40 1F </part>
-       <!-- CPS-B config for varth --> 
-       <part> 00 08 04 02 2A 00 00 32 28 30 26 2E FF FF FF FF 04 20 </part>
     </rom>
 </misterromdescription>

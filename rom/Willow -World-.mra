@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="willow.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for willow --> 
+        <part> FF 73 88 40 20 </part>
+        <!-- CPS-B config for willow --> 
+        <part> 00 08 10 20 26 00 00 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="wle_35.11h" crc="2e64623b" map="01"/>
@@ -39,9 +52,5 @@
             <part name="wl_22.5d" crc="fd3f89f0"  map="01000000"/>
             <part name="wl_12.5c" crc="7da49d69"  map="10000000"/>
        </interleave>
-       <!-- Mapper for willow --> 
-       <part> FF 73 88 40 20 </part>
-       <!-- CPS-B config for willow --> 
-       <part> 00 08 10 20 26 00 00 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
     </rom>
 </misterromdescription>

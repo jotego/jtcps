@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="ghouls.zip|daimakair.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>80 04 </part>
+        <!-- Graphics-->
+        <part>80 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for daimakair --> 
+        <part> FF 73 88 40 23 </part>
+        <!-- CPS-B config for daimakair --> 
+        <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="damj_23.8f" crc="c3b248ec" map="21"/>
@@ -29,9 +42,5 @@
             <part name="dam_07.9a" crc="ec351d78"  map="00210000"/>
             <part name="dam_08.10a" crc="ee2acc1e"  map="21000000"/>
        </interleave>
-       <!-- Mapper for daimakair --> 
-       <part> FF 73 88 40 23 </part>
-       <!-- CPS-B config for daimakair --> 
-       <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>

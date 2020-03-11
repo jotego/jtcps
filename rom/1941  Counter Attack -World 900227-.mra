@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="1941.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for 1941 --> 
+        <part> FF F3 44 40 00 </part>
+        <!-- CPS-B config for 1941 --> 
+        <part> 14 20 08 02 32 00 00 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="41em_35.11h" crc="ddbee5eb" map="01"/>
@@ -29,9 +42,5 @@
             <part name="41-1m.3a" crc="ff77985a"  map="00210000"/>
             <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
        </interleave>
-       <!-- Mapper for 1941 --> 
-       <part> FF F3 44 40 00 </part>
-       <!-- CPS-B config for 1941 --> 
-       <part> 14 20 08 02 32 00 00 30 2E 2C 2A 28 FF FF FF FF 05 20 </part>
     </rom>
 </misterromdescription>

@@ -5,12 +5,25 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="pnickj.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for pnickj --> 
+        <part> FF F3 44 40 14 </part>
+        <!-- CPS-B config for pnickj --> 
+        <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="pnij_42.12h" crc="c085dfaf" map="01"/>
             <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
        </interleave>
-       <part repeat="0xc0000">FF</part>
+       <part repeat="0xC0000">FF</part>
         <!-- audiocpu -->
         <part name="pnij_17.13b" crc="e86f787a"/>
         <!-- oki -->
@@ -37,9 +50,5 @@
             <part name="pnij_39.9h" crc="70fbe579"  map="01000000"/>
             <part name="pnij_33.9f" crc="3ed2c680"  map="10000000"/>
        </interleave>
-       <!-- Mapper for pnickj --> 
-       <part> FF F3 44 40 14 </part>
-       <!-- CPS-B config for pnickj --> 
-       <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
     </rom>
 </misterromdescription>

@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="mercs.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for mercs --> 
+        <part> FF 33 66 40 0F </part>
+        <!-- CPS-B config for mercs --> 
+        <part> 00 08 04 02 22 00 36 24 26 28 2A 2C FF FF FF FF 42 20 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="so2_35e.11h" crc="78e63575" map="01"/>
@@ -39,9 +52,5 @@
             <part name="so2_22.5d" crc="fce9a377"  map="01000000"/>
             <part name="so2_12.5c" crc="b7df8a06"  map="10000000"/>
        </interleave>
-       <!-- Mapper for mercs --> 
-       <part> FF 33 66 40 0F </part>
-       <!-- CPS-B config for mercs --> 
-       <part> 00 08 04 02 22 00 36 24 26 28 2A 2C FF FF FF FF 42 20 </part>
     </rom>
 </misterromdescription>

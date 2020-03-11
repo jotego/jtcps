@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="3wonders.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for 3wonders --> 
+        <part> FF 73 88 40 01 </part>
+        <!-- CPS-B config for 3wonders --> 
+        <part> 12 08 04 20 30 00 00 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="rte_35a.11h" crc="7d705529" map="01"/>
@@ -40,9 +53,5 @@
             <part name="rt-2m.4a" crc="e9a034f4"  map="00210000"/>
             <part name="rt-4m.6a" crc="df0eea8b"  map="21000000"/>
        </interleave>
-       <!-- Mapper for 3wonders --> 
-       <part> FF 73 88 40 01 </part>
-       <!-- CPS-B config for 3wonders --> 
-       <part> 12 08 04 20 30 00 00 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
     </rom>
 </misterromdescription>

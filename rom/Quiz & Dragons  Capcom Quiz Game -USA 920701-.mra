@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="qad.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for qad --> 
+        <part> FF F1 22 20 17 </part>
+        <!-- CPS-B config for qad --> 
+        <part> 00 14 02 14 12 00 36 FF FF FF FF 2C FF FF FF FF FF FF </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="qdu_42a.12h" crc="cfe36f0c" map="01"/>
@@ -31,9 +44,5 @@
             <part name="qd_38.8h" crc="ccdddd1f"  map="01000000"/>
             <part name="qd_32.8f" crc="a8d295d3"  map="10000000"/>
        </interleave>
-       <!-- Mapper for qad --> 
-       <part> FF F1 22 20 17 </part>
-       <!-- CPS-B config for qad --> 
-       <part> 00 14 02 14 12 00 36 FF FF FF FF 2C FF FF FF FF FF FF </part>
     </rom>
 </misterromdescription>

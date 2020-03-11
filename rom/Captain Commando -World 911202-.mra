@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="captcomm.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 05 </part>
+        <!-- OKI samples-->
+        <part>40 05 </part>
+        <!-- Graphics-->
+        <part>40 06 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for captcomm --> 
+        <part> FF 73 88 40 02 </part>
+        <!-- CPS-B config for captcomm --> 
+        <part> 00 12 12 20 30 38 36 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="cce_23f.8f" crc="42c814c5" map="21"/>
@@ -34,9 +47,5 @@
             <part name="cc-2m.8a" crc="0c69f151"  map="00210000"/>
             <part name="cc-4m.10a" crc="1f9ebb97"  map="21000000"/>
        </interleave>
-       <!-- Mapper for captcomm --> 
-       <part> FF 73 88 40 02 </part>
-       <!-- CPS-B config for captcomm --> 
-       <part> 00 12 12 20 30 38 36 28 2A 2C 2E 20 00 02 04 06 FF FF </part>
     </rom>
 </misterromdescription>

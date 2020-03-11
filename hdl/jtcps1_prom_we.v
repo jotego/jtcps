@@ -33,14 +33,57 @@ module jtcps1_prom_we(
 );
 
 parameter REGSIZE=23; // This is defined at _game level
+parameter CPU_OFFSET=22'h0;
+parameter SND_OFFSET=22'h0;
+parameter OKI_OFFSET=22'h0;
+parameter GFX_OFFSET=22'h0;
+
+// The start position header has 16 bytes, from which 6 are actually used and
+// 10 are reserved
+localparam START_BYTES  = 6;
+localparam START_HEADER = 16;
+localparam STARTW=8*START_BYTES;
+localparam FULL_HEADER = 23'd64;
+
+(*keep*) reg  [STARTW-1:0] starts;
+(*keep*) wire       [15:0] snd_start, oki_start, gfx_start;
+
+assign snd_start = starts[15: 0];
+assign oki_start = starts[31:16];
+assign gfx_start = starts[47:32];
+
+(*keep*) wire [22:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
+(*keep*) wire [22:0] cpu_addr  = bulk_addr ; // the header is excluded
+(*keep*) wire [22:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
+(*keep*) wire [22:0] oki_addr  = bulk_addr - { oki_start, 10'd0 };
+(*keep*) wire [22:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
+
+(*keep*) wire is_cps = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
+(*keep*) wire is_cpu = bulk_addr[22:10] < snd_start;
+(*keep*) wire is_snd = bulk_addr[22:10] < oki_start && bulk_addr[22:10]>=snd_start;
+(*keep*) wire is_oki = bulk_addr[22:10] < gfx_start && bulk_addr[22:10]>=oki_start;
+(*keep*) wire is_gfx = bulk_addr[22:10] >=gfx_start;
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
-        prog_we   <= 1'b1;
-        cfg_we    <= ioctl_addr[4:0] < REGSIZE;
         prog_data <= ioctl_data;
-        prog_addr <= ioctl_addr[22:1];
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
+        prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
+                     is_snd ?  snd_addr[22:1] + SND_OFFSET : (
+                     is_oki ?  oki_addr[22:1] + OKI_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
+        if( ioctl_addr < START_BYTES ) begin
+            starts  <= { ioctl_data, starts[STARTW-1:8] };
+            cfg_we  <= 1'b0;
+            prog_we <= 1'b0;
+        end else begin
+            if( is_cps ) begin
+                cfg_we    <= 1'b1;
+                prog_we   <= 1'b0;
+            end else begin
+                cfg_we    <= 1'b0;
+                prog_we   <= 1'b1;
+            end
+        end
     end
     else begin
         if(!downloading || sdram_ack) prog_we  <= 1'b0;

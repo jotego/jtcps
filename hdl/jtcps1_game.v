@@ -203,7 +203,13 @@ end
 
 localparam REGSIZE=23;
 
-jtcps1_prom_we #(REGSIZE) u_prom_we(
+jtcps1_prom_we #(
+    .REGSIZE   ( REGSIZE       ),
+    .CPU_OFFSET( 22'd0         ),
+    .SND_OFFSET( SOUND_OFFSET  ),
+    .OKI_OFFSET( ADPCM_OFFSET  ),
+    .GFX_OFFSET( GFX_OFFSET    )
+) u_prom_we(
     .clk            ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
@@ -295,8 +301,8 @@ jtcps1_video #(REGSIZE) u_video(
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
     // BUS sharing
-    .busreq      ( busreq           ),
-    .busack      ( busack           ),
+    .busreq         ( busreq        ),
+    .busack         ( busack        ),
 
     // Video signal
     .HS             ( HS            ),
@@ -337,19 +343,18 @@ jtcps1_video #(REGSIZE) u_video(
     .vpal_cs        ( vpal_cs       ),
 
     // GFX ROM interface
-    .rom1_addr  ( rom1_addr     ),
-    .rom1_bank  ( rom1_bank     ),
-    .rom1_half  ( rom1_half     ),
-    .rom1_data  ( rom1_data     ),
-    .rom1_cs    ( rom1_cs       ),
-    .rom1_ok    ( rom1_ok       ),
-
-    .rom0_addr  ( rom0_addr      ),
-    .rom0_bank  ( rom0_bank      ),
-    .rom0_half  ( rom0_half      ),
-    .rom0_data  ( rom0_data      ),
-    .rom0_cs    ( rom0_cs        ),
-    .rom0_ok    ( rom0_ok        )
+    .rom1_addr      ( rom1_addr     ),
+    .rom1_bank      ( rom1_bank     ),
+    .rom1_half      ( rom1_half     ),
+    .rom1_data      ( rom1_data     ),
+    .rom1_cs        ( rom1_cs       ),
+    .rom1_ok        ( rom1_ok       ),
+    .rom0_addr      ( rom0_addr     ),
+    .rom0_bank      ( rom0_bank     ),
+    .rom0_half      ( rom0_half     ),
+    .rom0_data      ( rom0_data     ),
+    .rom0_cs        ( rom0_cs       ),
+    .rom0_ok        ( rom0_ok       )
 );
 
 `ifndef NOSOUND

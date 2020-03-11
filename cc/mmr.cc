@@ -16,6 +16,10 @@ void xml_element( stringstream& of, const char *name, const string &content, int
     of << "<" << name << ">" << content << "</" << name << ">\n";
 }
 
+struct size_map{
+    int cpu, sound, oki, gfx;
+};
+
 void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap, int min_length=0 ) {
     int length=0;
     while( !(entry->flags&ROMENTRYTYPE_END) ) {
@@ -127,9 +131,6 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                     // used to ensure that each ROM section falls where it should
                     of << "       <part repeat=\"0x" << hex << (min_length-length) << "\">FF</part>\n" << dec;
                 }
-                if( min_length!=0 && length>min_length ) {
-                    cout << "ERROR: unexpected region size!\n";
-                }
                 return;
             }
         }
@@ -138,8 +139,29 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
     throw region;
 }
 
+int size_region( const tiny_rom_entry *entry, const string& region, int min_length=0 ) {
+    int length=0;
+    while( !(entry->flags&ROMENTRYTYPE_END) ) {
+        //if( entry->name != nullptr ) cout << "region=" << entry->name << '\n';
+        if( entry->flags & ROMENTRYTYPE_REGION ) {
+            if( region == entry->name ) {
+                ++entry;
+                int done=0;
+                while( !(entry->flags&ROMENTRYTYPE_REGION) && !(entry->flags&ROMENTRYTYPE_END)) {
+                    length += entry->length;
+                    entry++;
+                }
+                if( length < min_length ) length = min_length;
+                return length;
+            }
+        }
+        entry++;
+    }
+    throw region;
+}
+
 #define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' '; \
-    simf << "8'h" << hex << ((a)&0xff) << ',';
+    simf << "8'h" << hex << ((a)&0xff) << ','; dumpcnt++;
 
 int find_cfg( stringstream& of, const string& name ) {
     int k=0;
@@ -152,9 +174,10 @@ int find_cfg( stringstream& of, const string& name ) {
     return -1;
 }
 
-void generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
-    of << "       <!-- CPS-B config for " << x->name << " --> \n";
-    of << "       <part> ";            
+int generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
+    of << "        <!-- CPS-B config for " << x->name << " --> \n";
+    of << "        <part> ";            
+    int dumpcnt=0;
     DUMP( x->layer_enable_mask[3] );
     DUMP( x->layer_enable_mask[2] );
     DUMP( x->layer_enable_mask[1] );
@@ -174,6 +197,7 @@ void generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
     DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
     DUMP( x->cpsb_addr );
     of << "</part>\n";
+    return dumpcnt;
 }
 
 // SCR1      1'b0, code[15:...]
@@ -225,7 +249,7 @@ string parent_name( game_entry* game ) {
     return game->name;
 }
 
-void generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
+int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
     game_entry* game, const CPS1config* x) {
     int mask=0xABCD, offset=0x1234;
     int id=0;
@@ -240,8 +264,8 @@ void generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers
         of << "ERROR: game parent not found\n";
         cout << "ERROR: game parent not found\n";
     }
-    of << "       <!-- Mapper for " << name << " --> \n";
-    of << "       <part> ";
+    of << "        <!-- Mapper for " << name << " --> \n";
+    of << "        <part> ";
     int aux=0, aux_mask;
     offset=0;
     mask=0;
@@ -262,7 +286,7 @@ void generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers
     mask   |= ((x->bank_size[2]>>12)-1)<<8;
     // bank 4
     mask   |= ((x->bank_size[3]>>12)-1)<<12;
-
+    int dumpcnt=0;
     DUMP( mask>>8   );
     DUMP( mask      );
     DUMP( offset>>8 );
@@ -300,7 +324,45 @@ void generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers
         }
         mappers << "game_" << parent_name(game) << ": begin\n" << aux.str() << "    end\n";
     }
+    return dumpcnt;
 }
+
+void fill( stringstream& of, int& cnt, int lim ) {
+    if( cnt>lim ) throw 2;
+    of << "        <part repeat=\"" << dec << (lim-cnt) << "\">FF</part>\n";
+    cnt=lim;
+}
+
+string int2part( int x ) {
+    char xz[32];
+    sprintf( xz,"%04x",x&0xffff );
+    string aux(xz);
+    string s;
+    //s=aux;
+    s = aux.substr(2,2);
+    s += " ";
+    s += aux.substr(0,2);
+    s += " ";
+    return s;
+}
+
+#define LUT_DUMP(a,b) \
+    of << "        <!-- " << a << "-->\n"; \
+    of << "        <part>" << hex << int2part( cnt ) << "</part>\n"; \
+    cnt+=(b>>10); dumpcnt+=2;
+
+int generate_lut( stringstream& of, size_map& sizes ) {
+    of << "        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->\n";
+    int cnt=0, dumpcnt=0;
+    cnt = sizes.cpu>>10;
+    LUT_DUMP( "Sound CPU", sizes.sound );
+    LUT_DUMP( "OKI samples", sizes.oki );
+    LUT_DUMP( "Graphics", sizes.gfx );
+    fill( of, dumpcnt, 16 );
+    return dumpcnt;
+}
+
+#undef LUT_DUMP
 
 void generate_mra( game_entry* game ) {
     static bool first=true;
@@ -319,6 +381,20 @@ void generate_mra( game_entry* game ) {
     mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
     try{
+        int cfg_id = find_cfg( mras, game->name );
+        const CPS1config* x = &cps1_config_table[cfg_id];
+
+        int cnt=0;
+        size_map sizes;
+        sizes.cpu   = size_region(entry,"maincpu",1024*1024);
+        sizes.sound = size_region(entry,"audiocpu",64*1024);
+        sizes.oki   = size_region(entry,"oki",256*1024);
+        sizes.gfx   = size_region(entry,"gfx");
+
+        cnt+=generate_lut( mras, sizes );
+        cnt+=generate_mapper( mras, simf, mappers, game, x );
+        cnt+=generate_cpsb( mras, simf, x );
+        fill( mras, cnt, 64 );
         dump_region(mras, entry,"maincpu",16,1,1024*1024);
         dump_region(mras, entry,"audiocpu",8,0,64*1024);
         dump_region(mras, entry,"oki",8,0,256*1024);
@@ -327,15 +403,14 @@ void generate_mra( game_entry* game ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
         return;
     }
-    int cfg_id = find_cfg( mras, game->name );
-    const CPS1config* x = &cps1_config_table[cfg_id];
-    try {
-        generate_mapper( mras, simf, mappers, game, x );
-    } catch( int x ) {
-        cout << "ERROR: bank offset does not fit in 4 bits " << game->name << '\n';
+    catch( int x ) {
+        switch (x)  {
+            case 2: cout << "ERROR: MRA header does not fit\n"; break;
+            default:
+                cout << "ERROR: bank offset does not fit in 4 bits " << game->name << '\n'; break;
+        }
         return;
     }
-    generate_cpsb( mras, simf, x );
     mras << "    </rom>\n";
     mras << "</misterromdescription>\n";
     // hex file for simulation

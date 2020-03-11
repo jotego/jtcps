@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="msword.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for msword --> 
+        <part> FF F3 44 40 10 </part>
+        <!-- CPS-B config for msword --> 
+        <part> 00 04 02 20 2C 00 00 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="mse_35.11h" crc="d5bf66cd" map="01"/>
@@ -29,9 +42,5 @@
             <part name="ms-1m.3a" crc="0d2bbe00"  map="00210000"/>
             <part name="ms-3m.5a" crc="3a1a5bf4"  map="21000000"/>
        </interleave>
-       <!-- Mapper for msword --> 
-       <part> FF F3 44 40 10 </part>
-       <!-- CPS-B config for msword --> 
-       <part> 00 04 02 20 2C 00 00 2A 28 26 24 22 FF FF FF FF 43 2E </part>
     </rom>
 </misterromdescription>

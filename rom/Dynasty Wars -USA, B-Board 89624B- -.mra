@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="dynwar.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for dynwar --> 
+        <part> 33 31 64 20 06 </part>
+        <!-- CPS-B config for dynwar --> 
+        <part> 00 08 04 02 22 00 00 24 26 28 2A 2C FF FF FF FF 02 20 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="35.11h" crc="e41fff2f" map="01"/>
@@ -35,9 +48,5 @@
             <part name="tkm-2.4a" crc="ca5c687c"  map="00210000"/>
             <part name="tkm-3.6a" crc="f9fe6591"  map="21000000"/>
        </interleave>
-       <!-- Mapper for dynwar --> 
-       <part> 33 31 64 20 06 </part>
-       <!-- CPS-B config for dynwar --> 
-       <part> 00 08 04 02 22 00 00 24 26 28 2A 2C FF FF FF FF 02 20 </part>
     </rom>
 </misterromdescription>

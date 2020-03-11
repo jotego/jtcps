@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="cawing.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for cawing --> 
+        <part> FF F3 44 40 03 </part>
+        <!-- CPS-B config for cawing --> 
+        <part> 00 0A 0A 10 02 00 00 04 06 08 0A 0C FF FF FF FF 46 00 </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="cae_35a.11h" crc="3ef03083" map="01"/>
@@ -29,9 +42,5 @@
             <part name="ca-1m.3a" crc="4d0620fd"  map="00210000"/>
             <part name="ca-3m.5a" crc="0b0341c3"  map="21000000"/>
        </interleave>
-       <!-- Mapper for cawing --> 
-       <part> FF F3 44 40 03 </part>
-       <!-- CPS-B config for cawing --> 
-       <part> 00 0A 0A 10 02 00 00 04 06 08 0A 0C FF FF FF FF 46 00 </part>
     </rom>
 </misterromdescription>

@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="cworld2j.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for cworld2j --> 
+        <part> FF F3 44 40 04 </part>
+        <!-- CPS-B config for cworld2j --> 
+        <part> 00 14 14 20 30 00 36 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="q5_42.12h" crc="4d29b3a4" map="01"/>
@@ -48,9 +61,5 @@
             <part name="q5_39.9h" crc="a5839b25"  map="01000000"/>
             <part name="q5_33.9f" crc="04d03930"  map="10000000"/>
        </interleave>
-       <!-- Mapper for cworld2j --> 
-       <part> FF F3 44 40 04 </part>
-       <!-- CPS-B config for cworld2j --> 
-       <part> 00 14 14 20 30 00 36 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
     </rom>
 </misterromdescription>

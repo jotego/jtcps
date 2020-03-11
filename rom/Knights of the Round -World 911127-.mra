@@ -5,6 +5,19 @@
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
     <rom index="0" zip="knights.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Sound CPU-->
+        <part>00 04 </part>
+        <!-- OKI samples-->
+        <part>40 04 </part>
+        <!-- Graphics-->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- Mapper for knights --> 
+        <part> FF 73 88 40 0B </part>
+        <!-- CPS-B config for knights --> 
+        <part> 00 02 10 20 30 00 36 20 22 24 26 28 00 02 04 06 FF FF </part>
+        <part repeat="25">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="kr_23e.8f" crc="1b3997eb" map="21"/>
@@ -30,9 +43,5 @@
             <part name="kr-2m.8a" crc="0200bc3d"  map="00210000"/>
             <part name="kr-4m.10a" crc="0bb2b4e7"  map="21000000"/>
        </interleave>
-       <!-- Mapper for knights --> 
-       <part> FF 73 88 40 0B </part>
-       <!-- CPS-B config for knights --> 
-       <part> 00 02 10 20 30 00 36 20 22 24 26 28 00 02 04 06 FF FF </part>
     </rom>
 </misterromdescription>
