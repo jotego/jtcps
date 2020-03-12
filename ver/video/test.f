@@ -7,6 +7,7 @@
 ../../hdl/jtcps1_video.v
 ../../hdl/jtcps1_timing.v
 ../../hdl/jtcps1_scroll.v
+../../hdl/jtcps1_stars.v
 ../../hdl/jtcps1_tilemap.v
 ../../hdl/jtcps1_colmix.v
 ../../hdl/jtcps1_gfx_pal.v

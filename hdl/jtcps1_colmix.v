@@ -42,6 +42,8 @@ module jtcps1_colmix(
     input   [10:0]     scr1_pxl,
     input   [10:0]     scr2_pxl,
     input   [10:0]     scr3_pxl,
+    input   [ 3:0]     star0_pxl,
+    input   [ 3:0]     star1_pxl,
     input   [ 8:0]     obj_pxl,
 
     // Layer priority
@@ -92,7 +94,7 @@ reg  [3:0] dly_r, dly_g, dly_b;
 // 011 = SCROLL 3
 // 100 = STAR FIELD
 
-localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3;
+localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 
 assign raw_br   = raw[15:12]; // r
 assign raw_r    = raw[11: 8]; // br
@@ -100,6 +102,7 @@ assign raw_g    = raw[ 7: 4]; // b
 assign raw_b    = raw[ 3: 0]; // g
 assign pal_addr = pxl;
 
+/////////////////////////// LAYER MUX ////////////////////////////////////////////
 function [13:0] layer_mux;
     input [ 8:0] obj;
     input [10:0] scr1;
@@ -122,18 +125,22 @@ wire [4:0] lyren = {
 };
 
 // OBJ layer cannot be disabled by hardware
-wire [8:0] obj_mask   = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
+wire [ 8:0] obj_mask  = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
 wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
 wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
 wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
+wire [ 3:0] sta0_mask = star0_pxl | {4{~lyren[3]}};
+wire [ 3:0] sta1_mask = star1_pxl | {4{~lyren[4]}};
 
-localparam QW = 14*3;
-reg [13:0] lyr3, lyr2, lyr1, lyr0;
+localparam QW = 14*5;
+reg [13:0] lyr5, lyr4, lyr3, lyr2, lyr1, lyr0;
 reg [QW-1:0] lyr_queue;
 reg [11:0] pre_pxl;
 reg [ 1:0] group;
 
 always @(posedge clk) if(pxl_cen) begin
+    lyr5 <= { 2'b00, STA, 5'b0, sta1_mask };
+    lyr4 <= { 2'b00, STA, 5'b0, sta0_mask };
     lyr3 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
     lyr2 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
     lyr1 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
@@ -155,11 +162,14 @@ end
 // This take 6 clock cycles to process the 6 layers
 always @(posedge clk) begin
     if(pxl_cen) begin
-        {group, pre_pxl } <= lyr3;
-        lyr_queue <= { lyr0, lyr1, lyr2 };
-        check_prio <= 1'b1;
+        {group, pre_pxl } <= lyr5;
+        lyr_queue <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
+        check_prio <= 1'b0; // stars don't have priority
     end else begin
-        if( pre_pxl[3:0]==4'hf ||  ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) && lyr_queue[3:0] != 4'hf) ) begin
+        if( pre_pxl[3:0]==4'hf ||  
+            ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) 
+                    && lyr_queue[3:0] != 4'hf && lyr_queue[11:9]!=STA ) ) 
+        begin
             { group, pre_pxl } <= lyr_queue[13:0];
             check_prio <= 1'b1;
         end

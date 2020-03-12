@@ -31,6 +31,8 @@ module jtcps1_scroll(
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
     input              preVB,
+    input              VB,
+    input              HB,
     // control registers
     input      [15:0]  vram1_base,
     input      [15:0]  vram2_base,
@@ -41,6 +43,10 @@ module jtcps1_scroll(
     input      [15:0]  vpos2,
     input      [15:0]  hpos3,
     input      [15:0]  vpos3,
+    input      [15:0]  hstar0,
+    input      [15:0]  vstar0,
+    input      [15:0]  hstar1,
+    input      [15:0]  vstar1,
 
     // Row scroll
     input      [15:0]  vram_row_base,
@@ -67,9 +73,12 @@ module jtcps1_scroll(
 
     input      [ 3:0]  gfx_en,
 
-    (*keep*)output reg [10:0]  scr1_pxl,
-    (*keep*)output reg [10:0]  scr2_pxl,
-    (*keep*)output reg [10:0]  scr3_pxl
+    output reg [10:0]  scr1_pxl,
+    output reg [10:0]  scr2_pxl,
+    output reg [10:0]  scr3_pxl,
+
+    output     [ 3:0]  star0_pxl,
+    output     [ 3:0]  star1_pxl
 );
 
 reg         pre_start, sub_start, busy, done;
@@ -277,6 +286,21 @@ jtcps1_tilemap u_tilemap(
     .buf_addr   ( buf_addr      ),
     .buf_wr     ( buf_wr        ),
     .buf_data   ( buf_data      )
+);
+
+jtcps1_stars u_stars(
+    .rst      ( rst         ),
+    .clk      ( clk         ),
+    .pxl_cen  ( pxl_cen     ),
+    .VB       ( VB          ),
+    .HB       ( HB          ),
+    .vdump    ( vdump       ),
+    .hpos0    ( hstar0      ),
+    .vpos0    ( vstar0      ),
+    .hpos1    ( hstar1      ),
+    .vpos1    ( vstar1      ),
+    .star0    ( star0_pxl   ),
+    .star1    ( star1_pxl   )
 );
 
 endmodule

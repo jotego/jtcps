@@ -113,6 +113,7 @@ parameter REGSIZE=23;
 `endif
 
 wire [10:0]     scr1_pxl, scr2_pxl, scr3_pxl;
+wire [ 3:0]     star1_pxl, star0_pxl;
 wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
@@ -120,7 +121,7 @@ wire            line_start, preVB;
 
 // Register configuration
 // Scroll
-wire       [15:0]  hpos1, hpos2, hpos3, vpos1, vpos2, vpos3, hstar1, hstar2, vstar1, vstar2;
+wire       [15:0]  hpos1, hpos2, hpos3, vpos1, vpos2, vpos3, hstar1, hstar0, vstar1, vstar0;
 // VRAM position
 wire       [15:0]  vram1_base, vram2_base, vram3_base, vram_obj_base, vram_row_base, row_offset;
 // Layer priority
@@ -181,10 +182,10 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .vpos1          ( vpos1             ),
     .vpos2          ( vpos2             ),
     .vpos3          ( vpos3             ),
-    .hstar1         ( hstar1            ),
-    .hstar2         ( hstar2            ),
-    .vstar1         ( vstar1            ),
-    .vstar2         ( vstar2            ),
+    .hstar1         ( hstar0            ),
+    .hstar2         ( hstar1            ),
+    .vstar1         ( vstar0            ),
+    .vstar2         ( vstar1            ),
 
     // OBJ DMA
     .obj_dma_ok     ( obj_dma_ok        ),
@@ -238,6 +239,8 @@ jtcps1_scroll u_scroll(
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
     .preVB      ( preVB         ),
+    .VB         ( VB            ),
+    .HB         ( HB            ),
     
     .vram1_base ( vram1_base    ),
     .hpos1      ( hpos1         ),
@@ -250,6 +253,11 @@ jtcps1_scroll u_scroll(
     .vram3_base ( vram3_base    ),
     .hpos3      ( hpos3         ),
     .vpos3      ( vpos3         ),
+
+    .hstar0     ( hstar0        ),
+    .vstar0     ( vstar0        ),
+    .hstar1     ( hstar1        ),
+    .vstar1     ( vstar1        ),
 
     // Row Scroll
     .vram_row_base  ( vram_row_base ),
@@ -275,7 +283,10 @@ jtcps1_scroll u_scroll(
 
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
-    .scr3_pxl   ( scr3_pxl      )
+    .scr3_pxl   ( scr3_pxl      ),
+
+    .star0_pxl  ( star0_pxl     ),
+    .star1_pxl  ( star1_pxl     )
 );
 `else 
 assign rom1_cs    = 1'b0;
@@ -388,10 +399,12 @@ jtcps1_colmix u_colmix(
     .vram_ok    ( vpal_ok       ),
     .vram_cs    ( vpal_cs       ),
 
-    // Scroll data
+    // Pixel layers data
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
     .scr3_pxl   ( scr3_pxl      ),
+    .star0_pxl  ( star0_pxl     ),
+    .star1_pxl  ( star1_pxl     ),
     .obj_pxl    ( obj_pxl       ),
     // Video
     .red        ( red           ),

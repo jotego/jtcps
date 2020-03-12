@@ -258,6 +258,10 @@ initial begin
     vpos2          = mmr_regs[8];
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
+    hstar1         = 16'd10;
+    hstar2         = 16'd0;
+    vstar1         = 16'd0;
+    vstar2         = 16'd0;
     layer_ctrl     = mmr_regs[11]; //16'h12ce; // default
     pal_page_en    = mmr_regs[12];
     vram_row_base  = mmr_regs[13];
@@ -287,6 +291,10 @@ always @(posedge clk, posedge reg_rst) begin
         vpos1         <= 16'd0;
         vpos2         <= 16'd0;
         vpos3         <= 16'd0;
+        hstar1        <= 16'd0;
+        hstar2        <= 16'd0;
+        vstar1        <= 16'd0;
+        vstar2        <= 16'd0;
         vram1_base    <= 16'd0;
         vram2_base    <= 16'd0;
         vram3_base    <= 16'd0;
