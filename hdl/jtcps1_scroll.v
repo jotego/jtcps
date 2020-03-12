@@ -77,8 +77,8 @@ module jtcps1_scroll(
     output reg [10:0]  scr2_pxl,
     output reg [10:0]  scr3_pxl,
 
-    output     [ 3:0]  star0_pxl,
-    output     [ 3:0]  star1_pxl
+    output     [ 8:0]  star0_pxl,
+    output     [ 8:0]  star1_pxl
 );
 
 reg         pre_start, sub_start, busy, done;

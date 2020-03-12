@@ -113,7 +113,7 @@ parameter REGSIZE=23;
 `endif
 
 wire [10:0]     scr1_pxl, scr2_pxl, scr3_pxl;
-wire [ 3:0]     star1_pxl, star0_pxl;
+wire [ 8:0]     star1_pxl, star0_pxl;
 wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;

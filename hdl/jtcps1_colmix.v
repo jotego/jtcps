@@ -42,8 +42,8 @@ module jtcps1_colmix(
     input   [10:0]     scr1_pxl,
     input   [10:0]     scr2_pxl,
     input   [10:0]     scr3_pxl,
-    input   [ 3:0]     star0_pxl,
-    input   [ 3:0]     star1_pxl,
+    input   [ 8:0]     star0_pxl,
+    input   [ 8:0]     star1_pxl,
     input   [ 8:0]     obj_pxl,
 
     // Layer priority
@@ -129,8 +129,8 @@ wire [ 8:0] obj_mask  = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
 wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
 wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
 wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
-wire [ 3:0] sta0_mask = star0_pxl | {4{~lyren[3]}};
-wire [ 3:0] sta1_mask = star1_pxl | {4{~lyren[4]}};
+wire [ 8:0] sta0_mask = { star0_pxl[8:4], star0_pxl[3:0] | {4{~lyren[3]}} };
+wire [ 8:0] sta1_mask = { star1_pxl[8:4], star1_pxl[3:0] | {4{~lyren[4]}} };
 
 localparam QW = 14*5;
 reg [13:0] lyr5, lyr4, lyr3, lyr2, lyr1, lyr0;
@@ -139,8 +139,8 @@ reg [11:0] pre_pxl;
 reg [ 1:0] group;
 
 always @(posedge clk) if(pxl_cen) begin
-    lyr5 <= { 2'b00, STA, 5'b0, sta1_mask };
-    lyr4 <= { 2'b00, STA, 5'b0, sta0_mask };
+    lyr5 <= { 2'b00, STA, sta1_mask };
+    lyr4 <= { 2'b00, STA, sta0_mask };
     lyr3 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
     lyr2 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
     lyr1 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
@@ -164,14 +164,14 @@ always @(posedge clk) begin
     if(pxl_cen) begin
         {group, pre_pxl } <= lyr5;
         lyr_queue <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
-        check_prio <= 1'b0; // stars don't have priority
+        check_prio <= 1'b0;
     end else begin
         if( pre_pxl[3:0]==4'hf ||  
             ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) 
-                    && lyr_queue[3:0] != 4'hf && lyr_queue[11:9]!=STA ) ) 
+                    && lyr_queue[3:0] != 4'hf ) ) 
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
-            check_prio <= 1'b1;
+            check_prio <= lyr_queue[11:9]!=STA;
         end
         else check_prio <= 1'b0;
         lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };

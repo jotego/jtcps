@@ -35,8 +35,8 @@ module jtcps1_stars(
     input      [15:0]  hpos1,
     input      [15:0]  vpos1,
 
-    output     [ 3:0]  star0,
-    output     [ 3:0]  star1
+    output     [ 8:0]  star0,
+    output     [ 8:0]  star1
 );
 
 wire [22:0] poly1, poly0;
@@ -67,12 +67,16 @@ function bright;
     bright = &poly[15:7];
 endfunction
 
-assign star0 = bright(poly0) ? poly0[3:0] : 4'hf;
-assign star1 = bright(poly1) ? poly1[3:0] : 4'hf;
+// Bits 8:7 must be zero
+assign star0[8:4] = { 2'd0, poly0[6:4] };
+assign star1[8:4] = { 2'd0, poly1[6:4] };
+
+assign star0[3:0] = bright(poly0) ? poly0[3:0] : 4'hf;
+assign star1[3:0] = bright(poly1) ? poly1[3:0] : 4'hf;
 
 `ifdef SIMULATION
-wire s0 = star0!=4'hf;
-wire s1 = star1!=4'hf;
+wire s0 = star0[3:0]!=4'hf;
+wire s1 = star1[3:0]!=4'hf;
 `endif
 
 endmodule
@@ -93,11 +97,12 @@ wire bb = B;
 reg last_load;
 reg [8:0] cnt;
 wire      cnthi = |cnt;
+wire [8:0] v = vpos+vdump;
 
 always @(posedge clk) begin
     last_load <= load;
     if( load && !last_load ) begin
-        poly <= { bb, vpos+{2'b0,vdump}, 10'h55 ^ {10{bb}} };
+        poly <= { {bb,~bb,~bb,bb}^{v[3:2],v[7:6]}, v[3:0], v[8:4], 10'h55 ^ {10{bb}} };
         cnt  <= hpos;
     end else if( (!load && pxl_cen) || (load&&cnthi) ) begin
         if(cnthi) cnt<=cnt-9'd1;
