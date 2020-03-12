@@ -258,10 +258,6 @@ initial begin
     vpos2          = mmr_regs[8];
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
-    hstar1         = 16'd10;
-    hstar2         = 16'd0;
-    vstar1         = 16'd0;
-    vstar2         = 16'd0;
     layer_ctrl     = mmr_regs[11]; //16'h12ce; // default
     pal_page_en    = mmr_regs[12];
     vram_row_base  = mmr_regs[13];
@@ -271,6 +267,10 @@ initial begin
     prio1          = mmr_regs[17];
     prio2          = mmr_regs[18];
     prio3          = mmr_regs[19];
+    hstar1         = 16'd10;
+    hstar2         = 16'd0;
+    vstar1         = 16'd0;
+    vstar2         = 16'd0;
     // Default layer order = 4B = 01 00 10 11
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider

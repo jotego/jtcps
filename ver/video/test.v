@@ -49,7 +49,7 @@ reg        [15:0]  hpos1, vpos1, hpos2, vpos2, hpos3, vpos3,
 
 localparam WO=1;
 
-wire [9:0] slot_cs, slot_ok, slot_wr;
+wire [9:0] slot_cs, slot_ok, slot_wr, slot_clr;
 assign slot_cs[0] = 1'b0;
 assign slot_cs[1] = 1'b0;
 assign slot_cs[2] = rom0_cs;
@@ -60,6 +60,7 @@ assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = 1'b0;
 assign slot_cs[8] = 1'b0;
 assign slot_cs[9] = vram_obj_cs;
+assign slot_clr[8:0] = 9'd0;
 
 assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
@@ -124,7 +125,9 @@ jtcps1_video UUT (
     .addr           ( 5'd0          ),
     .dsn            ( 2'b10         ),      // data select, active low
     .cpu_dout       ( 16'h0         ),
-
+    // BUS sharing
+    .busreq         (               ),
+    .busack         ( 1'b1          ),
 
     // Video RAM interface
     .vram1_addr     ( vram1_addr    ),
@@ -136,6 +139,7 @@ jtcps1_video UUT (
     .vram_obj_data  ( vram_obj_data ),
     .vram_obj_ok    ( vram_obj_ok   ),
     .vram_obj_cs    ( vram_obj_cs   ),
+    .vram_obj_clr   ( slot_clr[9]   ),
 
     .vpal_addr      ( vpal_addr     ),
     .vpal_data      ( vpal_data     ),
@@ -212,6 +216,7 @@ u_sdram_mux(
     .slot_cs        ( slot_cs       ),
     .slot_ok        ( slot_ok       ),
     .slot_wr        ( slot_wr       ),
+    .slot_clr       ( slot_clr      ),
 
     // SDRAM controller interface
     .downloading    ( downloading   ),

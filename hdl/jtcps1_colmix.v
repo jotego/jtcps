@@ -116,13 +116,15 @@ function [13:0] layer_mux;
                 (sel==2'b11 ? { scr3[10:9], SCR3, scr3[8:0]}   : 13'h1fff )));
 endfunction
 
-wire [4:0] lyren = {
+(*keep*) wire [4:0] lyren = {
     |(layer_mask4[5:0] & layer_ctrl[5:0]), // Star layer 1
     |(layer_mask3[5:0] & layer_ctrl[5:0]), // Star layer 0
     |(layer_mask2[5:0] & layer_ctrl[5:0]),
     |(layer_mask1[5:0] & layer_ctrl[5:0]),
     |(layer_mask0[5:0] & layer_ctrl[5:0])
 };
+
+//reg [4:0] lyren2, lyren3;
 
 // OBJ layer cannot be disabled by hardware
 wire [ 8:0] obj_mask  = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
@@ -145,7 +147,11 @@ always @(posedge clk) if(pxl_cen) begin
     lyr2 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
     lyr1 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
     lyr0 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[13:12] );
-    pxl  <= pre_pxl;
+    //lyren2[5:4] <= lyren[5:4];
+    //lyren2[3] <= lyren[ layer_ctrl[7:6] ];
+    //lyren2[2] <= lyren[ layer_ctrl[7:6] ];
+    //lyren2[1] <= lyren[ layer_ctrl[7:6] ];
+    //lyren2[0] <= lyren[ layer_ctrl[7:6] ];
 end
 
 reg has_priority, check_prio;
@@ -162,19 +168,29 @@ end
 // This take 6 clock cycles to process the 6 layers
 always @(posedge clk) begin
     if(pxl_cen) begin
-        {group, pre_pxl } <= lyr5;
-        lyr_queue <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
-        check_prio <= 1'b0;
+        pxl               <= pre_pxl;
+        //{group, pre_pxl } <= lyr5;
+        {group, pre_pxl } <= lyr3;
+        //lyr_queue         <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
+        lyr_queue         <= { lyr0, lyr0, lyr0, lyr1, lyr2 };
+        //check_prio        <= 1'b0;
+        check_prio        <= 1'b1;
+        //lyren3            <= lyren2;
     end else begin
-        if( pre_pxl[3:0]==4'hf ||  
+        if( (pre_pxl[3:0]==4'hf ||  
             ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) 
-                    && lyr_queue[3:0] != 4'hf ) ) 
+                    && lyr_queue[3:0] != 4'hf )) /*&& 
+            !(lyr_queue[11:9]==OBJ && lyr_queue[3:0]==4'hf)*/ ) 
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
-            check_prio <= lyr_queue[11:9]!=STA;
+            //check_prio <= lyr_queue[11:9]!=STA;
+            check_prio <= 1'b1;
+            lyr_queue <= { lyr_queue[13:0], lyr_queue[QW-1:14] };
         end
-        else check_prio <= 1'b0;
-        lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
+        else begin
+            check_prio <= 1'b0;
+            lyr_queue <= { { group, pre_pxl }, lyr_queue[QW-1:14] };
+        end
     end
 end
 
