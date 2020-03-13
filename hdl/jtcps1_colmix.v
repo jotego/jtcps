@@ -169,22 +169,20 @@ end
 always @(posedge clk) begin
     if(pxl_cen) begin
         pxl               <= pre_pxl;
-        //{group, pre_pxl } <= lyr5;
-        {group, pre_pxl } <= lyr3;
-        //lyr_queue         <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
-        lyr_queue         <= { lyr0, lyr0, lyr0, lyr1, lyr2 };
-        //check_prio        <= 1'b0;
-        check_prio        <= 1'b1;
+        {group, pre_pxl } <= lyr5;
+        lyr_queue         <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
+        check_prio        <= 1'b0;
         //lyren3            <= lyren2;
     end else begin
         if( (pre_pxl[3:0]==4'hf ||  
-            ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio ) 
-                    && lyr_queue[3:0] != 4'hf )) /*&& 
+            ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio )
+                     )) && 
+            ( lyr_queue[3:0] != 4'hf || 
+             (pre_pxl[3:0]==4'hf && pre_pxl[11:9]==STA) )/*
             !(lyr_queue[11:9]==OBJ && lyr_queue[3:0]==4'hf)*/ ) 
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
-            //check_prio <= lyr_queue[11:9]!=STA;
-            check_prio <= 1'b1;
+            check_prio <= lyr_queue[11:9]!=STA;
             lyr_queue <= { lyr_queue[13:0], lyr_queue[QW-1:14] };
         end
         else begin
