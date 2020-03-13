@@ -97,7 +97,6 @@ wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu2_cs, ppu_rstn;
 wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
-wire [ 3:0] rom0_bank, rom1_bank;
 // Video RAM interface
 wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
 (*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
@@ -344,13 +343,11 @@ jtcps1_video #(REGSIZE) u_video(
 
     // GFX ROM interface
     .rom1_addr      ( rom1_addr     ),
-    .rom1_bank      ( rom1_bank     ),
     .rom1_half      ( rom1_half     ),
     .rom1_data      ( rom1_data     ),
     .rom1_cs        ( rom1_cs       ),
     .rom1_ok        ( rom1_ok       ),
     .rom0_addr      ( rom0_addr     ),
-    .rom0_bank      ( rom0_bank     ),
     .rom0_half      ( rom0_half     ),
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),

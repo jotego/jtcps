@@ -41,14 +41,14 @@ reg [1:0] shVB;
 `ifdef SIMULATION
 initial begin
     hdump     = 9'd0;
-    vdump     = 9'd261;
-    vrender   = 8'd0;
-    vrender1  = 8'd0;
+    vrender1  = 8'd2;
+    vrender   = 8'd1;
+    vdump     = 9'd0;
     HS        = 1'b0;
     VS        = 1'b0;
     HB        = 1'b1;
     VB        = 1'b1;
-    shVB      = 1'b0;
+    shVB      = 2'b11;
     start     = 1'b1;
 end
 `endif

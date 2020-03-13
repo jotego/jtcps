@@ -84,14 +84,12 @@ module jtcps1_video(
 
     // GFX ROM interface
     output     [19:0]  rom1_addr,
-    output     [ 3:0]  rom1_bank,
     output             rom1_half,    // selects which half to read
     input      [31:0]  rom1_data,
     output             rom1_cs,
     input              rom1_ok,
 
     output     [19:0]  rom0_addr,
-    output     [ 3:0]  rom0_bank,
     output             rom0_half,    // selects which half to read
     input      [31:0]  rom0_data,
     output             rom0_cs,

@@ -22,7 +22,6 @@ wire               vram1_cs,   vram_obj_cs, vpal_cs;
 // GFX ROM interface
 wire       [19:0]  rom1_addr, rom0_addr;
 wire       [31:0]  rom1_data, rom0_data;
-wire       [ 3:0]  rom1_bank, rom0_bank;
 wire               rom1_half, rom0_half;
 wire               rom1_cs, rom0_cs;
 wire               rom1_ok, rom0_ok;
@@ -118,6 +117,12 @@ jtcps1_video UUT (
     .cfg_we         ( 1'b0          ),
     .cfg_data       ( 8'h0          ),
 
+    // Extra inputs read through the C-Board
+    .start_button   ( 0             ),
+    .coin_input     ( 0             ),
+    .joystick3      ( 0             ),
+    .joystick4      ( 0             ),    
+
     // CPU interface
     .ppu_rstn       ( 1'b1          ),
     .ppu1_cs        ( ppu1_cs       ),
@@ -148,14 +153,12 @@ jtcps1_video UUT (
     
     // GFX ROM interface
     .rom1_addr  ( rom1_addr     ),
-    .rom1_bank  ( rom1_bank     ),
     .rom1_half  ( rom1_half     ),
     .rom1_data  ( rom1_data     ),
     .rom1_cs    ( rom1_cs       ),
     .rom1_ok    ( rom1_ok       ),
 
     .rom0_addr  ( rom0_addr      ),
-    .rom0_bank  ( rom0_bank      ),
     .rom0_half  ( rom0_half      ),
     .rom0_data  ( rom0_data      ),
     .rom0_cs    ( rom0_cs        ),
@@ -253,6 +256,7 @@ initial begin
 end
 `else
 integer fsdram, sdram_cnt, vram_offset_aux = vram_offset;
+integer aux;
 
 initial begin
     // load game ROM
@@ -261,6 +265,7 @@ initial begin
         $display("ERROR: cannot find ghouls.rom");
         $finish;
     end
+    aux=$fseek(fsdram,64,0); // skip header
     sdram_cnt=$fread(sdram,fsdram);
     $display("INFO: Read 0x%x x 64 kBytes for game ROM",sdram_cnt>>16);
     $display("           (0x%x bytes)",sdram_cnt);
