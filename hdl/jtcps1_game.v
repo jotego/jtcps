@@ -46,6 +46,7 @@ module jtcps1_game(
     output  [21:0]  sdram_addr,
     input   [31:0]  data_read,
     output  [ 1:0]  sdram_wrmask,
+    output  [ 1:0]  sdram_bank,
     output          sdram_rnw,
     output  [15:0]  data_write,
     input           data_rdy,
@@ -58,6 +59,7 @@ module jtcps1_game(
     output  [21:0]  prog_addr,
     output  [ 7:0]  prog_data,
     output  [ 1:0]  prog_mask,
+    output  [ 1:0]  prog_bank,
     output          prog_we,
     output          prog_rd,
     // DIP switches
@@ -153,6 +155,9 @@ assign dipsw_c      = { dip_test, 7'h1f };
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
+
+assign prog_bank    = 2'b0;
+assign sdram_bank   = 2'b0;
 
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
