@@ -78,9 +78,9 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
-localparam [21:0] SOUND_OFFSET = 22'h08_0000;
-localparam [21:0] ADPCM_OFFSET = 22'h08_8000;
-localparam [21:0] GFX_OFFSET   = 22'h0A_8000;
+localparam [21:0] SOUND_OFFSET = 22'h00_0000;
+localparam [21:0] ADPCM_OFFSET = 22'h00_8000;
+localparam [21:0] GFX_OFFSET   = 22'h02_8000;
 localparam [21:0] RAM_OFFSET   = 22'h3A_8000;
 localparam [21:0] VRAM_OFFSET  = 22'h3B_0000;
 
@@ -92,7 +92,7 @@ wire [15:0] snd_addr;
 wire [17:0] adpcm_addr;
 wire [ 7:0] snd_data, adpcm_data;
 wire [17:1] ram_addr;
-wire [19:1] main_rom_addr;
+wire [21:1] main_rom_addr;
 wire [21:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
@@ -432,7 +432,7 @@ assign sdram_bank = slot_active[0] ? 2'b01 : 2'b00; // CPU goes in bank 1
 
 jtframe_sdram_mux #(
     // Main CPU
-    .SLOT0_AW   ( 19    ),  // Max 1 Megabyte
+    .SLOT0_AW   ( 21    ),  // Max 4 Megabytes
     .SLOT1_AW   ( 17    ),  // 64 kB RAM, 192 kB VRAM
 
     .SLOT0_DW   ( 16    ),

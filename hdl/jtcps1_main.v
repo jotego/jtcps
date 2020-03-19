@@ -57,7 +57,7 @@ module jtcps1_main(
     (*keep*) input              ram_ok,
     // ROM access
     (*keep*) output  reg        rom_cs,
-    (*keep*) output      [19:1] rom_addr,
+    (*keep*) output      [21:1] rom_addr,
     (*keep*) input       [15:0] rom_data,
     (*keep*) input              rom_ok,
     // DIP switches
@@ -87,7 +87,7 @@ assign cpu_cen   = cen10;
 // As RAM and VRAM share contiguous spaces in the SDRAM
 // it is important to prevent overlapping
 assign addr      = ram_cs ? {2'b0, A[15:1] } : A[17:1];
-assign rom_addr  = A[19:1];
+assign rom_addr  = A[21:1];
 
 // high during DMA transfer
 wire UDSn, LDSn;
