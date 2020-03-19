@@ -27,6 +27,7 @@ module jtcps1_prom_we(
     output reg [21:0]    prog_addr,
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
+    output reg [ 1:0]    prog_bank,
     output reg           prog_we,
     input                sdram_ack,
     output reg           cfg_we
@@ -71,6 +72,7 @@ always @(posedge clk) begin
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  oki_addr[22:1] + OKI_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
+        prog_bank <= is_cpu ? 2'b01 : 2'b00;
         if( ioctl_addr < START_BYTES ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;

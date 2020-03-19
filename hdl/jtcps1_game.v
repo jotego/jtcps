@@ -109,7 +109,7 @@ wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire [ 9:0] slot_cs, slot_ok, slot_wr, slot_clr;
+wire [ 9:0] slot_cs, slot_ok, slot_wr, slot_clr, slot_active;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
@@ -155,9 +155,6 @@ assign dipsw_c      = { dip_test, 7'h1f };
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
-
-assign prog_bank    = 2'b0;
-assign sdram_bank   = 2'b0;
 
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
@@ -222,6 +219,7 @@ jtcps1_prom_we #(
     .prog_addr      ( prog_addr     ),
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
+    .prog_bank      ( prog_bank     ),
     .prog_we        ( prog_we       ),
     .sdram_ack      ( sdram_ack     ),
     .cfg_we         ( cfg_we        )
@@ -430,6 +428,8 @@ assign adpcm_cs   = 1'b0;
 assign sample   = 1'b0;
 `endif
 
+assign sdram_bank = slot_active[0] ? 2'b01 : 2'b00; // CPU goes in bank 1
+
 jtframe_sdram_mux #(
     // Main CPU
     .SLOT0_AW   ( 19    ),  // Max 1 Megabyte
@@ -515,6 +515,7 @@ u_sdram_mux(
     .slot_ok        ( slot_ok           ),
     .slot_wr        ( slot_wr           ),
     .slot_clr       ( slot_clr          ),
+    .slot_active    ( slot_active       ),
 
     // SDRAM controller interface
     .downloading    ( downloading       ),
