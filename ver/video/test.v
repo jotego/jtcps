@@ -118,10 +118,10 @@ jtcps1_video UUT (
     .cfg_data       ( 8'h0          ),
 
     // Extra inputs read through the C-Board
-    .start_button   ( 0             ),
-    .coin_input     ( 0             ),
-    .joystick3      ( 0             ),
-    .joystick4      ( 0             ),    
+    .start_button   ( 4'd0          ),
+    .coin_input     ( 4'd0          ),
+    .joystick3      ( 8'd0          ),
+    .joystick4      ( 8'd0          ),    
 
     // CPU interface
     .ppu_rstn       ( 1'b1          ),
