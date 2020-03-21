@@ -79,10 +79,10 @@ module jtcps1_game(
 );
 
 localparam [21:0] SOUND_OFFSET = 22'h00_0000;
-localparam [21:0] ADPCM_OFFSET = 22'h00_8000;
-localparam [21:0] GFX_OFFSET   = 22'h02_8000;
-localparam [21:0] RAM_OFFSET   = 22'h3A_8000;
-localparam [21:0] VRAM_OFFSET  = 22'h3B_0000;
+localparam [21:0] ADPCM_OFFSET = 22'h01_0000;
+localparam [21:0] RAM_OFFSET   = 22'h20_0000;
+localparam [21:0] VRAM_OFFSET  = 22'h30_0000;
+localparam [21:0] GFX_OFFSET   = 22'h00_0000; // bank 2
 
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
