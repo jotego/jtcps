@@ -17,7 +17,7 @@ void xml_element( stringstream& of, const char *name, const string &content, int
 }
 
 struct size_map{
-    int cpu, sound, oki, gfx;
+    int cpu, sound, oki, gfx, qsound;
 };
 
 void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& region, int bits, int swap, int min_length=0 ) {
@@ -157,7 +157,7 @@ int size_region( const tiny_rom_entry *entry, const string& region, int min_leng
         }
         entry++;
     }
-    throw region;
+    return 0;   // the region was not found
 }
 
 #define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' '; \
@@ -347,7 +347,7 @@ string int2part( int x ) {
 }
 
 #define LUT_DUMP(a,b) \
-    of << "        <!-- " << a << "-->\n"; \
+    of << "        <!-- " << a << " size " << dec << (b/1024) << " kB -->\n"; \
     of << "        <part>" << hex << int2part( cnt ) << "</part>\n"; \
     cnt+=(b>>10); dumpcnt+=2;
 
@@ -355,8 +355,14 @@ int generate_lut( stringstream& of, size_map& sizes ) {
     of << "        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->\n";
     int cnt=0, dumpcnt=0;
     cnt = sizes.cpu>>10;
+    of << "        <!-- Size of M68000 code " << dec << (sizes.cpu>>10) << " kB -->\n";
     LUT_DUMP( "Sound CPU", sizes.sound );
-    LUT_DUMP( "OKI samples", sizes.oki );
+    if( sizes.oki ) {
+        LUT_DUMP( "OKI samples", sizes.oki );
+    }
+    else {
+        LUT_DUMP( "QSound samples", sizes.qsound );
+    }
     LUT_DUMP( "Graphics", sizes.gfx );
     fill( of, dumpcnt, 16 );
     return dumpcnt;
@@ -389,6 +395,7 @@ void generate_mra( game_entry* game ) {
         sizes.cpu   = size_region(entry,"maincpu",1024*1024);
         sizes.sound = size_region(entry,"audiocpu",64*1024);
         sizes.oki   = size_region(entry,"oki",256*1024);
+        sizes.qsound= size_region(entry,"qsound",256*1024);
         sizes.gfx   = size_region(entry,"gfx");
 
         cnt+=generate_lut( mras, sizes );
@@ -397,7 +404,10 @@ void generate_mra( game_entry* game ) {
         fill( mras, cnt, 64 );
         dump_region(mras, entry,"maincpu",16,1,1024*1024);
         dump_region(mras, entry,"audiocpu",8,0,64*1024);
-        dump_region(mras, entry,"oki",8,0,256*1024);
+        if( sizes.oki!=0 )
+            dump_region(mras, entry,"oki",8,0,256*1024);
+        else
+            dump_region(mras, entry,"qsound",8,0,2*1024*1024);
         dump_region(mras, entry,"gfx",64,0);
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';

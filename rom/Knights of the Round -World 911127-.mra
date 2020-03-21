@@ -6,11 +6,12 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="knights.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
-        <!-- Sound CPU-->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
         <part>00 04 </part>
-        <!-- OKI samples-->
+        <!-- OKI samples size 256 kB -->
         <part>40 04 </part>
-        <!-- Graphics-->
+        <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
         <!-- Mapper for knights --> 

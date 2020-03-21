@@ -33,7 +33,10 @@
         <part name="pa3_06.11d" crc="affa4f82"/>
         <!-- gfx -->
         <interleave output="64">
-            <part name="pa3-01m.2c" crc="068a152c"  map="00000021"/>
-            <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100"/>
+            <part name="pa3-01m.2c" crc="068a152c"  map="00000021" size="0x100000" offset="0"/>
+            <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100" size="0x100000" offset="0"/>
+            <part name="pa3-01m.2c" crc="068a152c"  map="00210000" size="0x100000" offset="0x100000"/>
+            <part name="pa3-07m.2f" crc="3a4a619d"  map="21000000" size="0x100000" offset="0x100000"/>
+        </interleave>
     </rom>
 </misterromdescription>
