@@ -21,7 +21,7 @@
 module jtcps1_prom_we(
     input                clk,
     input                downloading,
-    input      [22:0]    ioctl_addr,
+    input      [24:0]    ioctl_addr,    // max 32 MB
     input      [ 7:0]    ioctl_data,
     input                ioctl_wr,
     output reg [21:0]    prog_addr,
@@ -44,7 +44,7 @@ parameter GFX_OFFSET=22'h0;
 localparam START_BYTES  = 6;
 localparam START_HEADER = 16;
 localparam STARTW=8*START_BYTES;
-localparam FULL_HEADER = 23'd64;
+localparam FULL_HEADER = 25'd64;
 
 (*keep*) reg  [STARTW-1:0] starts;
 (*keep*) wire       [15:0] snd_start, oki_start, gfx_start;
@@ -53,17 +53,17 @@ assign snd_start = starts[15: 0];
 assign oki_start = starts[31:16];
 assign gfx_start = starts[47:32];
 
-(*keep*) wire [22:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
-(*keep*) wire [22:0] cpu_addr  = bulk_addr ; // the header is excluded
-(*keep*) wire [22:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
-(*keep*) wire [22:0] oki_addr  = bulk_addr - { oki_start, 10'd0 };
-(*keep*) wire [22:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
+wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
+wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
+wire [24:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
+wire [24:0] oki_addr  = bulk_addr - { oki_start, 10'd0 };
+wire [24:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
 
-(*keep*) wire is_cps = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
-(*keep*) wire is_cpu = bulk_addr[22:10] < snd_start;
-(*keep*) wire is_snd = bulk_addr[22:10] < oki_start && bulk_addr[22:10]>=snd_start;
-(*keep*) wire is_oki = bulk_addr[22:10] < gfx_start && bulk_addr[22:10]>=oki_start;
-(*keep*) wire is_gfx = bulk_addr[22:10] >=gfx_start;
+wire is_cps = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
+wire is_cpu = bulk_addr[24:10] < snd_start;
+wire is_snd = bulk_addr[24:10] < oki_start && bulk_addr[24:10]>=snd_start;
+wire is_oki = bulk_addr[24:10] < gfx_start && bulk_addr[24:10]>=oki_start;
+wire is_gfx = bulk_addr[24:10] >=gfx_start;
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
@@ -72,7 +72,7 @@ always @(posedge clk) begin
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  oki_addr[22:1] + OKI_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
-        prog_bank <= is_cpu ? 2'b01 : 2'b00;
+        prog_bank <= is_cpu ? 2'b01 : ( is_gfx ? 2'b10 : 2'b00 );
         if( ioctl_addr < START_BYTES ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;

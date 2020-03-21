@@ -53,7 +53,7 @@ module jtcps1_game(
     input           sdram_ack,
     output          refresh_en,
     // ROM LOAD
-    input   [22:0]  ioctl_addr,
+    input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
     output  [21:0]  prog_addr,
@@ -428,7 +428,9 @@ assign adpcm_cs   = 1'b0;
 assign sample   = 1'b0;
 `endif
 
-assign sdram_bank = slot_active[0] ? 2'b01 : 2'b00; // CPU goes in bank 1
+assign sdram_bank = slot_active[0] ? 2'b01 :    // CPU goes in bank 1
+    ( slot_active[2] | slot_active[6] ? 2'b10 : // GFX goes in bank 2
+    2'b00 );                                    // Sound in bank 0
 
 jtframe_sdram_mux #(
     // Main CPU
