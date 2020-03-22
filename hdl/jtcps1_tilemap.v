@@ -69,7 +69,7 @@ reg [31:0] pxl_data;
 reg [ 5:0] st;
 
 reg [21:0] tile_addr;
-reg [15:0] code,attr;
+reg [15:0] code;
 
 reg  [11:0] scan;
 reg  [ 2:0] layer;
@@ -114,10 +114,10 @@ jtcps1_gfx_mappers u_mapper(
     .unmapped   ( unmapped        )
 );
 
-wire [1:0] group = attr[8:7];
-wire       vflip = attr[6];
-wire       hflip = attr[5];
-wire [4:0] pal   = attr[4:0];
+reg  [1:0] group;
+reg        vflip;
+reg        hflip;
+reg  [4:0] pal;
 // assign rom_half = hn[3] ^ hflip;
 
 reg [19:0] rom_pre_addr, rom_masked_addr, rom_offset_addr;
@@ -145,8 +145,8 @@ wire [15:0] row_hpos = hpos + vram_data;
 
 // pixels in the blank area are not visible but it takes time to draw them
 // so the start position is offset to avoid blanking
-wire [10:0] hn0  = size[0] ? 11'h40 : (size[1] ? 11'h30 : 11'h20 );
-wire [ 8:0] buf0 = size[0] ?  9'h40 : (size[1] ?  9'h30 :  9'h20 );
+wire [10:0] hn0  = size[0] ? 11'h38 : (size[1] ? 11'h30 : 11'h20 );
+wire [ 8:0] buf0 = size[0] ?  9'h38 : (size[1] ?  9'h30 :  9'h20 );
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
@@ -214,8 +214,11 @@ always @(posedge clk or posedge rst) begin
                 end else st<=st;
             end
             51: begin
-                if( vram_ok ) begin
-                    attr    <= vram_data;
+                if( vram_ok ) begin // attributes
+                    hflip   <= vram_data[5];
+                    group   <= vram_data[8:7];
+                    vflip   <= vram_data[6];
+                    pal     <= vram_data[4:0];
                     st <= 4;
                 end else st<=st;
                 end

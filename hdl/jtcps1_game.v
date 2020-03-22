@@ -19,8 +19,8 @@
 
 module jtcps1_game(
     input           rst,
-    //input           clk96,
-    input           clk,        // 48   MHz
+    input           clk,        // 96   MHz
+    input           clk48,      // 48   MHz
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
     output   [7:0]  red,
@@ -78,8 +78,6 @@ module jtcps1_game(
     // Debug
     input   [3:0]   gfx_en
 );
-
-wire clk96=clk;
 
 localparam [21:0] SOUND_OFFSET = 22'h00_0000;
 localparam [21:0] ADPCM_OFFSET = 22'h01_0000;
@@ -167,9 +165,9 @@ reg         cen10, cen10x;
 
 (*keep*) wire cen20 = cen10 | cen10b;
 
-// Timing
+// CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
-    .clk        ( clk           ),
+    .clk        ( clk48         ),
     .cen16      ( cen16         ),
     .cen12      (               ),
     .cen8       ( cen8          ),
@@ -188,19 +186,28 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
-assign pxl_cen  = cen8;
-assign pxl2_cen = cen16;
+//assign pxl_cen  = cen8;
+//assign pxl2_cen = cen16;
 
 // Fractional cen cannot provide an uniformly spaced cenb
 jtframe_frac_cen #(.W(2))u_cen10(
-    .clk        ( clk           ),
+    .clk        ( clk48         ),
     .n          ( 10'd5         ),
     .m          ( 10'd24        ),
     .cen        ( {nc0, cen10b }),
     .cenb       (               ) // 180 shifted
 );
 
-always @(posedge clk) begin
+// Fractional cen cannot provide an uniformly spaced cenb
+jtframe_frac_cen #(.W(2))u_pxl_cen(
+    .clk        ( clk           ),
+    .n          ( 10'd1         ),
+    .m          ( 10'd6         ),
+    .cen        ( { pxl_cen, pxl2_cen }),
+    .cenb       (               ) // 180 shifted
+);
+
+always @(posedge clk48) begin
     cen10x <= cen10b;
     cen10  <= cen10x;
 end
@@ -214,7 +221,7 @@ jtcps1_prom_we #(
     .OKI_OFFSET( ADPCM_OFFSET  ),
     .GFX_OFFSET( GFX_OFFSET    )
 ) u_prom_we(
-    .clk            ( clk96         ),
+    .clk            ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
@@ -231,7 +238,7 @@ jtcps1_prom_we #(
 `ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
-    .clk        ( clk               ),
+    .clk        ( clk48             ),
     .cen10      ( cen10             ),
     .cen10b     ( cen10b            ),
     // Timing
@@ -290,7 +297,7 @@ assign main_rnw = 1'b1;
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .pxl_cen        ( cen8          ),
+    .pxl_cen        ( pxl_cen       ),
 
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
@@ -395,7 +402,7 @@ end
 `endif
 jtcps1_sound u_sound(
     .rst            ( rst           ),
-    .clk            ( clk           ),    
+    .clk            ( clk48         ),    
 
     .enable_adpcm   ( enable_psg    ),
     .enable_fm      ( enable_fm     ),
@@ -471,7 +478,7 @@ jtframe_sdram_mux #(
 )
 u_sdram_mux(
     .rst            ( rst           ),
-    .clk            ( clk96         ),
+    .clk            ( clk           ),
     .vblank         ( VB            ),
 
     // Main CPU
