@@ -238,12 +238,19 @@ wire sdo;
 `undef MMR_FILE
 `endif
 
+`ifdef SIMULATION
+`ifndef LOADROM
+initial begin
+    regs = { `CPSB_CONFIG };
+    // $display("CPSB_CONFIG = %X", regs );
+end
+`endif
+`endif
+
 `ifdef MMR_FILE
 reg [15:0] mmr_regs[0:19];
 integer aux;
 initial begin
-    regs = { `CPSB_CONFIG };
-    // $display("CPSB_CONFIG = %X", regs );
     $display("Layer control address: %X", `MMR(6) );
     $display("Palette page  address: %X", `MMR(11));    
     $display("INFO: MMR initial values read from %s", `MMR_FILE );

@@ -22,21 +22,14 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-function make_main {
-    # Binary ROM file has bytes swapped because bin2hex 
-    # has fixed endianness
-    dd if=../../rom/$1.rom conv=swab | bin2hex  > $1.hex || exit 1
-    # Fill the rest of the space
-    hexlen=$(wc -l $1.hex | cut -f 1 -d " ")
-    yes FFFF | head -n $((4194304-hexlen)) >> $1.hex
-    echo $1.hex created
-}
+if [ ! -e rom2hex ]; then
+    g++ rom2hex.cc -o rom2hex || exit $?
+fi
 
-make_main $GAME
+rom2hex ../../rom/$GAME.rom || exit $?
 
 ln -sf ../../rom/$GAME.rom rom.bin
-ln -sf ${GAME}${PATCH}.hex sdram.hex
-
+ln -sf sdram_bank0.hex sdram.hex
 
 CFG_FILE=../video/cfg/${GAME}_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -70,4 +63,5 @@ echo "Game ROM length: " $GAME_ROM_LEN
     -d BUTTONS=4 -d JTFRAME_4PLAYERS -d JTFRAME_SDRAM_BANKS\
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \
     -videow 384 -videoh 224 \
+    -d JTFRAME_CLK96 \
     $OTHER

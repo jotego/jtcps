@@ -67,15 +67,16 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_sound.u_jt51.u_mmr, "AS");
             $shm_probe(UUT.u_game.u_sound.u_jt51, "AS");
             `else
-            $shm_probe(UUT.u_game.u_main, "A");
-            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
-            $shm_probe(UUT.u_game.u_video.u_colmix, "A");
+            $shm_probe(UUT.u_game.u_prom_we, "A");
+            $shm_probe(UUT.u_frame.u_board.u_sdram, "A");
+            //$shm_probe(UUT.u_game.u_main, "A");
+            //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
+            //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
             `endif
             //$shm_probe(UUT.u_game.u_sdram_mux, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot4, "AS");
-            //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             //$shm_probe(UUT.u_game,"A");
             //$shm_probe(UUT.u_game.u_sdram_mux,"A");
         `endif

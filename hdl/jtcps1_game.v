@@ -19,7 +19,8 @@
 
 module jtcps1_game(
     input           rst,
-    input           clk,
+    //input           clk96,
+    input           clk,        // 48   MHz
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
     output   [7:0]  red,
@@ -77,6 +78,8 @@ module jtcps1_game(
     // Debug
     input   [3:0]   gfx_en
 );
+
+wire clk96=clk;
 
 localparam [21:0] SOUND_OFFSET = 22'h00_0000;
 localparam [21:0] ADPCM_OFFSET = 22'h01_0000;
@@ -211,7 +214,7 @@ jtcps1_prom_we #(
     .OKI_OFFSET( ADPCM_OFFSET  ),
     .GFX_OFFSET( GFX_OFFSET    )
 ) u_prom_we(
-    .clk            ( clk           ),
+    .clk            ( clk96         ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
@@ -468,7 +471,7 @@ jtframe_sdram_mux #(
 )
 u_sdram_mux(
     .rst            ( rst           ),
-    .clk            ( clk           ),
+    .clk            ( clk96         ),
     .vblank         ( VB            ),
 
     // Main CPU
