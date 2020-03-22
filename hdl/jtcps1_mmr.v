@@ -384,9 +384,9 @@ jt9346 u_eeprom(
     .rst    ( rst       ),  // system reset
     // chip interface
     .sclk   ( sclk      ),  // serial clock
-    .di     ( sdi       ),  // serial data in
-    .do     ( sdo       ),  // serial data out and ready/not busy signal
-    .cs     ( scs       )   // chip select, active high. Goes low in between instructions
+    .sdi    ( sdi       ),  // serial data in
+    .sdo    ( sdo       ),  // serial data out and ready/not busy signal
+    .scs    ( scs       )   // chip select, active high. Goes low in between instructions
 );
 
 endmodule

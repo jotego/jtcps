@@ -15,6 +15,7 @@
 ../../hdl/jtcps1_main.v
 ../../hdl/jtcps1_game.v
 ../../hdl/jtcps1_sound.v
+../../hdl/jtcps1_stars.v
 ../../hdl/jtcps1_gfx_mappers.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
@@ -31,6 +32,8 @@
 ../../modules/fx68k/fx68kAlu.sv
 ../../modules/fx68k/fx68k.sv
 ../../modules/fx68k/uaddrPla.sv
+# Serial EEPROM
+../../modules/jteeprom/hdl/jt9346.v
 # Clocking
 ../../modules/jtframe/hdl/clocking/jtframe_cen48.v
 ../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v

@@ -39,14 +39,13 @@ module jtcps1_obj_line_table(
     output reg [15:0]  line_data
 );
 
-reg [15:0] line_buf[0:1023]; // up to 128 sprites per line
-reg [ 6:0] line_cnt;
+reg  [15:0] line_buf[0:1023]; // up to 128 sprites per line
+reg  [ 6:0] line_cnt;
 
-reg [15:0] obj_x, obj_y, obj_code, obj_attr;
-reg [15:0] last_x, last_y, last_code, last_attr;
-reg [15:0] pre_code;
-
-wire [15:0] eff_x = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+reg  [15:0] obj_x, obj_y, obj_code, obj_attr;
+reg  [15:0] last_x, last_y, last_code, last_attr;
+reg  [15:0] pre_code;
+wire [15:0] eff_x;
 
 wire  repeated = (obj_x==last_x) && (obj_y==last_y) && 
                  (obj_code==last_code) && (obj_attr==last_attr);
@@ -66,6 +65,7 @@ assign      tile_n     = obj_attr[11: 8];
 assign      vflip      = obj_attr[6];
 wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
+assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
 reg  [15:0] code_mn;
 reg  [ 4:0] st;
