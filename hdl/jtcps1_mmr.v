@@ -226,6 +226,10 @@ endfunction
 wire reg_rst;
 reg  pre_copy, pre_dma_ok;
 
+// EEPROM
+reg  sclk, sdi, scs;
+wire sdo;
+
 // For quick simulation of the video alone
 // it is possible to load the regs from a file
 // defined by the macro MMR_FILE
@@ -311,6 +315,9 @@ always @(posedge clk, posedge reg_rst) begin
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
         mmr_dout      <= 16'hffff;
+        sclk          <= 1'b0;
+        sdi           <= 1'b0;
+        scs           <= 1'b0;      
     end else begin
         if( !ppu1_cs ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down
@@ -363,9 +370,23 @@ always @(posedge clk, posedge reg_rst) begin
             if( addrb[ 8] && !dsn) prio2      <= cpu_dout;
             if( addrb[ 9] && !dsn) prio3      <= cpu_dout;
             if( addrb[10] && !dsn) pal_page_en<= cpu_dout;
+            if( game == 19 /*game_pang3*/ ) begin
+                if( addr == 5'h1d && !dsn[0] ) { scs, sclk, sdi } <= { cpu_dout[7], cpu_dout[6], cpu_dout[0] };
+                if( addr == 5'h1d ) mmr_dout <= { 15'd0, sdo };
+            end
         end
     end
 end
 
+// EEPROM used by Pang 3
+jt9346 u_eeprom(
+    .clk    ( clk       ),  // system clock
+    .rst    ( rst       ),  // system reset
+    // chip interface
+    .sclk   ( sclk      ),  // serial clock
+    .di     ( sdi       ),  // serial data in
+    .do     ( sdo       ),  // serial data out and ready/not busy signal
+    .cs     ( scs       )   // chip select, active high. Goes low in between instructions
+);
 
 endmodule

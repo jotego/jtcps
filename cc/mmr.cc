@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iomanip>
 #include <algorithm>
+#include <set>
 
 #include "config.h"
 
@@ -251,9 +252,11 @@ string parent_name( game_entry* game ) {
 
 int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
     game_entry* game, const CPS1config* x) {
+    static set<string>done;
     int mask=0xABCD, offset=0x1234;
     int id=0;
     bool found=false;
+    bool dump_inc;  // Avoid dumping more than once to the verilog include file
     const string name = game->parent=="0" ? game->name : game->parent;
     // find game code    
     while( parents[id] ) {
@@ -264,6 +267,8 @@ int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
         of << "ERROR: game parent not found\n";
         cout << "ERROR: game parent not found\n";
     }
+    dump_inc = done.count(name)==0;
+    done.insert(name);
     of << "        <!-- Mapper for " << name << " --> \n";
     of << "        <part> ";
     int aux=0, aux_mask;
@@ -293,36 +298,38 @@ int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
     DUMP( offset    );
     DUMP( id        );
     of << "</part>\n";
-    // Work on mapper ranges
-    const gfx_range *r = x->ranges;
-    while( r->type != 0 ) {
-        stringstream aux;
-        int b=-1;
-        int done=0;
-        do {
-            bool nl=false;
-            if ( b != r->bank ) {
-                b = r->bank;
-                aux << "        // Bank " << b << " size 0x" << hex << setw(5) << setfill('0') << x->bank_size[b] << '\n';
-                aux << "        bank["<<b<<"] <= ";
-                done |= (1<<b);
-            }
-            string s;
-            parse_range(s,r);
-            if( r[1].type!=0 ) {
-                if ( r[1].bank == b ) {
-                    aux << s << " ||\n        ";
-                    nl = true;
+    // Mapper ranges for verilog include file
+    if( dump_inc ) {
+        const gfx_range *r = x->ranges;
+        while( r->type != 0 ) {
+            stringstream aux;
+            int b=-1;
+            int done=0;
+            do {
+                bool nl=false;
+                if ( b != r->bank ) {
+                    b = r->bank;
+                    aux << "        // Bank " << b << " size 0x" << hex << setw(5) << setfill('0') << x->bank_size[b] << '\n';
+                    aux << "        bank["<<b<<"] <= ";
+                    done |= (1<<b);
                 }
+                string s;
+                parse_range(s,r);
+                if( r[1].type!=0 ) {
+                    if ( r[1].bank == b ) {
+                        aux << s << " ||\n        ";
+                        nl = true;
+                    }
+                }
+                if(!nl) aux << s << ";\n";
+                r++;
+            } while(r->type);
+            for( b=0; b<4; b++) {
+                if( (done & (1<<b)) == 0)
+                    aux << "        bank["<<b<<"] <= 1'b0;\n";
             }
-            if(!nl) aux << s << ";\n";
-            r++;
-        } while(r->type);
-        for( b=0; b<4; b++) {
-            if( (done & (1<<b)) == 0)
-                aux << "        bank["<<b<<"] <= 1'b0;\n";
+            mappers << "game_" << parent_name(game) << ": begin\n" << aux.str() << "    end\n";
         }
-        mappers << "game_" << parent_name(game) << ": begin\n" << aux.str() << "    end\n";
     }
     return dumpcnt;
 }
