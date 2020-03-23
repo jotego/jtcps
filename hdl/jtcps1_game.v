@@ -521,11 +521,11 @@ u_sdram_mux(
 
     // GFX ROM
     .slot2_offset   ( GFX_OFFSET        ),
-    .slot2_addr     ( gfx0_addr         ),
+    .slot2_addr     ( gfx0_addr         ),  // objects
     .slot2_dout     ( rom0_data         ),
 
     .slot6_offset   ( GFX_OFFSET        ),
-    .slot6_addr     ( gfx1_addr         ),
+    .slot6_addr     ( gfx1_addr         ),  // scroll tiles
     .slot6_dout     ( rom1_data         ),
 
     // bus signals
