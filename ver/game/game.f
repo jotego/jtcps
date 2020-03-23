@@ -35,6 +35,7 @@
 # Serial EEPROM
 ../../modules/jteeprom/hdl/jt9346.v
 # Clocking
+../../modules/jtframe/hdl/clocking/jtframe_cen96.v
 ../../modules/jtframe/hdl/clocking/jtframe_cen48.v
 ../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v
 # Other

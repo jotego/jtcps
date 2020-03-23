@@ -8,6 +8,7 @@ set_global_assignment -name VERILOG_MACRO "BUTTONS=4"
 set_global_assignment -name VERILOG_MACRO "STEREO_GAME=1"
 set_global_assignment -name VERILOG_MACRO "JTFRAME_WRITEBACK=1"
 set_global_assignment -name VERILOG_MACRO "JTFRAME_4PLAYERS=1"
+set_global_assignment -name VERILOG_MACRO "JTFRAME_CLK96=1"
 set_global_assignment -name VERILOG_MACRO "COLORW=8"
 # Full SDRAM use
 set_global_assignment -name VERILOG_MACRO "JTFRAME_SDRAM_BANKS"

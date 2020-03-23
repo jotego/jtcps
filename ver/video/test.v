@@ -6,7 +6,8 @@ module test;
 `define SIMULATION
 `endif
 
-reg                rst, clk, cen8;
+reg                rst, clk;
+wire               pxl_cen;
 wire       [ 8:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
@@ -95,7 +96,7 @@ end
 jtcps1_video UUT (
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .pxl_cen        ( cen8          ),
+    .pxl_cen        ( pxl_cen       ),
 
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
@@ -242,7 +243,7 @@ reg dumpdly, dumplast;
 
 initial fout=$fopen("video.raw","wb");
 
-always @(posedge clk) if(cen8 && !HB && !VB) begin
+always @(posedge clk) if(pxl_cen && !HB && !VB) begin
     $fwrite(fout,"%u", { 8'hff, blue, green, red });
 end
 
@@ -344,16 +345,14 @@ end
 
 initial begin
     clk = 1'b0;
-    forever #(10.417) clk = ~clk;
+    forever #(10.417/2) clk = ~clk; // 96 MHz
 end
 
-integer cen_cnt=0;
-
-always @(posedge clk) begin
-    cen_cnt <= cen_cnt+1;
-    if(cen_cnt>=5) cen_cnt<=0;
-    cen8 <= cen_cnt==0;
-end
+jtframe_cen96 u_pxl_cen(
+    .clk    ( clk       ),    // 96 MHz
+    .cen16  ( pxl2_cen  ),
+    .cen8   ( pxl_cen   )
+);
 
 integer framecnt;
 

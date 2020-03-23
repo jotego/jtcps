@@ -20,7 +20,9 @@
 module jtcps1_game(
     input           rst,
     input           clk,        // 96   MHz
+    `ifdef JTFRAME_CLK96
     input           clk48,      // 48   MHz
+    `endif
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
     output   [7:0]  red,
@@ -84,6 +86,12 @@ localparam [21:0] ADPCM_OFFSET = 22'h01_0000;
 localparam [21:0] RAM_OFFSET   = 22'h20_0000;
 localparam [21:0] VRAM_OFFSET  = 22'h30_0000;
 localparam [21:0] GFX_OFFSET   = 22'h00_0000; // bank 2
+
+// Support for 48MHz
+// This is useful for faster simulation
+`ifndef JTFRAME_CLK96
+wire clk48 = clk;
+`endif
 
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
@@ -198,13 +206,11 @@ jtframe_frac_cen #(.W(2))u_cen10(
     .cenb       (               ) // 180 shifted
 );
 
-// Fractional cen cannot provide an uniformly spaced cenb
-jtframe_frac_cen #(.W(2))u_pxl_cen(
-    .clk        ( clk           ),
-    .n          ( 10'd1         ),
-    .m          ( 10'd6         ),
-    .cen        ( { pxl_cen, pxl2_cen }),
-    .cenb       (               ) // 180 shifted
+
+jtframe_cen96 u_pxl_cen(
+    .clk    ( clk       ),    // 96 MHz
+    .cen16  ( pxl2_cen  ),
+    .cen8   ( pxl_cen   )
 );
 
 always @(posedge clk48) begin
