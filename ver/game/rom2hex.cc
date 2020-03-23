@@ -14,7 +14,9 @@ int get_offset( char *b, int s ) {
     return a2;
 }
 
-void dump(const char *, ifstream& fin, int start, int end );
+void clear_bank( char *data );
+void dump_bank( char *data, const char *fname );
+void read_bank(char *data, ifstream& fin, int start, int end, int offset=0 );
 
 int main(int argc, char *argv[]) {
     ifstream fin( argv[1], ios_base::binary );
@@ -33,12 +35,49 @@ int main(int argc, char *argv[]) {
     cout << "Oki   start " << hex << oki_start << '\n';
     cout << "GFX   start " << hex << gfx_start << '\n';
 
-    dump("sdram_bank1.hex", fin, 0, snd_start ); // CPU
-    dump("sdram_bank2.hex", fin, gfx_start, 0 ); // GFX
-    dump("sdram_bank0.hex", fin, snd_start, gfx_start ); // GFX
+    char *data = new char[8*1024*1024];
+    try{
+        // Main CPU
+        clear_bank( data );
+        read_bank( data, fin, 0, snd_start );
+        dump_bank( data, "sdram_bank1.hex" );
+        // GFX
+        clear_bank( data );
+        read_bank( data, fin, gfx_start, 0 );
+        dump_bank( data, "sdram_bank2.hex" );
+        // Sound
+        clear_bank( data );
+        read_bank( data, fin, snd_start, oki_start );
+        read_bank( data, fin, oki_start, gfx_start, 0x10000<<1 );
+        dump_bank( data, "sdram_bank0.hex" );
+    } catch( const char *s) {
+        cout << "ERROR: " << s << '\n';
+    }
+
+    delete []data;
+    return 0;
 }
 
-void dump(const char *fname, ifstream& fin, int start, int end ) {
+void clear_bank( char *data ) {
+    const int v = ~0;
+    int *b = (int*)data;
+    for( int k=0; k<8*1024*1024; k+=sizeof(int) ) *b++=v;
+}
+
+void dump_bank( char *data, const char *fname ) {
+    ofstream fout(fname);
+    if( !fout.good() ) throw "Cannot open output file";
+    for( int k=0; k<8*1024*1024; k+=2 ) {
+        int a = data[k+1];
+        int b = data[k];
+        a&=0xff;
+        b&=0xff;
+        a = (a<<8) | b;
+        fout << hex << a << '\n';
+    }
+}
+
+void read_bank(char *data, ifstream& fin, int start, int end, int offset ) {
     const int header_size = 64;
     start += header_size;
     if( end )
@@ -47,23 +86,12 @@ void dump(const char *fname, ifstream& fin, int start, int end ) {
         fin.seekg(0,ios_base::end);
         end = (int) fin.tellg();
     }
-    fin.seekg( start );
+    fin.seekg( start, ios_base::beg );
+    if( fin.eof() ) throw "input file reached EOF";
+    if( !fin.good() ) throw "Cannot seek inside input file";
     const int len=end-start+1;
-    if( len <=0 ) return;
-
-    char *data = new char[len];
-    ofstream fout(fname);    
+    if( len <=0 ) throw "Wrong offsets";
+    data += offset;
     fin.read(data,len);
-    cout << "INFO: " << dec << len << " bytes dumped to " << fname << '\n';
-    for( int k=0; k<len; k+=2 ) {
-        int a = data[k+1];
-        int b = data[k];
-        a&=0xff;
-        b&=0xff;
-        a = (a<<8) | b;
-        fout << hex << a << '\n';
-    }
-    delete []data;
-    // Fill up to 8MB
-    for( int k=len; k<8*1024*1024-1; k+=2 ) fout << "ffff\n";
+    fin.clear();
 }
