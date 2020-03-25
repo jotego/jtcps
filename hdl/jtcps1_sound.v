@@ -45,8 +45,7 @@ module jtcps1_sound(
     output                   sample
 );
 
-wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
-reg  cen_fm, cen_fm2;
+wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
@@ -66,8 +65,8 @@ end
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
-    .cen_3p57   (  pre_fm    ),
-    .cen_1p78   (  pre_fm2   )
+    .cen_3p57   (  cen_fm    ),
+    .cen_1p78   (  cen_fm2   )
 );
 
 jtframe_frac_cen u_okicen(
@@ -77,11 +76,6 @@ jtframe_frac_cen u_okicen(
     .cen        ( { nc, cen_oki }   ),
     .cenb       (                   )
 );
-
-// Make JT51 clock enable happen at the same time than the CPU's
-always @(posedge clk) begin
-    { cen_fm, cen_fm2 } <= { pre_fm, pre_fm2 };
-end
 
 (*keep*) wire [15:0] A;
 (*keep*) reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
@@ -162,7 +156,7 @@ wire iorq_n, m1_n;
 jtframe_z80_romwait u_cpu(
     .rst_n      ( ~rst        ),
     .clk        ( clk         ),
-    .cen        ( pre_fm      ),
+    .cen        ( cen_fm      ),
     .cpu_cen    ( cpu_cen     ),
     .int_n      ( int_n       ),
     .nmi_n      ( 1'b1        ),
