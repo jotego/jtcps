@@ -54,9 +54,9 @@ function signed [15:0] sum_snd;
     input               enable_fm;
     input               enable_adpcm;
     input signed [15:0] fm;
-    input signed [15:0] adpcm;
+    input signed [13:0] adpcm;
     sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
-        (enable_adpcm ? { {1{adpcm[13]}}, adpcm, adpcm[12] } : 16'd0 );
+        (enable_adpcm ? {    adpcm[13]  , adpcm, adpcm[12] } : 16'd0 );
 endfunction
 
 always @(posedge clk) begin
@@ -96,12 +96,9 @@ wire [7:0] oki_dout;
 
 assign oki_wrn = ~(oki_cs & ~WRn);
 
-always @(*) begin
-    rom_cs   = !mreq_n && (!A[15] || A[15:14]==2'b10);
-    rom_addr = A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
-end
-
 always @(posedge clk) begin
+    rom_cs    <= !mreq_n && (!A[15] || A[15:14]==2'b10);
+    rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
     ram_cs    <= !mreq_n && A[15:12] == 4'b1101;
     fm_cs     <= io_cs && A[3:1]==3'd0;
     oki_cs    <= io_cs && A[3:1]==3'd1;
