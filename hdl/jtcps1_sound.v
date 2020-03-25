@@ -45,7 +45,7 @@ module jtcps1_sound(
     output                   sample
 );
 
-wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
+(*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
@@ -91,7 +91,7 @@ wire [7:0] oki_dout;
 assign oki_wrn = ~(oki_cs & ~WRn);
 
 always @(posedge clk) begin
-    rom_cs    <= !mreq_n && (!A[15] || A[15:14]==2'b10);
+    rom_cs    <= !mreq_n && !rd_n && (!A[15] || A[15:14]==2'b10);
     rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
     ram_cs    <= !mreq_n && A[15:12] == 4'b1101;
     fm_cs     <= io_cs && A[3:1]==3'd0;
@@ -114,7 +114,7 @@ always @(posedge clk, posedge rst) begin
     if(rst) begin
         bank <= 1'b0;
         oki7 <= 1'b0;
-    end else begin
+    end else if(!wr_n) begin
         if(bank_cs) bank <= dout[0];
         if(oki7_cs) oki7 <= dout[0];
     end
