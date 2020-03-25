@@ -84,13 +84,13 @@ always @(posedge clk) begin
 end
 
 (*keep*) wire [15:0] A;
-reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
-reg  oki7;
+(*keep*) reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
+(*keep*) reg  oki7;
 (*keep*) wire mreq_n, int_n;
 wire WRn, oki_wrn;
 
 reg  bank;
-reg  io_cs;
+wire  io_cs = !mreq_n && A[15:12] == 4'b1111;
 
 wire [7:0] oki_dout;
 
@@ -98,15 +98,17 @@ assign oki_wrn = ~(oki_cs & ~WRn);
 
 always @(*) begin
     rom_cs   = !mreq_n && (!A[15] || A[15:14]==2'b10);
-    ram_cs   = !mreq_n && A[15:12] == 4'b1101;
-    io_cs    = !mreq_n && A[15:12] == 4'b1111;
-    fm_cs    = io_cs && A[3:1]==3'd0;
-    oki_cs   = io_cs && A[3:1]==3'd1;
-    bank_cs  = io_cs && A[3:1]==3'd2;
-    oki7_cs  = io_cs && A[3:1]==3'd3;
-    latch0_cs= io_cs && A[3:1]==3'd4;
-    latch1_cs= io_cs && A[3:1]==3'd5;
     rom_addr = A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
+end
+
+always @(posedge clk) begin
+    ram_cs    <= !mreq_n && A[15:12] == 4'b1101;
+    fm_cs     <= io_cs && A[3:1]==3'd0;
+    oki_cs    <= io_cs && A[3:1]==3'd1;
+    bank_cs   <= io_cs && A[3:1]==3'd2;
+    oki7_cs   <= io_cs && A[3:1]==3'd3;
+    latch0_cs <= io_cs && A[3:1]==3'd4;
+    latch1_cs <= io_cs && A[3:1]==3'd5;
 end
 
 wire rd_n;
