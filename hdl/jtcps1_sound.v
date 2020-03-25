@@ -53,9 +53,9 @@ function signed [15:0] sum_snd;
     input               enable_fm;
     input               enable_adpcm;
     input signed [15:0] fm;
-    input signed [15:0] adpcm;
+    input signed [13:0] adpcm;
     sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
-        (enable_adpcm ? { {1{adpcm[13]}}, adpcm, adpcm[12] } : 16'd0 );
+        (enable_adpcm ? { adpcm[13], adpcm, adpcm[12] } : 16'd0 );
 endfunction
 
 always @(posedge clk) begin
@@ -90,36 +90,61 @@ wire [7:0] oki_dout;
 assign oki_wrn = ~(oki_cs & ~WRn);
 
 always @(*) begin
-    rom_cs   = 1'b0;
-    ram_cs   = 1'b0;
-    latch0_cs= 1'b0;
-    latch1_cs= 1'b0;
-    fm_cs    = 1'b0;
-    bank_cs  = 1'b0;
-    oki_cs   = 1'b0;
-    oki7_cs  = 1'b0;
-    rom_addr = 16'h0000;
-    if(!mreq_n && !rst) casez( A[15:12] )
-        4'b0???: begin
-            rom_cs = 1'b1;
-            rom_addr = { 1'b0, A[14:0] };
-        end
-        4'b10??: begin
-            rom_cs   = 1'b1;
-            rom_addr = { 1'b1, bank, A[13:0] };
-        end
-        4'b1101: ram_cs   = 1'b1; // D
-        4'b1111: begin // F
-            case(A[3:1])
-                3'd0: fm_cs     = 1'b1;
-                3'd1: oki_cs    = 1'b1;
-                3'd2: bank_cs   = 1'b1;
-                3'd3: oki7_cs   = 1'b1;
-                3'd4: latch0_cs = 1'b1;
-                3'd5: latch1_cs = 1'b1;
-            endcase
-        end
-    endcase
+    if(!mreq_n && !rst) begin
+        casez( A[15:12] )
+            4'b0???: begin
+                rom_cs = 1'b1;
+                rom_addr = { 1'b0, A[14:0] };
+            end
+            4'b10??: begin
+                rom_cs   = 1'b1;
+                rom_addr = { 1'b1, bank, A[13:0] };
+            end
+            4'b1101: ram_cs   = 1'b1; // D
+            4'b1111: begin // F
+                case(A[3:1])
+                    3'd0: fm_cs     = 1'b1;
+                    3'd1: oki_cs    = 1'b1;
+                    3'd2: bank_cs   = 1'b1;
+                    3'd3: oki7_cs   = 1'b1;
+                    3'd4: latch0_cs = 1'b1;
+                    3'd5: latch1_cs = 1'b1;
+                    default: begin
+                        rom_cs   = 1'b0;
+                        ram_cs   = 1'b0;
+                        latch0_cs= 1'b0;
+                        latch1_cs= 1'b0;
+                        fm_cs    = 1'b0;
+                        bank_cs  = 1'b0;
+                        oki_cs   = 1'b0;
+                        oki7_cs  = 1'b0;
+                        rom_addr = 16'h0000;
+                    end
+                endcase
+            end
+            default: begin
+                rom_cs   = 1'b0;
+                ram_cs   = 1'b0;
+                latch0_cs= 1'b0;
+                latch1_cs= 1'b0;
+                fm_cs    = 1'b0;
+                bank_cs  = 1'b0;
+                oki_cs   = 1'b0;
+                oki7_cs  = 1'b0;
+                rom_addr = 16'h0000;
+            end
+        endcase
+    end else begin
+        rom_cs   = 1'b0;
+        ram_cs   = 1'b0;
+        latch0_cs= 1'b0;
+        latch1_cs= 1'b0;
+        fm_cs    = 1'b0;
+        bank_cs  = 1'b0;
+        oki_cs   = 1'b0;
+        oki7_cs  = 1'b0;
+        rom_addr = 16'h0000;
+    end
 end
 
 wire rd_n;
@@ -171,7 +196,6 @@ always @(posedge clk) begin
 end
 
 wire iorq_n, m1_n;
-(*keep*) wire irq_ack = !iorq_n && !m1_n;
 
 jtframe_z80_romwait u_cpu(
     .rst_n      ( ~rst        ),
