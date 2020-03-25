@@ -45,7 +45,8 @@ module jtcps1_sound(
     output                   sample
 );
 
-wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+reg  cen_fm, cen_fm2;
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
@@ -53,9 +54,9 @@ function signed [15:0] sum_snd;
     input               enable_fm;
     input               enable_adpcm;
     input signed [15:0] fm;
-    input signed [13:0] adpcm;
+    input signed [15:0] adpcm;
     sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
-        (enable_adpcm ? { adpcm[13], adpcm, adpcm[12] } : 16'd0 );
+        (enable_adpcm ? { {1{adpcm[13]}}, adpcm, adpcm[12] } : 16'd0 );
 endfunction
 
 always @(posedge clk) begin
@@ -65,8 +66,8 @@ end
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz
-    .cen_3p57   (  cen_fm    ),
-    .cen_1p78   (  cen_fm2   )
+    .cen_3p57   (  pre_fm    ),
+    .cen_1p78   (  pre_fm2   )
 );
 
 jtframe_frac_cen u_okicen(
@@ -77,74 +78,35 @@ jtframe_frac_cen u_okicen(
     .cenb       (                   )
 );
 
+// Make JT51 clock enable happen at the same time than the CPU's
+always @(posedge clk) begin
+    { cen_fm, cen_fm2 } <= { pre_fm, pre_fm2 };
+end
+
 (*keep*) wire [15:0] A;
-(*keep*) reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
+reg  fm_cs, latch0_cs, latch1_cs, ram_cs, oki_cs, oki7_cs, bank_cs;
 reg  oki7;
 (*keep*) wire mreq_n, int_n;
-(*keep*) wire WRn, oki_wrn;
+wire WRn, oki_wrn;
 
 reg  bank;
+reg  io_cs;
 
 wire [7:0] oki_dout;
 
 assign oki_wrn = ~(oki_cs & ~WRn);
 
 always @(*) begin
-    if(!mreq_n && !rst) begin
-        casez( A[15:12] )
-            4'b0???: begin
-                rom_cs = 1'b1;
-                rom_addr = { 1'b0, A[14:0] };
-            end
-            4'b10??: begin
-                rom_cs   = 1'b1;
-                rom_addr = { 1'b1, bank, A[13:0] };
-            end
-            4'b1101: ram_cs   = 1'b1; // D
-            4'b1111: begin // F
-                case(A[3:1])
-                    3'd0: fm_cs     = 1'b1;
-                    3'd1: oki_cs    = 1'b1;
-                    3'd2: bank_cs   = 1'b1;
-                    3'd3: oki7_cs   = 1'b1;
-                    3'd4: latch0_cs = 1'b1;
-                    3'd5: latch1_cs = 1'b1;
-                    default: begin
-                        rom_cs   = 1'b0;
-                        ram_cs   = 1'b0;
-                        latch0_cs= 1'b0;
-                        latch1_cs= 1'b0;
-                        fm_cs    = 1'b0;
-                        bank_cs  = 1'b0;
-                        oki_cs   = 1'b0;
-                        oki7_cs  = 1'b0;
-                        rom_addr = 16'h0000;
-                    end
-                endcase
-            end
-            default: begin
-                rom_cs   = 1'b0;
-                ram_cs   = 1'b0;
-                latch0_cs= 1'b0;
-                latch1_cs= 1'b0;
-                fm_cs    = 1'b0;
-                bank_cs  = 1'b0;
-                oki_cs   = 1'b0;
-                oki7_cs  = 1'b0;
-                rom_addr = 16'h0000;
-            end
-        endcase
-    end else begin
-        rom_cs   = 1'b0;
-        ram_cs   = 1'b0;
-        latch0_cs= 1'b0;
-        latch1_cs= 1'b0;
-        fm_cs    = 1'b0;
-        bank_cs  = 1'b0;
-        oki_cs   = 1'b0;
-        oki7_cs  = 1'b0;
-        rom_addr = 16'h0000;
-    end
+    rom_cs   = !mreq_n && (!A[15] || A[15:14]==2'b10);
+    ram_cs   = !mreq_n && A[15:12] == 4'b1101;
+    io_cs    = !mreq_n && A[15:12] == 4'b1111;
+    fm_cs    = io_cs && A[3:1]==3'd0;
+    oki_cs   = io_cs && A[3:1]==3'd1;
+    bank_cs  = io_cs && A[3:1]==3'd2;
+    oki7_cs  = io_cs && A[3:1]==3'd3;
+    latch0_cs= io_cs && A[3:1]==3'd4;
+    latch1_cs= io_cs && A[3:1]==3'd5;
+    rom_addr = A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
 end
 
 wire rd_n;
@@ -196,11 +158,12 @@ always @(posedge clk) begin
 end
 
 wire iorq_n, m1_n;
+(*keep*) wire irq_ack = !iorq_n && !m1_n;
 
 jtframe_z80_romwait u_cpu(
     .rst_n      ( ~rst        ),
     .clk        ( clk         ),
-    .cen        ( cen_fm      ),
+    .cen        ( pre_fm      ),
     .cpu_cen    ( cpu_cen     ),
     .int_n      ( int_n       ),
     .nmi_n      ( 1'b1        ),
