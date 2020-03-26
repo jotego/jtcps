@@ -55,7 +55,7 @@ function signed [15:0] sum_snd;
     input signed [15:0] fm;
     input signed [13:0] adpcm;
     sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
-        (enable_adpcm ? {    adpcm[13]  , adpcm, adpcm[12] } : 16'd0 );
+        (enable_adpcm ? {    adpcm, adpcm[12:11] } : 16'd0 );
 endfunction
 
 always @(posedge clk) begin
