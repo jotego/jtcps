@@ -114,7 +114,7 @@ always @(posedge clk, posedge rst) begin
     if(rst) begin
         bank <= 1'b0;
         oki7 <= 1'b0;
-    end else if(!wr_n) begin
+    end else if(!wr_n && cen_fm) begin
         if(bank_cs) bank <= dout[0];
         if(oki7_cs) oki7 <= dout[0];
     end
@@ -133,7 +133,7 @@ jtframe_ram #(.aw(11)) u_ram(
 // in two clock cycles. Data will always be ready before next cen_fm pulse
 // 
 reg [7:0] din, cmd_latch, dev_latch, mem_latch;
-reg       latch_cs, dev_cs, mem_cs;
+reg       latch_cs, dev_cs, mem_cs, rom_ok2;
 
 always @(posedge clk) begin
     cmd_latch <= latch0_cs ? snd_latch0 : snd_latch1;
@@ -142,6 +142,7 @@ always @(posedge clk) begin
     dev_cs    <= fm_cs | oki_cs;
     mem_latch <= ram_cs ? ram_dout : rom_data;
     mem_cs    <= ram_cs | rom_cs;
+    rom_ok2   <= rom_ok;
     case( 1'b1 )
         dev_cs:    din <= dev_latch;
         latch_cs:  din <= cmd_latch;
@@ -174,7 +175,7 @@ jtframe_z80_romwait u_cpu(
     .dout       ( dout        ),
     // manage access to ROM data from SDRAM
     .rom_cs     ( rom_cs      ),
-    .rom_ok     ( rom_ok      )
+    .rom_ok     ( rom_ok & rom_ok2     )
 );
 
 jt51 u_jt51(
