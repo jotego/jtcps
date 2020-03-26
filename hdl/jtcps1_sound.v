@@ -135,20 +135,26 @@ jtframe_ram #(.aw(11)) u_ram(
 reg [7:0] din, cmd_latch, dev_latch, mem_latch;
 reg       latch_cs, dev_cs, mem_cs, rom_ok2;
 
-always @(posedge clk) begin
-    cmd_latch <= latch0_cs ? snd_latch0 : snd_latch1;
-    latch_cs  <= latch1_cs | latch0_cs;
-    dev_latch <= fm_cs ? fm_dout : oki_dout;
-    dev_cs    <= fm_cs | oki_cs;
-    mem_latch <= ram_cs ? ram_dout : rom_data;
-    mem_cs    <= ram_cs | rom_cs;
-    rom_ok2   <= rom_ok;
-    case( 1'b1 )
-        dev_cs:    din <= dev_latch;
-        latch_cs:  din <= cmd_latch;
-        mem_cs:    din <= mem_latch;
-        default:   din <= 8'hff;
-    endcase
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        din     <= 8'hff;
+        rom_ok2 <= 1'b0;
+    end
+    else begin
+        cmd_latch <= latch0_cs ? snd_latch0 : snd_latch1;
+        latch_cs  <= latch1_cs | latch0_cs;
+        dev_latch <= fm_cs ? fm_dout : oki_dout;
+        dev_cs    <= fm_cs | oki_cs;
+        mem_latch <= ram_cs ? ram_dout : rom_data;
+        mem_cs    <= ram_cs | rom_cs;
+        rom_ok2   <= rom_ok;
+        case( 1'b1 )
+            dev_cs:    din <= dev_latch;
+            latch_cs:  din <= cmd_latch;
+            mem_cs:    din <= mem_latch;
+            default:   din <= 8'hff;
+        endcase
+    end
 end
 
 wire iorq_n, m1_n;

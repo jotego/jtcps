@@ -194,9 +194,6 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
-//assign pxl_cen  = cen8;
-//assign pxl2_cen = cen16;
-
 // Fractional cen cannot provide an uniformly spaced cenb
 jtframe_frac_cen #(.W(2))u_cen10(
     .clk        ( clk48         ),
@@ -206,12 +203,16 @@ jtframe_frac_cen #(.W(2))u_cen10(
     .cenb       (               ) // 180 shifted
 );
 
-
+`ifdef JTFRAME_CLK96
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
     .cen8   ( pxl_cen   )
 );
+`else
+assign pxl2_cen = cen16;
+assign pxl_cen  = cen8;
+`endif
 
 always @(posedge clk48) begin
     cen10x <= cen10b;
@@ -309,6 +310,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
     .gfx_en         ( gfx_en        ),
+    .pause          ( ~dip_pause    ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),
@@ -406,8 +408,14 @@ always @(posedge VB) begin
     endcase
 end
 `endif
+
+(*keep*) reg [3:0] rst_snd;
+always @(negedge clk48) begin
+    rst_snd <= { rst_snd[2:0], rst };
+end
+
 jtcps1_sound u_sound(
-    .rst            ( rst           ),
+    .rst            ( rst_snd[3]    ),
     .clk            ( clk48         ),    
 
     .enable_adpcm   ( enable_psg    ),

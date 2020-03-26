@@ -32,6 +32,8 @@ module jtcps1_video(
     output     [ 8:0]  hdump,
     input      [ 3:0]  gfx_en,
 
+    input              pause,
+
     // CPU interface
     input              ppu_rstn,
     input              ppu1_cs,
@@ -355,6 +357,8 @@ initial begin
 end
 `endif
 
+wire [7:0] red_colmix, green_colmix, blue_colmix;
+wire       LVBL_colmix, LHBL_colmix;
 
 `ifndef NOCOLMIX
 jtcps1_colmix u_colmix(
@@ -364,8 +368,8 @@ jtcps1_colmix u_colmix(
 
     .HB         ( HB            ),
     .VB         ( VB            ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
+    .LHBL_dly   ( LHBL_colmix   ),
+    .LVBL_dly   ( LVBL_colmix   ),
     .gfx_en     ( gfx_en        ),
 
     // Palette copy
@@ -405,18 +409,47 @@ jtcps1_colmix u_colmix(
     .star1_pxl  ( star1_pxl     ),
     .obj_pxl    ( obj_pxl       ),
     // Video
-    .red        ( red           ),
-    .green      ( green         ),
-    .blue       ( blue          )    
+    .red        ( red_colmix    ),
+    .green      ( green_colmix  ),
+    .blue       ( blue_colmix   )    
 );
 `else
-assign red=8'b0;
-assign green=8'b0;
-assign blue=8'b0;
-assign LHBL_dly = ~HB;
-assign LVBL_dly = ~VB;
+assign red_colmix  = 8'b0;
+assign green_colmix= 8'b0;
+assign blue_colmix = 8'b0;
+assign LHBL_colmix = ~HB;
+assign LVBL_colmix = ~VB;
 assign vpal_cs   = 1'b0;
 assign vpal_addr = 17'd0;
 `endif
+
+`ifndef SIMULATION
+wire [23:0] colmix_rgb = { red_colmix, green_colmix, blue_colmix };
+
+jtframe_credits #(
+    .PAGES  (      3 ),
+    .COLW   (      8 ),
+    .BLKPOL (      0 )
+) (
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    // input image
+    .HB         ( LHBL_colmix   ),
+    .VB         ( LVBL_colmix   ),
+    .rgb_in     ( colmix_rgb    ),
+    .enable     ( pause         ),
+
+    // output image
+    .HB_out     ( LHBL_dly      ),
+    .VB_out     ( LVBL_dly      ),
+    .rgb_out    ( {red, green, blue } )
+);
+`else
+assign {red, green, blue } = { red_colmix, green_colmix, blue_colmix };
+assign { LHBL_dly, LVBL_dly } = { LHBL_colmix, LVBL_colmix };
+`endif
+
 
 endmodule
