@@ -423,7 +423,15 @@ assign vpal_cs   = 1'b0;
 assign vpal_addr = 17'd0;
 `endif
 
-`ifndef SIMULATION
+`ifdef SIMULATION
+`define NOCREDITS
+`endif
+
+`ifdef MISTER_NOHDMI
+`define NOCREDITS
+`endif
+
+`ifndef NOCREDITS
 wire [23:0] colmix_rgb = { red_colmix, green_colmix, blue_colmix };
 
 jtframe_credits #(

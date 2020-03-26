@@ -19,6 +19,7 @@
 `timescale 1ns/1ps
 
 module jtcps1_obj_match #(parameter [3:0] OFFSET=0)(
+    input            clk,
     input      [3:0] tile_m,
     input      [8:0] vrender,
     input      [8:0] obj_y,
@@ -33,7 +34,10 @@ always @(*) begin
     vfinal2= vfinal + 9'h10;
     below  = vrender >= vfinal;
     inzone = vrender < vfinal2;
-    match  = below && inzone && (tile_m>=OFFSET);
+end
+
+always @(posedge clk) begin
+    match <= below && inzone && (tile_m>=OFFSET);
 end
 
 endmodule

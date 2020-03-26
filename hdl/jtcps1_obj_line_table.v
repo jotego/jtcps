@@ -99,6 +99,7 @@ generate
     genvar mgen;
     for( mgen=0; mgen<16;mgen=mgen+1) begin : obj_matches
         jtcps1_obj_match #(mgen) u_match(
+            .clk    ( clk           ),
             .tile_m ( tile_m        ),
             .vrender( vrender1      ),
             .obj_y  (   obj_y[8:0]  ),
@@ -196,13 +197,15 @@ always @(posedge clk, posedge rst) begin
                 mapper_en  <= 1'b0;
             end
             3: begin
-                //obj_code   <= { (pre_code[15:12]&{1'b0,mask[3:1]}) + offset, pre_code[11:0] };
-                obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
                 last_y     <= obj_y;
                 obj_y      <= frame_data;
                 //frame_addr <= frame_addr-10'd1;
             end
             4: begin
+                // Note that obj_code uses "offset", which was calculated with the
+                // frame_data value of st 2, but because the mapper takes an extra
+                // clock cycle to produce the output, the result is collected here
+                obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
                 last_x     <= obj_x;
                 obj_x      <= frame_data;
                 //frame_addr <= frame_addr-10'd1;

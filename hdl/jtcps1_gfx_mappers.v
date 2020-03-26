@@ -39,7 +39,7 @@ module jtcps1_gfx_mappers(
     
     output reg [ 3:0]  offset,
     output reg [ 3:0]  mask,
-    output             unmapped
+    output reg         unmapped
 );
 
 localparam [2:0] OBJ=3'd0, SCR1=3'd1, SCR2=3'd2, SCR3=3'd3, STARS=3'd4;
@@ -47,8 +47,6 @@ localparam [2:0] OBJ=3'd0, SCR1=3'd1, SCR2=3'd2, SCR3=3'd3, STARS=3'd4;
 reg  [ 3:0]  bank;
 
 wire [15:6] code = cin;
-
-assign unmapped = bank==4'd0; // no bank was selected
 
 localparam
         game_1941     = 0,
@@ -88,20 +86,32 @@ localparam
         game_daimakai = 34,
         game_daimakair= 35;
 
-always @(*) begin
-    case ( bank )
-        4'b0001: { offset, mask } = { bank_offset[ 3: 0], bank_mask[ 3: 0] };
-        4'b0010: { offset, mask } = { bank_offset[ 7: 4], bank_mask[ 7: 4] };
-        4'b0100: { offset, mask } = { bank_offset[11: 8], bank_mask[11: 8] };
-        4'b1000: { offset, mask } = { bank_offset[15:12], bank_mask[15:12] };
-        default: { offset, mask } = { 4'h0, 4'hf };
-    endcase
+reg last_enable;
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        unmapped <= 1'b1;
+        offset   <= 4'd0;
+        mask     <= 4'd0;
+    end else begin
+        last_enable <= enable;
+        if( last_enable ) begin
+            unmapped <= bank==4'd0; // no bank was selected
+            case ( bank )
+                4'b0001: { offset, mask } <= { bank_offset[ 3: 0], bank_mask[ 3: 0] };
+                4'b0010: { offset, mask } <= { bank_offset[ 7: 4], bank_mask[ 7: 4] };
+                4'b0100: { offset, mask } <= { bank_offset[11: 8], bank_mask[11: 8] };
+                4'b1000: { offset, mask } <= { bank_offset[15:12], bank_mask[15:12] };
+                default: { offset, mask } <= { 4'h0, 4'hf };
+            endcase
+        end
+    end
 end
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         bank <= 4'd0;
-    end else if(enable) begin
+    end else begin
         case( game )
             default: bank <= 4'd0;
             `include "mappers.inc"
