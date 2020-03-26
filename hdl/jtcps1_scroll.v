@@ -203,7 +203,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         done      <= 1'b0;
         last_start <= start;
-        if( pedg_start && !preVB ) begin
+        if( pedg_start && (!preVB || !VB) ) begin
             req_start <= 1'b1;
             rd_half   <= ~rd_half;
         end
