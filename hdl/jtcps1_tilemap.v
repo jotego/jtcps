@@ -219,10 +219,10 @@ always @(posedge clk or posedge rst) begin
                     group   <= vram_data[8:7];
                     vflip   <= vram_data[6];
                     pal     <= vram_data[4:0];
-                    // next st == 52                    
+                    st      <= 4;
                 end else st<=st;
                 end
-            52: st <= 4; // extra clock cycle for mapper
+            //52: st <= 4; // extra clock cycle for mapper
             4: begin
                 rom_half <= hflip;
                 rom_addr <= rom_offset_addr;
