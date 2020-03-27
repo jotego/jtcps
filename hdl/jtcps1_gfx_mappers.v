@@ -96,17 +96,14 @@ always @(posedge clk, posedge rst) begin
         offset   <= 4'd0;
         mask     <= 4'd0;
     end else begin
-        last_enable <= enable;
-        if( last_enable ) begin
-            unmapped <= eff_bank==4'd0; // no bank was selected
-            case ( eff_bank )
-                4'b0001: { offset, mask } <= { bank_offset[ 3: 0], bank_mask[ 3: 0] };
-                4'b0010: { offset, mask } <= { bank_offset[ 7: 4], bank_mask[ 7: 4] };
-                4'b0100: { offset, mask } <= { bank_offset[11: 8], bank_mask[11: 8] };
-                4'b1000: { offset, mask } <= { bank_offset[15:12], bank_mask[15:12] };
-                default: { offset, mask } <= { 4'h0, 4'hf };
-            endcase
-        end
+        unmapped <= eff_bank==4'd0; // no bank was selected
+        case ( eff_bank )
+            4'b0001: { offset, mask } <= { bank_offset[ 3: 0], bank_mask[ 3: 0] };
+            4'b0010: { offset, mask } <= { bank_offset[ 7: 4], bank_mask[ 7: 4] };
+            4'b0100: { offset, mask } <= { bank_offset[11: 8], bank_mask[11: 8] };
+            4'b1000: { offset, mask } <= { bank_offset[15:12], bank_mask[15:12] };
+            default: { offset, mask } <= { 4'h0, 4'hf };
+        endcase
     end
 end
 

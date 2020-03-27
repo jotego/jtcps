@@ -73,12 +73,15 @@ reg [15:0] code;
 
 reg  [11:0] scan;
 reg  [ 2:0] layer;
-reg         mapper_en;
 reg  [ 3:0] offset, mask;
 reg         unmapped;
 
-wire [ 3:0] pre_offset, pre_mask;
-wire        pre_unmapped;
+wire [ 3:0] pre_offset1, pre_mask1;
+wire [ 3:0] pre_offset2, pre_mask2;
+wire [ 3:0] pre_offset3, pre_mask3;
+wire        pre_unmapped1;
+wire        pre_unmapped2;
+wire        pre_unmapped3;
 
 
 always @(*) begin
@@ -104,20 +107,52 @@ end
 
 reg [9:0] mapper_in;
 
-jtcps1_gfx_mappers u_mapper(
+jtcps1_gfx_mappers u_mapper1(
     .clk        ( clk             ),
     .rst        ( rst             ),
     .game       ( game            ),
     .bank_offset( bank_offset     ),
     .bank_mask  ( bank_mask       ),
 
-    .enable     ( mapper_en       ),
-    .layer      ( layer           ),
+    .enable     ( 1'b1            ),
+    .layer      ( 3'd1            ),
     .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
-    .offset     ( pre_offset      ),
-    .mask       ( pre_mask        ),
-    .unmapped   ( pre_unmapped    )
+    .offset     ( pre_offset1     ),
+    .mask       ( pre_mask1       ),
+    .unmapped   ( pre_unmapped1   )
+);
+
+jtcps1_gfx_mappers u_mapper2(
+    .clk        ( clk             ),
+    .rst        ( rst             ),
+    .game       ( game            ),
+    .bank_offset( bank_offset     ),
+    .bank_mask  ( bank_mask       ),
+
+    .enable     ( 1'b1            ),
+    .layer      ( 3'd2            ),
+    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
+
+    .offset     ( pre_offset2     ),
+    .mask       ( pre_mask2       ),
+    .unmapped   ( pre_unmapped2   )
+);
+
+jtcps1_gfx_mappers u_mapper3(
+    .clk        ( clk             ),
+    .rst        ( rst             ),
+    .game       ( game            ),
+    .bank_offset( bank_offset     ),
+    .bank_mask  ( bank_mask       ),
+
+    .enable     ( 1'b1            ),
+    .layer      ( 3'd3            ),
+    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
+
+    .offset     ( pre_offset3     ),
+    .mask       ( pre_mask3       ),
+    .unmapped   ( pre_unmapped3   )
 );
 
 reg  [1:0] group;
@@ -163,7 +198,6 @@ always @(posedge clk or posedge rst) begin
         st              <= 6'd0;
         rom_addr        <= 23'd0;
         code            <= 16'd0;
-        mapper_en       <= 1'b0;
     end else begin
         st <= st+6'd1;
         case( st ) 
@@ -210,10 +244,8 @@ always @(posedge clk or posedge rst) begin
                 vram_addr <= aux_addr;
                 vram_cs   <= 1'b1;
             end
-            2:  mapper_en <= 1'b1;
             3: begin
                 if( vram_ok ) begin
-                    //mapper_en    <= 1'b0;
                     mapper_in    <= vram_data[15:6];
                     code         <= vram_data;
                     vram_addr[1] <= 1'b1;
@@ -231,9 +263,9 @@ always @(posedge clk or posedge rst) begin
             end
             52: begin
                 st <= 4;
-                offset   <= pre_offset;
-                mask     <= pre_mask;
-                unmapped <= pre_unmapped;
+                offset   <= size==3'd1 ? pre_offset1   : ( size==3'd2 ? pre_offset2   : pre_offset3    );
+                mask     <= size==3'd1 ? pre_mask1     : ( size==3'd2 ? pre_mask2     : pre_mask3      );
+                unmapped <= size==3'd1 ? pre_unmapped1 : ( size==3'd2 ? pre_unmapped2 : pre_unmapped3  );
             end
             4: begin
                 rom_half <= hflip;
