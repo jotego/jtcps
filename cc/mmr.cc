@@ -211,11 +211,11 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
         ss << " ( layer==" << layer << " "; 
         if( min!=0 ) {
             ss << " &&";
-            ss << " code[" << layer_bits << "]>=5'h" << hex << min;
+            ss << " code[" << layer_bits << "]>=7'h" << hex << min;
         }
         if( max != 31 ) {
             ss << " &&";
-            ss << " code[" << layer_bits << "]<=5'h"  << hex << max;
+            ss << " code[" << layer_bits << "]<=7'h"  << hex << max;
         }
         ss << ") /* " << hex << r->start << " - " << r->end << " */ ";
         addor= true; 
@@ -224,24 +224,27 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
 void parse_range( string& s, const gfx_range *r ) {
     stringstream ss;
     bool addor=false;
-    int min=r->start>>12;
-    int max=(r->end>>12);
+    int min=r->start>>10;
+    int max=(r->end>>10);
 
     if( r->type & GFXTYPE_SPRITES ) {
-        output_range( ss, "OBJ ",  "15:11", min, max, r, addor );
+        output_range( ss, "OBJ ",  "15:9", min, max, r, addor );
     }
     if( r->type & GFXTYPE_SCROLL2 ) { 
-        output_range( ss, "SCR2", "15:11", min, max, r, addor );
+        output_range( ss, "SCR2", "15:9", min, max, r, addor );
     }
     if( r->type & GFXTYPE_SCROLL1 ) { 
-        output_range( ss, "SCR1", "15:12", min, max, r, addor );
+        output_range( ss, "SCR1", "15:10", min, max, r, addor );
     }
     if( r->type & GFXTYPE_SCROLL3 ) {
-        output_range( ss, "SCR3", "13:9", min, max, r, addor );
+        output_range( ss, "SCR3", "13:7", min, max, r, addor );
     }
+    // ss << " 1'b0 /* STARS ommitted*/ ";
+    /*
     if( r->type & GFXTYPE_STARS   ) { 
-        output_range( ss, "STARS", "15:11", min, max, r, addor );
+        output_range( ss, "STARS", "15:10", min, max, r, addor );
     }
+    */
     s = ss.str();
 }
 
@@ -301,6 +304,8 @@ int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
     // Mapper ranges for verilog include file
     if( dump_inc ) {
         const gfx_range *r = x->ranges;
+        const int set_used = id<18;
+        const string mux_set = set_used ? "_b" : "_a";
         while( r->type != 0 ) {
             stringstream aux;
             int b=-1;
@@ -310,24 +315,25 @@ int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
                 if ( b != r->bank ) {
                     b = r->bank;
                     aux << "        // Bank " << b << " size 0x" << hex << setw(5) << setfill('0') << x->bank_size[b] << '\n';
-                    aux << "        bank["<<b<<"] <= ";
+                    aux << "        bank" << mux_set << "["<<b<<"] <= ";
                     done |= (1<<b);
                 }
                 string s;
                 parse_range(s,r);
                 if( r[1].type!=0 ) {
-                    if ( r[1].bank == b ) {
+                    if ( r[1].bank == b && s.size()>0 ) {
                         aux << s << " ||\n        ";
                         nl = true;
                     }
                 }
-                if(!nl) aux << s << ";\n";
+                if(!nl && s.size()>0 ) aux << s << ";\n";
                 r++;
             } while(r->type);
             for( b=0; b<4; b++) {
                 if( (done & (1<<b)) == 0)
-                    aux << "        bank["<<b<<"] <= 1'b0;\n";
+                    aux << "        bank" << mux_set << "["<<b<<"] <= 1'b0;\n";
             }
+            aux << "        set_used  <= 1'b" << set_used << ";\n";
             mappers << "game_" << parent_name(game) << ": begin\n" << aux.str() << "    end\n";
         }
     }
