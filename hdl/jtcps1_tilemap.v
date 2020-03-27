@@ -74,8 +74,12 @@ reg [15:0] code;
 reg  [11:0] scan;
 reg  [ 2:0] layer;
 reg         mapper_en;
-wire [ 3:0] offset, mask;
-wire        unmapped;
+reg  [ 3:0] offset, mask;
+reg         unmapped;
+
+wire [ 3:0] pre_offset, pre_mask;
+wire        pre_unmapped;
+
 
 always @(*) begin
     case(size)
@@ -98,6 +102,8 @@ always @(*) begin
     endcase
 end
 
+reg [9:0] mapper_in;
+
 jtcps1_gfx_mappers u_mapper(
     .clk        ( clk             ),
     .rst        ( rst             ),
@@ -107,11 +113,11 @@ jtcps1_gfx_mappers u_mapper(
 
     .enable     ( mapper_en       ),
     .layer      ( layer           ),
-    .cin        ( vram_data[15:6] ),    // pins 2-9, 11,13,15,17,18
+    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
-    .offset     ( offset          ),
-    .mask       ( mask            ),
-    .unmapped   ( unmapped        )
+    .offset     ( pre_offset      ),
+    .mask       ( pre_mask        ),
+    .unmapped   ( pre_unmapped    )
 );
 
 reg  [1:0] group;
@@ -207,7 +213,8 @@ always @(posedge clk or posedge rst) begin
             2:  mapper_en <= 1'b1;
             3: begin
                 if( vram_ok ) begin
-                    mapper_en    <= 1'b0;
+                    //mapper_en    <= 1'b0;
+                    mapper_in    <= vram_data[15:6];
                     code         <= vram_data;
                     vram_addr[1] <= 1'b1;
                     st <= 50;
@@ -219,10 +226,15 @@ always @(posedge clk or posedge rst) begin
                     group   <= vram_data[8:7];
                     vflip   <= vram_data[6];
                     pal     <= vram_data[4:0];
-                    st      <= 4;
+                    st      <= 52;
                 end else st<=st;
-                end
-            //52: st <= 4; // extra clock cycle for mapper
+            end
+            52: begin
+                st <= 4;
+                offset   <= pre_offset;
+                mask     <= pre_mask;
+                unmapped <= pre_unmapped;
+            end
             4: begin
                 rom_half <= hflip;
                 rom_addr <= rom_offset_addr;
