@@ -114,7 +114,6 @@ jtcps1_gfx_mappers u_mapper1(
     .bank_offset( bank_offset     ),
     .bank_mask  ( bank_mask       ),
 
-    .enable     ( 1'b1            ),
     .layer      ( 3'd1            ),
     .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
@@ -130,7 +129,6 @@ jtcps1_gfx_mappers u_mapper2(
     .bank_offset( bank_offset     ),
     .bank_mask  ( bank_mask       ),
 
-    .enable     ( 1'b1            ),
     .layer      ( 3'd2            ),
     .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
@@ -146,7 +144,6 @@ jtcps1_gfx_mappers u_mapper3(
     .bank_offset( bank_offset     ),
     .bank_mask  ( bank_mask       ),
 
-    .enable     ( 1'b1            ),
     .layer      ( 3'd3            ),
     .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 

@@ -28,7 +28,6 @@
 module jtcps1_gfx_mappers(
     input              clk,
     input              rst,
-    input              enable,
 
     input      [ 5:0]  game,
     input      [15:0]  bank_offset,

@@ -41,6 +41,7 @@ module jtcps1_obj_line_table(
 
 reg  [15:0] line_buf[0:1023]; // up to 128 sprites per line
 reg  [ 6:0] line_cnt;
+reg  [ 9:0] mapper_in;
 
 reg  [15:0] obj_x, obj_y, obj_code, obj_attr;
 reg  [15:0] last_x, last_y, last_code, last_attr;
@@ -58,7 +59,6 @@ wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
 wire [ 3:0] offset, mask;
-reg         mapper_en;
 
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
@@ -87,9 +87,8 @@ jtcps1_gfx_mappers u_mapper(
     .bank_offset( bank_offset     ),
     .bank_mask  ( bank_mask       ),
 
-    .enable     ( mapper_en       ),
     .layer      ( 3'b0            ),
-    .cin        ( frame_data[15:6]),    // pins 2-9, 11,13,15,17,18
+    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
     .offset     ( offset          ),
     .mask       ( mask            )
@@ -157,7 +156,6 @@ always @(posedge clk, posedge rst) begin
         st         <= 0;
         done       <= 1'b0;
         first      <= 1'b1;
-        mapper_en  <= 1'b1;
     end else begin
         st <= st+5'd1;
         case( st )
@@ -183,7 +181,6 @@ always @(posedge clk, posedge rst) begin
                     last_attr  <= obj_attr;
                     obj_attr   <= frame_data;
                     wait_cycle <= 3'b011; // leave it ready for next round
-                    mapper_en  <= 1'b1;
                     //if( frame_data[15:8] == 8'hff ) st<=10; // end of valid table entries
                 end else st<=1;
                 if(last_tile) begin                    
@@ -193,8 +190,8 @@ always @(posedge clk, posedge rst) begin
             2: begin
                 last_code  <= pre_code;
                 pre_code   <= frame_data;
+                mapper_in  <= frame_data[15:6];
                 frame_addr <= frame_addr-10'd1;
-                mapper_en  <= 1'b0;
             end
             3: begin
                 last_y     <= obj_y;
@@ -205,11 +202,15 @@ always @(posedge clk, posedge rst) begin
                 // Note that obj_code uses "offset", which was calculated with the
                 // frame_data value of st 2, but because the mapper takes an extra
                 // clock cycle to produce the output, the result is collected here
-                obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
                 last_x     <= obj_x;
                 obj_x      <= frame_data;
                 //frame_addr <= frame_addr-10'd1;
                 if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
+                st <= 13;
+            end
+            13: begin
+                obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
+                st <= 5;
             end
             5: begin // check whether sprite is visible
                 if( (repeated || !inzone )&& !first) begin
