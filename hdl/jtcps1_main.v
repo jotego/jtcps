@@ -51,15 +51,15 @@ module jtcps1_main(
     output      [17:1] addr,
     output      [15:0] cpu_dout,
     // RAM access
-    (*keep*) output             ram_cs,
-    (*keep*) output             vram_cs,
-    (*keep*) input       [15:0] ram_data,
-    (*keep*) input              ram_ok,
+    output             ram_cs,
+    output             vram_cs,
+    input       [15:0] ram_data,
+    input              ram_ok,
     // ROM access
-    (*keep*) output  reg        rom_cs,
-    (*keep*) output      [21:1] rom_addr,
-    (*keep*) input       [15:0] rom_data,
-    (*keep*) input              rom_ok,
+    output reg         rom_cs,
+    output reg  [21:1] rom_addr,
+    input       [15:0] rom_data,
+    input              rom_ok,
     // DIP switches
     input              dip_pause,
     input              dip_test,
@@ -87,7 +87,6 @@ assign cpu_cen   = cen10;
 // As RAM and VRAM share contiguous spaces in the SDRAM
 // it is important to prevent overlapping
 assign addr      = ram_cs ? {2'b0, A[15:1] } : A[17:1];
-assign rom_addr  = A[21:1];
 
 // high during DMA transfer
 wire UDSn, LDSn;
@@ -111,41 +110,59 @@ end
 // buf1 = A[23:16]==1001_0001 = 8'h91
 // buf2 = A[23:16]==1001_0010 = 8'h92
 
-always @(*) begin
-    rom_cs     = 1'b0;
-    pre_ram_cs = 1'b0;
-    pre_vram_cs= 1'b0;
-    dbus_cs    = 1'b0;
-    io_cs      = 1'b0;
-    joy_cs     = 1'b0;
-    sys_cs     = 1'b0;
-    olatch_cs  = 1'b0;
-    snd1_cs    = 1'b0;
-    snd0_cs    = 1'b0;
-    ppu1_cs    = 1'b0;
-    ppu2_cs    = 1'b0;
-    one_wait   = 1'b0;
-
-    if( !ASn && BGACKn ) begin // PAL PRG1 12H
-        one_wait    = A[23] | ~A[22];
-        dbus_cs     = ~|A[23:18]; // all must be zero
-        pre_ram_cs  = &A[23:18];
-        pre_vram_cs = A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
-        io_cs       = A[23:20] == 4'b1000;
-        rom_cs      = A[23:22] == 2'b00;
-        if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
-            ppu1_cs  = A[8:6] == 3'b100; // 'h10x
-            ppu2_cs  = A[8:6] == 3'b101; // 'h14x
-            if( RnW ) begin
-                joy_cs = A[8:3] == 6'b000_000;
-                sys_cs = A[8:3] == 6'b000_011;
-            end else begin // outputs
-                olatch_cs = !UDSWn && A[8:3]==6'b00_0110;
-                snd1_cs   = !LDSWn && A[8:3]==6'b11_0001;
-                snd0_cs   = !LDSWn && A[8:3]==6'b11_0000;
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        rom_cs      <= 1'b0;
+        pre_ram_cs  <= 1'b0;
+        pre_vram_cs <= 1'b0;
+        dbus_cs     <= 1'b0;
+        io_cs       <= 1'b0;
+        joy_cs      <= 1'b0;
+        sys_cs      <= 1'b0;
+        olatch_cs   <= 1'b0;
+        snd1_cs     <= 1'b0;
+        snd0_cs     <= 1'b0;
+        ppu1_cs     <= 1'b0;
+        ppu2_cs     <= 1'b0;
+        one_wait    <= 1'b0;
+        rom_addr    <= 21'd0;
+    end else begin
+        rom_addr  <= A[21:1];
+        if( !ASn && BGACKn ) begin // PAL PRG1 12H
+            one_wait    <= A[23] | ~A[22];
+            dbus_cs     <= ~|A[23:18]; // all must be zero
+            pre_ram_cs  <= &A[23:18];
+            pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
+            io_cs       <= A[23:20] == 4'b1000;
+            rom_cs      <= A[23:22] == 2'b00;
+            if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
+                ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
+                ppu2_cs  <= A[8:6] == 3'b101; // 'h14x
+                if( RnW ) begin
+                    joy_cs <= A[8:3] == 6'b000_000;
+                    sys_cs <= A[8:3] == 6'b000_011;
+                end else begin // outputs
+                    olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
+                    snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
+                    snd0_cs   <= !LDSWn && A[8:3]==6'b11_0000;
+                end
             end
+        end else begin
+            rom_cs      <= 1'b0;
+            pre_ram_cs  <= 1'b0;
+            pre_vram_cs <= 1'b0;
+            dbus_cs     <= 1'b0;
+            io_cs       <= 1'b0;
+            joy_cs      <= 1'b0;
+            sys_cs      <= 1'b0;
+            olatch_cs   <= 1'b0;
+            snd1_cs     <= 1'b0;
+            snd0_cs     <= 1'b0;
+            ppu1_cs     <= 1'b0;
+            ppu2_cs     <= 1'b0;
+            one_wait    <= 1'b0;
         end
-    end    
+    end
 end
 
 /*
@@ -191,23 +208,30 @@ always @(posedge clk) begin
 end
 
 // Data bus input
-(*keep*) reg  [15:0] cpu_din;
+reg  [15:0] cpu_din;
+reg         rom_ok2;
 
-always @(*) begin
-    case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
-        4'b10_00: cpu_din = sys_data;
-        4'b01_00: cpu_din = ram_data;
-        4'b00_10: cpu_din = rom_data;
-        4'b00_01: cpu_din = mmr_dout;
-        default:  cpu_din = 16'hffff;
-    endcase
+always @(posedge clk) begin
+    if(rst) begin
+        cpu_din <= 16'hffff;
+        rom_ok2 <= 1'b0;
+    end else begin
+        rom_ok2 <= rom_ok;
+        case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
+            4'b10_00: cpu_din <= sys_data;
+            4'b01_00: cpu_din <= ram_data;
+            4'b00_10: cpu_din <= rom_data;
+            4'b00_01: cpu_din <= mmr_dout;
+            default:  cpu_din <= 16'hffff;
+        endcase
+    end
 end
 
 // DTACKn generation
 wire       inta_n;
 reg [2:0]  wait_cycles;
 (*keep*) wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
-(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
+(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok2, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
                           wait_cycles[0] };
 reg        DTACKn;
 
