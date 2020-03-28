@@ -308,14 +308,17 @@ jtframe_sh #(.width(2),.stages(3)) u_sh(
     .drop   ( {vb1, hb1}    )
 );
 
+always @(posedge clk) begin
+    LVBL_dly <= ~vb1;
+    LHBL_dly <= ~hb1;
+end
+
 always @(posedge clk, posedge rst) begin
     if(rst) begin
         red   <= 8'd0;
         green <= 8'd0;
         blue  <= 8'd0;
     end else if(pxl_cen) begin
-        LVBL_dly <= ~vb1;
-        LHBL_dly <= ~hb1;
         // signal * 17 - signal*15/4 = signal * (17-15/4-15/8)
         // 33% max attenuation for brightness
         if( vb1 || hb1 ) begin

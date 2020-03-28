@@ -190,11 +190,15 @@ always @(posedge clk or posedge rst) begin
     if(rst) begin
         rom_cs          <= 1'b0;
         vram_cs         <= 1'b0;
-        buf_wr          <= 1'b0;
         done            <= 1'b0;
         st              <= 6'd0;
         rom_addr        <= 23'd0;
+        rom_half        <= 1'b0;
+        vram_addr       <= 17'd0;
         code            <= 16'd0;
+        buf_addr        <= 9'd0;
+        buf_wr          <= 1'b0;
+        buf_data        <= 11'd0;
     end else begin
         st <= st+6'd1;
         case( st ) 

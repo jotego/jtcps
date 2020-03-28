@@ -57,9 +57,9 @@ module jtcps1_mmr(
     output reg [15:0]  vstar2,
 
     // ROM banks
-(*keep*)    output     [ 5:0]  game,
-(*keep*)    output     [15:0]  bank_offset,
-(*keep*)    output     [15:0]  bank_mask,
+    output     [ 5:0]  game,
+    output     [15:0]  bank_offset,
+    output     [15:0]  bank_mask,
 
     // VRAM position
     output reg [15:0]  vram1_base,
@@ -311,6 +311,7 @@ always @(posedge clk, posedge reg_rst) begin
         vram3_base    <= 16'd0;
         vram_obj_base <= 16'd0;
         pal_base      <= 16'd0;
+        row_offset    <= 16'd0;
 
         prio0         <= 16'h0;
         prio1         <= 16'h0;
@@ -318,13 +319,16 @@ always @(posedge clk, posedge reg_rst) begin
         prio3         <= 16'h0;
         pal_page_en   <= 6'h3f;
         layer_ctrl    <= {2'b0,2'b11,2'b10,2'b01,2'b00,5'd0};
+        ppu_ctrl      <= 16'd0;
 
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
         mmr_dout      <= 16'hffff;
         sclk          <= 1'b0;
         sdi           <= 1'b0;
-        scs           <= 1'b0;      
+        scs           <= 1'b0;
+
+        obj_dma_ok    <= 1'b0;
     end else begin
         if( !ppu1_cs ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down

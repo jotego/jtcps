@@ -29,9 +29,9 @@ module jtcps1_sound(
 
     // ROM
     output  reg [15:0]  rom_addr,
-(*keep*)    output  reg         rom_cs,
+    output  reg         rom_cs,
     input       [ 7:0]  rom_data,
-(*keep*)    input               rom_ok,
+    input               rom_ok,
 
     // ADPCM ROM
     output      [17:0]       adpcm_addr,
@@ -58,9 +58,14 @@ function signed [15:0] sum_snd;
         (enable_adpcm ? {    adpcm, adpcm[12:11] } : 16'd0 );
 endfunction
 
-always @(posedge clk) begin
-    left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
-    right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        left  <= 16'd0;
+        right <= 16'd0;
+    end else begin
+        left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
+        right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+    end
 end
 
 jtframe_cen3p57 u_fmcen(

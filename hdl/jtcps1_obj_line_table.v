@@ -76,8 +76,11 @@ wire [ 7:0] rd_cnt  = line_addr>>2;
 wire [ 1:0] rd_sub  = line_addr[1:0];
 `endif
 
-always @(posedge clk) begin
-    line_data <= line_buf[ rd_addr ];
+always @(posedge clk, posedge rst) begin
+    if( rst )
+        line_data <= 16'd0;
+    else
+        line_data <= line_buf[ rd_addr ];
 end
 
 jtcps1_gfx_mappers u_mapper(

@@ -63,8 +63,11 @@ always @(posedge clk) begin
     if( wr_en ) table_buffer[ {frame_n, wr_addr[9:2], ~wr_addr[1:0]} ] <= wr_data;
 end
 
-always @(posedge clk) begin
-    table_data <= table_buffer[ {frame, table_addr} ];
+always @(posedge clk, posedge rst) begin
+    if( rst )
+        table_data <= 16'd0;
+    else
+        table_data <= table_buffer[ {frame, table_addr} ];
 end
 
 `ifdef SIMULATION

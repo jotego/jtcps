@@ -4,7 +4,7 @@
     <year>1988</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="forgottn.zip|forgottna.zip" md5="none">
+    <rom index="0" zip="forgottn.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
         <!-- Size of M68000 code 1024 kB -->
         <!-- Sound CPU size 64 kB -->
@@ -38,17 +38,17 @@
         <part name="lw-04u.13e" crc="e6cd098e"/>
         <!-- gfx -->
         <interleave output="64">
-            <part name="lw_2.2b" crc="4bd75fee"  map="00000001"/>
-            <part name="lw_1.2a" crc="65f41485"  map="00000010"/>
-            <part name="lw-08.9b" crc="25a8e43c"  map="00002100" size="0x40000"/>
+            <part name="lw_2.2b"  crc="4bd75fee"  map="00000001"/>
+            <part name="lw_1.2a"  crc="65f41485"  map="00000010"/>
+            <part name="lw-08.9b" crc="25a8e43c"  map="00002100" size="0x40000" offset="0"/>
             <part name="lw_18.5e" crc="b4b6241b"  map="00010000"/>
             <part name="lw_17.5c" crc="c5eea115"  map="00100000"/>
             <part name="lw_30.8h" crc="b385954e"  map="01000000"/>
             <part name="lw_29.8f" crc="7bda1ac6"  map="10000000"/>
         </interleave>
         <interleave output="64">
-            <part name="lw_4.3b" crc="50cf757f"  map="00000001"/>
-            <part name="lw_3.3a" crc="c03ef278"  map="00000010"/>
+            <part name="lw_4.3b"  crc="50cf757f" map="00000001"/>
+            <part name="lw_3.3a"  crc="c03ef278" map="00000010"/>
             <part name="lw-08.9b" crc="25a8e43c" map="00002100" size="0x40000" offset="0x40000"/>
             <part name="lw_20.7e" crc="df1a3665" map="00010000"/>
             <part name="lw_19.7c" crc="15af8440" map="00100000"/>
@@ -56,10 +56,10 @@
             <part name="lw_31.9f" crc="c49d37fb" map="10000000"/>
         </interleave>
         <interleave output="64">
-            <part name="lw-02.6b"  crc="43e6c5c8"  map="00000021" size="0x40000"/>
+            <part name="lw-02.6b"  crc="43e6c5c8"  map="00000021" size="0x40000" offset="0"/>
             <part name="lw_14.10b" crc="82862cce"  map="00000100"/>
             <part name="lw_13.10a" crc="b81c0e96"  map="00001000"/>
-            <part name="lw-06.9d"  crc="5b9edffc"  map="00210000" size="0x40000"/>
+            <part name="lw-06.9d"  crc="5b9edffc"  map="00210000" size="0x40000" offset="0"/>
             <part name="lw_26.10e" crc="57bcd032"  map="01000000"/>
             <part name="lw_25.10c" crc="bac91554"  map="10000000"/>
         </interleave>
