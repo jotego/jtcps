@@ -14,11 +14,11 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 01 </part>
-        <!-- Mapper for qtono2j --> 
-        <part> FF 73 88 40 18 </part>
         <!-- CPS-B config for qtono2j --> 
-        <part> 30 08 04 02 30 38 36 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 38 30 02 04 08 30 </part>
+        <!-- Mapper for qtono2j --> 
+        <part> 18 40 88 73 FF </part>
+        <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

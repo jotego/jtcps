@@ -14,11 +14,11 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for msword --> 
-        <part> FF F3 44 40 10 </part>
         <!-- CPS-B config for msword --> 
-        <part> 00 04 02 20 2C 00 00 2A 28 26 24 22 FF FF FF FF 43 2E </part>
+        <part> 2E 43 FF FF FF FF 22 24 26 28 2A 00 00 2C 20 02 04 00 </part>
+        <!-- Mapper for msword --> 
+        <part> 10 40 44 F3 FF </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

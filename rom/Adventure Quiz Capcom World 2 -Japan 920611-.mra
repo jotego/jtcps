@@ -14,11 +14,11 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 01 </part>
-        <!-- Mapper for cworld2j --> 
-        <part> FF F3 44 40 04 </part>
         <!-- CPS-B config for cworld2j --> 
-        <part> 00 14 14 20 30 00 36 28 2A 2C 2E 20 FF FF FF FF FF FF </part>
+        <part> FF FF FF FF FF FF 20 2E 2C 2A 28 36 00 30 20 14 14 00 </part>
+        <!-- Mapper for cworld2j --> 
+        <part> 04 40 44 F3 FF </part>
+        <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

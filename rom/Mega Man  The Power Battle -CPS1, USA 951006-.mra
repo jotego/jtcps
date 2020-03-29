@@ -14,11 +14,11 @@
         <!-- Graphics size 8192 kB -->
         <part>40 07 </part>
         <part repeat="10">FF</part>
-        <part> 01 </part>
-        <!-- Mapper for megaman --> 
-        <part> 77 73 C8 40 0E </part>
         <!-- CPS-B config for megaman --> 
-        <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for megaman --> 
+        <part> 0E 40 C8 73 77 </part>
+        <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

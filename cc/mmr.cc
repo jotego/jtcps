@@ -179,24 +179,24 @@ int generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
     of << "        <!-- CPS-B config for " << x->name << " --> \n";
     of << "        <part> ";            
     int dumpcnt=0;
-    DUMP( x->layer_enable_mask[3] );
-    DUMP( x->layer_enable_mask[2] );
-    DUMP( x->layer_enable_mask[1] );
-    DUMP( x->layer_enable_mask[0] );
-    DUMP( x->palette_control );
-    DUMP( x->in3_addr        );
-    DUMP( x->in2_addr        );
-    DUMP( x->priority[3]     );
-    DUMP( x->priority[2]     );
-    DUMP( x->priority[1]     );
-    DUMP( x->priority[0]     );
-    DUMP( x->layer_control   );
-    DUMP( x->mult_result_hi  );
-    DUMP( x->mult_result_lo  );
-    DUMP( x->mult_factor2    );
-    DUMP( x->mult_factor1    );
-    DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
     DUMP( x->cpsb_addr );
+    DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
+    DUMP( x->mult_factor1    );
+    DUMP( x->mult_factor2    );
+    DUMP( x->mult_result_lo  );
+    DUMP( x->mult_result_hi  );
+    DUMP( x->layer_control   );
+    DUMP( x->priority[0]     );
+    DUMP( x->priority[1]     );
+    DUMP( x->priority[2]     );
+    DUMP( x->priority[3]     );
+    DUMP( x->in2_addr        );
+    DUMP( x->in3_addr        );
+    DUMP( x->palette_control );
+    DUMP( x->layer_enable_mask[0] );
+    DUMP( x->layer_enable_mask[1] );
+    DUMP( x->layer_enable_mask[2] );
+    DUMP( x->layer_enable_mask[3] );
     of << "</part>\n";
     return dumpcnt;
 }
@@ -295,11 +295,11 @@ int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
     // bank 4
     mask   |= ((x->bank_size[3]>>12)-1)<<12;
     int dumpcnt=0;
-    DUMP( mask>>8   );
-    DUMP( mask      );
-    DUMP( offset>>8 );
-    DUMP( offset    );
     DUMP( id        );
+    DUMP( offset    );
+    DUMP( offset>>8 );
+    DUMP( mask      );
+    DUMP( mask>>8   );
     of << "</part>\n";
     // Mapper ranges for verilog include file
     if( dump_inc ) {
@@ -412,6 +412,10 @@ void generate_mra( game_entry* game ) {
         sizes.gfx   = size_region(entry,"gfx");
 
         cnt+=generate_lut( mras, sizes );
+        // CPS-B information
+        cnt+=generate_cpsb( mras, simf, x );
+        // Mappers
+        cnt+=generate_mapper( mras, simf, mappers, game, x );
         // Set 12MHz bit
         char cpu12=0;
         switch( game->board_type ) {
@@ -424,10 +428,6 @@ void generate_mra( game_entry* game ) {
         }
         mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
         cnt++;
-        // Mappers
-        cnt+=generate_mapper( mras, simf, mappers, game, x );
-        // CPS-B information
-        cnt+=generate_cpsb( mras, simf, x );
         fill( mras, cnt, 64 ); // fill rest of header
         // Header done
         dump_region(mras, entry,"maincpu",16,1,1024*1024);

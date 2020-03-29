@@ -14,11 +14,11 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for strider --> 
-        <part> FF 73 88 40 1D </part>
         <!-- CPS-B config for strider --> 
-        <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
+        <part> FF 00 FF FF FF FF 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for strider --> 
+        <part> 1D 40 88 73 FF </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

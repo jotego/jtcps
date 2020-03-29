@@ -14,11 +14,11 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for ffight --> 
-        <part> FF F3 44 40 07 </part>
         <!-- CPS-B config for ffight --> 
-        <part> 00 08 04 02 2A 00 00 32 28 30 26 2E FF FF FF FF 04 20 </part>
+        <part> 20 04 FF FF FF FF 2E 26 30 28 32 00 00 2A 02 04 08 00 </part>
+        <!-- Mapper for ffight --> 
+        <part> 07 40 44 F3 FF </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

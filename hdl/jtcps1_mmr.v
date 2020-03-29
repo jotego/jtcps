@@ -213,8 +213,7 @@ end
 
 always@(posedge clk) begin
     if( cfg_we ) begin
-        regs[7:0] <= cfg_data;
-        regs[8*REGSIZE-1:8] <= regs[8*(REGSIZE-1)-1:0];
+        regs <= { cfg_data, regs[8*REGSIZE-1:8] };
     end
 end
 

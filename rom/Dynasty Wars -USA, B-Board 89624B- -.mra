@@ -14,11 +14,11 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for dynwar --> 
-        <part> 33 31 64 20 06 </part>
         <!-- CPS-B config for dynwar --> 
-        <part> 00 08 04 02 22 00 00 24 26 28 2A 2C FF FF FF FF 02 20 </part>
+        <part> 20 02 FF FF FF FF 2C 2A 28 26 24 00 00 22 02 04 08 00 </part>
+        <!-- Mapper for dynwar --> 
+        <part> 06 20 64 31 33 </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

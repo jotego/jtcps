@@ -14,11 +14,11 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for cawing --> 
-        <part> FF F3 44 40 03 </part>
         <!-- CPS-B config for cawing --> 
-        <part> 00 0A 0A 10 02 00 00 04 06 08 0A 0C FF FF FF FF 46 00 </part>
+        <part> 00 46 FF FF FF FF 0C 0A 08 06 04 00 00 02 10 0A 0A 00 </part>
+        <!-- Mapper for cawing --> 
+        <part> 03 40 44 F3 FF </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">

@@ -14,11 +14,11 @@
         <!-- Graphics size 3072 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <part> 00 </part>
-        <!-- Mapper for mercs --> 
-        <part> FF 33 66 40 0F </part>
         <!-- CPS-B config for mercs --> 
-        <part> 00 08 04 02 22 00 36 24 26 28 2A 2C FF FF FF FF 42 20 </part>
+        <part> 20 42 FF FF FF FF 2C 2A 28 26 24 36 00 22 02 04 08 00 </part>
+        <!-- Mapper for mercs --> 
+        <part> 0F 40 66 33 FF </part>
+        <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
