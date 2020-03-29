@@ -14,11 +14,12 @@
         <!-- Graphics size 1024 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 01 </part>
         <!-- Mapper for qad --> 
         <part> FF F1 22 20 17 </part>
         <!-- CPS-B config for qad --> 
         <part> 00 14 02 14 12 00 36 FF FF FF FF 2C FF FF FF FF FF FF </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="qdu_42a.12h" crc="cfe36f0c" map="01"/>

@@ -33,7 +33,7 @@ module jtcps1_prom_we(
     output reg           cfg_we
 );
 
-parameter REGSIZE=23; // This is defined at _game level
+parameter REGSIZE=24; // This is defined at _game level
 parameter CPU_OFFSET=22'h0;
 parameter SND_OFFSET=22'h0;
 parameter OKI_OFFSET=22'h0;

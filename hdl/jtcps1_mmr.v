@@ -35,6 +35,7 @@ module jtcps1_mmr(
     // registers
     output reg [15:0]  ppu_ctrl,
     output reg         obj_dma_ok,
+    output             cpu_speed,   // 0 for 10MHz, 1 for 12MHz
 
     // Extra inputs read through the C-Board
     input   [ 3:0]  start_button,
@@ -89,7 +90,7 @@ module jtcps1_mmr(
 );
 
 // Shift register configuration
-parameter REGSIZE=23; // This is defined at _game level
+parameter REGSIZE=24; // This is defined at _game level
 reg [8*REGSIZE-1:0] regs;
 
 wire [5:1] addr_id,      
@@ -161,6 +162,7 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
+assign cpu_speed    = `MMR(23);
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;

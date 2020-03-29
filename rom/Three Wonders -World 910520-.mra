@@ -14,11 +14,12 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for 3wonders --> 
         <part> FF 73 88 40 01 </part>
         <!-- CPS-B config for 3wonders --> 
         <part> 12 08 04 20 30 00 00 20 22 24 26 28 08 0A 0C 0E 80 32 </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="rte_35a.11h" crc="7d705529" map="01"/>

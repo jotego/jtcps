@@ -113,6 +113,7 @@ wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
 (*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
 wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
 wire [15:0] cpu_dout;
+wire        cpu_speed;
 
 wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
@@ -169,15 +170,13 @@ assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM 
 
 wire [ 1:0] dsn;
 wire        cen16, cen8, cen10b;
-reg         cen10, cen10x;
-
-(*keep*) wire cen20 = cen10 | cen10b;
+wire        cpu_cen, cpu_cenb;
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
     .clk        ( clk48         ),
     .cen16      ( cen16         ),
-    .cen12      (               ),
+    .cen12      ( cen12         ),
     .cen8       ( cen8          ),
     .cen6       (               ),
     .cen4       (               ),
@@ -194,15 +193,6 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
-// Fractional cen cannot provide an uniformly spaced cenb
-jtframe_frac_cen #(.W(2))u_cen10(
-    .clk        ( clk48         ),
-    .n          ( 10'd5         ),
-    .m          ( 10'd24        ),
-    .cen        ( {nc0, cen10b }),
-    .cenb       (               ) // 180 shifted
-);
-
 `ifdef JTFRAME_CLK96
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
@@ -214,12 +204,15 @@ assign pxl2_cen = cen16;
 assign pxl_cen  = cen8;
 `endif
 
-always @(posedge clk48) begin
-    cen10x <= cen10b;
-    cen10  <= cen10x;
-end
+jtcps1_cpucen u_cpucen(
+    .clk        ( clk48       ),
+    .cen12      ( cen12       ),
+    .cpu_speed  ( cpu_speed   ),
+    .cpu_cen    ( cpu_cen     ),
+    .cpu_cenb   ( cpu_cenb    )
+);
 
-localparam REGSIZE=23;
+localparam REGSIZE=24;
 
 jtcps1_prom_we #(
     .REGSIZE   ( REGSIZE       ),
@@ -246,8 +239,8 @@ jtcps1_prom_we #(
 jtcps1_main u_main(
     .rst        ( rst               ),
     .clk        ( clk48             ),
-    .cen10      ( cen10             ),
-    .cen10b     ( cen10b            ),
+    .cen10      ( cpu_cen           ),
+    .cen10b     ( cpu_cenb          ),
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),
@@ -311,6 +304,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vrender        ( vrender       ),
     .gfx_en         ( gfx_en        ),
     .pause          ( ~dip_pause    ),
+    .cpu_speed      ( cpu_speed     ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

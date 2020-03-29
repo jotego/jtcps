@@ -14,11 +14,12 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for pokonyan --> 
         <part> F7 73 C8 40 15 </part>
         <!-- CPS-B config for pokonyan --> 
         <part> 30 08 04 02 30 00 36 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="xmqq-12h.bin" crc="2d7ee2e9" map="01"/>

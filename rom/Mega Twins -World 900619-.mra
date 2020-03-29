@@ -14,11 +14,12 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for mtwins --> 
         <part> FF F3 44 40 11 </part>
         <!-- CPS-B config for mtwins --> 
         <part> 00 10 20 08 1C 00 00 1A 18 16 14 12 FF FF FF FF 44 1E </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="che_35.11h" crc="a7f96b02" map="01"/>

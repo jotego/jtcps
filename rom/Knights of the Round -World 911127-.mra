@@ -14,11 +14,12 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for knights --> 
         <part> FF 73 88 40 0B </part>
         <!-- CPS-B config for knights --> 
         <part> 00 02 10 20 30 00 36 20 22 24 26 28 00 02 04 06 FF FF </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="kr_23e.8f" crc="1b3997eb" map="21"/>

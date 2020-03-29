@@ -14,11 +14,12 @@
         <!-- Graphics size 6144 kB -->
         <part>40 07 </part>
         <part repeat="10">FF</part>
+        <part> 01 </part>
         <!-- Mapper for sf2ce --> 
         <part> F7 73 C8 40 1A </part>
         <!-- CPS-B config for sf2ce --> 
         <part> 30 08 04 02 30 00 36 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="s92e_23b.8f" crc="0aaa1a3a" map="21"/>

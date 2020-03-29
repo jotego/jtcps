@@ -14,11 +14,12 @@
         <!-- Graphics size 3072 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for mercs --> 
         <part> FF 33 66 40 0F </part>
         <!-- CPS-B config for mercs --> 
         <part> 00 08 04 02 22 00 36 24 26 28 2A 2C FF FF FF FF 42 20 </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="so2_35e.11h" crc="78e63575" map="01"/>

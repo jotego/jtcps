@@ -14,11 +14,12 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 01 </part>
         <!-- Mapper for pnickj --> 
         <part> FF F3 44 40 14 </part>
         <!-- CPS-B config for pnickj --> 
         <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="pnij_42.12h" crc="c085dfaf" map="01"/>

@@ -14,11 +14,12 @@
         <!-- Graphics size 3072 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for willow --> 
         <part> FF 73 88 40 20 </part>
         <!-- CPS-B config for willow --> 
         <part> 00 08 10 20 26 00 00 28 2A 2C 2E 30 FF FF FF FF 00 FF </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="wle_35.11h" crc="2e64623b" map="01"/>

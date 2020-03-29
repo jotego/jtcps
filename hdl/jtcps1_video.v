@@ -42,6 +42,7 @@ module jtcps1_video(
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  [15:0]     mmr_dout,
+    output             cpu_speed,
     // BUS sharing
     output             busreq,
     input              busack,
@@ -186,6 +187,8 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .hstar2         ( hstar1            ),
     .vstar1         ( vstar0            ),
     .vstar2         ( vstar1            ),
+
+    .cpu_speed      ( cpu_speed         ),
 
     // OBJ DMA
     .obj_dma_ok     ( obj_dma_ok        ),

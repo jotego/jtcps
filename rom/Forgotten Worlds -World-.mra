@@ -16,9 +16,10 @@
         <part repeat="10">FF</part>
         <!-- Mapper for forgottn --> 
         <part> FF 73 88 40 08 </part>
+        <part> 00 </part>
         <!-- CPS-B config for forgottna --> 
         <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="lw15.12h" crc="50d7012d" map="01"/>

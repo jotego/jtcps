@@ -14,11 +14,12 @@
         <!-- Graphics size 3072 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for ghouls --> 
         <part> F1 13 65 40 0A </part>
         <!-- CPS-B config for ghouls --> 
         <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 FF FF FF FF 00 FF </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="dme_30.10j" crc="7ac8407a" map="01"/>

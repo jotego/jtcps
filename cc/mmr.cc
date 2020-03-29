@@ -412,9 +412,24 @@ void generate_mra( game_entry* game ) {
         sizes.gfx   = size_region(entry,"gfx");
 
         cnt+=generate_lut( mras, sizes );
+        // Set 12MHz bit
+        char cpu12=0;
+        switch( game->board_type ) {
+            case cps1_12MHz: cpu12=1; break;
+            case sf2m3:      cpu12=1; break;
+            case sf2m10:     cpu12=1; break;
+            case qsound:     cpu12=1; break;
+            case wofhfh:     cpu12=1; break;
+            case pang3:      cpu12=1; break;
+        }
+        mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
+        cnt++;
+        // Mappers
         cnt+=generate_mapper( mras, simf, mappers, game, x );
+        // CPS-B information
         cnt+=generate_cpsb( mras, simf, x );
-        fill( mras, cnt, 64 );
+        fill( mras, cnt, 64 ); // fill rest of header
+        // Header done
         dump_region(mras, entry,"maincpu",16,1,1024*1024);
         dump_region(mras, entry,"audiocpu",8,0,64*1024);
         if( sizes.oki!=0 )

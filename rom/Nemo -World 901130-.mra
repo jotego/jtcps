@@ -14,11 +14,12 @@
         <!-- Graphics size 2048 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
+        <part> 00 </part>
         <!-- Mapper for nemo --> 
         <part> FF F3 44 40 12 </part>
         <!-- CPS-B config for nemo --> 
         <part> 00 20 02 04 0C 00 00 0A 08 06 04 02 FF FF FF FF 45 0E </part>
-        <part repeat="25">FF</part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="nme_35a.11h" crc="5fd31661" map="01"/>
