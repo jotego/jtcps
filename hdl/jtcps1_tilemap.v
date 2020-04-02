@@ -25,6 +25,7 @@
 module jtcps1_tilemap(
     input              rst,
     input              clk,
+    input              flip,
 
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input      [ 2:0]  size,    // hot one encoding. bit 0=8x8, bit 1=16x16, bit 2=32x32
@@ -206,7 +207,7 @@ always @(posedge clk or posedge rst) begin
                 rom_cs   <= 1'b0;
                 vram_cs  <= 1'b0;
                 /* verilator lint_off WIDTH */
-                vn       <= vpos + {7'd0, vrender};
+                vn       <= vpos + {7'd0, vrender ^ { 1'b0, {8{flip}}} };
                 /* verilator lint_on WIDTH */
                 hn       <= hn0 + (
                       size[0] ? { hpos[10:3], 3'b0 } :

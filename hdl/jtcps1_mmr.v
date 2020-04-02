@@ -38,10 +38,10 @@ module jtcps1_mmr(
     output             cpu_speed,   // 0 for 10MHz, 1 for 12MHz
 
     // Extra inputs read through the C-Board
-    input   [ 3:0]  start_button,
-    input   [ 3:0]  coin_input,
-    input   [ 7:0]  joystick3,
-    input   [ 7:0]  joystick4,
+    input      [ 3:0]  start_button,
+    input      [ 3:0]  coin_input,
+    input      [ 7:0]  joystick3,
+    input      [ 7:0]  joystick4,
 
     // Scroll
     output reg [15:0]  hpos1,

@@ -119,6 +119,13 @@ wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start, preVB;
+wire            flip;
+
+`ifdef SIMULATION
+ assign flip = 1'b1;
+ `else
+ assign flip = ppu_ctrl[15];
+ `endif
 
 // Register configuration
 // Scroll
@@ -237,6 +244,7 @@ jtcps1_scroll u_scroll(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
     .gfx_en     ( gfx_en        ),
+    .flip       ( flip          ),
 
     .vrender    ( vrender       ),
     .vdump      ( vdump         ),
@@ -307,6 +315,7 @@ jtcps1_obj u_obj(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
+    .flip       ( flip          ),
 
     // input              HB,
     //.VB         ( VB            ),

@@ -21,6 +21,7 @@
 module jtcps1_obj_line_table(
     input              rst,
     input              clk,
+    input              flip,
 
     input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input              start,
@@ -42,6 +43,7 @@ module jtcps1_obj_line_table(
 reg  [15:0] line_buf[0:1023]; // up to 128 sprites per line
 reg  [ 6:0] line_cnt;
 reg  [ 9:0] mapper_in;
+reg  [ 8:0] vrenderf;
 
 reg  [15:0] obj_x, obj_y, obj_code, obj_attr;
 reg  [15:0] last_x, last_y, last_code, last_attr;
@@ -70,7 +72,7 @@ assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for m
 reg  [15:0] code_mn;
 reg  [ 4:0] st;
 
-wire [ 9:0] rd_addr = {~vrender1[0], line_addr};
+wire [ 9:0] rd_addr = {~vrenderf[0], line_addr};
 `ifdef SIMULATION
 wire [ 7:0] rd_cnt  = line_addr>>2;
 wire [ 1:0] rd_sub  = line_addr[1:0];
@@ -103,7 +105,7 @@ generate
         jtcps1_obj_match #(mgen) u_match(
             .clk    ( clk           ),
             .tile_m ( tile_m        ),
-            .vrender( vrender1      ),
+            .vrender( vrenderf      ),
             .obj_y  (   obj_y[8:0]  ),
             .match  ( match[mgen]   )
         );
@@ -112,7 +114,7 @@ endgenerate
 
 always @(*) begin
     inzone = match!=16'd0;
-    vsub = vrender1-obj_y;
+    vsub = vrenderf-obj_y;
     vsub = vsub ^ {4{vflip}};
     // which m won?
     case( match )
@@ -170,7 +172,8 @@ always @(posedge clk, posedge rst) begin
                     last_tile  <= 1'b0;
                     line_cnt   <= 7'd0;
                     done       <= 0;
-                    first      <= 1'b1;                    
+                    first      <= 1'b1;
+                    vrenderf   <= vrender1 ^ {1'b0,{8{flip}}};
                 end
             end
             1: begin
@@ -223,9 +226,9 @@ always @(posedge clk, posedge rst) begin
                     first <= 1'b0;
                 end
             end
-            6: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
-            7: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= code_mn;
-            8: line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= eff_x;
+            6: line_buf[ {vrenderf[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
+            7: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= code_mn;
+            8: line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= eff_x;
             9: begin
                 if( line_cnt==7'h7f ) begin
                     st   <= 0; // line full
@@ -241,10 +244,10 @@ always @(posedge clk, posedge rst) begin
                 end
             end
             // fill the rest of the table
-            10: line_buf[ {vrender1[0], line_cnt, 2'd0} ] <= ~16'h0;
-            11: line_buf[ {vrender1[0], line_cnt, 2'd1} ] <= ~16'h0;
+            10: line_buf[ {vrenderf[0], line_cnt, 2'd0} ] <= ~16'h0;
+            11: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= ~16'h0;
             12: begin
-                line_buf[ {vrender1[0], line_cnt, 2'd2} ] <= ~16'h0;
+                line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= ~16'h0;
                 line_cnt <= line_cnt+7'd1;
                 if( line_cnt==7'h7f ) begin
                     st   <= 0; // line full

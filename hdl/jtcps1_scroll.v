@@ -26,6 +26,7 @@ module jtcps1_scroll(
     input              rst,
     input              clk,
     input              pxl_cen,
+    input              flip,
 
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input      [ 8:0]  vdump,
@@ -92,8 +93,8 @@ wire        sub_done;
 
 reg         rd_half, wr_half;
 
-wire [ 9:0] addr0 = { wr_half, buf_addr }; // write
-wire [ 9:0] addr1 = { rd_half, hdump    }; // read
+wire [ 9:0] addr0 = { wr_half, buf_addr ^ {9{flip}} }; // write
+wire [ 9:0] addr1 = { rd_half, hdump }; // read
 wire [10:0] pre1_pxl, pre2_pxl, pre3_pxl;
 
 wire       wr1 = buf_wr & st[0],
@@ -253,6 +254,7 @@ end
 jtcps1_tilemap u_tilemap(
     .rst        ( rst           ),
     .clk        ( clk           ),
+    .flip       ( flip          ),
 
     .vrender    ( vrender       ),
     .size       ( st            ),

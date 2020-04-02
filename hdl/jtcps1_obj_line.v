@@ -21,6 +21,7 @@
 module jtcps1_obj_line(
     input              clk,
     input              pxl_cen,
+    input              flip,
 
     input      [ 8:0]  hdump,
     input              vdump, // only LSB
@@ -37,8 +38,10 @@ reg  [8:0] line_buffer[0:1023];
 reg  [8:0] last_h;
 reg        erase;
 
+wire [8:0] hdf = hdump ^ {9{flip}}; // H dump flipped
+
 wire [9:0] addr0 = {  vdump, buf_addr }; // write
-wire [9:0] addr1 = erase ? {~vdump, last_h} : { ~vdump, hdump    }; // read
+wire [9:0] addr1 = erase ? {~vdump, last_h} : { ~vdump, hdf    }; // read
 wire [8:0] pre_pxl;
 wire       wr1 = buf_wr && buf_data[3:0]!=4'hf;
 
@@ -59,7 +62,7 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line(
 
 always @(posedge clk) begin
     if( pxl_cen ) begin
-        last_h <= hdump;
+        last_h <= hdf;
         pxl    <= pre_pxl;
         erase  <= 1'b1;
     end else erase <= 1'b0;

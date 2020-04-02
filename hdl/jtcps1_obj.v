@@ -22,6 +22,7 @@ module jtcps1_obj(
     input              rst,
     input              clk,
     input              pxl_cen,
+    input              flip,
 
     // input              HB,
     input              obj_dma_ok,
@@ -87,6 +88,7 @@ jtcps1_obj_table u_table(
 jtcps1_obj_line_table u_line_table(
     .rst        ( rst           ),
     .clk        ( clk           ),
+    .flip       ( flip          ),
 
     .start      ( start         ),
     .vrender1   ( vrender1      ),
@@ -128,6 +130,7 @@ jtcps1_obj_draw u_draw(
 jtcps1_obj_line u_line(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
+    .flip       ( flip          ),
 
     .vdump      ( vdump[0]      ),
     .hdump      ( hdump         ),

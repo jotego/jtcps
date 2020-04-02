@@ -161,7 +161,7 @@ assign slot_wr[0]   = 1'd0;
 
 assign dipsw_a      = 8'hff;
 assign dipsw_b      = 8'hff;
-assign dipsw_c      = { dip_test, 7'h1f };
+assign dipsw_c      = { dip_test, 2'b11, ~dip_flip, 4'hf };
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
