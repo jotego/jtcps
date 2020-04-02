@@ -45,4 +45,5 @@
             <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 1 </part></rom>
 </misterromdescription>

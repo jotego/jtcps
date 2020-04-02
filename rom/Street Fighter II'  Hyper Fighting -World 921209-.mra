@@ -55,4 +55,5 @@
             <part name="s92-13m.6c" crc="ed2c67f6"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

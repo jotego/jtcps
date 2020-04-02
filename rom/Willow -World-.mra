@@ -55,4 +55,5 @@
             <part name="wl_12.5c" crc="7da49d69"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

@@ -50,4 +50,5 @@
             <part name="va-3m.5a" crc="44dfe706"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 1 </part></rom>
 </misterromdescription>

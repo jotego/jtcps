@@ -45,4 +45,5 @@
             <part name="ar-3m.5a" crc="ac6db17d"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

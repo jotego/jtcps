@@ -6,18 +6,20 @@
     <rbf>jtcps1</rbf>
     <rom index="0" zip="pang3.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
-        <!-- Sound CPU-->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
         <part>00 04 </part>
-        <!-- OKI samples-->
+        <!-- OKI samples size 256 kB -->
         <part>40 04 </part>
-        <!-- Graphics-->
+        <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <!-- Mapper for pang3 --> 
-        <part> FF 73 88 40 13 </part>
         <!-- CPS-B config for pang3 --> 
-        <part> 30 08 04 02 30 00 00 2E 2C 2A 28 26 06 04 02 00 FF 32 </part>
-        <part repeat="25">FF</part>
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for pang3 --> 
+        <part> 13 40 88 73 FF </part>
+        <part> 01 </part>
+        <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
             <part name="pa3e_17a.11l" crc="a213fa80" map="21"/>
@@ -33,10 +35,8 @@
         <part name="pa3_06.11d" crc="affa4f82"/>
         <!-- gfx -->
         <interleave output="64">
-            <part name="pa3-01m.2c" crc="068a152c"  map="00000021" size="0x100000" offset="0"/>
-            <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100" size="0x100000" offset="0"/>
-            <part name="pa3-01m.2c" crc="068a152c"  map="00210000" size="0x100000" offset="0x100000"/>
-            <part name="pa3-07m.2f" crc="3a4a619d"  map="21000000" size="0x100000" offset="0x100000"/>
-        </interleave>
+            <part name="pa3-01m.2c" crc="068a152c"  map="00000021"/>
+            <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100"/>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

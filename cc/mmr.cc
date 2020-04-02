@@ -382,6 +382,15 @@ int generate_lut( stringstream& of, size_map& sizes ) {
     return dumpcnt;
 }
 
+void dump_orientation( stringstream& mra, game_entry* game ) {
+    mra << "    <rom index=\"1\"><part>";
+    if( game->orientation==ROT0 )
+        mra << " 0 ";
+    else
+        mra << " 1 ";
+    mra << "</part></rom>\n";
+}
+
 #undef LUT_DUMP
 
 void generate_mra( game_entry* game ) {
@@ -458,6 +467,8 @@ void generate_mra( game_entry* game ) {
         return;
     }
     mras << "    </rom>\n";
+    // Game orientation
+    dump_orientation(mras, game);
     mras << "</misterromdescription>\n";
     // hex file for simulation
     string s = simf.str();

@@ -56,4 +56,5 @@
             <part name="tn2-12m.5c" crc="e04ff2f4"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

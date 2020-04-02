@@ -50,4 +50,5 @@
             <part name="cc-4m.10a" crc="1f9ebb97"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

@@ -55,4 +55,5 @@
             <part name="so2_12.5c" crc="b7df8a06"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 1 </part></rom>
 </misterromdescription>

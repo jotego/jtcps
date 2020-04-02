@@ -47,4 +47,5 @@
             <part name="qd_32.8f" crc="a8d295d3"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

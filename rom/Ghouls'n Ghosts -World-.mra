@@ -64,4 +64,5 @@
             <part name="25.7h" crc="29f79c78"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

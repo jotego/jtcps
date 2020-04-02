@@ -62,4 +62,5 @@
             <part name="sf2-11m.5d" crc="0627c831"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

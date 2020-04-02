@@ -43,17 +43,20 @@ struct tiny_rom_entry
 enum BOARD_TYPES { forgottn, cps1_10MHz, cps1_12MHz, sf2m3, sf2m10, sf2cems6,
         qsound, wofhfh, ganbare, pang3};
 
+enum ORIENTATION { ROT0, ROT270 };
+
 class game_entry{
 public:
     std::string year, name, parent, full_name, mfg, zipfile;
     const tiny_rom_entry *roms;
     BOARD_TYPES board_type;
+    ORIENTATION orientation;
     game_entry( const char * y, const char * n, const char *p, 
-        const char *zf, const char *fn, const char *m, const tiny_rom_entry *_roms, BOARD_TYPES btype );
+        const char *zf, const char *fn, const char *m, const tiny_rom_entry *_roms, BOARD_TYPES btype, ORIENTATION ori );
 };
 
 game_entry::game_entry( const char * y, const char * n, const char *p, const char *zf, 
-    const char *fn, const char *m, const tiny_rom_entry *_roms, BOARD_TYPES btype) {
+    const char *fn, const char *m, const tiny_rom_entry *_roms, BOARD_TYPES btype, ORIENTATION ori) {
     year = y;
     name = n;
     parent = p;
@@ -63,11 +66,12 @@ game_entry::game_entry( const char * y, const char * n, const char *p, const cha
     roms =_roms;
     gl.push_back( this );
     board_type = btype;
+    orientation = ori;
 }
 
 //GAME(       1988, forgottn,  0,        forgottn,   forgottn, cps_state, init_cps1,     ROT0,   "Capcom", "Forgotten Worlds (World, newer)", MACHINE_SUPPORTS_SAVE )  // (c) Capcom U.S.A. but World "warning"
 //GAME(       1988, daimakai,  ghouls,   cps1_10MHz, daimakai, cps_state, init_cps1,     ROT0,   "Capcom", "Daimakaimura (Japan)", MACHINE_SUPPORTS_SAVE )              // Wed.26.10.1988 in the ROMs
-#define GAME( year, name,      parent,   btype,   zipfile, ignore2, ignore3,     orientation,   mfg, full_name, ignore4 ) game_entry game_##name ( #year, #name, #parent, #zipfile, full_name, mfg, rom_##name, btype );
+#define GAME( year, name,      parent,   btype,   zipfile, ignore2, ignore3,     orientation,   mfg, full_name, ignore4 ) game_entry game_##name ( #year, #name, #parent, #zipfile, full_name, mfg, rom_##name, btype, orientation );
 
 /***************************************************************************
 CONSTANTS

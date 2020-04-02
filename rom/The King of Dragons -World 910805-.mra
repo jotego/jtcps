@@ -56,4 +56,5 @@
             <part name="kd-4m.5c" crc="402b9b4f"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

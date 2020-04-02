@@ -56,4 +56,5 @@
             <part name="rt-4m.6a" crc="df0eea8b"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

@@ -57,4 +57,5 @@
             <part name="xmqq-9f.bin" crc="1ec10bed"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>

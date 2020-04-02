@@ -45,4 +45,5 @@
             <part name="ca-3m.5a" crc="0b0341c3"  map="21000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 0 </part></rom>
 </misterromdescription>
