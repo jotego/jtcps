@@ -162,7 +162,7 @@ int size_region( const tiny_rom_entry *entry, const string& region, int min_leng
 }
 
 #define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' '; \
-    simf << "8'h" << hex << ((a)&0xff) << ','; dumpcnt++;
+    sim_cfg[dumpcnt] = a; dumpcnt++;
 
 int find_cfg( stringstream& of, const string& name ) {
     int k=0;
@@ -175,7 +175,7 @@ int find_cfg( stringstream& of, const string& name ) {
     return -1;
 }
 
-int generate_cpsb(stringstream& of, stringstream& simf, const CPS1config* x) {
+int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
     of << "        <!-- CPS-B config for " << x->name << " --> \n";
     of << "        <part> ";            
     int dumpcnt=0;
@@ -253,7 +253,7 @@ string parent_name( game_entry* game ) {
     return game->name;
 }
 
-int generate_mapper(stringstream& of, stringstream& simf, stringstream& mappers,
+int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     game_entry* game, const CPS1config* x) {
     static set<string>done;
     int mask=0xABCD, offset=0x1234;
@@ -413,9 +413,11 @@ void generate_mra( game_entry* game ) {
 
         cnt+=generate_lut( mras, sizes );
         // CPS-B information
-        cnt+=generate_cpsb( mras, simf, x );
+        int sim_cfg[64];
+        int lut_size = cnt;
+        cnt+=generate_cpsb( mras, sim_cfg+cnt, x );
         // Mappers
-        cnt+=generate_mapper( mras, simf, mappers, game, x );
+        cnt+=generate_mapper( mras, sim_cfg+cnt, mappers, game, x );
         // Set 12MHz bit
         char cpu12=0;
         switch( game->board_type ) {
@@ -427,7 +429,12 @@ void generate_mra( game_entry* game ) {
             case pang3:      cpu12=1; break;
         }
         mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
+        sim_cfg[cnt] = cpu12;
         cnt++;
+        for( int k=cnt-1; k>=lut_size; k-- ) {
+            simf << "8'h" << hex << (sim_cfg[k]&0xff);
+            if( k!=lut_size) simf << ',';
+        }
         fill( mras, cnt, 64 ); // fill rest of header
         // Header done
         dump_region(mras, entry,"maincpu",16,1,1024*1024);
