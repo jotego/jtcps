@@ -206,7 +206,7 @@ int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
 // SCR3      code[13:..]
 
 void output_range( stringstream& ss, const char *layer, const char *layer_bits,
-    int min, int max, const gfx_range *r, bool& addor ) {
+    int min, int max, const gfx_range *r, bool& addor, const char *extra="" ) {
         if(addor) ss << "\n        || "; 
         ss << " ( layer==" << layer << " "; 
         if( min!=0 ) {
@@ -217,6 +217,7 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
             ss << " &&";
             ss << " code[" << layer_bits << "]<=7'h"  << hex << max;
         }
+        if( extra[0] ) ss << extra;
         ss << ") /* " << hex << r->start << " - " << r->end << " */ ";
         addor= true; 
 }
@@ -237,7 +238,7 @@ void parse_range( string& s, const gfx_range *r ) {
         output_range( ss, "SCR1", "15:10", min, max, r, addor );
     }
     if( r->type & GFXTYPE_SCROLL3 ) {
-        output_range( ss, "SCR3", "13:7", min, max, r, addor );
+        output_range( ss, "SCR3", "13:7", min, max, r, addor, " && code[15:14]==2'b00 " );
     }
     // ss << " 1'b0 /* STARS ommitted*/ ";
     /*

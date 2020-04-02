@@ -119,13 +119,7 @@ wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start, preVB;
-wire            flip;
-
-`ifdef SIMULATION
- assign flip = 1'b1;
- `else
- assign flip = ppu_ctrl[15];
- `endif
+wire            flip = ppu_ctrl[15];
 
 // Register configuration
 // Scroll
