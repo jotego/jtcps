@@ -209,7 +209,7 @@ always @(posedge clk, posedge rst) begin
                 // frame_data value of st 2, but because the mapper takes an extra
                 // clock cycle to produce the output, the result is collected here
                 last_x     <= obj_x;
-                obj_x      <= frame_data;
+                obj_x      <= { 7'd0, frame_data[8:0] };
                 //frame_addr <= frame_addr-10'd1;
                 if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
                 st <= 13;
