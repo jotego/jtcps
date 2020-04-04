@@ -6,10 +6,6 @@ HOST=mr
 
 ftp -inv $HOST <<EOF
 user root 1
-cd /media/fat/games/JTCPS1
-mput *.rom
-rename ffight.rom JTCPS1.rom
-mput ffight.rom
 cd /media/fat/_CPS
 mput *.mra
 bye
