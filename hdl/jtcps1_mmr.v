@@ -40,8 +40,10 @@ module jtcps1_mmr(
     // Extra inputs read through the C-Board
     input      [ 3:0]  start_button,
     input      [ 3:0]  coin_input,
-    input      [ 7:0]  joystick3,
-    input      [ 7:0]  joystick4,
+    input      [ 9:0]  joystick1,
+    input      [ 9:0]  joystick2,
+    input      [ 9:0]  joystick3,
+    input      [ 9:0]  joystick4,
 
     // Scroll
     output reg [15:0]  hpos1,
@@ -129,6 +131,7 @@ wire [7:0]  cpsb_id;
 reg  [15:0]  mult1, mult2;
 reg  [15:0]  rslt1, rslt0;
 reg  [ 7:0]  in2, in3;
+(*keep*) wire [ 2:0]  cpsb_inputs;
 
 always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
@@ -162,15 +165,21 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
-assign cpu_speed    = `MMR(23);
+assign { cpsb_inputs, cpu_speed }  = `MMR(23);
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
 
 // extra inputs
-always @(*) begin
-    in2 = { start_button[2], coin_input[2], joystick3[5:0] };
-    in3 = { start_button[3], coin_input[3], joystick4[5:0] };
+always @(posedge clk) begin
+    in3 = { start_button[3], coin_input[3], joystick4[5:0] }; // four players
+    if( cpsb_inputs[2] )
+        begin // 6 buttons
+            in2 = { 1'b1, joystick2[9:7], 1'b1, joystick1[9:7] };
+        end
+        else begin // 3'b001 or other: three players
+            in2 = { start_button[2], coin_input[2], joystick3[5:0] };
+        end
 end
 
 always @(*) begin

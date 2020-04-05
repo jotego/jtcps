@@ -38,5 +38,7 @@
             <part name="pa3-01m.2c" crc="068a152c"  map="00000021"/>
             <part name="pa3-07m.2f" crc="3a4a619d"  map="00002100"/>
     </rom>
-    <rom index="1"><part> 0 </part></rom>
+    <rom index="1"><part> 70 </part></rom>
+    <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
+        default="A,B,R,L,Start"/>
 </misterromdescription>

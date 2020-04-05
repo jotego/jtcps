@@ -18,7 +18,7 @@
         <part> FF FF 06 04 02 00 20 2E 2C 2A 28 36 38 30 20 12 12 00 </part>
         <!-- Mapper for captcomm --> 
         <part> 02 40 88 73 FF </part>
-        <part> 00 </part>
+        <part> 04 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
@@ -50,5 +50,7 @@
             <part name="cc-4m.10a" crc="1f9ebb97"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 0 </part></rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
 </misterromdescription>

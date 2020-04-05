@@ -1,31 +1,49 @@
 # jtcps1
 Capcom System 1 compatible verilog core for FPGA by Jose Tejada (jotego).
 
-# Usage
+# Control
 
-## MiSTer
+MiSTer allows for gamepad redifinition. However, the keyboard can be used with more or less the same layout as MAME for MiST(er) platforms. Some important keys:
+
+-F7  toggles scroll 1
+-F8  toggles scroll 2
+-F9  toggles scroll 3
+-F10 toggles objects
+-F12 OSD menu
+-P   Pause. Press 1P during pause to toggle the credits on and off
+-5,6 1P coin, 2P coin
+-1,2 1P, 2P
+
+# MiSTer
 
 Copy the RBF file to `_Arcade/cores` and the MRA files to `_Arcade`. Copy zipped MAME romsets to `_Arcade/mame`. Enjoy.
 
-## MiST
+It is also possible to keep the MAME romsets in `_Arcade/mame` but have the MRA files in `_CPS` and the RBF files in `_CPS/cores`
+
+## Notes
+
+The _rotate screen_ OSD option is ignored for horizontal games.
+
+# MiST
+
+## Setup
 
 You need to generate the .rom file using this (tool)[https://github.com/sebdel/mra-tools-c/tree/master/release]. Basically call it like this:
 
-`mra ghouls.mra -z rompath`
+`mra ghouls.mra -z rompath -A`
 
-And that will produce the .rom file.
+And that will produce the .rom file and a .arc file. The .arc file can be used to start the core and directly load the game rom file. Note that the RBF name must be JTCPS1.RBF for it to work. The three files must be in the root folder.
 
-Copy the RBF and .rom files to MiST and enjoy!
+Copy the RBF, .arc and .rom files to MiST and enjoy!
+
+## Notes
+
+Note that there is no screen rotation in MiST. Vertical games require you to turn your screen around. You can however flip the image through the OSD.
 
 # Issues
 
 This is a beta version and as such not everything is implemented here. Known issues:
 
--Sprites may flicker
--Sprites/background may show blank horizontal lines
--ADPCM sound may sound as the same instrument all the time
--Top line of background is either missing or wrong
--Palette during Ghouls'n Ghosts boot up is wrong or absent. Ghouls n' Ghosts has a very long boot up test and if the palette is wrong you may not see something for a while. That's a known problem
 -No DIP settings yet, except for test.
 
 Things you may not notice but that are wrong

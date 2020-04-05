@@ -18,7 +18,7 @@
         <part> 32 41 FF FF FF FF 26 28 2A 2C 2E 36 00 30 08 10 20 00 </part>
         <!-- Mapper for sf2 --> 
         <part> 19 40 C8 73 F7 </part>
-        <part> 00 </part>
+        <part> 08 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
@@ -62,5 +62,7 @@
             <part name="sf2-11m.5d" crc="0627c831"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 0 </part></rom>
+    <rom index="1"><part> 78 </part></rom>
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Select,Select,Start"/>
 </misterromdescription>

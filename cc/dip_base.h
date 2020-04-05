@@ -1,6 +1,9 @@
 #ifndef __DIPBASE
 #define __DIPBASE
 
+#include <list>
+#include <string>
+
 enum PORTS_TYPE {
     cps1_2b,
     cps1_2b_4way,
@@ -15,18 +18,51 @@ enum PORTS_TYPE {
     ports_sfzch
 };
 
-struct port_entry {
+class port_entry;
+
+typedef std::list<port_entry*> port_entries;
+
+port_entries all_ports;
+
+class port_entry {
+public:
     PORTS_TYPE ports_type;
-    port_entry( PORTS_TYPE pt ) { ports_type = pt; }
+    std::string name;
+    port_entry( const char *n, PORTS_TYPE pt ) :  name(n), ports_type(pt) { all_ports.push_back(this); }
+    int buttons() const {
+        switch( ports_type ) {
+            case cps1_2b:
+            case cps1_2b_4way: return 2;
+            case cps1_3b: return 3;
+            case cps1_quiz:
+            case cps1_3players: 
+            case ports_ganbare:
+            case cps1_4players: return 4;
+            case sf2hack:
+            case ports_sfzch:
+            case cps1_6b: return 6;
+        }
+        return 0;
+    }
+    int cpsb_extra_inputs() const {
+        switch( ports_type ) {
+            case cps1_3players: return 1;
+            case cps1_4players: return 2; // Captain Commando
+            case cps1_6b: return 4;
+        }
+        return 0;
+    }
 };
 
+
+
 // define new entry
-#define INPUT_PORTS_START( name ) port_entry port_##name
-#define PORT_INCLUDE( ports ) (ports)
+#define INPUT_PORTS_START( name ) port_entry port_##name( #name,
+#define PORT_INCLUDE( ports ) ports )
 #define INPUT_PORTS_END ;
 
 // empty macros
-#define CPS1_COINAGE_1(...)
+//#define CPS1_COINAGE_1(...)
 #define CPS1_COINAGE_2(...)
 #define CPS1_COINAGE_3(...)
 

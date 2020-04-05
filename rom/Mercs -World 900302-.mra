@@ -18,7 +18,7 @@
         <part> 20 42 FF FF FF FF 2C 2A 28 26 24 36 00 22 02 04 08 00 </part>
         <!-- Mapper for mercs --> 
         <part> 0F 40 66 33 FF </part>
-        <part> 00 </part>
+        <part> 02 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
@@ -55,5 +55,7 @@
             <part name="so2_12.5c" crc="b7df8a06"  map="10000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 1 </part></rom>
+    <rom index="1"><part> 75 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
 </misterromdescription>

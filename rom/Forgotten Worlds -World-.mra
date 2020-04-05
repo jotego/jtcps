@@ -73,4 +73,5 @@
             <part name="lw_27.11c" crc="103c1bd2"  map="10000000"/>
         </interleave>
     </rom>
+    <rom index="1"><part> 00 </part></rom>
 </misterromdescription>

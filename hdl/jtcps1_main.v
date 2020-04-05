@@ -43,6 +43,9 @@ module jtcps1_main(
     input   [1:0]      coin_input,
     input              service,
     input              tilt,
+    // Forgotten worlds uses the analog stick
+    input   [15:0]     joystick_analog_0,
+    input   [15:0]     joystick_analog_1,
     // BUS sharing
     input              busreq,
     output             busack,
@@ -78,7 +81,7 @@ wire        BERRn = 1'b1;
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
 reg         dbus_cs, io_cs, joy_cs, 
-            sys_cs, olatch_cs, snd1_cs, snd0_cs;
+            sys_cs, olatch_cs, snd1_cs, snd0_cs, ana_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
@@ -125,6 +128,7 @@ always @(posedge clk, posedge rst) begin
         ppu1_cs     <= 1'b0;
         ppu2_cs     <= 1'b0;
         one_wait    <= 1'b0;
+        ana_cs      <= 1'b0;
         rom_addr    <= 21'd0;
     end else begin
         rom_addr  <= A[21:1];
@@ -139,8 +143,9 @@ always @(posedge clk, posedge rst) begin
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
                 ppu2_cs  <= A[8:6] == 3'b101; // 'h14x
                 if( RnW ) begin
-                    joy_cs <= A[8:3] == 6'b000_000;
-                    sys_cs <= A[8:3] == 6'b000_011;
+                    joy_cs <= A[8:3] == 6'b000_000; // 0x800000
+                    sys_cs <= A[8:3] == 6'b000_011; // 0x800018
+                    ana_cs <= A[8:4] == 6'b001_01; // 0x800050
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
@@ -161,6 +166,7 @@ always @(posedge clk, posedge rst) begin
             ppu1_cs     <= 1'b0;
             ppu2_cs     <= 1'b0;
             one_wait    <= 1'b0;
+            ana_cs      <= 1'b0;
         end
     end
 end
@@ -205,6 +211,15 @@ always @(posedge clk) begin
             2'b11: sys_data <= { dipsw_c, 8'hff };
         endcase
     end
+    else if( ana_cs ) begin
+        case( A[3:2] )
+            2'b00: sys_data <= joystick_analog_0[7:0];
+            2'b10: sys_data <= joystick_analog_1[7:0];
+            2'b01: sys_data <= joystick_analog_0[15:8];
+            2'b11: sys_data <= joystick_analog_1[15:8];
+        endcase
+    end
+    else sys_data <= 16'hffff;
 end
 
 // Data bus input
@@ -217,7 +232,7 @@ always @(posedge clk) begin
         rom_ok2 <= 1'b0;
     end else begin
         rom_ok2 <= rom_ok;
-        case( { joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
+        case( { ana_cs | joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
             4'b10_00: cpu_din <= sys_data;
             4'b01_00: cpu_din <= ram_data;
             4'b00_10: cpu_din <= rom_data;

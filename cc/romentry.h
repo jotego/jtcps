@@ -45,6 +45,7 @@ enum BOARD_TYPES { forgottn, cps1_10MHz, cps1_12MHz, sf2m3, sf2m10, sf2cems6,
 
 enum ORIENTATION { ROT0, ROT270 };
 
+
 class game_entry{
 public:
     std::string year, name, parent, full_name, mfg, zipfile;

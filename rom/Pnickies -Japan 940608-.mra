@@ -53,5 +53,7 @@
             <part name="pnij_33.9f" crc="3ed2c680"  map="10000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 0 </part></rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
 </misterromdescription>

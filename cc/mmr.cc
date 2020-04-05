@@ -7,6 +7,7 @@
 #include <set>
 
 #include "config.h"
+#include "dips.h"
 
 using namespace std;
 
@@ -382,13 +383,60 @@ int generate_lut( stringstream& of, size_map& sizes ) {
     return dumpcnt;
 }
 
-void dump_orientation( stringstream& mra, game_entry* game ) {
-    mra << "    <rom index=\"1\"><part>";
-    if( game->orientation==ROT0 )
-        mra << " 0 ";
-    else
-        mra << " 1 ";
-    mra << "</part></rom>\n";
+void dump_orientation( stringstream& mra, game_entry* game, int buttons ) {
+    mra << "    <rom index=\"1\"><part> ";
+    int core_mod = 0x7f;
+    if( game->orientation==ROT0 ) core_mod &= ~1;
+    if( buttons !=0 ) {
+        core_mod &= ~0xe;
+        core_mod |= (buttons-2)<<1;
+    }
+    mra << hex << setfill('0') << setw(2) << core_mod;
+    mra << " </part></rom>\n";
+    //mra << " <!-- " << buttons << "-->\n";
+}
+
+port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
+    port_entry* ports = nullptr;
+    for( port_entry* p : all_ports ) {
+        if( p->name == game->name ) {
+            ports = p;
+            break;
+        }
+    }
+    bool search_parent = ports==nullptr;
+    if( ports != nullptr ) search_parent = search_parent || ports->ports_type==parent;
+    if( search_parent ) {
+        ports = nullptr;
+        for( port_entry *p2 : all_ports ) {
+            if( p2->name == game->zipfile ) {
+                ports = p2;
+                break;
+            }
+        }
+    }
+    if( ports==nullptr ) {
+        cout << "Warning: no ports for game " << game->name << '\n';
+        return nullptr;
+    }
+//        <buttons names="Gear Up,Gear Down,-,-,Start,Coin" default="X,B,Start,R"/>
+    int buttons;
+    mra << "    <buttons names=\"";
+    switch( ports->ports_type ) {
+        case cps1_2b: mra << "B0,B1,-,-,-,-,Start,Coin,Pause\" \n        default=\"A,B,R,L,Start"; buttons=2; break;
+        case cps1_2b_4way: mra << "B0,B1,-,-,-,-,Start,Coin,Pause\" \n        default=\"A,B,R,L,Start"; buttons=2; break;
+        case cps1_3b: mra << "B0,B1,B2,-,-,-,Start,Coin,Pause\" \n        default=\"A,B,X,R,L,Start"; buttons=3; break;
+        case cps1_quiz:
+        case cps1_3players: 
+        case ports_ganbare:
+        case cps1_4players: mra << "B0,B1,B2,B3,-,-,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Start"; buttons=4; break;
+        case sf2hack:
+        case ports_sfzch:
+        case cps1_6b: mra << "B0,B1,B2,B3,B4,B5,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Select,Select,Start"; buttons=6; break;
+        default: cout << "ERROR: cannot process buttons of game " << game->name << '\n'; buttons=0; break;
+    }
+    mra << "\"/>\n";
+    return ports;
 }
 
 #undef LUT_DUMP
@@ -396,7 +444,7 @@ void dump_orientation( stringstream& mra, game_entry* game ) {
 void generate_mra( game_entry* game ) {
     static bool first=true;
     //ofstream simf( game->name+".hex");
-    stringstream mras, simf, mappers;
+    stringstream mras, simf, mappers, ss_ports;
     mras << "<misterromdescription>\n";
     xml_element(mras,"name", game->full_name,1 );
     xml_element(mras,"setname", game->name,1 );
@@ -409,6 +457,7 @@ void generate_mra( game_entry* game ) {
     if( game->zipfile != game->name ) mras << game->zipfile <<".zip|";
     mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
+    port_entry *ports = dump_buttons(ss_ports, game);
     try{
         int cfg_id = find_cfg( mras, game->name );
         const CPS1config* x = &cps1_config_table[cfg_id];
@@ -421,7 +470,7 @@ void generate_mra( game_entry* game ) {
         sizes.qsound= size_region(entry,"qsound",256*1024);
         sizes.gfx   = size_region(entry,"gfx");
 
-        cnt+=generate_lut( mras, sizes );
+        cnt+=generate_lut( mras, sizes );        
         // CPS-B information
         int sim_cfg[64];
         int lut_size = cnt;
@@ -438,6 +487,8 @@ void generate_mra( game_entry* game ) {
             case wofhfh:     cpu12=1; break;
             case pang3:      cpu12=1; break;
         }
+        if( ports!= nullptr )            
+            cpu12 |= ports->cpsb_extra_inputs()<<1;
         mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
         sim_cfg[cnt] = cpu12;
         cnt++;
@@ -468,8 +519,11 @@ void generate_mra( game_entry* game ) {
     }
     mras << "    </rom>\n";
     // Game orientation
-    dump_orientation(mras, game);
-    mras << "</misterromdescription>\n";
+    int buttons = ports == nullptr ? 4 : ports->buttons();
+    dump_orientation(mras, game, buttons);
+    mras << ss_ports.str();
+    mras << "</misterromdescription>\n";    // End of MRA file
+
     // hex file for simulation
     string s = simf.str();
     s = s.substr(0,s.length()-1);

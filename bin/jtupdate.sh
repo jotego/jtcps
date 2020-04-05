@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo -mist -mister | parallel jtcore cps -d JTFRAME_OSD_NOLOAD -z 
-jtcore cps -sidi -d JTFRAME_OSD_NOLOAD -z 
+parallel jtcore cps1 {} -d JTFRAME_OSD_NOLOAD -z $* ::: -mist -mister
+# jtcore cps1 -sidi -d JTFRAME_OSD_NOLOAD -z 

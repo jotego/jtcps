@@ -37,10 +37,13 @@ module jtcps1_game(
     // cabinet I/O
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
-    input   [ 7:0]  joystick1,
-    input   [ 7:0]  joystick2,
-    input   [ 7:0]  joystick3,
-    input   [ 7:0]  joystick4,
+    input   [ 9:0]  joystick1,
+    input   [ 9:0]  joystick2,
+    input   [ 9:0]  joystick3,
+    input   [ 9:0]  joystick4,
+    // Forgotten worlds uses the analog stick
+    input   [15:0]  joystick_analog_0,
+    input   [15:0]  joystick_analog_1,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -161,7 +164,7 @@ assign slot_wr[0]   = 1'd0;
 
 assign dipsw_a      = 8'hff;
 assign dipsw_b      = 8'hff;
-assign dipsw_c      = { dip_test, 2'b11, ~dip_flip, 4'hf };
+assign dipsw_c      = { dip_test, 2'b00, ~dip_flip, 4'hf };
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
@@ -258,8 +261,10 @@ jtcps1_main u_main(
     // Cabinet input
     .start_button( start_button     ),
     .coin_input  ( coin_input       ),
-    .joystick1   ( joystick1        ),
-    .joystick2   ( joystick2        ),
+    .joystick1   ( joystick1[7:0]   ),
+    .joystick2   ( joystick2[7:0]   ),
+    .joystick_analog_0( joystick_analog_0   ),
+    .joystick_analog_1( joystick_analog_1   ),
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
@@ -336,6 +341,8 @@ jtcps1_video #(REGSIZE) u_video(
     // Extra inputs read through the C-Board
     .start_button   ( start_button  ),
     .coin_input     ( coin_input    ),
+    .joystick1      ( joystick1     ),
+    .joystick2      ( joystick2     ),
     .joystick3      ( joystick3     ),
     .joystick4      ( joystick4     ),
 

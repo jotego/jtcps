@@ -18,7 +18,7 @@
         <part> FF FF 06 04 02 00 28 26 24 22 20 36 00 30 20 10 02 00 </part>
         <!-- Mapper for knights --> 
         <part> 0B 40 88 73 FF </part>
-        <part> 00 </part>
+        <part> 02 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
@@ -46,5 +46,7 @@
             <part name="kr-4m.10a" crc="0bb2b4e7"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 0 </part></rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
 </misterromdescription>

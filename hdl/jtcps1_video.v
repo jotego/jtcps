@@ -54,8 +54,10 @@ module jtcps1_video(
     // Extra inputs read through the C-Board
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
-    input   [ 7:0]  joystick3,
-    input   [ 7:0]  joystick4,
+    input   [ 9:0]  joystick1,
+    input   [ 9:0]  joystick2,
+    input   [ 9:0]  joystick3,
+    input   [ 9:0]  joystick4,
 
     // Video RAM interface
     output     [17:1]  vram1_addr,
@@ -196,6 +198,8 @@ jtcps1_mmr #(REGSIZE) u_mmr(
 
     .start_button   ( start_button      ),
     .coin_input     ( coin_input        ),
+    .joystick1      ( joystick1         ),
+    .joystick2      ( joystick2         ),
     .joystick3      ( joystick3         ),
     .joystick4      ( joystick4         ),
 
@@ -454,6 +458,7 @@ jtframe_credits #(
     .VB         ( LVBL_colmix   ),
     .rgb_in     ( colmix_rgb    ),
     .enable     ( pause         ),
+    .toggle     ( start_button[0] ),
 
     // output image
     .HB_out     ( LHBL_dly      ),

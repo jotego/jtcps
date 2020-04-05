@@ -1,5 +1,5 @@
 #include "dip_base.h"
-/*
+
 #define CPS1_COINAGE_1(diploc) \
     PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coin_A ) ) PORT_DIPLOCATION(diploc ":1,2,3") \
     PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) ) \
@@ -19,7 +19,7 @@
     PORT_DIPSETTING(    0x28, DEF_STR( 1C_3C ) ) \
     PORT_DIPSETTING(    0x20, DEF_STR( 1C_4C ) ) \
     PORT_DIPSETTING(    0x18, DEF_STR( 1C_6C ) )
-
+/*
 #define CPS1_COINAGE_2(diploc) \
     PORT_DIPNAME( 0x07, 0x07, DEF_STR( Coinage ) ) PORT_DIPLOCATION(diploc ":1,2,3") \
     PORT_DIPSETTING(    0x00, DEF_STR( 4C_1C ) ) \
@@ -234,7 +234,7 @@ INPUT_PORTS_END
 
 /* Same as 'ghouls' but additional "Freeze" Dip Switch */
 static INPUT_PORTS_START( daimakai )
-    PORT_INCLUDE(parent)
+    PORT_INCLUDE( cps1_2b_4way )
 
     PORT_MODIFY("DSWB")
     PORT_DIPNAME( 0x80, 0x80, "Freeze" )        PORT_DIPLOCATION("SW(B):8")
@@ -242,6 +242,14 @@ static INPUT_PORTS_START( daimakai )
     PORT_DIPSETTING(    0x00, DEF_STR( On ) )
 INPUT_PORTS_END
 
+static INPUT_PORTS_START( daimakair )
+    PORT_INCLUDE( cps1_2b_4way )
+
+    PORT_MODIFY("DSWB")
+    PORT_DIPNAME( 0x80, 0x80, "Freeze" )        PORT_DIPLOCATION("SW(B):8")
+    PORT_DIPSETTING(    0x80, DEF_STR( Off ) )  // This switch isn't documented in the manual
+    PORT_DIPSETTING(    0x00, DEF_STR( On ) )
+INPUT_PORTS_END
 
 /* "Debug" features to be implemented */
 static INPUT_PORTS_START( strider )
