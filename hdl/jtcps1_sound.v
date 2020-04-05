@@ -47,7 +47,8 @@ module jtcps1_sound(
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
 wire signed [13:0] adpcm_snd;
-wire signed [15:0] fm_left, fm_right;
+wire signed [15:0] fm_left, fm_right, gain_left, gain_right;
+reg  signed [15:0] pre_left, pre_right;
 
 function signed [15:0] sum_snd;
     input               enable_fm;
@@ -58,13 +59,25 @@ function signed [15:0] sum_snd;
         (enable_adpcm ? {    adpcm, adpcm[12:11] } : 16'd0 );
 endfunction
 
+function signed [15:0] limit;
+    input        good_sign;
+    input [15:0] signal;
+    limit = good_sign == signal[15] ? signal : { signal, {14{~signal}} };
+endfunction
+
+// adds 1.8dB of gain
+assign gain_left  = pre_left  + (pre_left >>>1);
+assign gain_right = pre_right + (pre_right>>>1);
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         left  <= 16'd0;
         right <= 16'd0;
     end else begin
-        left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
-        right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+        pre_left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
+        pre_right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+        left      <= limit( pre_left[15], gain_left );
+        right     <= limit( pre_right[15], gain_right );
     end
 end
 
