@@ -214,7 +214,7 @@ always @(posedge clk) begin : video_cen_gen
 end
 
 wire [7:0] clk96_r, clk96_g, clk96_b;
-wire clk96_HS, clk96_VS, clk96_HB, clk96_VB, clk96_LVBL_dly;
+wire clk96_HS, clk96_VS, clk96_HB, clk96_VB, clk96_LVBL_dly, clk96_LHBL_dly;
 
 always @(posedge clk48) if(pxl_cen) begin
     { red, green, blue } <= { clk96_r, clk96_g, clk96_b };
