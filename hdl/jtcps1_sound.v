@@ -105,6 +105,8 @@ reg  bank;
 wire  io_cs = !mreq_n && A[15:12] == 4'b1111;
 
 wire [7:0] oki_dout;
+wire rd_n;
+wire wr_n;
 
 assign oki_wrn = ~(oki_cs & ~WRn);
 
@@ -131,9 +133,6 @@ always @(posedge clk) begin
         latch1_cs <= io_cs && A[3:1]==3'd5;
     end
 end
-
-wire rd_n;
-wire wr_n;
 
 wire RAM_we = ram_cs && !WRn;
 wire [7:0] ram_dout, dout, fm_dout;

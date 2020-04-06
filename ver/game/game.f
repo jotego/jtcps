@@ -3,7 +3,6 @@
 ../../hdl/jtcps1_timing.v
 ../../hdl/jtcps1_tilemap.v
 ../../hdl/jtcps1_colmix.v
-../../hdl/jtcps1_gfx_pal.v
 ../../hdl/jtcps1_obj.v
 ../../hdl/jtcps1_mmr.v
 ../../hdl/jtcps1_obj_table.v
@@ -16,6 +15,7 @@
 ../../hdl/jtcps1_game.v
 ../../hdl/jtcps1_sound.v
 ../../hdl/jtcps1_stars.v
+../../hdl/jtcps1_cpucen.v
 ../../hdl/jtcps1_gfx_mappers.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
