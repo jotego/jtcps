@@ -113,6 +113,8 @@ end
 // buf1 = A[23:16]==1001_0001 = 8'h91
 // buf2 = A[23:16]==1001_0010 = 8'h92
 
+(*keep*) reg [23:0] last_fail;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         rom_cs      <= 1'b0;
@@ -131,8 +133,8 @@ always @(posedge clk, posedge rst) begin
         ana_cs      <= 1'b0;
         rom_addr    <= 21'd0;
     end else begin
-        rom_addr  <= A[21:1];
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
+            rom_addr  <= A[21:1];
             one_wait    <= A[23] | ~A[22];
             dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_ram_cs  <= &A[23:18];
@@ -153,6 +155,8 @@ always @(posedge clk, posedge rst) begin
                 end
             end
         end else begin
+            rom_addr    <= last_fail[20:0]; // this is a trick so the compiler
+                // won't get rid of last_fail, as I need to see it in signal tap
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
@@ -249,15 +253,19 @@ reg [2:0]  wait_cycles;
 (*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok2, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
                           wait_cycles[0] };
 reg        DTACKn;
+reg        last_LVBL;
+(*keep*) reg [23:0] fail_cnt;
 
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
         DTACKn      <= 1'b1;
         wait_cycles <= 3'b111;
+        fail_cnt    <= 24'd0;
+        last_fail   <= 24'd0;
     end else /*if(cen10b)*/ begin
         last_ASn <= ASn;
-        if( !ASn && last_ASn ) begin // for falling edge of ASn
+        if( (!ASn && last_ASn) || ASn ) begin // for falling edge of ASn
             DTACKn <= 1'b1; 
             wait_cycles <= 3'b111;
         end else if( !ASn  ) begin
@@ -271,9 +279,14 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             end
             if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
+                if( !wait_cycles[0] && bus_busy ) fail_cnt<=fail_cnt+1;
                 if (!bus_busy) DTACKn <= 1'b0;
             end
             else DTACKn <= 1'b0;
+        end
+        if( !LVBL && last_LVBL ) begin
+            fail_cnt <= 24'd0;
+            last_fail <= fail_cnt;
         end
     end
 end 
@@ -285,7 +298,7 @@ reg        int1, // VBLANK
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen
-    reg last_LVBL, last_V256;
+    reg last_V256;
     if( rst ) begin
         int1 <= 1'b1;
         int2 <= 1'b1;

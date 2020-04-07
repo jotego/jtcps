@@ -25,13 +25,15 @@ module jtcps1_game(
     `endif
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
-    output reg [7:0]red,
-    output reg [7:0]green,
-    output reg [7:0]blue,
-    output reg      LHBL_dly,
-    output reg      LVBL_dly,
-    output reg      HS,
-    output reg      VS,
+    output   [7:0]  red,
+    output   [7:0]  green,
+    output   [7:0]  blue,
+    output          LHBL,
+    output          LVBL,
+    output          LHBL_dly,
+    output          LVBL_dly,
+    output          HS,
+    output          VS,
     // cabinet I/O
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
@@ -97,8 +99,7 @@ wire clk48 = clk;
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram1_cs, vram_obj_cs, vpal_cs;
-wire        LVBL;
-reg         HB, VB;
+wire        HB, VB;
 wire [15:0] snd_addr;
 wire [17:0] adpcm_addr;
 wire [ 7:0] snd_data, adpcm_data;
@@ -166,6 +167,7 @@ assign dipsw_b      = 8'hff;
 assign dipsw_c      = { dip_test, 2'b00, ~dip_flip, 4'hf };
 
 assign LVBL         = ~VB;
+assign LHBL         = ~HB;
 
 assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
 
@@ -194,37 +196,16 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
-//`ifdef JTFRAME_CLK96
-//jtframe_cen96 u_pxl_cen(
-//    .clk    ( clk       ),    // 96 MHz
-//    .cen16  ( pxl2_cen  ),
-//    .cen8   ( pxl_cen   )
-//);
-//`else
+`ifdef JTFRAME_CLK96
+jtframe_cen96 u_pxl_cen(
+    .clk    ( clk       ),    // 96 MHz
+    .cen16  ( pxl2_cen  ),
+    .cen8   ( pxl_cen   )
+);
+`else
 assign pxl2_cen = cen16;
 assign pxl_cen  = cen8;
-//`endif
-
-reg video_cen;
-
-always @(posedge clk) begin : video_cen_gen
-    reg last;
-    last <= pxl_cen;
-    video_cen <= !last && pxl_cen;
-end
-
-wire [7:0] clk96_r, clk96_g, clk96_b;
-wire clk96_HS, clk96_VS, clk96_HB, clk96_VB, clk96_LVBL_dly, clk96_LHBL_dly;
-
-always @(posedge clk48) if(pxl_cen) begin
-    { red, green, blue } <= { clk96_r, clk96_g, clk96_b };
-    HS       <= clk96_HS;
-    VS       <= clk96_VS;
-    HB       <= clk96_HB;
-    VB       <= clk96_VB;
-    LHBL_dly <= clk96_LHBL_dly;
-    LVBL_dly <= clk96_LVBL_dly;
-end
+`endif
 
 jtcps1_cpucen u_cpucen(
     .clk        ( clk48       ),
@@ -321,7 +302,7 @@ assign main_rnw = 1'b1;
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .pxl_cen        ( video_cen     ),
+    .pxl_cen        ( pxl_cen       ),
 
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
@@ -343,15 +324,15 @@ jtcps1_video #(REGSIZE) u_video(
     .busack         ( busack        ),
 
     // Video signal
-    .HS             ( clk96_HS      ),
-    .VS             ( clk96_VS      ),
-    .HB             ( clk96_HB      ),
-    .VB             ( clk96_VB      ),
-    .LHBL_dly       ( clk96_LHBL_dly),
-    .LVBL_dly       ( clk96_LVBL_dly),
-    .red            ( clk96_r       ),
-    .green          ( clk96_g       ),
-    .blue           ( clk96_b       ),
+    .HS             ( HS            ),
+    .VS             ( VS            ),
+    .HB             ( HB            ),
+    .VB             ( VB            ),
+    .LHBL_dly       ( LHBL_dly      ),
+    .LVBL_dly       ( LVBL_dly      ),
+    .red            ( red           ),
+    .green          ( green         ),
+    .blue           ( blue          ),
 
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),
@@ -511,9 +492,9 @@ jtframe_sdram_mux #(
     .SLOT8_DW   ( 32    )
 )
 u_sdram_mux(
-    .rst            ( rst               ),
-    .clk            ( clk               ),
-    .vblank         ( clk96_VB          ),
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .vblank         ( VB            ),
 
     // Main CPU
     .slot0_offset   ( 22'd0             ),
