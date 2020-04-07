@@ -86,6 +86,7 @@ jtcps1_colram u_colram(
     .pxl_cen    ( pxl_cen       ),
 
     .HB         ( HB            ),
+    .VB         ( VB            ),
 
     // Palette PPU control
     .pal_copy   ( pal_copy      ),
