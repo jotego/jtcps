@@ -279,23 +279,27 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     int aux=0, aux_mask;
     offset=0;
     mask=0;
-    // bank 1. Bank size is always a multiple of 2^13
-    aux = x->bank_size[0]>>13;
-    if( (aux&~0xf) ) throw 1;
-    offset |= aux<<4;
-    mask   |= (aux-1);
-    // bank 2
-    aux += x->bank_size[1]>>13;
-    if( (aux&~0xf) ) throw 1;
-    offset |= aux<<8;
-    mask   |= ((x->bank_size[1]>>12)-1)<<4;
-    // bank 3
-    aux += x->bank_size[2]>>13;
-    if( (aux&~0xf) ) throw 1;
-    offset |= aux<<12;
-    mask   |= ((x->bank_size[2]>>12)-1)<<8;
-    // bank 4
-    mask   |= ((x->bank_size[3]>>12)-1)<<12;
+    if( game->name == "sfzch" ) {
+        mask = 0xffff;
+    } else {
+        // bank 1. Bank size is always a multiple of 2^13
+        aux = x->bank_size[0]>>13;
+        if( (aux&~0xf) ) throw 11;
+        offset |= aux<<4;
+        mask   |= (aux-1);
+        // bank 2
+        aux += x->bank_size[1]>>13;
+        if( (aux&~0xf) ) throw 12;
+        offset |= aux<<8;
+        mask   |= ((x->bank_size[1]>>12)-1)<<4;
+        // bank 3
+        aux += x->bank_size[2]>>13;
+        if( (aux&~0xf) ) throw 13;
+        offset |= aux<<12;
+        mask   |= ((x->bank_size[2]>>12)-1)<<8;
+        // bank 4
+        mask   |= ((x->bank_size[3]>>12)-1)<<12;
+    }
     int dumpcnt=0;
     DUMP( id        );
     DUMP( offset    );
@@ -489,6 +493,8 @@ void generate_mra( game_entry* game ) {
         }
         if( ports!= nullptr )            
             cpu12 |= ports->cpsb_extra_inputs()<<1;
+        // charger game ?
+        if( game->name == "sfzch" ) cpu12 |= 1 << 4;
         mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
         sim_cfg[cnt] = cpu12;
         cnt++;
@@ -513,7 +519,7 @@ void generate_mra( game_entry* game ) {
         switch (x)  {
             case 2: cout << "ERROR: MRA header does not fit\n"; break;
             default:
-                cout << "ERROR: bank offset does not fit in 4 bits " << game->name << '\n'; break;
+                cout << "ERROR: bank offset does not fit in 4 bits " << game->name << " error code " << x << '\n'; break;
         }
         return;
     }

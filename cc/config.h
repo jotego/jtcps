@@ -38,6 +38,7 @@ const char *parents[] = {
         "wof",      // 33
         "daimakai", // 34
         "daimakair",// 35
+        "sfzch",    // 36
         nullptr
 };
 

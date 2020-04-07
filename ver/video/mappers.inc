@@ -252,6 +252,17 @@ game_sf2ce: begin
         bank_a[3] <= 1'b0;
         set_used  <= 1'b0;
     end
+game_sfzch: begin
+        // Bank 0 size 0x20000
+        bank_a[0] <=  ( layer==OBJ   && code[15:9]<=7'h7f) /* 0 - 1ffff */ 
+        ||  ( layer==SCR2  && code[15:9]<=7'h7f) /* 0 - 1ffff */ 
+        ||  ( layer==SCR1  && code[15:10]<=7'h7f) /* 0 - 1ffff */ 
+        ||  ( layer==SCR3  && code[13:7]<=7'h7f && code[15:14]==2'b00 ) /* 0 - 1ffff */ ;
+        bank_a[1] <= 1'b0;
+        bank_a[2] <= 1'b0;
+        bank_a[3] <= 1'b0;
+        set_used  <= 1'b0;
+    end
 game_cworld2j: begin
         // Bank 0 size 0x08000
         bank_b[0] <=  ( layer==OBJ   && code[15:9]<=7'h1b) /* 0 - 6fff */ 

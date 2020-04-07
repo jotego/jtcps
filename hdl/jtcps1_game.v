@@ -174,6 +174,7 @@ assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM 
 wire [ 1:0] dsn;
 wire        cen16, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
+wire        charger;
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -259,10 +260,11 @@ jtcps1_main u_main(
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
     // Cabinet input
+    .charger     ( charger          ),
     .start_button( start_button     ),
     .coin_input  ( coin_input       ),
-    .joystick1   ( joystick1[7:0]   ),
-    .joystick2   ( joystick2[7:0]   ),
+    .joystick1   ( joystick1        ),
+    .joystick2   ( joystick2        ),
     .joystick_analog_0( joystick_analog_0   ),
     .joystick_analog_1( joystick_analog_1   ),
     .service     ( 1'b1             ),
@@ -310,6 +312,7 @@ jtcps1_video #(REGSIZE) u_video(
     .gfx_en         ( gfx_en        ),
     .pause          ( ~dip_pause    ),
     .cpu_speed      ( cpu_speed     ),
+    .charger        ( charger       ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

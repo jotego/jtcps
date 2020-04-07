@@ -37,8 +37,9 @@ module jtcps1_main(
     output             UDSWn,
     output             LDSWn,
     // cabinet I/O
-    input   [7:0]      joystick1,
-    input   [7:0]      joystick2,
+    input              charger,
+    input   [9:0]      joystick1,
+    input   [9:0]      joystick2,
     input   [1:0]      start_button,
     input   [1:0]      coin_input,
     input              service,
@@ -205,10 +206,15 @@ end
 reg [15:0] sys_data;
 
 always @(posedge clk) begin
-    if( joy_cs ) sys_data <= { joystick2, joystick1 };
+    if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
     else if(sys_cs) begin
         case( A[2:1] )
-            2'b00: sys_data <= { tilt, dip_test, start_button,
+            2'b00: sys_data <= 
+            charger ? // Support for SFZ charger version
+              { joystick2[9], joystick1[9], start_button,
+               1'b1, service, joystick2[8], joystick1[8], 8'hff }
+            // Regular CPS1 arcade:
+            : { tilt, dip_test, start_button,
                 1'b1, service, coin_input, 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
             2'b10: sys_data <= { dipsw_b, 8'hff };

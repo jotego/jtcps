@@ -84,7 +84,8 @@ localparam
         game_willow   = 32,
         game_wof      = 33,
         game_daimakai = 34,
-        game_daimakair= 35;
+        game_daimakair= 35,
+        game_sfzch    = 36;
 
 reg last_enable;
 wire [3:0] eff_bank = set_used ? bank_b : bank_a;
@@ -114,7 +115,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         case( game )
             default: begin
-                bank_a   <= 4'd0;
+                bank_a   <= 4'd1;
                 bank_b   <= 4'd0;
                 set_used <= 1'b0;
             end

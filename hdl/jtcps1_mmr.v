@@ -35,7 +35,8 @@ module jtcps1_mmr(
     // registers
     output reg [15:0]  ppu_ctrl,
     output reg         obj_dma_ok,
-    output             cpu_speed,   // 0 for 10MHz, 1 for 12MHz
+    output             cpu_speed, // 0 for 10MHz, 1 for 12MHz
+    output             charger,   // 0 arcade game, 1 charger game
 
     // Extra inputs read through the C-Board
     input      [ 3:0]  start_button,
@@ -165,7 +166,7 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
-assign { cpsb_inputs, cpu_speed }  = `MMR(23);
+assign { charger, cpsb_inputs, cpu_speed }  = `MMR(23);
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
