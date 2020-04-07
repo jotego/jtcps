@@ -279,7 +279,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     int aux=0, aux_mask;
     offset=0;
     mask=0;
-    if( game->name == "sfzch" ) {
+    if( game->name == "sfzch" || game->parent == "sfzch" ) {
         mask = 0xffff;
     } else {
         // bank 1. Bank size is always a multiple of 2^13
@@ -494,7 +494,7 @@ void generate_mra( game_entry* game ) {
         if( ports!= nullptr )            
             cpu12 |= ports->cpsb_extra_inputs()<<1;
         // charger game ?
-        if( game->name == "sfzch" ) cpu12 |= 1 << 4;
+        if( game->name == "sfzch" || game->parent == string("sfzch") ) cpu12 |= 1 << 4;
         mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
         sim_cfg[cnt] = cpu12;
         cnt++;
