@@ -24,10 +24,6 @@
 // If NMOS RON is comparable to the R2R ladder, attenuation will be
 // lower (~27%)
 
-// To do:
-// 1. Copy only the marked pages
-// 2. Bus arbitrion with main CPU --> check PCB
-
 module jtcps1_colmix(
     input              rst,
     input              clk,
@@ -62,14 +58,14 @@ module jtcps1_colmix(
     input   [15:0]     pal_base,
     input   [ 5:0]     pal_page_en, // which palette pages to copy
     // BUS sharing
-    output reg         busreq,
+    output             busreq,
     input              busack,
 
     // VRAM access
-    output reg [17:1]  vram_addr,
+    output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
-    output reg         vram_cs,
+    output             vram_cs,
 
     (*keep*) output reg [7:0]  red,
     (*keep*) output reg [7:0]  green,
@@ -80,10 +76,36 @@ reg  [11:0] pxl;
 wire [11:0] pal_addr;
 
 // Palette
-reg [15:0] pal[0:(2**12)-1]; // 4096?
-reg [15:0] raw;
-wire [3:0] raw_r, raw_g, raw_b, raw_br;
-reg  [3:0] dly_r, dly_g, dly_b;
+wire [15:0] raw;
+wire [ 3:0] raw_r, raw_g, raw_b, raw_br;
+reg  [ 3:0] dly_r, dly_g, dly_b;
+
+jtcps1_colram u_colram(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    .HB         ( HB            ),
+
+    // Palette PPU control
+    .pal_copy   ( pal_copy      ),
+    .pal_base   ( pal_base      ),
+    .pal_page_en( pal_page_en   ), // which palette pages to copy
+
+    // Palette data requests
+    .pal_addr   ( pal_addr      ),
+    .pal_data   ( raw           ),
+
+    // BUS sharing
+    .busreq     ( busreq        ),
+    .busack     ( busack        ),
+
+    // VRAM access
+    .vram_addr  ( vram_addr     ),
+    .vram_data  ( vram_data     ),
+    .vram_ok    ( vram_ok       ),
+    .vram_cs    ( vram_cs       )
+);
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
@@ -176,10 +198,7 @@ always @(posedge clk) begin
     end else begin
         if( (pre_pxl[3:0]==4'hf ||  
             ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio )
-                && lyr_queue[3:0] != 4'hf )) /*&& 
-            ( lyr_queue[3:0] != 4'hf || 
-             (pre_pxl[3:0]==4'hf && pre_pxl[11:9]==STA) )/*
-            !(lyr_queue[11:9]==OBJ && lyr_queue[3:0]==4'hf)*/ ) 
+                && lyr_queue[3:0] != 4'hf ))  ) 
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
             check_prio <= lyr_queue[11:9]!=STA;
@@ -189,93 +208,6 @@ always @(posedge clk) begin
             check_prio <= 1'b0;
             lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
         end
-    end
-end
-
-`ifdef SIMULATION
-integer f, rd_cnt;
-initial begin
-    //$readmemh("pal16.hex",pal);
-    f=$fopen("pal.bin","rb");
-    if(f==0) begin
-        $display("WARNING: cannot open file pal16.hex");
-        // no palette file, initialize with zeros
-        for( rd_cnt = 0; rd_cnt<4096; rd_cnt=rd_cnt+1 ) pal[rd_cnt] <= 16'd0;
-    end else begin
-        rd_cnt = $fread(pal,f);
-        $display("INFO: read %d bytes from pal.bin",rd_cnt);
-        $fclose(f);
-        //$finish;
-    end
-end
-`endif
-
-// Palette copy
-reg [8:0] pal_cnt;
-reg [2:0] pal_st;
-reg [2:0] rdpage, wrpage;
-reg [5:0] pal_en;
-//reg       pal_fist;
-
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        raw       <= 16'h0;
-        pal_cnt   <= 9'd0;
-        pal_st    <= 0;
-        vram_cs   <= 1'b0;
-        vram_addr <= 23'd0;
-    end else begin
-        raw <= pal[pal_addr];
-        `ifdef FORCE_GRAY
-        raw <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
-        `endif
-
-        case( pal_st )
-            0: begin
-
-                if( pal_copy ) begin
-                    vram_cs   <= 1'b0;
-                    rdpage    <= 3'd0;
-                    pal_en    <= pal_page_en;
-                    wrpage    <= 3'd0;
-                    busreq    <= 1;
-                    pal_st    <= 4;
-                end
-            end
-            1: begin
-                if( wrpage >= 3'd6 ) begin
-                    busreq  <= 1'b0;
-                    pal_st  <= 0; // done
-                    vram_cs <= 1'b0;
-                end else begin
-                    pal_en <= pal_en>>1;
-                    if( !pal_en[0] ) begin
-                        if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
-                        wrpage <= wrpage + 3'd1;
-                    end else begin
-                        pal_cnt   <= 9'd0;
-                        vram_cs   <= 1'b1;
-                        vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
-                        pal_st <= 2;
-                    end
-                end
-            end
-            2: pal_st <= 3; // wait state
-            3: if(vram_ok) begin
-                pal[ {wrpage , pal_cnt } ] <= vram_data;
-                pal_cnt <= pal_cnt + 9'd1;
-                if( &pal_cnt ) begin
-                    rdpage <= rdpage + 3'd1;
-                    wrpage <= wrpage + 3'd1;
-                    pal_st <= 1;
-                end
-                else begin
-                    vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
-                    pal_st <= 2;
-                end
-            end
-            4: if( busack ) pal_st <= 1;
-        endcase
     end
 end
 

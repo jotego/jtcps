@@ -12,6 +12,7 @@
 ../../hdl/jtcps1_stars.v
 ../../hdl/jtcps1_tilemap.v
 ../../hdl/jtcps1_colmix.v
+../../hdl/jtcps1_colram.v
 ../../hdl/jtcps1_obj.v
 ../../hdl/jtcps1_mmr.v
 ../../hdl/jtcps1_obj_table.v
