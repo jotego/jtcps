@@ -279,7 +279,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             end
             if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
-                if( !wait_cycles[0] && bus_busy ) fail_cnt<=fail_cnt+1;
+                if( !wait_cycles[0] && bus_busy && cen10 ) fail_cnt<=fail_cnt+1;
                 if (!bus_busy) DTACKn <= 1'b0;
             end
             else DTACKn <= 1'b0;
