@@ -1,0 +1,7 @@
+define XMSIMRC	( /cad/adi/apps/cadence/xlm/linux/18.03-s06/tools/xcelium/files/xmsimrc, ~/.xmsimrc )
+include ./hdlrun.var
+define SNAPSHOT worklib.jtcps1_sound:v
+DEFINE RUNMODEDEFAULT 1
+DEFINE LIB_MAP ( + => worklib )
+define ELAB_SNAPSHOT
+define SNAPSHOT worklib.jtcps1_sound:v

@@ -85,7 +85,7 @@ wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 
 reg  sim_start;
 reg  last_VB;
-wire ppu1_cs = (!last_VB && VB) || sim_start; // produce an OBJ DMA event at VB flank
+wire ppu1_cs = (last_VB && !VB) || sim_start; // produce an OBJ DMA event at VB flank
 // The first frame will start with the OBJ data from VRAM without filtering
 // as read from the obj.bin file. From the second frame on, the DMA process
 // decides the contents of the OBJ buffer.

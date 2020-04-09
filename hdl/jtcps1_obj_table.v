@@ -30,6 +30,7 @@
 module jtcps1_obj_table(
     input              rst,
     input              clk,
+    input              pxl_cen,
 
     input              obj_dma_ok,
     // BUS sharing
@@ -127,9 +128,9 @@ always @(posedge clk, posedge rst) begin
                     st        <= 2'd3;      // one clock cycle to let cache clear propagate
                 end
             end
-            2'd1: begin
+            2'd1: if(pxl_cen) begin
                 wait_cycle <= 1'b0;
-                if(vram_ok && !wait_cycle) begin
+                if(vram_ok && !wait_cycle && busack ) begin
                     if( vram_data[15:8]==8'hff && vram_cnt[2:1]==2'b00 ) begin
                         st<=2'd2; // fill
                     end else begin                   

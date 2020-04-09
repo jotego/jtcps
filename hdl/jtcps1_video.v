@@ -148,7 +148,8 @@ jtcps1_dma u_dma(
     .rst            ( rst               ),
     .clk            ( clk               ),
     .pxl_cen        ( pxl_cen           ),
-
+    .HB             ( HB                ),
+    
     .br_obj         ( busreq_obj        ),
     .bg_obj         ( busack_obj        ),
 

@@ -68,6 +68,7 @@ wire        buf_wr;
 jtcps1_obj_table u_table(
     .rst            ( rst           ),
     .clk            ( clk           ),
+    .pxl_cen        ( pxl_cen       ),
     .obj_dma_ok     ( obj_dma_ok    ),
     // BUS sharing
     .busreq         ( busreq        ),

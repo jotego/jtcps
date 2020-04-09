@@ -22,6 +22,7 @@ module jtcps1_dma(
     input              rst,
     input              clk,
     input              pxl_cen,
+    input              HB,
 
     input              br_obj,
     output reg         bg_obj,
@@ -34,9 +35,12 @@ module jtcps1_dma(
 );
 
 reg [1:0] bus_master;
-reg       last_bg;
+reg [3:0] line_cnt;
+reg       last_HB;
+wire      HB_edge = !last_HB && HB;
 
-localparam OBJ=0, PAL=1;
+localparam LINE=0, PAL=1;
+localparam OBJ_START=4'd3, OBJ_END=4'd11;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -44,21 +48,27 @@ always @(posedge clk, posedge rst) begin
         bus_master <= 2'b0;
         bg_obj     <= 1'b0;
         bg_pal     <= 1'b0;
+        line_cnt   <= 4'd0;
     end else begin
-        last_bg <= bg;
+        last_HB <= HB;
         br      <= bus_master != 2'b00;
-        bg_obj  <= bus_master[OBJ] ? bg : 1'b0;
-        bg_pal  <= bus_master[PAL] ? bg : 1'b0;
+        bg_pal  <= bus_master[PAL]  ? bg : 1'b0;
         if( !bus_master ) begin
-            if( br_obj ) begin
-                bus_master <= 2'b01 << OBJ;
-            end else
             if( br_pal ) begin
                 bus_master <= 2'b01 << PAL;
+            end else if( HB_edge) begin
+                bus_master <= 2'b01 << LINE;
+                line_cnt   <= 4'd0;
             end
         end else begin
-            if( !br_obj && bus_master[OBJ] ) bus_master <= 2'b0;
-            if( !br_pal && bus_master[PAL] ) bus_master <= 2'b0;
+            if( !br_pal && bus_master[PAL] ) bus_master[PAL] <= 1'b0;
+            if( bus_master[LINE] && pxl_cen && bg ) begin
+                // Line DMA transfer takes 2us
+                line_cnt <= line_cnt + 4'd1;
+                if( &line_cnt ) bus_master[LINE] <= 1'b0;
+                if( line_cnt == OBJ_START && br_obj ) bg_obj <= 1'b1;
+                if( line_cnt == OBJ_END ) bg_obj <= 1'b0;
+            end
         end
     end
 end

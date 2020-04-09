@@ -1,0 +1,470 @@
+xrun: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+TOOL:	xrun	18.03-s006: Started on Mar 25, 2020 at 16:42:37 CET
+xrun
+	-hal
+	-gui
+	-clean
+	jtcps1_sound.v
+xrun: *N,CLEAN: Removing existing directory ./xcelium.d.
+file: jtcps1_sound.v
+	module worklib.jtcps1_sound:v
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_fmcen of design unit 'jtframe_cen3p57' is unresolved in 'worklib.jtcps1_sound:v'.
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_okicen of design unit 'jtframe_frac_cen' is unresolved in 'worklib.jtcps1_sound:v'.
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_ram of design unit 'jtframe_ram' is unresolved in 'worklib.jtcps1_sound:v'.
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_cpu of design unit 'jtframe_z80_romwait' is unresolved in 'worklib.jtcps1_sound:v'.
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_jt51 of design unit 'jt51' is unresolved in 'worklib.jtcps1_sound:v'.
+xmelab: *N,CUVBPD: instance jtcps1_sound.u_adpcm of design unit 'jt6295' is unresolved in 'worklib.jtcps1_sound:v'.
+	Top level design units:
+		jtcps1_sound
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.jtcps1_sound:v <0x392de999>
+			streams:  25, words:  8163
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		             Instances  Unique
+		Modules:             1       1
+		Registers:          27      27
+		Scalar wires:       24       -
+		Vectored wires:     13       -
+		Always blocks:       5       5
+		Cont. assignments:   4       6
+	Writing initial simulation snapshot: worklib.jtcps1_sound:v
+hal: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+hal: Options:   -cdslib ./xcelium.d/run.lnx86.18.03.d/cds.lib -logfile xrun.log -f /nobackup/jtejada/git/jtcps1/hdl/xcelium.d/run.lnx86.18.03.d/hal.args .
+hal: Snapshot:  worklib.jtcps1_sound:v.
+hal: *W,PRTSNP: Design is partially elaborated. Connectivity information may not be complete.
+hal: Workspace: /nobackup/jtejada/git/jtcps1/hdl.
+hal: Date: Wed Mar 25 16:42:39 CET 2020.
+
+hal: Running on elaborated SNAPSHOT.....
+
+  ==========================================================================
+Performing lint checks 
+
+halcheck: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+visadev: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+module jtcps1_sound(
+|
+halcheck: *N,PRTCNT (./jtcps1_sound.v,19|0): Module/Entity 'jtcps1_sound' contains '17' ports.
+halcheck: (./jtcps1_sound.v,19): Number of Input ports: 10.
+halcheck: (./jtcps1_sound.v,19): Number of Output ports: 7.
+    .n          ( 10'd1             ),
+|
+halcheck: *W,IPRTEX (./jtcps1_sound.v,75|0): A constant is used in a port expression.
+    .m          ( 10'd48            ),
+|
+halcheck: *W,IPRTEX (./jtcps1_sound.v,76|0): A constant is used in a port expression.
+    .cen        ( { nc, cen_oki }   ),
+|
+halcheck: *W,EXPIPC (./jtcps1_sound.v,77|0): Formal port 'cen' of instance 'u_okicen' is connected to an expression.
+    .cen    ( 1'b1     ),
+|
+halcheck: *W,IPRTEX (./jtcps1_sound.v,131|0): A constant is used in a port expression.
+    .nmi_n      ( 1'b1        ),
+|
+halcheck: *W,IPRTEX (./jtcps1_sound.v,168|0): A constant is used in a port expression.
+    .busrq_n    ( 1'b1        ),
+|
+halcheck: *W,IPRTEX (./jtcps1_sound.v,169|0): A constant is used in a port expression.
+    input   [7:0]   snd_latch0,
+|
+halcheck: *W,NUMSUF (./jtcps1_sound.v,24|0): Identifier 'snd_latch0' has a numeric value suffix.
+    input   [7:0]   snd_latch0,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,24|0): Numeric value '7' used for identifier 'snd_latch0'. Use constants to avoid portability issues.
+    input   [7:0]   snd_latch1,
+|
+halcheck: *W,NUMSUF (./jtcps1_sound.v,25|0): Identifier 'snd_latch1' has a numeric value suffix.
+    input   [7:0]   snd_latch1,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,25|0): Numeric value '7' used for identifier 'snd_latch1'. Use constants to avoid portability issues.
+    output  reg [15:0]  rom_addr,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,31|0): Numeric value '15' used for identifier 'rom_addr'. Use constants to avoid portability issues.
+    input       [ 7:0]  rom_data,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,33|0): Numeric value '7' used for identifier 'rom_data'. Use constants to avoid portability issues.
+    output      [17:0]       adpcm_addr,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,37|0): Numeric value '17' used for identifier 'adpcm_addr'. Use constants to avoid portability issues.
+    input       [ 7:0]       adpcm_data,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,39|0): Numeric value '7' used for identifier 'adpcm_data'. Use constants to avoid portability issues.
+    output reg signed [15:0] left,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,43|0): Numeric value '15' used for identifier 'left'. Use constants to avoid portability issues.
+    output reg signed [15:0] right,
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,44|0): Numeric value '15' used for identifier 'right'. Use constants to avoid portability issues.
+wire signed [13:0] adpcm_snd;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,50|0): Numeric value '13' used for identifier 'adpcm_snd'. Use constants to avoid portability issues.
+wire signed [15:0] fm_left, fm_right;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,51|0): Numeric value '15' used for identifier 'fm_left'. Use constants to avoid portability issues.
+(*keep*) wire [15:0] A;
+|
+halcheck: *W,LCVARN (./jtcps1_sound.v,86|0): Net name 'A' uses uppercase characters.
+(*keep*) wire [15:0] A;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,86|0): Numeric value '15' used for identifier 'A'. Use constants to avoid portability issues.
+wire WRn, oki_wrn;
+|
+halcheck: *W,LCVARN (./jtcps1_sound.v,90|0): Net name 'WRn' uses uppercase characters.
+wire [7:0] oki_dout;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,95|0): Numeric value '7' used for identifier 'oki_dout'. Use constants to avoid portability issues.
+wire RAM_we = ram_cs && !WRn;
+|
+halcheck: *W,LCVARN (./jtcps1_sound.v,114|0): Net name 'RAM_we' uses uppercase characters.
+wire [7:0] ram_dout, dout, fm_dout;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,115|0): Numeric value '7' used for identifier 'ram_dout'. Use constants to avoid portability issues.
+reg [7:0] din, cmd_latch, dev_latch, mem_latch;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,141|0): Numeric value '7' used for identifier 'din'. Use constants to avoid portability issues.
+always @(posedge clk) begin
+|
+halcheck: *W,NOBLKN (./jtcps1_sound.v,62|0): Each block should be labeled with a meaningful name.
+    left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
+|
+halcheck: *W,NEQPRM (./jtcps1_sound.v,63|0): Size mismatch between formal 'adpcm' and actual 'adpcm_snd' parameters of function 'sum_snd'.
+halcheck: (./jtcps1_sound.v,57): Formal parameter 'adpcm' is of 16 bit(s).
+halcheck: (./jtcps1_sound.v,50): Actual parameter 'adpcm_snd' is of 14 bit(s).
+halcheck: (./jtcps1_sound.v,63): Actual parameter will be padded with 2 bit(s).
+    right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+|
+halcheck: *W,NEQPRM (./jtcps1_sound.v,64|0): Size mismatch between formal 'adpcm' and actual 'adpcm_snd' parameters of function 'sum_snd'.
+halcheck: (./jtcps1_sound.v,57): Formal parameter 'adpcm' is of 16 bit(s).
+halcheck: (./jtcps1_sound.v,50): Actual parameter 'adpcm_snd' is of 14 bit(s).
+halcheck: (./jtcps1_sound.v,64): Actual parameter will be padded with 2 bit(s).
+always @(posedge clk) begin
+|
+halcheck: *W,NOBLKN (./jtcps1_sound.v,82|0): Each block should be labeled with a meaningful name.
+always @(posedge clk) begin
+|
+halcheck: *W,NOBLKN (./jtcps1_sound.v,99|0): Each block should be labeled with a meaningful name.
+always @(posedge clk, posedge rst) begin
+|
+halcheck: *W,NOBLKN (./jtcps1_sound.v,119|0): Each block should be labeled with a meaningful name.
+        if(bank_cs) bank <= dout[0];
+|
+halcheck: *W,NBGEND (./jtcps1_sound.v,124|0): Missing begin/end statement in the 'if' block.
+        if(bank_cs) bank <= dout[0];
+|
+halcheck: *W,SEPLIN (./jtcps1_sound.v,124|0): Use a separate line for each HDL statement.
+        if(oki7_cs) oki7 <= dout[0];
+|
+halcheck: *W,NBGEND (./jtcps1_sound.v,125|0): Missing begin/end statement in the 'if' block.
+        if(oki7_cs) oki7 <= dout[0];
+|
+halcheck: *W,SEPLIN (./jtcps1_sound.v,125|0): Use a separate line for each HDL statement.
+always @(posedge clk) begin
+|
+halcheck: *W,NOBLKN (./jtcps1_sound.v,144|0): Each block should be labeled with a meaningful name.
+    case( 1'b1 )
+|
+halcheck: *W,CSTEXP (./jtcps1_sound.v,151|0): A variable/Expression is used for items of a case statement.
+halcheck: (./jtcps1_sound.v,152): A variable 'dev_cs' is used.
+halcheck: (./jtcps1_sound.v,153): A variable 'latch_cs' is used.
+halcheck: (./jtcps1_sound.v,154): A variable 'mem_cs' is used.
+    case( 1'b1 )
+|
+halcheck: *W,CONSTC (./jtcps1_sound.v,151|0): Constant conditional expression encountered.
+    input signed [15:0] fm;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,56|0): Numeric value '15' used for identifier 'fm'. Use constants to avoid portability issues.
+    input signed [15:0] adpcm;
+|
+halcheck: *W,STYVAL (./jtcps1_sound.v,57|0): Numeric value '15' used for identifier 'adpcm'. Use constants to avoid portability issues.
+    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
+|
+halcheck: *W,IPUFSE (./jtcps1_sound.v,58|0): Expression '((enable_fm ? {{1{fm[15]}},fm[15:1]}:16'd0)) + ((enable_adpcm ? {{1{adpcm[13]}},adpcm,adpcm[12]}:16'd0))' implicitly converted to type 'signed' from type 'unsigned' in module/design-unit jtcps1_sound.
+    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
+|
+halcheck: *W,POIASG (./jtcps1_sound.v,58|0): The result of addition operation may lead to a potential overflow in module/design-unit jtcps1_sound.
+halcheck: (./jtcps1_sound.v,58): LHS operand 'sum_snd' is 16 bit(s), RHS operand '((enable_fm ? {{1{fm...' is 19 bit(s).
+halcheck: (./jtcps1_sound.v,58): Increase the size of LHS by 3 bit(s).
+    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
+|
+halcheck: *W,LRGOPR (./jtcps1_sound.v,58|0): Arithmetic or relational operation performed on large operands in module/design-unit jtcps1_sound.
+    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
+|
+halcheck: *W,UELOPR (./jtcps1_sound.v,58|0): Unequal length operand in bit/arithmetic operator PLUS in module/design-unit jtcps1_sound.
+halcheck: (./jtcps1_sound.v,58): LHS operand '(enable_fm ? {{1{fm[...' is 16 bits, RHS operand '(enable_adpcm ? {{1{...' is 18 bits.
+        (enable_adpcm ? { {1{adpcm[13]}}, adpcm, adpcm[12] } : 16'd0 );
+|
+halcheck: *W,MXUANS (./jtcps1_sound.v,59|0): Expression '{{1{adpcm[13]}},...' in module/design-unit jtcps1_sound has both signed and unsigned variables/constants.
+halcheck: (./jtcps1_sound.v,59): Variable 'adpcm' is signed.
+halcheck: (./jtcps1_sound.v,59): Variable 'adpcm[12]' is unsigned.
+halcheck: (./jtcps1_sound.v,59): Variable 'adpcm[13]' is unsigned.
+    input signed [15:0] fm;
+|
+halcheck: *W,USEPRT (./jtcps1_sound.v,56|0): The input/inout port 'fm[0]' defined in the function 'sum_snd' is unused (neither read nor assigned).
+jtframe_z80_romwait u_cpu(
+|
+halcheck: *N,IDLENG (./jtcps1_sound.v,162|0): Identifier name 'jtframe_z80_romwait' is not of appropriate length (4 to 16 characters).
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,48|0): Wire 'pre_fm' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,48|0): Wire 'pre_fm2' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,48|0): Wire 'cen_oki' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,48|0): Wire 'nc' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire pre_fm, pre_fm2, cen_oki, nc, cpu_cen;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,48|0): Wire 'cpu_cen' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire signed [13:0] adpcm_snd;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,50|0): Wire 'adpcm_snd' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire signed [15:0] fm_left, fm_right;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,51|0): Wire 'fm_left' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire signed [15:0] fm_left, fm_right;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,51|0): Wire 'fm_right' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+(*keep*) wire [15:0] A;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,86|0): Wire 'A' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+(*keep*) wire mreq_n, int_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,89|0): Wire 'mreq_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+(*keep*) wire mreq_n, int_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,89|0): Wire 'int_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire [7:0] oki_dout;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,95|0): Wire 'oki_dout' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire rd_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,111|0): Wire 'rd_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire wr_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,112|0): Wire 'wr_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire [7:0] ram_dout, dout, fm_dout;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,115|0): Wire 'ram_dout' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire [7:0] ram_dout, dout, fm_dout;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,115|0): Wire 'dout' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire [7:0] ram_dout, dout, fm_dout;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,115|0): Wire 'fm_dout' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire iorq_n, m1_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,159|0): Wire 'iorq_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+wire iorq_n, m1_n;
+|
+halcheck: *W,UASWIR (./jtcps1_sound.v,159|0): Wire 'm1_n' defined in module 'jtcps1_sound' is unassigned, but drives at least an object.
+(*keep*) wire irq_ack = !iorq_n && !m1_n;
+|
+halcheck: *W,URDWIR (./jtcps1_sound.v,160|0): Wire 'irq_ack' defined in module 'jtcps1_sound' does not drive any object, but is assigned at least once.
+halcheck: Total errors   = 0.
+halcheck: Total warnings = 66.
+
+  ==========================================================================
+Performing synthesizability checks 
+
+cfe: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+halsynth: Loading design snapshot....
+halsynth: Traversing design hierarchy....
+jtframe_cen3p57 u_fmcen(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,67|0): Component instance is not fully bound (u_fmcen).
+jtframe_frac_cen u_okicen(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,73|0): Component instance is not fully bound (u_okicen).
+jtframe_ram #(.aw(11)) u_ram(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,129|0): Component instance is not fully bound (u_ram).
+jtframe_z80_romwait u_cpu(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,162|0): Component instance is not fully bound (u_cpu).
+jt51 u_jt51(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,186|0): Component instance is not fully bound (u_jt51).
+jt6295 u_adpcm(
+|
+halsynth: *W,UNCINW (./jtcps1_sound.v,213|0): Component instance is not fully bound (u_adpcm).
+    output      [17:0]       adpcm_addr,
+|
+halsynth: *W,UNDRIV (./jtcps1_sound.v,37|0): Primary output/inout 'adpcm_addr'  is not driven in the module 'jtcps1_sound'.
+    output                   sample
+|
+halsynth: *W,UNDRIV (./jtcps1_sound.v,45|0): Primary output/inout 'sample'  is not driven in the module 'jtcps1_sound'.
+halsynth: Total errors   = 0.
+halsynth: Total warnings = 8.
+
+  ==========================================================================
+Performing structural checks 
+
+halstruct: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+visadev: 18.03-s006: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+assign adpcm_cs = 1'b1;
+|
+halstruct: *W,TIELOG (./jtcps1_sound.v,211|0): The output/inout 'adpcm_cs' is assigned a constant logic value.
+(*keep*) wire irq_ack = !iorq_n && !m1_n;
+|
+halstruct: *N,INFNOT (./jtcps1_sound.v,160|0): Ignoring wire 'irq_ack' with no fanout to module/design-unit outputs or child instances.
+    left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,63|0): Flip-flop 'left' does not have any set or reset.
+    input           clk,    
+|
+halstruct: *N,CLKINF (./jtcps1_sound.v,21|0): Signal 'jtcps1_sound.clk' was inferred as clock.
+halstruct: (./jtcps1_sound.v,21): Clock source is signal 'jtcps1_sound.clk'.
+halstruct: (./jtcps1_sound.v,63): Drives the flip-flop 'jtcps1_sound.left'.
+    right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,64|0): Flip-flop 'right' does not have any set or reset.
+    { cen_fm, cen_fm2 } <= { pre_fm, pre_fm2 };
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,83|0): Flip-flop 'cen_fm2' does not have any set or reset.
+    { cen_fm, cen_fm2 } <= { pre_fm, pre_fm2 };
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,83|0): Flip-flop 'cen_fm' does not have any set or reset.
+    rom_cs    <= !mreq_n && (!A[15] || A[15:14]==2'b10);
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,100|0): Flip-flop 'rom_cs' does not have any set or reset.
+    rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,101|0): Flip-flop 'rom_addr[13:0]' does not have any set or reset.
+    rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,101|0): Flip-flop 'rom_addr[14]' does not have any set or reset.
+    rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
+|
+halstruct: *W,FFWASR (./jtcps1_sound.v,101|0): Flip-flop 'rom_addr[15]' does not have any asynchronous set or reset.
+    rom_addr  <= A[15] ? { 1'b1, bank, A[13:0] } : { 1'b0, A[14:0] };
+|
+halstruct: *W,FFCSTD (./jtcps1_sound.v,101|0): Inferred flip-flop 'rom_addr[15]' has a constant data input.
+    ram_cs    <= !mreq_n && A[15:12] == 4'b1101;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,102|0): Flip-flop 'ram_cs' does not have any set or reset.
+    fm_cs     <= io_cs && A[3:1]==3'd0;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,103|0): Flip-flop 'fm_cs' does not have any set or reset.
+    oki_cs    <= io_cs && A[3:1]==3'd1;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,104|0): Flip-flop 'oki_cs' does not have any set or reset.
+    bank_cs   <= io_cs && A[3:1]==3'd2;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,105|0): Flip-flop 'bank_cs' does not have any set or reset.
+    oki7_cs   <= io_cs && A[3:1]==3'd3;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,106|0): Flip-flop 'oki7_cs' does not have any set or reset.
+    latch0_cs <= io_cs && A[3:1]==3'd4;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,107|0): Flip-flop 'latch0_cs' does not have any set or reset.
+    latch1_cs <= io_cs && A[3:1]==3'd5;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,108|0): Flip-flop 'latch1_cs' does not have any set or reset.
+        if(bank_cs) bank <= dout[0];
+|
+halstruct: *W,MRSTDT (./jtcps1_sound.v,124|0): Design uses a mix of both synchronous and asynchronous set/reset.
+halstruct: (./jtcps1_sound.v,124): One instance of latch/flip-flop using asynchronous logic is: jtcps1_sound.bank.
+halstruct: (./jtcps1_sound.v,101): One instance of latch/flip-flop using synchronous logic is: jtcps1_sound.rom_addr[15].
+        if(bank_cs) bank <= dout[0];
+|
+halstruct: *W,ASNRST (./jtcps1_sound.v,124|0): Flip-flop 'jtcps1_sound.bank' has 'active_high' asynchronous set/reset 'rst' as against the recommended 'active_low' style.
+        if(bank_cs) bank <= dout[0];
+|
+halstruct: *N,FFASRT (./jtcps1_sound.v,124|0): Flip-flop 'bank' has an asynchronous reset 'rst'.
+        if(oki7_cs) oki7 <= dout[0];
+|
+halstruct: *W,ASNRST (./jtcps1_sound.v,125|0): Flip-flop 'jtcps1_sound.oki7' has 'active_high' asynchronous set/reset 'rst' as against the recommended 'active_low' style.
+        if(oki7_cs) oki7 <= dout[0];
+|
+halstruct: *N,FFASRT (./jtcps1_sound.v,125|0): Flip-flop 'oki7' has an asynchronous reset 'rst'.
+    cmd_latch <= latch0_cs ? snd_latch0 : snd_latch1;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,145|0): Flip-flop 'cmd_latch' does not have any set or reset.
+    latch_cs  <= latch1_cs | latch0_cs;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,146|0): Flip-flop 'latch_cs' does not have any set or reset.
+    dev_latch <= fm_cs ? fm_dout : oki_dout;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,147|0): Flip-flop 'dev_latch' does not have any set or reset.
+    dev_cs    <= fm_cs | oki_cs;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,148|0): Flip-flop 'dev_cs' does not have any set or reset.
+    mem_latch <= ram_cs ? ram_dout : rom_data;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,149|0): Flip-flop 'mem_latch' does not have any set or reset.
+    mem_cs    <= ram_cs | rom_cs;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,150|0): Flip-flop 'mem_cs' does not have any set or reset.
+        default:   din <= 8'hff;
+|
+halstruct: *W,FFWNSR (./jtcps1_sound.v,155|0): Flip-flop 'din' does not have any set or reset.
+module jtcps1_sound(
+|
+halstruct: *W,ATLGLC (./jtcps1_sound.v,19|0): Glue logic inferred in top-level module/design-unit 'jtcps1_sound'.
+halstruct: (./jtcps1_sound.v,93): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,97): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,114): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,117): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,160): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,211): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,63): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,64): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,83): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,100): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,101): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,102): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,103): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,104): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,105): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,106): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,107): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,108): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,124): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,125): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,145): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,146): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,147): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,148): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,149): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,150): HDL-statement inferred as glue logic.
+halstruct: (./jtcps1_sound.v,155): HDL-statement inferred as glue logic.
+module jtcps1_sound(
+|
+halstruct: *N,NUMDFF (./jtcps1_sound.v,19|0): Number of single-bit D flip-flops present in the hierarchy is 95.
+halstruct: Design facts generated in 'hal.design_facts'.
+halstruct: Total errors   = 0.
+halstruct: Total warnings = 28.
+
+  ==========================================================================
+
+Analysis summary :
+
+ Warnings : (103)
+  ASNRST (2)      ATLGLC (1)      CONSTC (1)      CSTEXP (1)     
+  EXPIPC (1)      FFCSTD (1)      FFWASR (1)      FFWNSR (21)    
+  IPRTEX (5)      IPUFSE (1)      LCVARN (3)      LRGOPR (1)     
+  MRSTDT (1)      MXUANS (1)      NBGEND (2)      NEQPRM (2)     
+  NOBLKN (5)      NUMSUF (2)      POIASG (1)      PRTSNP (1)     
+  SEPLIN (2)      STYVAL (16)     TIELOG (1)      UASWIR (19)    
+  UELOPR (1)      UNCINW (6)      UNDRIV (2)      URDWIR (1)     
+  USEPRT (1)     
+
+ Notes    : (14)
+  CLEAN (1)      CLKINF (1)      CUVBPD (6)      FFASRT (2)     
+  IDLENG (1)      INFNOT (1)      NUMDFF (1)      PRTCNT (1)     
+
+Analysis complete.
+
+ ==========================================================================
+
+TOOL:	xrun	18.03-s006: Exiting on Mar 25, 2020 at 16:52:36 CET  (total: 00:09:59)

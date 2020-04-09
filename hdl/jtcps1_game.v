@@ -299,7 +299,6 @@ assign main_rnw = 1'b1;
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst           ),
     .clk            ( clk           ),
-    .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
 
     .hdump          ( hdump         ),
