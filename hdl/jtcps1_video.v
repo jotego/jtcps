@@ -61,11 +61,6 @@ module jtcps1_video(
     input   [ 9:0]  joystick4,
 
     // Video RAM interface
-    output     [17:1]  vram1_addr,
-    input      [15:0]  vram1_data,
-    input              vram1_ok,
-    output             vram1_cs,
-
     output     [17:1]  vram_dma_addr,
     input      [15:0]  vram_dma_data,
     input              vram_dma_ok,
@@ -138,6 +133,9 @@ wire       [ 5:0]  game;
 wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
+wire       [ 7:0]  tile_addr;
+wire       [15:0]  tile_data;
+
 wire               obj_dma_ok, busreq_obj, busreq_pal;
 
 jtcps1_dma u_dma(
@@ -145,7 +143,24 @@ jtcps1_dma u_dma(
     .clk            ( clk               ),
     .pxl_cen        ( pxl_cen           ),
     .HB             ( HB                ),
-    
+    .vrender        ( vrender           ),
+    .flip           ( flip              ),
+
+    .tile_addr      ( tile_addr         ),
+    .tile_data      ( tile_data         ),
+
+    .vram1_base     ( vram1_base        ),
+    .hpos1          ( hpos1             ),
+    .vpos1          ( vpos1             ),
+
+    .vram2_base     ( vram2_base        ),
+    .hpos2          ( hpos2             ),
+    .vpos2          ( vpos2             ),
+
+    .vram3_base     ( vram3_base        ),
+    .hpos3          ( hpos3             ),
+    .vpos3          ( vpos3             ),
+
     .br_obj         ( busreq_obj        ),
     .bg_obj         ( busack_obj        ),
     .vram_obj_addr  ( vram_obj_addr     ),
@@ -157,6 +172,8 @@ jtcps1_dma u_dma(
     .br             ( busreq            ),
     .bg             ( busack            ),
     .vram_addr      ( vram_dma_addr     ),
+    .vram_data      ( vram_dma_data     ),
+    .vram_ok        ( vram_dma_ok       ),
     .vram_clr       ( vram_dma_clr      ),
     .vram_cs        ( vram_dma_cs       )
 );
@@ -269,15 +286,12 @@ jtcps1_scroll u_scroll(
     .VB         ( VB            ),
     .HB         ( HB            ),
     
-    .vram1_base ( vram1_base    ),
     .hpos1      ( hpos1         ),
     .vpos1      ( vpos1         ),
 
-    .vram2_base ( vram2_base    ),
     .hpos2      ( hpos2         ),
     .vpos2      ( vpos2         ),
 
-    .vram3_base ( vram3_base    ),
     .hpos3      ( hpos3         ),
     .vpos3      ( vpos3         ),
 
@@ -296,12 +310,11 @@ jtcps1_scroll u_scroll(
     .bank_offset( bank_offset   ),
     .bank_mask  ( bank_mask     ),
 
-    .start      ( line_start    ),
+    .start      ( ~HB           ),
 
-    .vram_addr  ( vram1_addr    ),
-    .vram_data  ( vram1_data    ),
-    .vram_ok    ( vram1_ok      ),
-    .vram_cs    ( vram1_cs      ),
+    .tile_addr  ( tile_addr     ),
+    .tile_data  ( tile_data     ),
+
     .rom_addr   ( rom1_addr     ),
     .rom_data   ( rom1_data     ),
     .rom_cs     ( rom1_cs       ),
@@ -318,8 +331,6 @@ jtcps1_scroll u_scroll(
 `else 
 assign rom1_cs    = 1'b0;
 assign rom1_addr  = 20'd0;
-assign vram1_cs   = 1'b0;
-assign vram1_addr = 17'd0;
 assign scr1_pxl   = 11'h1ff;
 assign scr2_pxl   = 11'h1ff;
 assign scr3_pxl   = 11'h1ff;

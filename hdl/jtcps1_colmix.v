@@ -65,7 +65,6 @@ module jtcps1_colmix(
     output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
-    output             vram_cs,
 
     (*keep*) output reg [7:0]  red,
     (*keep*) output reg [7:0]  green,
@@ -104,8 +103,7 @@ jtcps1_colram u_colram(
     // VRAM access
     .vram_addr  ( vram_addr     ),
     .vram_data  ( vram_data     ),
-    .vram_ok    ( vram_ok       ),
-    .vram_cs    ( vram_cs       )
+    .vram_ok    ( vram_ok       )
 );
 
 // These are the top four bits written by CPS-B to each

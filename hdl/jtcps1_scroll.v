@@ -35,9 +35,6 @@ module jtcps1_scroll(
     input              VB,
     input              HB,
     // control registers
-    input      [15:0]  vram1_base,
-    input      [15:0]  vram2_base,
-    input      [15:0]  vram3_base,
     input      [15:0]  hpos1,
     input      [15:0]  vpos1,
     input      [15:0]  hpos2,
@@ -56,10 +53,8 @@ module jtcps1_scroll(
 
     input              start,
 
-    output     [17:1]  vram_addr,
-    input      [15:0]  vram_data,
-    input              vram_ok,
-    output             vram_cs,
+    output     [ 7:0]  tile_addr,
+    input      [15:0]  tile_data,
 
     // ROM banks
     input      [ 5:0]  game,
@@ -87,7 +82,7 @@ wire [10:0] buf_data;
 wire [ 8:0] buf_addr;
 wire        buf_wr;
 
-reg  [15:0] hpos, vpos, vram_base;
+reg  [15:0] hpos, vpos;
 reg  [ 2:0] st;
 wire        sub_done;
 
@@ -216,7 +211,6 @@ always @(posedge clk, posedge rst) begin
             pre_start <= 1'b1;
             hpos      <= hpos1;
             vpos      <= vpos1;
-            vram_base <= vram1_base;
         end else if( busy ) begin
             pre_start <= 1'b0;
             sub_start <= pre_start;
@@ -226,7 +220,6 @@ always @(posedge clk, posedge rst) begin
                         vram_row  <= { vram_row_base[9:1], 8'd0 } + { 7'd0, row_offset[9:0] + vrender };
                         hpos      <= hpos2;
                         vpos      <= vpos2;
-                        vram_base <= vram2_base;
                         pre_start <= 1'b1;
                         st        <= 3'b10;
                     end
@@ -235,7 +228,6 @@ always @(posedge clk, posedge rst) begin
                     if( sub_done ) begin
                         hpos      <= hpos3;
                         vpos      <= vpos3;
-                        vram_base <= vram3_base;
                         pre_start <= 1'b1;
                         st        <= 3'b100;
                     end
@@ -263,21 +255,15 @@ jtcps1_tilemap u_tilemap(
     .bank_offset( bank_offset   ),
     .bank_mask  ( bank_mask     ),
 
-    .vram_base  ( vram_base     ),
     .hpos       ( hpos          ),
     .vpos       ( vpos          ),
-
-    .vram_row   ( vram_row      ),
-    .row_en     ( row_en        ),
 
     .start      ( sub_start     ),
     .stop       ( pedg_start    ),
     .done       ( sub_done      ),
 
-    .vram_addr  ( vram_addr     ),
-    .vram_data  ( vram_data     ),
-    .vram_ok    ( vram_ok       ),
-    .vram_cs    ( vram_cs       ),
+    .tile_addr  ( tile_addr     ),
+    .tile_data  ( tile_data     ),
 
     .rom_addr   ( rom_addr      ),    // up to 1 MB
     .rom_half   ( rom_half      ),    // selects which half to read

@@ -16,13 +16,14 @@
     Version: 1.0
     Date: 13-1-2020 */
 
-// Colour palette seems to be copied at a pace of 16 entries per image line
-// This makes sense because if the whole palette was copied at once it would
-// take a lot of time from the CPU.
-// At 8MHz, the whole palette needs 512us, which is the equivalent of 8 lines
-// PCB measurements show that there are 2us bus requests once per line,
-// 2us = 16/8MHz and 16*256 = 4096. So the whole palette can be coppied
-// over a period of a whole frame but just 2us at a time
+// PCB measurements show that palette is read at 4MHz. There are 3072+60 cycles
+// It takes 783us to copy the full palette in the SF2 CE PCB.
+// This module takes 768.5us because the ammount of extra cycles is different.
+// The extra 60 cycles may be needed by the original DMA state machine
+// It doesn't seem that the extra 60 cycles (15us) are due to other DMA operations
+// because the numbers don't add up.
+// For now, I don't do anything about those 15us because I still don't understand
+// where they come from
     
 `timescale 1ns/1ps
 
@@ -50,8 +51,7 @@ module jtcps1_colram(
     // VRAM access
     output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
-    input              vram_ok,
-    output reg         vram_cs
+    input              vram_ok
 );
 
 reg [15:0] pal[0:(2**12)-1]; // 4096?
@@ -59,7 +59,7 @@ reg [15:0] pal[0:(2**12)-1]; // 4096?
 
 // Palette copy
 reg [8:0] pal_cnt;
-reg [3:0] pal_st;
+reg [2:0] pal_st;
 reg [2:0] rdpage, wrpage;
 reg [5:0] pal_en;
 //reg       pal_fist;
@@ -74,7 +74,6 @@ always @(posedge clk, posedge rst) begin
         pal_data  <= 16'h0;
         pal_cnt   <= 9'd0;
         pal_st    <= 0;
-        vram_cs   <= 1'b0;
         vram_addr <= 23'd0;
         busreq    <= 1'b0;
     end else begin
@@ -82,62 +81,51 @@ always @(posedge clk, posedge rst) begin
         `ifdef FORCE_GRAY
         pal_data <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
         `endif
+        if( pxl_cen ) begin
+            case( pal_st )
+                0: begin
 
-        case( pal_st )
-            0: begin
-
-                if( pal_copy ) begin
-                    vram_cs   <= 1'b0;
-                    rdpage    <= 3'd0;
-                    pal_en    <= pal_page_en;
-                    wrpage    <= 3'd0;
-                    busreq    <= 1;
-                    pal_st    <= 4;
+                    if( pal_copy ) begin
+                        rdpage    <= 3'd0;
+                        pal_en    <= pal_page_en;
+                        wrpage    <= 3'd0;
+                        busreq    <= 1;
+                        pal_st    <= 4;
+                    end
                 end
-            end
-            1: begin
-                if( wrpage >= 3'd6 ) begin
-                    busreq  <= 1'b0;
-                    pal_st  <= 0; // done
-                    vram_cs <= 1'b0;
-                end else begin
-                    pal_en <= pal_en>>1;
-                    if( !pal_en[0] ) begin
-                        if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
-                        wrpage <= wrpage + 3'd1;
+                1: begin
+                    if( wrpage >= 3'd6 ) begin
+                        busreq  <= 1'b0;
+                        pal_st  <= 0; // done
                     end else begin
-                        pal_cnt   <= 9'd0;
-                        vram_cs   <= 1'b1;
-                        vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
+                        pal_en <= pal_en>>1;
+                        if( !pal_en[0] ) begin
+                            if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
+                            wrpage <= wrpage + 3'd1;
+                        end else begin
+                            pal_cnt   <= 9'd0;
+                            vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
+                            pal_st <= 2;
+                        end
+                    end
+                end
+                2: pal_st <= 3; // wait state
+                3: if(vram_ok) begin
+                    pal[ {wrpage , pal_cnt } ] <= vram_data;
+                    pal_cnt <= pal_cnt + 9'd1;
+                    if( &pal_cnt ) begin
+                        rdpage <= rdpage + 3'd1;
+                        wrpage <= wrpage + 3'd1;
+                        pal_st <= 1;
+                    end
+                    else begin
+                        vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
                         pal_st <= 2;
                     end
                 end
-            end
-            2: if(pxl_cen) pal_st <= 3; // wait state
-            3: if(vram_ok) begin
-                pal[ {wrpage , pal_cnt } ] <= vram_data;
-                pal_cnt <= pal_cnt + 9'd1;
-                if( &pal_cnt ) begin
-                    rdpage <= rdpage + 3'd1;
-                    wrpage <= wrpage + 3'd1;
-                    pal_st <= 1;
-                end
-                else begin
-                    vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
-                    pal_st <= 2;
-                    if( &pal_cnt[3:0] ) begin
-                        pal_st <= 5;
-                        busreq <= 0;
-                    end
-                end
-            end
-            4: if( busack && pxl_cen ) pal_st <= 1;
-            6: if( busack && pxl_cen ) pal_st <= 3;
-            5: if( hb_edge ) begin
-                pal_st <= 6;
-                busreq <= 1;
-            end
-        endcase
+                4: if( busack && pxl_cen ) pal_st <= 1;
+            endcase
+        end
     end
 end
 
