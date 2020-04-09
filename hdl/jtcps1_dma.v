@@ -24,12 +24,24 @@ module jtcps1_dma(
     input              pxl_cen,
     input              HB,
 
+    // Row scroll
+    // input      [15:0]  vram_row_base,
+    // input      [15:0]  row_offset,
+    // input              row_en,
+
+    // OBJ
     input              br_obj,
     output reg         bg_obj,
+    input      [17:1]  vram_obj_addr,
 
+    // PAL
     input              br_pal,
     output reg         bg_pal,
+    input      [17:1]  vram_pal_addr,
 
+    output reg [17:1]  vram_addr,
+    output reg         vram_clr,
+    output reg         vram_cs,
     output reg         br,
     input              bg
 );
@@ -49,10 +61,18 @@ always @(posedge clk, posedge rst) begin
         bg_obj     <= 1'b0;
         bg_pal     <= 1'b0;
         line_cnt   <= 4'd0;
+        vram_addr  <= 17'd0;
+        vram_cs    <= 1'b0;
+        vram_clr   <= 1'b0;
     end else begin
         last_HB <= HB;
         br      <= bus_master != 2'b00;
         bg_pal  <= bus_master[PAL]  ? bg : 1'b0;
+
+        if( bus_master[PAL] ) vram_addr <= vram_pal_addr;
+        else if( bus_master[LINE] ) vram_addr <= vram_obj_addr;
+        vram_cs <= bus_master!=2'd0;
+
         if( !bus_master ) begin
             if( br_pal ) begin
                 bus_master <= 2'b01 << PAL;
@@ -65,9 +85,12 @@ always @(posedge clk, posedge rst) begin
             if( bus_master[LINE] && pxl_cen && bg ) begin
                 // Line DMA transfer takes 2us
                 line_cnt <= line_cnt + 4'd1;
+                vram_clr <= line_cnt == 4'd0; // clear cache to prevent
+                // wrong readings that could trigger an end-of-table
+                // flag in OBJ controller
                 if( &line_cnt ) bus_master[LINE] <= 1'b0;
                 if( line_cnt == OBJ_START && br_obj ) bg_obj <= 1'b1;
-                if( line_cnt == OBJ_END ) bg_obj <= 1'b0;
+                if( line_cnt == OBJ_END             ) bg_obj <= 1'b0;
             end
         end
     end

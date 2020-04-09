@@ -42,8 +42,6 @@ module jtcps1_obj_table(
     output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
-    output reg         vram_cs,
-    output reg         vram_clr,
 
     // interface with renderer
     input      [ 9:0]  table_addr,
@@ -99,9 +97,7 @@ always @(posedge clk, posedge rst) begin
     if( rst ) begin
         frame       <= 1'b0;
         frame_n     <= 1'b1;
-        vram_cs     <= 1'b0;
         vram_cnt    <= 17'd0;
-        vram_clr    <= 1'b0;
         // start by clearing the memory. Not very useful as it only clears one half of it, though.
         st          <= 2'd2;
         wr_addr     <= ~10'd0;
@@ -110,7 +106,6 @@ always @(posedge clk, posedge rst) begin
     end else begin
         case( st )
             2'd0: begin
-                vram_cs    <= 1'b0;
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
                 wait_cycle <= 1'b1;
@@ -122,7 +117,6 @@ always @(posedge clk, posedge rst) begin
                     // objects will be displayed. The circuit would become locked in this state
                     // as the cache contents would stay fixed
                     busreq    <= 1'b1;
-                    vram_clr  <= 1'b1;      // clear cache
                     frame     <= ~frame;
                     frame_n   <=  frame;
                     st        <= 2'd3;      // one clock cycle to let cache clear propagate
@@ -148,13 +142,10 @@ always @(posedge clk, posedge rst) begin
                 wr_addr    <= wr_addr + 10'd1;
                 wr_data    <= 16'h0000;
                 wr_en      <= 1'b1;
-                vram_cs    <= 1'b0;
                 vram_cnt  <= vram_cnt + 17'd1;
                 if( vram_cnt[10:1]== 10'h3ff && !wait_cycle) st<=2'd0;
             end
             2'd3: begin
-                vram_clr <= 1'b0;
-                vram_cs  <= 1'b1;
                 if(busack) st <= 2'd1;
             end
         endcase

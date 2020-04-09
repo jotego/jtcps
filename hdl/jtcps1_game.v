@@ -98,7 +98,7 @@ wire clk48 = clk;
 
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
-            vram1_cs, vram_obj_cs, vpal_cs;
+            vram1_cs, vram_dma_cs;
 wire        HB, VB;
 wire [15:0] snd_addr;
 wire [17:0] adpcm_addr;
@@ -112,9 +112,9 @@ wire        ppu1_cs, ppu2_cs, ppu_rstn;
 wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 // Video RAM interface
-wire [17:1] vram1_addr, vram_obj_addr, vpal_addr;
-(*keep*) wire [15:0] vram1_data, vram_obj_data, vpal_data;
-wire        vram1_ok,   vram_obj_ok, vpal_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
+wire [17:1] vram1_addr, vram_dma_addr;
+(*keep*) wire [15:0] vram1_data, vram_dma_data;
+wire        vram1_ok,   vram_dma_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
 
@@ -138,12 +138,12 @@ assign slot_cs[0] = main_rom_cs;
 assign slot_cs[1] = main_ram_cs | main_vram_cs;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
-assign slot_cs[4] = vpal_cs;
+assign slot_cs[4] = 1'b0;
 assign slot_cs[5] = adpcm_cs;
 assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = snd_cs;
 assign slot_cs[8] = 1'b0;
-assign slot_cs[9] = vram_obj_cs;
+assign slot_cs[9] = vram_dma_cs;
 
 assign gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr = {rom1_addr, rom1_half, 1'b0 };
@@ -152,11 +152,10 @@ assign main_rom_ok = slot_ok[0];
 assign main_ram_ok = slot_ok[1];
 assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
-assign vpal_ok     = slot_ok[4];
 assign adpcm_ok    = slot_ok[5];
 assign rom1_ok     = slot_ok[6];
 assign snd_ok      = slot_ok[7];
-assign vram_obj_ok = slot_ok[9];
+assign vram_dma_ok = slot_ok[9];
 
 assign slot_wr[9:2] = 7'd0;
 assign slot_wr[1]   = ~main_rnw;
@@ -355,16 +354,11 @@ jtcps1_video #(REGSIZE) u_video(
     .vram1_ok       ( vram1_ok      ),
     .vram1_cs       ( vram1_cs      ),
 
-    .vram_obj_addr  ( vram_obj_addr ),
-    .vram_obj_data  ( vram_obj_data ),
-    .vram_obj_ok    ( vram_obj_ok   ),
-    .vram_obj_cs    ( vram_obj_cs   ),
-    .vram_obj_clr   ( slot_clr[9]   ),
-
-    .vpal_addr      ( vpal_addr     ),
-    .vpal_data      ( vpal_data     ),
-    .vpal_ok        ( vpal_ok       ),
-    .vpal_cs        ( vpal_cs       ),
+    .vram_dma_addr  ( vram_dma_addr ),
+    .vram_dma_data  ( vram_dma_data ),
+    .vram_dma_ok    ( vram_dma_ok   ),
+    .vram_dma_cs    ( vram_dma_cs   ),
+    .vram_dma_clr   ( slot_clr[9]   ),
 
     // GFX ROM interface
     .rom1_addr      ( rom1_addr     ),
@@ -479,11 +473,9 @@ jtframe_sdram_mux #(
 
     // VRAM read access:
     .SLOT3_AW   ( 17    ),  // Scroll VRAM
-    .SLOT4_AW   ( 17    ),  // Palette VRAM
     .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
-    .SLOT4_DW   ( 16    ),
     .SLOT9_DW   ( 16    ),
     // GFX ROM
     .SLOT2_AW   ( 22    ),  // OBJ VRAM
@@ -520,16 +512,12 @@ u_sdram_mux(
     .slot5_dout     ( adpcm_data        ),
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
-    .slot9_addr     ( vram_obj_addr     ),
-    .slot9_dout     ( vram_obj_data     ),
+    .slot9_addr     ( vram_dma_addr     ),
+    .slot9_dout     ( vram_dma_data     ),
 
     .slot3_offset   ( VRAM_OFFSET       ),
     .slot3_addr     ( vram1_addr        ),
     .slot3_dout     ( vram1_data        ),
-
-    .slot4_offset   ( VRAM_OFFSET       ),
-    .slot4_addr     ( vpal_addr         ),
-    .slot4_dout     ( vpal_data         ),
 
     // GFX ROM
     .slot2_offset   ( GFX_OFFSET        ),

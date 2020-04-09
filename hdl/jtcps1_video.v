@@ -66,16 +66,11 @@ module jtcps1_video(
     input              vram1_ok,
     output             vram1_cs,
 
-    output     [17:1]  vram_obj_addr,
-    input      [15:0]  vram_obj_data,
-    input              vram_obj_ok,
-    output             vram_obj_cs,
-    output             vram_obj_clr,
-
-    output     [17:1]  vpal_addr,
-    input      [15:0]  vpal_data,
-    input              vpal_ok,
-    output             vpal_cs,
+    output     [17:1]  vram_dma_addr,
+    input      [15:0]  vram_dma_data,
+    input              vram_dma_ok,
+    output             vram_dma_cs,
+    output             vram_dma_clr,
 
     // Video signal
     output             HS,
@@ -121,6 +116,7 @@ wire [ 8:0]     star1_pxl, star0_pxl;
 wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
+wire [17:1]     vram_pal_addr, vram_obj_addr;
 wire            line_start, preVB;
 wire            flip = ppu_ctrl[15];
 wire            busack_obj, busack_pal;
@@ -152,12 +148,17 @@ jtcps1_dma u_dma(
     
     .br_obj         ( busreq_obj        ),
     .bg_obj         ( busack_obj        ),
+    .vram_obj_addr  ( vram_obj_addr     ),
 
     .br_pal         ( busreq_pal        ),
     .bg_pal         ( busack_pal        ),
+    .vram_pal_addr  ( vram_pal_addr     ),
 
     .br             ( busreq            ),
-    .bg             ( busack            )
+    .bg             ( busack            ),
+    .vram_addr      ( vram_dma_addr     ),
+    .vram_clr       ( vram_dma_clr      ),
+    .vram_cs        ( vram_dma_cs       )
 );
 
 jtcps1_timing u_timing(
@@ -351,10 +352,8 @@ jtcps1_obj u_obj(
     // control registers
     .vram_base  ( vram_obj_base ),
     .vram_addr  ( vram_obj_addr ),
-    .vram_data  ( vram_obj_data ),
-    .vram_ok    ( vram_obj_ok   ),
-    .vram_cs    ( vram_obj_cs   ),
-    .vram_clr   ( vram_obj_clr  ),
+    .vram_data  ( vram_dma_data ),
+    .vram_ok    ( vram_dma_ok   ),
 
     .rom_addr   ( rom0_addr     ),
     .rom_data   ( rom0_data     ),
@@ -420,10 +419,9 @@ jtcps1_colmix u_colmix(
     .prio3      ( prio3         ),
 
     // VRAM access
-    .vram_addr  ( vpal_addr     ),
-    .vram_data  ( vpal_data     ),
-    .vram_ok    ( vpal_ok       ),
-    .vram_cs    ( vpal_cs       ),
+    .vram_addr  ( vram_pal_addr ),
+    .vram_data  ( vram_dma_data ),
+    .vram_ok    ( vram_dma_ok   ),
 
     // Pixel layers data
     .scr1_pxl   ( scr1_pxl      ),

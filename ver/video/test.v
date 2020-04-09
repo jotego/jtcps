@@ -15,10 +15,10 @@ wire               HS, VS, HB, VB, LHBL_dly, LVBL_dly;
 wire       [ 7:0]  red, green, blue;
 
 // Video RAM interface
-wire       [17:1]  vram1_addr, vram_obj_addr, vpal_addr;
-wire       [15:0]  vram1_data, vram_obj_data, vpal_data;
-wire               vram1_ok,   vram_obj_ok, vpal_ok;
-wire               vram1_cs,   vram_obj_cs, vpal_cs;
+wire       [17:1]  vram1_addr, vram_dma_addr;
+wire       [15:0]  vram1_data, vram_dma_data;
+wire               vram1_ok,   vram_dma_ok;
+wire               vram1_cs,   vram_dma_cs;
 
 // GFX ROM interface
 wire       [19:0]  rom1_addr, rom0_addr;
@@ -54,19 +54,18 @@ assign slot_cs[0] = 1'b0;
 assign slot_cs[1] = 1'b0;
 assign slot_cs[2] = rom0_cs;
 assign slot_cs[3] = vram1_cs;
-assign slot_cs[4] = vpal_cs;
+assign slot_cs[4] = 1'b0;
 assign slot_cs[5] = 1'b0;
 assign slot_cs[6] = rom1_cs;
 assign slot_cs[7] = 1'b0;
 assign slot_cs[8] = 1'b0;
-assign slot_cs[9] = vram_obj_cs;
+assign slot_cs[9] = vram_dma_cs;
 assign slot_clr[8:0] = 9'd0;
 
 assign rom0_ok     = slot_ok[2];
 assign vram1_ok    = slot_ok[3];
-assign vpal_ok     = slot_ok[4];
 assign rom1_ok     = slot_ok[6];
-assign vram_obj_ok = slot_ok[9];
+assign vram_dma_ok = slot_ok[9];
 
 assign slot_wr[9:0] = 9'd0;
 
@@ -109,6 +108,8 @@ jtcps1_video UUT (
     .vrender        ( vrender       ),
     .gfx_en         ( 4'b1111       ),
 
+    .pause          ( 1'b0          ),
+
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
@@ -127,8 +128,10 @@ jtcps1_video UUT (
     // Extra inputs read through the C-Board
     .start_button   ( 4'd0          ),
     .coin_input     ( 4'd0          ),
+    .joystick1      ( 8'd0          ),
+    .joystick2      ( 8'd0          ),
     .joystick3      ( 8'd0          ),
-    .joystick4      ( 8'd0          ),    
+    .joystick4      ( 8'd0          ),
 
     // CPU interface
     .ppu_rstn       ( 1'b1          ),
@@ -147,16 +150,11 @@ jtcps1_video UUT (
     .vram1_ok       ( vram1_ok      ),
     .vram1_cs       ( vram1_cs      ),
 
-    .vram_obj_addr  ( vram_obj_addr ),
-    .vram_obj_data  ( vram_obj_data ),
-    .vram_obj_ok    ( vram_obj_ok   ),
-    .vram_obj_cs    ( vram_obj_cs   ),
-    .vram_obj_clr   ( slot_clr[9]   ),
-
-    .vpal_addr      ( vpal_addr     ),
-    .vpal_data      ( vpal_data     ),
-    .vpal_ok        ( vpal_ok       ),
-    .vpal_cs        ( vpal_cs       ),
+    .vram_dma_addr  ( vram_dma_addr ),
+    .vram_dma_data  ( vram_dma_data ),
+    .vram_dma_ok    ( vram_dma_ok   ),
+    .vram_dma_cs    ( vram_dma_cs   ),
+    .vram_dma_clr   ( slot_clr[9]   ),
     
     // GFX ROM interface
     .rom1_addr  ( rom1_addr     ),
@@ -175,12 +173,10 @@ jtcps1_video UUT (
 jtframe_sdram_mux #(
     // VRAM read access:
     .SLOT3_AW   ( 17    ),
-    .SLOT4_AW   ( 17    ),  //4
     .SLOT5_AW   ( 17    ),  //5
     .SLOT9_AW   ( 17    ),  // OBJ VRAM
 
     .SLOT3_DW   ( 16    ),
-    .SLOT4_DW   ( 16    ),
     .SLOT5_DW   ( 16    ),
     .SLOT9_DW   ( 16    ),
     // GFX ROM
@@ -201,17 +197,12 @@ u_sdram_mux(
 
     // VRAM read access only
     .slot9_offset   ( vram_offset       ),
-    .slot9_addr     ( vram_obj_addr     ),
-    .slot9_dout     ( vram_obj_data     ),
+    .slot9_addr     ( vram_dma_addr     ),
+    .slot9_dout     ( vram_dma_data     ),
 
     .slot3_offset   ( vram_offset       ),
     .slot3_addr     ( vram1_addr        ),
     .slot3_dout     ( vram1_data        ),
-
-
-    .slot4_offset   ( vram_offset       ),
-    .slot4_addr     ( vpal_addr         ),
-    .slot4_dout     ( vpal_data         ),
 
     // GFX ROM
     .slot2_offset   ( gfx_offset/*^(22'b01_111<<17) */       ),

@@ -46,8 +46,6 @@ module jtcps1_obj(
     output     [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
-    output             vram_cs,
-    output             vram_clr,
 
     output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
@@ -78,12 +76,10 @@ jtcps1_obj_table u_table(
     .table_data     ( frame_data    ),
 
     // VRAM
-    .vram_base  ( vram_base     ),
-    .vram_addr  ( vram_addr     ),
-    .vram_data  ( vram_data     ),
-    .vram_ok    ( vram_ok       ),
-    .vram_cs    ( vram_cs       ),
-    .vram_clr   ( vram_clr      )
+    .vram_base      ( vram_base     ),
+    .vram_addr      ( vram_addr     ),
+    .vram_data      ( vram_data     ),
+    .vram_ok        ( vram_ok       )
 );
 
 jtcps1_obj_line_table u_line_table(
