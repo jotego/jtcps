@@ -166,7 +166,7 @@ always @(posedge clk, posedge rst) begin
         if( HB_edge ) begin
             active <= active ^ swap;
             swap   <= 3'd0;
-            vrenderf <= {7'd0, (vrender+2) ^ { 1'b0, {8{flip}}} };
+            vrenderf <= {7'd0, (vrender+9'd2) ^ { 1'b0, {8{flip}}} };
         end
 
         if( !bus_master ) begin
@@ -230,7 +230,7 @@ always @(posedge clk, posedge rst) begin
                 end
                 ////////// Scroll 1
                 if( bus_master[SCR1] || bus_master[SCR2] || bus_master[SCR3] ) begin
-                    if( pxl_cen ) begin
+                    if( pxl_cen && (!scr_cnt[0] || (scr_cnt[0]&&cache_wr) ) ) begin
                         scr_cnt   <= scr_cnt + 1;
                         if( scr_cnt[8:1]==scr_over && scr_cnt[0] ) begin
                             bus_master[SCR3:SCR1] <= 3'b0;

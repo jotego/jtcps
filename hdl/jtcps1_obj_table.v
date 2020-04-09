@@ -90,6 +90,7 @@ initial begin
 end
 `endif
 
+reg        restart;
 reg [17:1] vram_cnt;
 assign vram_addr = { vram_cnt[17:3], ~vram_cnt[2:1] };
 
@@ -103,14 +104,19 @@ always @(posedge clk, posedge rst) begin
         wr_addr     <= ~10'd0;
         wait_cycle  <= 1'b1; // this signals st'2 not to finish when wr_addr==~10'd0
         busreq      <= 1'b0;
+        restart     <= 1'b0;
     end else begin
+        if( obj_dma_ok && st!=2'd0 ) begin
+            restart <= 1'b1;
+            st      <= 2'd0;
+        end else
         case( st )
             2'd0: begin
                 wr_addr    <= 10'h3ff;
                 wr_en      <= 1'b0;
                 wait_cycle <= 1'b1;
                 busreq     <= 1'b0;
-                if( obj_dma_ok ) begin // start of new frame, after blanking
+                if( obj_dma_ok || restart ) begin // start of new frame, after blanking
                     vram_cnt  <= {vram_base[9:1], 8'd0};
                     // VRAM cache needs be cleared because otherwise if a sprite buffer end
                     // value was cached in the previous frame, this will be read and no
@@ -120,6 +126,7 @@ always @(posedge clk, posedge rst) begin
                     frame     <= ~frame;
                     frame_n   <=  frame;
                     st        <= 2'd3;      // one clock cycle to let cache clear propagate
+                    restart   <= 1'b0;
                 end
             end
             2'd1: if(pxl_cen) begin
