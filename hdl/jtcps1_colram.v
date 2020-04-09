@@ -59,7 +59,7 @@ reg [15:0] pal[0:(2**12)-1]; // 4096?
 
 // Palette copy
 reg [8:0] pal_cnt;
-reg [2:0] pal_st;
+reg [2:0] st;
 reg [2:0] rdpage, wrpage;
 reg [5:0] pal_en;
 //reg       pal_fist;
@@ -73,59 +73,56 @@ always @(posedge clk, posedge rst) begin
     if( rst ) begin
         pal_data  <= 16'h0;
         pal_cnt   <= 9'd0;
-        pal_st    <= 0;
+        st    <= 0;
         vram_addr <= 23'd0;
         busreq    <= 1'b0;
     end else begin
         pal_data <= pal[pal_addr];
         `ifdef FORCE_GRAY
         pal_data <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
-        `endif
-        if( pxl_cen ) begin
-            case( pal_st )
-                0: begin
-
-                    if( pal_copy ) begin
-                        rdpage    <= 3'd0;
-                        pal_en    <= pal_page_en;
-                        wrpage    <= 3'd0;
-                        busreq    <= 1;
-                        pal_st    <= 4;
-                    end
+        `endif        
+        case( st )
+            0: begin
+                if( pal_copy ) begin
+                    rdpage    <= 3'd0;
+                    pal_en    <= pal_page_en;
+                    wrpage    <= 3'd0;
+                    busreq    <= 1;
+                    st    <= 4;
                 end
-                1: begin
-                    if( wrpage >= 3'd6 ) begin
-                        busreq  <= 1'b0;
-                        pal_st  <= 0; // done
-                    end else begin
-                        pal_en <= pal_en>>1;
-                        if( !pal_en[0] ) begin
-                            if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
-                            wrpage <= wrpage + 3'd1;
-                        end else begin
-                            pal_cnt   <= 9'd0;
-                            vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
-                            pal_st <= 2;
-                        end
-                    end
-                end
-                2: pal_st <= 3; // wait state
-                3: if(vram_ok) begin
-                    pal[ {wrpage , pal_cnt } ] <= vram_data;
-                    pal_cnt <= pal_cnt + 9'd1;
-                    if( &pal_cnt ) begin
-                        rdpage <= rdpage + 3'd1;
+            end
+            1: begin
+                if( wrpage >= 3'd6 ) begin
+                    busreq  <= 1'b0;
+                    st  <= 0; // done
+                end else begin
+                    pal_en <= pal_en>>1;
+                    if( !pal_en[0] ) begin
+                        if( rdpage!=3'd0 ) rdpage <= rdpage + 3'd1;
                         wrpage <= wrpage + 3'd1;
-                        pal_st <= 1;
-                    end
-                    else begin
-                        vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
-                        pal_st <= 2;
+                    end else begin
+                        pal_cnt   <= 9'd0;
+                        vram_addr <= { pal_base[9:1], 8'd0 } + { rdpage , 9'd0 };
+                        st <= 2;
                     end
                 end
-                4: if( busack && pxl_cen ) pal_st <= 1;
-            endcase
-        end
+            end
+            2: if( pxl_cen ) st <= 3; // wait state
+            3: if( pxl_cen && vram_ok) begin
+                pal[ {wrpage , pal_cnt } ] <= vram_data;
+                pal_cnt <= pal_cnt + 9'd1;
+                if( &pal_cnt ) begin
+                    rdpage <= rdpage + 3'd1;
+                    wrpage <= wrpage + 3'd1;
+                    st <= 1;
+                end
+                else begin
+                    vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
+                    st <= 2;
+                end
+            end
+            4: if( busack && pxl_cen ) st <= 1;
+        endcase
     end
 end
 
