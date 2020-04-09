@@ -123,6 +123,7 @@ wire [ 8:0]     vrender1;
 wire [15:0]     ppu_ctrl;
 wire            line_start, preVB;
 wire            flip = ppu_ctrl[15];
+wire            busack_obj, busack_pal;
 
 // Register configuration
 // Scroll
@@ -143,7 +144,20 @@ wire       [15:0]  bank_mask;
 
 wire               obj_dma_ok, busreq_obj, busreq_pal;
 
-assign             busreq = busreq_pal | busreq_obj;
+jtcps1_dma u_dma(
+    .rst            ( rst               ),
+    .clk            ( clk               ),
+    .pxl_cen        ( pxl_cen           ),
+
+    .br_obj         ( busreq_obj        ),
+    .bg_obj         ( busack_obj        ),
+
+    .br_pal         ( busreq_pal        ),
+    .bg_pal         ( busack_pal        ),
+
+    .br             ( busreq            ),
+    .bg             ( busack            )
+);
 
 jtcps1_timing u_timing(
     .rst            ( rst               ),
@@ -317,13 +331,10 @@ jtcps1_obj u_obj(
     .pxl_cen    ( pxl_cen       ),
     .flip       ( flip          ),
 
-    // input              HB,
-    //.VB         ( VB            ),
-
     .obj_dma_ok    ( obj_dma_ok   ),
     // BUS sharing
     .busreq     ( busreq_obj    ),
-    .busack     ( busack        ),
+    .busack     ( busack_obj    ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
@@ -393,7 +404,7 @@ jtcps1_colmix u_colmix(
     .pal_base   ( pal_base      ),
     .pal_page_en( pal_page_en   ),
     .busreq     ( busreq_pal    ),
-    .busack     ( busack        ),
+    .busack     ( busack_pal    ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),

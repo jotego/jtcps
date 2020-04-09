@@ -7,7 +7,7 @@ module test;
 `endif
 
 reg                rst, clk;
-wire               pxl_cen;
+wire               pxl_cen, pxl2_cen;
 wire       [ 8:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
@@ -127,8 +127,8 @@ jtcps1_video UUT (
     // Extra inputs read through the C-Board
     .start_button   ( 4'd0          ),
     .coin_input     ( 4'd0          ),
-    .joystick3      ( 8'd0          ),
-    .joystick4      ( 8'd0          ),    
+    .joystick3      ( ~10'd0        ),
+    .joystick4      ( ~10'd0        ),    
 
     // CPU interface
     .ppu_rstn       ( 1'b1          ),
