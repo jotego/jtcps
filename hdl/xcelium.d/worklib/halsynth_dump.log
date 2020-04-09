@@ -1,5 +1,0 @@
-General information about this run 
--- piranha worklib.jtcps1_sound:v
--- TOOL:	cfe	18.03-s006
--- Options : +TOOLNAME halsynth -HAL ALL -BB_SIG_SIZE 16384 +DISABLE -MULTI_DRIVEN_REG TRI -NOLOG +PRIM_TRI +FSM_RULE_CHECKS -SYNTHESIS ALL -IGNORE_COMB_INIT -VITAL_BLACKBOX +MDARRAY_ON -DEFINES /cad/adi/apps/cadence/xlm/linux/18.03-s06/tools/hal/files/hal.def -DUMP +RULES_LIST +HAL_SIDEFILE xrun.log -BB_UNBOUND_COMP -PRAGMA ALL -cdslib ./xcelium.d/run.lnx86.18.03.d/cds.lib -hdlvar ./xcelium.d/run.lnx86.18.03.d/hdl.var worklib.jtcps1_sound:v
--- SMV File is :/nobackup/jtejada/git/jtcps1/hdl/xcelium.d/worklib/jtcps1_sound/v/jtcps1_sound.smv
