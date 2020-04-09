@@ -20,7 +20,6 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_stars.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_gfx_mappers.v    ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_cpucen.v         ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_dma.v            ]
 
 # SDRAM
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v     ]

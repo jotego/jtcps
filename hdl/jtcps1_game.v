@@ -197,11 +197,16 @@ jtframe_cen48 u_cen48(
 
 wire nc0, nc1;
 
+`ifdef JTFRAME_CLK96
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
     .cen8   ( pxl_cen   )
 );
+`else
+assign pxl2_cen = cen16;
+assign pxl_cen  = cen8;
+`endif
 
 jtcps1_cpucen u_cpucen(
     .clk        ( clk48       ),

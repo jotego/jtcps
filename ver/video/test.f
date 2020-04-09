@@ -21,4 +21,3 @@
 ../../hdl/jtcps1_obj_draw.v
 ../../hdl/jtcps1_obj_line.v
 ../../hdl/jtcps1_gfx_mappers.v
-../../hdl/jtcps1_dma.v

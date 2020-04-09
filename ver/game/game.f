@@ -18,7 +18,6 @@
 ../../hdl/jtcps1_stars.v
 ../../hdl/jtcps1_cpucen.v
 ../../hdl/jtcps1_gfx_mappers.v
-../../hdl/jtcps1_dma.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
