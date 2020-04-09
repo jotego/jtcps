@@ -267,7 +267,7 @@ always @(posedge clk or posedge rst) begin
             end
             42: begin
                 buf_wr <= 1'b0;
-                st     <= 6'd2; // 32x tile done
+                st     <= 6'd1; // 32x tile done
             end
         endcase
         if( stop || buf_addr == 9'd447 ) begin

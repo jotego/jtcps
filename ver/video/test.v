@@ -104,7 +104,7 @@ jtcps1_video UUT (
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
-    .gfx_en         ( 4'b1100       ),
+    .gfx_en         ( 4'b1111       ),
 
     .pause          ( 1'b0          ),
 
