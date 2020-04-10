@@ -211,7 +211,7 @@ always @(posedge clk or posedge rst) begin
                 group   <= tile_data[8:7];
                 vflip   <= tile_data[6];
                 pal     <= tile_data[4:0];
-                st      <= 50;
+                st      <= 49;
             end
             50: begin
                 offset   <= size==3'd1 ? pre_offset1   : ( size==3'd2 ? pre_offset2   : pre_offset3    );

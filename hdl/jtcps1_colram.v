@@ -82,7 +82,7 @@ always @(posedge clk, posedge rst) begin
         pal_data <= {4'hf, {3{pal_addr[3:0]}} }; // uses palette index as gray colour
         `endif        
         case( st )
-            0: begin
+            0: begin // this must run at full clock speed
                 if( pal_copy ) begin
                     rdpage    <= 3'd0;
                     pal_en    <= pal_page_en;
@@ -91,7 +91,7 @@ always @(posedge clk, posedge rst) begin
                     st    <= 4;
                 end
             end
-            1: begin
+            1: if( pxl_cen ) begin
                 if( wrpage >= 3'd6 ) begin
                     busreq  <= 1'b0;
                     st  <= 0; // done
