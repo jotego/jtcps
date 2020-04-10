@@ -189,7 +189,7 @@ always @(posedge clk, posedge rst) begin
                     if( vscr2[3:0]==4'd0 ) begin
                         bus_master[SCR2]<=1'b1;
                         vn <= vscr2;
-                        hn <= 11'h30 + { row_scr[10:4], 4'b0 };
+                        hn <= 11'h30 + { hpos2[10:4], 4'b0 };
                         scr_cnt   <= 9'd128<<1;
                         scr_over  <= 8'd223;
                         vram_base <= vram2_base;
@@ -215,24 +215,26 @@ always @(posedge clk, posedge rst) begin
                 if( bus_master[LINE] && pxl_cen ) begin
                     // Line DMA transfer takes 2us
                     line_cnt <= line_cnt + 4'd1;
-                    vram_clr <= line_cnt == 4'd0; // clear cache to prevent
+                    //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
                     // wrong readings that could trigger an end-of-table
                     // flag in OBJ controller
                     hpos2_row <= hpos2; // + vram_data;
                     if( line_cnt == OBJ_START && br_obj ) begin
                         bg_obj <= 1'b1;
-                        row_scr <= hpos2 + 
+                        row_scr <= {12'b0, hpos2[3:0] } + 
                            (row_en ? vram_data : 16'h0); // this is collected
                             // without checking for vram_ok
                             // there should have been enough time
                             // for the read to get through
                     end
-                    if( line_cnt == OBJ_END             ) bg_obj <= 1'b0;
+                    if( line_cnt == OBJ_END   ) bg_obj <= 1'b0;
                     if( line_cnt >= OBJ_START )
                         vram_addr <= vram_obj_addr;
                     else
                         vram_addr <= { vram_row_base[9:1], 8'd0 } + 
-                                     { 7'd0, row_offset[9:0] + vrender };
+                                     { 7'd0, row_offset[9:0] + vrenderf };
+                                     // vrenderf may need to be decreased by one
+                                     // to match vrender in tilemap (?)
                     if( &line_cnt ) begin
                         bus_master[LINE] <= 1'b0;
                         set_data         <= 3'b111;

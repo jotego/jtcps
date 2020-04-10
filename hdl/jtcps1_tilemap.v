@@ -195,7 +195,7 @@ always @(posedge clk or posedge rst) begin
                     size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) );
                 buf_wr    <= 1'b0;
                 done      <= 1'b0;
-                tile_addr <= size[0] ? 8'd0 : (size[1] ? 8'h80 : 8'd224 );
+                tile_addr <= size[0] ? 8'd0 : (size[1] ? (8'h80+{1'b0,hpos[9:4],1'b0}) : 8'd224 );
                 if(!start) begin
                     st   <= 0;
                 end
