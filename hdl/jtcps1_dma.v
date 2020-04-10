@@ -27,7 +27,7 @@ module jtcps1_dma(
     input              pxl_cen,
 
     input              HB,
-    input      [ 8:0]  vrender, // 1 line ahead of vdump
+    input      [ 8:0]  vrender1, // 1 line ahead of vdump
     input              flip,
 
     // control registers
@@ -164,98 +164,96 @@ always @(posedge clk, posedge rst) begin
         if( HB_edge ) begin
             active <= active ^ swap;
             swap   <= 3'd0;
-            vrenderf <= {7'd0, (vrender+9'd2) ^ { 1'b0, {8{flip}}} };
+            vrenderf <= {7'd0, (vrender1+9'd1) ^ { 1'b0, {8{flip}}} };
+            // It'd be better to use a vrender2 signal generated in the timing module
+            // but adding 1 to vrender1 doesn't seem to create artifacts
+            // note that adding 2 to vrender does create problems in the top horizontal line
         end
 
-        if( !bus_master ) begin
-            if( br_pal ) begin
-                bus_master <= 2'b01 << PAL;
-            end else if( HB_edge) begin
-                bus_master <= 2'b01 << LINE;
-                line_cnt   <= 4'd0;
-                row_scr    <= row_scr_next;
-            end else begin
-                if( set_data[0] ) begin
-                    if( vscr1[2:0]==3'd0 ) begin
-                        bus_master[SCR1]<=1'b1;
-                        vn        <= vscr1;
-                        hn        <= 11'h38 + { hpos1[10:3], 3'b0 };
-                        scr_cnt   <= 9'd0;
-                        scr_over  <= 8'd99;
-                        vram_base <= vram1_base;
-                        swap[0]   <= 1'b1;
-                    end else set_data[0] <= 1'b0;
+        if( HB_edge) begin
+            bus_master <= 5'd1 << LINE;
+            line_cnt   <= 4'd0;
+            row_scr    <= row_scr_next;
+        end else if( br_pal ) begin
+            bus_master <= 5'd1 << PAL;
+        end else begin
+            if( set_data[0] ) begin
+                if( vscr1[2:0]==3'd0 ) begin
+                    bus_master[SCR1]<=1'b1;
+                    vn        <= vscr1;
+                    hn        <= 11'h38 + { hpos1[10:3], 3'b0 };
+                    scr_cnt   <= 9'd0;
+                    scr_over  <= 8'd99;
+                    vram_base <= vram1_base;
+                    swap[0]   <= 1'b1;
+                end else set_data[0] <= 1'b0;
+            end
+            if( set_data[1] & ~set_data[0] ) begin
+                if( vscr2[3:0]==4'd0 ) begin
+                    bus_master[SCR2]<=1'b1;
+                    vn <= vscr2;
+                    hn <= 11'h30 + { hpos2[10:4], 4'b0 };
+                    scr_cnt   <= 9'd128<<1;
+                    scr_over  <= 8'd225;
+                    vram_base <= vram2_base;
+                    swap[1]   <= 1'b1;
+                end else set_data[1] <= 1'b0;
+            end
+            if( set_data[2] && set_data[1:0]==2'b0 ) begin
+                if( vscr3[3:0]==4'd0 ) begin
+                    bus_master[SCR3]<=1'b1;
+                    vn <= vscr3;
+                    hn <= 11'h20 + { hpos3[10:5], 5'b0 };
+                    scr_cnt   <= 9'd224<<1;
+                    scr_over  <= 8'd255;
+                    vram_base <= vram3_base;
+                    swap[2]   <= 1'b1;
+                end else set_data[2] <= 1'b0;
+            end
+        end
+        if( !br_pal && bus_master[PAL] ) bus_master[PAL] <= 1'b0;
+        if( bg ) begin
+            if( bus_master[LINE] && pxl_cen ) begin
+                // Line DMA transfer takes 2us
+                line_cnt <= line_cnt + 4'd1;
+                //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
+                // wrong readings that could trigger an end-of-table
+                // flag in OBJ controller
+                if( line_cnt == OBJ_START  ) begin
+                    bg_obj  <= br_obj & ~br_pal;
+                    row_scr_next <= {12'b0, hpos2[3:0] } + 
+                       (row_en ? vram_data : 16'h0); // this is collected
+                        // without checking for vram_ok
+                        // there should have been enough time
+                        // for the read to get through
                 end
-                if( set_data[1] & ~set_data[0] ) begin
-                    if( vscr2[3:0]==4'd0 ) begin
-                        bus_master[SCR2]<=1'b1;
-                        vn <= vscr2;
-                        hn <= 11'h30 + { hpos2[10:4], 4'b0 };
-                        scr_cnt   <= 9'd128<<1;
-                        scr_over  <= 8'd225;
-                        vram_base <= vram2_base;
-                        swap[1]   <= 1'b1;
-                    end else set_data[1] <= 1'b0;
-                end
-                if( set_data[2] && set_data[1:0]==2'b0 ) begin
-                    if( vscr3[3:0]==4'd0 ) begin
-                        bus_master[SCR3]<=1'b1;
-                        vn <= vscr3;
-                        hn <= 11'h20 + { hpos3[10:5], 5'b0 };
-                        scr_cnt   <= 9'd224<<1;
-                        scr_over  <= 8'd255;
-                        vram_base <= vram3_base;
-                        swap[2]   <= 1'b1;
-                    end else set_data[2] <= 1'b0;
+                if( line_cnt == OBJ_END   ) bg_obj <= 1'b0;
+                if( line_cnt >= OBJ_START )
+                    vram_addr <= vram_obj_addr;
+                else
+                    vram_addr <= { vram_row_base[9:1], 8'd0 } + 
+                                 { 7'd0, row_offset[9:0] + vrenderf };
+                if( &line_cnt || (br_pal&&line_cnt==9) ) begin
+                    bus_master[LINE] <= 1'b0;
+                    set_data         <= 3'b111;
                 end
             end
-            cache_wr <= 1'b0;
-        end else begin
-            if( !br_pal && bus_master[PAL] ) bus_master[PAL] <= 1'b0;
-            if( bg ) begin
-                if( bus_master[LINE] && pxl_cen ) begin
-                    // Line DMA transfer takes 2us
-                    line_cnt <= line_cnt + 4'd1;
-                    //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
-                    // wrong readings that could trigger an end-of-table
-                    // flag in OBJ controller
-                    if( line_cnt == OBJ_START  ) begin
-                        bg_obj  <= br_obj;
-                        row_scr_next <= {12'b0, hpos2[3:0] } + 
-                           (row_en ? vram_data : 16'h0); // this is collected
-                            // without checking for vram_ok
-                            // there should have been enough time
-                            // for the read to get through
+            ////////// Scroll tile cache
+            if( bus_master[SCR1] || bus_master[SCR2] || bus_master[SCR3] ) begin
+                if( pxl_cen && (!scr_cnt[0] || (scr_cnt[0]&&cache_wr) ) ) begin
+                    scr_cnt   <= scr_cnt + 1;
+                    if( scr_cnt[8:1]==scr_over && scr_cnt[0] ) begin
+                        bus_master[SCR3:SCR1] <= 3'b0;
+                        set_data <= set_data & ~bus_master[SCR3:SCR1];
+                        cache_wr <= 1'b0;
                     end
-                    if( line_cnt == OBJ_END   ) bg_obj <= 1'b0;
-                    if( line_cnt >= OBJ_START )
-                        vram_addr <= vram_obj_addr;
-                    else
-                        vram_addr <= { vram_row_base[9:1], 8'd0 } + 
-                                     { 7'd0, row_offset[9:0] + vrenderf };
-                                     // vrenderf may need to be decreased by one
-                                     // to match vrender in tilemap (?)
-                    if( &line_cnt ) begin
-                        bus_master[LINE] <= 1'b0;
-                        set_data         <= 3'b111;
-                    end
-                end
-                ////////// Scroll tile cache
-                if( bus_master[SCR1] || bus_master[SCR2] || bus_master[SCR3] ) begin
-                    if( pxl_cen && (!scr_cnt[0] || (scr_cnt[0]&&cache_wr) ) ) begin
-                        scr_cnt   <= scr_cnt + 1;
-                        if( scr_cnt[8:1]==scr_over && scr_cnt[0] ) begin
-                            bus_master[SCR3:SCR1] <= 3'b0;
-                            set_data <= set_data & ~bus_master[SCR3:SCR1];
-                        end
-                    end                        
-                    if( !scr_cnt[0] ) begin
-                        vram_addr <= { vram_base[9:1], 8'd0 } + { 4'd0, scan, scr_cnt[1] };
-                        cache_wr  <= 1'b0;
-                    end else if( vram_ok && !cache_wr) begin
-                        if( scr_cnt[1] ) hn <= hn + hstep;
-                        cache_wr       <= 1'b1;
-                    end
+                end                        
+                if( !scr_cnt[0] ) begin
+                    vram_addr <= { vram_base[9:1], 8'd0 } + { 4'd0, scan, scr_cnt[1] };
+                    cache_wr  <= 1'b0;
+                end else if( vram_ok && !cache_wr) begin
+                    if( scr_cnt[1] ) hn <= hn + hstep;
+                    cache_wr <= 1'b1;
                 end
             end
         end

@@ -107,21 +107,25 @@ always @(posedge clk, posedge rst) begin
                     end
                 end
             end
-            2: if( pxl_cen ) st <= 3; // wait state
-            3: if( pxl_cen && vram_ok) begin
-                pal[ {wrpage , pal_cnt } ] <= vram_data;
-                pal_cnt <= pal_cnt + 9'd1;
-                if( &pal_cnt ) begin
-                    rdpage <= rdpage + 3'd1;
-                    wrpage <= wrpage + 3'd1;
-                    st <= 1;
-                end
-                else begin
-                    vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
-                    st <= 2;
+            2: if(!busack) st<=5; else if( pxl_cen ) st <= 3; // wait state
+            3: begin
+                if(!busack) st<=5; else
+                if( pxl_cen && vram_ok) begin
+                    pal[ {wrpage , pal_cnt } ] <= vram_data;
+                    pal_cnt <= pal_cnt + 9'd1;
+                    if( &pal_cnt ) begin
+                        rdpage <= rdpage + 3'd1;
+                        wrpage <= wrpage + 3'd1;
+                        st <= 1;
+                    end
+                    else begin
+                        vram_addr[9:1] <= vram_addr[9:1] + 9'd1;
+                        st <= busack ? 2 : 5;
+                    end
                 end
             end
             4: if( busack && pxl_cen ) st <= 1;
+            5: if( busack && pxl_cen ) st <= 2; // wait for busack again in case it was lost
         endcase
     end
 end

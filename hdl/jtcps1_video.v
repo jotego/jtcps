@@ -143,7 +143,7 @@ jtcps1_dma u_dma(
     .clk            ( clk               ),
     .pxl_cen        ( pxl_cen           ),
     .HB             ( HB                ),
-    .vrender        ( vrender           ),
+    .vrender1       ( vrender1          ),
     .flip           ( flip              ),
 
     .tile_addr      ( tile_addr         ),
