@@ -90,17 +90,17 @@ reg  [15:0] vram_base;
 reg         rd_bank, wr_bank;
 reg  [ 2:0] active, swap, set_data;
 
+localparam [7:0] LAST_SCR2 = 8'd225;
+
 always @(*) begin
     casez( scr_cnt[8:6] )
         3'b0??:  wr_bank = ~active[0]; // SCR1
         3'b111:  wr_bank = ~active[2]; // SCR3
         default: wr_bank = ~active[1]; // SCR2
     endcase
-    casez( tile_addr[7:5] )
-        3'b0??:  rd_bank = active[0]; // SCR1
-        3'b111:  rd_bank = active[2]; // SCR3
-        default: rd_bank = active[1]; // SCR2
-    endcase
+    rd_bank = !tile_addr[7] ? active[0] : ( // SCR1
+        tile_addr <= LAST_SCR2 ? active[1] : // SCR2
+                            active[2]); // SCR3
 end
 
 jtframe_dual_ram #(.dw(16), .aw(9)) u_cache(
@@ -195,7 +195,7 @@ always @(posedge clk, posedge rst) begin
                     vn <= vscr2;
                     hn <= 11'h30 + { hpos2[10:4], 4'b0 };
                     scr_cnt   <= 9'd128<<1;
-                    scr_over  <= 8'd225;
+                    scr_over  <= LAST_SCR2;
                     vram_base <= vram2_base;
                     swap[1]   <= 1'b1;
                 end else set_data[1] <= 1'b0;
@@ -205,7 +205,7 @@ always @(posedge clk, posedge rst) begin
                     bus_master[SCR3]<=1'b1;
                     vn <= vscr3;
                     hn <= 11'h20 + { hpos3[10:5], 5'b0 };
-                    scr_cnt   <= 9'd224<<1;
+                    scr_cnt   <= (LAST_SCR2+1)<<1;
                     scr_over  <= 8'd255;
                     vram_base <= vram3_base;
                     swap[2]   <= 1'b1;
