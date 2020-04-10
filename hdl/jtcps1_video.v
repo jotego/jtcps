@@ -134,7 +134,7 @@ wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
 wire       [ 7:0]  tile_addr;
-wire       [15:0]  tile_data;
+wire       [15:0]  tile_data, row_scr;
 
 wire               obj_dma_ok, busreq_obj, busreq_pal;
 
@@ -160,6 +160,12 @@ jtcps1_dma u_dma(
     .vram3_base     ( vram3_base        ),
     .hpos3          ( hpos3             ),
     .vpos3          ( vpos3             ),
+
+    // Row Scroll
+    .vram_row_base  ( vram_row_base     ),
+    .row_offset     ( row_offset        ),
+    .row_en         ( ppu_ctrl[0]       ),
+    .row_scr        ( row_scr           ),
 
     .br_obj         ( busreq_obj        ),
     .bg_obj         ( busack_obj        ),
@@ -289,7 +295,7 @@ jtcps1_scroll u_scroll(
     .hpos1      ( hpos1         ),
     .vpos1      ( vpos1         ),
 
-    .hpos2      ( hpos2         ),
+    .hpos2      ( row_scr       ),
     .vpos2      ( vpos2         ),
 
     .hpos3      ( hpos3         ),
@@ -299,11 +305,6 @@ jtcps1_scroll u_scroll(
     .vstar0     ( vstar0        ),
     .hstar1     ( hstar1        ),
     .vstar1     ( vstar1        ),
-
-    // Row Scroll
-    .vram_row_base  ( vram_row_base ),
-    .row_offset     ( row_offset    ),
-    .row_en         ( ppu_ctrl[0]   ),
 
     // ROM banks
     .game       ( game          ),

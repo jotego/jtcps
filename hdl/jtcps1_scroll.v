@@ -46,11 +46,6 @@ module jtcps1_scroll(
     input      [15:0]  hstar1,
     input      [15:0]  vstar1,
 
-    // Row scroll
-    input      [15:0]  vram_row_base,
-    input      [15:0]  row_offset,
-    input              row_en,
-
     input              start,
 
     output     [ 7:0]  tile_addr,
@@ -182,8 +177,6 @@ end
 reg req_start, last_start;
 wire pedg_start = start & ~last_start;
 
-reg [17:1] vram_row;
-
 // Tilemap sequencer
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -217,7 +210,6 @@ always @(posedge clk, posedge rst) begin
             case( st )
                 3'b001: begin
                     if( sub_done ) begin
-                        vram_row  <= { vram_row_base[9:1], 8'd0 } + { 7'd0, row_offset[9:0] + vrender };
                         hpos      <= hpos2;
                         vpos      <= vpos2;
                         pre_start <= 1'b1;
