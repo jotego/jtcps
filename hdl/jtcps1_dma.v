@@ -165,7 +165,7 @@ always @(posedge clk, posedge rst) begin
         if( HB_edge ) begin
             active <= active ^ swap;
             swap   <= 3'd0;
-            vrenderf <= {7'd0, (vrender1+9'd1) ^ { 1'b0, {8{flip}}} };
+            vrenderf <= {7'd0, (vrender1 ^ { 1'b0, {8{flip}}}) + (flip ? -9'd8 : 9'd1) };
             // It'd be better to use a vrender2 signal generated in the timing module
             // but adding 1 to vrender1 doesn't seem to create artifacts
             // note that adding 2 to vrender does create problems in the top horizontal line
@@ -190,7 +190,7 @@ always @(posedge clk, posedge rst) begin
                 end else set_data[0] <= 1'b0;
             end
             if( set_data[1] & ~set_data[0] ) begin
-                if( vscr2[3:0]==4'd0 ) begin
+                if( vscr2[3:0]=={ flip, 3'd0 } ) begin
                     bus_master[SCR2]<=1'b1;
                     vn <= vscr2;
                     hn <= 11'h30 + { hpos2[10:4], 4'b0 };
@@ -201,7 +201,7 @@ always @(posedge clk, posedge rst) begin
                 end else set_data[1] <= 1'b0;
             end
             if( set_data[2] && set_data[1:0]==2'b0 ) begin
-                if( vscr3[3:0]==4'd0 ) begin
+                if( vscr3[3:0]=={ flip, 3'd0 } ) begin
                     bus_master[SCR3]<=1'b1;
                     vn <= vscr3;
                     hn <= 11'h20 + { hpos3[10:5], 5'b0 };

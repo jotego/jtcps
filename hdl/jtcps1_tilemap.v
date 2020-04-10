@@ -145,7 +145,6 @@ reg  [1:0] group;
 reg        vflip;
 reg        hflip;
 reg  [4:0] pal;
-// assign rom_half = hn[3] ^ hflip;
 
 reg [19:0] rom_pre_addr, rom_masked_addr, rom_offset_addr;
 
