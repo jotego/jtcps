@@ -85,8 +85,8 @@ reg         cache_wr;
 reg  [11:0] hstep;
 reg  [ 7:0] scr_over;
 
-reg  [15:0] vscr1, vscr2, vscr3;
-reg  [15:0] vram_base, hpos2_row;
+reg  [15:0] vscr1, vscr2, vscr3, row_scr_next;
+reg  [15:0] vram_base;
 reg         rd_bank, wr_bank;
 reg  [ 2:0] active, swap, set_data;
 
@@ -173,6 +173,7 @@ always @(posedge clk, posedge rst) begin
             end else if( HB_edge) begin
                 bus_master <= 2'b01 << LINE;
                 line_cnt   <= 4'd0;
+                row_scr    <= row_scr_next;
             end else begin
                 if( set_data[0] ) begin
                     if( vscr1[2:0]==3'd0 ) begin
@@ -218,10 +219,9 @@ always @(posedge clk, posedge rst) begin
                     //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
                     // wrong readings that could trigger an end-of-table
                     // flag in OBJ controller
-                    hpos2_row <= hpos2; // + vram_data;
-                    if( line_cnt == OBJ_START && br_obj ) begin
-                        bg_obj <= 1'b1;
-                        row_scr <= {12'b0, hpos2[3:0] } + 
+                    if( line_cnt == OBJ_START  ) begin
+                        bg_obj  <= br_obj;
+                        row_scr_next <= {12'b0, hpos2[3:0] } + 
                            (row_en ? vram_data : 16'h0); // this is collected
                             // without checking for vram_ok
                             // there should have been enough time
