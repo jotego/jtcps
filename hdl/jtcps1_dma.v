@@ -150,6 +150,7 @@ always @(posedge clk, posedge rst) begin
         active     <= 3'b0;
         swap       <= 3'b0;
         set_data   <= 3'b0;
+        cache_wr   <= 1'b0;
     end else begin
         last_HB <= HB;
         br      <= |{bus_master, set_data};
@@ -159,7 +160,7 @@ always @(posedge clk, posedge rst) begin
         vscr2  <= vpos2 + vrenderf;
         vscr3  <= vpos3 + vrenderf;
 
-        if( bus_master[PAL] ) vram_addr <= vram_pal_addr;        
+        if( bus_master[PAL] ) vram_addr <= vram_pal_addr;   
 
         if( HB_edge ) begin
             active <= active ^ swap;
@@ -174,9 +175,9 @@ always @(posedge clk, posedge rst) begin
             bus_master <= 5'd1 << LINE;
             line_cnt   <= 4'd0;
             row_scr    <= row_scr_next;
-        end else if( br_pal ) begin
+        end else if( br_pal && !bus_master ) begin
             bus_master <= 5'd1 << PAL;
-        end else begin
+        end else if(!bus_master) begin
             if( set_data[0] ) begin
                 if( vscr1[2:0]==3'd0 ) begin
                     bus_master[SCR1]<=1'b1;
@@ -233,9 +234,9 @@ always @(posedge clk, posedge rst) begin
                 else
                     vram_addr <= { vram_row_base[9:1], 8'd0 } + 
                                  { 7'd0, row_offset[9:0] + vrenderf };
-                if( &line_cnt || (br_pal&&line_cnt==9) ) begin
+                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+4'd3) ) begin
                     bus_master[LINE] <= 1'b0;
-                    set_data         <= 3'b111;
+                    if(!br_pal ) set_data <= 3'b111;
                 end
             end
             ////////// Scroll tile cache
@@ -245,7 +246,6 @@ always @(posedge clk, posedge rst) begin
                     if( scr_cnt[8:1]==scr_over && scr_cnt[0] ) begin
                         bus_master[SCR3:SCR1] <= 3'b0;
                         set_data <= set_data & ~bus_master[SCR3:SCR1];
-                        cache_wr <= 1'b0;
                     end
                 end                        
                 if( !scr_cnt[0] ) begin
