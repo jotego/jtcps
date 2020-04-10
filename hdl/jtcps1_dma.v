@@ -181,7 +181,7 @@ always @(posedge clk, posedge rst) begin
                         vn        <= vscr1;
                         hn        <= 11'h38 + { hpos1[10:3], 3'b0 };
                         scr_cnt   <= 9'd0;
-                        scr_over  <= 8'd97;
+                        scr_over  <= 8'd99;
                         vram_base <= vram1_base;
                         swap[0]   <= 1'b1;
                     end else set_data[0] <= 1'b0;
@@ -192,7 +192,7 @@ always @(posedge clk, posedge rst) begin
                         vn <= vscr2;
                         hn <= 11'h30 + { hpos2[10:4], 4'b0 };
                         scr_cnt   <= 9'd128<<1;
-                        scr_over  <= 8'd223;
+                        scr_over  <= 8'd225;
                         vram_base <= vram2_base;
                         swap[1]   <= 1'b1;
                     end else set_data[1] <= 1'b0;
