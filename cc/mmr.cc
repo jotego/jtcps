@@ -400,8 +400,18 @@ void dump_orientation( stringstream& mra, game_entry* game, int buttons ) {
     //mra << " <!-- " << buttons << "-->\n";
 }
 
-port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
-    port_entry* ports = nullptr;
+game_entry *get_parent( game_entry *game ) {
+    if( game->parent == "0" ) return game;
+    for( game_entry* g : gl ) {
+        if( g->name == game->parent ) return g;
+    }
+    return nullptr;
+}
+
+port_entry* find_ports( game_entry *game ) {
+    port_entry*ports = nullptr;
+    if( game == nullptr ) return nullptr;
+
     for( port_entry* p : all_ports ) {
         if( p->name == game->name ) {
             ports = p;
@@ -411,14 +421,25 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
     bool search_parent = ports==nullptr;
     if( ports != nullptr ) search_parent = search_parent || ports->ports_type==parent;
     if( search_parent ) {
-        ports = nullptr;
+        cout << "Looking for parent of " << game->zipfile << " (" << game->parent << ")\n";
         for( port_entry *p2 : all_ports ) {
-            if( p2->name == game->zipfile ) {
+            cout << "p2->name " << p2->name <<'\n';
+            if( (p2->name == game->zipfile || p2->name == game->parent) && p2->name!=game->name ) {
                 ports = p2;
+                cout << "\t found " << p2->name << '\n';
+                if( p2->ports_type == parent ) {
+                    game_entry *p = get_parent( game );
+                    return find_ports( p );
+                }  
                 break;
             }
         }
     }
+    return ports;
+}
+
+port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
+    port_entry* ports = find_ports( game );
     if( ports==nullptr ) {
         cout << "Warning: no ports for game " << game->name << '\n';
         return nullptr;
@@ -437,7 +458,8 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
         case sf2hack:
         case ports_sfzch:
         case cps1_6b: mra << "B0,B1,B2,B3,B4,B5,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Select,Select,Start"; buttons=6; break;
-        default: cout << "ERROR: cannot process buttons of game " << game->name << '\n'; buttons=0; break;
+        default: cout << "ERROR: cannot process buttons of game " << game->name;
+            cout << " ports_type = " << ports->ports_type << '\n'; buttons=0; break;
     }
     mra << "\"/>\n";
     return ports;
@@ -446,7 +468,20 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
 #undef LUT_DUMP
 
 void generate_mra( game_entry* game ) {
-    static bool first=true;
+    switch( game->board_type ) {
+        //case cps1_10MHz:
+        //case cps1_12MHz:
+        //case sf2m3:
+        //case sf2m10:
+        //case sf2cems6:
+        case forgottn:
+        case qsound:
+        case wofhfh:
+        case ganbare:
+        case pang3:
+            return;
+    }
+    static bool first=true;    
     //ofstream simf( game->name+".hex");
     stringstream mras, simf, mappers, ss_ports;
     mras << "<misterromdescription>\n";
@@ -577,11 +612,13 @@ int main(int argc, char *argv[]) {
     }
     int cnt=0;
     for( auto game : gl ) {
-        if( parents_only && game->parent!="0" ) continue;
         if( game_list ) {
                 cout << game->name << '\n';
         } else {
-            if( !game_name.length() || game->name == game_name )
+            // process game if it matches the name in arguments or
+            // if there was not name then process all 
+            if( (!game_name.length() && !(parents_only && game->parent!="0"))
+                || game->name == game_name )
                 generate_mra( game );
                 cnt++;
         }
