@@ -401,17 +401,24 @@ void dump_orientation( stringstream& mra, game_entry* game, int buttons ) {
 }
 
 game_entry *get_parent( game_entry *game ) {
-    if( game->parent == "0" ) return game;
+    string ref = game->parent;
+    if( ref == "0" ) {
+        ref = game->zipfile;
+        //cout << "* using zipfile name (" << ref << " ) as parent was null\n";
+    }
     for( game_entry* g : gl ) {
-        if( g->name == game->parent ) return g;
+        if( g->name == ref ) return g;
     }
     return nullptr;
 }
 
 port_entry* find_ports( game_entry *game ) {
     port_entry*ports = nullptr;
-    if( game == nullptr ) return nullptr;
-
+    if( game == nullptr ) {
+        //cout << "ERROR: find_ports called with nullprt\n";
+        return nullptr;
+    }
+    //cout << "Looking for ports of " << game->name << '\n';
     for( port_entry* p : all_ports ) {
         if( p->name == game->name ) {
             ports = p;
@@ -421,19 +428,8 @@ port_entry* find_ports( game_entry *game ) {
     bool search_parent = ports==nullptr;
     if( ports != nullptr ) search_parent = search_parent || ports->ports_type==parent;
     if( search_parent ) {
-        cout << "Looking for parent of " << game->zipfile << " (" << game->parent << ")\n";
-        for( port_entry *p2 : all_ports ) {
-            cout << "p2->name " << p2->name <<'\n';
-            if( (p2->name == game->zipfile || p2->name == game->parent) && p2->name!=game->name ) {
-                ports = p2;
-                cout << "\t found " << p2->name << '\n';
-                if( p2->ports_type == parent ) {
-                    game_entry *p = get_parent( game );
-                    return find_ports( p );
-                }  
-                break;
-            }
-        }
+        game_entry *p = get_parent( game );
+        return find_ports( p );
     }
     return ports;
 }
