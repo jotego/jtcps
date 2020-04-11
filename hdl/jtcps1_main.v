@@ -316,7 +316,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int1 <= 1'b1;
             int2 <= 1'b1;
         end
-        else if(dip_pause) begin
+        else begin
             //if( V[8] && !last_V256 ) int2 <= 1'b0;
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end
@@ -361,7 +361,7 @@ fx68k u_cpu(
 
     .BERRn      ( BERRn       ),
     // Bus arbitrion
-    .HALTn      ( 1'b1        ),
+    .HALTn      ( dip_pause   ),
     .BRn        ( BRn         ),
     .BGACKn     ( BGACKn      ),
     .BGn        ( BGn         ),
