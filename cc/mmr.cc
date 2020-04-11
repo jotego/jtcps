@@ -490,6 +490,10 @@ void generate_mra( game_entry* game ) {
     if(verbose) cout << '\n' << game->name << '\n';
     mras << "    <rom index=\"0\" zip=\"";
     if( game->zipfile != game->name ) mras << game->zipfile <<".zip|";
+    if( game->parent!="0" && game->zipfile != get_parent(game)->zipfile ) {
+        mras << get_parent(game)->zipfile<<".zip|";
+        mras << get_parent(game)->name<<".zip|";
+    }
     mras << game->name << ".zip\" md5=\"none\">\n";
     const tiny_rom_entry *entry = game->roms;
     port_entry *ports = dump_buttons(ss_ports, game);

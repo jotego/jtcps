@@ -12,7 +12,7 @@ enum PORTS_TYPE {
     cps1_4players,
     cps1_6b,
     cps1_quiz,
-    parent,
+    parent = 7,
     sf2hack,
     ports_ganbare,
     ports_sfzch
