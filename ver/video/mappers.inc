@@ -80,6 +80,17 @@ game_unsquad: begin
         bank_a[3] <= 1'b0;
         set_used  <= 1'b0;
     end
+game_area88: begin
+        // Bank 0 size 0x04000
+        bank_a[0] <=  ( layer==OBJ   && code[15:9]<=7'hb) /* 0 - 2fff */  ||
+         ( layer==SCR1  && code[15:10]>=7'hc && code[15:10]<=7'hf) /* 3000 - 3fff */ ;
+        // Bank 1 size 0x04000
+        bank_a[1] <=  ( layer==SCR2  && code[15:9]>=7'h10 && code[15:9]<=7'h17) /* 4000 - 5fff */  ||
+         ( layer==SCR3  && code[13:7]>=7'h18 && code[15:14]==2'b00 ) /* 6000 - 7fff */ ;
+        bank_a[2] <= 1'b0;
+        bank_a[3] <= 1'b0;
+        set_used  <= 1'b0;
+    end
 game_ffight: begin
         // Bank 0 size 0x08000
         bank_b[0] <=  ( layer==OBJ   && code[15:9]<=7'h10) /* 0 - 43ff */  ||
@@ -190,6 +201,21 @@ game_3wonders: begin
         bank_b[3] <= 1'b0;
         set_used  <= 1'b1;
     end
+game_wonder3: begin
+        // Bank 0 size 0x04000
+        bank_a[0] <=  ( layer==OBJ   && code[15:9]<=7'hf) /* 0 - 3fff */ ;
+        // Bank 1 size 0x04000
+        bank_a[1] <=  ( layer==OBJ   && code[15:9]>=7'h10 && code[15:9]<=7'h14) /* 4000 - 53ff */  ||
+         ( layer==SCR1  && code[15:10]>=7'h15 && code[15:10]<=7'h1b) /* 5400 - 6fff */  ||
+         ( layer==SCR3  && code[13:7]>=7'h1c && code[15:14]==2'b00 ) /* 7000 - 7fff */ ;
+        // Bank 2 size 0x04000
+        bank_a[2] <=  ( layer==SCR3  && code[13:7]<=7'hf && code[15:14]==2'b00 ) /* 0 - 3fff */  ||
+         ( layer==SCR2  && code[15:9]>=7'ha && code[15:9]<=7'hf) /* 2800 - 3fff */ ;
+        // Bank 3 size 0x04000
+        bank_a[3] <=  ( layer==SCR2  && code[15:9]>=7'h10) /* 4000 - 7fff */  ||
+         ( layer==OBJ   && code[15:9]>=7'h15) /* 5400 - 7fff */ ;
+        set_used  <= 1'b0;
+    end
 game_kod: begin
         // Bank 0 size 0x08000
         bank_b[0] <=  ( layer==OBJ  ) /* 0 - 7fff */ ;
@@ -270,6 +296,21 @@ game_varth: begin
         ||  ( layer==SCR1 ) /* 0 - 7fff */ 
         ||  ( layer==SCR3  && code[15:14]==2'b00 ) /* 0 - 7fff */ ;
         bank_a[1] <= 1'b0;
+        bank_a[2] <= 1'b0;
+        bank_a[3] <= 1'b0;
+        set_used  <= 1'b0;
+    end
+game_varthj: begin
+        // Bank 0 size 0x04000
+        bank_a[0] <=  ( layer==OBJ   && code[15:9]<=7'hf) /* 0 - 3fff */ 
+        ||  ( layer==SCR2  && code[15:9]<=7'hf) /* 0 - 3fff */ 
+        ||  ( layer==SCR1  && code[15:10]<=7'hf) /* 0 - 3fff */ 
+        ||  ( layer==SCR3  && code[13:7]<=7'hf && code[15:14]==2'b00 ) /* 0 - 3fff */ ;
+        // Bank 1 size 0x04000
+        bank_a[1] <=  ( layer==OBJ   && code[15:9]>=7'h10) /* 4000 - 7fff */ 
+        ||  ( layer==SCR2  && code[15:9]>=7'h10) /* 4000 - 7fff */ 
+        ||  ( layer==SCR1  && code[15:10]>=7'h10) /* 4000 - 7fff */ 
+        ||  ( layer==SCR3  && code[13:7]>=7'h10 && code[15:14]==2'b00 ) /* 4000 - 7fff */ ;
         bank_a[2] <= 1'b0;
         bank_a[3] <= 1'b0;
         set_used  <= 1'b0;

@@ -262,15 +262,23 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     int id=0;
     bool found=false;
     bool dump_inc;  // Avoid dumping more than once to the verilog include file
-    const string name = game->parent=="0" ? game->name : game->parent;
-    // find game code    
-    while( parents[id] ) {
-        if( name == parents[id] ) { found=true; break; }
-        id++;
+    string name; // = game->parent=="0" ? game->name : game->parent;
+    // find game code. First look by the game name as some game variations have different
+    // mappers to the parent game, like area88/unsquad
+    for( int k=0; k<2 && !found; k++ ) {
+        name = k==0 ? game->name : game->parent;
+        id=0;
+        while( parents[id] && !found) {
+            if( name == parents[id] ) {
+                found=true;
+            }
+            else id++;
+        }
     }
+    //cout << "Found: " << name << '\n';
     if(!found) {
         of << "ERROR: game parent not found\n";
-        cout << "ERROR: game parent not found\n";
+        cout << "ERROR: game parent not found (" << game->name << ") \n";
     }
     dump_inc = done.count(name)==0;
     done.insert(name);
@@ -340,7 +348,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
                     aux << "        bank" << mux_set << "["<<b<<"] <= 1'b0;\n";
             }
             aux << "        set_used  <= 1'b" << set_used << ";\n";
-            mappers << "game_" << parent_name(game) << ": begin\n" << aux.str() << "    end\n";
+            mappers << "game_" << name << ": begin\n" << aux.str() << "    end\n";
         }
     }
     return dumpcnt;

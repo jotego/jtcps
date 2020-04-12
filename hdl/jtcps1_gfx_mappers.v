@@ -85,7 +85,12 @@ localparam
         game_wof      = 33,
         game_daimakai = 34,
         game_daimakair= 35,
-        game_sfzch    = 36;
+        game_sfzch    = 36,
+        game_area88   = 37,
+        game_varthj   = 37,
+        game_wonder3  = 38,
+        game_striderj = 39,
+        game_cawingu  = 40;
 
 reg last_enable;
 wire [3:0] eff_bank = set_used ? bank_b : bank_a;

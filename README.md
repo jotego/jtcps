@@ -61,6 +61,17 @@ jedutil -view wl24b.1a gal16v8
 
 In order to see the equations for Willow's PAL.
 
+# Compilation
+The core is compiled using jtcore from **JTFRAME** but the first time you need to compile and run the utility **mmr** in the *cc* folder:
+
+```
+cd cc
+make
+mmr -alt
+```
+
+This generates an include file needed by the verilog code.
+
 # Simulation
 
 ## Game

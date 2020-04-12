@@ -39,6 +39,11 @@ const char *parents[] = {
         "daimakai", // 34
         "daimakair",// 35
         "sfzch",    // 36
+        "area88",   // 37
+        "varthj",   // 38
+        "wonder3",  // 39
+        "striderj", // 40
+        "cawingu",  // 41
         nullptr
 };
 
