@@ -144,7 +144,7 @@ always @(posedge clk, posedge rst) begin
             rom_cs      <= A[23:22] == 2'b00;
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
-                ppu2_cs  <= A[8:6] == 3'b101; // 'h14x
+                ppu2_cs  <= A[8:6] == 3'b101 /* 'h14x */ || A[8:6] == 3'b111; /* 'h1Cx */
                 if( RnW ) begin
                     joy_cs <= A[8:3] == 6'b000_000; // 0x800000
                     sys_cs <= A[8:3] == 6'b000_011; // 0x800018
