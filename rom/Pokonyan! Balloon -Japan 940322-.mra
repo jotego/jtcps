@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for pokonyan --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 00 30 02 04 08 30 </part>
-        <!-- Mapper for pokonyan --> 
-        <part> 15 40 C8 73 F7 </part>
+        <!-- Mapper for  --> 
+        <part> 16 40 C8 73 F7 </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

@@ -16,7 +16,7 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for ghouls --> 
         <part> FF 00 FF FF FF FF 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for ghouls --> 
+        <!-- Mapper for  --> 
         <part> 0A 40 65 13 F1 </part>
         <part> 00 </part>
         <part repeat="24">FF</part>

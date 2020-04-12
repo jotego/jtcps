@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for 1941 --> 
         <part> 20 05 FF FF FF FF 28 2A 2C 2E 30 00 00 32 02 08 20 14 </part>
-        <!-- Mapper for 1941 --> 
-        <part> 00 40 44 F3 FF </part>
+        <!-- Mapper for  --> 
+        <part> 2A 40 44 F3 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

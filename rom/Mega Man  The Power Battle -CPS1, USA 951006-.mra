@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for megaman --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for megaman --> 
-        <part> 0E 40 C8 73 77 </part>
+        <!-- Mapper for  --> 
+        <part> 1B 40 C8 73 77 </part>
         <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

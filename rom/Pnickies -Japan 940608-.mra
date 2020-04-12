@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for pnickj --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for pnickj --> 
-        <part> 14 40 44 F3 FF </part>
+        <!-- Mapper for  --> 
+        <part> 15 40 44 F3 FF </part>
         <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

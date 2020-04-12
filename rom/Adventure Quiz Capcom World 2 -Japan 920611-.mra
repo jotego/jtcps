@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for cworld2j --> 
         <part> FF FF FF FF FF FF 20 2E 2C 2A 28 36 00 30 20 14 14 00 </part>
-        <!-- Mapper for cworld2j --> 
-        <part> 04 40 44 F3 FF </part>
+        <!-- Mapper for  --> 
+        <part> 18 40 44 F3 FF </part>
         <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

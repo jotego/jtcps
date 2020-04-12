@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for daimakai --> 
         <part> FF 00 FF FF FF FF 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for daimakai --> 
-        <part> 22 20 54 31 11 </part>
+        <!-- Mapper for  --> 
+        <part> 09 20 54 31 11 </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

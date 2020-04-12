@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for sf2ce --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 00 30 02 04 08 30 </part>
-        <!-- Mapper for sf2ce --> 
-        <part> 1A 40 C8 73 F7 </part>
+        <!-- Mapper for  --> 
+        <part> 1F 40 C8 73 F7 </part>
         <part> 09 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

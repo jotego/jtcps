@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for captcomm --> 
         <part> FF FF 06 04 02 00 20 2E 2C 2A 28 36 38 30 20 12 12 00 </part>
-        <!-- Mapper for captcomm --> 
-        <part> 02 40 88 73 FF </part>
+        <!-- Mapper for  --> 
+        <part> 04 40 88 73 FF </part>
         <part> 04 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

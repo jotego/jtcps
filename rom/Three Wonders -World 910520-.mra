@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for 3wonders --> 
         <part> 32 80 0E 0C 0A 08 28 26 24 22 20 00 00 30 20 04 08 12 </part>
-        <!-- Mapper for 3wonders --> 
-        <part> 01 40 88 73 FF </part>
+        <!-- Mapper for  --> 
+        <part> 1D 40 88 73 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

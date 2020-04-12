@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for qad --> 
         <part> FF FF FF FF FF FF 2C FF FF FF FF 36 00 12 14 02 14 00 </part>
-        <!-- Mapper for qad --> 
-        <part> 17 20 22 F1 FF </part>
+        <!-- Mapper for  --> 
+        <part> 1A 20 22 F1 FF </part>
         <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

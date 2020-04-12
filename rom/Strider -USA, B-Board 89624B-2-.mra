@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for strider --> 
         <part> FF 00 FF FF FF FF 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for strider --> 
-        <part> 1D 40 88 73 FF </part>
+        <!-- Mapper for  --> 
+        <part> 22 40 88 73 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

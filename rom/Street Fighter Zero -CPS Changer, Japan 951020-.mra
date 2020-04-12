@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for sfzch --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for sfzch --> 
-        <part> 24 00 00 FF FF </part>
+        <!-- Mapper for  --> 
+        <part> 20 00 00 FF FF </part>
         <part> 11 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for daimakair --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
-        <!-- Mapper for daimakair --> 
-        <part> 23 40 88 73 FF </part>
+        <!-- Mapper for  --> 
+        <part> 08 40 88 73 FF </part>
         <part> 01 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

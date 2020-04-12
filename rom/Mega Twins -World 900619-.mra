@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for mtwins --> 
         <part> 1E 44 FF FF FF FF 12 14 16 18 1A 00 00 1C 08 20 10 00 </part>
-        <!-- Mapper for mtwins --> 
-        <part> 11 40 44 F3 FF </part>
+        <!-- Mapper for  --> 
+        <part> 06 40 44 F3 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

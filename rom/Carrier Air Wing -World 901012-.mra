@@ -16,7 +16,7 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for cawing --> 
         <part> 00 46 FF FF FF FF 0C 0A 08 06 04 00 00 02 10 0A 0A 00 </part>
-        <!-- Mapper for cawing --> 
+        <!-- Mapper for  --> 
         <part> 03 40 44 F3 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>

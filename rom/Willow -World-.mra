@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for willow --> 
         <part> FF 00 FF FF FF FF 30 2E 2C 2A 28 00 00 26 20 10 08 00 </part>
-        <!-- Mapper for willow --> 
-        <part> 20 40 88 73 FF </part>
+        <!-- Mapper for  --> 
+        <part> 29 40 88 73 FF </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

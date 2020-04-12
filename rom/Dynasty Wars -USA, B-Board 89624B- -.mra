@@ -16,8 +16,8 @@
         <part repeat="10">FF</part>
         <!-- CPS-B config for dynwar --> 
         <part> 20 02 FF FF FF FF 2C 2A 28 26 24 00 00 22 02 04 08 00 </part>
-        <!-- Mapper for dynwar --> 
-        <part> 06 20 64 31 33 </part>
+        <!-- Mapper for  --> 
+        <part> 24 20 64 31 33 </part>
         <part> 00 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->

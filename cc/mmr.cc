@@ -257,7 +257,7 @@ string parent_name( game_entry* game ) {
 
 int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     game_entry* game, const CPS1config* x) {
-    static set<string>done;
+    static set<int>done;
     int mask=0xABCD, offset=0x1234;
     int id=0;
     bool found=false;
@@ -265,23 +265,16 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     string name; // = game->parent=="0" ? game->name : game->parent;
     // find game code. First look by the game name as some game variations have different
     // mappers to the parent game, like area88/unsquad
-    for( int k=0; k<2 && !found; k++ ) {
-        name = k==0 ? game->name : game->parent;
-        id=0;
-        while( parents[id] && !found) {
-            if( name == parents[id] ) {
-                found=true;
-            }
-            else id++;
-        }
+    for(id=0;all_mappers[id]!=nullptr && all_mappers[id]!=x->ranges;id++);
+    // cout << hex << all_mappers[id] << '\n';
+    // cout << hex << x->ranges << '\n';
+    // cout << "Found: " << id << '\n';
+    if(all_mappers[id]==nullptr) {
+        of << "ERROR: game mapper not found\n";
+        cout << "ERROR: game mapper not found (" << game->name << ") \n";
     }
-    //cout << "Found: " << name << '\n';
-    if(!found) {
-        of << "ERROR: game parent not found\n";
-        cout << "ERROR: game parent not found (" << game->name << ") \n";
-    }
-    dump_inc = done.count(name)==0;
-    done.insert(name);
+    dump_inc = done.count(id)==0;
+    done.insert(id);
     of << "        <!-- Mapper for " << name << " --> \n";
     of << "        <part> ";
     int aux=0, aux_mask;
@@ -318,7 +311,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     // Mapper ranges for verilog include file
     if( dump_inc ) {
         const gfx_range *r = x->ranges;
-        const int set_used = id<18;
+        const int set_used = id&1; // half of the games will use b outputs, and the other 
         const string mux_set = set_used ? "_b" : "_a";
         while( r->type != 0 ) {
             stringstream aux;
@@ -348,7 +341,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
                     aux << "        bank" << mux_set << "["<<b<<"] <= 1'b0;\n";
             }
             aux << "        set_used  <= 1'b" << set_used << ";\n";
-            mappers << "game_" << name << ": begin\n" << aux.str() << "    end\n";
+            mappers << "6'h" << hex << id << ": begin\n" << aux.str() << "    end\n";
         }
     }
     return dumpcnt;
