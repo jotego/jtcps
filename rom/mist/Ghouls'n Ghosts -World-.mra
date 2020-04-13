@@ -68,7 +68,6 @@
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF">
-        <dip bits="16,18"	 name="Difficulty" ids="8,7,6,5,1,2,3,4"/>
         <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
         <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
     </switches>

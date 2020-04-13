@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <set>
+#include <mamegame.hpp>
 
 #include "config.h"
 #include "dips.h"
@@ -39,7 +40,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                     of << hex << uppercase << erase << "</part>\n";
                     of << dec;
                     return;
-                }                 
+                }
                 ++entry;
                 int done=0;
                 while( !(entry->flags&ROMENTRYTYPE_REGION) && !(entry->flags&ROMENTRYTYPE_END)) {
@@ -68,7 +69,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                                 if( done==0 ) {
                                     of << "<interleave output=\""<<bits<<"\">\n";
                                     of << indent;
-                                }                                
+                                }
                                 of << "    ";
                                 of << "<part name=\"" << cur->name << "\" ";
                                 of << "crc=\"" << cur->hashdata << "\" map=\"";
@@ -90,7 +91,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                                 of << indent << "    <part name=\"" << entry->name << "\" ";
                                 of << "crc=\"" << entry->hashdata << "\"";
                                 int file_swap = (entry->flags & ROM_REVERSE)!=0;
-                                if( swap != file_swap ) 
+                                if( swap != file_swap )
                                     of << " map=\"12\"/>\n";
                                 else
                                     of << " map=\"21\"/>\n";
@@ -178,7 +179,7 @@ int find_cfg( stringstream& of, const string& name ) {
 
 int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
     of << "        <!-- CPS-B config for " << x->name << " --> \n";
-    of << "        <part> ";            
+    of << "        <part> ";
     int dumpcnt=0;
     DUMP( x->cpsb_addr );
     DUMP( (x->cpsb_value>>4) | (x->cpsb_value&0xf) );
@@ -208,8 +209,8 @@ int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
 
 void output_range( stringstream& ss, const char *layer, const char *layer_bits,
     int min, int max, const gfx_range *r, bool& addor, const char *extra="" ) {
-        if(addor) ss << "\n        || "; 
-        ss << " ( layer==" << layer << " "; 
+        if(addor) ss << "\n        || ";
+        ss << " ( layer==" << layer << " ";
         if( min!=0 ) {
             ss << " &&";
             ss << " code[" << layer_bits << "]>=7'h" << hex << min;
@@ -220,7 +221,7 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
         }
         if( extra[0] ) ss << extra;
         ss << ") /* " << hex << r->start << " - " << r->end << " */ ";
-        addor= true; 
+        addor= true;
 }
 
 void parse_range( string& s, const gfx_range *r ) {
@@ -232,10 +233,10 @@ void parse_range( string& s, const gfx_range *r ) {
     if( r->type & GFXTYPE_SPRITES ) {
         output_range( ss, "OBJ ",  "15:9", min, max, r, addor );
     }
-    if( r->type & GFXTYPE_SCROLL2 ) { 
+    if( r->type & GFXTYPE_SCROLL2 ) {
         output_range( ss, "SCR2", "15:9", min, max, r, addor );
     }
-    if( r->type & GFXTYPE_SCROLL1 ) { 
+    if( r->type & GFXTYPE_SCROLL1 ) {
         output_range( ss, "SCR1", "15:10", min, max, r, addor );
     }
     if( r->type & GFXTYPE_SCROLL3 ) {
@@ -243,7 +244,7 @@ void parse_range( string& s, const gfx_range *r ) {
     }
     // ss << " 1'b0 /* STARS ommitted*/ ";
     /*
-    if( r->type & GFXTYPE_STARS   ) { 
+    if( r->type & GFXTYPE_STARS   ) {
         output_range( ss, "STARS", "15:10", min, max, r, addor );
     }
     */
@@ -311,7 +312,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     // Mapper ranges for verilog include file
     if( dump_inc ) {
         const gfx_range *r = x->ranges;
-        const int set_used = id&1; // half of the games will use b outputs, and the other 
+        const int set_used = id&1; // half of the games will use b outputs, and the other
         const string mux_set = set_used ? "_b" : "_a";
         while( r->type != 0 ) {
             stringstream aux;
@@ -398,7 +399,6 @@ void dump_orientation( stringstream& mra, game_entry* game, int buttons ) {
     }
     mra << hex << setfill('0') << setw(2) << core_mod;
     mra << " </part></rom>\n";
-    //mra << " <!-- " << buttons << "-->\n";
 }
 
 game_entry *get_parent( game_entry *game ) {
@@ -449,7 +449,7 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
         case cps1_2b_4way: mra << "B0,B1,-,-,-,-,Start,Coin,Pause\" \n        default=\"A,B,R,L,Start"; buttons=2; break;
         case cps1_3b: mra << "B0,B1,B2,-,-,-,Start,Coin,Pause\" \n        default=\"A,B,X,R,L,Start"; buttons=3; break;
         case cps1_quiz:
-        case cps1_3players: 
+        case cps1_3players:
         case ports_ganbare:
         case cps1_4players: mra << "B0,B1,B2,B3,-,-,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Start"; buttons=4; break;
         case sf2hack:
@@ -464,7 +464,102 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
 
 #undef LUT_DUMP
 
-void generate_mra( game_entry* game ) {
+void replace( string& aux, const char *f, const char *r ) {
+    int x;
+    while( (x = aux.find(f)) != string::npos  )
+        aux.replace( x, strlen(f), r );
+} 
+
+
+void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
+    map<string, int> bases;
+    bases["DSWA"] = 8;
+    bases["DSWB"] = 16;
+    bases["DSWC"] = 24;
+    mras << "    <switches default=\"FF,FF,FF\">\n";
+    for( DIPsw* d : dip_info->getDIPs() ) {
+        if( d->name == "Unused" ) continue;
+        if( skip_coins ) {
+            //if( d->name.find("Coin") != string::npos ) continue;
+            int dump=0;
+            if( d->name.find("Flip") != string::npos ) dump++;
+            if( d->name.find("Game") != string::npos ) dump++;
+            if( d->name.find("Demo") != string::npos ) dump++;
+            if( d->name.find("Freeze") != string::npos ) dump++;
+            if( d->name.find("Difficulty") != string::npos ) dump++;
+            if( !dump ) continue;
+        }
+        auto b = bases.find(d->tag);
+        if( b != bases.end() ) {
+            stringstream pre_mras;
+            pre_mras << "        ";
+            int base = b->second;
+            int bit0 = base;
+            int bit1 = base;
+            int m    = d->mask;
+            int k;
+            for( k=0; k<8; k++ ) {
+                if( (m&1) == 0 ) {
+                    m>>=1;
+                    bit0++;
+                }
+                else
+                    break;
+            }
+            for( bit1=bit0; k<8;k++ ) {
+                if( (m&1) == 1 ) {
+                    m>>=1;
+                    bit1++;
+                }
+                else
+                    break;
+            }
+            pre_mras << "<dip bits=\"";
+            --bit1;
+            if( bit1==bit0 )
+                pre_mras << dec << bit0;
+            else
+                pre_mras << dec << bit0 << "," << bit1;
+            pre_mras << "\"\t name=\"" << d->name << "\" ids=\"";
+            stringstream ids;
+            for( DIPvalue& dval : d->values ) {
+                string aux = dval.name;
+                if( skip_coins ) {
+                    while(1) {
+                        int x = aux.find_first_of('(');
+                        if( x!=string::npos) {
+                            int y = aux.find_first_of(')');
+                            if( y!=string::npos) {
+                                aux = aux.substr(0,x)+aux.substr(y+1);
+                            } else break;
+                        } else break;
+                    }
+                }
+                if( aux[aux.length()-1]==' ' ) {
+                    aux.erase( aux.end()-1 );
+                }
+                ids << aux << ',';
+            }
+            string ids_str = ids.str();
+            ids_str.erase( ids_str.length()-1, 1 );
+            int total_length = ids_str.length() + d->name.length() + 4;
+            if( total_length >255 ) {
+                cout << "WARNING: DIP ids string too long by " << (total_length-255) << " chars.\n";
+                cout << ids_str << '\n';
+            }
+            pre_mras << ids_str;
+            pre_mras << "\"/>\n";
+            string aux = pre_mras.str();
+            if( !(aux.length()>63 && skip_coins) ) {
+                mras << aux;
+            }
+        }
+    }
+    mras << "    </switches>\n";
+}
+
+void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins,
+    bool skip_cfg ) {
     switch( game->board_type ) {
         //case cps1_10MHz:
         //case cps1_12MHz:
@@ -478,7 +573,7 @@ void generate_mra( game_entry* game ) {
         case pang3:
             return;
     }
-    static bool first=true;    
+    static bool first=true;
     //ofstream simf( game->name+".hex");
     stringstream mras, simf, mappers, ss_ports;
     mras << "<misterromdescription>\n";
@@ -510,7 +605,7 @@ void generate_mra( game_entry* game ) {
         sizes.qsound= size_region(entry,"qsound",256*1024);
         sizes.gfx   = size_region(entry,"gfx");
 
-        cnt+=generate_lut( mras, sizes );        
+        cnt+=generate_lut( mras, sizes );
         // CPS-B information
         int sim_cfg[64];
         int lut_size = cnt;
@@ -527,7 +622,7 @@ void generate_mra( game_entry* game ) {
             case wofhfh:     cpu12=1; break;
             case pang3:      cpu12=1; break;
         }
-        if( ports!= nullptr )            
+        if( ports!= nullptr )
             cpu12 |= ports->cpsb_extra_inputs()<<1;
         // charger game ?
         if( game->name == "sfzch" || game->parent == string("sfzch") ) cpu12 |= 1 << 4;
@@ -564,8 +659,18 @@ void generate_mra( game_entry* game ) {
     int buttons = ports == nullptr ? 4 : ports->buttons();
     dump_orientation(mras, game, buttons);
     mras << ss_ports.str();
+    // DIPs
+    parse_dips( mras, dip_info, skip_coins );
+    // Close MRA file
     mras << "</misterromdescription>\n";    // End of MRA file
-
+    // Config file for MiST
+    if( !skip_cfg ) {
+        string fname = game->name+".cfg";
+        transform(fname.begin(), fname.end(), fname.begin(), ::toupper);
+        ofstream ofcfg( fname, ios_base::binary );
+        unsigned char buf[4] = { 0, 0, 0xff, 0xff };
+        ofcfg.write((char*)buf,4);
+    }
     // hex file for simulation
     string s = simf.str();
     s = s.substr(0,s.length()-1);
@@ -573,7 +678,7 @@ void generate_mra( game_entry* game ) {
     ofstream ofhex( "../ver/video/cfg/"+game->name+"_cfg.hex");
     ofhex << s;
     ofhex.close();
-    
+
     string mra_name=game->full_name;
     replace(mra_name.begin(),mra_name.end(),'(','-');
     replace(mra_name.begin(),mra_name.end(),')','-');
@@ -583,25 +688,33 @@ void generate_mra( game_entry* game ) {
     ofhex << mras.str();
     ofhex.close();
 
-    ofhex.open( "../ver/video/mappers.inc", first ? ios_base::trunc : (ios_base::app | ios_base::ate) );
-    ofhex << mappers.str();
-    ofhex.close();
+    if( !skip_include ) {
+        ofhex.open( "../ver/video/mappers.inc", first ? ios_base::trunc : (ios_base::app | ios_base::ate) );
+        ofhex << mappers.str();
+        ofhex.close();
+    }
     first=false;
 }
 
 int main(int argc, char *argv[]) {
-    bool game_list=false, parents_only=true;
+    bool game_list=false, parents_only=true, skip_include=true, skip_coins=false;
+    bool skip_cfg =true;
     string game_name;
     for( int k=1; k<argc; k++ ) {
         if( string(argv[k])=="-list" )  { game_list=true; continue; }
         if( string(argv[k])=="-parent" ) { parents_only=true; continue; }
         if( string(argv[k])=="-alt" ) { parents_only=false; continue; }
         if( string(argv[k])=="-v" )   { verbose=true; continue; }
+        if( string(argv[k])=="-inc" )   { skip_include=false; continue; }
+        if( string(argv[k])=="-nocoin" )   { skip_coins=true; continue; }
+        if( string(argv[k])=="-cfg" )   { skip_cfg=false; continue; }
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
             cout << "-parent    to produce only output for parent games (default)\n";
             cout << "-alt       to produce output for all games\n";
             cout << "-v         verbose\n";
+            cout << "-inc       generates the include file for verilog\n";
+            cout << "-nocoin    skips coin/credit DIP switches (useful for MiST)\n";
             cout << "-h         shows this message\n";
             return 0;
         }
@@ -612,19 +725,30 @@ int main(int argc, char *argv[]) {
         game_name = argv[k];
     }
     int cnt=0;
+    // Parse XML file
+    GameMap game_dips;
+    parse_MAME_xml( game_dips, "cps1.xml" );
+
     for( auto game : gl ) {
         if( game_list ) {
                 cout << game->name << '\n';
         } else {
             // process game if it matches the name in arguments or
-            // if there was not name then process all 
+            // if there was not name then process all
             if( (!game_name.length() && !(parents_only && game->parent!="0"))
-                || game->name == game_name )
-                generate_mra( game );
-                cnt++;
+                || game->name == game_name ) {
+                Game* dip_info;
+                for( auto& g : game_dips ) {
+                    if( g.second->name == game->name ) {
+                        dip_info = g.second;
+                        // cout << "Found " << dip_info->name << '\n';
+                        break;
+                    }
+                }
+                generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
+            }
+            cnt++;
         }
     }
     cout << cnt << " games.\n";
 }
-
-

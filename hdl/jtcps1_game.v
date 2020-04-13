@@ -71,9 +71,10 @@ module jtcps1_game(
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input           dip_pause,
-    input           dip_flip,
+    inout           dip_flip,
     input           dip_test,
     input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB    
+    input   [31:0]  dipsw,
     // Sound output
     output  signed [15:0] snd_left,
     output  signed [15:0] snd_right,
@@ -160,9 +161,10 @@ assign slot_wr[9:2] = 7'd0;
 assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
-assign dipsw_a      = 8'hff;
-assign dipsw_b      = 8'hff;
-assign dipsw_c      = { dip_test, 2'b00, ~dip_flip, 4'hf };
+//assign dipsw_c      = { dipsw[23:21], ~dip_flip, dipsw[19:16] };
+
+assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+assign dip_flip = dipsw_c[4];
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;

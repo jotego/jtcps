@@ -50,7 +50,6 @@
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
     <switches default="FF,FF,FF">
-        <dip bits="16,18"	 name="Difficulty" ids="8,7,6,5,1,2,3,4"/>
         <dip bits="24"	 name="Freeze" ids="On,Off"/>
         <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
         <dip bits="29"	 name="Demo Sounds" ids="Off,On"/>

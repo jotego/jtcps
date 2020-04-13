@@ -49,8 +49,6 @@
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF">
-        <dip bits="16,18"	 name="Difficulty" ids="7,6,5,4,3,2,1,0"/>
-        <dip bits="24"	 name="Throttle Game Speed" ids="Off,On"/>
         <dip bits="27"	 name="Freeze" ids="On,Off"/>
         <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
         <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>

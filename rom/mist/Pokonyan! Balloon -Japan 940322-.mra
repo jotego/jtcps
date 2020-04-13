@@ -61,7 +61,6 @@
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
     <switches default="FF,FF,FF">
-        <dip bits="16,17"	 name="Demo Sounds" ids="Off,Every 4,Every 2,On"/>
         <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
     </switches>
 </misterromdescription>

@@ -15,6 +15,7 @@ else
     GAME=$VER/game
     VIDEO=$VER/video
     HDL=$JTROOT/hdl
+    CC=$JTROOT/cc
     ROM=$JTROOT/rom
     MRA=$ROM/mra
     MODULES=$JTROOT/modules
