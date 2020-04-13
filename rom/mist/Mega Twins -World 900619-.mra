@@ -1,0 +1,58 @@
+<misterromdescription>
+    <name>Mega Twins (World 900619)</name>
+    <setname>mtwins</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="mtwins.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 2048 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for mtwins --> 
+        <part> 1E 44 FF FF FF FF 12 14 16 18 1A 00 00 1C 08 20 10 00 </part>
+        <!-- Mapper for  --> 
+        <part> 06 40 44 F3 FF </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="che_35.11h" crc="a7f96b02" map="01"/>
+            <part name="che_30.11f" crc="9a2a2db1" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="che_36.12h" crc="0fa00c39" map="01"/>
+            <part name="che_31.12f" crc="bbff8a99" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ck-32m.8h" crc="9b70bd41" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="ch_09.12b" crc="4d4255b7"/>
+        <!-- oki -->
+        <part name="ch_18.11c" crc="f909e8de"/>
+        <part name="ch_19.12c" crc="fc158cf7"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="ck-5m.7a" crc="4ec75f15"  map="00000021"/>
+            <part name="ck-7m.9a" crc="d85d00d6"  map="00002100"/>
+            <part name="ck-1m.3a" crc="f33ca9d4"  map="00210000"/>
+            <part name="ck-3m.5a" crc="0ba2047f"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty" ids="7,6,5,4,3,2,1,0"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

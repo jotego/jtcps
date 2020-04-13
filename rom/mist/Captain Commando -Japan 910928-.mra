@@ -1,0 +1,64 @@
+<misterromdescription>
+    <name>Captain Commando (Japan 910928)</name>
+    <setname>captcommjr1</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="captcomm.zip|captcommjr1.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1280 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 05 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 05 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>40 06 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for captcommjr1 --> 
+        <part> FF FF 06 04 02 00 20 2E 2C 2A 28 36 38 30 20 12 12 00 </part>
+        <!-- Mapper for  --> 
+        <part> 04 40 88 73 FF </part>
+        <part> 04 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="ccj_23b.8f" crc="e2a2d80e" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ccj_22c.7f" crc="9b82a052" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ccj_28b.9f" crc="fbcec223" map="01"/>
+            <part name="ccj_24b.9e" crc="84ff99b2" map="10"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="ccj_09.12a" crc="698e8b58"/>
+        <!-- oki -->
+        <part name="ccj_18.11c" crc="6de2c2db"/>
+        <part name="ccj_19.12c" crc="b99091ae"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="cc_01.3a" crc="7261d8ba"  map="00000021"/>
+            <part name="cc_02.4a" crc="6a60f949"  map="00002100"/>
+            <part name="cc_03.5a" crc="00637302"  map="00210000"/>
+            <part name="cc_04.6a" crc="cc87cf61"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="cc_05.7a" crc="28718bed"  map="00000021"/>
+            <part name="cc_06.8a" crc="d4acc53a"  map="00002100"/>
+            <part name="cc_07.9a" crc="0c69f151"  map="00210000"/>
+            <part name="cc_08.10a" crc="1f9ebb97"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty 1" ids="8,7,6,5,4,3,2,1"/>
+        <dip bits="19,20"	 name="Difficulty 2" ids="Hardest,Hard,Normal,Easy"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

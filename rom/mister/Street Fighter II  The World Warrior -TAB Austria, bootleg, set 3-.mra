@@ -1,0 +1,69 @@
+<misterromdescription>
+    <name>Street Fighter II: The World Warrior (TAB Austria, bootleg, set 3)</name>
+    <setname>sf2ebbl2</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="sf2hack.zip|sf2.zip|sf2.zip|sf2ebbl2.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 6656 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for sf2ebbl2 --> 
+        <part> 08 47 FF FF FF FF 14 12 10 0E 0C 00 00 0A 08 14 02 00 </part>
+        <!-- Mapper for  --> 
+        <part> 23 40 C8 73 F7 </part>
+        <part> 08 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="27c020.5" crc="59ccd474" map="01"/>
+            <part name="27c020.7" crc="a258b4d5" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="27c020.4" crc="0c83844d" map="01"/>
+            <part name="27c020.6" crc="82097d63" map="10"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="27c512.3" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="27c010.2" crc="7f162009"/>
+        <part name="27c010.1" crc="beade53f"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="a-se235.bin" crc="a258de13"  map="00000021"/>
+            <part name="c-se005.bin" crc="c781bf87"  map="00002100"/>
+            <part name="b-se194.bin" crc="5726cab8"  map="00210000"/>
+            <part name="d-se064.bin" crc="4dd24197"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="e-sf004.bin" crc="187667cc"  map="00000021"/>
+            <part name="f-sf001.bin" crc="5b585071"  map="00002100"/>
+            <part name="27c1024.10" crc="84427d1b"  map="00210000"/>
+            <part name="27c1024.12" crc="55bc790c"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="27c1024.9" crc="f8725add"  map="00000021"/>
+            <part name="27c1024.11" crc="c2a5373e"  map="00002100"/>
+    </rom>
+    <rom index="1"><part> 78 </part></rom>
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Select,Select,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="8,10"	 name="Coin A" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="11,13"	 name="Coin B" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="14"	 name="2 Coins to Start, 1 to Continue" ids="On,Off"/>
+        <dip bits="16,18"	 name="Difficulty" ids="7 (Hardest),6,5,4,3 (Normal),2,1,0 (Easiest)"/>
+        <dip bits="26"	 name="Free Play" ids="On,Off"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="30"	 name="Allow Continue" ids="Yes,No"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

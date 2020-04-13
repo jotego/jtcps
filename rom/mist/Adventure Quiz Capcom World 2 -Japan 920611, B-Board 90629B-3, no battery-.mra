@@ -1,0 +1,53 @@
+<misterromdescription>
+    <name>Adventure Quiz Capcom World 2 (Japan 920611, B-Board 90629B-3, no battery)</name>
+    <setname>cworld2ja</setname>
+    <year>1992</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="cworld2j.zip|cworld2ja.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 2048 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for cworld2ja --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 18 40 44 F3 FF </part>
+        <part> 01 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="q5 - 34_90629b.8f" crc="de54487f" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="q5 - 33_90629b.6f" crc="93248458" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="q5 - 09_90629b.12a" crc="e14dc524"/>
+        <!-- oki -->
+        <part name="q5 - 18_90629b.11c" crc="d10c1b68"/>
+        <part name="q5 - 19_90629b.12c" crc="7d17e496"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="q5 - 06_90629b.8a" crc="09d0e7ce"  map="00000021"/>
+            <part name="q5 - 08_90629b.10a" crc="22e4ce9a"  map="00002100"/>
+            <part name="q5 - 05_90629b.7a" crc="f7b3aed6"  map="00210000"/>
+            <part name="q5 - 07_90629b.9a" crc="520c6c88"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty" ids="4,3,2,1,0"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

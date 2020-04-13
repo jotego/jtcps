@@ -1,0 +1,59 @@
+<misterromdescription>
+    <name>1941: Counter Attack (World 900227)</name>
+    <setname>1941</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="1941.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 2048 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for 1941 --> 
+        <part> 20 05 FF FF FF FF 28 2A 2C 2E 30 00 00 32 02 08 20 14 </part>
+        <!-- Mapper for  --> 
+        <part> 2A 40 44 F3 FF </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="41em_35.11h" crc="ddbee5eb" map="01"/>
+            <part name="41em_30.11f" crc="4249ec61" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="41em_36.12h" crc="3cfc31d0" map="01"/>
+            <part name="41em_31.12f" crc="584e88e5" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="41-32m.8h" crc="4e9648ca" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="41_9.12b" crc="0f9d8527"/>
+        <!-- oki -->
+        <part name="41_18.11c" crc="d1f15aeb"/>
+        <part name="41_19.12c" crc="15aec3a6"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="41-5m.7a" crc="01d1cb11"  map="00000021"/>
+            <part name="41-7m.9a" crc="aeaa3509"  map="00002100"/>
+            <part name="41-1m.3a" crc="ff77985a"  map="00210000"/>
+            <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 71 </part></rom>
+    <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
+        default="A,B,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty" ids="7,6,5,4,3,2,1,0"/>
+        <dip bits="24"	 name="Throttle Game Speed" ids="Off,On"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

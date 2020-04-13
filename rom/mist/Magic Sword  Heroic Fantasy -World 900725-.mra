@@ -1,0 +1,57 @@
+<misterromdescription>
+    <name>Magic Sword: Heroic Fantasy (World 900725)</name>
+    <setname>msword</setname>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="msword.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 2048 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for msword --> 
+        <part> 2E 43 FF FF FF FF 22 24 26 28 2A 00 00 2C 20 02 04 00 </part>
+        <!-- Mapper for  --> 
+        <part> 11 40 44 F3 FF </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="mse_35.11h" crc="d5bf66cd" map="01"/>
+            <part name="mse_30.11f" crc="03fc8dbc" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="mse_36.12h" crc="8f7d6ce9" map="01"/>
+            <part name="mse_31.12f" crc="30332bcf" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ms-32m.8h" crc="2475ddfc" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="ms_09.12b" crc="57b29519"/>
+        <!-- oki -->
+        <part name="ms_18.11c" crc="fb64e90d"/>
+        <part name="ms_19.12c" crc="74f892b9"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="ms-5m.7a" crc="c00fe7e2"  map="00000021"/>
+            <part name="ms-7m.9a" crc="4ccacac5"  map="00002100"/>
+            <part name="ms-1m.3a" crc="0d2bbe00"  map="00210000"/>
+            <part name="ms-3m.5a" crc="3a1a5bf4"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

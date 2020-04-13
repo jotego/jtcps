@@ -1,0 +1,58 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (Mstreet-6, bootleg, set 2)</name>
+    <setname>sf2cems6b</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="sf2bhh.zip|sf2.zip|sf2ce.zip|sf2cems6b.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1280 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 05 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 05 </part>
+        <!-- Graphics size 6656 kB -->
+        <part>40 06 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for sf2cems6b --> 
+        <part> FF FF FF FF FF FF 14 12 10 0E 0C 00 00 0A 0E 0E 0E 30 </part>
+        <!-- Mapper for  --> 
+        <part> 1F 40 C8 73 F7 </part>
+        <part> 08 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="ms6b.u196" crc="435153d5" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ms6b.u10" crc="c812b7b2" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="ms6.u191" crc="08f6b60e"/>
+        <!-- oki -->
+        <part name="ms6.u210" crc="6cfffb11"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="ms6.u70" crc="baa0f81f"  map="00000021"/>
+            <part name="ms6.u68" crc="8edff95a"  map="00002100"/>
+            <part name="ms6.u69" crc="468962b1"  map="00210000"/>
+            <part name="ms6.u64" crc="8165f536"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="ms6.u19" crc="39d763d3"  map="00000021"/>
+            <part name="ms6.u18" crc="2ddfe46e"  map="00002100"/>
+            <part name="ms6.u31" crc="35486f2d"  map="00210000"/>
+            <part name="ms6.u29" crc="e4eca601"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 78 </part></rom>
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Select,Select,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty" ids="7,6,5,4,3,2,1,0"/>
+        <dip bits="27"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

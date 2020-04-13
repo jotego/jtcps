@@ -1,0 +1,59 @@
+<misterromdescription>
+    <name>Strider Hiryu (Japan Resale Ver.)</name>
+    <setname>striderjr</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="strider.zip|striderjr.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for striderjr --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 22 40 88 73 FF </part>
+        <part> 01 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="sthj_23.8f" crc="046e7b12" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="sthj_22.7f" crc="9b3cfc08" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="sth_09.12a" crc="08d63519"/>
+        <!-- oki -->
+        <part name="sth_18.11c" crc="4386bc80"/>
+        <part name="sth_19.12c" crc="444536d7"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="sth_01.3a" crc="4eee9aea"  map="00000021"/>
+            <part name="sth_02.4a" crc="2d7f21e4"  map="00002100"/>
+            <part name="sth_03.5a" crc="7705aa46"  map="00210000"/>
+            <part name="sth_04.6a" crc="5b18b722"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="sth_05.7a" crc="005f000b"  map="00000021"/>
+            <part name="sth_06.8a" crc="b9441519"  map="00002100"/>
+            <part name="sth_07.9a" crc="b7d04e8b"  map="00210000"/>
+            <part name="sth_08.10a" crc="6b4713b4"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="16,18"	 name="Difficulty" ids="8,7,6,5,1,2,3,4"/>
+        <dip bits="26"	 name="Freeze" ids="On,Off"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="Off,On"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

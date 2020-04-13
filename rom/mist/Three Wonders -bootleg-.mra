@@ -1,0 +1,56 @@
+<misterromdescription>
+    <name>Three Wonders (bootleg)</name>
+    <setname>3wondersb</setname>
+    <year>1991</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="3wonders.zip|3wondersb.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for 3wondersb --> 
+        <part> 32 80 0E 0C 0A 08 28 26 24 22 20 36 00 30 20 04 08 12 </part>
+        <!-- Mapper for  --> 
+        <part> 1D 40 88 73 FF </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="274001.3" crc="e79eacb3" map="01"/>
+            <part name="274001.4" crc="47887cf3" map="10"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="27512.2" crc="abfca165"/>
+        <!-- oki -->
+        <part name="27020.1" crc="3c4348cf"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="274001.12" crc="47cf8dfb"  map="00000001"/>
+            <part name="274001.8" crc="3bc2ef5e"  map="00000010"/>
+            <part name="274001.10" crc="a0d27605"  map="00000100"/>
+            <part name="274001.6" crc="312d790c"  map="00001000"/>
+            <part name="274001.11" crc="8112bbb4"  map="00010000"/>
+            <part name="274001.7" crc="58307167"  map="00100000"/>
+            <part name="274001.9" crc="cb73759d"  map="01000000"/>
+            <part name="274001.5" crc="3f765ae8"  map="10000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="15"	 name="Freeze" ids="On,Off"/>
+        <dip bits="18,19"	 name="Difficulty (Midnight Wanderers)" ids="Hardest,Hard,Normal,Easy"/>
+        <dip bits="22,23"	 name="Difficulty (Chariot)" ids="Hardest,Hard,Normal,Easy"/>
+        <dip bits="26,27"	 name="Difficulty (Don't Pull)" ids="Hardest,Hard,Normal,Easy"/>
+        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

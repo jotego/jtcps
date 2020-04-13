@@ -1,0 +1,86 @@
+<misterromdescription>
+    <name>Mega Man: The Power Battle (CPS1, USA 951006)</name>
+    <setname>megaman</setname>
+    <year>1995</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="megaman.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1536 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 06 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 06 </part>
+        <!-- Graphics size 8192 kB -->
+        <part>40 07 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for megaman --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 1B 40 C8 73 77 </part>
+        <part> 01 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="rcmu_23b.8f" crc="1cd33c7a" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="rcmu_22b.7f" crc="708268c4" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="rcmu_21a.6f" crc="4376ea95" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="rcm_09.11a" crc="22ac8f5f"/>
+        <!-- oki -->
+        <part name="rcm_18.11c" crc="80f1f8aa"/>
+        <part name="rcm_19.12c" crc="f257dbe1"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="rcm_01.3a" crc="6ecdf13f"  map="00000021"/>
+            <part name="rcm_02.4a" crc="944d4f0f"  map="00002100"/>
+            <part name="rcm_03.5a" crc="36f3073c"  map="00210000"/>
+            <part name="rcm_04.6a" crc="54e622ff"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="rcm_05.7a" crc="5dd131fd"  map="00000021"/>
+            <part name="rcm_06.8a" crc="f0faf813"  map="00002100"/>
+            <part name="rcm_07.9a" crc="826de013"  map="00210000"/>
+            <part name="rcm_08.10a" crc="fbff64cf"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="rcm_10.3c" crc="4dc8ada9"  map="00000021"/>
+            <part name="rcm_11.4c" crc="f2b9ee06"  map="00002100"/>
+            <part name="rcm_12.5c" crc="fed5f203"  map="00210000"/>
+            <part name="rcm_13.6c" crc="5069d4a9"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="rcm_14.7c" crc="303be3bd"  map="00000021"/>
+            <part name="rcm_15.8c" crc="4f2d372f"  map="00002100"/>
+            <part name="rcm_16.9c" crc="93d97fde"  map="00210000"/>
+            <part name="rcm_17.10c" crc="92371042"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF">
+        <dip bits="8,12"	 name="Coinage" ids="Free Play,2 Coins to Start, 1 to Continue,9 Coins/1 Credit,8 Coins/1 Credit,7 Coins/1 Credit,6 Coins/1 Credit,5 Coins/1 Credit,4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/9 Credits,1 Coin/8 Credits,1 Coin/7 Credits,1 Coin/6 Credits,1 Coin/5 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="13,14"	 name="Coin slots" ids="1, Common,2, Individual,2, Common"/>
+        <dip bits="15"	 name="Unknown" ids="On,Off"/>
+        <dip bits="16,17"	 name="Difficulty" ids="Hardest,Hard,Normal,Easy"/>
+        <dip bits="18,19"	 name="Time" ids="60,70,90,100"/>
+        <dip bits="20"	 name="Unknown" ids="On,Off"/>
+        <dip bits="21"	 name="Unknown" ids="On,Off"/>
+        <dip bits="22"	 name="Voice" ids="Off,On"/>
+        <dip bits="23"	 name="Unknown" ids="On,Off"/>
+        <dip bits="24"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="25"	 name="Demo Sounds" ids="Off,On"/>
+        <dip bits="26"	 name="Allow Continue" ids="No,Yes"/>
+        <dip bits="27"	 name="Unknown" ids="On,Off"/>
+        <dip bits="28"	 name="Unknown" ids="On,Off"/>
+        <dip bits="29"	 name="Unknown" ids="On,Off"/>
+        <dip bits="30"	 name="Unknown" ids="On,Off"/>
+        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>
