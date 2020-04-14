@@ -161,9 +161,12 @@ assign slot_wr[9:2] = 7'd0;
 assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
-//assign dipsw_c      = { dipsw[23:21], ~dip_flip, dipsw[19:16] };
-
+`ifndef SIMULATION
 assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+`else
+assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
+`endif
+
 assign dip_flip = dipsw_c[4];
 
 assign LVBL         = ~VB;
@@ -474,11 +477,9 @@ jtframe_sdram_mux #(
     // GFX ROM
     .SLOT2_AW   ( 22    ),  // OBJ VRAM
     .SLOT6_AW   ( 22    ),  //6
-    .SLOT8_AW   ( 22    ),  //8
 
     .SLOT2_DW   ( 32    ),
-    .SLOT6_DW   ( 32    ),
-    .SLOT8_DW   ( 32    )
+    .SLOT6_DW   ( 32    )
 )
 u_sdram_mux(
     .rst            ( rst           ),
