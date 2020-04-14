@@ -244,9 +244,10 @@ always @(posedge clk or posedge rst) begin
                     st <= 6'd1; // scan again
                 end else if(rom_ok) begin
                     pxl_data <= rom_data;
-                    rom_half <= ~rom_half;
-                    if(size[2] /*32*/)
+                    if(size[2] /*32*/) begin
+                        rom_half <= ~rom_half;
                         rom_addr[0] <= ~rom_addr[0];
+                    end else rom_cs <= 1'b0; /* 16 */
                 end else st<=st;
             end
             24: begin
@@ -266,6 +267,7 @@ always @(posedge clk or posedge rst) begin
             end
             42: begin
                 buf_wr <= 1'b0;
+                rom_cs <= 1'b0;
                 st     <= 6'd1; // 32x tile done
             end
         endcase
