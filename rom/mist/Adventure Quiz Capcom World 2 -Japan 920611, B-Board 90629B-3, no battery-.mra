@@ -43,11 +43,4 @@
     <rom index="1"><part> 74 </part></rom>
     <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Start"/>
-    <switches default="FF,FF,FF">
-        <dip bits="16,18"	 name="Difficulty" ids="4,3,2,1,0"/>
-        <dip bits="27"	 name="Freeze" ids="On,Off"/>
-        <dip bits="28"	 name="Flip Screen" ids="On,Off"/>
-        <dip bits="29"	 name="Demo Sounds" ids="On,Off"/>
-        <dip bits="31"	 name="Game Mode" ids="Test,Game"/>
-    </switches>
 </misterromdescription>

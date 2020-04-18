@@ -1,0 +1,52 @@
+<misterromdescription>
+    <name>Huo Feng Huang (Chinese bootleg of Sangokushi II)</name>
+    <setname>wofhfh</setname>
+    <year>1999</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="wof.zip|wof.zip|wofhfh.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 128 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>80 04 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>80 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for wofhfh --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 25 40 88 73 FF </part>
+        <part> 03 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="23" crc="6ae4b312" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="22" crc="94e8d01a" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="9" crc="86fe8a97"/>
+        <!-- oki -->
+        <part name="18" crc="c04be720"/>
+        <part name="19" crc="fbb8d8c1"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="1" crc="0d9cb9bf"  map="00000021"/>
+            <part name="2" crc="45227027"  map="00002100"/>
+            <part name="3" crc="c5ca2460"  map="00210000"/>
+            <part name="4" crc="e349551c"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="5" crc="34949d7b"  map="00000021"/>
+            <part name="6" crc="dfa70971"  map="00002100"/>
+            <part name="7" crc="073686a6"  map="00210000"/>
+            <part name="8" crc="5300f8db"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
+</misterromdescription>

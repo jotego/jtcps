@@ -135,7 +135,7 @@ always @(posedge clk, posedge rst) begin
         rom_addr    <= 21'd0;
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
-            rom_addr  <= A[21:1];
+            rom_addr    <= A[21:1];
             one_wait    <= A[23] | ~A[22];
             dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_ram_cs  <= &A[23:18];

@@ -64,7 +64,7 @@
     <rom index="1"><part> 72 </part></rom>
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
-    <switches default="FF,FF,FF">
+    <switches default="FF,FF,FF,FF">
         <dip bits="8,12"	 name="Coinage" ids="Free Play,2 Coins to Start, 1 to Continue,9 Coins/1 Credit,8 Coins/1 Credit,7 Coins/1 Credit,6 Coins/1 Credit,5 Coins/1 Credit,4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/9 Credits,1 Coin/8 Credits,1 Coin/7 Credits,1 Coin/6 Credits,1 Coin/5 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
         <dip bits="13,14"	 name="Coin slots" ids="1, Common,2, Individual,2, Common"/>
         <dip bits="15"	 name="Unknown" ids="On,Off"/>

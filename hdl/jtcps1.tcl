@@ -15,7 +15,6 @@ set_global_assignment -name VERILOG_MACRO "COLORW=8"
 set_global_assignment -name VERILOG_MACRO "JTFRAME_SDRAM_BANKS"
 
 # OSD options
-set_global_assignment -name VERILOG_MACRO "JTFRAME_MRA_DIP=1"
 set_global_assignment -name VERILOG_MACRO "JTFRAME_ADPCM=1"
 set_global_assignment -name VERILOG_MACRO "JTFRAME_ANALOG=1"
 

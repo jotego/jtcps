@@ -281,7 +281,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     int aux=0, aux_mask;
     offset=0;
     mask=0;
-    if( game->name == "sfzch" || game->parent == "sfzch" ) {
+    if( game->name == "sfzch" || game->parent == "sfzch" || game->name == "ganbare" ) {
         mask = 0xffff;
     } else {
         // bank 1. Bank size is always a multiple of 2^13
@@ -476,7 +476,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
     bases["DSWA"] = 8;
     bases["DSWB"] = 16;
     bases["DSWC"] = 24;
-    mras << "    <switches default=\"FF,FF,FF\">\n";
+    mras << "    <switches default=\"FF,FF,FF,FF\">\n";
     for( DIPsw* d : dip_info->getDIPs() ) {
         if( d->name == "Unused" ) continue;
         if( skip_coins ) {
@@ -568,8 +568,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         //case sf2cems6:
         case forgottn:
         case qsound:
-        case wofhfh:
-        case ganbare:
+        //case ganbare:
         case pang3:
             return;
     }
@@ -660,7 +659,8 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     dump_orientation(mras, game, buttons);
     mras << ss_ports.str();
     // DIPs
-    parse_dips( mras, dip_info, skip_coins );
+    if(!skip_coins) // Don't do it for MiST for now
+        parse_dips( mras, dip_info, skip_coins );
     // Close MRA file
     mras << "</misterromdescription>\n";    // End of MRA file
     // Config file for MiST

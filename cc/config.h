@@ -1,55 +1,6 @@
 #include "romsets.h"
 #include "mappers.h"
 
-const char *parents[] = {
-        "1941",     // 0
-        "3wonders", // 1
-        "captcomm", // 2
-        "cawing",   // 3
-        "cworld2j", // 4
-        "dino",     // 5
-        "dynwar",   // 6
-        "ffight",   // 7
-        "forgottn", // 8
-        "ganbare",  // 9
-        "ghouls",   // 10
-        "knights",  // 11
-        "kod",      // 12
-        "mbombrd",  // 13
-        "megaman",  // 14
-        "mercs",    // 15
-        "msword",   // 16
-        "mtwins",   // 17
-        "nemo",     // 18
-        "pang3",    // 19
-        "pnickj",   // 20
-        "pokonyan", // 21
-        "punisher", // 22
-        "qad",      // 23
-        "qtono2j",  // 24
-        "sf2",      // 25
-        "sf2ce",    // 26
-        "sf2hf",    // 27
-        "slammast", // 28
-        "strider",  // 29
-        "unsquad",  // 30
-        "varth",    // 31
-        "willow",   // 32
-        "wof",      // 33
-        "daimakai", // 34
-        "daimakair",// 35
-        "sfzch",    // 36
-        "area88",   // 37
-        "varthj",   // 38
-        "wonder3",  // 39
-        "striderj", // 40
-        "cawingu",  // 41
-        nullptr
-};
-
-
-
-
 #define __not_applicable__  -1,-1,-1,-1,-1,-1,-1
 #define CPS_B_01      -1, 0x0000,          __not_applicable__,          0x26,{0x28,0x2a,0x2c,0x2e},0x30, {0x02,0x04,0x08,0x30,0x30}
 #define CPS_B_02     0x20,0x0002,          __not_applicable__,          0x2c,{0x2a,0x28,0x26,0x24},0x22, {0x02,0x04,0x08,0x00,0x00}

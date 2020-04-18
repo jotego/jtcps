@@ -3,5 +3,13 @@ rom/*.rom
 *.bak
 *.7z
 *.tar.gz
+*.rom
+*.arc
+*.mra
+*.log
+*.hex
+*.png
+*.zip
+*.bin
 sim
 modules/fx68k

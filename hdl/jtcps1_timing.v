@@ -55,6 +55,11 @@ end
 
 assign preVB = shVB[0];
 
+localparam [8:0] VS_START = 9'd237+9'd8;
+localparam [8:0] VS_END   = VS_START + 9'd4;
+localparam [8:0] HS_START = 9'd488;
+localparam [8:0] HS_END   = 9'd18;
+
 always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
     //if ( vdump>=9'hf8  ) VB <= 1'b1;
@@ -62,13 +67,16 @@ always @(posedge clk) if(cen8) begin
     shVB[0] <= vdump<(9'd14) || vdump>9'd237; // 224 visible lines
     HB      <= hdump>=(9'd384+9'd64) || hdump<9'd64;
     // original HS reported to last for 36 clock ticks
-    if( hdump== 9'h1dc ) begin
+    if( hdump== HS_START ) begin
         HS <= 1'b1;
         // VS must occur synchronized with HS for better compatibility
-        if ( vdump==9'h100 ) VS <= 1'b1;
-        if ( vdump==9'h001 ) VS <= 1'b0;
+        // 250/261 wavy
+        // 250/255 best
+        // h100/h001 old
+        if ( vdump==VS_START ) VS <= 1'b1;
+        if ( vdump==VS_END   ) VS <= 1'b0;
     end
-    if( hdump== 9'h000 ) HS <= 1'b0;
+    if( hdump== HS_END ) HS <= 1'b0;
     start  <= hdump==9'h1ff;
     if(&hdump) begin
         hdump   <= 9'd0;

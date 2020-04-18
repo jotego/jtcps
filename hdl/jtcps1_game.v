@@ -162,12 +162,18 @@ assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
 `ifndef SIMULATION
-assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+    `ifdef MISTER
+        assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+        assign dip_flip = dipsw_c[4];
+    `else
+        assign dipsw_a      = 8'hff;
+        assign dipsw_b      = 8'hff;
+        assign dipsw_c      = { dip_test, 2'b00, ~dip_flip, 4'hf };
+    `endif
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 `endif
 
-assign dip_flip = dipsw_c[4];
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
