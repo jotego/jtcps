@@ -174,8 +174,8 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-reg req_start, last_start;
-wire pedg_start = start & ~last_start;
+reg req_start, last_HB, last_start;
+wire pedg_HB = !HB && last_HB;
 
 // Tilemap sequencer
 always @(posedge clk, posedge rst) begin
@@ -186,18 +186,21 @@ always @(posedge clk, posedge rst) begin
         pre_start <= 1'b0;
         req_start <= 1'b0;
         done      <= 1'b0;
+        last_HB   <= 1'b0;
         last_start<= 1'b0;
         rd_half   <= 1'b0;
         wr_half   <= 1'b1;
     end else begin
-        done      <= 1'b0;
+        done       <= 1'b0;
+        last_HB    <= HB;
         last_start <= start;
-        if( pedg_start && (!preVB || !VB) ) begin
+        if( start && !last_start ) begin
+            rd_half   <= ~wr_half;
+        end
+        if( pedg_HB && (!preVB || !VB) ) begin
             req_start <= 1'b1;
-            rd_half   <= ~rd_half;
         end
         if( req_start  && !busy ) begin
-            wr_half   <= ~wr_half;
             req_start <= 1'b0;
             busy      <= 1'b1;
             st        <= 3'b1;
@@ -228,6 +231,7 @@ always @(posedge clk, posedge rst) begin
                     if( sub_done ) begin
                         done <= 1'b1;
                         busy <= 1'b0;
+                        wr_half   <= ~wr_half;
                     end
                 end
             endcase
@@ -251,7 +255,7 @@ jtcps1_tilemap u_tilemap(
     .vpos       ( vpos          ),
 
     .start      ( sub_start     ),
-    .stop       ( pedg_start    ),
+    .stop       ( pedg_HB    ),
     .done       ( sub_done      ),
 
     .tile_addr  ( tile_addr     ),

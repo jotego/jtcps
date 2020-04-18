@@ -311,7 +311,7 @@ jtcps1_scroll u_scroll(
     .bank_offset( bank_offset   ),
     .bank_mask  ( bank_mask     ),
 
-    .start      ( ~HB           ),
+    .start      ( line_start    ),
 
     .tile_addr  ( tile_addr     ),
     .tile_data  ( tile_data     ),
