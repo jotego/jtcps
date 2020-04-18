@@ -55,10 +55,11 @@ end
 
 assign preVB = shVB[0];
 
-localparam [8:0] VS_START = 9'd243+9'd8; // larger values pull it up
+localparam [8:0] VS_START = 9'd251; // larger values pull it up
 localparam [8:0] VS_END   = VS_START + 9'd4;
-localparam [8:0] HS_START = 9'd478; // larger values pull it left
-localparam [8:0] HS_END   = 9'd18;
+localparam [8:0] HS_START = 9'd486; // larger values pull it left
+localparam [8:0] HS_LEN   = 9'd18;
+localparam [8:0] HS_END   = HS_START<(9'd511-HS_LEN) ? (HS_START+HS_LEN) : ( HS_LEN-(9'd511-HS_START)-9'd1  );
 
 always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
