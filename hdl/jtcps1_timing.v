@@ -55,9 +55,9 @@ end
 
 assign preVB = shVB[0];
 
-localparam [8:0] VS_START = 9'd237+9'd8;
+localparam [8:0] VS_START = 9'd243+9'd8;
 localparam [8:0] VS_END   = VS_START + 9'd4;
-localparam [8:0] HS_START = 9'd488;
+localparam [8:0] HS_START = 9'd478;
 localparam [8:0] HS_END   = 9'd18;
 
 always @(posedge clk) if(cen8) begin
