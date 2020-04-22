@@ -187,7 +187,12 @@ always @(posedge clk, posedge rst) begin
             // but I couldn't measure it on the PCB. This fourth case is
             // ~1.18us in simulation
             bus_master <= 5'd1 << LINE;
-            line_cnt   <= row_en ? 4'd0 : (br_obj ? OBJ_START : OBJ_SKIP);
+            if( row_en ) begin
+                line_cnt <= 5'd0;
+            end else begin
+                row_scr_next <= {12'b0, hpos2[3:0] };
+                line_cnt     <= br_obj ? OBJ_START : OBJ_SKIP;
+            end
             row_scr    <= row_scr_next;
         end else if( br_pal && !bus_master ) begin
             bus_master <= 5'd1 << PAL;
