@@ -18,8 +18,28 @@
     
 `timescale 1ns/1ps
 
-// Open questions
-// Is SCR2 always 96 reads or does it get shorter if row scroll is disabled?
+// I measured the line DMA header and found these values
+// 604ns, 1.64us, 2.06us
+// The first one would correspond to a line update with
+// no OBJ and no row scroll
+// The second, no row scroll, but OBJ is active
+// The third, full row scroll and OBJ
+// It seems that there is a minimum of ~600ns required
+// by the original DMA controller even if no requests are
+// in place.
+// These three times are matched with this controller implementation
+// a fourth case of no OBJ but row scroll active is implemented too
+// but I couldn't measure it on the PCB. This fourth case is
+// ~1.18us in simulation
+//
+// When all 6 palettes are enabled, the measured DMA interval is ~782us
+// This fits well with copying the palette while still copying one
+// OBJ entry per line. Row scrolling is ignored during this time, which
+// should always be blanking anyway
+// OBJ+PAL interval lasts for 784us in simulation. Given the accuracy of
+// the measurement; this could be a perfect match.
+// Copying OBJ during PAL is needed also in order to be able to transfer
+// the whole OBJ table within one frame
 
 module jtcps1_dma(
     input              rst,
@@ -137,7 +157,6 @@ end
 
 assign vram_cs = br;
 
-
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         br         <= 1'b0;
@@ -155,7 +174,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         last_HB <= HB;
         br      <= |{bus_master, set_data};
-        bg_pal  <= bus_master[PAL]  ? bg : 1'b0;
+        bg_pal  <= bus_master[PAL] & bg;
 
         vscr1  <= vpos1 + vrenderf;
         vscr2  <= vpos2 + vrenderf;
@@ -173,21 +192,8 @@ always @(posedge clk, posedge rst) begin
         end
 
         if( HB_edge) begin
-            // I measured the line DMA header and found these values
-            // 604ns, 1.64us, 2.06us
-            // The first one would correspond to a line update with
-            // no OBJ and no row scroll
-            // The second, no row scroll, but OBJ is active
-            // The third, full row scroll and OBJ
-            // It seems that there is a minimum of ~600ns required
-            // by the original DMA controller even if no requests are
-            // in place.
-            // These three times are matched with this controller implementation
-            // a fourth case of no OBJ but row scroll active is implemented too
-            // but I couldn't measure it on the PCB. This fourth case is
-            // ~1.18us in simulation
             bus_master <= 5'd1 << LINE;
-            if( row_en ) begin
+            if( row_en && !bg_pal ) begin
                 line_cnt <= 5'd0;
             end else begin
                 row_scr_next <= {12'b0, hpos2[3:0] };
@@ -240,7 +246,7 @@ always @(posedge clk, posedge rst) begin
                 // wrong readings that could trigger an end-of-table
                 // flag in OBJ controller
                 if( line_cnt == OBJ_START  ) begin
-                    bg_obj  <= br_obj & ~br_pal;
+                    bg_obj  <= br_obj;
                     row_scr_next <= {12'b0, hpos2[3:0] } + 
                        (row_en ? vram_data : 16'h0); // this is collected
                         // without checking for vram_ok
@@ -254,7 +260,7 @@ always @(posedge clk, posedge rst) begin
                 else
                     vram_addr <= { vram_row_base[9:1], 8'd0 } + 
                                  { 7'd0, row_offset[9:0] + vrenderf };
-                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+5'd6) ) begin
+                if( (&line_cnt) || (br_pal&&line_cnt==OBJ_END) ) begin
                     bus_master[LINE] <= 1'b0;
                     if(!br_pal ) set_data <= 3'b111;
                 end

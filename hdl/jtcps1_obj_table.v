@@ -142,7 +142,7 @@ always @(posedge clk, posedge rst) begin
                         wait_cycle <= 1'b1;
                         if( vram_cnt[10:1]== 10'h3ff ) st<=2'd0;
                     end
-                end
+                end else wr_en <= 0;
             end
             2'd2: begin
                 wait_cycle <= 1'b0;

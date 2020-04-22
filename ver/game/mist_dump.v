@@ -86,7 +86,7 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_main.vram_cs );
             $shm_probe(UUT.u_game.u_main, "A" );
             $shm_probe(UUT.u_game.u_video, "A");
-            $shm_probe(UUT.u_game.u_video.u_scroll, "AS");
+            $shm_probe(UUT.u_game.u_video.u_obj, "AS");
             `endif
             
         `endif
