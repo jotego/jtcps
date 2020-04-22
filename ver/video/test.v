@@ -80,15 +80,41 @@ localparam [21:0] vram_offset  = 22'h3B_0000;
 wire [21:0] gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 wire [21:0] gfx1_addr = {rom1_addr[19:0], rom1_half, 1'b0 };
 
-reg  sim_start;
-reg  last_VB;
-wire ppu1_cs = (last_VB && !VB) || sim_start; // produce an OBJ DMA event at VB flank
-// The first frame will start with the OBJ data from VRAM without filtering
-// as read from the obj.bin file. From the second frame on, the DMA process
-// decides the contents of the OBJ buffer.
+reg       sim_start;
+reg       last_VB;
+reg       ppu1_cs;
+reg [4:0] ppu_addr;
 
 always @(posedge clk) begin
     last_VB <= VB;
+end
+
+integer time_cnt;
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        ppu1_cs  <= 0;
+        time_cnt <=0;
+        ppu_addr <= 0;
+    end else begin
+        time_cnt <= (VB && !last_VB) ? 0 : time_cnt+1;
+        case( time_cnt )
+            3725: begin
+                ppu1_cs  <= 1;
+                ppu_addr <= 0;
+            end
+            3735: begin
+                ppu1_cs <= 0;
+            end
+            4580: begin
+                ppu1_cs  <= 1;
+                ppu_addr <= 5;
+            end
+            4590: begin
+                ppu1_cs <= 0;
+            end
+        endcase
+    end
 end
 
 always @(posedge clk, posedge rst) begin
@@ -136,7 +162,7 @@ jtcps1_video UUT (
     .ppu_rstn       ( 1'b1          ),
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( 1'b0          ),
-    .addr           ( 5'd0          ),
+    .addr           ( ppu_addr      ),
     .dsn            ( 2'b10         ),      // data select, active low
     .cpu_dout       ( 16'h0         ),
     // BUS sharing

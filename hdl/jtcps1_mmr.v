@@ -231,7 +231,11 @@ function [15:0] data_sel;
     input [15:0] olddata;
     input [15:0] newdata;
     input [ 1:0] dsn;
+    `ifndef VIDEOSIMULATION
     data_sel = { dsn[1] ? olddata[15:8] : newdata[15:8], dsn[0] ? olddata[7:0] : newdata[7:0] };
+    `else
+    data_sel = olddata;
+    `endif
 endfunction
 
 wire reg_rst;

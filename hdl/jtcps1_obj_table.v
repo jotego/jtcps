@@ -149,7 +149,8 @@ always @(posedge clk, posedge rst) begin
                 wr_addr    <= wr_addr + 10'd1;
                 wr_data    <= 16'h0000;
                 wr_en      <= 1'b1;
-                if( wr_addr== 10'h3fe && !wait_cycle) st<=2'd0;
+                vram_cnt  <= vram_cnt + 17'd1;
+                if( vram_cnt[10:1]== 10'h3ff && !wait_cycle) st<=2'd0;
             end
             2'd3: begin
                 if(busack) st <= 2'd1;
