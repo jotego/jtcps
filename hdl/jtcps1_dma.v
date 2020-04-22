@@ -242,7 +242,7 @@ always @(posedge clk, posedge rst) begin
             if( bus_master[LINE] && pxl2_cen ) begin
                 // Line DMA transfer takes 2us
                 line_cnt <= line_cnt + 5'd1;
-                //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
+                vram_clr <= line_cnt == OBJ_START; // clear cache to prevent
                 // wrong readings that could trigger an end-of-table
                 // flag in OBJ controller
                 if( line_cnt == OBJ_START  ) begin
@@ -263,6 +263,7 @@ always @(posedge clk, posedge rst) begin
                 if( (&line_cnt) || (br_pal&&line_cnt==OBJ_END) ) begin
                     bus_master[LINE] <= 1'b0;
                     if(!br_pal ) set_data <= 3'b111;
+                    // else bus_master[PAL] <= 1;
                 end
             end
             ////////// Scroll tile cache

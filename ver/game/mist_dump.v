@@ -58,7 +58,7 @@ module mist_dump(
             $shm_probe(UUT.u_game.u_sdram_mux, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
-            $shm_probe(UUT.u_game.u_sdram_mux.u_slot6, "AS");
+            $shm_probe(UUT.u_game.u_sdram_mux.u_slot9, "AS");
             //$shm_probe(UUT.u_game,"A");
             //$shm_probe(UUT.u_game.u_sdram_mux,"A");
             
@@ -87,6 +87,7 @@ module mist_dump(
             $shm_probe(UUT.u_game.u_main, "A" );
             $shm_probe(UUT.u_game.u_video, "A");
             $shm_probe(UUT.u_game.u_video.u_obj, "AS");
+            $shm_probe(UUT.u_game.u_video.u_colmix, "AS");
             `endif
             
         `endif
