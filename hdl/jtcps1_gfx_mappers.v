@@ -57,8 +57,7 @@ always @(posedge clk, posedge rst) begin
         offset   <= 4'd0;
         mask     <= 4'd0;
     end else begin
-        unmapped <= eff_bank==4'd0 || ( code[15:12]&~mask ); // no bank was selected
-            // the code/mask comparison takes an extra clock cycle
+        unmapped <= eff_bank==4'd0; // no bank was selected
         case ( eff_bank )
             4'b0001: { offset, mask } <= { bank_offset[ 3: 0], bank_mask[ 3: 0] };
             4'b0010: { offset, mask } <= { bank_offset[ 7: 4], bank_mask[ 7: 4] };

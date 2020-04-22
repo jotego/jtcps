@@ -218,7 +218,7 @@ always @(posedge clk, posedge rst) begin
             end
             13: begin
                 obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
-                if( unmapped )
+                if( unmapped  || (pre_code[15:12]&~mask) )
                     st <= 1; // skip
                 else
                     st <= 5;
