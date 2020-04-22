@@ -172,13 +172,9 @@ always @(posedge clk, posedge rst) begin
         end
 
         if( HB_edge) begin
-            if( br_obj || row_en ) begin
-                bus_master <= 5'd1 << LINE;
-                line_cnt   <= row_en ? 4'd0 : OBJ_START;
-                row_scr    <= row_scr_next;
-            end else if(!br_pal ) begin
-                set_data <= 3'b111; // start with scroll DMA
-            end
+            bus_master <= 5'd1 << LINE;
+            line_cnt   <= 4'd0;
+            row_scr    <= row_scr_next;
         end else if( br_pal && !bus_master ) begin
             bus_master <= 5'd1 << PAL;
         end else if(!bus_master) begin
@@ -238,9 +234,9 @@ always @(posedge clk, posedge rst) begin
                 else
                     vram_addr <= { vram_row_base[9:1], 8'd0 } + 
                                  { 7'd0, row_offset[9:0] + vrenderf };
-                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+4'd3) || (!br_obj && !row_en)) begin
+                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+4'd3) ) begin
                     bus_master[LINE] <= 1'b0;
-                    if(!br_pal ) set_data <= 3'b111; // start with scroll DMA
+                    if(!br_pal ) set_data <= 3'b111;
                 end
             end
             ////////// Scroll tile cache

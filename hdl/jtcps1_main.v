@@ -256,8 +256,8 @@ end
 wire       inta_n;
 reg [2:0]  wait_cycles;
 (*keep*) wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
-(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok2, (pre_ram_cs|pre_vram_cs) & ~ram_ok,
-                          wait_cycles[0] };
+(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok2, (pre_ram_cs|pre_vram_cs) & ~ram_ok };
+//                          wait_cycles[0] };
 reg        DTACKn;
 reg        last_LVBL;
 (*keep*) reg [23:0] fail_cnt;
@@ -286,7 +286,10 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
                 if( !wait_cycles[0] && bus_busy && cen10 ) fail_cnt<=fail_cnt+1;
-                if (!bus_busy) DTACKn <= 1'b0;
+                if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=0&&wait_cycles==3'b001) ) ) begin
+                    DTACKn <= 1'b0;
+                    if( wait_cycles[0] ) fail_cnt<=fail_cnt-1; // one bus cycle recovered
+                end
             end
             else DTACKn <= 1'b0;
         end
