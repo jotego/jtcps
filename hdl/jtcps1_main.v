@@ -285,7 +285,21 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             end
             if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
-                if( !wait_cycles[0] && bus_busy && cen10 ) fail_cnt<=fail_cnt+1;
+                // we avoid accumulating delay by counting it
+                // and skipping wait cycles when necessary
+                // the resolution of this compensation is 20.8ns
+                // or one system clock
+                // At any given time, fail_cnt contains the accumulated
+                // delay. Worst values seen in simulation are about 125ns
+                // which get resolved to zero within the next 2.8us
+                // The origin of the delay is the SDRAM multiplexing
+                // it would be possible to reduce the ammount of multiplexing
+                // by moving the CPU RAM (not the VRAM) to a BRAM block inside
+                // the FPGA, but many FPGA models don't have the resources
+                // and average delay is below 3ns, so it doesn't need improvement.
+                // Average delay can be displayed in simulation by defining the
+                // macro REPORT_DELAY
+                if( !wait_cycles[0] && bus_busy ) fail_cnt<=fail_cnt+1;
                 if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=0&&wait_cycles==3'b001) ) ) begin
                     DTACKn <= 1'b0;
                     if( wait_cycles[0] ) fail_cnt<=fail_cnt-1; // one bus cycle recovered
@@ -299,6 +313,22 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         end
     end
 end 
+
+`ifdef REPORT_DELAY
+// Note that the data for the first frame may be wrong because
+// of SDRAM initialization
+real dly_cnt, ticks;
+always @(posedge clk) begin
+    if( !LVBL && last_LVBL ) begin
+        ticks <= 0;
+        dly_cnt <= 0;
+        if( ticks ) $display("INFO: average CPU delay = %.2f ticks",dly_cnt/ticks);
+    end else begin
+        dly_cnt <= dly_cnt+fail_cnt;
+        ticks <= ticks+1;
+    end
+end
+`endif
 
 // interrupt generation
 reg        int1, // VBLANK

@@ -55,30 +55,40 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_prom_we, "A");
             //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
+            $shm_probe(UUT.u_game.u_sdram_mux, "A");
+            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
+            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
+            $shm_probe(UUT.u_game.u_sdram_mux.u_slot6, "AS");
+            //$shm_probe(UUT.u_game,"A");
+            //$shm_probe(UUT.u_game.u_sdram_mux,"A");
+            
             `ifdef FAKE_LATCH
+            $shm_probe(UUT.u_game.u_sound.u_adpcm.u_ctrl, "A");
+            $shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_rom, "A");
-            $shm_probe(UUT.u_game.u_sound.u_adpcm.u_ctrl, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm.u_serial, "A");
-            $shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_cpu, "A");
             //$shm_probe(UUT.u_game.u_sound.u_cpu.u_wait, "AS");
             //$shm_probe(UUT.u_game.u_sound.u_jt51.u_timers, "A");
             //$shm_probe(UUT.u_game.u_sound.u_jt51.u_mmr, "AS");
             $shm_probe(UUT.u_game.u_sound.u_jt51, "AS");
+            
             `else
+
             //$shm_probe(UUT.u_game.u_prom_we, "A");
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
-            $shm_probe(UUT.u_game.u_main, "A");
-            //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
-            //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
+            //$shm_probe(UUT.u_game.u_main, "A");
+            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
+            $shm_probe(UUT.u_game.u_video.u_dma, "A");
+            $shm_probe(UUT.u_game.u_video.VB );
+            $shm_probe(UUT.u_game.u_video.HB );
+            //$shm_probe(UUT.u_game.u_main.vram_cs );
+            $shm_probe(UUT.u_game.u_main, "A" );
+            $shm_probe(UUT.u_game.u_video, "A");
+            $shm_probe(UUT.u_game.u_video.u_scroll, "AS");
             `endif
-            //$shm_probe(UUT.u_game.u_sdram_mux, "A");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot4, "AS");
-            //$shm_probe(UUT.u_game,"A");
-            //$shm_probe(UUT.u_game.u_sdram_mux,"A");
+            
         `endif
     end
 `endif
