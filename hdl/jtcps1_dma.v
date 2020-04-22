@@ -25,6 +25,7 @@ module jtcps1_dma(
     input              rst,
     input              clk,
     input              pxl_cen,
+    input              pxl2_cen,
 
     input              HB,
     input      [ 8:0]  vrender1, // 1 line ahead of vdump
@@ -72,7 +73,7 @@ module jtcps1_dma(
 );
 
 reg [4:0] bus_master;
-reg [3:0] line_cnt;
+reg [4:0] line_cnt;
 reg [8:0] scr_cnt;
 reg       last_HB;
 wire      HB_edge = !last_HB && HB;
@@ -119,7 +120,7 @@ jtframe_dual_ram #(.dw(16), .aw(9)) u_cache(
 );
 
 localparam LINE=0, PAL=1, SCR1=2, SCR2=3, SCR3=4;
-localparam OBJ_START=4'd3, OBJ_END=4'd11;
+localparam [5:0] OBJ_START=5'd7, OBJ_END=5'd22, OBJ_SKIP=5'd23;
 
 always @(*) begin
     if( bus_master[SCR1] ) begin
@@ -172,8 +173,21 @@ always @(posedge clk, posedge rst) begin
         end
 
         if( HB_edge) begin
+            // I measured the line DMA header and found these values
+            // 604ns, 1.64us, 2.06us
+            // The first one would correspond to a line update with
+            // no OBJ and no row scroll
+            // The second, no row scroll, but OBJ is active
+            // The third, full row scroll and OBJ
+            // It seems that there is a minimum of ~600ns required
+            // by the original DMA controller even if no requests are
+            // in place.
+            // These three times are matched with this controller implementation
+            // a fourth case of no OBJ but row scroll active is implemented too
+            // but I couldn't measure it on the PCB. This fourth case is
+            // ~1.18us in simulation
             bus_master <= 5'd1 << LINE;
-            line_cnt   <= row_en ? 4'd0 : OBJ_START;
+            line_cnt   <= row_en ? 4'd0 : (br_obj ? OBJ_START : OBJ_SKIP);
             row_scr    <= row_scr_next;
         end else if( br_pal && !bus_master ) begin
             bus_master <= 5'd1 << PAL;
@@ -214,9 +228,9 @@ always @(posedge clk, posedge rst) begin
         end
         if( !br_pal && bus_master[PAL] ) bus_master[PAL] <= 1'b0;
         if( bg ) begin
-            if( bus_master[LINE] && pxl_cen ) begin
+            if( bus_master[LINE] && pxl2_cen ) begin
                 // Line DMA transfer takes 2us
-                line_cnt <= line_cnt + 4'd1;
+                line_cnt <= line_cnt + 5'd1;
                 //vram_clr <= line_cnt == 4'd0; // clear cache to prevent
                 // wrong readings that could trigger an end-of-table
                 // flag in OBJ controller
@@ -227,6 +241,7 @@ always @(posedge clk, posedge rst) begin
                         // without checking for vram_ok
                         // there should have been enough time
                         // for the read to get through
+                    if( !br_obj ) line_cnt <= OBJ_END;
                 end
                 if( line_cnt == OBJ_END   ) bg_obj <= 1'b0;
                 if( line_cnt >= OBJ_START )
@@ -234,7 +249,7 @@ always @(posedge clk, posedge rst) begin
                 else
                     vram_addr <= { vram_row_base[9:1], 8'd0 } + 
                                  { 7'd0, row_offset[9:0] + vrenderf };
-                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+4'd3) ) begin
+                if( &line_cnt || (br_pal&&line_cnt==OBJ_START+5'd6) ) begin
                     bus_master[LINE] <= 1'b0;
                     if(!br_pal ) set_data <= 3'b111;
                 end

@@ -25,6 +25,7 @@
 module jtcps1_video(
     input              rst,
     input              clk,
+    input              pxl2_cen,        // pixel clock enable
     input              pxl_cen,        // pixel clock enable
 
     output     [ 8:0]  vdump,
@@ -141,6 +142,7 @@ wire               obj_dma_ok, busreq_obj, busreq_pal;
 jtcps1_dma u_dma(
     .rst            ( rst               ),
     .clk            ( clk               ),
+    .pxl2_cen       ( pxl2_cen          ),
     .pxl_cen        ( pxl_cen           ),
     .HB             ( HB                ),
     .vrender1       ( vrender1          ),

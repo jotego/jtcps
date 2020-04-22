@@ -94,6 +94,8 @@ This generates an include file needed by the verilog code.
 Some Verilog macros:
 
 1. FORCE_GRAY ignore palette and use a 4-bit gray scale for everything
+2. REPORT_DELAY will print the average CPU delay at the end of each frame
+   in system ticks (number of 48MHz clocks)
 
 # Support
 
