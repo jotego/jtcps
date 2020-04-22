@@ -142,15 +142,14 @@ always @(posedge clk, posedge rst) begin
                         wait_cycle <= 1'b1;
                         if( vram_cnt[10:1]== 10'h3ff ) st<=2'd0;
                     end
-                end else wr_en <= 0;
+                end
             end
-            2'd2: begin // fill
+            2'd2: begin
                 wait_cycle <= 1'b0;
                 wr_addr    <= wr_addr + 10'd1;
                 wr_data    <= 16'h0000;
                 wr_en      <= 1'b1;
-                // vram_cnt  <= vram_cnt + 17'd1;
-                if( (&wr_addr) && !wait_cycle) st<=2'd0;
+                if( wr_addr== 10'h3fe && !wait_cycle) st<=2'd0;
             end
             2'd3: begin
                 if(busack) st <= 2'd1;
