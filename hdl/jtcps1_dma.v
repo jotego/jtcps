@@ -174,7 +174,7 @@ always @(posedge clk, posedge rst) begin
         if( HB_edge) begin
             if( br_obj || row_en ) begin
                 bus_master <= 5'd1 << LINE;
-                line_cnt   <= 4'd0;
+                line_cnt   <= row_en ? 4'd0 : OBJ_START;
                 row_scr    <= row_scr_next;
             end else if(!br_pal ) begin
                 set_data <= 3'b111; // start with scroll DMA
