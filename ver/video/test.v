@@ -7,7 +7,7 @@ module test;
 `endif
 
 reg                rst, clk;
-wire               pxl_cen;
+wire               pxl2_cen, pxl_cen;
 wire       [ 8:0]  vdump, vrender;
 wire       [ 8:0]  hdump;
 // video signals
@@ -99,6 +99,7 @@ end
 jtcps1_video UUT (
     .rst            ( rst           ),
     .clk            ( clk           ),
+    .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
 
     .hdump          ( hdump         ),

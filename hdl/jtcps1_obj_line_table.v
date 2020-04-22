@@ -61,6 +61,7 @@ wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
 wire [ 3:0] offset, mask;
+wire        unmapped;
 
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
@@ -96,7 +97,8 @@ jtcps1_gfx_mappers u_mapper(
     .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
     .offset     ( offset          ),
-    .mask       ( mask            )
+    .mask       ( mask            ),
+    .unmapped   ( unmapped        )
 );
 
 generate
@@ -216,7 +218,10 @@ always @(posedge clk, posedge rst) begin
             end
             13: begin
                 obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
-                st <= 5;
+                if( unmapped )
+                    st <= 1; // skip
+                else
+                    st <= 5;
             end
             5: begin // check whether sprite is visible
                 if( (repeated || !inzone )&& !first) begin

@@ -48,50 +48,6 @@ reg          set_used;
 
 wire [15:6] code = cin;
 
-localparam
-        game_1941     = 0,
-        game_3wonders = 1,
-        game_captcomm = 2,
-        game_cawing   = 3,
-        game_cworld2j = 4,
-        game_dino     = 5,
-        game_dynwar   = 6,
-        game_ffight   = 7,
-        game_forgottn = 8,
-        game_ganbare  = 9,
-        game_ghouls   = 10,
-        game_knights  = 11,
-        game_kod      = 12,
-        game_mbombrd  = 13,
-        game_megaman  = 14,
-        game_mercs    = 15,
-        game_msword   = 16,
-        game_mtwins   = 17,
-        game_nemo     = 18,
-        game_pang3    = 19,
-        game_pnickj   = 20,
-        game_pokonyan = 21,
-        game_punisher = 22,
-        game_qad      = 23,
-        game_qtono2j  = 24,
-        game_sf2      = 25,
-        game_sf2ce    = 26,
-        game_sf2hf    = 27,
-        game_slammast = 28,
-        game_strider  = 29,
-        game_unsquad  = 30,
-        game_varth    = 31,
-        game_willow   = 32,
-        game_wof      = 33,
-        game_daimakai = 34,
-        game_daimakair= 35,
-        game_sfzch    = 36,
-        game_area88   = 37,
-        game_varthj   = 37,
-        game_wonder3  = 38,
-        game_striderj = 39,
-        game_cawingu  = 40;
-
 reg last_enable;
 wire [3:0] eff_bank = set_used ? bank_b : bank_a;
 
@@ -101,7 +57,8 @@ always @(posedge clk, posedge rst) begin
         offset   <= 4'd0;
         mask     <= 4'd0;
     end else begin
-        unmapped <= eff_bank==4'd0; // no bank was selected
+        unmapped <= eff_bank==4'd0 || ( code[15:12]&~mask ); // no bank was selected
+            // the code/mask comparison takes an extra clock cycle
         case ( eff_bank )
             4'b0001: { offset, mask } <= { bank_offset[ 3: 0], bank_mask[ 3: 0] };
             4'b0010: { offset, mask } <= { bank_offset[ 7: 4], bank_mask[ 7: 4] };
