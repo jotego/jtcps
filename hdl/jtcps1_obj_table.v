@@ -133,7 +133,8 @@ always @(posedge clk, posedge rst) begin
                 wait_cycle <= 1'b0;
                 if(vram_ok && !wait_cycle && busack ) begin
                     if( vram_data[15:8]==8'hff && vram_cnt[2:1]==2'b00 ) begin
-                        st<=2'd2; // fill
+                        st     <= 2'd2; // fill
+                        busreq <= 0;
                     end else begin                   
                         vram_cnt  <= vram_cnt + 17'd1;
                         wr_addr    <= wr_addr + 10'd1;

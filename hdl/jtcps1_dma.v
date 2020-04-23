@@ -140,7 +140,7 @@ jtframe_dual_ram #(.dw(16), .aw(9)) u_cache(
 );
 
 localparam LINE=0, PAL=1, SCR1=2, SCR2=3, SCR3=4;
-localparam [5:0] OBJ_START=5'd7, OBJ_END=5'd22, OBJ_SKIP=5'd23;
+localparam [5:0] OBJ_PRE=5'd6, OBJ_START=5'd7, OBJ_END=5'd22, OBJ_SKIP=5'd23;
 
 always @(*) begin
     if( bus_master[SCR1] ) begin
@@ -171,7 +171,7 @@ always @(posedge clk, posedge rst) begin
         swap       <= 3'b0;
         set_data   <= 3'b0;
         cache_wr   <= 1'b0;
-    end else begin
+    end else if(pxl2_cen) begin
         last_HB <= HB;
         br      <= |{bus_master, set_data};
         bg_pal  <= bus_master[PAL] & bg;
@@ -197,7 +197,7 @@ always @(posedge clk, posedge rst) begin
                 line_cnt <= 5'd0;
             end else begin
                 row_scr_next <= {12'b0, hpos2[3:0] };
-                line_cnt     <= br_obj ? OBJ_START : OBJ_SKIP;
+                line_cnt     <= br_obj ? OBJ_PRE : OBJ_SKIP;
             end
             row_scr    <= row_scr_next;
         end else if( br_pal && !bus_master ) begin
