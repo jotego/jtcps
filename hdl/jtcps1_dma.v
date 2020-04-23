@@ -340,7 +340,7 @@ always @(posedge clk) begin
                 if( next_task[SCR3]) begin
                     vn        <= vscr3[10:0];
                     hn        <= 11'h20 + { hpos3[10:5], 5'b0 };
-                    scr_cnt   <= (LAST_SCR2+1)<<1;
+                    scr_cnt   <= LAST_SCR2+1;
                     scr_over  <= LAST_SCR2;
                     vram_scr_base <= vram3_base[9:1];
                     swap[2]   <= 1'b1;
@@ -371,7 +371,6 @@ always @(posedge clk) begin
                         pal_wr <= 0;
                         if( |cur_task[SCR3:SCR1] ) begin
                             if( scr_cnt==scr_over ) begin
-                                scr_cnt <= 0;
                                 adv     <= 1;
                                 if( cur_task[SCR1] ) tasks[SCR1] <= 0;
                                 if( cur_task[SCR2] ) tasks[SCR2] <= 0;
