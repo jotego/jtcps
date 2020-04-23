@@ -351,7 +351,7 @@ always @(posedge clk) begin
                 end
             end
             else begin
-                step <= { step[2:0], step[3] };
+                if( !(step[2] && !vram_ok) ) step <= { step[2:0], step[3] };
                 case( step ) // 250us to go through all four steps
                     4'd1: begin // request data
                         vram_addr <=  cur_task[ROW]       ? vrow_addr : (
