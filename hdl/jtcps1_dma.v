@@ -113,7 +113,7 @@ reg  [ 2:0] active, swap, pal_rd_page, pal_wr_page;
 wire [ TASKW-1:0] next_step_task, next_task;
 reg  [ TASKW-1:0] tasks, old_tasks, step_task, cur_task;
 
-reg         last_HB, first_pal, line_req, last_pal_dma_ok, pal_busy;
+reg         last_HB, line_req, last_pal_dma_ok, pal_busy;
 reg         rd_bank, wr_bank, adv, check_adv;
 reg         rd_obj_bank, wr_obj_bank;
 reg         scr_wr, obj_wr, pal_wr;
@@ -215,6 +215,21 @@ assign next_step_task = step_task<<1;
 assign next_task      = step_task & tasks;
 
 always @(posedge clk) begin
+    vscr1 <= vpos1 + vrenderf;
+    vscr2 <= vpos2 + vrenderf;
+    vscr3 <= vpos3 + vrenderf;
+end
+
+`ifdef SIMULATION
+wire on_scr1 = cur_task[SCR1];
+wire on_scr2 = cur_task[SCR2];
+wire on_scr3 = cur_task[SCR3];
+wire on_row  = cur_task[ROW];
+wire on_obj  = cur_task[OBJ];
+wire on_pal  = |cur_task[PAL5:PAL0];
+`endif
+
+always @(posedge clk) begin
     if( rst ) begin
         tasks      <= {TASKW{1'b0}};
         cur_task   <= {TASKW{1'b0}};
@@ -241,18 +256,12 @@ always @(posedge clk) begin
         obj_cnt     <= 10'd0;
         obj_busy    <= 0;
         // SCR
-        vscr1       <= 16'd0;
-        vscr2       <= 16'd0;
-        vscr3       <= 16'd0;
         vrenderf    <= 16'd0;
     end else if(pxl2_cen) begin
         last_HB <= HB;
         last_obj_dma_ok <= obj_dma_ok;
         last_pal_dma_ok <= pal_dma_ok;
 
-        vscr1  <= vpos1 + vrenderf;
-        vscr2  <= vpos2 + vrenderf;
-        vscr3  <= vpos3 + vrenderf;
 
         if( obj_dma_ok && !last_obj_dma_ok ) begin
             obj_busy <= 1;
@@ -264,7 +273,6 @@ always @(posedge clk) begin
 
         if( HB_edge ) begin
             line_req <= 1;
-            br       <= 1;
             active   <= active ^ swap;
             swap     <= 3'd0;
             vrenderf <= {7'd0, (vrender1 ^ { 1'b0, {8{flip}}}) + (flip ? -9'd8 : 9'd1) };
@@ -285,10 +293,9 @@ always @(posedge clk) begin
             end
             if( pal_busy ) begin
                 pal_rd_page      <= 3'd0;
-                pal_wr_page      <= 3'd0;
+                pal_wr_page      <= pal_page_en[0] ? 3'd0 : 3'd1;
                 tasks[PAL5:PAL0] <= pal_page_en;
                 pal_cnt          <= 9'd0;
-                first_pal        <= 1;
             end
             tasks[ROW]  <= row_en & tile_ok;
             tasks[SCR1] <= vscr1[2:0]==3'd0 && tile_ok;
@@ -315,11 +322,6 @@ always @(posedge clk) begin
                 else
                     step      <= 4'b1;
                 adv <= ~|next_task;
-                // Update palette page
-                if( (|tasks[PAL5:PAL1]) && (~|tasks[PAL0:0]) ) begin
-                    pal_wr_page <= pal_wr_page+3'd1;
-                    if( !first_pal ) pal_rd_page<=pal_rd_page+3'd1;
-                end
                 // Update SCR base pointer
                 if( next_task[SCR1] ) begin
                     vn        <= vscr1[10:0];
@@ -341,9 +343,9 @@ always @(posedge clk) begin
                     vn        <= vscr3[10:0];
                     hn        <= 11'h20 + { hpos3[10:5], 5'b0 };
                     scr_cnt   <= LAST_SCR2+1;
-                    scr_over  <= LAST_SCR2;
-                    vram_scr_base <= vram3_base[9:1];
+                    scr_over  <= LAST_SCR3;
                     swap[2]   <= 1'b1;
+                    vram_scr_base <= vram3_base[9:1];
                 end
             end
             else begin
@@ -378,7 +380,8 @@ always @(posedge clk) begin
                             end 
                             else begin
                                 scr_cnt <= scr_cnt+1;
-                                hn      <= hn + hstep;
+                                if( scr_cnt[0] )
+                                    hn <= hn + hstep;
                             end
                         end else
                         if( cur_task[ROW] ) begin
@@ -399,15 +402,16 @@ always @(posedge clk) begin
                             pal_cnt <= pal_cnt + 9'd1;
                             if( &pal_cnt ) begin
                                 tasks[PAL5:PAL0] <= tasks[PAL5:PAL0] & ~cur_task[PAL5:PAL0];
-                                first_pal <= 0;
                                 adv <= 1;
+                                // Update palette page
+                                pal_wr_page <= pal_wr_page+3'd1;
+                                pal_rd_page<=pal_rd_page+3'd1;
                             end
                         end
                     end
                 endcase
             end
         end
-        else br <= 1;
     end
 end
 
