@@ -173,11 +173,10 @@ jtcps1_dma u_dma(
     .vram_pal_base  ( pal_base          ),
     .pal_dma_ok     ( pal_dma_ok        ),
     .pal_page_en    ( pal_page_en       ),
-    .pal_data       ( pal_data          ),
+    .pal_data       ( pal_raw           ),
     .colmix_addr    ( pal_addr          ),
 
     // Objects
-    .vram_obj_addr  ( vram_obj_addr     ),
     .obj_table_addr ( obj_cache_addr    ),
     .obj_table_data ( obj_cache_data    ),
     .obj_dma_ok     ( obj_dma_ok        ),
@@ -216,6 +215,7 @@ jtcps1_timing u_timing(
 jtcps1_mmr #(REGSIZE) u_mmr(
     .rst            ( rst               ),
     .clk            ( clk               ),
+    .pxl_cen        ( pxl_cen           ),
     .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
 
     .ppu1_cs        ( ppu1_cs           ),
@@ -381,16 +381,6 @@ assign vram_obj_cs = 1'b0;
 assign rom0_cs     = 1'b0;
 assign rom0_addr   = 20'd0;
 assign obj_pxl     = 9'h1ff;
-`endif
-
-`ifdef SIMULATION
-reg pal_copy2=1'b0;
-wire pal_copy3 = pal_copy2 | pal_copy;
-initial begin
-    pal_copy2=1'b0;
-    #50_000 pal_copy2=1'b1;
-    #50_040 pal_copy2=1'b0;
-end
 `endif
 
 wire [7:0] red_colmix, green_colmix, blue_colmix;

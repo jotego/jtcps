@@ -64,7 +64,6 @@ module jtcps1_colmix(
 );
 
 reg  [11:0] pxl;
-wire [11:0] pal_addr;
 
 // Palette
 wire [ 3:0] raw_r, raw_g, raw_b, raw_br;

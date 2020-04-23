@@ -84,9 +84,12 @@ reg       sim_start;
 reg       last_VB;
 reg       ppu1_cs;
 reg [4:0] ppu_addr;
+reg       busack = 0;
+wire      busreq;
 
 always @(posedge clk) begin
     last_VB <= VB;
+    busack  <= busreq;
 end
 
 integer time_cnt;
@@ -166,8 +169,8 @@ jtcps1_video UUT (
     .dsn            ( 2'b10         ),      // data select, active low
     .cpu_dout       ( 16'h0         ),
     // BUS sharing
-    .busreq         (               ),
-    .busack         ( 1'b1          ),
+    .busreq         ( busreq        ),
+    .busack         ( busack        ),
 
     // Video RAM interface
     .vram_dma_addr  ( vram_dma_addr ),
