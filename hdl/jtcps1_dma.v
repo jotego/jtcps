@@ -74,9 +74,10 @@ module jtcps1_dma(
     output     [15:0]  tile_data,
 
     // OBJ
-    input              br_obj,
-    output reg         bg_obj,
-    input      [17:1]  vram_obj_addr,
+    input      [15:0]  vram_obj_base,
+    input      [ 9:0]  obj_table_addr,
+    input              obj_dma_ok,
+    output     [15:0]  obj_table_data
 
     // PAL
     input              br_pal,
@@ -92,26 +93,35 @@ module jtcps1_dma(
     input              bg
 );
 
-reg [4:0] bus_master;
-reg [4:0] line_cnt;
-reg [8:0] scr_cnt;
-reg       last_HB;
-wire      HB_edge = !last_HB && HB;
 
+reg  [15:0] vrenderf, vscr1, vscr2, vscr3, row_scr_next;
+reg  [11:0] scan, hstep;
 reg  [10:0] vn, hn;
-reg  [11:0] scan;
-reg  [15:0] vrenderf;
+reg  [ 9:0] obj_cnt, vram_scr_base;
+reg  [ 7:0] scr_cnt, scr_over;
+wire [ 4:0] next_step_task;
+reg  [ 4:0] tasks, step_task, cur_task;
+wire [ 4:0] next_task;
+reg  [ 3:0] step;
+reg  [ 2:0] active, swap;
 
-reg         cache_wr;
-reg  [11:0] hstep;
-reg  [ 7:0] scr_over;
-
-reg  [15:0] vscr1, vscr2, vscr3, row_scr_next;
-reg  [15:0] vram_base;
+reg         last_HB;
 reg         rd_bank, wr_bank;
-reg  [ 2:0] active, swap, set_data;
+reg         rd_obj_bank, wr_obj_bank;
+reg         scr_wr, obj_wr;
+reg         obj_busy, obj_fill, last_obj_dma_ok;
 
-localparam [7:0] LAST_SCR2 = 8'd225;
+wire        HB_edge  = !last_HB && HB;
+wire        tile_ok  = vdump<9'd237 || vdump>9'd257; // VB is 38 lines
+wire        tile_vs  = vdump==9'd12; // Vertical start, use for SCR3
+
+// various addresses
+wire [17:1] vrow_addr = { vram_row_base[9:1], 8'd0 } + 
+                        { 7'd0, row_offset[9:0] + vrenderf },
+            vscr_addr = { vram_scr_base[9:1], 8'd0 } + { 4'd0, scan, scr_cnt[0] },
+            vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], ~obj_cnt[1:0] };
+
+localparam [7:0] LAST_SCR1 = 8'd99, LAST_SCR2 = 8'd225, LAST_SCR2 = 8'd255;
 
 always @(*) begin
     casez( scr_cnt[8:6] )
@@ -124,23 +134,37 @@ always @(*) begin
                             active[2]); // SCR3
 end
 
-jtframe_dual_ram #(.dw(16), .aw(9)) u_cache(
+// Tile cache
+jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
     // Port 0: write
     .data0  ( vram_data     ),
-    .addr0  ( { wr_bank, scr_cnt[8:1] } ),
-    .we0    ( cache_wr      ),
+    .addr0  ( { wr_bank, scr_cnt    } ),
+    .we0    ( scr_wr        ),
     .q0     (               ),
     // Port 1: read
     .data1  ( ~16'd0        ),
-    .addr1  ( { rd_bank, tile_addr    } ),
+    .addr1  ( { rd_bank, tile_addr  } ),
     .we1    ( 1'b0          ),
     .q1     ( tile_data     )
 );
 
-localparam LINE=0, PAL=1, SCR1=2, SCR2=3, SCR3=4;
-localparam [5:0] OBJ_PRE=5'd6, OBJ_START=5'd7, OBJ_END=5'd22, OBJ_SKIP=5'd23;
+// OBJ table
+jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
+    .clk0   ( clk           ),
+    .clk1   ( clk           ),
+    // Port 0: write
+    .data0  ( vram_data & {16{~obj_fill}} ),
+    .addr0  ( { wr_obj_bank, obj_cnt } ),
+    .we0    ( obj_wr        ),
+    .q0     (               ),
+    // Port 1: read
+    .data1  ( ~16'd0        ),
+    .addr1  ( { rd_obj_bank, obj_table_addr  } ),
+    .we1    ( 1'b0          ),
+    .q1     ( obj_table_data)
+);
 
 always @(*) begin
     if( bus_master[SCR1] ) begin
@@ -156,132 +180,145 @@ always @(*) begin
 end
 
 assign vram_cs = br;
+assign next_step_task = step_task<<1;
+assign next_task      = step_task & tasks;
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk) begin
     if( rst ) begin
-        br         <= 1'b0;
-        bus_master <= 5'b0;
-        bg_obj     <= 1'b0;
-        bg_pal     <= 1'b0;
-        line_cnt   <= 4'd0;
-        vram_addr  <= 17'd0;
-        vram_clr   <= 1'b0;
-        scr_cnt    <= 9'd0;
+        tasks      <= 5'd0;
+        cur_task   <= 5'd0;
+        step_task  <= 5'd1;
+        last_HB    <= 0;
+        br         <= 0;
+        step       <= 4'd1;
+        line_req   <= 0;
         active     <= 3'b0;
         swap       <= 3'b0;
-        set_data   <= 3'b0;
-        cache_wr   <= 1'b0;
+        last_obj_dma_ok <= 0;
+        // banks
+        rd_obj_bank <= 0;
+        wr_obj_bank <= 1;
+        scr_wr      <= 0;
+        obj_wr      <= 0;
+        // OBJ
+        obj_fill    <= 0;
+        obj_cnt     <= 10'd0;
+        obj_busy    <= 0;
     end else if(pxl2_cen) begin
         last_HB <= HB;
-        br      <= |{bus_master, set_data};
-        bg_pal  <= bus_master[PAL] & bg;
+        last_obj_dma_ok <= obj_dma_ok;
 
         vscr1  <= vpos1 + vrenderf;
         vscr2  <= vpos2 + vrenderf;
         vscr3  <= vpos3 + vrenderf;
 
-        if( bus_master[PAL] ) vram_addr <= vram_pal_addr;   
+        if( obj_dma_ok && !last_obj_dma_ok ) begin
+            obj_busy <= 1;
+            obj_fill <= 0;
+        end
 
         if( HB_edge ) begin
-            active <= active ^ swap;
-            swap   <= 3'd0;
+            line_req <= 1;
+            active   <= active ^ swap;
+            swap     <= 3'd0;
             vrenderf <= {7'd0, (vrender1 ^ { 1'b0, {8{flip}}}) + (flip ? -9'd8 : 9'd1) };
             // It'd be better to use a vrender2 signal generated in the timing module
             // but adding 1 to vrender1 doesn't seem to create artifacts
             // note that adding 2 to vrender does create problems in the top horizontal line
         end
 
-        if( HB_edge) begin
-            bus_master <= 5'd1 << LINE;
-            if( row_en && !bg_pal ) begin
-                line_cnt <= 5'd0;
-            end else begin
-                row_scr_next <= {12'b0, hpos2[3:0] };
-                line_cnt     <= br_obj ? OBJ_PRE : OBJ_SKIP;
-            end
-            row_scr    <= row_scr_next;
-        end else if( br_pal && !bus_master ) begin
-            bus_master <= 5'd1 << PAL;
-        end else if(!bus_master) begin
-            if( set_data[0] ) begin
-                if( vscr1[2:0]==3'd0 ) begin
-                    bus_master[SCR1]<=1'b1;
-                    vn        <= vscr1;
+        if( line_req && step[3] ) begin
+            line_req    <= 0;
+            obj_busy    <= 0;
+            tasks[OBJ]  <= (tasks[OBJ] | obj_busy) & ~obj_fill;
+            tasks[ROW]  <= row_en & tile_ok;
+            tasks[SCR1] <= vscr1[2:0]==3'd0 && tile_ok;
+            tasks[SCR2] <= vscr2[3:0]=={ flip, 3'd0 } && tile_ok;
+            tasks[SCR3] <= (vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs;
+            scr_cnt     <= 9'd0;
+            cur_task    <= 5'b0;
+            step_task   <= 5'b1;
+            adv         <= 1;
+            vram_scr_base <= vram1_base;
+            row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };
+            if( obj_busy ) obj_cnt <= 10'd0;
+        end else
+        if( !bg ) begin
+            if( tasks!=5'd0 ) br<=1;
+        end else
+        if( bg ) begin
+            if( adv ) begin
+                step_task <= next_step_task;
+                cur_task  <= next_task;
+                adv       <= 0;
+                if( !step_task ) br <= 0;
+                // Update SCR base pointer
+                if( next_task[SCR1] ) begin
+                    vn <= vscr1;
                     hn        <= 11'h38 + { hpos1[10:3], 3'b0 };
                     scr_cnt   <= 9'd0;
-                    scr_over  <= 8'd99;
-                    vram_base <= vram1_base;
+                    scr_over  <= LAST_SCR1;
                     swap[0]   <= 1'b1;
-                end else set_data[0] <= 1'b0;
-            end
-            if( set_data[1] & ~set_data[0] ) begin
-                if( vscr2[3:0]=={ flip, 3'd0 } ) begin
-                    bus_master[SCR2]<=1'b1;
+                    vram_scr_base <= vram2_base;
+                end
+                if( next_task[SCR2] ) begin
                     vn <= vscr2;
                     hn <= 11'h30 + { hpos2[10:4], 4'b0 };
                     scr_cnt   <= 9'd128<<1;
                     scr_over  <= LAST_SCR2;
-                    vram_base <= vram2_base;
                     swap[1]   <= 1'b1;
-                end else set_data[1] <= 1'b0;
-            end
-            if( set_data[2] && set_data[1:0]==2'b0 ) begin
-                if( vscr3[3:0]=={ flip, 3'd0 } ) begin
-                    bus_master[SCR3]<=1'b1;
+                    vram_scr_base <= vram2_base;
+                end
+                if( next_task[SCR3]) begin
                     vn <= vscr3;
                     hn <= 11'h20 + { hpos3[10:5], 5'b0 };
                     scr_cnt   <= (LAST_SCR2+1)<<1;
-                    scr_over  <= 8'd255;
-                    vram_base <= vram3_base;
+                    scr_over  <= LAST_SCR2;
+                    vram_scr_base <= vram3_base;
                     swap[2]   <= 1'b1;
-                end else set_data[2] <= 1'b0;
-            end
-        end
-        if( !br_pal && bus_master[PAL] ) bus_master[PAL] <= 1'b0;
-        if( bg ) begin
-            if( bus_master[LINE] && pxl2_cen ) begin
-                // Line DMA transfer takes 2us
-                line_cnt <= line_cnt + 5'd1;
-                vram_clr <= line_cnt == OBJ_START; // clear cache to prevent
-                // wrong readings that could trigger an end-of-table
-                // flag in OBJ controller
-                if( line_cnt == OBJ_START  ) begin
-                    bg_obj  <= br_obj;
-                    row_scr_next <= {12'b0, hpos2[3:0] } + 
-                       (row_en ? vram_data : 16'h0); // this is collected
-                        // without checking for vram_ok
-                        // there should have been enough time
-                        // for the read to get through
-                    if( !br_obj ) line_cnt <= OBJ_END;
-                end
-                if( line_cnt == OBJ_END   ) bg_obj <= 1'b0;
-                if( line_cnt >= OBJ_START )
-                    vram_addr <= vram_obj_addr;
-                else
-                    vram_addr <= { vram_row_base[9:1], 8'd0 } + 
-                                 { 7'd0, row_offset[9:0] + vrenderf };
-                if( (&line_cnt) || (br_pal&&line_cnt==OBJ_END) ) begin
-                    bus_master[LINE] <= 1'b0;
-                    if(!br_pal ) set_data <= 3'b111;
-                    // else bus_master[PAL] <= 1;
                 end
             end
-            ////////// Scroll tile cache
-            if( bus_master[SCR1] || bus_master[SCR2] || bus_master[SCR3] ) begin
-                if( pxl_cen && (!scr_cnt[0] || (scr_cnt[0]&&cache_wr) ) ) begin
-                    scr_cnt   <= scr_cnt + 1;
-                    if( scr_cnt[8:1]==scr_over && scr_cnt[0] ) begin
-                        bus_master[SCR3:SCR1] <= 3'b0;
-                        set_data <= set_data & ~bus_master[SCR3:SCR1];
+            else begin
+                step <= { step[2:0], step[3] };
+                case( step ) // 250us to go through all four steps
+                    4'd1: begin // request data
+                        vram_addr <= cur_task[ROW]       ? vrow_addr : (
+                                     cur_task[SCR3:SCR1] ? vscr_addr : (
+                                     cur_task[OBJ]       ? vobj_addr :
+                                     vpal_addr ));
                     end
-                end                        
-                if( !scr_cnt[0] ) begin
-                    vram_addr <= { vram_base[9:1], 8'd0 } + { 4'd0, scan, scr_cnt[1] };
-                    cache_wr  <= 1'b0;
-                end else if( vram_ok && !cache_wr) begin
-                    if( scr_cnt[1] ) hn <= hn + hstep;
-                    cache_wr <= 1'b1;
-                end
+                    4'd4: begin // collect data
+                        scr_wr <= |cur_task[SCR3:SCR1];
+                        obj_wr <= cur_task[OBJ] | obj_fill;
+                        if( cur_task[ROW] )
+                            row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
+                        if( cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff ) begin
+                            obj_fill <= 1;
+                        end
+                    end
+                    4'd8: begin
+                        scr_wr <= 0;
+                        if( cur_task[SCR3:SCR1] ) begin
+                            if( scr_cnt==scr_over ) begin
+                                scr_cnt <= 0;
+                                adv     <= 1;
+                                if( cur_task[SCR1] ) tasks[SCR1] <= 0;
+                                if( cur_task[SCR2] ) tasks[SCR2] <= 0;
+                                if( cur_task[SCR3] ) tasks[SCR3] <= 0;
+                            end 
+                            else scr_cnt<=scr_cnt+1;
+                        end else
+                        if( cur_task[ROW] ) adv <= 1;
+                        if( cur_task[OBJ] || obj_fill ) begin
+                            obj_cnt <= obj_cnt + 10'd1;
+                            if( &obj_cnt ) begin
+                                cur_task[OBJ] <= 0;
+                                obj_fill      <= 0;
+                                obj_busy      <= 0;
+                            end
+                        end
+                    end
+                endcase
             end
         end
     end
