@@ -23,6 +23,7 @@
 module jtcps1_mmr(
     input              rst,
     input              clk,
+    input              pxl_cen,
 
     input              ppu_rstn,
     input              ppu1_cs,
@@ -345,7 +346,7 @@ always @(posedge clk, posedge reg_rst) begin
 
         obj_dma_ok    <= 1'b0;
     end else begin
-        if( !ppu1_cs ) begin
+        if( !ppu1_cs && pxl_cen ) begin
             // The palette copy signal is delayed until after ppu1_cs has gone down
             // otherwise it would get a wrong pal_base value as pal_base is written
             // to a bit after ppu1_cs has gone high
@@ -355,7 +356,6 @@ always @(posedge clk, posedge reg_rst) begin
             obj_dma_ok <= pre_dma_ok;
             pre_dma_ok <= 1'b0;
         end
-        else pal_copy <= 1'b0;
         if( ppu1_cs ) begin
             case( addr[5:1] )
                 // CPS-A registers

@@ -53,18 +53,10 @@ module jtcps1_colmix(
     input   [15:0]     prio1,
     input   [15:0]     prio2,
     input   [15:0]     prio3,
-    // Palette copy
-    input              pal_copy,
-    input   [15:0]     pal_base,
-    input   [ 5:0]     pal_page_en, // which palette pages to copy
-    // BUS sharing
-    output             busreq,
-    input              busack,
 
-    // VRAM access
-    output     [17:1]  vram_addr,
-    input      [15:0]  vram_data,
-    input              vram_ok,
+    // Palette RAM
+    output  [11:0]     pal_addr,
+    input   [15:0]     pal_raw,
 
     (*keep*) output reg [7:0]  red,
     (*keep*) output reg [7:0]  green,
@@ -75,36 +67,8 @@ reg  [11:0] pxl;
 wire [11:0] pal_addr;
 
 // Palette
-wire [15:0] raw;
 wire [ 3:0] raw_r, raw_g, raw_b, raw_br;
 reg  [ 3:0] dly_r, dly_g, dly_b;
-
-jtcps1_colram u_colram(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .pxl_cen    ( pxl_cen       ),
-
-    .HB         ( HB            ),
-    .VB         ( VB            ),
-
-    // Palette PPU control
-    .pal_copy   ( pal_copy      ),
-    .pal_base   ( pal_base      ),
-    .pal_page_en( pal_page_en   ), // which palette pages to copy
-
-    // Palette data requests
-    .pal_addr   ( pal_addr      ),
-    .pal_data   ( raw           ),
-
-    // BUS sharing
-    .busreq     ( busreq        ),
-    .busack     ( busack        ),
-
-    // VRAM access
-    .vram_addr  ( vram_addr     ),
-    .vram_data  ( vram_data     ),
-    .vram_ok    ( vram_ok       )
-);
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
@@ -117,10 +81,10 @@ jtcps1_colram u_colram(
 
 localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 
-assign raw_br   = raw[15:12]; // r
-assign raw_r    = raw[11: 8]; // br
-assign raw_g    = raw[ 7: 4]; // b
-assign raw_b    = raw[ 3: 0]; // g
+assign raw_br   = pal_raw[15:12]; // r
+assign raw_r    = pal_raw[11: 8]; // br
+assign raw_g    = pal_raw[ 7: 4]; // b
+assign raw_b    = pal_raw[ 3: 0]; // g
 assign pal_addr = pxl;
 
 /////////////////////////// LAYER MUX ////////////////////////////////////////////

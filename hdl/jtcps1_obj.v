@@ -24,11 +24,9 @@ module jtcps1_obj(
     input              pxl_cen,
     input              flip,
 
-    // input              HB,
-    input              obj_dma_ok,
-    // BUS sharing
-    output             busreq,
-    input              busack,
+    // cache interface
+    output     [ 9:0]  frame_addr,
+    input      [15:0]  frame_data,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
@@ -41,12 +39,6 @@ module jtcps1_obj(
     input      [15:0]  bank_offset,
     input      [15:0]  bank_mask,
 
-    // control registers
-    input      [15:0]  vram_base,
-    output     [17:1]  vram_addr,
-    input      [15:0]  vram_data,
-    input              vram_ok,
-
     output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
@@ -56,31 +48,11 @@ module jtcps1_obj(
     output     [ 8:0]  pxl
 );
 
-wire [15:0] frame_data, line_data;
-wire [ 9:0] frame_addr;
+wire [15:0] line_data;
 wire [ 8:0] line_addr;
 
 wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
-
-jtcps1_obj_table u_table(
-    .rst            ( rst           ),
-    .clk            ( clk           ),
-    .pxl_cen        ( pxl_cen       ),
-    .obj_dma_ok     ( obj_dma_ok    ),
-    // BUS sharing
-    .busreq         ( busreq        ),
-    .busack         ( busack        ),
-    // OBJ renderization
-    .table_addr     ( frame_addr    ),
-    .table_data     ( frame_data    ),
-
-    // VRAM
-    .vram_base      ( vram_base     ),
-    .vram_addr      ( vram_addr     ),
-    .vram_data      ( vram_data     ),
-    .vram_ok        ( vram_ok       )
-);
 
 jtcps1_obj_line_table u_line_table(
     .rst        ( rst           ),

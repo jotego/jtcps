@@ -48,7 +48,7 @@ module jtcps1_dma(
     input              pxl2_cen,
 
     input              HB,
-    input      [ 8:0]  vrender1, // 1 line ahead of vdump
+    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input              flip,
 
     // control registers
@@ -77,12 +77,14 @@ module jtcps1_dma(
     input      [15:0]  vram_obj_base,
     input      [ 9:0]  obj_table_addr,
     input              obj_dma_ok,
-    output     [15:0]  obj_table_data
+    output     [15:0]  obj_table_data,
 
     // PAL
-    input              br_pal,
-    output reg         bg_pal,
-    input      [17:1]  vram_pal_addr,
+    input      [15:0]  vram_pal_base,
+    input              pal_dma_ok,
+    input      [10:0]  colmix_addr,
+    output     [15:0]  pal_data,
+    input      [ 5:0]  pal_page_en, // which palette pages to copy
 
     output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
@@ -93,38 +95,44 @@ module jtcps1_dma(
     input              bg
 );
 
+localparam TASKW=1+1+3+6;
 
 reg  [15:0] vrenderf, vscr1, vscr2, vscr3, row_scr_next;
-reg  [11:0] scan, hstep;
-reg  [10:0] vn, hn;
-reg  [ 9:0] obj_cnt, vram_scr_base;
+reg  [11:0] scan;
+wire [11:0] wr_pal_addr;
+reg  [10:0] vn, hn, hstep;
+reg  [ 9:0] obj_cnt;
+reg  [ 8:0] pal_cnt, vram_scr_base;
 reg  [ 7:0] scr_cnt, scr_over;
-wire [ 4:0] next_step_task;
-reg  [ 4:0] tasks, step_task, cur_task;
-wire [ 4:0] next_task;
 reg  [ 3:0] step;
-reg  [ 2:0] active, swap;
+reg  [ 2:0] active, swap, pal_rd_page, pal_wr_page;
 
-reg         last_HB;
-reg         rd_bank, wr_bank;
+wire [ TASKW-1:0] next_step_task, next_task;
+reg  [ TASKW-1:0] tasks, step_task, cur_task;
+
+reg         last_HB, first_pal, line_req, last_pal_dma_ok, pal_busy;
+reg         rd_bank, wr_bank, adv;
 reg         rd_obj_bank, wr_obj_bank;
-reg         scr_wr, obj_wr;
+reg         scr_wr, obj_wr, pal_wr;
 reg         obj_busy, obj_fill, last_obj_dma_ok;
 
 wire        HB_edge  = !last_HB && HB;
-wire        tile_ok  = vdump<9'd237 || vdump>9'd257; // VB is 38 lines
-wire        tile_vs  = vdump==9'd12; // Vertical start, use for SCR3
+wire        tile_ok  = vrender1<9'd237 || vrender1>9'd257; // VB is 38 lines
+wire        tile_vs  = vrender1==9'd12; // Vertical start, use for SCR3
 
 // various addresses
 wire [17:1] vrow_addr = { vram_row_base[9:1], 8'd0 } + 
-                        { 7'd0, row_offset[9:0] + vrenderf },
-            vscr_addr = { vram_scr_base[9:1], 8'd0 } + { 4'd0, scan, scr_cnt[0] },
-            vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], ~obj_cnt[1:0] };
+                        { 7'd0, row_offset[9:0] } + {1'b0,vrenderf },
+            vscr_addr = { vram_scr_base, 8'd0 } + { 4'd0, scan, scr_cnt[0] },
+            vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], ~obj_cnt[1:0] },
+            vpal_addr = { vram_pal_base[9:1], 8'd0 } + { 5'd0, pal_rd_page , pal_cnt };
 
-localparam [7:0] LAST_SCR1 = 8'd99, LAST_SCR2 = 8'd225, LAST_SCR2 = 8'd255;
+localparam [7:0] LAST_SCR1 = 8'd99, LAST_SCR2 = 8'd225, LAST_SCR3 = 8'd255;
+localparam ROW=0, OBJ=1, SCR1=2, SCR2=3, SCR3=4, 
+           PAL0=5, PAL1=6,PAL2=7,PAL3=8,PAL4=9,PAL5=10;
 
 always @(*) begin
-    casez( scr_cnt[8:6] )
+    casez( scr_cnt[7:5] )
         3'b0??:  wr_bank = ~active[0]; // SCR1
         3'b111:  wr_bank = ~active[2]; // SCR3
         default: wr_bank = ~active[1]; // SCR2
@@ -166,11 +174,35 @@ jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .q1     ( obj_table_data)
 );
 
+assign wr_pal_addr = { pal_wr_page, pal_cnt };
+
+// Palette RAM (this was phisically outside of CPS-A/B chips)
+jtframe_dual_ram #(.dw(16), .aw(12)) u_pal_ram(
+    .clk0   ( clk           ),
+    .clk1   ( clk           ),
+    // Port 0: write
+    .data0  ( vram_data     ),
+    .addr0  ( wr_pal_addr   ),
+    .we0    ( pal_wr        ),
+    .q0     (               ),
+    // Port 1: read
+    .data1  ( ~16'd0        ),
+    .addr1  ( colmix_addr   ),
+    .we1    ( 1'b0          ),
+    `ifndef FORCE_GRAY
+    .q1     ( pal_data      )
+    `endif
+);
+
+`ifdef FORCE_GRAY
+assign pal_data = {4'hf, {3{colmix_addr[3:0]}} };
+`endif
+
 always @(*) begin
-    if( bus_master[SCR1] ) begin
+    if( cur_task[SCR1] ) begin
         scan   = { vn[8],   hn[8:3], vn[7:3] };
         hstep  = 11'd8;
-    end else if( bus_master[SCR2] ) begin
+    end else if( cur_task[SCR2] ) begin
         scan   = { vn[9:8], hn[9:4], vn[7:4] };
         hstep  = 11'd16;
     end else begin
@@ -185,9 +217,9 @@ assign next_task      = step_task & tasks;
 
 always @(posedge clk) begin
     if( rst ) begin
-        tasks      <= 5'd0;
-        cur_task   <= 5'd0;
-        step_task  <= 5'd1;
+        tasks      <= {TASKW{1'b0}};
+        cur_task   <= {TASKW{1'b0}};
+        step_task  <= {TASKW{1'b0}};
         last_HB    <= 0;
         br         <= 0;
         step       <= 4'd1;
@@ -200,6 +232,7 @@ always @(posedge clk) begin
         wr_obj_bank <= 1;
         scr_wr      <= 0;
         obj_wr      <= 0;
+        pal_wr      <= 0;
         // OBJ
         obj_fill    <= 0;
         obj_cnt     <= 10'd0;
@@ -207,6 +240,7 @@ always @(posedge clk) begin
     end else if(pxl2_cen) begin
         last_HB <= HB;
         last_obj_dma_ok <= obj_dma_ok;
+        last_pal_dma_ok <= pal_dma_ok;
 
         vscr1  <= vpos1 + vrenderf;
         vscr2  <= vpos2 + vrenderf;
@@ -215,6 +249,10 @@ always @(posedge clk) begin
         if( obj_dma_ok && !last_obj_dma_ok ) begin
             obj_busy <= 1;
             obj_fill <= 0;
+        end
+
+        if( pal_dma_ok && !last_pal_dma_ok ) begin
+            pal_busy <= 1;
         end
 
         if( HB_edge ) begin
@@ -230,51 +268,66 @@ always @(posedge clk) begin
         if( line_req && step[3] ) begin
             line_req    <= 0;
             obj_busy    <= 0;
+            pal_busy    <= 0;
+            if( obj_busy ) begin
+                wr_obj_bank <= ~wr_obj_bank;
+                rd_obj_bank <= wr_obj_bank;
+            end
+            if( pal_busy ) begin
+                pal_rd_page      <= 3'd0;
+                pal_wr_page      <= 3'd0;
+                tasks[PAL5:PAL0] <= pal_page_en;
+                first_pal <= 1;
+            end
             tasks[OBJ]  <= (tasks[OBJ] | obj_busy) & ~obj_fill;
             tasks[ROW]  <= row_en & tile_ok;
             tasks[SCR1] <= vscr1[2:0]==3'd0 && tile_ok;
             tasks[SCR2] <= vscr2[3:0]=={ flip, 3'd0 } && tile_ok;
             tasks[SCR3] <= (vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs;
-            scr_cnt     <= 9'd0;
-            cur_task    <= 5'b0;
-            step_task   <= 5'b1;
+            scr_cnt     <= 8'd0;
+            cur_task    <= {TASKW{1'b0}};
+            step_task   <= { {TASKW-1{1'b0}}, 1'b1 };
             adv         <= 1;
-            vram_scr_base <= vram1_base;
             row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };
             if( obj_busy ) obj_cnt <= 10'd0;
         end else
         if( !bg ) begin
-            if( tasks!=5'd0 ) br<=1;
+            if( |tasks ) br<=1;
         end else
-        if( bg ) begin
+        if( bg && br ) begin
             if( adv ) begin
                 step_task <= next_step_task;
                 cur_task  <= next_task;
-                adv       <= 0;
-                if( !step_task ) br <= 0;
+                if( ~|tasks ) br <= 0;
+                adv       <= |next_task;
+                // Update palette page
+                if( (|tasks[PAL5:PAL1]) && (~|tasks[PAL0:0]) ) begin
+                    pal_wr_page <= pal_wr_page+3'd1;
+                    if( !first_pal ) pal_rd_page<=pal_rd_page+3'd1;
+                end
                 // Update SCR base pointer
                 if( next_task[SCR1] ) begin
-                    vn <= vscr1;
+                    vn        <= vscr1[10:0];
                     hn        <= 11'h38 + { hpos1[10:3], 3'b0 };
-                    scr_cnt   <= 9'd0;
+                    scr_cnt   <= 8'd0;
                     scr_over  <= LAST_SCR1;
                     swap[0]   <= 1'b1;
-                    vram_scr_base <= vram2_base;
+                    vram_scr_base <= vram1_base[9:1];
                 end
                 if( next_task[SCR2] ) begin
-                    vn <= vscr2;
-                    hn <= 11'h30 + { hpos2[10:4], 4'b0 };
-                    scr_cnt   <= 9'd128<<1;
+                    vn        <= vscr2[10:0];
+                    hn        <= 11'h30 + { hpos2[10:4], 4'b0 };
+                    scr_cnt   <= 8'd128<<1;
                     scr_over  <= LAST_SCR2;
                     swap[1]   <= 1'b1;
-                    vram_scr_base <= vram2_base;
+                    vram_scr_base <= vram2_base[9:1];
                 end
                 if( next_task[SCR3]) begin
-                    vn <= vscr3;
-                    hn <= 11'h20 + { hpos3[10:5], 5'b0 };
+                    vn        <= vscr3[10:0];
+                    hn        <= 11'h20 + { hpos3[10:5], 5'b0 };
                     scr_cnt   <= (LAST_SCR2+1)<<1;
                     scr_over  <= LAST_SCR2;
-                    vram_scr_base <= vram3_base;
+                    vram_scr_base <= vram3_base[9:1];
                     swap[2]   <= 1'b1;
                 end
             end
@@ -282,14 +335,15 @@ always @(posedge clk) begin
                 step <= { step[2:0], step[3] };
                 case( step ) // 250us to go through all four steps
                     4'd1: begin // request data
-                        vram_addr <= cur_task[ROW]       ? vrow_addr : (
-                                     cur_task[SCR3:SCR1] ? vscr_addr : (
-                                     cur_task[OBJ]       ? vobj_addr :
-                                     vpal_addr ));
+                        vram_addr <=  cur_task[ROW]       ? vrow_addr : (
+                                     |cur_task[SCR3:SCR1] ? vscr_addr : (
+                                      cur_task[OBJ]       ? vobj_addr :
+                                      vpal_addr ));
                     end
                     4'd4: begin // collect data
                         scr_wr <= |cur_task[SCR3:SCR1];
                         obj_wr <= cur_task[OBJ] | obj_fill;
+                        pal_wr <= |cur_task[PAL5:PAL0];
                         if( cur_task[ROW] )
                             row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
                         if( cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff ) begin
@@ -298,7 +352,7 @@ always @(posedge clk) begin
                     end
                     4'd8: begin
                         scr_wr <= 0;
-                        if( cur_task[SCR3:SCR1] ) begin
+                        if( |cur_task[SCR3:SCR1] ) begin
                             if( scr_cnt==scr_over ) begin
                                 scr_cnt <= 0;
                                 adv     <= 1;
@@ -306,7 +360,10 @@ always @(posedge clk) begin
                                 if( cur_task[SCR2] ) tasks[SCR2] <= 0;
                                 if( cur_task[SCR3] ) tasks[SCR3] <= 0;
                             end 
-                            else scr_cnt<=scr_cnt+1;
+                            else begin
+                                scr_cnt <= scr_cnt+1;
+                                hn      <= hn + hstep;
+                            end
                         end else
                         if( cur_task[ROW] ) adv <= 1;
                         if( cur_task[OBJ] || obj_fill ) begin
@@ -316,6 +373,11 @@ always @(posedge clk) begin
                                 obj_fill      <= 0;
                                 obj_busy      <= 0;
                             end
+                        end
+                        if( (|cur_task[PAL5:PAL0]) && (&pal_cnt) ) begin
+                            tasks[PAL5:PAL0] <= tasks[PAL5:PAL0] & ~cur_task[PAL5:PAL0];
+                            first_pal <= 0;
+                            adv <= 1;
                         end
                     end
                 endcase

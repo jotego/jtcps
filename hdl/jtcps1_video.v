@@ -107,12 +107,13 @@ parameter REGSIZE=23;
 `define NOCOLMIX
 `endif
 
+wire [11:0]     pal_addr;
 wire [10:0]     scr1_pxl, scr2_pxl, scr3_pxl;
 wire [ 8:0]     star1_pxl, star0_pxl;
 wire [ 8:0]     obj_pxl;
 wire [ 8:0]     vrender1;
-wire [15:0]     ppu_ctrl;
-wire [17:1]     vram_pal_addr, vram_obj_addr;
+wire [15:0]     ppu_ctrl, pal_raw;
+wire [17:1]     vram_pal_addr;
 wire            line_start, preVB;
 wire            flip = ppu_ctrl[15];
 wire            busack_obj, busack_pal;
@@ -127,7 +128,7 @@ wire       [15:0]  layer_ctrl, prio0, prio1, prio2, prio3;
 wire       [ 7:0]  layer_mask0, layer_mask1, layer_mask2, layer_mask3, layer_mask4;
 // palette control
 wire       [15:0]  pal_base;
-wire               pal_copy;
+wire               pal_dma_ok;
 wire       [ 5:0]  pal_page_en; // which palette pages to copy
 // ROM banks
 wire       [ 5:0]  game;
@@ -135,9 +136,8 @@ wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
 wire       [ 7:0]  tile_addr;
-wire       [15:0]  tile_data, row_scr;
-
-wire               obj_dma_ok, busreq_obj, busreq_pal;
+wire       [15:0]  tile_data, row_scr, obj_cache_data;
+wire       [ 9:0]  obj_cache_addr;
 
 jtcps1_dma u_dma(
     .rst            ( rst               ),
@@ -169,13 +169,18 @@ jtcps1_dma u_dma(
     .row_en         ( ppu_ctrl[0]       ),
     .row_scr        ( row_scr           ),
 
-    .br_obj         ( busreq_obj        ),
-    .bg_obj         ( busack_obj        ),
-    .vram_obj_addr  ( vram_obj_addr     ),
+    // Palette
+    .vram_pal_base  ( pal_base          ),
+    .pal_dma_ok     ( pal_dma_ok        ),
+    .pal_page_en    ( pal_page_en       ),
+    .pal_data       ( pal_data          ),
+    .colmix_addr    ( pal_addr          ),
 
-    .br_pal         ( busreq_pal        ),
-    .bg_pal         ( busack_pal        ),
-    .vram_pal_addr  ( vram_pal_addr     ),
+    // Objects
+    .vram_obj_addr  ( vram_obj_addr     ),
+    .obj_table_addr ( obj_cache_addr    ),
+    .obj_table_data ( obj_cache_data    ),
+    .obj_dma_ok     ( obj_dma_ok        ),
 
     .br             ( busreq            ),
     .bg             ( busack            ),
@@ -259,7 +264,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .vram_row_base  ( vram_row_base     ),
     .row_offset     ( row_offset        ),
     .pal_base       ( pal_base          ),
-    .pal_copy       ( pal_copy          ),
+    .pal_copy       ( pal_dma_ok        ),
 
     // CPS-B Registers
     .cfg_we         ( cfg_we            ),
@@ -347,10 +352,9 @@ jtcps1_obj u_obj(
     .pxl_cen    ( pxl_cen       ),
     .flip       ( flip          ),
 
-    .obj_dma_ok    ( obj_dma_ok   ),
-    // BUS sharing
-    .busreq     ( busreq_obj    ),
-    .busack     ( busack_obj    ),
+    // Cache access
+    .frame_addr ( obj_cache_addr),
+    .frame_data ( obj_cache_data),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
@@ -363,12 +367,7 @@ jtcps1_obj u_obj(
     .bank_offset( bank_offset   ),
     .bank_mask  ( bank_mask     ),
 
-    // control registers
-    .vram_base  ( vram_obj_base ),
-    .vram_addr  ( vram_obj_addr ),
-    .vram_data  ( vram_dma_data ),
-    .vram_ok    ( vram_dma_ok   ),
-
+    // ROM data
     .rom_addr   ( rom0_addr     ),
     .rom_data   ( rom0_data     ),
     .rom_cs     ( rom0_cs       ),
@@ -409,16 +408,9 @@ jtcps1_colmix u_colmix(
     .LVBL_dly   ( LVBL_colmix   ),
     .gfx_en     ( gfx_en        ),
 
-    // Palette copy
-    `ifdef SIMULATION
-    .pal_copy   ( pal_copy3     ), // runs a palette copy command at the beginning of the simulation
-    `else
-    .pal_copy   ( pal_copy      ),
-    `endif
-    .pal_base   ( pal_base      ),
-    .pal_page_en( pal_page_en   ),
-    .busreq     ( busreq_pal    ),
-    .busack     ( busack_pal    ),
+    // Palette RAM
+    .pal_addr   ( pal_addr      ),
+    .pal_raw    ( pal_raw       ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),
@@ -432,10 +424,7 @@ jtcps1_colmix u_colmix(
     .prio2      ( prio2         ),
     .prio3      ( prio3         ),
 
-    // VRAM access
-    .vram_addr  ( vram_pal_addr ),
-    .vram_data  ( vram_dma_data ),
-    .vram_ok    ( vram_dma_ok   ),
+
 
     // Pixel layers data
     .scr1_pxl   ( scr1_pxl      ),
