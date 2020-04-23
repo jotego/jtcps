@@ -177,6 +177,7 @@ jtcps1_dma u_dma(
     .colmix_addr    ( pal_addr          ),
 
     // Objects
+    .vram_obj_base  ( vram_obj_base     ),
     .obj_table_addr ( obj_cache_addr    ),
     .obj_table_data ( obj_cache_data    ),
     .obj_dma_ok     ( obj_dma_ok        ),

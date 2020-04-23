@@ -127,7 +127,7 @@ wire        tile_vs  = vrender1==9'd12; // Vertical start, use for SCR3
 wire [17:1] vrow_addr = { vram_row_base[9:1], 8'd0 } + 
                         { 7'd0, row_offset[9:0] } + {1'b0,vrenderf },
             vscr_addr = { vram_scr_base, 8'd0 } + { 4'd0, scan, scr_cnt[0] },
-            vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], ~obj_cnt[1:0] },
+            vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], obj_cnt[1:0] },
             vpal_addr = { vram_pal_base[9:1], 8'd0 } + { 5'd0, pal_rd_page , pal_cnt };
 
 always @(*) begin
@@ -365,9 +365,9 @@ always @(posedge clk) begin
                         pal_wr <= |cur_task[PAL5:PAL0];
                         if( cur_task[ROW] )
                             row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
-                        // if( cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff ) begin
-                        //     obj_fill <= 1;
-                        // end
+                        if( cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff ) begin
+                            obj_fill <= 1;
+                        end
                     end
                     4'd8: begin
                         scr_wr <= 0;

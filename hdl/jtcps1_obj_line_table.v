@@ -163,6 +163,10 @@ always @(posedge clk, posedge rst) begin
         st         <= 0;
         done       <= 1'b0;
         first      <= 1'b1;
+        obj_attr   <= 16'd0;
+        obj_x      <= 16'd0;
+        pre_code   <= 16'd0;
+        obj_y      <= 16'd0;
     end else begin
         st <= st+5'd1;
         case( st )
