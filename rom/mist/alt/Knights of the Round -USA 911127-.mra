@@ -1,0 +1,58 @@
+<misterromdescription>
+    <name>Knights of the Round (USA 911127)</name>
+    <setname>knightsu</setname>
+    <year>1991</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="knights.zip|knightsu.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for knightsu --> 
+        <part> FF FF 06 04 02 00 28 26 24 22 20 36 00 30 20 10 02 00 </part>
+        <!-- Mapper for  --> 
+        <part> 0D 40 88 73 FF </part>
+        <part> 02 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="kr_23u.8f" crc="252bc2ba" map="21"/>
+        </interleave>
+        <interleave output="16">
+            <part name="kr_22.7f" crc="d0b671a9" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="kr_09.11a" crc="5e44d9ee"/>
+        <!-- oki -->
+        <part name="kr_18.11c" crc="da69d15f"/>
+        <part name="kr_19.12c" crc="bfc654e9"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="kr-5m.3a" crc="9e36c1a4"  map="00000021"/>
+            <part name="kr-7m.5a" crc="c5832cae"  map="00002100"/>
+            <part name="kr-1m.4a" crc="f095be2d"  map="00210000"/>
+            <part name="kr-3m.6a" crc="179dfd96"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="kr-6m.7a" crc="1f4298d2"  map="00000021"/>
+            <part name="kr-8m.9a" crc="37fa8751"  map="00002100"/>
+            <part name="kr-2m.8a" crc="0200bc3d"  map="00210000"/>
+            <part name="kr-4m.10a" crc="0bb2b4e7"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 74 </part></rom>
+    <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Start"/>
+    <switches default="FF,FF,FF,FF" base="8">
+        <dip bits="19"	 name="Freeze" ids="On,Off"/>
+        <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="21"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

@@ -1,0 +1,67 @@
+<misterromdescription>
+    <name>Willow (USA)</name>
+    <setname>willowu</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="willow.zip|willowu.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 3072 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for willowu --> 
+        <part> FF 00 FF FF FF FF 30 2E 2C 2A 28 00 00 26 20 10 08 00 </part>
+        <!-- Mapper for  --> 
+        <part> 29 40 88 73 FF </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="35.11h" crc="7a791e77" map="01"/>
+            <part name="wlu_30.11f" crc="d604dbb1" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="wlu_36.12h" crc="36100209" map="01"/>
+            <part name="wlu_31.12f" crc="0eb48a83" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="wlm-32.8h" crc="dfd9f643" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="wl_09.12b" crc="f6b3d060"/>
+        <!-- oki -->
+        <part name="wl_18.11c" crc="bde23d4d"/>
+        <part name="wl_19.12c" crc="683898f5"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="wlm-7.7a" crc="afa74b73"  map="00000021"/>
+            <part name="wlm-5.9a" crc="12a0dc0b"  map="00002100"/>
+            <part name="wlm-3.3a" crc="c6f2abce"  map="00210000"/>
+            <part name="wlm-1.5a" crc="4aa4c6d3"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="wl_24.7d" crc="6f0adee5"  map="00000001"/>
+            <part name="wl_14.7c" crc="9cf3027d"  map="00000010"/>
+            <part name="wl_26.9d" crc="f09c8ecf"  map="00000100"/>
+            <part name="wl_16.9c" crc="e35407aa"  map="00001000"/>
+            <part name="wl_20.3d" crc="84992350"  map="00010000"/>
+            <part name="wl_10.3c" crc="b87b5a36"  map="00100000"/>
+            <part name="wl_22.5d" crc="fd3f89f0"  map="01000000"/>
+            <part name="wl_12.5c" crc="7da49d69"  map="10000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF,FF" base="8">
+        <dip bits="17"	 name="Freeze" ids="On,Off"/>
+        <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="21"	 name="Demo Sounds" ids="Off,On"/>
+        <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

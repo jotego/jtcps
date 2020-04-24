@@ -162,7 +162,7 @@ assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
 `ifndef SIMULATION
-    assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+    assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[23:0];
     assign dip_flip = dipsw_c[4];
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;

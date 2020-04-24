@@ -473,10 +473,10 @@ void replace( string& aux, const char *f, const char *r ) {
 
 void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
     map<string, int> bases;
-    bases["DSWA"] = 8;
-    bases["DSWB"] = 16;
-    bases["DSWC"] = 24;
-    mras << "    <switches default=\"FF,FF,FF,FF\">\n";
+    bases["DSWA"] = 0;
+    bases["DSWB"] = 8;
+    bases["DSWC"] = 16;
+    mras << "    <switches default=\"FF,FF,FF,FF\" base=\"8\">\n";
     for( DIPsw* d : dip_info->getDIPs() ) {
         if( d->name == "Unused" ) continue;
         if( skip_coins ) {
@@ -545,6 +545,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
             int total_length = ids_str.length() + d->name.length() + 4;
             if( total_length >255 ) {
                 cout << "WARNING: DIP ids string too long by " << (total_length-255) << " chars.\n";
+                cout << "Game: " << dip_info->name << '\n';
                 cout << ids_str << '\n';
             }
             pre_mras << ids_str;
@@ -659,8 +660,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     dump_orientation(mras, game, buttons);
     mras << ss_ports.str();
     // DIPs
-    if(!skip_coins) // Don't do it for MiST for now
-        parse_dips( mras, dip_info, skip_coins );
+    parse_dips( mras, dip_info, skip_coins );
     // Close MRA file
     mras << "</misterromdescription>\n";    // End of MRA file
     // Config file for MiST
@@ -711,7 +711,7 @@ int main(int argc, char *argv[]) {
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
             cout << "-parent    to produce only output for parent games (default)\n";
-            cout << "-alt       to produce output for all games\n";
+            cout << "-alt       to produce output for alternative games\n";
             cout << "-v         verbose\n";
             cout << "-inc       generates the include file for verilog\n";
             cout << "-nocoin    skips coin/credit DIP switches (useful for MiST)\n";
@@ -735,7 +735,10 @@ int main(int argc, char *argv[]) {
         } else {
             // process game if it matches the name in arguments or
             // if there was not name then process all
-            if( (!game_name.length() && !(parents_only && game->parent!="0"))
+            if( (!game_name.length() && (
+                    ( !(parents_only && game->parent!="0") ) ||
+                    (  !parents_only && game->parent=="0")
+                ))
                 || game->name == game_name ) {
                 Game* dip_info;
                 for( auto& g : game_dips ) {

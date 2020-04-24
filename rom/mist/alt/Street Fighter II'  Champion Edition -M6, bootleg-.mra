@@ -1,0 +1,61 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (M6, bootleg)</name>
+    <setname>sf2m6</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="sf2hack.zip|sf2.zip|sf2ce.zip|sf2m6.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1280 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 05 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 05 </part>
+        <!-- Graphics size 6656 kB -->
+        <part>40 06 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for sf2m6 --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 1F 40 C8 73 F7 </part>
+        <part> 09 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="27c040.u196" crc="80454da7" map="01"/>
+            <part name="27c040.u222" crc="0a3692be" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="27c010.u195" crc="924c6ce2" map="01"/>
+            <part name="27c010.u221" crc="8226c11c" map="10"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="sound.u191" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="voice.u210" crc="6cfffb11"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="ycecmkr001.u70" crc="a258de13"  map="00000021"/>
+            <part name="ycecmkr003.u69" crc="c781bf87"  map="00002100"/>
+            <part name="ycecmkr002.u68" crc="5726cab8"  map="00210000"/>
+            <part name="ycecdwc011.u64" crc="bc90c12f"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="ycecdwc012.u19" crc="187667cc"  map="00000021"/>
+            <part name="ycecdwc013.u18" crc="5b585071"  map="00002100"/>
+            <part name="grp1.u31" crc="6de44671"  map="00010000"/>
+            <part name="grp3.u29" crc="e8f14362"  map="00100000"/>
+            <part name="grp2.u30" crc="bf0cd819"  map="01000000"/>
+            <part name="grp4.u28" crc="76f9f91f"  map="10000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 78 </part></rom>
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Select,Select,Start"/>
+    <switches default="FF,FF,FF,FF" base="8">
+        <dip bits="19"	 name="Freeze" ids="On,Off"/>
+        <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="21"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

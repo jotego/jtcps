@@ -1,0 +1,63 @@
+<misterromdescription>
+    <name>Dynasty Wars (USA, B-Board 89624B-?)</name>
+    <setname>dynwar</setname>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="dynwar.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1024 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 04 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 04 </part>
+        <!-- Graphics size 4096 kB -->
+        <part>40 05 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for dynwar --> 
+        <part> 20 02 FF FF FF FF 2C 2A 28 26 24 00 00 22 02 04 08 00 </part>
+        <!-- Mapper for  --> 
+        <part> 24 20 64 31 33 </part>
+        <part> 00 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="35.11h" crc="e41fff2f" map="01"/>
+            <part name="30.11f" crc="f9ec6d68" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="36.12h" crc="7a13cfbf" map="01"/>
+            <part name="31.12f" crc="e3de76ff" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="tkm-9.8h" crc="93654bcf" map="21"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="tke_17.12b" crc="b3b79d4f"/>
+        <!-- oki -->
+        <part name="tke_18.11c" crc="ac6e307d"/>
+        <part name="tke_19.12c" crc="068741db"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="tkm-5.7a" crc="f64bb6a0"  map="00000021"/>
+            <part name="tkm-8.9a" crc="21fe6274"  map="00002100"/>
+            <part name="tkm-6.3a" crc="0bf228cb"  map="00210000"/>
+            <part name="tkm-7.5a" crc="1255dfb1"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="tkm-1.8a" crc="44f7661e"  map="00000021"/>
+            <part name="tkm-4.10a" crc="a54c515d"  map="00002100"/>
+            <part name="tkm-2.4a" crc="ca5c687c"  map="00210000"/>
+            <part name="tkm-3.6a" crc="f9fe6591"  map="21000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 72 </part></rom>
+    <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
+        default="A,B,X,R,L,Start"/>
+    <switches default="FF,FF,FF,FF" base="8">
+        <dip bits="16"	 name="Freeze" ids="On,Off"/>
+        <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="21"	 name="Demo Sounds" ids="Off,On"/>
+        <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>
