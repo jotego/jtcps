@@ -3057,7 +3057,7 @@
 			<dipvalue name="7" value="1"/>
 			<dipvalue name="8 (Hardest)" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Player's Strength)" tag="DSWB" mask="24">
+		<dipswitch name="Difficulty" tag="DSWB" mask="24">
 			<diplocation name="SW(B)" number="4"/>
 			<diplocation name="SW(B)" number="5"/>
 			<dipvalue name="Easy" value="16"/>
@@ -3240,7 +3240,7 @@
 			<dipvalue name="7" value="1"/>
 			<dipvalue name="8 (Hardest)" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Player's Strength)" tag="DSWB" mask="24">
+		<dipswitch name="Difficulty" tag="DSWB" mask="24">
 			<diplocation name="SW(B)" number="4"/>
 			<diplocation name="SW(B)" number="5"/>
 			<dipvalue name="Easy" value="16"/>
@@ -3408,7 +3408,7 @@
 			<dipvalue name="7" value="1"/>
 			<dipvalue name="8 (Hardest)" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Player's Strength)" tag="DSWB" mask="24">
+		<dipswitch name="Difficulty" tag="DSWB" mask="24">
 			<diplocation name="SW(B)" number="4"/>
 			<diplocation name="SW(B)" number="5"/>
 			<dipvalue name="Easy" value="16"/>
@@ -3591,7 +3591,7 @@
 			<dipvalue name="7" value="1"/>
 			<dipvalue name="8 (Hardest)" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Player's Strength)" tag="DSWB" mask="24">
+		<dipswitch name="Difficulty" tag="DSWB" mask="24">
 			<diplocation name="SW(B)" number="4"/>
 			<diplocation name="SW(B)" number="5"/>
 			<dipvalue name="Easy" value="16"/>
@@ -3759,7 +3759,7 @@
 			<dipvalue name="7" value="1"/>
 			<dipvalue name="8 (Hardest)" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Player's Strength)" tag="DSWB" mask="24">
+		<dipswitch name="Difficulty" tag="DSWB" mask="24">
 			<diplocation name="SW(B)" number="4"/>
 			<diplocation name="SW(B)" number="5"/>
 			<dipvalue name="Easy" value="16"/>

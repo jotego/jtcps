@@ -107,6 +107,7 @@ reg  [10:0] vn, hn, hstep;
 reg  [ 9:0] obj_cnt;
 reg  [ 8:0] pal_cnt, vram_scr_base;
 reg  [ 7:0] scr_cnt, scr_over;
+reg  [ 4:0] misses;
 reg  [ 3:0] step;
 reg  [ 2:0] active, swap, pal_rd_page, pal_wr_page;
 
@@ -231,20 +232,21 @@ wire on_pal  = |cur_task[PAL5:PAL0];
 
 always @(posedge clk) begin
     if( rst ) begin
-        tasks      <= {TASKW{1'b0}};
-        cur_task   <= {TASKW{1'b0}};
-        step_task  <= {TASKW{1'b0}};
-        old_tasks  <= {TASKW{1'b0}};
-        last_HB    <= 1;
-        br         <= 0;
-        adv        <= 0;
-        check_adv  <= 0;
-        step       <= 4'b1; // initial value is important
-        line_req   <= 0;
-        active     <= 3'b0;
-        swap       <= 3'b0;
+        tasks       <= {TASKW{1'b0}};
+        cur_task    <= {TASKW{1'b0}};
+        step_task   <= {TASKW{1'b0}};
+        old_tasks   <= {TASKW{1'b0}};
+        last_HB     <= 1;
+        br          <= 0;
+        adv         <= 0;
+        check_adv   <= 0;
+        step        <= 4'b1; // initial value is important
+        line_req    <= 0;
+        active      <= 3'b0;
+        swap        <= 3'b0;
         last_obj_dma_ok <= 0;
         pal_cnt     <= 9'd0;
+        misses      <= 5'd0;
         // banks
         rd_obj_bank <= 0;
         wr_obj_bank <= 1;
@@ -351,7 +353,16 @@ always @(posedge clk) begin
                 end
             end
             else begin
-                if( !(step[2] && !vram_ok) ) step <= { step[2:0], step[3] };
+                if( step[2] && !vram_ok ) begin
+                    if( ~&misses ) misses <= misses + 5'd1;    // wait for SDRAM
+                end else begin
+                    if( step[1] && vram_ok && misses>5'd0 ) begin
+                        misses <= misses - 5'd1;
+                        step <= 4'b1000; // skip one to recover a cycle
+                    end else begin
+                        step <= { step[2:0], step[3] }; // normal sequence
+                    end
+                end
                 case( step ) // 250us to go through all four steps
                     4'd1: begin // request data
                         vram_addr <=  cur_task[ROW]       ? vrow_addr : (
@@ -359,7 +370,7 @@ always @(posedge clk) begin
                                       cur_task[OBJ]       ? vobj_addr :
                                       vpal_addr ));
                     end
-                    4'd4: begin // collect data
+                    default: if(vram_ok) begin // collect data
                         scr_wr <= |cur_task[SCR3:SCR1];
                         obj_wr <= cur_task[OBJ] | obj_fill;
                         pal_wr <= |cur_task[PAL5:PAL0];
