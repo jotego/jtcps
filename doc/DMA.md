@@ -20,7 +20,14 @@ Palette DMA stops for OBJ processing at the regular pace. It probably stops also
 
 I measured the line DMA header and found these values: 604ns, 1.64us, 2.06us
 
-The first one would correspond to a line update with no OBJ and no row scroll. The second, no row scroll, but OBJ is active. The third, full row scroll and OBJ. It seems that there is a minimum of ~600ns (maybe 9x 16MHz cycles plus some bus arbitrion at the CPU 10MHz) required by the original DMA controller even if no requests are in place. 
+ROW SCR | OBJ  | Time (us)
+--------|------|----------
+  OFF   | OFF  | 0.60
+  OFF   |  ON  | 1.64
+  ON    | OFF  | Not measured
+  ON    |  ON  | 2.06
+
+The first one would correspond to a line update with no OBJ and no row scroll. The second, no row scroll, but OBJ is active. The third, full row scroll and OBJ. It seems that there is a minimum of ~600ns (maybe 9x 16MHz cycles plus some bus arbitrion at the CPU 10MHz) required by the original DMA controller even if no requests are in place.
 
 On each line a whole sprite data is copied: 4 16-bit transfers.
 
