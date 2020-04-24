@@ -162,14 +162,8 @@ assign slot_wr[1]   = ~main_rnw;
 assign slot_wr[0]   = 1'd0;
 
 `ifndef SIMULATION
-    `ifdef MISTER
-        assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
-        assign dip_flip = dipsw_c[4];
-    `else
-        assign dipsw_a      = 8'hff;
-        assign dipsw_b      = 8'hff;
-        assign dipsw_c      = { dip_test, 2'b00, ~dip_flip, 4'hf };
-    `endif
+    assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[31:8];
+    assign dip_flip = dipsw_c[4];
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 `endif
@@ -184,6 +178,7 @@ wire [ 1:0] dsn;
 wire        cen16, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
 wire        charger;
+wire        turbo = status[6];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -218,11 +213,11 @@ assign pxl_cen  = cen8;
 `endif
 
 jtcps1_cpucen u_cpucen(
-    .clk        ( clk48       ),
-    .cen12      ( cen12       ),
-    .cpu_speed  ( cpu_speed   ),
-    .cpu_cen    ( cpu_cen     ),
-    .cpu_cenb   ( cpu_cenb    )
+    .clk        ( clk48              ),
+    .cen12      ( cen12              ),
+    .cpu_speed  ( cpu_speed | turbo  ),
+    .cpu_cen    ( cpu_cen            ),
+    .cpu_cenb   ( cpu_cenb           )
 );
 
 localparam REGSIZE=24;
@@ -247,6 +242,11 @@ jtcps1_prom_we #(
     .sdram_ack      ( sdram_ack     ),
     .cfg_we         ( cfg_we        )
 );
+
+// Turbo speed disables DMA
+wire busreq_cpu = busreq & ~turbo;
+wire busack_cpu;
+assign busack = busack_cpu | turbo;
 
 `ifndef NOMAIN
 jtcps1_main u_main(
@@ -279,8 +279,8 @@ jtcps1_main u_main(
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
-    .busreq      ( busreq           ),
-    .busack      ( busack           ),
+    .busreq      ( busreq_cpu       ),
+    .busack      ( busack_cpu       ),
     .RnW         ( main_rnw         ),
     // RAM/VRAM access
     .addr        ( ram_addr         ),
