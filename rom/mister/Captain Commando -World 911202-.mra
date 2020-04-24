@@ -54,17 +54,9 @@
     <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Start"/>
     <switches default="FF,FF,FF,FF" base="8">
-        <dip bits="0,2"	 name="Coinage" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
-        <dip bits="6"	 name="2 to Start, 1 to Cont." ids="On,Off"/>
-        <dip bits="8,10"	 name="Difficulty 1" ids="8 (Hardest),7,6,5,4 (Normal),3,2,1 (Easiest)"/>
-        <dip bits="11,12"	 name="Difficulty 2" ids="Hardest,Hard,Normal,Easy"/>
-        <dip bits="14,15"	 name="Play Mode" ids="4 Players,1 Players,3 Players,2 Players"/>
-        <dip bits="16,17"	 name="Lives" ids="1,4,3,2"/>
-        <dip bits="18"	 name="Free Play" ids="On,Off"/>
         <dip bits="19"	 name="Freeze" ids="On,Off"/>
         <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
         <dip bits="21"	 name="Demo Sounds" ids="On,Off"/>
-        <dip bits="22"	 name="Continue" ids="Yes,No"/>
         <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
     </switches>
 </misterromdescription>

@@ -61,20 +61,6 @@
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
     <switches default="FF,FF,FF,FF" base="8">
-        <dip bits="0,1"	 name="Coinage" ids="4 Coins/1 Credit,3 Coins/1 Credit,1 Coin/1 Credit,2 Coins/1 Credit"/>
-        <dip bits="6"	 name="Unknown" ids="On,Off"/>
-        <dip bits="8,9"	 name="Demo Sounds" ids="Off,Every 4,Every 2,On"/>
-        <dip bits="10"	 name="Prize Mode" ids="Not Used,Used"/>
-        <dip bits="11"	 name="Credit Mode" ids="On,Off"/>
-        <dip bits="12"	 name="Max Stage" ids="2,3"/>
-        <dip bits="13"	 name="Card Check" ids="On,Off"/>
-        <dip bits="16"	 name="Unknown" ids="On,Off"/>
-        <dip bits="17"	 name="Body Check" ids="On,Off"/>
-        <dip bits="18"	 name="Unknown" ids="On,Off"/>
-        <dip bits="19"	 name="Screen Stop" ids="On,Off"/>
         <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
-        <dip bits="21"	 name="Unknown" ids="On,Off"/>
-        <dip bits="22"	 name="Unknown" ids="On,Off"/>
-        <dip bits="23"	 name="Service Mode" ids="On,Off"/>
     </switches>
 </misterromdescription>

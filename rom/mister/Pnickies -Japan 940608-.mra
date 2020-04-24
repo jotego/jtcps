@@ -57,24 +57,9 @@
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
     <switches default="FF,FF,FF,FF" base="8">
-        <dip bits="0,2"	 name="Coinage" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
-        <dip bits="3"	 name="Coin Slots" ids="2,1"/>
-        <dip bits="4"	 name="Unknown" ids="On,Off"/>
-        <dip bits="5"	 name="Unknown" ids="On,Off"/>
-        <dip bits="6"	 name="Unknown" ids="On,Off"/>
-        <dip bits="7"	 name="Unknown" ids="On,Off"/>
-        <dip bits="8,10"	 name="Difficulty" ids="7 (Hardest),6,5,4,3 (Normal),2,1,0 (Easiest)"/>
-        <dip bits="11"	 name="Unknown" ids="On,Off"/>
-        <dip bits="12"	 name="Unknown" ids="On,Off"/>
-        <dip bits="13"	 name="Unknown" ids="On,Off"/>
-        <dip bits="14,15"	 name="Vs Play Mode" ids="7 Games Match,5 Games Match,3 Games Match,1 Game Match"/>
-        <dip bits="16"	 name="Unknown" ids="On,Off"/>
-        <dip bits="17"	 name="Unknown" ids="On,Off"/>
-        <dip bits="18"	 name="Unknown" ids="On,Off"/>
         <dip bits="19"	 name="Freeze" ids="On,Off"/>
         <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
         <dip bits="21"	 name="Demo Sounds" ids="On,Off"/>
-        <dip bits="22"	 name="Unknown" ids="On,Off"/>
         <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
     </switches>
 </misterromdescription>

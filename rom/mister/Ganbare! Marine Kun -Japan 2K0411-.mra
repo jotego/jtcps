@@ -48,23 +48,5 @@
     <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Start"/>
     <switches default="FF,FF,FF,FF" base="8">
-        <dip bits="0"	 name="Medal Setup" ids="Don't use,1 Medal 1 Credit"/>
-        <dip bits="1"	 name="Coin Setup" ids="10 Yen,100 Yen"/>
-        <dip bits="2,4"	 name="Change Setup" ids="11,12,No change,5,6,7,8,10"/>
-        <dip bits="5,6"	 name="10 Yen Setup" ids="Don't use,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/1 Credit"/>
-        <dip bits="7"	 name="Payout Setup" ids="Payout Mode,Credit Mode"/>
-        <dip bits="8,10"	 name="Payout Rate Setup" ids="85%,90%,55%,60%,65%,70%,75%,80%"/>
-        <dip bits="11"	 name="Unknown" ids="On,Off"/>
-        <dip bits="12"	 name="Unknown" ids="On,Off"/>
-        <dip bits="13"	 name="Unknown" ids="On,Off"/>
-        <dip bits="14"	 name="Unknown" ids="On,Off"/>
-        <dip bits="15"	 name="Unknown" ids="On,Off"/>
-        <dip bits="16,17"	 name="Demo Sounds" ids="Off,Every third sound,Every second sound,On"/>
-        <dip bits="18"	 name="Unknown" ids="On,Off"/>
-        <dip bits="19"	 name="Unknown" ids="On,Off"/>
-        <dip bits="20"	 name="Unknown" ids="On,Off"/>
-        <dip bits="21"	 name="Unknown" ids="On,Off"/>
-        <dip bits="22"	 name="Clear RAM" ids="Yes,No"/>
-        <dip bits="23"	 name="Tes Mode Display" ids="On,Off"/>
     </switches>
 </misterromdescription>
