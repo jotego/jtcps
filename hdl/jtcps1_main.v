@@ -148,7 +148,7 @@ always @(posedge clk, posedge rst) begin
                 if( RnW ) begin
                     joy_cs <= A[8:3] == 6'b000_000; // 0x800000
                     sys_cs <= A[8:3] == 6'b000_011; // 0x800018
-                    ana_cs <= A[8:4] == 6'b001_01;  // 0x800050
+                    ana_cs <= A[8:5] == 6'b001_0;   // 0x800040/50
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
@@ -204,17 +204,21 @@ end
 
 // Cabinet input
 reg [15:0] sys_data;
-reg [15:0] rotator0, rotator1;
+reg [11:0] rot_x, rot_y;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        rotator0 <= 16'd0;
-        rotator1 <= 16'd0;
-    end else begin
-        if( !joystick1[6] ) rotator0 <= rotator0 - 16'd1;
-        if( !joystick2[6] ) rotator1 <= rotator1 - 16'd1;
-        if( !joystick1[7] ) rotator0 <= rotator0 + 16'd1;
-        if( !joystick2[7] ) rotator1 <= rotator1 + 16'd1;
+        rot_x <= ~12'd0;
+        rot_y <= ~12'd0;
+    end else if(cpu_cen) begin
+        //if( ana_cs && !A[4] ) begin
+        //    if(!A[3]) rot_x <= 12'h00;
+        //    if( A[3]) rot_y <= 12'h00;
+        //end
+        //if( !joystick1[6] ) rot_x <= 12'h010; // 8080 turns clock wise
+        //if( !joystick1[7] ) rot_x <= 12'h810;  // stops movement
+        //if( !joystick2[6] ) rot_y <= 12'h400;
+        //if( !joystick2[7] ) rot_y <= 12'hc00;
     end
 end
 
@@ -230,17 +234,13 @@ always @(posedge clk) begin
             : { tilt, 1'b1 /* alternative test dip */, start_button,
                 1'b1, service, coin_input, 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
-            2'b10: sys_data <= { dipsw_b, 8'hff };
-            2'b11: sys_data <= { dipsw_c, 8'hff };
+            2'b10: sys_data <= 16'hff; //{ dipsw_b, 8'hff };
+            2'b11: sys_data <= 16'hff; //{ dipsw_c, 8'hff };
         endcase
     end
-    else if( ana_cs ) begin
-        case( A[3:2] )
-            2'b00: sys_data <= rotator0[7:0];
-            2'b10: sys_data <= rotator1[7:0];
-            2'b01: sys_data <= rotator0[15:8];
-            2'b11: sys_data <= rotator1[15:8];
-        endcase
+    else if( ana_cs && A[4] ) begin
+        if( !A[3] ) sys_data <= {dipsw_b, dipsw_a };
+        else sys_data <= 16'h0;
     end
     else sys_data <= 16'hffff;
 end
