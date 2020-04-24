@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <set>
+#include <vector>
 #include <mamegame.hpp>
 
 #include "config.h"
@@ -166,13 +167,13 @@ int size_region( const tiny_rom_entry *entry, const string& region, int min_leng
 #define DUMP(a) of << hex << uppercase << setw(2) << setfill('0') << ((a)&0xff) << ' '; \
     sim_cfg[dumpcnt] = a; dumpcnt++;
 
-int find_cfg( stringstream& of, const string& name ) {
+int find_cfg( const string& name, stringstream *of=nullptr ) {
     int k=0;
     while( cps1_config_table[k].name != nullptr ) {
         if( name == cps1_config_table[k].name ) return k;
         k++;
     }
-    of << "ERROR: cannot find game " << name << '\n';
+    if( of ) (*of) << "ERROR: cannot find game " << name << '\n';
     cout << "ERROR: cannot find game " << name << '\n';
     return -1;
 }
@@ -256,6 +257,47 @@ string parent_name( game_entry* game ) {
     return game->name;
 }
 
+int add_verilog_mapper( stringstream& mappers, const CPS1config* x ) {
+    int id;
+
+    for(id=0;all_mappers[id]!=nullptr && all_mappers[id]!=x->ranges;id++);
+
+    const gfx_range *r = x->ranges;
+    const int set_used = id&1; // half of the games will use b outputs, and the other
+    const string mux_set = set_used ? "_b" : "_a";
+    while( r->type != 0 ) {
+        stringstream aux;
+        int b=-1;
+        int done=0;
+        do {
+            bool nl=false;
+            if ( b != r->bank ) {
+                b = r->bank;
+                aux << "        // Bank " << b << " size 0x" << hex << setw(5) << setfill('0') << x->bank_size[b] << '\n';
+                aux << "        bank" << mux_set << "["<<b<<"] <= ";
+                done |= (1<<b);
+            }
+            string s;
+            parse_range(s,r);
+            if( r[1].type!=0 ) {
+                if ( r[1].bank == b && s.size()>0 ) {
+                    aux << s << " ||\n        ";
+                    nl = true;
+                }
+            }
+            if(!nl && s.size()>0 ) aux << s << ";\n";
+            r++;
+        } while(r->type);
+        for( b=0; b<4; b++) {
+            if( (done & (1<<b)) == 0)
+                aux << "        bank" << mux_set << "["<<b<<"] <= 1'b0;\n";
+        }
+        aux << "        set_used  <= 1'b" << set_used << ";\n";
+        mappers << "6'h" << hex << id << ": begin\n" << aux.str() << "    end\n";
+    }
+    return id;
+}
+
 int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     game_entry* game, const CPS1config* x) {
     static set<int>done;
@@ -311,39 +353,7 @@ int generate_mapper(stringstream& of, int *sim_cfg, stringstream& mappers,
     of << "</part>\n";
     // Mapper ranges for verilog include file
     if( dump_inc ) {
-        const gfx_range *r = x->ranges;
-        const int set_used = id&1; // half of the games will use b outputs, and the other
-        const string mux_set = set_used ? "_b" : "_a";
-        while( r->type != 0 ) {
-            stringstream aux;
-            int b=-1;
-            int done=0;
-            do {
-                bool nl=false;
-                if ( b != r->bank ) {
-                    b = r->bank;
-                    aux << "        // Bank " << b << " size 0x" << hex << setw(5) << setfill('0') << x->bank_size[b] << '\n';
-                    aux << "        bank" << mux_set << "["<<b<<"] <= ";
-                    done |= (1<<b);
-                }
-                string s;
-                parse_range(s,r);
-                if( r[1].type!=0 ) {
-                    if ( r[1].bank == b && s.size()>0 ) {
-                        aux << s << " ||\n        ";
-                        nl = true;
-                    }
-                }
-                if(!nl && s.size()>0 ) aux << s << ";\n";
-                r++;
-            } while(r->type);
-            for( b=0; b<4; b++) {
-                if( (done & (1<<b)) == 0)
-                    aux << "        bank" << mux_set << "["<<b<<"] <= 1'b0;\n";
-            }
-            aux << "        set_used  <= 1'b" << set_used << ";\n";
-            mappers << "6'h" << hex << id << ": begin\n" << aux.str() << "    end\n";
-        }
+        add_verilog_mapper( mappers, x );
     }
     return dumpcnt;
 }
@@ -594,7 +604,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     const tiny_rom_entry *entry = game->roms;
     port_entry *ports = dump_buttons(ss_ports, game);
     try{
-        int cfg_id = find_cfg( mras, game->name );
+        int cfg_id = find_cfg( game->name, &mras );
         const CPS1config* x = &cps1_config_table[cfg_id];
 
         int cnt=0;
@@ -697,7 +707,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
 }
 
 int main(int argc, char *argv[]) {
-    bool game_list=false, parents_only=true, skip_include=true, skip_coins=false;
+    bool game_list=false, parents_only=true, skip_include=true, skip_coins=false, mapper=false;
     bool skip_cfg =true;
     string game_name;
     for( int k=1; k<argc; k++ ) {
@@ -708,6 +718,7 @@ int main(int argc, char *argv[]) {
         if( string(argv[k])=="-inc" )   { skip_include=false; continue; }
         if( string(argv[k])=="-nocoin" )   { skip_coins=true; continue; }
         if( string(argv[k])=="-cfg" )   { skip_cfg=false; continue; }
+        if( string(argv[k])=="-mapper" )   { mapper=true; continue; }
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
             cout << "-parent    to produce only output for parent games (default)\n";
@@ -729,28 +740,50 @@ int main(int argc, char *argv[]) {
     GameMap game_dips;
     parse_MAME_xml( game_dips, "cps1.xml" );
 
-    for( auto game : gl ) {
-        if( game_list ) {
-                cout << game->name << '\n';
-        } else {
-            // process game if it matches the name in arguments or
-            // if there was not name then process all
-            if( (!game_name.length() && (
-                    ( !(parents_only && game->parent!="0") ) ||
-                    (  !parents_only && game->parent=="0")
-                ))
-                || game->name == game_name ) {
-                Game* dip_info;
-                for( auto& g : game_dips ) {
-                    if( g.second->name == game->name ) {
-                        dip_info = g.second;
-                        // cout << "Found " << dip_info->name << '\n';
-                        break;
-                    }
-                }
-                generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
+    if( mapper ) {
+        string all_mappers;
+        set<int> done;
+        vector<string> mapper_str(100);
+        for( auto game : gl ) {
+            int cfg_id = find_cfg( game->name );
+            const CPS1config* x = &cps1_config_table[cfg_id];
+            stringstream new_mapper;
+            int new_id = add_verilog_mapper( new_mapper, x );
+            if( done.count(new_id)==0 ) {
+                done.insert(new_id);
+                mapper_str[new_id] = new_mapper.str();
             }
-            cnt++;
+        }
+        ofstream fout("../ver/video/mappers.inc");
+        for( int k=0; k < done.size(); k++ ) {
+            fout << mapper_str[k];
+        }
+        cout << done.size() << " mappers\n";
+    }
+    else {
+        for( auto game : gl ) {
+            if( game_list ) {
+                    cout << game->name << '\n';
+            } else {
+                // process game if it matches the name in arguments or
+                // if there was not name then process all
+                if( (!game_name.length() && (
+                        ( !(parents_only && game->parent!="0") ) ||
+                        (  !parents_only && game->parent=="0")
+                    ))
+                    || game->name == game_name || skip_include ) {
+                    Game* dip_info;
+                    for( auto& g : game_dips ) {
+                        if( g.second->name == game->name ) {
+                            dip_info = g.second;
+                            // cout << "Found " << dip_info->name << '\n';
+                            break;
+                        }
+                    }
+                    generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
+                }
+                cnt++;
+            }
         }
     }
     cout << cnt << " games.\n";

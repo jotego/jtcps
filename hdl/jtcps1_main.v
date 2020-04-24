@@ -148,7 +148,7 @@ always @(posedge clk, posedge rst) begin
                 if( RnW ) begin
                     joy_cs <= A[8:3] == 6'b000_000; // 0x800000
                     sys_cs <= A[8:3] == 6'b000_011; // 0x800018
-                    ana_cs <= A[8:4] == 6'b001_01; // 0x800050
+                    ana_cs <= A[8:4] == 6'b001_01;  // 0x800050
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
@@ -204,6 +204,19 @@ end
 
 // Cabinet input
 reg [15:0] sys_data;
+reg [15:0] rotator0, rotator1;
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        rotator0 <= 16'd0;
+        rotator1 <= 16'd0;
+    end else begin
+        if( !joystick1[6] ) rotator0 <= rotator0 - 16'd1;
+        if( !joystick2[6] ) rotator1 <= rotator1 - 16'd1;
+        if( !joystick1[7] ) rotator0 <= rotator0 + 16'd1;
+        if( !joystick2[7] ) rotator1 <= rotator1 + 16'd1;
+    end
+end
 
 always @(posedge clk) begin
     if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
@@ -223,10 +236,10 @@ always @(posedge clk) begin
     end
     else if( ana_cs ) begin
         case( A[3:2] )
-            2'b00: sys_data <= joystick_analog_0[7:0];
-            2'b10: sys_data <= joystick_analog_1[7:0];
-            2'b01: sys_data <= joystick_analog_0[15:8];
-            2'b11: sys_data <= joystick_analog_1[15:8];
+            2'b00: sys_data <= rotator0[7:0];
+            2'b10: sys_data <= rotator1[7:0];
+            2'b01: sys_data <= rotator0[15:8];
+            2'b11: sys_data <= rotator1[15:8];
         endcase
     end
     else sys_data <= 16'hffff;
@@ -350,7 +363,7 @@ always @(posedge clk, posedge rst) begin : int_gen
             int2 <= 1'b1;
         end
         else begin
-            //if( V[8] && !last_V256 ) int2 <= 1'b0;
+            if( V[8] && !last_V256 ) int2 <= 1'b0; // Needed by Ganbare
             if( !LVBL && last_LVBL ) int1 <= 1'b0;
         end
     end

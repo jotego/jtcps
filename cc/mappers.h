@@ -933,7 +933,7 @@ const gfx_range* all_mappers[] = {
     mapper_DM22A_table,
     mapper_DM620_table,
     mapper_KD29B_table,
-    mapper_KNM10B_table,
+    mapper_KNM10B_table,    // Ken sei mogura
     mapper_KR63B_table,
     mapper_LW621_table,
     mapper_LWCHR_table,
