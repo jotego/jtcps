@@ -234,14 +234,14 @@ always @(posedge clk) begin
             : { tilt, 1'b1 /* alternative test dip */, start_button,
                 1'b1, service, coin_input, 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
-            2'b10: sys_data <= 16'hff; //{ dipsw_b, 8'hff };
-            2'b11: sys_data <= 16'hff; //{ dipsw_c, 8'hff };
+            2'b10: sys_data <= { dipsw_b, 8'hff };
+            2'b11: sys_data <= { dipsw_c, 8'hff };
         endcase
     end
-    else if( ana_cs && A[4] ) begin
-        if( !A[3] ) sys_data <= {dipsw_b, dipsw_a };
-        else sys_data <= 16'h0;
-    end
+    //else if( ana_cs && A[4] ) begin
+    //    if( !A[3] ) sys_data <= {dipsw_b, dipsw_a };
+    //    else sys_data <= 16'h0;
+    //end
     else sys_data <= 16'hffff;
 end
 
