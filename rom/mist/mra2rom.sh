@@ -1,9 +1,16 @@
 #!/bin/bash
+
+function copy {
+	DEST=/media/$USER/$1
+
+	if [ -d $DEST ]; then
+	    mkdir -p $DEST/JTCPS1
+	    cp *.arc $DEST/JTCPS1
+	fi
+}
+
 parallel mra {} -z ../zip -A ::: *.mra
 
-DEST=/media/$USER/MIST
+copy MIST
+copy SIDI
 
-if [ -d $DEST ]; then
-    mkdir -p $DEST/JTCPS1
-    cp *.arc $DEST/JTCPS1
-fi

@@ -1,0 +1,67 @@
+<misterromdescription>
+    <name>Street Fighter II': Champion Edition (L735 Test Rom, bootleg, set 1)</name>
+    <setname>sf2amf2</setname>
+    <year>1992</year>
+    <manufacturer>bootleg</manufacturer>
+    <rbf>jtcps1</rbf>
+    <rom index="0" zip="sf2amfx.zip|sf2.zip|sf2ce.zip|sf2amf2.zip" md5="none">
+        <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
+        <!-- Size of M68000 code 1536 kB -->
+        <!-- Sound CPU size 64 kB -->
+        <part>00 06 </part>
+        <!-- OKI samples size 256 kB -->
+        <part>40 06 </part>
+        <!-- Graphics size 6656 kB -->
+        <part>40 07 </part>
+        <part repeat="10">FF</part>
+        <!-- CPS-B config for sf2amf2 --> 
+        <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 36 00 30 02 04 08 30 </part>
+        <!-- Mapper for  --> 
+        <part> 1F 40 C8 73 F7 </part>
+        <part> 09 </part>
+        <part repeat="24">FF</part>
+        <!-- maincpu -->
+        <interleave output="16">
+            <part name="m5m27c401.u196" crc="39f15a1e" map="01"/>
+            <part name="m5m27c401.u222" crc="03991fba" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="27020.u195" crc="2bffa6f9" map="01"/>
+            <part name="27020.u221" crc="aa4d55a6" map="10"/>
+        </interleave>
+        <!-- audiocpu -->
+        <part name="27512.u191" crc="a4823a1b"/>
+        <!-- oki -->
+        <part name="fun-u210.bin" crc="6cfffb11"/>
+        <!-- gfx -->
+        <interleave output="64">
+            <part name="fun-u70.bin" crc="a94a8b19"  map="00000021"/>
+            <part name="fun-u68.bin" crc="0405f21f"  map="00002100"/>
+            <part name="fun-u69.bin" crc="05dc2043"  map="00210000"/>
+            <part name="fun-u67.bin" crc="055b64f1"  map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="fun-u19.bin" crc="1a518609"  map="00000021"/>
+            <part name="fun-u18.bin" crc="84f9354f"  map="00002100"/>
+            <part name="grp1.u31" crc="6de44671"  map="00010000"/>
+            <part name="grp3.u29" crc="e8f14362"  map="00100000"/>
+            <part name="grp2.u30" crc="bf0cd819"  map="01000000"/>
+            <part name="grp4.u28" crc="76f9f91f"  map="10000000"/>
+        </interleave>
+    </rom>
+    <rom index="1"><part> 78 </part></rom>
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
+        default="A,B,X,Y,R,L,Select,Select,Start"/>
+    <switches default="FF,FF,FF,FF" base="8">
+        <dip bits="0,2"	 name="Coin A" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="3,5"	 name="Coin B" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="6"	 name="2 to Start, 1 to Cont." ids="On,Off"/>
+        <dip bits="8,10"	 name="Difficulty" ids="7 (Hardest),6,5,4,3 (Normal),2,1,0 (Easiest)"/>
+        <dip bits="18"	 name="Free Play" ids="On,Off"/>
+        <dip bits="19"	 name="Freeze" ids="On,Off"/>
+        <dip bits="20"	 name="Flip Screen" ids="On,Off"/>
+        <dip bits="21"	 name="Demo Sounds" ids="On,Off"/>
+        <dip bits="22"	 name="Continue" ids="Yes,No"/>
+        <dip bits="23"	 name="Game Mode" ids="Test,Game"/>
+    </switches>
+</misterromdescription>

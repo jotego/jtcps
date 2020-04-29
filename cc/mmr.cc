@@ -707,13 +707,14 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
 }
 
 int main(int argc, char *argv[]) {
-    bool game_list=false, parents_only=true, skip_include=true, skip_coins=false, mapper=false;
+    bool game_list=false, dump_parents=true, skip_include=true, skip_coins=false, mapper=false;
+    bool dump_alt=false;
     bool skip_cfg =true;
     string game_name;
     for( int k=1; k<argc; k++ ) {
         if( string(argv[k])=="-list" )  { game_list=true; continue; }
-        if( string(argv[k])=="-parent" ) { parents_only=true; continue; }
-        if( string(argv[k])=="-alt" ) { parents_only=false; continue; }
+        if( string(argv[k])=="-parent" ) { dump_parents=true; continue; }
+        if( string(argv[k])=="-alt" ) { dump_alt=true; continue; }
         if( string(argv[k])=="-v" )   { verbose=true; continue; }
         if( string(argv[k])=="-inc" )   { skip_include=false; continue; }
         if( string(argv[k])=="-nocoin" )   { skip_coins=true; continue; }
@@ -721,7 +722,7 @@ int main(int argc, char *argv[]) {
         if( string(argv[k])=="-mapper" )   { mapper=true; continue; }
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
-            cout << "-parent    to produce only output for parent games (default)\n";
+            cout << "-parent    to produce output for parent games (default)\n";
             cout << "-alt       to produce output for alternative games\n";
             cout << "-v         verbose\n";
             cout << "-inc       generates the include file for verilog\n";
@@ -761,6 +762,7 @@ int main(int argc, char *argv[]) {
         cout << done.size() << " mappers\n";
     }
     else {
+        int mra_count=0;
         for( auto game : gl ) {
             if( game_list ) {
                     cout << game->name << '\n';
@@ -768,10 +770,10 @@ int main(int argc, char *argv[]) {
                 // process game if it matches the name in arguments or
                 // if there was not name then process all
                 if( (!game_name.length() && (
-                        ( !(parents_only && game->parent!="0") ) ||
-                        (  !parents_only && game->parent=="0")
+                        ( dump_parents && game->parent=="0" ) ||
+                        ( dump_alt     && game->parent!="0" )
                     ))
-                    || game->name == game_name || skip_include ) {
+                    || game->name == game_name  ) {
                     Game* dip_info;
                     for( auto& g : game_dips ) {
                         if( g.second->name == game->name ) {
@@ -781,10 +783,12 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
+                    mra_count++;
                 }
                 cnt++;
             }
         }
+        cout << "Created " << mra_count << " MRA files.\n";
     }
     cout << cnt << " games.\n";
 }
