@@ -571,6 +571,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
 
 void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins,
     bool skip_cfg ) {
+    bool skip_gfx = false;
     switch( game->board_type ) {
         //case cps1_10MHz:
         //case cps1_12MHz:
@@ -580,8 +581,10 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         case forgottn:
         case qsound:
         //case ganbare:
-        case pang3:
             return;
+        case pang3:
+            skip_gfx = true;
+            break;
     }
     static bool first=true;
     //ofstream simf( game->name+".hex");
@@ -651,7 +654,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             dump_region(mras, entry,"oki",8,0,256*1024);
         else
             dump_region(mras, entry,"qsound",8,0,2*1024*1024);
-        dump_region(mras, entry,"gfx",64,0);
+        if( !skip_gfx ) dump_region(mras, entry,"gfx",64,0);
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
         return;
