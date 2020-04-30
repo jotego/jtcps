@@ -38,7 +38,7 @@ parameter [21:0] CPU_OFFSET=22'h0;
 parameter [21:0] SND_OFFSET=22'h0;
 parameter [21:0] OKI_OFFSET=22'h0;
 parameter [21:0] GFX_OFFSET=22'h0;
-parameter [ 7:0] CFG_BYTE  =39; // location of the byte with encoder information
+parameter [ 5:0] CFG_BYTE  =6'd39; // location of the byte with encoder information
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
@@ -72,7 +72,7 @@ reg [7:0] pang3_decrypt;
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
 always @(*) begin
-    pang3 = is_cpu && decrypt && cpu_addr[19] && cpu_addr[0];
+    pang3 = is_cpu && decrypt && cpu_addr[19] && !cpu_addr[0];
     pang3_decrypt = 8'd0;
     if ( ioctl_data[0] ) pang3_decrypt = pang3_decrypt ^ 8'h04;
     if ( ioctl_data[1] ) pang3_decrypt = pang3_decrypt ^ 8'h21;
@@ -97,11 +97,11 @@ always @(posedge clk) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
-            if( ioctl_addr[7:0] == CFG_BYTE ) decrypt <= ioctl_data[7];  
         end else begin
             if( is_cps ) begin
                 cfg_we    <= 1'b1;
                 prog_we   <= 1'b0;
+                if( ioctl_addr[5:0] == CFG_BYTE ) decrypt <= ioctl_data[7];  
             end else begin
                 cfg_we    <= 1'b0;
                 prog_we   <= 1'b1;
