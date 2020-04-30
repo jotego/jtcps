@@ -33,11 +33,12 @@ module jtcps1_prom_we(
     output reg           cfg_we
 );
 
-parameter REGSIZE=24; // This is defined at _game level
-parameter CPU_OFFSET=22'h0;
-parameter SND_OFFSET=22'h0;
-parameter OKI_OFFSET=22'h0;
-parameter GFX_OFFSET=22'h0;
+parameter        REGSIZE=24; // This is defined at _game level
+parameter [21:0] CPU_OFFSET=22'h0;
+parameter [21:0] SND_OFFSET=22'h0;
+parameter [21:0] OKI_OFFSET=22'h0;
+parameter [21:0] GFX_OFFSET=22'h0;
+parameter [ 7:0] CFG_BYTE  =39; // location of the byte with encoder information
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
@@ -65,9 +66,27 @@ wire is_snd = bulk_addr[24:10] < oki_start && bulk_addr[24:10]>=snd_start;
 wire is_oki = bulk_addr[24:10] < gfx_start && bulk_addr[24:10]>=oki_start;
 wire is_gfx = bulk_addr[24:10] >=gfx_start;
 
+reg       decrypt;
+reg [7:0] pang3_decrypt;
+
+// The decryption is literally copied from MAME, it is up to
+// the synthesizer to optimize the code. And it will.
+always @(*) begin
+    pang3_decrypt = 8'd0;
+    if ( ioctl_data & 8'h01) pang3_decrypt = pang3_decrypt ^ 8'h04;
+    if ( ioctl_data & 8'h02) pang3_decrypt = pang3_decrypt ^ 8'h21;
+    if ( ioctl_data & 8'h04) pang3_decrypt = pang3_decrypt ^ 8'h01;
+    if (~ioctl_data & 8'h08) pang3_decrypt = pang3_decrypt ^ 8'h50;
+    if ( ioctl_data & 8'h10) pang3_decrypt = pang3_decrypt ^ 8'h40;
+    if ( ioctl_data & 8'h20) pang3_decrypt = pang3_decrypt ^ 8'h06;
+    if ( ioctl_data & 8'h40) pang3_decrypt = pang3_decrypt ^ 8'h08;
+    if (~ioctl_data & 8'h80) pang3_decrypt = pang3_decrypt ^ 8'h88;
+end
+
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
-        prog_data <= ioctl_data;
+        prog_data <= is_cpu && decrypt && ioctl_addr[19] && !ioctl_addr[0] ?
+            pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
@@ -77,6 +96,7 @@ always @(posedge clk) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
+            if( ioctl_addr[7:0] == CFG_BYTE ) decrypt <= ioctl_data[7];  
         end else begin
             if( is_cps ) begin
                 cfg_we    <= 1'b1;
@@ -89,6 +109,7 @@ always @(posedge clk) begin
     end
     else begin
         if(!downloading || sdram_ack) prog_we  <= 1'b0;
+        if( !downloading ) decrypt <= 0;
         cfg_we   <= 1'b0;
     end
 end
