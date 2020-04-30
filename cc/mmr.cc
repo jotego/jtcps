@@ -635,6 +635,8 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             case wofhfh:     cpu12=1; break;
             case pang3:      cpu12=1; break;
         }
+        if( game->name!="pang3b" && game->board_type == pang3 )
+            cpu12 |= 0x80; // enable decryption
         if( ports!= nullptr )
             cpu12 |= ports->cpsb_extra_inputs()<<1;
         // charger game ?

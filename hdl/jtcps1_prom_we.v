@@ -66,26 +66,27 @@ wire is_snd = bulk_addr[24:10] < oki_start && bulk_addr[24:10]>=snd_start;
 wire is_oki = bulk_addr[24:10] < gfx_start && bulk_addr[24:10]>=oki_start;
 wire is_gfx = bulk_addr[24:10] >=gfx_start;
 
-reg       decrypt;
+reg       decrypt, pang3;
 reg [7:0] pang3_decrypt;
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
 always @(*) begin
+    pang3 = is_cpu && decrypt && cpu_addr[19] && cpu_addr[0];
     pang3_decrypt = 8'd0;
-    if ( ioctl_data & 8'h01) pang3_decrypt = pang3_decrypt ^ 8'h04;
-    if ( ioctl_data & 8'h02) pang3_decrypt = pang3_decrypt ^ 8'h21;
-    if ( ioctl_data & 8'h04) pang3_decrypt = pang3_decrypt ^ 8'h01;
-    if (~ioctl_data & 8'h08) pang3_decrypt = pang3_decrypt ^ 8'h50;
-    if ( ioctl_data & 8'h10) pang3_decrypt = pang3_decrypt ^ 8'h40;
-    if ( ioctl_data & 8'h20) pang3_decrypt = pang3_decrypt ^ 8'h06;
-    if ( ioctl_data & 8'h40) pang3_decrypt = pang3_decrypt ^ 8'h08;
-    if (~ioctl_data & 8'h80) pang3_decrypt = pang3_decrypt ^ 8'h88;
+    if ( ioctl_data[0] ) pang3_decrypt = pang3_decrypt ^ 8'h04;
+    if ( ioctl_data[1] ) pang3_decrypt = pang3_decrypt ^ 8'h21;
+    if ( ioctl_data[2] ) pang3_decrypt = pang3_decrypt ^ 8'h01;
+    if (~ioctl_data[3] ) pang3_decrypt = pang3_decrypt ^ 8'h50;
+    if ( ioctl_data[4] ) pang3_decrypt = pang3_decrypt ^ 8'h40;
+    if ( ioctl_data[5] ) pang3_decrypt = pang3_decrypt ^ 8'h06;
+    if ( ioctl_data[6] ) pang3_decrypt = pang3_decrypt ^ 8'h08;
+    if (~ioctl_data[7] ) pang3_decrypt = pang3_decrypt ^ 8'h88;
 end
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
-        prog_data <= is_cpu && decrypt && ioctl_addr[19] && !ioctl_addr[0] ?
+        prog_data <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
