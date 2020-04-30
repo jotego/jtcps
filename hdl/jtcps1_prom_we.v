@@ -73,7 +73,16 @@ reg [7:0] pang3_decrypt;
 // the synthesizer to optimize the code. And it will.
 always @(*) begin
     pang3 = is_cpu && decrypt && cpu_addr[19] && !cpu_addr[0];
-    pang3_decrypt = 8'd0;
+    pang3_decrypt =
+        (((((((ioctl_data[0] ? 8'h04 : 8'h00)  ^
+              (ioctl_data[1] ? 8'h21 : 8'h00)) ^
+              (ioctl_data[2] ? 8'h01 : 8'h00)) ^
+              (ioctl_data[3] ? 8'h00 : 8'h50)) ^
+              (ioctl_data[4] ? 8'h40 : 8'h00)) ^
+              (ioctl_data[5] ? 8'h06 : 8'h00)) ^
+              (ioctl_data[6] ? 8'h08 : 8'h00)) ^
+              (ioctl_data[7] ? 8'h00 : 8'h88);
+    /*pang3_decrypt = 8'd0;
     if ( ioctl_data[0] ) pang3_decrypt = pang3_decrypt ^ 8'h04;
     if ( ioctl_data[1] ) pang3_decrypt = pang3_decrypt ^ 8'h21;
     if ( ioctl_data[2] ) pang3_decrypt = pang3_decrypt ^ 8'h01;
@@ -81,7 +90,7 @@ always @(*) begin
     if ( ioctl_data[4] ) pang3_decrypt = pang3_decrypt ^ 8'h40;
     if ( ioctl_data[5] ) pang3_decrypt = pang3_decrypt ^ 8'h06;
     if ( ioctl_data[6] ) pang3_decrypt = pang3_decrypt ^ 8'h08;
-    if (~ioctl_data[7] ) pang3_decrypt = pang3_decrypt ^ 8'h88;
+    if (~ioctl_data[7] ) pang3_decrypt = pang3_decrypt ^ 8'h88;*/
 end
 
 always @(posedge clk) begin
