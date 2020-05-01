@@ -1,10 +1,10 @@
 <misterromdescription>
-    <name>Pang! 3 (Euro 950601)</name>
-    <setname>pang3</setname>
+    <name>Pang! 3 (Euro 950511)</name>
+    <setname>pang3r1</setname>
     <year>1995</year>
     <manufacturer>Mitchell</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="pang3.zip" md5="none">
+    <rom index="0" zip="pang3.zip|pang3r1.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
         <!-- Size of M68000 code 1024 kB -->
         <!-- Sound CPU size 64 kB -->
@@ -14,7 +14,7 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <!-- CPS-B config for pang3 --> 
+        <!-- CPS-B config for pang3r1 --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
         <!-- Mapper for  --> 
         <part> 14 40 88 73 FF </part>
@@ -22,10 +22,10 @@
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
-            <part name="pa3e_17a.11l" crc="a213fa80" map="21"/>
+            <part name="pa3e_17.11l" crc="d7041d32" map="21"/>
         </interleave>
         <interleave output="16">
-            <part name="pa3e_16a.10l" crc="7169ea67" map="21"/>
+            <part name="pa3e_16.10l" crc="1be9a483" map="21"/>
         </interleave>
         <!-- audiocpu -->
         <part name="pa3_11.11f" crc="cb1423a2" length="0x10000"/>        

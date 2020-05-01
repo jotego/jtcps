@@ -29,7 +29,7 @@
         </interleave>
         <!-- audiocpu -->
         <part name="pa3_11.11f" crc="90a08c46"/>
-       <part repeat="0x8000">FF</part>
+        <part repeat="0x8000">FF</part>
         <!-- oki -->
         <part name="pa3_05.10d" crc="73a10d5d"/>
         <part name="pa3_06.11d" crc="affa4f82"/>
