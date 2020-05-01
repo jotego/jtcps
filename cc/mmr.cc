@@ -133,7 +133,7 @@ void dump_region( stringstream& of, const tiny_rom_entry *entry, const string& r
                 if(verbose) cout <<  " - " << length << " - " << min_length << '\n';
                 if( length < min_length ) {
                     // used to ensure that each ROM section falls where it should
-                    of << "       <part repeat=\"0x" << hex << (min_length-length) << "\">FF</part>\n" << dec;
+                    of << "        <part repeat=\"0x" << hex << (min_length-length) << "\">FF</part>\n" << dec;
                 }
                 return;
             }
@@ -486,7 +486,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
     bases["DSWA"] = 0;
     bases["DSWB"] = 8;
     bases["DSWC"] = 16;
-    mras << "    <switches default=\"FF,FF,FF,FF\" base=\"8\">\n";
+    mras << "    <switches default=\"FF,FF,FF\" base=\"8\">\n";
     for( DIPsw* d : dip_info->getDIPs() ) {
         if( d->name == "Unused" ) continue;
         if( skip_coins ) {
@@ -571,7 +571,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
 
 void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins,
     bool skip_cfg ) {
-    bool skip_gfx = false;
+    bool pang_gfx = false;
     switch( game->board_type ) {
         //case cps1_10MHz:
         //case cps1_12MHz:
@@ -583,7 +583,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         //case ganbare:
             return;
         case pang3:
-            skip_gfx = true;
+            pang_gfx = true;
             break;
     }
     static bool first=true;
@@ -636,12 +636,12 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             case pang3:      cpu12=1; break;
         }
         if( game->name!="pang3b" && game->board_type == pang3 )
-            cpu12 |= 0x80; // enable decryption
+            cpu12 |= 0xC0; // enable decryption
         if( ports!= nullptr )
             cpu12 |= ports->cpsb_extra_inputs()<<1;
         // charger game ?
         if( game->name == "sfzch" || game->parent == string("sfzch") ) cpu12 |= 1 << 4;
-        mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)cpu12 << " </part>\n";
+        mras << "        <part> " << hex << uppercase << setw(2) << setfill('0') << (int)(cpu12&0xff) << " </part>\n";
         sim_cfg[cnt] = cpu12;
         cnt++;
         for( int k=cnt-1; k>=lut_size; k-- ) {
@@ -656,7 +656,18 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             dump_region(mras, entry,"oki",8,0,256*1024);
         else
             dump_region(mras, entry,"qsound",8,0,2*1024*1024);
-        if( !skip_gfx ) dump_region(mras, entry,"gfx",64,0);
+        if( !pang_gfx ) 
+            dump_region(mras, entry,"gfx",64,0);
+        else {
+            mras <<
+"        <!-- gfx -->\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00000021\" length=\"0x100000\" offset=\"0\"/>\n"
+"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00210000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
+"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"00002100\" length=\"0x100000\" offset=\"0\"/>\n"
+"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"21000000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
+"        </interleave>\n";
+        }
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
         return;
@@ -783,9 +794,9 @@ int main(int argc, char *argv[]) {
                     for( auto& g : game_dips ) {
                         if( g.second->name == game->name ) {
                             dip_info = g.second;
-                            // cout << "Found " << dip_info->name << '\n';
+                            //cout << "Found " << dip_info->name << '\n';
                             break;
-                        }
+                        }// else cout << g.second->name << '\n';
                     }
                     generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
                     mra_count++;

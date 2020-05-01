@@ -18,7 +18,7 @@
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
         <!-- Mapper for  --> 
         <part> 14 40 88 73 FF </part>
-        <part> 81 </part>
+        <part> C1 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
@@ -44,6 +44,7 @@
     <rom index="1"><part> 70 </part></rom>
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
-    <switches default="FF,FF,FF,FF" base="8">
+    <switches default="FF,FF,FF" base="8">
+        <dip bits="23"	 name="Service Mode" ids="On,Off"/>
     </switches>
 </misterromdescription>

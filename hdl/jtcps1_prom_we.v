@@ -66,13 +66,13 @@ wire is_snd = bulk_addr[24:10] < oki_start && bulk_addr[24:10]>=snd_start;
 wire is_oki = bulk_addr[24:10] < gfx_start && bulk_addr[24:10]>=oki_start;
 wire is_gfx = bulk_addr[24:10] >=gfx_start;
 
-reg       decrypt, pang3;
+reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
 always @(*) begin
-    pang3 = is_cpu && decrypt && cpu_addr[19] && !cpu_addr[0];
+    pang3 = is_cpu && cpu_addr[19] && decrypt  && (cpu_addr[0]^pang3_bit);
     pang3_decrypt =
         (((((((ioctl_data[0] ? 8'h04 : 8'h00)  ^
               (ioctl_data[1] ? 8'h21 : 8'h00)) ^
@@ -110,7 +110,7 @@ always @(posedge clk) begin
             if( is_cps ) begin
                 cfg_we    <= 1'b1;
                 prog_we   <= 1'b0;
-                if( ioctl_addr[5:0] == CFG_BYTE ) decrypt <= ioctl_data[7];  
+                if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
             end else begin
                 cfg_we    <= 1'b0;
                 prog_we   <= 1'b1;

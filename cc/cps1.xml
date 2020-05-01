@@ -15051,7 +15051,7 @@
 			<dipvalue name="Off" value="64" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Unused" tag="DSWC" mask="128">
+		<dipswitch name="Service Mode" tag="DSWC" mask="128">
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
@@ -15142,7 +15142,7 @@
 			<dipvalue name="Off" value="64" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Unused" tag="DSWC" mask="128">
+		<dipswitch name="Service Mode" tag="DSWC" mask="128">
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
@@ -15233,7 +15233,7 @@
 			<dipvalue name="Off" value="64" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Unused" tag="DSWC" mask="128">
+		<dipswitch name="Service Mode" tag="DSWC" mask="128">
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
@@ -15324,7 +15324,7 @@
 			<dipvalue name="Off" value="64" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Unused" tag="DSWC" mask="128">
+		<dipswitch name="Service Mode" tag="DSWC" mask="128">
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
