@@ -3044,7 +3044,7 @@
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Enemy's Strength)" tag="DSWB" mask="7">
+		<dipswitch name="Enemy Power" tag="DSWB" mask="7">
 			<diplocation name="SW(B)" number="1"/>
 			<diplocation name="SW(B)" number="2"/>
 			<diplocation name="SW(B)" number="3"/>
@@ -3227,7 +3227,7 @@
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Enemy's Strength)" tag="DSWB" mask="7">
+		<dipswitch name="Enemy Power" tag="DSWB" mask="7">
 			<diplocation name="SW(B)" number="1"/>
 			<diplocation name="SW(B)" number="2"/>
 			<diplocation name="SW(B)" number="3"/>
@@ -3395,7 +3395,7 @@
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Enemy's Strength)" tag="DSWB" mask="7">
+		<dipswitch name="Enemy Power" tag="DSWB" mask="7">
 			<diplocation name="SW(B)" number="1"/>
 			<diplocation name="SW(B)" number="2"/>
 			<diplocation name="SW(B)" number="3"/>
@@ -3578,7 +3578,7 @@
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Enemy's Strength)" tag="DSWB" mask="7">
+		<dipswitch name="Enemy Power" tag="DSWB" mask="7">
 			<diplocation name="SW(B)" number="1"/>
 			<diplocation name="SW(B)" number="2"/>
 			<diplocation name="SW(B)" number="3"/>
@@ -3746,7 +3746,7 @@
 			<dipvalue name="Off" value="128" default="yes"/>
 			<dipvalue name="On" value="0"/>
 		</dipswitch>
-		<dipswitch name="Difficulty Level (Enemy's Strength)" tag="DSWB" mask="7">
+		<dipswitch name="Enemy Power" tag="DSWB" mask="7">
 			<diplocation name="SW(B)" number="1"/>
 			<diplocation name="SW(B)" number="2"/>
 			<diplocation name="SW(B)" number="3"/>

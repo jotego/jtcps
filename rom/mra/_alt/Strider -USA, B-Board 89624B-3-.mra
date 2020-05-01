@@ -60,7 +60,7 @@
         <dip bits="6,7"	 name="Cabinet" ids="Cocktail,Upright 2 Players,Upright 1 Player"/>
         <dip bits="8,10"	 name="Difficulty" ids="8 (Hardest),7,6,5,1 (Easiest),2,3,4 (Normal)"/>
         <dip bits="11"	 name="2 to Start, 1 to Cont." ids="On,Off"/>
-        <dip bits="12,13"	 name="Bonus Life" ids="30K & 60K only,20K & 60K only,30K, 50K then every 70K,20K, 40K then every 60K"/>
+        <dip bits="12,13"	 name="Bonus Life" ids="30K &amp; 60K only,20K &amp; 60K only,30K, 50K then every 70K,20K, 40K then every 60K"/>
         <dip bits="14,15"	 name="Diff. on Life Loss" ids="-1,Default,-3"/>
         <dip bits="16,17"	 name="Lives" ids="2,5,4,3"/>
         <dip bits="18"	 name="Freeze" ids="On,Off"/>

@@ -15,9 +15,80 @@ using namespace std;
 
 bool verbose=false;
 
+// Special GFX cases
+void captcommb_gfx(stringstream& mra ) {
+    mra <<
+"        <!-- gfx -->\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"c91e-01.bin\" crc=\"f863071c\"  map=\"00000001\" length=\"0x40000\"/>\n"
+"            <part name=\"c91e-02.bin\" crc=\"4b03c308\"  map=\"00000010\" length=\"0x40000\"/>\n"
+"            <part name=\"c91e-03.bin\" crc=\"3383ea96\"  map=\"00000100\" length=\"0x40000\"/>\n"
+"            <part name=\"c91e-04.bin\" crc=\"b8e1f4cf\"  map=\"00001000\" length=\"0x40000\"/>\n"
+"            <part name=\"c91e-01.bin\" crc=\"f863071c\"  map=\"00010000\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"c91e-02.bin\" crc=\"4b03c308\"  map=\"00100000\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"c91e-03.bin\" crc=\"3383ea96\"  map=\"01000000\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"c91e-04.bin\" crc=\"b8e1f4cf\"  map=\"10000000\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"        </interleave>\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"c91e-01.bin\" crc=\"f863071c\"  map=\"00000001\" length=\"0x40000\" offset=\"0x80000\"/>\n"
+"            <part name=\"c91e-02.bin\" crc=\"4b03c308\"  map=\"00000010\" length=\"0x40000\" offset=\"0x80000\"/>\n"
+"            <part name=\"c91e-03.bin\" crc=\"3383ea96\"  map=\"00000100\" length=\"0x40000\" offset=\"0x80000\"/>\n"
+"            <part name=\"c91e-04.bin\" crc=\"b8e1f4cf\"  map=\"00001000\" length=\"0x40000\" offset=\"0x80000\"/>\n"
+"            <part name=\"c91e-01.bin\" crc=\"f863071c\"  map=\"00010000\" length=\"0x40000\" offset=\"0xC0000\"/>\n"
+"            <part name=\"c91e-02.bin\" crc=\"4b03c308\"  map=\"00100000\" length=\"0x40000\" offset=\"0xC0000\"/>\n"
+"            <part name=\"c91e-03.bin\" crc=\"3383ea96\"  map=\"01000000\" length=\"0x40000\" offset=\"0xC0000\"/>\n"
+"            <part name=\"c91e-04.bin\" crc=\"b8e1f4cf\"  map=\"10000000\" length=\"0x40000\" offset=\"0xC0000\"/>\n"
+"        </interleave>\n";
+}
+
+void pang3_gfx(stringstream& mra ) {
+            mra <<
+"        <!-- gfx -->\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00000021\" length=\"0x100000\" offset=\"0\"/>\n"
+"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00210000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
+"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"00002100\" length=\"0x100000\" offset=\"0\"/>\n"
+"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"21000000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
+"        </interleave>\n";
+}
+
+void knightsb2_gfx(stringstream& mra) {
+    mra <<
+"        <!-- gfx --\n>";
+"        <interleave output=\"64\"\n>";
+"            <part name=\"spe-a.japan9207d.mask1.801\" crc=\"14a15fcd\"  map=\"00000001\" length=\"0x40000\" offset=\"0x0\"/\n>";
+"            <part name=\"spe-b.japan9207d.mask2.801\" crc=\"250d2957\"  map=\"00000010\" length=\"0x40000\" offset=\"0x0\"/\n>";
+"            <part name=\"spe-c.japan9207d.mask4.801\" crc=\"0721c26d\"  map=\"00000100\" length=\"0x40000\" offset=\"0x0\"/\n>";
+"            <part name=\"spe-d.japan9207d.mask3.801\" crc=\"db97f56a\"  map=\"00001000\" length=\"0x40000\" offset=\"0x0\"/\n>";
+"            <part name=\"spe-a.japan9207d.mask1.801\" crc=\"14a15fcd\"  map=\"00010000\" length=\"0x40000\" offset=\"0x40000\"/\n>";
+"            <part name=\"spe-b.japan9207d.mask2.801\" crc=\"250d2957\"  map=\"00100000\" length=\"0x40000\" offset=\"0x40000\"/\n>";
+"            <part name=\"spe-c.japan9207d.mask4.801\" crc=\"0721c26d\"  map=\"01000000\" length=\"0x40000\" offset=\"0x40000\"/\n>";
+"            <part name=\"spe-d.japan9207d.mask3.801\" crc=\"db97f56a\"  map=\"10000000\" length=\"0x40000\" offset=\"0x40000\"/\n>";
+"            <part name=\"spe-a.japan9207d.mask1.801\" crc=\"14a15fcd\"  map=\"00000001\" length=\"0x40000\" offset=\"0x80000\"/\n>";
+"            <part name=\"spe-b.japan9207d.mask2.801\" crc=\"250d2957\"  map=\"00000010\" length=\"0x40000\" offset=\"0x80000\"/\n>";
+"            <part name=\"spe-c.japan9207d.mask4.801\" crc=\"0721c26d\"  map=\"00000100\" length=\"0x40000\" offset=\"0x80000\"/\n>";
+"            <part name=\"spe-d.japan9207d.mask3.801\" crc=\"db97f56a\"  map=\"00001000\" length=\"0x40000\" offset=\"0x80000\"/\n>";
+"            <part name=\"spe-a.japan9207d.mask1.801\" crc=\"14a15fcd\"  map=\"00010000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
+"            <part name=\"spe-b.japan9207d.mask2.801\" crc=\"250d2957\"  map=\"00100000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
+"            <part name=\"spe-c.japan9207d.mask4.801\" crc=\"0721c26d\"  map=\"01000000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
+"            <part name=\"spe-d.japan9207d.mask3.801\" crc=\"db97f56a\"  map=\"10000000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
+"        </interleave\n>";
+}
+
+string fix_xml(string x) {
+    size_t p=0;
+    string y = x;
+    while( (p=y.find('&',p))!=string::npos ) {
+        y.replace(p,1,"&amp;");
+        p+=4;
+    }
+    //cout << x << " -> " << y << '\n';
+    return y;
+}
+
 void xml_element( stringstream& of, const char *name, const string &content, int tab) {
     while( tab-- ) of << "    ";
-    of << "<" << name << ">" << content << "</" << name << ">\n";
+    of << "<" << name << ">" << fix_xml(content) << "</" << name << ">\n";
 }
 
 struct size_map{
@@ -530,7 +601,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
                 pre_mras << dec << bit0;
             else
                 pre_mras << dec << bit0 << "," << bit1;
-            pre_mras << "\"\t name=\"" << d->name << "\" ids=\"";
+            pre_mras << "\"\t name=\"" << fix_xml( d->name ) << "\" ids=\"";
             stringstream ids;
             for( DIPvalue& dval : d->values ) {
                 string aux = dval.name;
@@ -558,7 +629,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
                 cout << "Game: " << dip_info->name << '\n';
                 cout << ids_str << '\n';
             }
-            pre_mras << ids_str;
+            pre_mras << fix_xml(ids_str);
             pre_mras << "\"/>\n";
             string aux = pre_mras.str();
             if( !(aux.length()>63 && skip_coins) ) {
@@ -656,18 +727,10 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             dump_region(mras, entry,"oki",8,0,256*1024);
         else
             dump_region(mras, entry,"qsound",8,0,2*1024*1024);
-        if( !pang_gfx ) 
-            dump_region(mras, entry,"gfx",64,0);
-        else {
-            mras <<
-"        <!-- gfx -->\n"
-"        <interleave output=\"64\">\n"
-"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00000021\" length=\"0x100000\" offset=\"0\"/>\n"
-"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00210000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
-"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"00002100\" length=\"0x100000\" offset=\"0\"/>\n"
-"            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"21000000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
-"        </interleave>\n";
-        }
+        if( pang_gfx ) pang3_gfx(mras);
+        else if(game->name=="captcommb") captcommb_gfx(mras);
+        else if(game->name=="knightsb2") knightsb2_gfx(mras);
+        else dump_region(mras, entry,"gfx",64,0);
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';
         return;
