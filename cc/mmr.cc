@@ -822,23 +822,17 @@ int main(int argc, char *argv[]) {
 
     if( mapper ) {
         string all_mappers;
-        set<int> done;
-        vector<string> mapper_str(100);
-        for( auto game : gl ) {
-            int cfg_id = find_cfg( game->name );
-            const CPS1config* x = &cps1_config_table[cfg_id];
-            stringstream new_mapper;
-            int new_id = add_verilog_mapper( new_mapper, x );
-            if( done.count(new_id)==0 ) {
-                done.insert(new_id);
-                mapper_str[new_id] = new_mapper.str();
-            }
-        }
         ofstream fout("../ver/video/mappers.inc");
-        for( int k=0; k < done.size(); k++ ) {
-            fout << mapper_str[k];
+        int done[100];
+        for(int k=0; k<100; k++) done[k]=0;
+        for( const CPS1config* x = cps1_config_table; x->name != nullptr; x++ ) {
+            stringstream s;
+            int id = add_verilog_mapper( s, x );
+            if( done[id] ) continue;
+            done[id] = 1;
+            cout << id << " for " << x->name << '\n';
+            fout << s.str();
         }
-        cout << done.size() << " mappers\n";
     }
     else {
         int mra_count=0;

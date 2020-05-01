@@ -931,7 +931,7 @@ const gfx_range* all_mappers[] = {
     mapper_cps2_table,
     mapper_DAM63B_table,
     mapper_DM22A_table,
-    mapper_DM620_table,
+    mapper_DM620_table, // 10
     mapper_KD29B_table,
     mapper_KNM10B_table,    // 12: Ken sei mogura
     mapper_KR63B_table,
@@ -941,28 +941,28 @@ const gfx_range* all_mappers[] = {
     mapper_MS24B_table,
     mapper_NM24B_table,
     mapper_O224B_table,
-    mapper_pang3_table,
+    mapper_pang3_table, // 20
     mapper_PKB10B_table,
     mapper_pokonyan_table,
-    mapper_PS63B_table,
+    mapper_PS63B_table, // 23 Punisher clone
     mapper_Q522B_table,
     mapper_QAD63B_table,
-    mapper_QD22B_table,
+    mapper_QD22B_table, // 26
     mapper_RCM63B_table,
     mapper_RT22B_table,
     mapper_RT24B_table,
     mapper_S224B_table,
     mapper_S9263B_table,
-    mapper_sfzch_table,
+    mapper_sfzch_table, //32
     mapper_ST22B_table,
     mapper_ST24M1_table,
     mapper_STF29_table,
     mapper_TK22B_table,
     mapper_TK263B_table,
-    mapper_TN2292_table,
+    mapper_TN2292_table, //38
     mapper_VA22B_table,
     mapper_VA63B_table,
-    mapper_WL24B_table,
-    mapper_YI24B_table,
+    mapper_WL24B_table, // 41 = 29
+    mapper_YI24B_table, // 42 = 2Ah
     nullptr
 };
