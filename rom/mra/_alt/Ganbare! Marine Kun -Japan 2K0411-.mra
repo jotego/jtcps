@@ -24,7 +24,7 @@
         <interleave output="16">
             <part name="mrnj_23d.8f" crc="f929be72" map="21"/>
         </interleave>
-       <part repeat="0x80000">FF</part>
+        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->
         <part name="mrnj_09.12a" crc="62470d72"/>
         <!-- oki -->

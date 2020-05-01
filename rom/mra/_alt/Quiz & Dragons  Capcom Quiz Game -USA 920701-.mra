@@ -29,7 +29,7 @@
             <part name="qdu_43a.13h" crc="15e6beb9" map="01"/>
             <part name="qdu_37a.13f" crc="10d22320" map="10"/>
         </interleave>
-       <part repeat="0x80000">FF</part>
+        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->
         <part name="qd_23.13b" crc="cfb5264b"/>
         <!-- oki -->

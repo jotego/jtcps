@@ -31,7 +31,7 @@
         <part name="ara_09.12a" crc="af88359c"/>
         <!-- oki -->
         <part name="ara_18.11c" crc="584b43a9"/>
-       <part repeat="0x20000">FF</part>
+        <part repeat="0x20000">FF</part>
         <!-- gfx -->
         <interleave output="64">
             <part name="ara_01.3a" crc="bf4575d8"  map="00000021"/>

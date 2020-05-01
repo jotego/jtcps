@@ -7,12 +7,12 @@
     <rom index="0" zip="pang3.zip|pang3r1.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
         <!-- Size of M68000 code 1024 kB -->
-        <!-- Sound CPU size 64 kB -->
+        <!-- Sound CPU size 128 kB -->
         <part>00 04 </part>
         <!-- OKI samples size 256 kB -->
-        <part>40 04 </part>
+        <part>80 04 </part>
         <!-- Graphics size 4096 kB -->
-        <part>40 05 </part>
+        <part>80 05 </part>
         <part repeat="10">FF</part>
         <!-- CPS-B config for pang3r1 --> 
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
@@ -28,7 +28,7 @@
             <part name="pa3e_16.10l" crc="1be9a483" map="21"/>
         </interleave>
         <!-- audiocpu -->
-        <part name="pa3_11.11f" crc="cb1423a2" length="0x10000"/>        
+        <part name="pa3_11.11f" crc="cb1423a2"/>
         <!-- oki -->
         <part name="pa3_05.10d" crc="73a10d5d"/>
         <part name="pa3_06.11d" crc="affa4f82"/>

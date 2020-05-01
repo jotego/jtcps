@@ -25,7 +25,7 @@
             <part name="pnij_42.12h" crc="c085dfaf" map="01"/>
             <part name="pnij_36.12f" crc="2d4ffb2b" map="10"/>
         </interleave>
-       <part repeat="0xC0000">FF</part>
+        <part repeat="0xC0000">FF</part>
         <!-- audiocpu -->
         <part name="pnij_17.13b" crc="e86f787a"/>
         <!-- oki -->

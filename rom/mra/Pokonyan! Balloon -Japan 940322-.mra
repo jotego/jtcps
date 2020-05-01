@@ -29,7 +29,7 @@
             <part name="xmqq-13h.bin" crc="3fefe432" map="01"/>
             <part name="xmqq-13f.bin" crc="8f6abf26" map="10"/>
         </interleave>
-       <part repeat="0x80000">FF</part>
+        <part repeat="0x80000">FF</part>
         <!-- audiocpu -->
         <part name="xmqq-13b.bin" crc="4e8b81a8"/>
         <!-- oki -->
