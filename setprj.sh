@@ -10,15 +10,11 @@ else
     #unalias jtcore
     alias jtcore="$JTFRAME/bin/jtcore cps1 -ftp-folder CPS"
 
+    source $JTFRAME/bin/setprj.sh --quiet
     # derived variables
     VER=$JTROOT/ver
     GAME=$VER/game
     VIDEO=$VER/video
     HDL=$JTROOT/hdl
-    CC=$JTROOT/cc
-    ROM=$JTROOT/rom
-    MRA=$ROM/mra
-    MODULES=$JTROOT/modules
-    JT51=$MODULES/jt51
     OKI=$MODULES/jt6295
 fi
