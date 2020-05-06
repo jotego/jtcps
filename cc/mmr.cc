@@ -329,10 +329,13 @@ string parent_name( game_entry* game ) {
 }
 
 int add_verilog_mapper( stringstream& mappers, const CPS1config* x ) {
-    int id;
+    int id=0;
 
     for(id=0;all_mappers[id]!=nullptr && all_mappers[id]!=x->ranges;id++);
-
+    if( all_mappers[id] != x->ranges ) {
+        cout << "ERROR: cannot find mapper\n";
+        return -1;
+    }
     const gfx_range *r = x->ranges;
     const int set_used = id&1; // half of the games will use b outputs, and the other
     const string mux_set = set_used ? "_b" : "_a";
@@ -776,12 +779,12 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     ofhex.open( mra_name+".mra" );
     ofhex << mras.str();
     ofhex.close();
-
+/*
     if( !skip_include ) {
         ofhex.open( "../ver/video/mappers.inc", first ? ios_base::trunc : (ios_base::app | ios_base::ate) );
         ofhex << mappers.str();
         ofhex.close();
-    }
+    }*/
     first=false;
 }
 
@@ -828,9 +831,10 @@ int main(int argc, char *argv[]) {
         for( const CPS1config* x = cps1_config_table; x->name != nullptr; x++ ) {
             stringstream s;
             int id = add_verilog_mapper( s, x );
+            if( id<0 || id>99 ) cout << "ERROR: wrong mapper id\n";
             if( done[id] ) continue;
             done[id] = 1;
-            cout << id << " for " << x->name << '\n';
+            cout << "0x" << hex << id << " for " << x->name << '\n';
             fout << s.str();
         }
     }
