@@ -643,8 +643,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
     mras << "    </switches>\n";
 }
 
-void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins,
-    bool skip_cfg ) {
+void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins ) {
     bool pang_gfx = false;
     switch( game->board_type ) {
         //case cps1_10MHz:
@@ -720,7 +719,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         cnt++;
         for( int k=cnt-1; k>=lut_size; k-- ) {
             simf << "8'h" << hex << (sim_cfg[k]&0xff);
-            if( k!=lut_size) simf << ',';
+            simf << ',';
         }
         fill( mras, cnt, 64 ); // fill rest of header
         // Header done
@@ -755,14 +754,6 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     parse_dips( mras, dip_info, skip_coins );
     // Close MRA file
     mras << "</misterromdescription>\n";    // End of MRA file
-    // Config file for MiST
-    if( !skip_cfg ) {
-        string fname = game->name+".cfg";
-        transform(fname.begin(), fname.end(), fname.begin(), ::toupper);
-        ofstream ofcfg( fname, ios_base::binary );
-        unsigned char buf[4] = { 0, 0, 0xff, 0xff };
-        ofcfg.write((char*)buf,4);
-    }
     // hex file for simulation
     string s = simf.str();
     s = s.substr(0,s.length()-1);
@@ -779,19 +770,13 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     ofhex.open( mra_name+".mra" );
     ofhex << mras.str();
     ofhex.close();
-/*
-    if( !skip_include ) {
-        ofhex.open( "../ver/video/mappers.inc", first ? ios_base::trunc : (ios_base::app | ios_base::ate) );
-        ofhex << mappers.str();
-        ofhex.close();
-    }*/
+
     first=false;
 }
 
 int main(int argc, char *argv[]) {
     bool game_list=false, dump_parents=true, skip_include=true, skip_coins=false, mapper=false;
     bool dump_alt=false;
-    bool skip_cfg =true;
     string game_name;
     for( int k=1; k<argc; k++ ) {
         if( string(argv[k])=="-list" )  { game_list=true; continue; }
@@ -800,7 +785,6 @@ int main(int argc, char *argv[]) {
         if( string(argv[k])=="-v" )   { verbose=true; continue; }
         if( string(argv[k])=="-inc" )   { skip_include=false; continue; }
         if( string(argv[k])=="-nocoin" )   { skip_coins=true; continue; }
-        if( string(argv[k])=="-cfg" )   { skip_cfg=false; continue; }
         if( string(argv[k])=="-mapper" )   { mapper=true; continue; }
         if( string(argv[k])=="-h" ) {
             cout << "-list      to produce only the game list\n";
@@ -824,6 +808,7 @@ int main(int argc, char *argv[]) {
     parse_MAME_xml( game_dips, "cps1.xml" );
 
     if( mapper ) {
+        // Dump Mappers
         string all_mappers;
         ofstream fout("../ver/video/mappers.inc");
         int done[100];
@@ -859,7 +844,7 @@ int main(int argc, char *argv[]) {
                             break;
                         }// else cout << g.second->name << '\n';
                     }
-                    generate_mra( game, dip_info, skip_include, skip_coins, skip_cfg );
+                    generate_mra( game, dip_info, skip_include, skip_coins );
                     mra_count++;
                 }
                 cnt++;
