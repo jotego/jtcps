@@ -8,9 +8,9 @@ else
 
     PATH=$PATH:$JTFRAME/bin
     #unalias jtcore
-    alias jtcore="$JTFRAME/bin/jtcore cps1 -ftp-folder CPS"
 
     source $JTFRAME/bin/setprj.sh --quiet
+    alias jtcore="$JTFRAME/bin/jtcore cps1 -ftp-folder CPS"
     # derived variables
     VER=$JTROOT/ver
     GAME=$VER/game
