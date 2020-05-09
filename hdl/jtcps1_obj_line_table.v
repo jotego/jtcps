@@ -228,7 +228,7 @@ always @(posedge clk, posedge rst) begin
                     st <= 5;
             end
             5: begin // check whether sprite is visible
-                if( (repeated || !inzone )&& !first) begin
+                if( (repeated && !first ) || !inzone ) begin
                     st<= 1; // try next one
                 end
                 else begin
