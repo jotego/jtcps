@@ -121,7 +121,7 @@ reg         scr_wr, obj_wr, pal_wr;
 reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok;
 
 wire        HB_edge  = !last_HB && HB;
-wire        tile_ok  = vrender1<9'd237 || vrender1>9'd257; // VB is 38 lines
+wire        tile_ok  = vrender1<9'd240 || vrender1>9'd257; // VB is 38 lines
 wire        tile_vs  = vrender1==9'd12; // Vertical start, use for SCR3
 
 // various addresses
@@ -306,7 +306,7 @@ always @(posedge clk) begin
             tasks[SCR2] <= vscr2[3:0]=={ flip, 3'd0 } && tile_ok;
             tasks[SCR3] <= (vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs;
             scr_cnt     <= 8'd0;
-            check_adv  <= 1;
+            check_adv   <= 1;
             row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };
             if( obj_busy ) obj_cnt <= 10'd0;
         end else
