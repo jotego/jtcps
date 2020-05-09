@@ -163,11 +163,11 @@ assign slot_wr[0]   = 1'd0;
 
 `ifndef SIMULATION
     assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[23:0];
-    assign dip_flip = dipsw_c[4];
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 `endif
-
+assign dip_flip = dipsw_c[4];  // this is correct for all games except Mega Man
+    // but it does not matter for horizontal games
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
