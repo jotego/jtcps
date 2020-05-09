@@ -166,7 +166,7 @@ jtcps1_video UUT (
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( 1'b0          ),
     .addr           ( ppu_addr      ),
-    .dsn            ( 2'b10         ),      // data select, active low
+    .dsn            ( 2'b00         ),      // data select, active low
     .cpu_dout       ( 16'h0         ),
     // BUS sharing
     .busreq         ( busreq        ),
