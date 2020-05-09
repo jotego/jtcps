@@ -127,7 +127,7 @@ wire        tile_vs  = vrender1==9'd12; // Vertical start, use for SCR3
 // various addresses
 wire [17:1] vrow_addr = { vram_row_base[9:1], 8'd0 } + 
                         { 7'd0, row_offset[9:0] } + {1'b0,vrenderf },
-            vscr_addr = { vram_scr_base, 8'd0 } + { 4'd0, scan, scr_cnt[0] },
+            vscr_addr = { vram_scr_base[8:5], 5'd0, 8'd0 } + { 4'd0, scan, scr_cnt[0] },
             vobj_addr = { vram_obj_base[9:1], 8'd0 } + { 7'd0, obj_cnt[9:2], obj_cnt[1:0] },
             vpal_addr = { vram_pal_base[9:1], 8'd0 } + { 5'd0, pal_rd_page , pal_cnt };
 
