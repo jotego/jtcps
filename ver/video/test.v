@@ -68,6 +68,7 @@ assign vram_dma_ok = slot_ok[9];
 assign slot_wr[9:0] = 9'd0;
 
 wire [15:0] data_write;
+reg  [15:0] cpu_dout;
 wire        sdram_rnw;
 
 localparam [21:0] gfx_offset   = 22'h0A_8000;
@@ -94,17 +95,31 @@ end
 
 integer time_cnt;
 
+parameter REGSIZE=24; // This is defined at _game level
+
+// local copy. jtcps1_mmr has another
+reg [15:0] mmr_regs[0:19];
+
+wire [15:0] pal_base = mmr_regs[4];
+wire [15:0] obj_base = mmr_regs[0];
+
+initial begin
+    $readmemh(`MMR_FILE,mmr_regs);
+end
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         ppu1_cs  <= 0;
         time_cnt <=0;
         ppu_addr <= 0;
+        cpu_dout <= 16'd0;
     end else begin
         time_cnt <= (VB && !last_VB) ? 0 : time_cnt+1;
         case( time_cnt )
             3725: begin
                 ppu1_cs  <= 1;
                 ppu_addr <= 0;
+                cpu_dout <= mmr_regs[0];
             end
             3735: begin
                 ppu1_cs <= 0;
@@ -112,6 +127,7 @@ always @(posedge clk, posedge rst) begin
             4580: begin
                 ppu1_cs  <= 1;
                 ppu_addr <= 5;
+                cpu_dout <= mmr_regs[4];
             end
             4590: begin
                 ppu1_cs <= 0;
@@ -167,7 +183,10 @@ jtcps1_video UUT (
     .ppu2_cs        ( 1'b0          ),
     .addr           ( ppu_addr      ),
     .dsn            ( 2'b00         ),      // data select, active low
-    .cpu_dout       ( 16'h0         ),
+    .cpu_dout       ( cpu_dout      ),
+    .mmr_dout       (               ),
+    .cpu_speed      (               ),
+    .charger        (               ),
     // BUS sharing
     .busreq         ( busreq        ),
     .busack         ( busack        ),
