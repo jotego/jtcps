@@ -98,7 +98,7 @@ module jtcps1_video(
     // input              line_wr_ok
 );
 
-parameter REGSIZE=23;
+parameter REGSIZE=24;
 
 // use for CPU only simulations:
 `ifdef NOVIDEO

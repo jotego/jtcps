@@ -407,12 +407,15 @@ always @(posedge VB) begin
         //FAKE0: fake_latch <= 8'h2;
         //FAKE0+1: fake_latch <= 8'h2;
         //FAKE0+2: fake_latch <= 8'h0;
+        // KOD
+        FAKE0: fake_latch <= 8'h6;
+        FAKE0+1: fake_latch <= 8'h6;
+        FAKE0+2: fake_latch <= 8'h0;
         // Magic Sword
-        FAKE0: fake_latch <= 8'h1e;
-
-        FAKE1: fake_latch <= 8'h0;
-        FAKE1+1: fake_latch <= 8'h4;
-        FAKE1+2: fake_latch <= 8'h0;
+        //FAKE0: fake_latch <= 8'h1e;
+        //FAKE1: fake_latch <= 8'h0;
+        //FAKE1+1: fake_latch <= 8'h4;
+        //FAKE1+2: fake_latch <= 8'h0;
 
         default: fake_latch <= 8'hff;
     endcase

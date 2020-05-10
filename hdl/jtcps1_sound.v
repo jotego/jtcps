@@ -40,46 +40,51 @@ module jtcps1_sound(
     input                    adpcm_ok,
 
     // Sound output
-    output reg signed [15:0] left,
-    output reg signed [15:0] right,
+    output     signed [15:0] left,
+    output     signed [15:0] right,
     output                   sample
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
 wire signed [13:0] adpcm_snd;
-wire signed [15:0] fm_left, fm_right, gain_left, gain_right;
-reg  signed [15:0] pre_left, pre_right;
+wire signed [15:0] fm_left, fm_right;
 
-function signed [15:0] sum_snd;
-    input               enable_fm;
-    input               enable_adpcm;
-    input signed [15:0] fm;
-    input signed [13:0] adpcm;
-    sum_snd = (enable_fm ? { {1{fm[15]}}, fm[15:1]  } : 16'd0) + 
-        (enable_adpcm ? {    adpcm, adpcm[12:11] } : 16'd0 );
-endfunction
+localparam [7:0] FMGAIN = 8'h1D, PCMGAIN = 8'h13;
 
-function signed [15:0] limit;
-    input        good_sign;
-    input [15:0] signal;
-    limit = good_sign == signal[15] ? signal : { signal, {14{~signal}} };
-endfunction
+wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
+           pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
 
-// adds 1.8dB of gain
-assign gain_left  = pre_left  + (pre_left >>>1);
-assign gain_right = pre_right + (pre_right>>>1);
+jtframe_mixer #(.w1(14),.wout(16)) u_left(
+    .clk    ( clk       ),
+    .cen    ( 1'b1      ),
+    // input signals
+    .ch0    ( fm_left   ),
+    .ch1    ( adpcm_snd ),
+    .ch2    ( 16'd0     ),
+    .ch3    ( 16'd0     ),
+    // gain for each channel in 4.4 fixed point format
+    .gain0  ( fmgain    ),
+    .gain1  ( pcmgain   ),
+    .gain2  ( 8'h00     ),
+    .gain3  ( 8'h00     ),
+    .mixed  ( left      )
+);
 
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        left  <= 16'd0;
-        right <= 16'd0;
-    end else begin
-        pre_left  <= sum_snd( enable_fm, enable_adpcm, fm_left,  adpcm_snd );  
-        pre_right <= sum_snd( enable_fm, enable_adpcm, fm_right, adpcm_snd );  
-        left      <= limit( pre_left[15], gain_left );
-        right     <= limit( pre_right[15], gain_right );
-    end
-end
+jtframe_mixer #(.w1(14),.wout(16)) u_right(
+    .clk    ( clk       ),
+    .cen    ( 1'b1      ),
+    // input signals
+    .ch0    ( fm_right  ),
+    .ch1    ( adpcm_snd ),
+    .ch2    ( 16'd0     ),
+    .ch3    ( 16'd0     ),
+    // gain for each channel in 4.4 fixed point format
+    .gain0  ( fmgain    ),
+    .gain1  ( pcmgain   ),
+    .gain2  ( 8'h00     ),
+    .gain3  ( 8'h00     ),
+    .mixed  ( right     )
+);
 
 jtframe_cen3p57 u_fmcen(
     .clk        (  clk       ),       // 48 MHz

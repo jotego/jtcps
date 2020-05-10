@@ -40,3 +40,4 @@
 ../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v
 # Other
 ../../modules/jtframe/hdl/jtframe_sh.v
+../../modules/jtframe/hdl/sound/jtframe_mixer.v
