@@ -1,1 +1,0 @@
-../mist/jtcps1.tcl
