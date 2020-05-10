@@ -49,7 +49,7 @@ module jtcps1_sound(
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-localparam [7:0] FMGAIN = 8'h1D, PCMGAIN = 8'h13;
+localparam [7:0] FMGAIN = 8'h10, PCMGAIN = 8'h70;
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;

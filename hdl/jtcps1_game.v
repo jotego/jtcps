@@ -409,8 +409,6 @@ always @(posedge VB) begin
         //FAKE0+2: fake_latch <= 8'h0;
         // KOD
         FAKE0: fake_latch <= 8'h6;
-        FAKE0+1: fake_latch <= 8'h6;
-        FAKE0+2: fake_latch <= 8'h0;
         // Magic Sword
         //FAKE0: fake_latch <= 8'h1e;
         //FAKE1: fake_latch <= 8'h0;
