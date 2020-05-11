@@ -46,8 +46,8 @@ void pang3_gfx(stringstream& mra ) {
 "        <!-- gfx -->\n"
 "        <interleave output=\"64\">\n"
 "            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00000021\" length=\"0x100000\" offset=\"0\"/>\n"
-"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00210000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
 "            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"00002100\" length=\"0x100000\" offset=\"0\"/>\n"
+"            <part name=\"pa3-01m.2c\" crc=\"068a152c\" map=\"00210000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
 "            <part name=\"pa3-07m.2f\" crc=\"3a4a619d\" map=\"21000000\" length=\"0x100000\" offset=\"0x100000\"/>\n"
 "        </interleave>\n";
 }
@@ -73,6 +73,45 @@ void knightsb2_gfx(stringstream& mra) {
 "            <part name=\"spe-c.japan9207d.mask4.801\" crc=\"0721c26d\"  map=\"01000000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
 "            <part name=\"spe-d.japan9207d.mask3.801\" crc=\"db97f56a\"  map=\"10000000\" length=\"0x40000\" offset=\"0xC0000\"/\n>";
 "        </interleave\n>";
+}
+
+void forgottn_gfx(stringstream& mra) {
+    mra <<
+"        <!-- gfx -->\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"lw_2.2b\"  crc=\"4bd75fee\"  map=\"00000001\"/>\n"
+"            <part name=\"lw_1.2a\"  crc=\"65f41485\"  map=\"00000010\"/>\n"
+"            <part name=\"lw-08.9b\" crc=\"25a8e43c\"  map=\"00002100\" length=\"0x40000\" offset=\"0\"/>\n"
+"            <part name=\"lw_18.5e\" crc=\"b4b6241b\"  map=\"00010000\"/>\n"
+"            <part name=\"lw_17.5c\" crc=\"c5eea115\"  map=\"00100000\"/>\n"
+"            <part name=\"lw_30.8h\" crc=\"b385954e\"  map=\"01000000\"/>\n"
+"            <part name=\"lw_29.8f\" crc=\"7bda1ac6\"  map=\"10000000\"/>\n"
+"        </interleave>\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"lw_4.3b\"  crc=\"50cf757f\" map=\"00000001\"/>\n"
+"            <part name=\"lw_3.3a\"  crc=\"c03ef278\" map=\"00000010\"/>\n"
+"            <part name=\"lw-08.9b\" crc=\"25a8e43c\" map=\"00002100\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"lw_20.7e\" crc=\"df1a3665\" map=\"00010000\"/>\n"
+"            <part name=\"lw_19.7c\" crc=\"15af8440\" map=\"00100000\"/>\n"
+"            <part name=\"lw_32.9h\" crc=\"30967a15\" map=\"01000000\"/>\n"
+"            <part name=\"lw_31.9f\" crc=\"c49d37fb\" map=\"10000000\"/>\n"
+"        </interleave>\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"lw-02.6b\"  crc=\"43e6c5c8\"  map=\"00000021\" length=\"0x40000\" offset=\"0\"/>\n"
+"            <part name=\"lw_14.10b\" crc=\"82862cce\"  map=\"00000100\"/>\n"
+"            <part name=\"lw_13.10a\" crc=\"b81c0e96\"  map=\"00001000\"/>\n"
+"            <part name=\"lw-06.9d\"  crc=\"5b9edffc\"  map=\"00210000\" length=\"0x40000\" offset=\"0\"/>\n"
+"            <part name=\"lw_26.10e\" crc=\"57bcd032\"  map=\"01000000\"/>\n"
+"            <part name=\"lw_25.10c\" crc=\"bac91554\"  map=\"10000000\"/>\n"
+"        </interleave>\n"
+"        <interleave output=\"64\">\n"
+"            <part name=\"lw-02.6b\"  crc=\"43e6c5c8\"  map=\"00000021\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"lw_16.11b\" crc=\"40b26554\"  map=\"00000100\"/>\n"
+"            <part name=\"lw_15.11a\" crc=\"1b7d2e07\"  map=\"00001000\"/>\n"
+"            <part name=\"lw-06.9d\"  crc=\"5b9edffc\"  map=\"00210000\" length=\"0x40000\" offset=\"0x40000\"/>\n"
+"            <part name=\"lw_28.11e\" crc=\"a805ad30\"  map=\"01000000\"/>\n"
+"            <part name=\"lw_27.11c\" crc=\"103c1bd2\"  map=\"10000000\"/>\n"
+"        </interleave>\n";
 }
 
 string fix_xml(string x) {
@@ -474,12 +513,14 @@ int generate_lut( stringstream& of, size_map& sizes ) {
 }
 
 void dump_orientation( stringstream& mra, game_entry* game, bool joy4way ) {
+    mra << "\n    <!-- Set bit 1 for vertical games.\n"
+           "         Set bit 2 for games using 4-way joysticks -->\n";
     mra << "    <rom index=\"1\"><part> ";
-    int core_mod = 0;
+    int core_mod = 0;    
     if( game->orientation==ROT270 ) core_mod |= 1;
     if( joy4way ) core_mod |= 2;
     mra << hex << setfill('0') << setw(2) << core_mod;
-    mra << " </part></rom>\n";
+    mra << " </part></rom>\n\n";
 }
 
 game_entry *get_parent( game_entry *game ) {
@@ -533,6 +574,7 @@ port_entry* dump_buttons( stringstream& mra, game_entry* game ) {
         case cps1_3players:
         case ports_ganbare:
         case cps1_4players: mra << "B0,B1,B2,B3,-,-,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Start"; buttons=4; break;
+        case ports_forgottn: mra << "Fire,Turn left,Turn right,-,-,-,Start,Coin,Pause\" \n        default=\"B,Y,A,R,L,Start"; buttons=3; break;
         case sf2hack:
         case ports_sfzch:
         case cps1_6b: mra << "B0,B1,B2,B3,B4,B5,Start,Coin,Pause\" \n        default=\"A,B,X,Y,R,L,Select,Select,Start"; buttons=6; break;
@@ -643,6 +685,7 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
 void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins ) {
     bool pang_gfx = false;
     bool joy4way  = false;
+    bool forgotwrld_gfx = false;
     static bool first=true;
     switch( game->board_type ) {
         //case cps1_10MHz:
@@ -651,6 +694,8 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         //case sf2m10:
         //case sf2cems6:
         case forgottn:
+            forgotwrld_gfx = true;
+            break;
         case qsound:
         //case ganbare:
             return;
@@ -665,7 +710,23 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         joy4way = true;
     //ofstream simf( game->name+".hex");
     stringstream mras, simf, mappers, ss_ports;
-    mras << "<misterromdescription>\n";
+    mras << "<!-- JTCPS1 - FPGA compatible core of CAPCOM CPS hardware by Jotego\n\n"
+            "              This core is available for hardware compatible with MiST and MiSTer\n"
+            "              Other FPGA systems may be supported by the time you read this.\n"
+            "              This work is not mantained by the MiSTer project. Please contact the\n"
+            "              core author for issues and updates.\n\n"
+            "              (c) Jose Tejada, 2020. Please support the author\n"
+            "              Patreon: https://patreon.com/topapate\n"
+            "              Paypal:  https://paypal.me/topapate\n\n"
+            "              The author does not endorse or participate in illegal distribution\n"
+            "              of CAPCOM copyrighted material. This work can be used with legally\n"
+            "              obtained ROM dumps of CAPCOM games or with homework software for\n"
+            "              the CPS platform.\n\n"
+            "-->\n\n";
+    mras << "<misterromdescription>\n"
+            "    <about author=\"jotego\" webpage=\"https://patreon.com/topapate\"\n"
+            "                           source =\"https://github.com/jotego/jtcps1\"\n"
+            "                           twitter=\"@topapate\"/>\n";
     xml_element(mras,"name", game->full_name,1 );
     xml_element(mras,"setname", game->name,1 );
     xml_element(mras,"year", game->year,1 );
@@ -735,6 +796,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
         if( pang_gfx ) pang3_gfx(mras);
         else if(game->name=="captcommb") captcommb_gfx(mras);
         else if(game->name=="knightsb2") knightsb2_gfx(mras);
+        else if(forgotwrld_gfx) forgottn_gfx(mras);
         else dump_region(mras, entry,"gfx",64,0);
     } catch( const string& reg ) {
         cout << "ERROR: cannot process region " << reg << " of game " << game->name << '\n';

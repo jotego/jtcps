@@ -2238,6 +2238,10 @@ static INPUT_PORTS_START( wofhfh )
     PORT_BIT( 0x40, IP_ACTIVE_LOW, IPT_COIN3 ) PORT_NAME("Coin 3 (P3 Button 3 in-game)")
 INPUT_PORTS_END
 
+static INPUT_PORTS_START( forgottn )
+    PORT_INCLUDE( ports_forgottn )
+INPUT_PORTS_END
+
 static INPUT_PORTS_START( ganbare )
     PORT_INCLUDE( ports_ganbare )
     PORT_START("IN0")

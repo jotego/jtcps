@@ -15,7 +15,8 @@ enum PORTS_TYPE {
     parent = 7,
     sf2hack,
     ports_ganbare,
-    ports_sfzch
+    ports_sfzch,
+    ports_forgottn
 };
 
 class port_entry;
@@ -41,6 +42,7 @@ public:
             case sf2hack:
             case ports_sfzch:
             case cps1_6b: return 6;
+            case ports_forgottn: return 3;
         }
         return 0;
     }
