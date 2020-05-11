@@ -49,7 +49,7 @@
             <part name="27c010.u28" crc="76f9f91f"  map="10000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 78 </part></rom>
+    <rom index="1"><part> 00 </part></rom>
     <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Select,Select,Start"/>
     <switches default="FF,FF,FF" base="8">

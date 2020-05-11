@@ -45,7 +45,7 @@
             <part name="41-3m.5a" crc="983be58f"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 71 </part></rom>
+    <rom index="1"><part> 01 </part></rom>
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

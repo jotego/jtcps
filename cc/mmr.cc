@@ -473,14 +473,11 @@ int generate_lut( stringstream& of, size_map& sizes ) {
     return dumpcnt;
 }
 
-void dump_orientation( stringstream& mra, game_entry* game, int buttons ) {
+void dump_orientation( stringstream& mra, game_entry* game, bool joy4way ) {
     mra << "    <rom index=\"1\"><part> ";
-    int core_mod = 0x7f;
-    if( game->orientation==ROT0 ) core_mod &= ~1;
-    if( buttons !=0 ) {
-        core_mod &= ~0xe;
-        core_mod |= (buttons-2)<<1;
-    }
+    int core_mod = 0;
+    if( game->orientation==ROT270 ) core_mod |= 1;
+    if( joy4way ) core_mod |= 2;
     mra << hex << setfill('0') << setw(2) << core_mod;
     mra << " </part></rom>\n";
 }
@@ -645,6 +642,8 @@ void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
 
 void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool skip_coins ) {
     bool pang_gfx = false;
+    bool joy4way  = false;
+    static bool first=true;
     switch( game->board_type ) {
         //case cps1_10MHz:
         //case cps1_12MHz:
@@ -657,9 +656,13 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             return;
         case pang3:
             pang_gfx = true;
+            joy4way  = true;
             break;
     }
-    static bool first=true;
+    if( game->name=="ghouls" || game->parent == "ghouls" || 
+        game->name=="daimakai" || game->parent == "daimakai" ||
+        game->name=="daimakair" || game->parent == "daimakair" )
+        joy4way = true;
     //ofstream simf( game->name+".hex");
     stringstream mras, simf, mappers, ss_ports;
     mras << "<misterromdescription>\n";
@@ -747,8 +750,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
     }
     mras << "    </rom>\n";
     // Game orientation
-    int buttons = ports == nullptr ? 4 : ports->buttons();
-    dump_orientation(mras, game, buttons);
+    dump_orientation(mras, game, joy4way);
     mras << ss_ports.str();
     // DIPs
     parse_dips( mras, dip_info, skip_coins );

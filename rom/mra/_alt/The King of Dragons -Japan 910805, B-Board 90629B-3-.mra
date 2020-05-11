@@ -51,7 +51,7 @@
             <part name="kd_16.9c" crc="402b9b4f"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 74 </part></rom>
+    <rom index="1"><part> 00 </part></rom>
     <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

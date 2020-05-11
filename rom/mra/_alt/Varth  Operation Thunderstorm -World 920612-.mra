@@ -50,7 +50,7 @@
             <part name="va-3m.5a" crc="44dfe706"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 73 </part></rom>
+    <rom index="1"><part> 01 </part></rom>
     <buttons names="B0,B1,B2,-,-,-,Start,Coin,Pause" 
         default="A,B,X,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

@@ -41,7 +41,7 @@
             <part name="pa3-07m.2f" crc="3a4a619d" map="21000000" length="0x100000" offset="0x100000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 70 </part></rom>
+    <rom index="1"><part> 02 </part></rom>
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

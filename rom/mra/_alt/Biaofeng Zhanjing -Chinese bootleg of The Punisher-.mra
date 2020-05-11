@@ -52,7 +52,7 @@
             <part name="ps_gfx8.rom" crc="8f02f436"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 70 </part></rom>
+    <rom index="1"><part> 00 </part></rom>
     <buttons names="B0,B1,-,-,-,-,Start,Coin,Pause" 
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

@@ -74,7 +74,7 @@
             <part name="so2_21.10c" crc="b7df8a06"  map="10000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 75 </part></rom>
+    <rom index="1"><part> 01 </part></rom>
     <buttons names="B0,B1,B2,B3,-,-,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">

@@ -51,7 +51,7 @@
             <part name="s92_13.6c" crc="ed2c67f6"  map="21000000"/>
         </interleave>
     </rom>
-    <rom index="1"><part> 78 </part></rom>
+    <rom index="1"><part> 00 </part></rom>
     <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause" 
         default="A,B,X,Y,R,L,Select,Select,Start"/>
     <switches default="FF,FF,FF" base="8">
