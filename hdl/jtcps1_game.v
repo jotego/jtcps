@@ -41,9 +41,6 @@ module jtcps1_game(
     input   [ 9:0]  joystick2,
     input   [ 9:0]  joystick3,
     input   [ 9:0]  joystick4,
-    // Forgotten worlds uses the analog stick
-    input   [15:0]  joystick_analog_0,
-    input   [15:0]  joystick_analog_1,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -263,6 +260,7 @@ jtcps1_main u_main(
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),
+    .LHBL       ( LHBL              ),
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
     .ppu2_cs    ( ppu2_cs           ),
@@ -280,8 +278,6 @@ jtcps1_main u_main(
     .coin_input  ( coin_input       ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
-    .joystick_analog_0( joystick_analog_0   ),
-    .joystick_analog_1( joystick_analog_1   ),
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing

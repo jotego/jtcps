@@ -27,6 +27,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modu
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/sdram/jtframe_ram_rq.v        ]
 
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/video/jtframe_credits.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/keyboard/jt4701.v             ]
 
 # RAM
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/ram/jtframe_dual_ram.v        ]
@@ -54,6 +55,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modu
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../modules/fx68k/fx68kAlu.sv                 ]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../modules/fx68k/fx68k.sv                    ]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../modules/fx68k/uaddrPla.sv                 ]
+
 # Clocking
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/clocking/jtframe_cen96.v      ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/clocking/jtframe_cen48.v      ]

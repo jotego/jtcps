@@ -26,6 +26,7 @@ module jtcps1_main(
     // Timing
     input   [8:0]      V,
     input              LVBL,
+    input              LHBL,
     // PPU
     output reg         ppu1_cs,
     output reg         ppu2_cs,
@@ -44,9 +45,6 @@ module jtcps1_main(
     input   [1:0]      coin_input,
     input              service,
     input              tilt,
-    // Forgotten worlds uses the analog stick
-    input   [15:0]     joystick_analog_0,
-    input   [15:0]     joystick_analog_1,
     // BUS sharing
     input              busreq,
     output             busack,
@@ -82,7 +80,7 @@ wire        BERRn = 1'b1;
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
 reg         dbus_cs, io_cs, joy_cs, 
-            sys_cs, olatch_cs, snd1_cs, snd0_cs, ana_cs;
+            sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
@@ -131,7 +129,7 @@ always @(posedge clk, posedge rst) begin
         ppu1_cs     <= 1'b0;
         ppu2_cs     <= 1'b0;
         one_wait    <= 1'b0;
-        ana_cs      <= 1'b0;
+        dial_cs      <= 1'b0;
         rom_addr    <= 21'd0;
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
@@ -146,9 +144,9 @@ always @(posedge clk, posedge rst) begin
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
                 ppu2_cs  <= A[8:6] == 3'b101 /* 'h14x */ || A[8:6] == 3'b111; /* 'h1Cx */
                 if( RnW ) begin
-                    joy_cs <= A[8:3] == 6'b000_000; // 0x800000
-                    sys_cs <= A[8:3] == 6'b000_011; // 0x800018
-                    ana_cs <= A[8:4] == 6'b001_01; // 0x800050
+                    joy_cs  <= A[8:3] == 6'b0_0000_0; // 0x800000
+                    sys_cs  <= A[8:3] == 6'b0_0001_1; // 0x800018
+                    dial_cs <= A[8:5] == 4'b0_010;    // 0x800040/50
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
@@ -171,7 +169,7 @@ always @(posedge clk, posedge rst) begin
             ppu1_cs     <= 1'b0;
             ppu2_cs     <= 1'b0;
             one_wait    <= 1'b0;
-            ana_cs      <= 1'b0;
+            dial_cs     <= 1'b0;
         end
     end
 end
@@ -201,8 +199,50 @@ always @(posedge clk) begin
     end
 end
 
+// incremental encoder counter
+wire [7:0] dial_dout;
+(*keep*) wire       dial_rstn = !(dial_cs & ~A[4]);
+wire       xn_y      = A[3];
+(*keep*) wire       x_rstn    = dial_rstn &  xn_y;
+(*keep*) wire       y_rstn    = dial_rstn & ~xn_y;
+wire [1:0] x_in, y_in;
 
-// Cabinet input
+jt4701 u_dial(
+    .clk        ( clk       ),
+    .rst        ( rst       ),
+    .x_in       ( x_in      ),
+    .y_in       ( y_in      ),
+    .rightn     ( 1'b1      ),
+    .leftn      ( 1'b1      ),
+    .middlen    ( 1'b1      ),
+    .x_rstn     ( x_rstn    ),
+    .y_rstn     ( y_rstn    ),
+    .csn        ( ~dial_cs  ),        // chip select
+    .uln        ( ~A[1]     ),        // byte selection
+    .xn_y       ( xn_y      ),        // select x or y for reading
+    .cfn        (           ),        // counter flag
+    .sfn        (           ),        // switch flag
+    .dout       ( dial_dout )
+);
+
+jt4701_dialemu u_dial1p(
+    .clk        ( clk           ),
+    .rst        ( rst           ),
+    .pulse      ( cen10         ),
+    .inc        ( ~joystick1[5] ),
+    .dec        ( ~joystick1[6] ),
+    .dial       ( x_in          )
+);
+
+jt4701_dialemu u_dial2p(
+    .clk        ( clk           ),
+    .rst        ( rst           ),
+    .pulse      ( cen10         ),
+    .inc        ( ~joystick2[5] ),
+    .dec        ( ~joystick2[6] ),
+    .dial       ( y_in          )
+);
+
 reg [15:0] sys_data;
 
 always @(posedge clk) begin
@@ -221,13 +261,8 @@ always @(posedge clk) begin
             2'b11: sys_data <= { dipsw_c, 8'hff };
         endcase
     end
-    else if( ana_cs ) begin
-        case( A[3:2] )
-            2'b00: sys_data <= joystick_analog_0[7:0];
-            2'b10: sys_data <= joystick_analog_1[7:0];
-            2'b01: sys_data <= joystick_analog_0[15:8];
-            2'b11: sys_data <= joystick_analog_1[15:8];
-        endcase
+    else if( dial_cs && A[4]) begin
+            sys_data <= { 8'hff, dial_dout };
     end
     else sys_data <= 16'hffff;
 end
@@ -242,7 +277,7 @@ always @(posedge clk) begin
         rom_ok2 <= 1'b0;
     end else begin
         rom_ok2 <= rom_ok;
-        case( { ana_cs | joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
+        case( { dial_cs | joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
             4'b10_00: cpu_din <= sys_data;
             4'b01_00: cpu_din <= ram_data;
             4'b00_10: cpu_din <= rom_data;
