@@ -443,9 +443,9 @@ assign vpal_addr = 17'd0;
 `define NOCREDITS
 `endif
 
-`ifdef MISTER_NOHDMI
-`define NOCREDITS
-`endif
+//`ifdef MISTER_NOHDMI
+//`define NOCREDITS
+//`endif
 
 `ifndef NOCREDITS
 wire [23:0] colmix_rgb = { red_colmix, green_colmix, blue_colmix };
