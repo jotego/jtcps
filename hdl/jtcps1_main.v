@@ -143,10 +143,10 @@ always @(posedge clk, posedge rst) begin
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
                 ppu2_cs  <= A[8:6] == 3'b101 /* 'h14x */ || A[8:6] == 3'b111; /* 'h1Cx */
+                dial_cs  <= A[8:5] == 4'b0_010;    // 0x800040/50
                 if( RnW ) begin
                     joy_cs  <= A[8:3] == 6'b0_0000_0; // 0x800000
                     sys_cs  <= A[8:3] == 6'b0_0001_1; // 0x800018
-                    dial_cs <= A[8:5] == 4'b0_010;    // 0x800040/50
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
@@ -201,7 +201,7 @@ end
 
 // incremental encoder counter
 wire [7:0] dial_dout;
-(*keep*) wire       dial_rst  = dial_cs && !RnW; //~A[4];
+(*keep*) wire       dial_rst  = dial_cs && !RnW && ~A[4];
 wire       xn_y      = A[3];
 (*keep*) wire       x_rst     = dial_rst & ~xn_y;
 (*keep*) wire       y_rst     = dial_rst &  xn_y;
@@ -228,7 +228,7 @@ jt4701 u_dial(
 jt4701_dialemu u_dial1p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( LVBL          ),
+    .pulse      ( LHBL          ),
     .inc        ( ~joystick1[5] ),
     .dec        ( ~joystick1[6] ),
     .dial       ( x_in          )
@@ -237,7 +237,7 @@ jt4701_dialemu u_dial1p(
 jt4701_dialemu u_dial2p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( LVBL          ),
+    .pulse      ( LHBL          ),
     .inc        ( ~joystick2[5] ),
     .dec        ( ~joystick2[6] ),
     .dial       ( y_in          )
@@ -261,7 +261,7 @@ always @(posedge clk) begin
             2'b11: sys_data <= { dipsw_c, 8'hff };
         endcase
     end
-    else if( dial_cs && A[4]) begin
+    else if( dial_cs && A[4] && RnW ) begin
             sys_data <= { 8'hff, dial_dout };
     end
     else sys_data <= 16'hffff;
