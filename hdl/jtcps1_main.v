@@ -201,11 +201,18 @@ end
 
 // incremental encoder counter
 wire [7:0] dial_dout;
-(*keep*) wire       dial_rst  = dial_cs && !RnW && ~A[4];
+wire       dial_rst  = dial_cs && !RnW && ~A[4];
 wire       xn_y      = A[3];
-(*keep*) wire       x_rst     = dial_rst & ~xn_y;
-(*keep*) wire       y_rst     = dial_rst &  xn_y;
+wire       x_rst     = dial_rst & ~xn_y;
+wire       y_rst     = dial_rst &  xn_y;
 wire [1:0] x_in, y_in;
+reg  [1:0] dial_pulse, last_LHBL;
+
+// The dial update ryhtm is set to once every four lines
+always @(posedge clk) begin
+    last_LHBL <= LHBL;
+    if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
+end
 
 jt4701 u_dial(
     .clk        ( clk       ),
@@ -228,7 +235,7 @@ jt4701 u_dial(
 jt4701_dialemu u_dial1p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( LHBL          ),
+    .pulse      ( dial_pulse[1] ),
     .inc        ( ~joystick1[5] ),
     .dec        ( ~joystick1[6] ),
     .dial       ( x_in          )
@@ -237,7 +244,7 @@ jt4701_dialemu u_dial1p(
 jt4701_dialemu u_dial2p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( LHBL          ),
+    .pulse      ( dial_pulse[1] ),
     .inc        ( ~joystick2[5] ),
     .dec        ( ~joystick2[6] ),
     .dial       ( y_in          )
