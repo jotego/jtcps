@@ -129,7 +129,7 @@ always @(posedge clk, posedge rst) begin
         ppu1_cs     <= 1'b0;
         ppu2_cs     <= 1'b0;
         one_wait    <= 1'b0;
-        dial_cs      <= 1'b0;
+        dial_cs     <= 1'b0;
         rom_addr    <= 21'd0;
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
@@ -201,10 +201,10 @@ end
 
 // incremental encoder counter
 wire [7:0] dial_dout;
-(*keep*) wire       dial_rstn = !(dial_cs & ~A[4]);
+(*keep*) wire       dial_rst  = dial_cs && !RnW; //~A[4];
 wire       xn_y      = A[3];
-(*keep*) wire       x_rstn    = dial_rstn &  xn_y;
-(*keep*) wire       y_rstn    = dial_rstn & ~xn_y;
+(*keep*) wire       x_rst     = dial_rst & ~xn_y;
+(*keep*) wire       y_rst     = dial_rst &  xn_y;
 wire [1:0] x_in, y_in;
 
 jt4701 u_dial(
@@ -215,8 +215,8 @@ jt4701 u_dial(
     .rightn     ( 1'b1      ),
     .leftn      ( 1'b1      ),
     .middlen    ( 1'b1      ),
-    .x_rstn     ( x_rstn    ),
-    .y_rstn     ( y_rstn    ),
+    .x_rst      ( x_rst     ),
+    .y_rst      ( y_rst     ),
     .csn        ( ~dial_cs  ),        // chip select
     .uln        ( ~A[1]     ),        // byte selection
     .xn_y       ( xn_y      ),        // select x or y for reading
@@ -228,7 +228,7 @@ jt4701 u_dial(
 jt4701_dialemu u_dial1p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( cen10         ),
+    .pulse      ( LVBL          ),
     .inc        ( ~joystick1[5] ),
     .dec        ( ~joystick1[6] ),
     .dial       ( x_in          )
@@ -237,7 +237,7 @@ jt4701_dialemu u_dial1p(
 jt4701_dialemu u_dial2p(
     .clk        ( clk           ),
     .rst        ( rst           ),
-    .pulse      ( cen10         ),
+    .pulse      ( LVBL          ),
     .inc        ( ~joystick2[5] ),
     .dec        ( ~joystick2[6] ),
     .dial       ( y_in          )
