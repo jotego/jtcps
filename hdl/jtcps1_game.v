@@ -28,8 +28,6 @@ module jtcps1_game(
     output   [7:0]  red,
     output   [7:0]  green,
     output   [7:0]  blue,
-    output          LHBL,
-    output          LVBL,
     output          LHBL_dly,
     output          LVBL_dly,
     output          HS,
@@ -94,6 +92,7 @@ localparam [21:0] GFX_OFFSET   = 22'h00_0000; // bank 2
 wire clk48 = clk;
 `endif
 
+wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
@@ -191,6 +190,7 @@ jtframe_cen48 u_cen48(
     .cen8       ( cen8          ),
     .cen6       (               ),
     .cen4       (               ),
+    .cen4_12    (               ),
     .cen3       (               ),
     .cen3q      (               ),
     .cen1p5     (               ),
@@ -257,6 +257,7 @@ jtcps1_main u_main(
     .clk        ( clk48             ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
+    .cpu_cen    (                   ),
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),
@@ -274,8 +275,8 @@ jtcps1_main u_main(
     // cabinet I/O
     // Cabinet input
     .charger     ( charger          ),
-    .start_button( start_button     ),
-    .coin_input  ( coin_input       ),
+    .start_button( start_button[1:0]),
+    .coin_input  ( coin_input[1:0]  ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
     .service     ( 1'b1             ),
@@ -547,7 +548,28 @@ u_sdram_mux(
     .sdram_wrmask   ( sdram_wrmask      ),
     .data_rdy       ( data_rdy          ),
     .data_read      ( data_read         ),   
-    .data_write     ( data_write        )
+    .data_write     ( data_write        ),
+
+    // Unused
+    .slot3_dout     (                   ),
+    .slot4_dout     (                   ),
+    .slot8_dout     (                   ),
+    .ready          (                   ),
+    .slot3_addr     (                   ),
+    .slot4_addr     (                   ),
+    .slot8_addr     (                   ),
+    .slot3_offset   (                   ),
+    .slot4_offset   (                   ),
+    .slot8_offset   (                   ),
+    .slot0_din      (                   ),
+    .slot2_din      (                   ),
+    .slot3_din      (                   ),
+    .slot4_din      (                   ),
+    .slot5_din      (                   ),
+    .slot6_din      (                   ),
+    .slot7_din      (                   ),
+    .slot8_din      (                   ),
+    .slot9_din      (                   )    
 );
 
 endmodule
