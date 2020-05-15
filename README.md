@@ -1,14 +1,11 @@
 # jtcps1
+
 Capcom System 1 compatible verilog core for FPGA by Jose Tejada (jotego).
 
 # Control
 
 MiSTer allows for gamepad redifinition. However, the keyboard can be used with more or less the same layout as MAME for MiST(er) platforms. Some important keys:
 
--F7  toggles scroll 1
--F8  toggles scroll 2
--F9  toggles scroll 3
--F10 toggles objects
 -F12 OSD menu
 -P   Pause. Press 1P during pause to toggle the credits on and off
 -5,6 1P coin, 2P coin
@@ -34,6 +31,8 @@ You need to generate the .rom file using this (tool)[https://github.com/sebdel/m
 
 And that will produce the .rom file and a .arc file. The .arc file can be used to start the core and directly load the game rom file. Note that the RBF name must be JTCPS1.RBF for it to work. The three files must be in the root folder.
 
+*Important*: make sure to have the latest firmware and latest version of the mra tool.
+
 Copy the RBF, .arc and .rom files to MiST and enjoy!
 
 ## Notes
@@ -42,13 +41,10 @@ Note that there is no screen rotation in MiST. Vertical games require you to tur
 
 # Issues
 
-This is a beta version and as such not everything is implemented here. Known issues:
+Known issues:
 
--No DIP settings yet, except for test.
-
-Things you may not notice but that are wrong
-
--CPU bus timing is still not exact, particularly bus sharing is not fully implemented yet
+-Fuel hoses in Carrier Airwing appear on top of the airplane
+-12MHz games may run slightly slower than the original
 
 Please report issues (here)[https://github.com/jotego/jtbin/issues].
 
@@ -67,7 +63,7 @@ The core is compiled using jtcore from **JTFRAME** but the first time you need t
 ```
 cd cc
 make
-mmr -alt
+mmr -inc
 ```
 
 This generates an include file needed by the verilog code.
@@ -97,8 +93,27 @@ Some Verilog macros:
 2. REPORT_DELAY will print the average CPU delay at the end of each frame
    in system ticks (number of 48MHz clocks)
 
+## Video
+
+Video only simulations can be done using mame dumps. Use the tool *cfg2mame* in the *ver/video* folder
+to create two *.mame* files that can invoked from mame to dump the simulation data. Run the game in debug
+mode but source from MAME the register file that *cfg2mame* creates. Then at the point of interest souce *vram.mame*. That creates the file vram.bin. Copy that file to a directory with the mame name of the game. Add a numerical index (see the other folders for examples). Create a hex file following the examples in
+the other files too. Now you run go.sh like this:
+
+```
+go.sh -g game -s number -frame 2
+```
+
+This will run the simulation for the folder *game* and looking for files with the *number* index. If you
+ need to look at the sprites too, you need to run more than one frame as the object DMA needs a frame to
+ fill in the data.
+
 # Support
 
 You can show your appreciation through
-    * Patreon: https://patreon.com/topapate
-    * Paypal: https://paypal.me/topapate
+* Patreon: https://patreon.com/topapate
+* Paypal: https://paypal.me/topapate
+
+# Licensing
+
+Contact the author for special licensing needs. Otherwise follow the GPLv3 license attached.
