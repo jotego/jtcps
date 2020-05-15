@@ -1,0 +1,34 @@
+==============================================
+jtcps1 mist compilation starts at 11:46:28 with seed 5362 on despacho
+Macros used: JTFRAME_OSD_NOSND JTFRAME_RELEASE JTFRAME_OSD_NOLOAD
+/home/jtejada/altera/13.1/quartus/bin/quartus_sh
+WARNING: Missing jtcps1.tcl
+Log file: /home/jtejada/repo/github/jtcps1/log/mist/jtcps1.log
+Info (293000): Quartus II Full Compilation was successful. 0 errors, 194 warnings
+'jtcps1_20200515.rbf' -> '/home/jtejada/repo/github/jtcps1/../jtbin/mist/cps1/releases/jtcps1_20200515.rbf'
+'jtcps1_20200515.rbf' -> '/home/jtejada/repo/github/jtcps1/../jtbin/mist/cps1/releases/jtcps1_20200515_5362.rbf'
+completed at vie may 15 11:54:16 CEST 2020
+
+==============================================
+jtcps1 mister compilation starts at 11:46:45 with seed 2368 on despacho
+Macros used: JTFRAME_OSD_NOSND JTFRAME_RELEASE JTFRAME_OSD_NOLOAD
+/opt/intelFPGA_lite/17.1/quartus/bin/quartus_sh
+WARNING: Missing jtcps1.tcl
+Log file: /home/jtejada/repo/github/jtcps1/log/mister/jtcps1.log
+Info (293000): Quartus Prime Full Compilation was successful. 0 errors, 283 warnings
+Info (332146): Worst-case hold slack is -0.016
+'jtcps1_20200515.rbf' -> '/home/jtejada/repo/github/jtcps1/../jtbin/mister/cps1/releases/jtcps1_20200515.rbf'
+'jtcps1_20200515.rbf' -> '/home/jtejada/repo/github/jtcps1/../jtbin/mister/cps1/releases/jtcps1_20200515_2368.rbf'
+completed at vie may 15 12:05:51 CEST 2020
+
+==============================================
+jtcps1 sidi compilation starts at 11:55:17 with seed 4033 on despacho
+Macros used: JTFRAME_OSD_NOSND JTFRAME_RELEASE JTFRAME_OSD_NOLOAD
+/home/jtejada/altera/13.1/quartus/bin/quartus_sh
+WARNING: Missing jtcps1.tcl
+Log file: /home/jtejada/github/jtcps1/log/sidi/jtcps1.log
+Info (293000): Quartus II Full Compilation was successful. 0 errors, 194 warnings
+Info (332146): Worst-case setup slack is -0.015
+'jtcps1_20200515.rbf' -> '/home/jtejada/github/jtcps1/../jtbin/sidi/cps1/releases/jtcps1_20200515.rbf'
+'jtcps1_20200515.rbf' -> '/home/jtejada/github/jtcps1/../jtbin/sidi/cps1/releases/jtcps1_20200515_4033.rbf'
+completed at vie may 15 12:04:32 CEST 2020
