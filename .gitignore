@@ -11,5 +11,12 @@ rom/*.rom
 *.png
 *.zip
 *.bin
+*.raw
+*.wav
+*.xml
 sim
-modules/fx68k
+mist/*
+sidi/*
+mister/*
+history
+

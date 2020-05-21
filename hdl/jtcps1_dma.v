@@ -141,12 +141,23 @@ always @(*) begin
                             active[2]); // SCR3
 end
 
+reg [15:0] tile_din, obj_din, pal_din;
+reg        vram_ok_dly;
+
+always @(posedge clk) begin
+    tile_din    <= vram_data;
+    obj_din     <= vram_data & {16{~obj_fill}};
+    pal_din     <= vram_data;
+    vram_ok_dly <= vram_ok;
+end
+
+
 // Tile cache
 jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
     // Port 0: write
-    .data0  ( vram_data     ),
+    .data0  ( tile_din      ),
     .addr0  ( { wr_bank, scr_cnt    } ),
     .we0    ( scr_wr        ),
     .q0     (               ),
@@ -162,7 +173,7 @@ jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
     // Port 0: write
-    .data0  ( vram_data & {16{~obj_fill}} ),
+    .data0  ( obj_din       ),
     .addr0  ( { wr_obj_bank, obj_cnt } ),
     .we0    ( obj_wr        ),
     .q0     (               ),
@@ -180,7 +191,7 @@ jtframe_dual_ram #(.dw(16), .aw(12)) u_pal_ram(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
     // Port 0: write
-    .data0  ( vram_data     ),
+    .data0  ( pal_din       ),
     .addr0  ( wr_pal_addr   ),
     .we0    ( pal_wr        ),
     .q0     (               ),
@@ -352,10 +363,10 @@ always @(posedge clk) begin
                 end
             end
             else begin
-                if( step[2] && !vram_ok ) begin
+                if( step[2] && !vram_ok_dly ) begin
                     if( ~&misses ) misses <= misses + 5'd1;    // wait for SDRAM
                 end else begin
-                    if( step[1] && vram_ok && misses>5'd0 ) begin
+                    if( step[1] && vram_ok_dly && misses>5'd0 ) begin
                         misses <= misses - 5'd1;
                         step <= 4'b1000; // skip one to recover a cycle
                     end else begin
@@ -369,7 +380,7 @@ always @(posedge clk) begin
                                       cur_task[OBJ]       ? vobj_addr :
                                       vpal_addr ));
                     end
-                    default: if(vram_ok) begin // collect data
+                    default: if(vram_ok_dly) begin // collect data
                         scr_wr <= |cur_task[SCR3:SCR1];
                         obj_wr <= cur_task[OBJ] | obj_fill;
                         pal_wr <= |cur_task[PAL5:PAL0];
