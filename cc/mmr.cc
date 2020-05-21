@@ -722,6 +722,9 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             "              of CAPCOM copyrighted material. This work can be used with legally\n"
             "              obtained ROM dumps of CAPCOM games or with homework software for\n"
             "              the CPS platform.\n\n"
+            "              This file license is GNU GPLv2.\n"
+            "              You can read the whole license file in\n"
+            "              https://opensource.org/licenses/gpl-2.0.php\n"
             "-->\n\n";
     mras << "<misterromdescription>\n"
             "    <about author=\"jotego\" webpage=\"https://patreon.com/topapate\"\n"
