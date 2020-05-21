@@ -313,8 +313,14 @@ assign dsn = 2'b11;
 assign main_rnw = 1'b1;
 `endif
 
+reg rst_video;
+
+always @(negedge clk) begin
+    rst_video <= rst;
+end
+
 jtcps1_video #(REGSIZE) u_video(
-    .rst            ( rst           ),
+    .rst            ( rst_video     ),
     .clk            ( clk           ),
     .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
@@ -460,6 +466,12 @@ assign adpcm_cs   = 1'b0;
 assign sample   = 1'b0;
 `endif
 
+reg rst_sdram;
+
+always @(negedge clk) begin
+    rst_sdram <= rst;
+end
+
 assign sdram_bank = slot_active[0] ? 2'b01 :    // CPU goes in bank 1
     ( slot_active[2] | slot_active[6] ? 2'b10 : // GFX goes in bank 2
     2'b00 );                                    // Sound in bank 0
@@ -493,7 +505,7 @@ jtframe_sdram_mux #(
     .SLOT6_DW   ( 32    )
 )
 u_sdram_mux(
-    .rst            ( rst           ),
+    .rst            ( rst_sdram     ),
     .clk            ( clk           ),
     .vblank         ( VB            ),
 
