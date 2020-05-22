@@ -58,15 +58,18 @@ jedutil -view wl24b.1a gal16v8
 In order to see the equations for Willow's PAL.
 
 # Compilation
-The core is compiled using jtcore from **JTFRAME** but the first time you need to compile and run the utility **mmr** in the *cc* folder:
+The core is compiled using jtcore from **JTFRAME**. Follow the instructions in the README file of (JTFRAME)[https://github.com/jotego/jtframe] and then:
 
 ```
-cd cc
-make
-mmr -inc
+source setprj.sh
+jtcore -mister
 ```
 
-This generates an include file needed by the verilog code.
+This will produce the mister file.
+
+## Static Time Analysis (STA)
+
+MiST and SiDi compilations produce STA clean files with the default seed. However the MiSTer RBF file with everything enabled doesn't always come STA clean. If you disable HDMI or sound during compilation the RBF file will normally be STA clean. Public binary distribution in [jtbin](https://github.com/jotego/jtbin) are either STA clean or violations are below 99ps.
 
 # Simulation
 
