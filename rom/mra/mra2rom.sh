@@ -6,7 +6,7 @@ function copy {
 	if [ -d $DEST ]; then
 	    mkdir -p $DEST/JTCPS1
 	    cp *.arc $DEST/JTCPS1
-        if [ $2 = "-rom" ]; then
+        if [ "$2" = "-rom" ]; then
             cp -v *.rom $DEST/JTCPS1
         fi
 	fi
