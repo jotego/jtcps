@@ -73,3 +73,5 @@ cps1          	mist	20200522	1	PASS	c8d6e07	11de7f9
 cps1          	mister	20200522	14909	FAIL	c8d6e07	11de7f9
 cps1          	mister	20200522	3479	FAIL	c8d6e07	11de7f9
 cps1          	mister	20200522	14107	FAIL	c8d6e07	11de7f9
+cps1          	mist	20200524	1	PASS	97186b8	d03a01c
+cps1          	mist	20200524	1	FAIL	97186b8	afc8808
