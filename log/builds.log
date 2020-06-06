@@ -77,3 +77,7 @@ cps1          	mist	20200524	1	PASS	97186b8	d03a01c
 cps1          	mist	20200524	1	FAIL	97186b8	afc8808
 cps1          	sidi	20200524	1	FAIL	26d741a	b69cdf8
 cps1          	mist	20200525	1	PASS	26d741a	b69cdf8
+cps1          	mist	20200604	1	FAIL	5c512f1	14a933c
+cps1          	sidi	20200604	1	PASS	5c512f1	14a933c
+cps1          	mister	20200604	1	FAIL	5c512f1	14a933c
+cps1          	mist	20200605	1	PASS	5c512f1	fd80012
