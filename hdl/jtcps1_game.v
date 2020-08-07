@@ -68,7 +68,7 @@ module jtcps1_game(
     input           dip_pause,
     inout           dip_flip,
     input           dip_test,
-    input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB    
+    input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB
     input   [31:0]  dipsw,
     // Sound output
     output  signed [15:0] snd_left,
@@ -304,7 +304,7 @@ jtcps1_main u_main(
     .dipsw_b     ( dipsw_b          ),
     .dipsw_c     ( dipsw_c          )
 );
-`else 
+`else
 assign ram_addr = 17'd0;
 assign main_ram_cs = 1'b0;
 assign main_vram_cs = 1'b0;
@@ -329,7 +329,6 @@ jtcps1_video #(REGSIZE) u_video(
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
     .gfx_en         ( gfx_en        ),
-    .pause          ( ~dip_pause    ),
     .cpu_speed      ( cpu_speed     ),
     .charger        ( charger       ),
 
@@ -430,7 +429,7 @@ end
 
 jtcps1_sound u_sound(
     .rst            ( rst_snd[3]    ),
-    .clk            ( clk48         ),    
+    .clk            ( clk48         ),
 
     .enable_adpcm   ( enable_psg    ),
     .enable_fm      ( enable_fm     ),
@@ -438,7 +437,7 @@ jtcps1_sound u_sound(
     // Interface with main CPU
     .snd_latch0     ( snd_latch0    ),
     .snd_latch1     ( snd_latch1    ),
-    
+
     // ROM
     .rom_addr       ( snd_addr      ),
     .rom_cs         ( snd_cs        ),
@@ -456,7 +455,7 @@ jtcps1_sound u_sound(
     .right          ( snd_right     ),
     .sample         ( sample        )
 );
-`else 
+`else
 assign snd_addr   = 16'd0;
 assign snd_cs     = 1'b0;
 assign snd_left   = 16'd0;
@@ -482,10 +481,10 @@ jtframe_sdram_mux #(
     .SLOT1_AW   ( 17    ),  // 64 kB RAM, 192 kB VRAM
 
     .SLOT0_DW   ( 16    ),
-    .SLOT1_DW   ( 16    ),   
+    .SLOT1_DW   ( 16    ),
 
     .SLOT1_TYPE ( 2     ), // R/W access
-    
+
     // Sound
     .SLOT5_AW   ( 18    ),  // ADPCM
     .SLOT5_DW   (  8    ),
@@ -559,7 +558,7 @@ u_sdram_mux(
     .sdram_rnw      ( sdram_rnw         ),
     .sdram_wrmask   ( sdram_wrmask      ),
     .data_rdy       ( data_rdy          ),
-    .data_read      ( data_read         ),   
+    .data_read      ( data_read         ),
     .data_write     ( data_write        ),
 
     // Unused
@@ -581,7 +580,7 @@ u_sdram_mux(
     .slot6_din      (                   ),
     .slot7_din      (                   ),
     .slot8_din      (                   ),
-    .slot9_din      (                   )    
+    .slot9_din      (                   )
 );
 
 endmodule

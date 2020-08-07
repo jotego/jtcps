@@ -14,6 +14,8 @@ COLORW=8
 # Full SDRAM use
 JTFRAME_SDRAM_BANKS
 CORE_OSD="O6,Turbo,Off,On;",
+JTFRAME_CREDITS_PAGES=3
+JTFRAME_CREDITS
 
 [mist|sidi]
 VIDEO_WIDTH=512
@@ -27,7 +29,7 @@ JTFRAME_OSD_NOCREDITS
 VIDEO_WIDTH=384
 # OSD options
 JTFRAME_ADPCM
-AVATARS
+JTFRAME_AVATARS
 JTFRAME_SDRAM_REPACK
 # For some reason adding a space between 1P and Start is a problem
 # for Quartus TCL, so I write it together

@@ -82,3 +82,6 @@ cps1          	sidi	20200604	1	PASS	5c512f1	14a933c
 cps1          	mister	20200604	1	FAIL	5c512f1	14a933c
 cps1          	mist	20200605	1	PASS	5c512f1	fd80012
 cps1          	mist	20200606	1	FAIL	3eb1f8a	f38eaa8
+cps1          	mist	20200606	1	PASS	0eaf5a0	f38eaa8
+cps1          	mister	20200807	1	FAIL	0eaf5a0	5e0fd69
+cps1          	mister	20200807	1	FAIL	2c0c461	5e0fd69

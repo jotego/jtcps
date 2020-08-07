@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 `timescale 1ns/1ps
 
 // Scroll 1 is 512x512, 8x8 tiles
@@ -32,8 +32,6 @@ module jtcps1_video(
     output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
     input      [ 3:0]  gfx_en,
-
-    input              pause,
 
     // CPU interface
     input              ppu_rstn,
@@ -299,7 +297,7 @@ jtcps1_scroll u_scroll(
     .preVB      ( preVB         ),
     .VB         ( VB            ),
     .HB         ( HB            ),
-    
+
     .hpos1      ( hpos1         ),
     .vpos1      ( vpos1         ),
 
@@ -337,7 +335,7 @@ jtcps1_scroll u_scroll(
     .star0_pxl  ( star0_pxl     ),
     .star1_pxl  ( star1_pxl     )
 );
-`else 
+`else
 assign rom1_cs    = 1'b0;
 assign rom1_addr  = 20'd0;
 assign scr1_pxl   = 11'h1ff;
@@ -377,15 +375,12 @@ jtcps1_obj u_obj(
 
     .pxl        ( obj_pxl       )
 );
-`else 
+`else
 assign vram_obj_cs = 1'b0;
 assign rom0_cs     = 1'b0;
 assign rom0_addr   = 20'd0;
 assign obj_pxl     = 9'h1ff;
 `endif
-
-wire [7:0] red_colmix, green_colmix, blue_colmix;
-wire       LVBL_colmix, LHBL_colmix;
 
 `ifndef NOCOLMIX
 jtcps1_colmix u_colmix(
@@ -395,8 +390,8 @@ jtcps1_colmix u_colmix(
 
     .HB         ( HB            ),
     .VB         ( VB            ),
-    .LHBL_dly   ( LHBL_colmix   ),
-    .LVBL_dly   ( LVBL_colmix   ),
+    .LHBL_dly   ( LHBL_dly      ),
+    .LVBL_dly   ( LVBL_dly      ),
     .gfx_en     ( gfx_en        ),
 
     // Palette RAM
@@ -425,9 +420,9 @@ jtcps1_colmix u_colmix(
     .star1_pxl  ( star1_pxl     ),
     .obj_pxl    ( obj_pxl       ),
     // Video
-    .red        ( red_colmix    ),
-    .green      ( green_colmix  ),
-    .blue       ( blue_colmix   )    
+    .red        ( red           ),
+    .green      ( green         ),
+    .blue       ( blue          )
 );
 `else
 assign red_colmix  = 8'b0;
@@ -438,43 +433,5 @@ assign LVBL_colmix = ~VB;
 assign vpal_cs   = 1'b0;
 assign vpal_addr = 17'd0;
 `endif
-
-`ifdef SIMULATION
-`define NOCREDITS
-`endif
-
-//`ifdef MISTER_NOHDMI
-//`define NOCREDITS
-//`endif
-
-`ifndef NOCREDITS
-wire [23:0] colmix_rgb = { red_colmix, green_colmix, blue_colmix };
-
-jtframe_credits #(
-    .PAGES  (      3 ),
-    .COLW   (      8 ),
-    .BLKPOL (      0 )
-) (
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .pxl_cen    ( pxl_cen       ),
-
-    // input image
-    .HB         ( LHBL_colmix   ),
-    .VB         ( LVBL_colmix   ),
-    .rgb_in     ( colmix_rgb    ),
-    .enable     ( pause         ),
-    .toggle     ( start_button[0] ),
-
-    // output image
-    .HB_out     ( LHBL_dly      ),
-    .VB_out     ( LVBL_dly      ),
-    .rgb_out    ( {red, green, blue } )
-);
-`else
-assign {red, green, blue } = { red_colmix, green_colmix, blue_colmix };
-assign { LHBL_dly, LVBL_dly } = { LHBL_colmix, LVBL_colmix };
-`endif
-
 
 endmodule
