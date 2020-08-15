@@ -18,7 +18,7 @@
 
 module jtcps1_sound(
     input           rst,
-    input           clk,    
+    input           clk,
 
     // Interface with main CPU
     input   [7:0]   snd_latch0,
@@ -49,12 +49,12 @@ module jtcps1_sound(
 wire signed [13:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-localparam [7:0] FMGAIN = 8'h10, PCMGAIN = 8'h70;
+localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h10; // 7 -> 5 >  < 1
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
 
-jtframe_mixer #(.w1(14),.wout(16)) u_left(
+jtframe_mixer #(.W1(14),.WOUT(16)) u_left(
     .clk    ( clk       ),
     .cen    ( 1'b1      ),
     // input signals
@@ -70,7 +70,7 @@ jtframe_mixer #(.w1(14),.wout(16)) u_left(
     .mixed  ( left      )
 );
 
-jtframe_mixer #(.w1(14),.wout(16)) u_right(
+jtframe_mixer #(.W1(14),.WOUT(16)) u_right(
     .clk    ( clk       ),
     .cen    ( 1'b1      ),
     // input signals
@@ -165,7 +165,7 @@ jtframe_ram #(.aw(11)) u_ram(
 
 // As we operate much faster than cen_fm, the input data mux is done
 // in two clock cycles. Data will always be ready before next cen_fm pulse
-// 
+//
 reg [7:0] din, cmd_latch, dev_latch, mem_latch;
 reg       latch_cs, dev_cs, mem_cs, rom_ok2;
 
