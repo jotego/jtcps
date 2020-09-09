@@ -258,3 +258,7 @@ cps1          	mist	20200815	1	PASS	2c9cca4	f80a90c
 cps1          	mister	20200815	1	FAIL	2c9cca4	f80a90c
 cps1          	mist	20200815	1	PASS	2c9cca4	f80a90c
 cps1          	mister	20200815	1	FAIL	2c9cca4	f80a90c
+cps1          	mist	20200815	1	PASS	d4c12f8	821e1f2
+cps1          	sidi	20200815	1	PASS	d4c12f8	821e1f2
+cps1          	mister	20200815	1	FAIL	d4c12f8	821e1f2
+cps1          	mister	20200815	1	FAIL	d4c12f8	0804378

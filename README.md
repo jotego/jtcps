@@ -11,6 +11,8 @@ MiSTer allows for gamepad redifinition. However, the keyboard can be used with m
 -5,6 1P coin, 2P coin
 -1,2 1P, 2P
 
+For MiST, the first 6 gamepad buttons are used for game buttons, the next 2 buttons are used for credit and start buttons. If there is still one button left in the gamepad, it will be used for pause.
+
 # MiSTer
 
 Copy the RBF file to `_Arcade/cores` and the MRA files to `_Arcade`. Copy zipped MAME romsets to `_Arcade/mame`. Enjoy.
