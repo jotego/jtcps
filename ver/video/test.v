@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 module test;
-    
+
 `ifndef SIMULATION
 `define SIMULATION
 `endif
@@ -152,8 +152,6 @@ jtcps1_video UUT (
     .vrender        ( vrender       ),
     .gfx_en         ( 4'b1111       ),
 
-    .pause          ( 1'b0          ),
-
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
@@ -197,7 +195,7 @@ jtcps1_video UUT (
     .vram_dma_ok    ( vram_dma_ok   ),
     .vram_dma_cs    ( vram_dma_cs   ),
     .vram_dma_clr   ( slot_clr[9]   ),
-    
+
     // GFX ROM interface
     .rom1_addr  ( rom1_addr     ),
     .rom1_half  ( rom1_half     ),
@@ -264,7 +262,7 @@ u_sdram_mux(
     .sdram_addr     ( sdram_addr    ),
     .sdram_rnw      ( sdram_rnw     ),
     .data_rdy       ( data_rdy      ),
-    .data_read      ( data_read     ),   
+    .data_read      ( data_read     ),
     .data_write     ( data_write    )
 );
 
@@ -296,7 +294,7 @@ initial begin
     // load game ROM
     fsdram=$fopen("rom","rb");
     if(fsdram==0) begin
-        $display("ERROR: cannot find ghouls.rom");
+        $display("ERROR: cannot find file 'rom'");
         $finish;
     end
     aux=$fseek(fsdram,64,0); // skip header
@@ -355,8 +353,8 @@ always @(posedge clk, posedge rst) begin
         end
         if( sdram_st[SDRAM_STCNT-1] ) begin
             data_rdy <= 1'b1;
-            data_read  <= { 
-                sdram[ sdram8_addr+23'h3 ], 
+            data_read  <= {
+                sdram[ sdram8_addr+23'h3 ],
                 sdram[ sdram8_addr+23'h2 ],
                 sdram[ sdram8_addr+23'h1 ],
                 sdram[ sdram8_addr+23'h0 ] };
@@ -384,7 +382,10 @@ end
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
-    .cen8   ( pxl_cen   )
+    .cen8   ( pxl_cen   ),
+    .cen12  (           ),
+    .cen6b  (           ),
+    .cen6   (           )
 );
 
 integer framecnt;

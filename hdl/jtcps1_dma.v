@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 `timescale 1ns/1ps
 
 // I measured the line DMA header and found these values
@@ -97,7 +97,7 @@ module jtcps1_dma(
 
 localparam TASKW=1+1+3+6;
 localparam [7:0] LAST_SCR1 = 8'd99, LAST_SCR2 = 8'd225, LAST_SCR3 = 8'd255;
-localparam ROW=0, OBJ=1, SCR1=2, SCR2=3, SCR3=4, 
+localparam ROW=0, OBJ=1, SCR1=2, SCR2=3, SCR3=4,
            PAL0=5, PAL1=6,PAL2=7,PAL3=8,PAL4=9,PAL5=10;
 
 reg  [15:0] vrenderf, vscr1, vscr2, vscr3, row_scr_next;
@@ -122,7 +122,9 @@ reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok;
 
 wire        HB_edge  = !last_HB && HB;
 wire        tile_ok  = vrender1<9'd240 || vrender1>9'd257; // VB is 38 lines
-wire        tile_vs  = vrender1==9'd12; // Vertical start, use for SCR3
+wire        tile_vs  = vrender1== flip ? 9'd17 : 9'd12; // Vertical start, use for SCR3
+    // 9'd17 was needed for 1941 logo screen on flip mode
+    // 9'd12 was the previous value used for non flip images
 
 // various addresses
 wire [17:1] vrow_addr = { vram_row_base[9:3], row_offset[9:0] + vrenderf[9:0] },
@@ -313,14 +315,14 @@ always @(posedge clk) begin
             tasks[OBJ]  <= obj_busy || (!obj_busy && !obj_end);
             tasks[ROW]  <= row_en & tile_ok;
             tasks[SCR1] <= vscr1[2:0]==3'd0 && tile_ok;
-            tasks[SCR2] <= vscr2[3:0]=={ flip, 3'd0 } && tile_ok;
+            tasks[SCR2] <=  vscr2[3:0]=={ flip, 3'd0 } && tile_ok;
             tasks[SCR3] <= (vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs;
             scr_cnt     <= 8'd0;
             check_adv   <= 1;
             row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };
             if( obj_busy ) obj_cnt <= 10'd0;
         end else
-        if( check_adv ) begin            
+        if( check_adv ) begin
             cur_task  <= {TASKW{1'b0}};
             step_task <= { {TASKW-1{1'b0}}, 1'b1 };
             adv       <= |tasks[SCR3:0];
@@ -331,7 +333,7 @@ always @(posedge clk) begin
             if( adv ) begin
                 step_task <= next_step_task;
                 cur_task  <= next_task;
-                if( ~|tasks ) 
+                if( ~|tasks )
                     br <= 0;
                 else
                     step      <= 4'b1;
@@ -400,7 +402,7 @@ always @(posedge clk) begin
                                 if( cur_task[SCR1] ) tasks[SCR1] <= 0;
                                 if( cur_task[SCR2] ) tasks[SCR2] <= 0;
                                 if( cur_task[SCR3] ) tasks[SCR3] <= 0;
-                            end 
+                            end
                             else begin
                                 scr_cnt <= scr_cnt+1;
                                 if( scr_cnt[0] )
