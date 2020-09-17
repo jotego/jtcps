@@ -16,8 +16,6 @@
     Version: 1.0
     Date: 30-1-2020 */
 
-`timescale 1ns/1ps
-
 module jtcps1_prom_we(
     input                clk,
     input                downloading,
@@ -97,7 +95,7 @@ always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
         prog_data <= pang3 ?
             pang3_decrypt : ioctl_data;
-        prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;            
+        prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  oki_addr[22:1] + OKI_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));

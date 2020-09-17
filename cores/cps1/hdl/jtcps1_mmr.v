@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
     
-`timescale 1ns/1ps
 
 // This module represents the register logic of both CPS-A and CPS-B chips
 

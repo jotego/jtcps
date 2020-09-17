@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 12-3-2020 */
     
-`timescale 1ns/1ps
 
 // Star field generator
 // Based on the circuit used for Side Arms, but without the ROM

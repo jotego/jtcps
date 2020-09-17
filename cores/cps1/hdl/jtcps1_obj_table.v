@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
     
-`timescale 1ns/1ps
 
 // DMA copying OBJ table data from video RAM to internal RAM
 // Copying stops if 8'hFF is detected in the attributes word

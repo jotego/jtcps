@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
     
-`timescale 1ns/1ps
 
 module jtcps1_obj(
     input              rst,

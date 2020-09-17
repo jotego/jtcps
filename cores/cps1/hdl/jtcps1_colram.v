@@ -25,7 +25,6 @@
 // For now, I don't do anything about those 15us because I still don't understand
 // where they come from
     
-`timescale 1ns/1ps
 
 module jtcps1_colram(
     input              rst,

@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
 
-`timescale 1ns/1ps
 
 // Scroll 1 is 512x512, 8x8 tiles
 // Scroll 2 is 1024x1024 16x16 tiles

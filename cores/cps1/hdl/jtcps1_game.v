@@ -15,7 +15,6 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 28-1-2020 */
-`timescale 1ns/1ps
 
 module jtcps1_game(
     input           rst,

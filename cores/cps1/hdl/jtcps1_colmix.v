@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
     
-`timescale 1ns/1ps
 
 // Brightness only affects the gain of the signal, not the offset
 // Depending on the impedance of the 74'07 device, the maximum

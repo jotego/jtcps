@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
 
-`timescale 1ns/1ps
 
 // I measured the line DMA header and found these values
 // 604ns, 1.64us, 2.06us

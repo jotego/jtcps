@@ -1,0 +1,22 @@
+[all]
+rbf jtcps1p5
+alt _alt/Warriors of Fate
+frac 2 gfx 4
+ignore aboardplds bboardplds cboardplds dboardplds
+header 64 0xff
+header-offset 0 audiocpu qsound gfx
+header-offset-bits 10
+header-offset-reverse
+header-pointer 16
+header-data FF FF
+header-data FF FF FF FF
+header-data 22 24 26 28 2a 2c 10 08 04 00
+header-data 25
+# mapper_offset.py 8000 8000 0 0
+header-data 40 88 73 FF
+header-pointer 48
+header-data 01 23 45 67 54 16 30 72 51 51 51
+
+[wofr1|wofa]
+header-pointer 16
+header-data 32 FF 00 02 04 06

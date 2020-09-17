@@ -16,7 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
     
-`timescale 1ns/1ps
 
 // A[22:20]   Usage
 // 000        OBJ
