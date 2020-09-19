@@ -67,6 +67,13 @@ module jtcps1_main(
     input    [7:0]     dipsw_a,
     input    [7:0]     dipsw_b,
     input    [7:0]     dipsw_c
+    // QSound
+    `ifdef CPS15
+    ,input      [ 7:0] qsound_dout,
+    output      [ 7:0] qsound_din,
+    output reg  [12:0] qsound_addr,
+    output reg         qsound_cs
+    `endif
 );
 
 wire [23:1] A;
@@ -78,11 +85,14 @@ wire        BERRn = 1'b1;
 
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
-reg         dbus_cs, io_cs, joy_cs, 
+reg         dbus_cs, io_cs, joy_cs,
             sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
+`ifdef CPS15
+reg         io15_cs, joy3_cs, joy4_cs, eeprom_cs;
+`endif
 
 assign cpu_cen   = cen10;
 // As RAM and VRAM share contiguous spaces in the SDRAM
@@ -130,15 +140,31 @@ always @(posedge clk, posedge rst) begin
         one_wait    <= 1'b0;
         dial_cs     <= 1'b0;
         rom_addr    <= 21'd0;
+        `ifdef CPS15
+        io15_cs     <= 0;
+        joy3_cs     <= 0;
+        joy4_cs     <= 0;
+        eeprom_cs   <= 0;
+        qsound_cs   <= 0;
+        qsound_addr <= 13'd0;
+        `endif
+
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
             one_wait    <= A[23] | ~A[22];
             dbus_cs     <= ~|A[23:18]; // all must be zero
-            pre_ram_cs  <= &A[23:18];
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             io_cs       <= A[23:20] == 4'b1000;
             rom_cs      <= A[23:22] == 2'b00;
+            `ifdef CPS15
+            io15_cs     <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
+            pre_ram_cs  <= &A[23:17];
+            qsound_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
+            qsound_addr <= A[13:1];
+            `else
+            pre_ram_cs  <= &A[23:18];
+            `endif
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
                 ppu2_cs  <= A[8:6] == 3'b101 /* 'h14x */ || A[8:6] == 3'b111; /* 'h1Cx */
@@ -148,10 +174,20 @@ always @(posedge clk, posedge rst) begin
                     sys_cs  <= A[8:3] == 6'b0_0001_1; // 0x800018
                 end else begin // outputs
                     olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
+                    `ifndef CPS15
                     snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
                     snd0_cs   <= !LDSWn && A[8:3]==6'b11_0000;
+                    `endif
                 end
             end
+            `ifdef CPS15
+            if( io15_cs ) begin
+                joy3_cs   <= A[3:2]==2'd0;
+                joy4_cs   <= A[3:2]==2'd1;
+                // coin2_cs   <= A[3:2]==2'd2;
+                eeprom_cs <= A[3:2]==2'd3;
+            end
+            `endif
         end else begin
             rom_addr    <= last_fail[20:0]; // this is a trick so the compiler
                 // won't get rid of last_fail, as I need to see it in signal tap
@@ -169,6 +205,12 @@ always @(posedge clk, posedge rst) begin
             ppu2_cs     <= 1'b0;
             one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
+            `ifdef CPS15
+            io15_cs     <= 0;
+            eeprom_cs   <= 0;
+            joy3_cs     <= 0;
+            joy4_cs     <= 0;
+            `endif
         end
     end
 end
@@ -255,7 +297,7 @@ always @(posedge clk) begin
     if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
     else if(sys_cs) begin
         case( A[2:1] )
-            2'b00: sys_data <= 
+            2'b00: sys_data <=
             charger ? // Support for SFZ charger version
               { joystick2[9], joystick1[9], start_button,
                1'b1, service, joystick2[8], joystick1[8], 8'hff }
@@ -313,7 +355,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
     end else /*if(cen10b)*/ begin
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn ) begin // for falling edge of ASn
-            DTACKn <= 1'b1; 
+            DTACKn <= 1'b1;
             wait_cycles <= 3'b111;
         end else if( !ASn  ) begin
             // The original hardware always waits for 250ns
@@ -353,7 +395,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             last_fail <= fail_cnt;
         end
     end
-end 
+end
 
 `ifdef REPORT_DELAY
 // Note that the data for the first frame may be wrong because

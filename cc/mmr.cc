@@ -516,7 +516,7 @@ void dump_orientation( stringstream& mra, game_entry* game, bool joy4way ) {
     mra << "\n    <!-- Set bit 1 for vertical games.\n"
            "         Set bit 2 for games using 4-way joysticks -->\n";
     mra << "    <rom index=\"1\"><part> ";
-    int core_mod = 0;    
+    int core_mod = 0;
     if( game->orientation==ROT270 ) core_mod |= 1;
     if( joy4way ) core_mod |= 2;
     mra << hex << setfill('0') << setw(2) << core_mod;
@@ -591,7 +591,7 @@ void replace( string& aux, const char *f, const char *r ) {
     int x;
     while( (x = aux.find(f)) != string::npos  )
         aux.replace( x, strlen(f), r );
-} 
+}
 
 
 void parse_dips( stringstream& mras, Game* dip_info, bool skip_coins ) {
@@ -704,7 +704,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             joy4way  = true;
             break;
     }
-    if( game->name=="ghouls" || game->parent == "ghouls" || 
+    if( game->name=="ghouls" || game->parent == "ghouls" ||
         game->name=="daimakai" || game->parent == "daimakai" ||
         game->name=="daimakair" || game->parent == "daimakair" )
         joy4way = true;
@@ -877,7 +877,7 @@ int main(int argc, char *argv[]) {
     if( mapper ) {
         // Dump Mappers
         string all_mappers;
-        ofstream fout("../ver/video/mappers.inc");
+        ofstream fout("../cores/cps1/ver/video/mappers.inc");
         int done[100];
         for(int k=0; k<100; k++) done[k]=0;
         for( const CPS1config* x = cps1_config_table; x->name != nullptr; x++ ) {

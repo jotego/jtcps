@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 // This module represents the register logic of both CPS-A and CPS-B chips
 
@@ -96,16 +96,16 @@ module jtcps1_mmr(
 parameter REGSIZE=24; // This is defined at _game level
 reg [8*REGSIZE-1:0] regs;
 
-wire [5:1] addr_id,      
-           addr_mult1,   
-           addr_mult2,   
-           addr_rslt0,   
-           addr_rslt1,   
-           addr_layer,   
-           addr_prio0,   
-           addr_prio1,   
-           addr_prio2,   
-           addr_prio3,   
+wire [5:1] addr_id,
+           addr_mult1,
+           addr_mult2,
+           addr_rslt0,
+           addr_rslt1,
+           addr_layer,
+           addr_prio0,
+           addr_prio1,
+           addr_prio2,
+           addr_prio3,
            addr_pal_page,
            addr_in2,
            addr_in3;
@@ -115,16 +115,16 @@ wire [12:0] addrb = {
            addr == addr_in2 && addr_in2!=5'h0,     // 11
            addr == addr_pal_page,// 10
            // priority masks cannot be modified if the address is all '1
-           addr == addr_prio3 && addr_prio3!=5'h1f,   // 9  
-           addr == addr_prio2 && addr_prio2!=5'h1f,   // 8  
-           addr == addr_prio1 && addr_prio1!=5'h1f,   // 7  
-           addr == addr_prio0 && addr_prio0!=5'h1f,   // 6  
-           addr == addr_layer,   // 5  
+           addr == addr_prio3 && addr_prio3!=5'h1f,   // 9
+           addr == addr_prio2 && addr_prio2!=5'h1f,   // 8
+           addr == addr_prio1 && addr_prio1!=5'h1f,   // 7
+           addr == addr_prio0 && addr_prio0!=5'h1f,   // 6
+           addr == addr_layer,   // 5
            // multiply registers only valid if different from '1
-           addr == addr_rslt1 && addr_rslt1!=5'h1f,   // 4  
-           addr == addr_rslt0 && addr_rslt0!=5'h1f,   // 3  
+           addr == addr_rslt1 && addr_rslt1!=5'h1f,   // 4
+           addr == addr_rslt0 && addr_rslt0!=5'h1f,   // 3
            addr == addr_mult2 && addr_mult2!=5'h1f,   // 2
-           addr == addr_mult1 && addr_mult1!=5'h1f,   // 1   
+           addr == addr_mult1 && addr_mult1!=5'h1f,   // 1
            addr == addr_id       // 0
         };
 
@@ -217,7 +217,7 @@ end
         //{{16{8'b0}}} }
     // Ffight  FF F7 44 40 07
     // Ghouls  F1 17 65 40 0A
-    // Strider FF 77 00 40 1D 
+    // Strider FF 77 00 40 1D
     `endif
 `endif
 
@@ -256,7 +256,7 @@ reg [15:0] mmr_regs[0:19];
 integer aux;
 initial begin
     $display("Layer control address: %X", `MMR(6) );
-    $display("Palette page  address: %X", `MMR(11));    
+    $display("Palette page  address: %X", `MMR(11));
     $display("INFO: MMR initial values read from %s", `MMR_FILE );
     // clear the content in case the MMR file does not
     // contain values for all
@@ -392,7 +392,7 @@ always @(posedge clk, posedge reg_rst) begin
     end
 end
 
-// EEPROM used by Pang 3
+// EEPROM used by Pang 3 and QSound games
 jt9346 u_eeprom(
     .clk    ( clk       ),  // system clock
     .rst    ( rst       ),  // system reset

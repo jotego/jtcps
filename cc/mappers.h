@@ -958,7 +958,7 @@ const gfx_range* all_mappers[] = {
     mapper_ST24M1_table,
     mapper_STF29_table,
     mapper_TK22B_table,
-    mapper_TK263B_table,
+    mapper_TK263B_table, // 37 WOF
     mapper_TN2292_table, //38
     mapper_VA22B_table,
     mapper_VA63B_table,
