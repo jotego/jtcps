@@ -73,6 +73,18 @@ This will produce the mister file.
 
 MiST and SiDi compilations produce STA clean files with the default seed. However the MiSTer RBF file with everything enabled doesn't always come STA clean. If you disable HDMI or sound during compilation the RBF file will normally be STA clean. Public binary distribution in [jtbin](https://github.com/jotego/jtbin) are either STA clean or violations are below 99ps.
 
+# SDRAM Usage
+
+## CPS 1.5
+
+Game                  | CPU     |   Z80       | GFX     | Q-Sound |
+----------------------|---------|-------------|---------|---------|
+Warriors of Fate      | 1   MB  |  128 kB     | 4 MB    | 2 MB    |
+Cadillacs & Dinosaurs | 1.5 MB  |  128 kB     | 4 MB    | 2 MB    |
+The Punisher          | 1.5 MB  |  128 kB     | 4 MB    | 2 MB    |
+S.N. Slam Masters     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
+Muscle Bomber Duo     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
+
 # Simulation
 
 ## Game

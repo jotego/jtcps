@@ -1,0 +1,482 @@
+<mame>
+	<machine name="dino" sourcefile="cps1.cpp">
+		<description>Cadillacs and Dinosaurs (World 930201)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cde_23a.8f" size="524288" crc="8f4e585e" sha1="55ecba3652066cdafad140c4524b1fc81228e69b" region="maincpu" offset="0"/>
+		<rom name="cde_22a.7f" size="524288" crc="9278aa12" sha1="58cbbd53a98abe640ccb233f8dbd8ca6d63475e7" region="maincpu" offset="80000"/>
+		<rom name="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinoa" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Cadillacs and Dinosaurs (Asia TW 930223)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cdt_23.8f" size="524288" crc="f477f7a0" sha1="bad4979093ced8ae09273454c80de704b798e590" region="maincpu" offset="0"/>
+		<rom name="cdt_22.7f" size="524288" crc="1e534ca5" sha1="8233a1a5de2a1fdd2b1c2b8616eda29db4be725a" region="maincpu" offset="80000"/>
+		<rom name="cdt_21.6f" size="524288" crc="74b04329" sha1="138db4749acfb922bb31023cc0203df40e467fba" region="maincpu" offset="100000"/>
+		<rom name="cd-1m.3a" merge="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd-3m.5a" merge="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd-2m.4a" merge="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd-4m.6a" merge="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd-5m.7a" merge="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd-7m.9a" merge="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd-6m.8a" merge="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd-8m.10a" merge="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" merge="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" merge="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" merge="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" merge="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" merge="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" merge="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinohunt" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Dinosaur Hunter (Chinese bootleg of Cadillacs and Dinosaurs)</description>
+		<year>1993</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="u23" size="524288" crc="8d5ddc5d" sha1="3ed1da71d73425308d0c3ac1a01a7242e60b6677" region="maincpu" offset="0"/>
+		<rom name="u22" size="524288" crc="f72cd219" sha1="a3f580bd328b54d2546ae7e94262c1a706d27172" region="maincpu" offset="80000"/>
+		<rom name="u21" size="524288" crc="bc275b76" sha1="1f7f7533b4ccb511dc479f531d9d6740d3ca6712" region="maincpu" offset="100000"/>
+		<rom name="u20" size="524288" crc="8987c975" sha1="3fd856805d627f855f72acc7aacc2e8ecf0f12bd" region="maincpu" offset="180000"/>
+		<rom name="u1" size="524288" crc="a01a9fb5" sha1="d1ab4c7ead04932c60923363a0a661d0d1472aaa" region="gfx" offset="0"/>
+		<rom name="u2" size="524288" crc="bdf02c17" sha1="046ba4c589a22a7ac65c86baaae18eff0bff6ecb" region="gfx" offset="2"/>
+		<rom name="u3" size="524288" crc="058beefa" sha1="0d09ab5a200643b5a16e0313228f7ea243752bd0" region="gfx" offset="4"/>
+		<rom name="u4" size="524288" crc="5028a9f1" sha1="ff3a988153860e76beb79918ad896e702c3ecd3d" region="gfx" offset="6"/>
+		<rom name="u5" size="524288" crc="d77f89ea" sha1="1dd8c2a18742fd8483ecade31aed384c686ed244" region="gfx" offset="200000"/>
+		<rom name="u6" size="524288" crc="bfbcb034" sha1="c1eb4d420b10ffa05197d9a82c7adac4d265c546" region="gfx" offset="200002"/>
+		<rom name="u7" size="524288" crc="a2544d4e" sha1="def704055e041bc7c3b8cf7977249b69aa7924a8" region="gfx" offset="200004"/>
+		<rom name="u8" size="524288" crc="8869bbb1" sha1="e53f77baffb913bf3ef5396d84fbfbaec6a90ca2" region="gfx" offset="200006"/>
+		<rom name="u9" size="65536" crc="2eb16a83" sha1="067ea0bfc2c1e73520d6b836c72fbb9da9998311" region="audiocpu" offset="0"/>
+		<rom name="u18" size="131072" crc="8d2899ba" sha1="0b3ac6cf2ce0323e3bfc9da3ebfcb0fd14bc405b" region="oki" offset="0"/>
+		<rom name="u19" size="131072" crc="b34a4b42" sha1="3eeb9e33bb911359e03d44949ac58439a3d3d54b" region="oki" offset="20000"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="speaker"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2151"/>
+		<device_ref name="okim6295"/>
+		<device_ref name="93c46_8"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="3579545"/>
+		<chip type="audio" tag="mono" name="Speaker"/>
+		<chip type="audio" tag="2151" name="Yamaha YM2151 OPM" clock="3579545"/>
+		<chip type="audio" tag="oki" name="OKI MSM6295 ADPCM" clock="1000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="1"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="3" ways="8"/>
+			<control type="joy" player="2" buttons="3" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Coinage" tag="DSWA" mask="7">
+			<diplocation name="SW(A)" number="1"/>
+			<diplocation name="SW(A)" number="2"/>
+			<diplocation name="SW(A)" number="3"/>
+			<dipvalue name="4 Coins/1 Credit" value="0"/>
+			<dipvalue name="3 Coins/1 Credit" value="1"/>
+			<dipvalue name="2 Coins/1 Credit" value="2"/>
+			<dipvalue name="1 Coin/1 Credit" value="7" default="yes"/>
+			<dipvalue name="1 Coin/2 Credits" value="6"/>
+			<dipvalue name="1 Coin/3 Credits" value="5"/>
+			<dipvalue name="1 Coin/4 Credits" value="4"/>
+			<dipvalue name="1 Coin/6 Credits" value="3"/>
+		</dipswitch>
+		<dipswitch name="Coin Slots" tag="DSWA" mask="8">
+			<diplocation name="SW(B)" number="4"/>
+			<dipvalue name="1" value="0"/>
+			<dipvalue name="3" value="8" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Play Mode" tag="DSWA" mask="16">
+			<diplocation name="SW(B)" number="5"/>
+			<dipvalue name="2 Players" value="0"/>
+			<dipvalue name="3 Players" value="16" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWA" mask="32">
+			<diplocation name="SW(A)" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="2 Coins to Start, 1 to Continue" tag="DSWA" mask="64">
+			<diplocation name="SW(A)" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWA" mask="128">
+			<diplocation name="SW(A)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Difficulty Level 1" tag="DSWB" mask="7">
+			<diplocation name="SW(B)" number="1"/>
+			<diplocation name="SW(B)" number="2"/>
+			<diplocation name="SW(B)" number="3"/>
+			<dipvalue name="Easiest" value="7"/>
+			<dipvalue name="Easier" value="6"/>
+			<dipvalue name="Easy" value="5"/>
+			<dipvalue name="Normal" value="4" default="yes"/>
+			<dipvalue name="Medium" value="3"/>
+			<dipvalue name="Hard" value="2"/>
+			<dipvalue name="Harder" value="1"/>
+			<dipvalue name="Hardest" value="0"/>
+		</dipswitch>
+		<dipswitch name="Difficulty Level 2" tag="DSWB" mask="24">
+			<diplocation name="SW(B)" number="4"/>
+			<diplocation name="SW(B)" number="5"/>
+			<dipvalue name="Easy" value="24"/>
+			<dipvalue name="Normal" value="16" default="yes"/>
+			<dipvalue name="Hard" value="8"/>
+			<dipvalue name="Hardest" value="0"/>
+		</dipswitch>
+		<dipswitch name="Bonus Life" tag="DSWB" mask="96">
+			<diplocation name="SW(B)" number="6"/>
+			<diplocation name="SW(B)" number="7"/>
+			<dipvalue name="300k and 700k" value="96"/>
+			<dipvalue name="500k and 1000k" value="64" default="yes"/>
+			<dipvalue name="1000k" value="32"/>
+			<dipvalue name="None" value="0"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWB" mask="128">
+			<diplocation name="SW(B)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Lives" tag="DSWC" mask="3">
+			<diplocation name="SW(C)" number="1"/>
+			<diplocation name="SW(C)" number="2"/>
+			<dipvalue name="4" value="0"/>
+			<dipvalue name="3" value="1"/>
+			<dipvalue name="2" value="2" default="yes"/>
+			<dipvalue name="1" value="3"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSWC" mask="4">
+			<diplocation name="SW(C)" number="3"/>
+			<dipvalue name="Off" value="4" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<diplocation name="SW(C)" number="4"/>
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Flip Screen" tag="DSWC" mask="16">
+			<diplocation name="SW(C)" number="5"/>
+			<dipvalue name="Off" value="16" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Demo Sounds" tag="DSWC" mask="32">
+			<diplocation name="SW(C)" number="6"/>
+			<dipvalue name="Off" value="32"/>
+			<dipvalue name="On" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Allow Continue" tag="DSWC" mask="64">
+			<diplocation name="SW(C)" number="7"/>
+			<dipvalue name="No" value="64"/>
+			<dipvalue name="Yes" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Game Mode" tag="DSWC" mask="128">
+			<diplocation name="SW(C)" number="8"/>
+			<dipvalue name="Game" value="128" default="yes"/>
+			<dipvalue name="Test" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinoj" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Cadillacs: Kyouryuu Shin Seiki (Japan 930201)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cdj_23a.8f" size="524288" crc="5f3ece96" sha1="33ffb08ff8c5d3bfb2fa17fa00f254da2fc61f44" region="maincpu" offset="0"/>
+		<rom name="cdj_22a.7f" size="524288" crc="a0d8de29" sha1="79d916f181804b6176581efe2a1b7f210ec79c07" region="maincpu" offset="80000"/>
+		<rom name="cdj_21a.6f" merge="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd_01.3a" merge="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd_02.4a" merge="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd_03.5a" merge="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd_04.6a" merge="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd_05.7a" merge="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd_06.8a" merge="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd_07.9a" merge="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd_08.10a" merge="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" merge="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" merge="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" merge="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" merge="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" merge="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" merge="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinou" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Cadillacs and Dinosaurs (USA 930201)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cdu_23a.8f" size="524288" crc="7c2543cd" sha1="6b7a90392fe4c31b2d57620b0ddcb3412401efc3" region="maincpu" offset="0"/>
+		<rom name="cdu_22a.7f" size="524288" crc="d19f981e" sha1="acb951caba3867c21149286185b94beb37721bd2" region="maincpu" offset="80000"/>
+		<rom name="cdu_21a.6f" merge="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd-1m.3a" merge="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd-3m.5a" merge="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd-2m.4a" merge="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd-4m.6a" merge="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd-5m.7a" merge="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd-7m.9a" merge="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd-6m.8a" merge="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd-8m.10a" merge="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" merge="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" merge="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" merge="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" merge="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" merge="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" merge="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+</mame>

@@ -1,0 +1,457 @@
+<mame>
+	<machine name="punisher" sourcefile="cps1.cpp">
+		<description>The Punisher (World 930422)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="pse_26.11e" size="131072" crc="389a99d2" sha1="e97f4225554e4603cb0e3edd296a90bb2e467ca7" region="maincpu" offset="0"/>
+		<rom name="pse_30.11f" size="131072" crc="68fb06ac" sha1="189e25ca7e4aaa80492c03ce06696952cc1b1553" region="maincpu" offset="1"/>
+		<rom name="pse_27.12e" size="131072" crc="3eb181c3" sha1="a2442449f4bbe3be03d2be7d4e2cbb69f9741dac" region="maincpu" offset="40000"/>
+		<rom name="pse_31.12f" size="131072" crc="37108e7b" sha1="78aaa6e2913e6b1b852b39416557ac4a394d7d8b" region="maincpu" offset="40001"/>
+		<rom name="pse_24.9e" size="131072" crc="0f434414" sha1="aaacf835a93551fc792571d6e824a01f3c5d4469" region="maincpu" offset="80000"/>
+		<rom name="pse_28.9f" size="131072" crc="b732345d" sha1="472d84f846e9f73f129562d78352376194e0211e" region="maincpu" offset="80001"/>
+		<rom name="pse_25.10e" size="131072" crc="b77102e2" sha1="2e39b2c2c0eed5ca2320a57e69bcf377f809a20c" region="maincpu" offset="c0000"/>
+		<rom name="pse_29.10f" size="131072" crc="ec037bce" sha1="f86e7feb63d7662a38048e6d51d7b5a69dafaffb" region="maincpu" offset="c0001"/>
+		<rom name="ps_21.6f" size="524288" crc="8affa5a9" sha1="268760b83b1723ff50a019ec51ef7af2e49935bf" region="maincpu" offset="100000"/>
+		<rom name="ps-1m.3a" size="524288" crc="77b7ccab" sha1="e08e5d55a79e4c0c8ca819d6d7d2a14f753c6ec3" region="gfx" offset="0"/>
+		<rom name="ps-3m.5a" size="524288" crc="0122720b" sha1="5f0d3097e097f64106048156fbb0d343fe78fffa" region="gfx" offset="2"/>
+		<rom name="ps-2m.4a" size="524288" crc="64fa58d4" sha1="d4a774285ed15273195b6b26d2965ce370e54e73" region="gfx" offset="4"/>
+		<rom name="ps-4m.6a" size="524288" crc="60da42c8" sha1="95eec4a58d9628a2d9764951dd8dc11e4860a899" region="gfx" offset="6"/>
+		<rom name="ps-5m.7a" size="524288" crc="c54ea839" sha1="0733f37329edd9d0cace1319a7544b40aa7ecb0b" region="gfx" offset="200000"/>
+		<rom name="ps-7m.9a" size="524288" crc="04c5acbd" sha1="fddc94b0f36d4d22d7c357856ae15b7514c342d3" region="gfx" offset="200002"/>
+		<rom name="ps-6m.8a" size="524288" crc="a544f4cc" sha1="9552df8934ba25f19a22f2e07783712d8c8ef03c" region="gfx" offset="200004"/>
+		<rom name="ps-8m.10a" size="524288" crc="8f02f436" sha1="a2f0ebb7e9593469c7b843f8962a66f3d77f79e5" region="gfx" offset="200006"/>
+		<rom name="ps_q.5k" size="131072" crc="49ff4446" sha1="87af12f87a940a6c5428b4574ad44a4b54867bc3" region="audiocpu" offset="0"/>
+		<rom name="ps-q1.1k" size="524288" crc="31fd8726" sha1="1d73a76682e9fb908db0c55b9a18163f7539fea1" region="qsound" offset="0"/>
+		<rom name="ps-q2.2k" size="524288" crc="980a9eef" sha1="36571381f349bc726508a7e618ba1c635ec9d271" region="qsound" offset="80000"/>
+		<rom name="ps-q3.3k" size="524288" crc="0dd44491" sha1="903cea1d7f3120545ea3229d30fbd687d11ad68f" region="qsound" offset="100000"/>
+		<rom name="ps-q4.4k" size="524288" crc="bed42f03" sha1="21302f7e75f9c795392a3b34e16a959fc5f6e4e9" region="qsound" offset="180000"/>
+		<rom name="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="ps63b.1a" size="279" crc="03a758b0" sha1="f0035f0dac927af50e21f5c57b7b4462856aa50c" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="punisherbz" sourcefile="cps1.cpp" cloneof="punisher" romof="punisher">
+		<description>Biaofeng Zhanjing (Chinese bootleg of The Punisher)</description>
+		<year>1993</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="23.096" size="524288" crc="bfa45d23" sha1="56d04d02c9b9b22603205b1ce9e376874d2eaa05" region="maincpu" offset="0"/>
+		<rom name="22.096" size="524288" crc="092578a4" sha1="c3c8f98f8b8fc9c71b33fb906b4c591067b4355b" region="maincpu" offset="80000"/>
+		<rom name="21.096" size="524288" crc="d21ccddb" sha1="295c886cd14ee54e12acfe3f1e8f13513442c8c0" region="maincpu" offset="100000"/>
+		<rom name="20.096" size="524288" crc="f9f334ce" sha1="22e58ce5096b95138a30e9726e1169895118e990" region="maincpu" offset="180000"/>
+		<rom name="1.096" size="524288" crc="ad468e07" sha1="1ee8ecfd001b447982bc16972575eb2c5e01bc51" region="gfx" offset="0"/>
+		<rom name="2.096" size="524288" crc="b9fdb6b5" sha1="991fe0ded5c859f1e25766e9417e1ad691205e59" region="gfx" offset="2"/>
+		<rom name="3.096" size="524288" crc="be0b1a78" sha1="d002bd90d0f239d29f5ea481e455d85a1c088516" region="gfx" offset="4"/>
+		<rom name="4.096" size="524288" crc="bba67a43" sha1="9cd51a06a7661b2f78059ac392423f73de5cf56f" region="gfx" offset="6"/>
+		<rom name="ps_gfx5.rom" merge="ps-5m.7a" size="524288" crc="c54ea839" sha1="0733f37329edd9d0cace1319a7544b40aa7ecb0b" region="gfx" offset="200000"/>
+		<rom name="ps_gfx7.rom" merge="ps-7m.9a" size="524288" crc="04c5acbd" sha1="fddc94b0f36d4d22d7c357856ae15b7514c342d3" region="gfx" offset="200002"/>
+		<rom name="ps_gfx6.rom" merge="ps-6m.8a" size="524288" crc="a544f4cc" sha1="9552df8934ba25f19a22f2e07783712d8c8ef03c" region="gfx" offset="200004"/>
+		<rom name="ps_gfx8.rom" merge="ps-8m.10a" size="524288" crc="8f02f436" sha1="a2f0ebb7e9593469c7b843f8962a66f3d77f79e5" region="gfx" offset="200006"/>
+		<rom name="9.512" size="65536" crc="b8367eb5" sha1="ec3db29fdd6200e9a8f4f8073a7e34aef731354f" region="audiocpu" offset="0"/>
+		<rom name="18.010" size="131072" crc="375c66e7" sha1="36189e23209ce4ae5d9cbabd1574540d0591e7b3" region="oki" offset="0"/>
+		<rom name="19.010" size="131072" crc="eb5ca884" sha1="3592c69f77c7cd6ee241d6c1079c34a3e58abb5b" region="oki" offset="20000"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="speaker"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2151"/>
+		<device_ref name="okim6295"/>
+		<device_ref name="93c46_8"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="3579545"/>
+		<chip type="audio" tag="mono" name="Speaker"/>
+		<chip type="audio" tag="2151" name="Yamaha YM2151 OPM" clock="3579545"/>
+		<chip type="audio" tag="oki" name="OKI MSM6295 ADPCM" clock="1000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="1"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="3" ways="8"/>
+			<control type="joy" player="2" buttons="3" ways="8"/>
+		</input>
+		<dipswitch name="Coinage" tag="DSWA" mask="7">
+			<diplocation name="SW(A)" number="1"/>
+			<diplocation name="SW(A)" number="2"/>
+			<diplocation name="SW(A)" number="3"/>
+			<dipvalue name="4 Coins/1 Credit" value="0"/>
+			<dipvalue name="3 Coins/1 Credit" value="1"/>
+			<dipvalue name="2 Coins/1 Credit" value="2"/>
+			<dipvalue name="1 Coin/1 Credit" value="7" default="yes"/>
+			<dipvalue name="1 Coin/2 Credits" value="6"/>
+			<dipvalue name="1 Coin/3 Credits" value="5"/>
+			<dipvalue name="1 Coin/4 Credits" value="4"/>
+			<dipvalue name="1 Coin/6 Credits" value="3"/>
+		</dipswitch>
+		<dipswitch name="2 Coins to Start, 1 to Continue" tag="DSWA" mask="8">
+			<diplocation name="SW(A)" number="4"/>
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Lives" tag="DSWA" mask="48">
+			<diplocation name="SW(A)" number="5"/>
+			<diplocation name="SW(A)" number="6"/>
+			<dipvalue name="1" value="48"/>
+			<dipvalue name="2" value="32" default="yes"/>
+			<dipvalue name="3" value="16"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="Sound" tag="DSWA" mask="64">
+			<diplocation name="SW(A)" number="7"/>
+			<dipvalue name="Q Sound" value="64" default="yes"/>
+			<dipvalue name="Monaural" value="0"/>
+		</dipswitch>
+		<dipswitch name="Flip Screen" tag="DSWA" mask="128">
+			<diplocation name="SW(A)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Difficulty" tag="DSWB" mask="7">
+			<diplocation name="SW(B)" number="1"/>
+			<diplocation name="SW(B)" number="2"/>
+			<diplocation name="SW(B)" number="3"/>
+			<dipvalue name="Extra Easy" value="7"/>
+			<dipvalue name="Very Easy" value="6"/>
+			<dipvalue name="Easy" value="5"/>
+			<dipvalue name="Normal" value="4" default="yes"/>
+			<dipvalue name="Hard" value="3"/>
+			<dipvalue name="Very Hard" value="2"/>
+			<dipvalue name="Extra Hard" value="1"/>
+			<dipvalue name="Hardest" value="0"/>
+		</dipswitch>
+		<dipswitch name="Extend" tag="DSWB" mask="24">
+			<diplocation name="SW(B)" number="4"/>
+			<diplocation name="SW(B)" number="5"/>
+			<dipvalue name="800000" value="24"/>
+			<dipvalue name="1800000" value="16" default="yes"/>
+			<dipvalue name="2800000" value="8"/>
+			<dipvalue name="No Extend" value="0"/>
+		</dipswitch>
+		<dipswitch name="Allow Continue" tag="DSWB" mask="32">
+			<diplocation name="SW(B)" number="6"/>
+			<dipvalue name="No" value="32"/>
+			<dipvalue name="Yes" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Demo Sounds" tag="DSWB" mask="64">
+			<diplocation name="SW(B)" number="7"/>
+			<dipvalue name="Off" value="64"/>
+			<dipvalue name="On" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Unknown" tag="DSWB" mask="128">
+			<diplocation name="SW(B)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="punisherh" sourcefile="cps1.cpp" cloneof="punisher" romof="punisher">
+		<description>The Punisher (Hispanic 930422)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="psh_26.11e" size="131072" crc="6ad2bb83" sha1="c1c5e8922af948955f53eb56d1b9902dd8944a71" region="maincpu" offset="0"/>
+		<rom name="psh_30.11f" size="131072" crc="058d3659" sha1="b3fad151f80e0cc21afff3ec00b7871f21d40437" region="maincpu" offset="1"/>
+		<rom name="psh_27.12e" size="131072" crc="579f4fd3" sha1="5459da68e844db6e6249186aa31fe71aa72d9ff4" region="maincpu" offset="40000"/>
+		<rom name="psh_31.12f" size="131072" crc="2c9f70b5" sha1="c5d89f37def4b9340a0325e616306f0e9e68ab13" region="maincpu" offset="40001"/>
+		<rom name="psh_24.9e" size="131072" crc="faa14841" sha1="d998f1cdfba3305eb1398909d4b07e7492dbdec0" region="maincpu" offset="80000"/>
+		<rom name="psh_28.9f" size="131072" crc="5c5b1f20" sha1="47ee27dc9849a69c54a5a0e269b20e61f17f34c0" region="maincpu" offset="80001"/>
+		<rom name="psh_25.10e" size="131072" crc="724fdfda" sha1="23d75e7864dfa0da8c2231785878fb05a5aac628" region="maincpu" offset="c0000"/>
+		<rom name="psh_29.10f" size="131072" crc="779cf901" sha1="6761edcf26084e44783f3eecd5822e50f1a099bd" region="maincpu" offset="c0001"/>
+		<rom name="ps_21.6f" merge="ps_21.6f" size="524288" crc="8affa5a9" sha1="268760b83b1723ff50a019ec51ef7af2e49935bf" region="maincpu" offset="100000"/>
+		<rom name="ps-1m.3a" merge="ps-1m.3a" size="524288" crc="77b7ccab" sha1="e08e5d55a79e4c0c8ca819d6d7d2a14f753c6ec3" region="gfx" offset="0"/>
+		<rom name="ps-3m.5a" merge="ps-3m.5a" size="524288" crc="0122720b" sha1="5f0d3097e097f64106048156fbb0d343fe78fffa" region="gfx" offset="2"/>
+		<rom name="ps-2m.4a" merge="ps-2m.4a" size="524288" crc="64fa58d4" sha1="d4a774285ed15273195b6b26d2965ce370e54e73" region="gfx" offset="4"/>
+		<rom name="ps-4m.6a" merge="ps-4m.6a" size="524288" crc="60da42c8" sha1="95eec4a58d9628a2d9764951dd8dc11e4860a899" region="gfx" offset="6"/>
+		<rom name="ps-5m.7a" merge="ps-5m.7a" size="524288" crc="c54ea839" sha1="0733f37329edd9d0cace1319a7544b40aa7ecb0b" region="gfx" offset="200000"/>
+		<rom name="ps-7m.9a" merge="ps-7m.9a" size="524288" crc="04c5acbd" sha1="fddc94b0f36d4d22d7c357856ae15b7514c342d3" region="gfx" offset="200002"/>
+		<rom name="ps-6m.8a" merge="ps-6m.8a" size="524288" crc="a544f4cc" sha1="9552df8934ba25f19a22f2e07783712d8c8ef03c" region="gfx" offset="200004"/>
+		<rom name="ps-8m.10a" merge="ps-8m.10a" size="524288" crc="8f02f436" sha1="a2f0ebb7e9593469c7b843f8962a66f3d77f79e5" region="gfx" offset="200006"/>
+		<rom name="ps_q.5k" merge="ps_q.5k" size="131072" crc="49ff4446" sha1="87af12f87a940a6c5428b4574ad44a4b54867bc3" region="audiocpu" offset="0"/>
+		<rom name="ps-q1.1k" merge="ps-q1.1k" size="524288" crc="31fd8726" sha1="1d73a76682e9fb908db0c55b9a18163f7539fea1" region="qsound" offset="0"/>
+		<rom name="ps-q2.2k" merge="ps-q2.2k" size="524288" crc="980a9eef" sha1="36571381f349bc726508a7e618ba1c635ec9d271" region="qsound" offset="80000"/>
+		<rom name="ps-q3.3k" merge="ps-q3.3k" size="524288" crc="0dd44491" sha1="903cea1d7f3120545ea3229d30fbd687d11ad68f" region="qsound" offset="100000"/>
+		<rom name="ps-q4.4k" merge="ps-q4.4k" size="524288" crc="bed42f03" sha1="21302f7e75f9c795392a3b34e16a959fc5f6e4e9" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="ps63b.1a" merge="ps63b.1a" size="279" crc="03a758b0" sha1="f0035f0dac927af50e21f5c57b7b4462856aa50c" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="punisherj" sourcefile="cps1.cpp" cloneof="punisher" romof="punisher">
+		<description>The Punisher (Japan 930422)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="psj_23.8f" size="524288" crc="6b2fda52" sha1="5f95a79b7b802609ae9ddd6641cc52610d428bf4" region="maincpu" offset="0"/>
+		<rom name="psj_22.7f" size="524288" crc="e01036bc" sha1="a01886014dabe8f9ab45619865c6bd9f27472eae" region="maincpu" offset="80000"/>
+		<rom name="psj_21.6f" merge="ps_21.6f" size="524288" crc="8affa5a9" sha1="268760b83b1723ff50a019ec51ef7af2e49935bf" region="maincpu" offset="100000"/>
+		<rom name="ps_01.3a" merge="ps-1m.3a" size="524288" crc="77b7ccab" sha1="e08e5d55a79e4c0c8ca819d6d7d2a14f753c6ec3" region="gfx" offset="0"/>
+		<rom name="ps_02.4a" merge="ps-3m.5a" size="524288" crc="0122720b" sha1="5f0d3097e097f64106048156fbb0d343fe78fffa" region="gfx" offset="2"/>
+		<rom name="ps_03.5a" merge="ps-2m.4a" size="524288" crc="64fa58d4" sha1="d4a774285ed15273195b6b26d2965ce370e54e73" region="gfx" offset="4"/>
+		<rom name="ps_04.6a" merge="ps-4m.6a" size="524288" crc="60da42c8" sha1="95eec4a58d9628a2d9764951dd8dc11e4860a899" region="gfx" offset="6"/>
+		<rom name="ps_05.7a" merge="ps-5m.7a" size="524288" crc="c54ea839" sha1="0733f37329edd9d0cace1319a7544b40aa7ecb0b" region="gfx" offset="200000"/>
+		<rom name="ps_06.8a" merge="ps-7m.9a" size="524288" crc="04c5acbd" sha1="fddc94b0f36d4d22d7c357856ae15b7514c342d3" region="gfx" offset="200002"/>
+		<rom name="ps_07.9a" merge="ps-6m.8a" size="524288" crc="a544f4cc" sha1="9552df8934ba25f19a22f2e07783712d8c8ef03c" region="gfx" offset="200004"/>
+		<rom name="ps_08.10a" merge="ps-8m.10a" size="524288" crc="8f02f436" sha1="a2f0ebb7e9593469c7b843f8962a66f3d77f79e5" region="gfx" offset="200006"/>
+		<rom name="ps_q.5k" merge="ps_q.5k" size="131072" crc="49ff4446" sha1="87af12f87a940a6c5428b4574ad44a4b54867bc3" region="audiocpu" offset="0"/>
+		<rom name="ps-q1.1k" merge="ps-q1.1k" size="524288" crc="31fd8726" sha1="1d73a76682e9fb908db0c55b9a18163f7539fea1" region="qsound" offset="0"/>
+		<rom name="ps-q2.2k" merge="ps-q2.2k" size="524288" crc="980a9eef" sha1="36571381f349bc726508a7e618ba1c635ec9d271" region="qsound" offset="80000"/>
+		<rom name="ps-q3.3k" merge="ps-q3.3k" size="524288" crc="0dd44491" sha1="903cea1d7f3120545ea3229d30fbd687d11ad68f" region="qsound" offset="100000"/>
+		<rom name="ps-q4.4k" merge="ps-q4.4k" size="524288" crc="bed42f03" sha1="21302f7e75f9c795392a3b34e16a959fc5f6e4e9" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="ps63b.1a" merge="ps63b.1a" size="279" crc="03a758b0" sha1="f0035f0dac927af50e21f5c57b7b4462856aa50c" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="punisheru" sourcefile="cps1.cpp" cloneof="punisher" romof="punisher">
+		<description>The Punisher (USA 930422)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="psu_26.11e" size="131072" crc="9236d121" sha1="52d5d00009f61089157319943cde8f1a1ed48ad4" region="maincpu" offset="0"/>
+		<rom name="psu_30.11f" size="131072" crc="8320e501" sha1="bb3b74135df9dd494a277a1bc3bef2917351203f" region="maincpu" offset="1"/>
+		<rom name="psu_27.12e" size="131072" crc="61c960a1" sha1="f8fe651283cc1f138d013cab65b833505de6df9f" region="maincpu" offset="40000"/>
+		<rom name="psu_31.12f" size="131072" crc="78d4c298" sha1="6e7fbaed9ad9230a6e5035c6eda64b2f1f83048c" region="maincpu" offset="40001"/>
+		<rom name="psu_24.9e" size="131072" crc="1cfecad7" sha1="f4dcf5066dc59507cece0c53ccc208e4323ae26f" region="maincpu" offset="80000"/>
+		<rom name="psu_28.9f" size="131072" crc="bdf921c1" sha1="89a6709756c7c32e7c888806f983ce5af61cfcef" region="maincpu" offset="80001"/>
+		<rom name="psu_25.10e" size="131072" crc="c51acc94" sha1="34ffd6392914e3e67d7d0804215bd1193846b554" region="maincpu" offset="c0000"/>
+		<rom name="psu_29.10f" size="131072" crc="52dce1ca" sha1="45277abe34feacdcaedaec56f513b7437d4260e9" region="maincpu" offset="c0001"/>
+		<rom name="ps_21.6f" merge="ps_21.6f" size="524288" crc="8affa5a9" sha1="268760b83b1723ff50a019ec51ef7af2e49935bf" region="maincpu" offset="100000"/>
+		<rom name="ps-1m.3a" merge="ps-1m.3a" size="524288" crc="77b7ccab" sha1="e08e5d55a79e4c0c8ca819d6d7d2a14f753c6ec3" region="gfx" offset="0"/>
+		<rom name="ps-3m.5a" merge="ps-3m.5a" size="524288" crc="0122720b" sha1="5f0d3097e097f64106048156fbb0d343fe78fffa" region="gfx" offset="2"/>
+		<rom name="ps-2m.4a" merge="ps-2m.4a" size="524288" crc="64fa58d4" sha1="d4a774285ed15273195b6b26d2965ce370e54e73" region="gfx" offset="4"/>
+		<rom name="ps-4m.6a" merge="ps-4m.6a" size="524288" crc="60da42c8" sha1="95eec4a58d9628a2d9764951dd8dc11e4860a899" region="gfx" offset="6"/>
+		<rom name="ps-5m.7a" merge="ps-5m.7a" size="524288" crc="c54ea839" sha1="0733f37329edd9d0cace1319a7544b40aa7ecb0b" region="gfx" offset="200000"/>
+		<rom name="ps-7m.9a" merge="ps-7m.9a" size="524288" crc="04c5acbd" sha1="fddc94b0f36d4d22d7c357856ae15b7514c342d3" region="gfx" offset="200002"/>
+		<rom name="ps-6m.8a" merge="ps-6m.8a" size="524288" crc="a544f4cc" sha1="9552df8934ba25f19a22f2e07783712d8c8ef03c" region="gfx" offset="200004"/>
+		<rom name="ps-8m.10a" merge="ps-8m.10a" size="524288" crc="8f02f436" sha1="a2f0ebb7e9593469c7b843f8962a66f3d77f79e5" region="gfx" offset="200006"/>
+		<rom name="ps_q.5k" merge="ps_q.5k" size="131072" crc="49ff4446" sha1="87af12f87a940a6c5428b4574ad44a4b54867bc3" region="audiocpu" offset="0"/>
+		<rom name="ps-q1.1k" merge="ps-q1.1k" size="524288" crc="31fd8726" sha1="1d73a76682e9fb908db0c55b9a18163f7539fea1" region="qsound" offset="0"/>
+		<rom name="ps-q2.2k" merge="ps-q2.2k" size="524288" crc="980a9eef" sha1="36571381f349bc726508a7e618ba1c635ec9d271" region="qsound" offset="80000"/>
+		<rom name="ps-q3.3k" merge="ps-q3.3k" size="524288" crc="0dd44491" sha1="903cea1d7f3120545ea3229d30fbd687d11ad68f" region="qsound" offset="100000"/>
+		<rom name="ps-q4.4k" merge="ps-q4.4k" size="524288" crc="bed42f03" sha1="21302f7e75f9c795392a3b34e16a959fc5f6e4e9" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="ps63b.1a" merge="ps63b.1a" size="279" crc="03a758b0" sha1="f0035f0dac927af50e21f5c57b7b4462856aa50c" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+</mame>

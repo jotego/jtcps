@@ -17,32 +17,31 @@
     Date: 28-1-2020 */
 
 module jtcps1_sound(
-    input           rst,
-    input           clk,
+    input                rst,
+    input                clk,
 
     // Interface with main CPU
-    input   [7:0]   snd_latch0,
-    input   [7:0]   snd_latch1,
-
-    input            enable_adpcm,
-    input            enable_fm,
+    input         [ 7:0] snd_latch0,
+    input         [ 7:0] snd_latch1,
+    input                enable_adpcm,
+    input                enable_fm,
 
     // ROM
-    output  reg [15:0]  rom_addr,
-    output  reg         rom_cs,
-    input       [ 7:0]  rom_data,
-    input               rom_ok,
+    output    reg [15:0] rom_addr,
+    output    reg        rom_cs,
+    input         [ 7:0] rom_data,
+    input                rom_ok,
 
     // ADPCM ROM
-    output      [17:0]       adpcm_addr,
-    output                   adpcm_cs,
-    input       [ 7:0]       adpcm_data,
-    input                    adpcm_ok,
+    output        [17:0] adpcm_addr,
+    output               adpcm_cs,
+    input         [ 7:0] adpcm_data,
+    input                adpcm_ok,
 
     // Sound output
-    output     signed [15:0] left,
-    output     signed [15:0] right,
-    output                   sample
+    output signed [15:0] left,
+    output signed [15:0] right,
+    output               sample
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;

@@ -13,3 +13,6 @@
 [submodule "modules/jteeprom"]
 	path = modules/jteeprom
 	url = https://github.com/jotego/jteeprom.git
+[submodule "modules/jtdsp16"]
+	path = modules/jtdsp16
+	url = git@github.com:jotego/jtdsp16.git
