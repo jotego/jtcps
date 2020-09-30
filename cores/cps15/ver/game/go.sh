@@ -9,9 +9,10 @@
 # Boot up fails around frame 3220
 
 
-GAME=ghouls
+GAME=wof
 PATCH=
 OTHER=
+GOOD=0
 
 while [ $# -gt 0 ]; do
     case $1 in
@@ -21,6 +22,18 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+for i in wof wofa wofj wofu dino dinoa dinohunt dinoj dinou punisher punisherbz punisherh punisherj punisheru mbomberj slammast slammastu mbombrd mbombrdj; do
+    if [ $GAME = $i ]; then
+        GOOD=1
+        break
+    fi
+done
+
+if [ $GOOD = 0 ]; then
+    echo "The specified game is not a CPS 1.5 title"
+    exit 1
+fi
 
 if [ ! -e rom2hex ]; then
     g++ rom2hex.cc -o rom2hex || exit $?
@@ -58,7 +71,7 @@ fi
 # Generic simulation script from JTFRAME
 echo "Game ROM length: " $GAME_ROM_LEN
 ../../modules/jtframe/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
-    -sysname cps1  \
+    -sysname cps15 \
     -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1 \
     -d BUTTONS=6 -d JTFRAME_4PLAYERS -d JTFRAME_SDRAM_BANKS\
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \

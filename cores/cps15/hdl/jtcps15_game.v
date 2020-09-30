@@ -127,12 +127,15 @@ wire        rom0_half, rom1_half;
 wire        cfg_we;
 wire [21:0] gfx0_addr, gfx1_addr;
 
-// QSound
-// Decode keys
+// QSound - Decode keys
 wire [31:0] swap_key1;
 wire [31:0] swap_key2;
 wire [15:0] addr_key;
 wire [ 7:0] xor_key;
+
+// EEPROM
+wire        sclk, sdi, sdo, scs;
+
 
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
@@ -309,7 +312,12 @@ jtcps1_main u_main(
     .dip_test    ( dip_test         ),
     .dipsw_a     ( dipsw_a          ),
     .dipsw_b     ( dipsw_b          ),
-    .dipsw_c     ( dipsw_c          )
+    .dipsw_c     ( dipsw_c          ),
+    // EEPROM
+    .eeprom_sclk ( sclk             ),
+    .eeprom_sdi  ( sdi              ),
+    .eeprom_sdo  ( sdo              ),
+    .eeprom_scs  ( scs              )
 );
 `else
 assign ram_addr = 17'd0;
@@ -318,7 +326,21 @@ assign main_vram_cs = 1'b0;
 assign main_rom_cs = 1'b0;
 assign dsn = 2'b11;
 assign main_rnw = 1'b1;
+assign sclk = 0;
+assign sdo  = 0;
+assign scs  = 0;
 `endif
+
+// EEPROM to save game settings
+jt9346 u_eeprom(
+    .clk    ( clk       ),  // system clock
+    .rst    ( rst       ),  // system reset
+    // chip interface
+    .sclk   ( sclk      ),  // serial clock
+    .sdi    ( sdi       ),  // serial data in
+    .sdo    ( sdo       ),  // serial data out and ready/not busy signal
+    .scs    ( scs       )   // chip select, active high. Goes low in between instructions
+);
 
 reg rst_video;
 

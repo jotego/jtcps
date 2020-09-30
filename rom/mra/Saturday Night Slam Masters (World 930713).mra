@@ -24,9 +24,9 @@
     <name>Saturday Night Slam Masters (World 930713)</name>
     <setname>slammast</setname>
     <rbf>jtcps15</rbf>
-    <rom index="0" zip="slammast.zip" type="merged" md5="None">
+    <rom index="0" zip="slammast.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 08 80 08 80 18 ff ff 
+        00 08 80 08 80 18 80 30 
         ff ff ff ff ff ff ff ff 
         ff ff ff ff ff ff 22 24 
         26 28 2a 2c 10 08 04 00 
@@ -87,7 +87,9 @@
             <part name="mb-10m.3c" crc="97976ff5" map="00210000"/>
             <part name="mb-13m.6c" crc="da810d5f" map="21000000"/>
         </interleave>
-        <!-- Total 0xC20000 bytes - 12416 kBytes -->
+        <!-- QSound firmware - starts at 0xC20000 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0xC22000 bytes - 12424 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

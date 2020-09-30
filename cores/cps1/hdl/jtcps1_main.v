@@ -69,7 +69,12 @@ module jtcps1_main(
     input    [7:0]     dipsw_c
     // QSound
     `ifdef CPS15
-    ,input      [ 7:0] qsound_dout,
+    ,
+    output reg         eeprom_sclk,
+    input              eeprom_sdi,
+    output reg         eeprom_sdo,
+    output reg         eeprom_scs,
+    input       [ 7:0] qsound_dout,
     output      [ 7:0] qsound_din,
     output reg  [12:0] qsound_addr,
     output reg         qsound_cs
@@ -85,13 +90,13 @@ wire        BERRn = 1'b1;
 
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
-reg         dbus_cs, io_cs, joy_cs,
+reg         dbus_cs, io_cs, joy_cs, eeprom_cs,
             sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
 `ifdef CPS15
-reg         io15_cs, joy3_cs, joy4_cs, eeprom_cs;
+reg         io15_cs, joy3_cs, joy4_cs;
 `endif
 
 assign cpu_cen   = cen10;
@@ -224,7 +229,7 @@ end
 `endif
 */
 // special registers
-always @(posedge clk) begin
+always @(posedge clk, posedge rst) begin
     if( rst ) begin
         ppu_rstn   <= 1'b0;
         snd_latch0 <= 8'd0;
@@ -239,6 +244,24 @@ always @(posedge clk) begin
         if( snd1_cs ) snd_latch1 <= cpu_dout[7:0];
     end
 end
+
+`ifdef CPS15
+// EEPROM control in CPS 1.5 games
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        eeprom_scs  <= 0;
+        eeprom_sclk <= 0;
+        eeprom_sdo  <= 0;
+    end
+    else if(cpu_cen) begin
+        if( eeprom_cs && !LDSWn ) begin
+            eeprom_scs  <= cpu_dout[7];
+            eeprom_sclk <= cpu_dout[6];
+            eeprom_sdo  <= cpu_dout[0];
+        end
+    end
+end
+`endif
 
 // incremental encoder counter
 wire [7:0] dial_dout;
@@ -255,6 +278,7 @@ always @(posedge clk) begin
     if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
 end
 
+`ifndef CPS15
 jt4701 u_dial(
     .clk        ( clk       ),
     .rst        ( rst       ),
@@ -290,6 +314,7 @@ jt4701_dialemu u_dial2p(
     .dec        ( ~joystick2[6] ),
     .dial       ( y_in          )
 );
+`endif
 
 reg [15:0] sys_data;
 
@@ -325,13 +350,15 @@ always @(posedge clk) begin
         rom_ok2 <= 1'b0;
     end else begin
         rom_ok2 <= rom_ok;
-        case( { dial_cs | joy_cs | sys_cs, ram_cs | vram_cs, rom_cs, ppu2_cs } )
-            4'b10_00: cpu_din <= sys_data;
-            4'b01_00: cpu_din <= ram_data;
-            4'b00_10: cpu_din <= rom_data;
-            4'b00_01: cpu_din <= mmr_dout;
-            default:  cpu_din <= 16'hffff;
-        endcase
+        cpu_din <= (dial_cs | joy_cs | sys_cs) ? sys_data : (
+                   (ram_cs | vram_cs )         ? ram_data : (
+                    rom_cs                     ? rom_data : (
+                    ppu2_cs                    ? mmr_dout : (
+                    `ifdef CPS15
+                    eeprom_cs                  ? {15'd0, eeprom_sdi} :
+                    `endif
+                                                 16'hFFFF ))));
+
     end
 end
 

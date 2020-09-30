@@ -24,9 +24,9 @@
     <name>The Punisher (World 930422)</name>
     <setname>punisher</setname>
     <rbf>jtcps15</rbf>
-    <rom index="0" zip="punisher.zip" type="merged" md5="None">
+    <rom index="0" zip="punisher.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 06 80 06 80 0e ff ff 
+        00 06 80 06 80 0e 80 1e 
         ff ff ff ff ff ff ff ff 
         ff ff ff ff ff ff 22 24 
         26 28 2a 2c 10 08 04 00 
@@ -83,7 +83,9 @@
             <part name="ps-7m.9a" crc="04c5acbd" map="00210000"/>
             <part name="ps-8m.10a" crc="8f02f436" map="21000000"/>
         </interleave>
-        <!-- Total 0x7A0000 bytes - 7808 kBytes -->
+        <!-- QSound firmware - starts at 0x7A0000 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0x7A2000 bytes - 7816 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>
