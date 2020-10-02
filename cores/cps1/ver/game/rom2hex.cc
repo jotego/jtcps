@@ -1,3 +1,12 @@
+// Creates hex files to be load in simulation in order to
+// skip the ROM loading process
+// The input ROM file must be created from an MRA file with the mra tool
+
+// The output files are:
+// sdram bank hex files
+// CPS config data
+// Q-Sound firmware
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -17,6 +26,8 @@ int get_offset( char *b, int s ) {
 void clear_bank( char *data );
 void dump_bank( char *data, const char *fname );
 void read_bank(char *data, ifstream& fin, int start, int end, int offset=0 );
+void dump_cfg( char header[64]);
+void dump_qsnd( char *data );
 
 int main(int argc, char *argv[]) {
     ifstream fin( argv[1], ios_base::binary );
@@ -25,15 +36,23 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     char header[64];
+    bool qnsd_game=false;
     fin.read( header, 64 );
 
-    int snd_start = get_offset( header, 0 );
-    int oki_start = get_offset( header, 2 );
-    int gfx_start = get_offset( header, 4 );
+    int snd_start  = get_offset( header, 0 );
+    int pcm_start  = get_offset( header, 2 );
+    int gfx_start  = get_offset( header, 4 );
+    int qsnd_start = get_offset( header, 6 );
+    qnsd_game = qsnd_start != 0xffff*0x400;
 
     cout << "Sound start " << hex << snd_start << '\n';
-    cout << "Oki   start " << hex << oki_start << '\n';
+    cout << "PCM   start " << hex << pcm_start << '\n';
     cout << "GFX   start " << hex << gfx_start << '\n';
+    if( qnsd_game ) {
+        cout << "Qsnd  start " << hex << qsnd_start << '\n';
+    }
+
+    dump_cfg( header );
 
     char *data = new char[8*1024*1024];
     try{
@@ -47,9 +66,14 @@ int main(int argc, char *argv[]) {
         dump_bank( data, "sdram_bank2.hex" );
         // Sound
         clear_bank( data );
-        read_bank( data, fin, snd_start, oki_start );
-        read_bank( data, fin, oki_start, gfx_start, 0x10000<<1 );
+        read_bank( data, fin, snd_start, pcm_start );
+        read_bank( data, fin, pcm_start, gfx_start, 0x10000<<1 );
         dump_bank( data, "sdram_bank0.hex" );
+        // QSound firmware
+        if( qnsd_game ) {
+            read_bank( data, fin, qsnd_start, qsnd_start+0x2000 );
+            dump_qsnd( data );
+        }
     } catch( const char *s) {
         cout << "ERROR: " << s << '\n';
     }
@@ -94,4 +118,26 @@ void read_bank(char *data, ifstream& fin, int start, int end, int offset ) {
     data += offset;
     fin.read(data,len);
     fin.clear();
+}
+
+void dump_cfg( char header[64]) {
+    ofstream fout("cps_cfg.hex");
+    for( int k=0x27; k>=0x10; k-- ) {
+        int j = header[k];
+        j&=0xff;
+        fout << "8'h" << hex << j;
+        if( k!=0x10 ) fout << ',';
+    }
+}
+
+void dump_qsnd( char *data ) {
+    ofstream flsb("qsnd_lsb.hex");
+    ofstream fmsb("qsnd_msb.hex");
+    for( int k=0; k<0x2000; ) {
+        int d;
+        d = data[k++];
+        flsb << hex << (d&0xff) << '\n';
+        d = data[k++];
+        fmsb << hex << (d&0xff) << '\n';
+    }
 }

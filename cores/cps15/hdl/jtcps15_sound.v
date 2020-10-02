@@ -55,15 +55,15 @@ module jtcps15_sound(
     // Sound output
     output reg signed [15:0] left,
     output reg signed [15:0] right,
-    output                   sample
+    output reg               sample
 );
 
 wire        cpu_cen, cen_extra;
-wire [ 7:0] dec_dout, ram_dout;
+wire [ 7:0] dec_dout, ram_dout, cpu_dout;
 wire [15:0] A;
 reg  [ 3:0] bank;
 reg  [ 7:0] dec_din;
-reg         rstn;
+reg         rstn, wr_n, rd_n, mreq_n, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n;
 wire        busrq_n, busak_n, z80_buswn, m68_busakn;
@@ -79,7 +79,8 @@ wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out;
 reg  [15:0] dsp_pbus_in;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
-wire        dsp_iack, dsp_rst;
+wire        dsp_iack;
+reg         dsp_rst;
 wire        dsp_psel, dsp_sadd, dsp_rdy_n;
 wire        cen_dsp, cen_cko;
 
@@ -96,12 +97,14 @@ end
 always @(posedge clk, posedge rst) begin
     if ( rst ) begin
         rom_cs    <= 0;
+        rom_ok2   <= 0;
         rom_addr  <= 16'd0;
         ram_cs    <= 0;
         bank_cs   <= 0;
         qsnd_wr   <= 0;
         qsnd_rd   <= 0;
     end else begin
+        rom_ok2  <= rom_ok;
         rom_cs   <= !mreq_n && !rd_n && (!A[15] || A[15:14]==2'b10);
         rom_addr <= A[15] ? ({ 1'b0, bank, A[13:0] } + 19'h8000) : { 4'b0, A[14:0] };
         ram_cs   <= !mreq_n && (A[15:12] == 4'hc || A[15:12]==4'hf);
@@ -222,8 +225,8 @@ jtframe_z80_romwait #(0) u_cpu(
     .halt_n     (             ),
     .busak_n    ( busak_n     ),
     .A          ( A           ),
-    .din        ( din         ),
-    .dout       ( dout        ),
+    .din        ( dec_dout    ),
+    .dout       ( cpu_dout    ),
     // manage access to ROM data from SDRAM
     .rom_cs     ( rom_cs      ),
     .rom_ok     ( rom_ok & rom_ok2     )
@@ -247,25 +250,25 @@ always @(posedge clk, posedge rst) begin
     end else begin
         last_pids_n <= dsp_pids_n;
         last_pods_n <= dsp_pods_n;
-        last_ock    <= ock;
+        last_ock    <= dsp_ock;
         last_psel   <= dsp_psel;
         if( qs1l_w )
             dsp_irq <= 1; // read MSB
         else
-            if( pids_n && !last_pids_n ) dsp_irq <= 0; // read LSB
+            if( dsp_pids_n && !last_pids_n ) dsp_irq <= 0; // read LSB
         // volume control
         last_vol_up   <= vol_up;
         last_vol_down <= vol_down;
         // latch sound data
-        last_sadd <= sadd;
-        if( !sadd && last_sadd ) audio_ws <= dsp_psel;
-        if( !ock && last_ock ) begin
+        last_sadd <= dsp_sadd;
+        if( !dsp_sadd && last_sadd ) audio_ws <= dsp_psel;
+        if( !dsp_ock && last_ock ) begin
             if( !dsp_psel )
                 reg_left  <= { reg_left[14:0],  dsp_do };
             else
                 reg_right <= { reg_right[14:0], dsp_do };
         end
-        if( !last_psel && psel ) begin
+        if( !last_psel && dsp_psel ) begin
             left   <= reg_left;
             right  <= reg_right;
             sample <= 1;
@@ -273,7 +276,7 @@ always @(posedge clk, posedge rst) begin
             sample <= 0;
         end
         // latch QSound ROM address
-        if( pods_n && !last_pods_n) begin
+        if( dsp_pods_n && !last_pods_n) begin
             qsnd_addr[15:0] <= dsp_pbus_out;
         end
         qsnd_addr[22:16] <= dsp_ab[6:0];
@@ -281,7 +284,7 @@ always @(posedge clk, posedge rst) begin
 end
 
 always @(*) begin
-    dsp_pbus_in = !pods_n ?
+    dsp_pbus_in = !dsp_pods_n ?
         ( !dsp_irq ? cpu2dsp[15:0] : {8'd0, cpu2dsp[23:16]} ) : 16'hffff;
 end
 
@@ -300,7 +303,7 @@ jtdsp16 u_dsp16(
     .pods_n     ( dsp_pods_n    ),  // parallel output data strobe
     .pids_n     ( dsp_pids_n    ),  // parallel input  data strobe
     // Serial output
-    .do         ( dsp_do        ),  // serial data output
+    .sdo        ( dsp_do        ),  // serial data output
     .ock        ( dsp_ock       ),  // output clock
     .doen       ( dsp_doen      ),  // data output enable
     .sadd       ( dsp_sadd      ),  // serial address
@@ -398,6 +401,8 @@ module jtcps15_z80buslock(
 
 parameter CPS2=0;
 
+reg  [1:0] latch;
+
 wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
                    (m68_addr[23:12]>=12'hf18 && m68_addr[23:12]<12'hf1a ) ||
                    (m68_addr[23:12]>=12'hf1e && m68_addr[23:12]<12'hf20 ) );
@@ -405,8 +410,6 @@ wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
 assign z80_buswn = m68_buswen | m68_busakn;
 assign busrq_n   = buse_n | ~shared_addr;
 assign busak_n   = latch[1];
-
-reg [1:0] latch;
 
 always @(posedge clk, posedge rst) begin
     if( rst )

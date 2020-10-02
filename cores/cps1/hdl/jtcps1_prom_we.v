@@ -47,7 +47,7 @@ localparam STARTW=8*START_BYTES;
 localparam FULL_HEADER = 25'd64;
 
 (*keep*) reg  [STARTW-1:0] starts;
-(*keep*) wire       [15:0] snd_start, pcm_start, gfx_start;
+(*keep*) wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
 
 assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];

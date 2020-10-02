@@ -80,7 +80,7 @@ module jtcps15_game(
 );
 
 localparam [21:0] SOUND_OFFSET = 22'h00_0000;
-localparam [21:0] QSND_OFFSET  = 22'h40_0000; // second half of the memory
+localparam [21:0] PCM_OFFSET   = 22'h10_0000;
 localparam [21:0] RAM_OFFSET   = 22'h20_0000;
 localparam [21:0] VRAM_OFFSET  = 22'h30_0000;
 localparam [21:0] GFX_OFFSET   = 22'h00_0000; // bank 2
@@ -218,7 +218,11 @@ wire nc0, nc1;
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
-    .cen8   ( pxl_cen   )
+    .cen8   ( pxl_cen   ),
+    // unused
+    .cen12  (           ),
+    .cen6   (           ),
+    .cen6b  (           )
 );
 `else
 assign pxl2_cen = cen16;
@@ -239,7 +243,7 @@ jtcps1_prom_we #(
     .REGSIZE   ( REGSIZE       ),
     .CPU_OFFSET( 22'd0         ),
     .SND_OFFSET( SOUND_OFFSET  ),
-    .PCM_OFFSET( QSND_OFFSET   ),
+    .PCM_OFFSET( PCM_OFFSET   ),
     .GFX_OFFSET( GFX_OFFSET    )
 ) u_prom_we(
     .clk            ( clk           ),
@@ -251,8 +255,8 @@ jtcps1_prom_we #(
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
     .prog_bank      ( prog_bank     ),
-    .prog_we        ( prog_qsnd     ),
-    .prom_we        ( prom_we       ),
+    .prog_we        ( prog_we       ),
+    .prom_we        ( prog_qsnd     ),
     .sdram_ack      ( sdram_ack     ),
     .cfg_we         ( cfg_we        )
 );
@@ -423,7 +427,7 @@ always @(negedge clk48) begin
     rst_snd <= { rst_snd[2:0], rst };
 end
 
-jtcps15_sound(
+jtcps15_sound u_sound(
     .rst        ( rst               ),
     .clk        ( clk               ),
     .cen8       ( cen8              ),
@@ -534,7 +538,7 @@ u_sdram_mux(
     .slot7_addr     ( snd_addr          ),
     .slot7_dout     ( snd_data          ),
 
-    .slot5_offset   ( QSND_OFFSET      ),
+    .slot5_offset   ( PCM_OFFSET      ),
     .slot5_addr     ( qsnd_addr        ),
     .slot5_dout     ( qsnd_data        ),
     // VRAM read access only
