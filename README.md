@@ -75,7 +75,19 @@ MiST and SiDi compilations produce STA clean files with the default seed. Howeve
 
 # SDRAM Usage
 
+## CPS 1
+
+Some games do not fit in one memory bank (8MB) so three banks are used. The largest game (SF2) uses 6MB for GFX.
+
+SDRAM bank | Usage
+-----------|-------
+0          | Sound: Z80 plus samples
+1          | M68000
+2          | GFX
+
 ## CPS 1.5
+
+The SDRAM layout is the same as for CPS 1. Although samples are much larger than in CPS 1 titles, they still fit in one SDRAM bank sharing space with the Z80 ROM.
 
 Game                  | CPU     |   Z80       | GFX     | Q-Sound |
 ----------------------|---------|-------------|---------|---------|
@@ -84,6 +96,49 @@ Cadillacs & Dinosaurs | 1.5 MB  |  128 kB     | 4 MB    | 2 MB    |
 The Punisher          | 1.5 MB  |  128 kB     | 4 MB    | 2 MB    |
 S.N. Slam Masters     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
 Muscle Bomber Duo     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
+
+
+## CPS 2
+
+Game                  | CPU     |   Z80       | GFX     | Q-Sound |
+----------------------|---------|-------------|---------|---------|
+19XX                  | 2.5 MB  |  128 kB     | 10 MB   | 4 MB    |
+Alien vs Predator     | 2.0 MB  |  128 kB     | 16 MB   | 4 MB    |
+Armored Warriors      | 4.0 MB  |  256 kB     | 20 MB   | 4 MB    |
+Battle Circuit        | 3.5 MB  |  256 kB     | 16 MB   | 4 MB    |
+Capcom Sports Club    | 2.5 MB  |  128 kB     |  8 MB   | 4 MB    |
+Cyberbots             | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |
+Darkstalkers          | 4.0 MB  |  256 kB     | 20 MB   | 4 MB    |
+Dimahoo               | 2.0 MB  |  256 kB     | 16 MB   | 8 MB    |
+DnD Shadow o. Mystara | 4.0 MB  |  256 kB     | 24 MB   | 4 MB    |
+DnD Tower of Doom     | 2.5 MB  |  128 kB     | 12 MB   | 4 MB    |
+Eco Fighters          | 2.0 MB  |  128 kB     | 12 MB   | 4 MB    |
+Giga Wing             | 1.5 MB  |  128 kB     | 16 MB   | 8 MB    |
+Hyper SF II           | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+Janpai                | 1.0 MB  |  128 kB     | 16 MB   | 4 MB    |
+Jyangokushi           | 0.5 MB  |  128 kB     | 16 MB   | 4 MB    |
+Mars Matrix           | 1.5 MB  |  128 kB     | 32 MB   | 8 MB    |
+Marvel Super Heroes   | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |
+Marvel vs SF          | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+Marvel vs CAPCOM      | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+Megaman 2             | 1.5 MB  |  256 kB     |  8 MB   | 4 MB    |
+Darkstalker's revenge | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |
+Progear               | 1.0 MB  |  128 kB     | 16 MB   | 8 MB    |
+Puzz Loop 2           | 2.0 MB  |  128 kB     | 16 MB   | 4 MB    |
+Quiz Nanairo Dreams   | 2.0 MB  |  128 kB     |  8 MB   | 4 MB    |
+Slam Masters 2        | 3.0 MB  |  256 kB     | 18 MB   | 4 MB    |
+SF alpha 1            | 2.0 MB  |  256 kB     |  8 MB   | 4 MB    |
+SF alpha 2            | 3.0 MB  |  256 kB     | 20 MB   | 4 MB    |
+SF alpha 3            | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+SF zero 2 alpha       | 3.0 MB  |  256 kB     | 20 MB   | 4 MB    |
+Super Gem Fighter     | 2.5 MB  |  256 kB     | 20 MB   | 8 MB    |
+Super Puzzle Fighter 2| 1.0 MB  |  256 kB     |  4 MB   | 4 MB    |
+SF2 New Challengers   | 2.5 MB  |  128 kB     | 12 MB   | 4 MB    |
+SF2 Turbo             | 3.5 MB  |  256 kB     | 16 MB   | 4 MB    |
+Vampire Savior 1      | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+Vampire Savior 2      | 4.0 MB  |  256 kB     | 32 MB   | 8 MB    |
+X-Men Children of A.  | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |
+X-Men vs SF           | 3.5 MB  |  256 kB     | 32 MB   | 4 MB    |
 
 # Simulation
 

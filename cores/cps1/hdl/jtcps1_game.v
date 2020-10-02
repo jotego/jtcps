@@ -228,7 +228,7 @@ jtcps1_prom_we #(
     .REGSIZE   ( REGSIZE       ),
     .CPU_OFFSET( 22'd0         ),
     .SND_OFFSET( SOUND_OFFSET  ),
-    .OKI_OFFSET( ADPCM_OFFSET  ),
+    .PCM_OFFSET( ADPCM_OFFSET  ),
     .GFX_OFFSET( GFX_OFFSET    )
 ) u_prom_we(
     .clk            ( clk           ),
@@ -241,6 +241,7 @@ jtcps1_prom_we #(
     .prog_mask      ( prog_mask     ),
     .prog_bank      ( prog_bank     ),
     .prog_we        ( prog_we       ),
+    .prom_we        (               ), // unused for non q-sound games
     .sdram_ack      ( sdram_ack     ),
     .cfg_we         ( cfg_we        )
 );

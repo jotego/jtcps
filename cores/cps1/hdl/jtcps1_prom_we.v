@@ -27,6 +27,7 @@ module jtcps1_prom_we(
     output reg [ 1:0]    prog_mask, // active low
     output reg [ 1:0]    prog_bank,
     output reg           prog_we,
+    output reg           prom_we,   // for Q-Sound internal ROM
     input                sdram_ack,
     output reg           cfg_we
 );
@@ -34,35 +35,37 @@ module jtcps1_prom_we(
 parameter        REGSIZE=24; // This is defined at _game level
 parameter [21:0] CPU_OFFSET=22'h0;
 parameter [21:0] SND_OFFSET=22'h0;
-parameter [21:0] OKI_OFFSET=22'h0;
+parameter [21:0] PCM_OFFSET=22'h0;
 parameter [21:0] GFX_OFFSET=22'h0;
 parameter [ 5:0] CFG_BYTE  =6'd39; // location of the byte with encoder information
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
-localparam START_BYTES  = 6;
+localparam START_BYTES  = 8;
 localparam START_HEADER = 16;
 localparam STARTW=8*START_BYTES;
 localparam FULL_HEADER = 25'd64;
 
 (*keep*) reg  [STARTW-1:0] starts;
-(*keep*) wire       [15:0] snd_start, oki_start, gfx_start;
+(*keep*) wire       [15:0] snd_start, pcm_start, gfx_start;
 
-assign snd_start = starts[15: 0];
-assign oki_start = starts[31:16];
-assign gfx_start = starts[47:32];
+assign snd_start  = starts[15: 0];
+assign pcm_start  = starts[31:16];
+assign gfx_start  = starts[47:32];
+assign qsnd_start = starts[63:48];
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
 wire [24:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
-wire [24:0] oki_addr  = bulk_addr - { oki_start, 10'd0 };
+wire [24:0] pcm_addr  = bulk_addr - { pcm_start, 10'd0 };
 wire [24:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
 
-wire is_cps = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
-wire is_cpu = bulk_addr[24:10] < snd_start;
-wire is_snd = bulk_addr[24:10] < oki_start && bulk_addr[24:10]>=snd_start;
-wire is_oki = bulk_addr[24:10] < gfx_start && bulk_addr[24:10]>=oki_start;
-wire is_gfx = bulk_addr[24:10] >=gfx_start;
+wire is_cps  = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
+wire is_cpu  = bulk_addr[24:10] < snd_start;
+wire is_snd  = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
+wire is_oki  = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
+wire is_gfx  = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
+wire is_qsnd = bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -98,26 +101,32 @@ always @(posedge clk) begin
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
-                     is_oki ?  oki_addr[22:1] + OKI_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
+                     is_oki ?  pcm_addr[22:1] + PCM_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
         prog_bank <= is_cpu ? 2'b01 : ( is_gfx ? 2'b10 : 2'b00 );
         if( ioctl_addr < START_BYTES ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
+            prom_we <= 1'b0;
         end else begin
             if( is_cps ) begin
                 cfg_we    <= 1'b1;
                 prog_we   <= 1'b0;
+                prom_we   <= 1'b0;
                 if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
             end else begin
                 cfg_we    <= 1'b0;
-                prog_we   <= 1'b1;
+                prog_we   <= ~is_qsnd;
+                prom_we   <=  is_qsnd;
             end
         end
     end
     else begin
         if(!downloading || sdram_ack) prog_we  <= 1'b0;
-        if( !downloading ) decrypt <= 0;
+        if( !downloading ) begin
+            decrypt <= 0;
+            prom_we <= 0;
+        end
         cfg_we   <= 1'b0;
     end
 end
