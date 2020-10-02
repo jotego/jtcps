@@ -74,10 +74,10 @@ module jtcps1_main(
     input              eeprom_sdi,
     output reg         eeprom_sdo,
     output reg         eeprom_scs,
-    input       [ 7:0] qsound_dout,
-    output      [ 7:0] qsound_din,
-    output reg  [12:0] qsound_addr,
-    output reg         qsound_cs
+    output      [ 7:0] main2qs_dout,
+    input       [ 7:0] main2qs_din,
+    output reg  [12:0] main2qs_addr,
+    output reg         main2qs_cs
     `endif
 );
 
@@ -150,8 +150,8 @@ always @(posedge clk, posedge rst) begin
         joy3_cs     <= 0;
         joy4_cs     <= 0;
         eeprom_cs   <= 0;
-        qsound_cs   <= 0;
-        qsound_addr <= 13'd0;
+        main2qs_cs   <= 0;
+        main2qs_addr <= 13'd0;
         `endif
 
     end else begin
@@ -165,8 +165,8 @@ always @(posedge clk, posedge rst) begin
             `ifdef CPS15
             io15_cs     <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
             pre_ram_cs  <= &A[23:17];
-            qsound_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
-            qsound_addr <= A[13:1];
+            main2qs_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
+            main2qs_addr <= A[13:1];
             `else
             pre_ram_cs  <= &A[23:18];
             `endif

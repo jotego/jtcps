@@ -27,6 +27,7 @@ void clear_bank( char *data );
 void dump_bank( char *data, const char *fname );
 void read_bank(char *data, ifstream& fin, int start, int end, int offset=0 );
 void dump_cfg( char header[64]);
+void dump_kabuki( char header[64]);
 void dump_qsnd( char *data );
 
 int main(int argc, char *argv[]) {
@@ -53,6 +54,7 @@ int main(int argc, char *argv[]) {
     }
 
     dump_cfg( header );
+    dump_kabuki( header );
 
     char *data = new char[8*1024*1024];
     try{
@@ -128,6 +130,16 @@ void dump_cfg( char header[64]) {
         fout << "8'h" << hex << j;
         if( k!=0x10 ) fout << ',';
     }
+}
+
+void dump_kabuki( char header[64]) {
+    ofstream fout("kabuki.hex");
+    for( int k=0x30; k<=0x3a; k++ ) {
+        int j = header[k];
+        j&=0xff;
+        fout << hex << setw(2) << setfill('0') << j;
+    }
+    fout << '\n';
 }
 
 void dump_qsnd( char *data ) {

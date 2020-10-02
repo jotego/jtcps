@@ -29,7 +29,12 @@ module jtcps1_prom_we(
     output reg           prog_we,
     output reg           prom_we,   // for Q-Sound internal ROM
     input                sdram_ack,
-    output reg           cfg_we
+    output reg           cfg_we,
+    // Kabuki decoder (CPS 1.5)
+    output     [31:0]    swap_key1,
+    output     [31:0]    swap_key2,
+    output     [15:0]    addr_key,
+    output     [ 7:0]    xor_key
 );
 
 parameter        REGSIZE=24; // This is defined at _game level
@@ -44,15 +49,20 @@ parameter [ 5:0] CFG_BYTE  =6'd39; // location of the byte with encoder informat
 localparam START_BYTES  = 8;
 localparam START_HEADER = 16;
 localparam STARTW=8*START_BYTES;
-localparam FULL_HEADER = 25'd64;
+localparam FULL_HEADER   = 25'd64;
+localparam KABUKI_HEADER = 25'd48;
+localparam KABUKI_END    = KABUKI_HEADER + 25'd11;
 
-(*keep*) reg  [STARTW-1:0] starts;
-(*keep*) wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
+reg  [STARTW-1:0] starts;
+wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
+reg        [87:0] kabuki_keys;
 
 assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
+
+assign { swap_key1, swap_key2, addr_key, xor_key } = kabuki_keys;
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
@@ -60,12 +70,13 @@ wire [24:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
 wire [24:0] pcm_addr  = bulk_addr - { pcm_start, 10'd0 };
 wire [24:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
 
-wire is_cps  = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
-wire is_cpu  = bulk_addr[24:10] < snd_start;
-wire is_snd  = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
-wire is_oki  = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
-wire is_gfx  = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
-wire is_qsnd = bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
+wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
+wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
+wire is_cpu    = bulk_addr[24:10] < snd_start;
+wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
+wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
+wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
+wire is_qsnd   = bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -114,6 +125,8 @@ always @(posedge clk) begin
                 prog_we   <= 1'b0;
                 prom_we   <= 1'b0;
                 if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
+            end else if(is_kabuki) begin
+                kabuki_keys <= { kabuki_keys[79:0], ioctl_data };
             end else begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
@@ -130,5 +143,19 @@ always @(posedge clk) begin
         cfg_we   <= 1'b0;
     end
 end
+
+// Load the kabuki keys only if it is a simulation with no rom loading
+// of CPS 1.5
+`ifdef CPS15
+`ifdef SIMULATION
+`ifndef LOADROM
+reg [87:0] kabuki_aux[0:0];
+initial begin
+    $readmemh("kabuki.hex", kabuki_aux);
+    kabuki_keys = kabuki_aux[0];
+end
+`endif
+`endif
+`endif
 
 endmodule

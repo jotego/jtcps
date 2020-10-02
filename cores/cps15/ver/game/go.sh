@@ -58,10 +58,7 @@ fi
 echo "Game ROM length: " $GAME_ROM_LEN
 ../../modules/jtframe/bin/sim.sh -mist \
     -sysname cps15 \
-    -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1 \
-    -d BUTTONS=6 -d JTFRAME_4PLAYERS -d JTFRAME_SDRAM_BANKS\
-    -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \
-    -d JTFRAME_MRA_DIP \
+    -def ../../hdl/jtcps15.def \
+    -d CPSB_CONFIG="$CPSB_CONFIG" \
     -videow 384 -videoh 224 \
-    -d JTFRAME_CLK96 \
     $OTHER

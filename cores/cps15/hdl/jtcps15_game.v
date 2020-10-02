@@ -116,7 +116,6 @@ wire [15:0] cpu_dout;
 wire        cpu_speed;
 
 wire        main_rnw, busreq, busack;
-wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
 wire [ 9:0] slot_cs, slot_ok, slot_wr, slot_clr, slot_active;
@@ -132,6 +131,11 @@ wire [31:0] swap_key1;
 wire [31:0] swap_key2;
 wire [15:0] addr_key;
 wire [ 7:0] xor_key;
+
+// M68k - Sound subsystem communication
+wire [ 7:0] main2qs_dout, qsound_din;
+wire [12:0] main2qs_addr;
+wire        main2qs_cs;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
@@ -258,7 +262,12 @@ jtcps1_prom_we #(
     .prog_we        ( prog_we       ),
     .prom_we        ( prog_qsnd     ),
     .sdram_ack      ( sdram_ack     ),
-    .cfg_we         ( cfg_we        )
+    .cfg_we         ( cfg_we        ),
+    // Kabuki keys
+    .swap_key1      ( swap_key1     ),
+    .swap_key2      ( swap_key2     ),
+    .addr_key       ( addr_key      ),
+    .xor_key        ( xor_key       )
 );
 
 // Turbo speed disables DMA
@@ -283,8 +292,10 @@ jtcps1_main u_main(
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     // Sound
-    .snd_latch0 ( snd_latch0        ),
-    .snd_latch1 ( snd_latch1        ),
+    .main2qs_dout( main2qs_dout     ),
+    .main2qs_din ( main2qs_din      ),
+    .main2qs_addr( main2qs_addr     ),
+    .main2qs_cs  ( main2qs_cs       ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
@@ -440,11 +451,11 @@ jtcps15_sound u_sound(
     .xor_key    ( xor_key           ),
 
     // Interface with main CPU
-    .main_addr  (                   ),
-    .main_dout  (                   ),
-    .main_din   (                   ),
-    .main_ldswn (                   ),
-    .main_buse_n(                   ),
+    .main_addr  ( main2qs_addr      ),
+    .main_dout  ( main2qs_dout      ),
+    .main_din   ( main2qs_din       ),
+    .main_ldswn ( dsn[0]            ),
+    .main_buse_n( ~main2qs_cs       ),
 
     // ROM
     .rom_addr   ( snd_addr          ),
@@ -500,10 +511,10 @@ jtframe_sdram_mux #(
     .SLOT1_TYPE ( 2     ), // R/W access
 
     // Sound
-    .SLOT5_AW   ( 23    ),  // QSOUND
+    .SLOT5_AW   ( 23    ),  // PCM samples
     .SLOT5_DW   (  8    ),
 
-    .SLOT7_AW   ( 16    ),
+    .SLOT7_AW   ( 19    ),  // Z80
     .SLOT7_DW   (  8    ),
 
     // VRAM read access:
