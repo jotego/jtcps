@@ -213,8 +213,8 @@ always @(posedge clk, posedge rst) begin
         green <= 8'd0;
         blue  <= 8'd0;
     end else if(pxl_cen) begin
-        // signal * 17 - signal*15/4 = signal * (17-15/4-15/8)
-        // 33% max attenuation for brightness
+        // signal * 17 - signal*15/2 - signal*15/4 = signal * (17-15/2-15/4)
+        // 66% max attenuation for brightness
         if( vb1 || (hb1 && !LHBL_dly) ) begin
             red   <= 8'd0;
             green <= 8'd0;
@@ -225,9 +225,9 @@ always @(posedge clk, posedge rst) begin
             green <= {2{raw_g}};
             blue  <= {2{raw_b}};
             `else
-            red   <= {2{dly_r}} - (mul_r>>2) - (mul_r>>3); // - (mul_r>>4);
-            green <= {2{dly_g}} - (mul_g>>2) - (mul_g>>3); // - (mul_g>>4);
-            blue  <= {2{dly_b}} - (mul_b>>2) - (mul_b>>3); // - (mul_b>>4);
+            red   <= {2{dly_r}} - (mul_r>>1) - (mul_r>>2);
+            green <= {2{dly_g}} - (mul_g>>1) - (mul_g>>2);
+            blue  <= {2{dly_b}} - (mul_b>>1) - (mul_b>>2);
             `endif
         end
     end
