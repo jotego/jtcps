@@ -428,7 +428,7 @@ wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
 
 assign z80_buswn = m68_buswen | m68_busakn;
 assign busrq_n   = buse_n | ~shared_addr;
-assign busak_n   = latch[1];
+assign m68_busakn= latch[1];
 
 always @(posedge clk, posedge rst) begin
     if( rst )

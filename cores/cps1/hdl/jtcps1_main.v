@@ -356,9 +356,11 @@ always @(posedge clk) begin
                     ppu2_cs                    ? mmr_dout : (
                     `ifdef CPS15
                     eeprom_cs                  ? {15'd0, eeprom_sdi}  : (
-                    main2qs_cs                 ? {15'd0, main2qs_din} : )
+                    main2qs_cs                 ? {15'd0, main2qs_din} :
+                    `else
+                    (
                     `endif
-                                                 16'hFFFF ))));
+                                                 16'hFFFF )))));
 
     end
 end
