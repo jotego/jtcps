@@ -926,7 +926,7 @@ const gfx_range* all_mappers[] = {
     mapper_CA22B_table,
     mapper_CA24B_table,
     mapper_CC63B_table,
-    mapper_CD63B_table,
+    mapper_CD63B_table, // 5
     mapper_CK24B_table,
     mapper_cps2_table,
     mapper_DAM63B_table,
@@ -937,14 +937,14 @@ const gfx_range* all_mappers[] = {
     mapper_KR63B_table,
     mapper_LW621_table,     // 14
     mapper_LWCHR_table,
-    mapper_MB63B_table,
+    mapper_MB63B_table, // 16=10h Slam Masters
     mapper_MS24B_table,
     mapper_NM24B_table,
     mapper_O224B_table,
     mapper_pang3_table, // 20
     mapper_PKB10B_table,
     mapper_pokonyan_table,
-    mapper_PS63B_table, // 23 Punisher clone
+    mapper_PS63B_table, // 23=17h Punisher clone
     mapper_Q522B_table,
     mapper_QAD63B_table,
     mapper_QD22B_table, // 26
@@ -958,7 +958,7 @@ const gfx_range* all_mappers[] = {
     mapper_ST24M1_table,
     mapper_STF29_table,
     mapper_TK22B_table,
-    mapper_TK263B_table, // 37 WOF
+    mapper_TK263B_table, // 37 = 25h WOF
     mapper_TN2292_table, //38
     mapper_VA22B_table,
     mapper_VA63B_table,

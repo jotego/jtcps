@@ -34,10 +34,10 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosa
     -header-data FF FF \
     -header-data FF FF FF FF \
     -header-data 22 24 26 28 2a 2c 10 08 04 00 \
-    -header-data 25 \
+    -header-data 5 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \
-    -header-data 01 23 45 67 54 16 30 72 51 51 51 \
+    -header-data 76 54 32 10 24 60 13 57 43 43 43 \
     -buttons Attack Jump None None None None
 
 # CPSB data is a place holder
@@ -50,13 +50,13 @@ mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
-    -header-data FF FF \
+    -header-data 0e c0 \
     -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 2c 10 08 04 00 \
-    -header-data 25 \
+    -header-data 12 14 16 08 0a 0c 04 02 20 00 \
+    -header-data 17 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \
-    -header-data 01 23 45 67 54 16 30 72 51 51 51 \
+    -header-data 67 45 21 03 75 31 60 24 22 22 22 \
     -buttons Attack Jump None None None None
 
 # CPSB data is a place holder
@@ -69,13 +69,13 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night S
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
-    -header-data FF FF \
+    -header-data 2e c1 \
     -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 2c 10 08 04 00 \
-    -header-data 25 \
-    -header-data $(mapper_offset.py 8000 8000 0 0) \
+    -header-data 16 00 02 28 2a 2c 04 08 10 00 \
+    -header-data 10 \
+    -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
-    -header-data 01 23 45 67 54 16 30 72 51 51 51 \
+    -header-data 54 32 10 76 65 43 21 07 31 31 19 \
     -buttons Attack Jump None None None None
 
 # CPSB data is a place holder

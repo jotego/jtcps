@@ -73,6 +73,24 @@ This will produce the mister file.
 
 MiST and SiDi compilations produce STA clean files with the default seed. However the MiSTer RBF file with everything enabled doesn't always come STA clean. If you disable HDMI or sound during compilation the RBF file will normally be STA clean. Public binary distribution in [jtbin](https://github.com/jotego/jtbin) are either STA clean or violations are below 99ps.
 
+# MRA Format
+
+Offset | Length | Use
+-------|--------|-------------
+ 0     |  2     | Sound CPU ROM*
+ 2     |  2     | PCM data*
+ 4     |  2     | GFX ROM*
+ 6     |  2     | QSound firmware*
+10h    | 18     | CPS-B configuration
+22h    |  1     | Game ID
+23h    |  2     | Bank offset
+25h    |  2     | Bank mask
+27h    |  1     | CPS-A board type
+30h    | 11     | Kabuki keys (CPS 1.5 only)
+
+* All offset values are expressed in kilobytes and stored with MSB byte second
+
+
 # SDRAM Usage
 
 ## CPS 1

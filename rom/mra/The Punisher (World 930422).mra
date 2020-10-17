@@ -28,12 +28,12 @@
         <part>
         00 06 80 06 80 0e 80 1e 
         ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff 22 24 
-        26 28 2a 2c 10 08 04 00 
-        25 40 88 73 ff ff ff ff 
+        0e c0 ff ff ff ff 12 14 
+        16 08 0a 0c 04 02 20 00 
+        17 40 88 73 ff ff ff ff 
         ff ff ff ff ff ff ff ff 
-        01 23 45 67 54 16 30 72 
-        51 51 51 ff ff ff ff ff 
+        67 45 21 03 75 31 60 24 
+        22 22 22 ff ff ff ff ff 
         </part>
         <!-- maincpu - starts at 0x0 -->
         <interleave output="16">
