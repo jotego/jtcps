@@ -133,7 +133,7 @@ wire [15:0] addr_key;
 wire [ 7:0] xor_key;
 
 // M68k - Sound subsystem communication
-wire [ 7:0] main2qs_dout, main2qs_din;
+wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
 wire        main2qs_cs;
 
@@ -292,7 +292,6 @@ jtcps1_main u_main(
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     // Sound
-    .main2qs_dout( main2qs_dout     ),
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
     .main2qs_cs  ( main2qs_cs       ),
@@ -452,7 +451,7 @@ jtcps15_sound u_sound(
 
     // Interface with main CPU
     .main_addr  ( main2qs_addr      ),
-    .main_dout  ( main2qs_dout      ),
+    .main_dout  ( main_dout[7:0]    ),
     .main_din   ( main2qs_din       ),
     .main_ldswn ( dsn[0]            ),
     .main_buse_n( ~main2qs_cs       ),

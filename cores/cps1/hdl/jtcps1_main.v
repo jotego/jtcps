@@ -74,7 +74,6 @@ module jtcps1_main(
     input              eeprom_sdi,
     output reg         eeprom_sdo,
     output reg         eeprom_scs,
-    output      [ 7:0] main2qs_dout,
     input       [ 7:0] main2qs_din,
     output reg  [23:1] main2qs_addr,
     output reg         main2qs_cs
@@ -153,7 +152,6 @@ always @(posedge clk, posedge rst) begin
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
         `endif
-
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
@@ -357,7 +355,8 @@ always @(posedge clk) begin
                     rom_cs                     ? rom_data : (
                     ppu2_cs                    ? mmr_dout : (
                     `ifdef CPS15
-                    eeprom_cs                  ? {15'd0, eeprom_sdi} :
+                    eeprom_cs                  ? {15'd0, eeprom_sdi}  : (
+                    main2qs_cs                 ? {15'd0, main2qs_din} : )
                     `endif
                                                  16'hFFFF ))));
 
