@@ -135,7 +135,7 @@ wire [ 7:0] xor_key;
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
-wire        main2qs_cs;
+wire        main2qs_cs, main_busakn;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
@@ -295,6 +295,7 @@ jtcps1_main u_main(
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
     .main2qs_cs  ( main2qs_cs       ),
+    .main2qs_busakn( main_busakn    ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
@@ -455,6 +456,7 @@ jtcps15_sound u_sound(
     .main_din   ( main2qs_din       ),
     .main_ldswn ( dsn[0]            ),
     .main_buse_n( ~main2qs_cs       ),
+    .main_busakn( main_busakn       ),
 
     // ROM
     .rom_addr   ( snd_addr          ),

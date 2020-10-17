@@ -34,6 +34,7 @@ module jtcps15_sound(
     output     [ 7:0] main_din,
     input             main_ldswn,
     input             main_buse_n,
+    output            main_busakn,
 
     // ROM
     output reg [18:0] rom_addr, // 512 kByte
@@ -43,7 +44,7 @@ module jtcps15_sound(
 
     // QSound sample ROM
     output reg [22:0] qsnd_addr, // max 8 MB.
-    output reg        qsnd_cs,
+    output            qsnd_cs,
     input      [ 7:0] qsnd_data,
     input             qsnd_ok,
 
@@ -63,10 +64,10 @@ wire [ 7:0] dec_dout, ram_dout, cpu_dout;
 wire [15:0] A;
 reg  [ 3:0] bank;
 reg  [ 7:0] dec_din;
-reg         rstn, wr_n, rd_n, mreq_n, rom_ok2;
+reg         rstn, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
-wire        ram_we, main_we, int_n;
-wire        busrq_n, busak_n, z80_buswn, m68_busakn;
+wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
+wire        busrq_n, busak_n, z80_buswn;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -93,7 +94,7 @@ assign      dsp_rdy_n = 0;
 `endif
 
 assign      ram_we    = ram_cs && !wr_n;
-assign      main_we   = !m68_busakn && !z80_buswn && (main_addr[16:13]==4'hc || main_addr[16:13]==4'hf);
+assign      main_we   = !main_busakn && !z80_buswn && (main_addr[16:13]==4'hc || main_addr[16:13]==4'hf);
 
 always @(negedge clk) begin
     rstn <= ~rst;
@@ -163,7 +164,7 @@ jtcps15_z80buslock u_buslock(
     .m68_addr   ( main_addr[23:12] ),
     .m68_buswen ( main_ldswn       ),
     .z80_buswn  ( z80_buswn        ),
-    .m68_busakn ( m68_busakn       )
+    .m68_busakn ( main_busakn       )
 );
 
 jtcps15_z80int u_z80int(
@@ -341,6 +342,7 @@ assign dsp_doen     = 0;
 assign dsp_sadd     = 0;
 assign dsp_psel     = 0;
 assign dsp_ab       = 16'd0;
+assign qsnd_cs      = 0;
 `endif
 
 endmodule
@@ -415,7 +417,7 @@ module jtcps15_z80buslock(
     input [23:12] m68_addr,
     input         m68_buswen,
     output        z80_buswn,
-    output reg    m68_busakn
+    output        m68_busakn
 );
 
 parameter CPS2=0;

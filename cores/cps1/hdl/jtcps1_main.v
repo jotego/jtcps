@@ -76,7 +76,8 @@ module jtcps1_main(
     output reg         eeprom_scs,
     input       [ 7:0] main2qs_din,
     output reg  [23:1] main2qs_addr,
-    output reg         main2qs_cs
+    output reg         main2qs_cs,
+    input              main2qs_busakn
     `endif
 );
 
@@ -355,8 +356,8 @@ always @(posedge clk) begin
                     rom_cs                     ? rom_data : (
                     ppu2_cs                    ? mmr_dout : (
                     `ifdef CPS15
-                    eeprom_cs                  ? {15'd0, eeprom_sdi}  : (
-                    main2qs_cs                 ? {15'd0, main2qs_din} :
+                    eeprom_cs                  ? {~15'd0, eeprom_sdi}  : (
+                    main2qs_cs                 ? {8'hff, main2qs_din} :
                     `else
                     (
                     `endif
@@ -384,7 +385,11 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         last_fail   <= 24'd0;
     end else /*if(cen10b)*/ begin
         last_ASn <= ASn;
-        if( (!ASn && last_ASn) || ASn ) begin // for falling edge of ASn
+        if( (!ASn && last_ASn) || ASn
+            `ifdef CPS15
+            || (main2qs_cs && main2qs_busakn) // wait for Z80 bus grant
+            `endif
+        ) begin // for falling edge of ASn
             DTACKn <= 1'b1;
             wait_cycles <= 3'b111;
         end else if( !ASn  ) begin

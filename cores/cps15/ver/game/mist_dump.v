@@ -62,13 +62,15 @@ module mist_dump(
             //$shm_probe(UUT.u_game,"A");
             //$shm_probe(UUT.u_game.u_sdram_mux,"A");
 
+            $shm_probe(UUT.u_game, "A");
             `ifdef LOADROM
             $shm_probe(UUT.u_game.u_prom_we, "A");
-            $shm_probe(UUT.u_game, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             `ifndef NOMAIN
             $shm_probe(UUT.u_game.u_main, "A");
+            $shm_probe(UUT.u_game.u_sound, "A");
+            $shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `endif
             //$shm_probe(UUT.u_game.u_video.u_mmr, "AS");
 
