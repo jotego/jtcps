@@ -63,11 +63,11 @@ wire        cpu_cen, cen_extra;
 wire [ 7:0] dec_dout, ram_dout, cpu_dout;
 wire [15:0] A;
 reg  [ 3:0] bank;
-reg  [ 7:0] dec_din;
+reg  [ 7:0] cpu_din;
 reg         rstn, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
-wire        busrq_n, busak_n, z80_buswn;
+wire        busrq_n, busak_n, halt_n, z80_buswn;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -147,7 +147,7 @@ always @(posedge clk, posedge rst) begin
 end
 
 always @(*) begin
-    dec_din =  rom_cs ? rom_data : (
+    cpu_din =  rom_cs ? dec_dout : (
                ram_cs ? ram_dout : (
               qsnd_rd ? { dsp_rdy_n, 3'b111, bank } : 8'hff
               ));
@@ -207,7 +207,7 @@ jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
     .mreq_n     ( mreq_n      ),
     .rd_n       ( rd_n        ),
     .addr       ( A           ),
-    .din        ( dec_din     ),
+    .din        ( rom_data    ),
     // Decode keys
     .swap_key1  ( swap_key1   ),
     .swap_key2  ( swap_key2   ),
@@ -230,10 +230,10 @@ jtframe_z80_romwait #(0) u_cpu(
     .rd_n       ( rd_n        ),
     .wr_n       ( wr_n        ),
     .rfsh_n     (             ),
-    .halt_n     (             ),
+    .halt_n     ( halt_n      ),
     .busak_n    ( busak_n     ),
     .A          ( A           ),
-    .din        ( dec_dout    ),
+    .din        ( cpu_din     ),
     .dout       ( cpu_dout    ),
     // manage access to ROM data from SDRAM
     .rom_cs     ( rom_cs      ),
