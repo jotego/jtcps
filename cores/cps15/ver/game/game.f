@@ -19,16 +19,16 @@
 # CPS15
 ../../hdl/jtcps15_game.v
 ../../hdl/jtcps15_sound.v
-#QSound
-../../modules/jtdsp16/hdl/jtdsp16_ctrl.v
-../../modules/jtdsp16/hdl/jtdsp16_dau.v
-../../modules/jtdsp16/hdl/jtdsp16_div.v
-../../modules/jtdsp16/hdl/jtdsp16_ram_aau.v
-../../modules/jtdsp16/hdl/jtdsp16_ram.v
-../../modules/jtdsp16/hdl/jtdsp16_rom_aau.v
-../../modules/jtdsp16/hdl/jtdsp16_rom.v
-../../modules/jtdsp16/hdl/jtdsp16_rsel.v
-../../modules/jtdsp16/hdl/jtdsp16.v
+# DSP16
+# ../../modules/jtdsp16/hdl/jtdsp16_ctrl.v
+# ../../modules/jtdsp16/hdl/jtdsp16_dau.v
+# ../../modules/jtdsp16/hdl/jtdsp16_div.v
+# ../../modules/jtdsp16/hdl/jtdsp16_ram_aau.v
+# ../../modules/jtdsp16/hdl/jtdsp16_ram.v
+# ../../modules/jtdsp16/hdl/jtdsp16_rom_aau.v
+# ../../modules/jtdsp16/hdl/jtdsp16_rom.v
+# ../../modules/jtdsp16/hdl/jtdsp16_rsel.v
+# ../../modules/jtdsp16/hdl/jtdsp16.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v

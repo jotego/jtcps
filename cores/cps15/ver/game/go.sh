@@ -59,6 +59,6 @@ echo "Game ROM length: " $GAME_ROM_LEN
 ../../modules/jtframe/bin/sim.sh -mist \
     -sysname cps15 \
     -def ../../hdl/jtcps15.def \
-    -d CPSB_CONFIG="$CPSB_CONFIG" \
+    -d CPSB_CONFIG="$CPSB_CONFIG" -d NODSP \
     -videow 384 -videoh 224 \
     $OTHER

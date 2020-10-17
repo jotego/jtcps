@@ -76,7 +76,7 @@ module jtcps1_main(
     output reg         eeprom_scs,
     output      [ 7:0] main2qs_dout,
     input       [ 7:0] main2qs_din,
-    output reg  [12:0] main2qs_addr,
+    output reg  [23:1] main2qs_addr,
     output reg         main2qs_cs
     `endif
 );
@@ -151,7 +151,7 @@ always @(posedge clk, posedge rst) begin
         joy4_cs     <= 0;
         eeprom_cs   <= 0;
         main2qs_cs   <= 0;
-        main2qs_addr <= 13'd0;
+        main2qs_addr <= 23'd0;
         `endif
 
     end else begin
@@ -166,7 +166,7 @@ always @(posedge clk, posedge rst) begin
             io15_cs     <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
             pre_ram_cs  <= &A[23:17];
             main2qs_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
-            main2qs_addr <= A[13:1];
+            main2qs_addr <= A;
             `else
             pre_ram_cs  <= &A[23:18];
             `endif
@@ -265,6 +265,7 @@ end
 
 // incremental encoder counter
 wire [7:0] dial_dout;
+`ifndef CPS15
 wire       dial_rst  = dial_cs && !RnW && ~A[4];
 wire       xn_y      = A[3];
 wire       x_rst     = dial_rst & ~xn_y;
@@ -278,7 +279,6 @@ always @(posedge clk) begin
     if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
 end
 
-`ifndef CPS15
 jt4701 u_dial(
     .clk        ( clk       ),
     .rst        ( rst       ),
@@ -314,6 +314,8 @@ jt4701_dialemu u_dial2p(
     .dec        ( ~joystick2[6] ),
     .dial       ( y_in          )
 );
+`else
+assign dial_dout = 8'd0;
 `endif
 
 reg [15:0] sys_data;

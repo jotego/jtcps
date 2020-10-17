@@ -133,8 +133,8 @@ wire [15:0] addr_key;
 wire [ 7:0] xor_key;
 
 // M68k - Sound subsystem communication
-wire [ 7:0] main2qs_dout, qsound_din;
-wire [12:0] main2qs_addr;
+wire [ 7:0] main2qs_dout, main2qs_din;
+wire [23:1] main2qs_addr;
 wire        main2qs_cs;
 
 // EEPROM
@@ -440,7 +440,7 @@ end
 
 jtcps15_sound u_sound(
     .rst        ( rst               ),
-    .clk        ( clk               ),
+    .clk        ( clk48             ),
     .cen8       ( cen8              ),
     .vol_up     ( 1'b0              ),
     .vol_down   ( 1'b0              ),

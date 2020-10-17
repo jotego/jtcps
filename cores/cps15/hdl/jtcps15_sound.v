@@ -96,7 +96,7 @@ assign      ram_we    = ram_cs && !wr_n;
 assign      main_we   = !m68_busakn && !z80_buswn && (main_addr[16:13]==4'hc || main_addr[16:13]==4'hf);
 
 always @(negedge clk) begin
-    rstn <= rst;
+    rstn <= ~rst;
 end
 
 always @(posedge clk, posedge rst) begin
@@ -111,7 +111,8 @@ always @(posedge clk, posedge rst) begin
     end else begin
         rom_ok2  <= rom_ok;
         rom_cs   <= !mreq_n && !rd_n && (!A[15] || A[15:14]==2'b10);
-        rom_addr <= A[15] ? ({ 1'b0, bank, A[13:0] } + 19'h8000) : { 4'b0, A[14:0] };
+        if(!mreq_n)
+            rom_addr <= A[15] ? ({ 1'b0, bank, A[13:0] } + 19'h8000) : { 4'b0, A[14:0] };
         ram_cs   <= !mreq_n && (A[15:12] == 4'hc || A[15:12]==4'hf);
         bank_cs  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd2);
         qsnd_wr  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd3);
@@ -198,7 +199,7 @@ jtframe_dual_ram #(.aw(13)) u_z80ram( // 8 kB!
     .q1     ( main_din  )
 );
 
-jtframe_kabuki u_kabuki(
+jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
     .rst_n      ( rstn        ),
     .clk        ( clk         ),
     .m1_n       ( m1_n        ),
@@ -340,7 +341,7 @@ assign dsp_doen     = 0;
 assign dsp_sadd     = 0;
 assign dsp_psel     = 0;
 assign dsp_ab       = 16'd0;
-`end
+`endif
 
 endmodule
 
