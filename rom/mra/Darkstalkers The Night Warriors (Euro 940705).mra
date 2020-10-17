@@ -1,0 +1,92 @@
+<!--          FPGA compatible core of arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2020. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Darkstalkers: The Night Warriors (Euro 940705)</name>
+    <setname>dstlk</setname>
+    <rbf>jtcps2</rbf>
+    <rom index="0" zip="dstlk.zip|qsound.zip" type="merged" md5="None">
+        <part>
+        00 10 00 11 00 21 00 71 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff 22 24 
+        26 28 2a 2c 10 08 04 00 
+        25 40 88 73 ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        01 23 45 67 54 16 30 72 
+        51 51 51 ff ff ff ff ff 
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="vame.03a" crc="004c9cff" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.04a" crc="ae413ff2" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.05a" crc="60678756" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.06a" crc="912870b3" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.07a" crc="dabae3e8" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.08a" crc="2c6e3077" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.09a" crc="f16db74b" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vame.10a" crc="701e2147" map="12"/>
+        </interleave>
+        <!-- audiocpu - starts at 0x400000 -->
+        <part name="vam.01" crc="64b685d5"/>
+        <part name="vam.02" crc="cf7c97c7"/>
+        <!-- qsound - starts at 0x440000 -->
+        <part name="vam.11m" crc="4a39deb2"/>
+        <part name="vam.12m" crc="1a3e5c03"/>
+        <!-- gfx - starts at 0x840000 -->
+        <interleave output="64">
+            <part name="vam.13m" crc="c51baf99" map="00000021"/>
+            <part name="vam.17m" crc="4f2408e0" map="00002100"/>
+            <part name="vam.14m" crc="bd87243c" map="00210000"/>
+            <part name="vam.18m" crc="3a033625" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="vam.15m" crc="3ce83c77" map="00000021"/>
+            <part name="vam.19m" crc="9ff60250" map="00002100"/>
+            <part name="vam.16m" crc="afec855f" map="00210000"/>
+            <part name="vam.20m" crc="2bff6a89" map="21000000"/>
+        </interleave>
+        <!-- key - starts at 0x1C40000 -->
+        <part name="dstlk.key" crc="cfa46dec"/>
+        <!-- QSound firmware - starts at 0x1C40014 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0x1C42014 bytes - 28936 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+</misterromdescription>

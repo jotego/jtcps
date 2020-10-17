@@ -1,0 +1,100 @@
+<!--          FPGA compatible core of arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2020. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Capcom Sports Club (Euro 971017)</name>
+    <setname>csclub</setname>
+    <rbf>jtcps2</rbf>
+    <rom index="0" zip="csclub.zip|qsound.zip" type="merged" md5="None">
+        <part>
+        00 0a 80 0a 80 1a 80 3a 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff 22 24 
+        26 28 2a 2c 10 08 04 00 
+        25 40 88 73 ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        01 23 45 67 54 16 30 72 
+        51 51 51 ff ff ff ff ff 
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="csce.03a" crc="824082be" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csce.04a" crc="74e6a4fe" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csce.05a" crc="8ae0df19" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csce.06a" crc="51f2f0d3" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csce.07a" crc="003968fd" map="12"/>
+        </interleave>
+        <!-- audiocpu - starts at 0x280000 -->
+        <part name="csc.01" crc="ee162111"/>
+        <!-- qsound - starts at 0x2A0000 -->
+        <part name="csc.51" crc="5a52afd5"/>
+        <part name="csc.52" crc="1408a811"/>
+        <part name="csc.53" crc="4fb9f57c"/>
+        <part name="csc.54" crc="9a8f40ec"/>
+        <part name="csc.55" crc="91529a91"/>
+        <part name="csc.56" crc="9a345334"/>
+        <part name="csc.57" crc="aedc27f2"/>
+        <part name="csc.58" crc="2300b7b3"/>
+        <!-- gfx - starts at 0x6A0000 -->
+        <interleave output="64">
+            <part name="csc.73" crc="335f07c3" map="00000021"/>
+            <part name="csc.63" crc="3711b8ca" map="00002100"/>
+            <part name="csc.83" crc="0750d12a" map="00210000"/>
+            <part name="csc.93" crc="a756c7f7" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="csc.74" crc="ab215357" map="00000021"/>
+            <part name="csc.64" crc="828a06d8" map="00002100"/>
+            <part name="csc.84" crc="90a92f39" map="00210000"/>
+            <part name="csc.94" crc="fb7ccc73" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="csc.75" crc="a2367381" map="00000021"/>
+            <part name="csc.65" crc="86ee4569" map="00002100"/>
+            <part name="csc.85" crc="d08ab012" map="00210000"/>
+            <part name="csc.95" crc="4d014297" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="csc.76" crc="728aac1f" map="00000021"/>
+            <part name="csc.66" crc="c24f577f" map="00002100"/>
+            <part name="csc.86" crc="41652583" map="00210000"/>
+            <part name="csc.96" crc="6754b1ef" map="21000000"/>
+        </interleave>
+        <!-- key - starts at 0xEA0000 -->
+        <part name="csclub.key" crc="903907d7"/>
+        <!-- QSound firmware - starts at 0xEA0014 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0xEA2014 bytes - 14984 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+</misterromdescription>

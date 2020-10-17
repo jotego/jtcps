@@ -1,0 +1,92 @@
+<!--          FPGA compatible core of arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2020. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Marvel Super Heroes (Euro 951024)</name>
+    <setname>msh</setname>
+    <rbf>jtcps2</rbf>
+    <rom index="0" zip="msh.zip|qsound.zip" type="merged" md5="None">
+        <part>
+        00 10 00 11 00 21 00 a1 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff 22 24 
+        26 28 2a 2c 10 08 04 00 
+        25 40 88 73 ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        01 23 45 67 54 16 30 72 
+        51 51 51 ff ff ff ff ff 
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="mshe.03e" crc="bd951414" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="mshe.04e" crc="19dd42f2" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.05" crc="6a091b9e" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.06b" crc="803e3fa4" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.07a" crc="c45f8e27" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.08a" crc="9ca6f12c" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.09a" crc="82ec27af" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.10b" crc="8d931196" map="12"/>
+        </interleave>
+        <!-- audiocpu - starts at 0x400000 -->
+        <part name="msh.01" crc="c976e6f9"/>
+        <part name="msh.02" crc="ce67d0d9"/>
+        <!-- qsound - starts at 0x440000 -->
+        <part name="msh.11m" crc="37ac6d30"/>
+        <part name="msh.12m" crc="de092570"/>
+        <!-- gfx - starts at 0x840000 -->
+        <interleave output="64">
+            <part name="msh.13m" crc="09d14566" map="00000021"/>
+            <part name="msh.17m" crc="604ece14" map="00002100"/>
+            <part name="msh.14m" crc="4197973e" map="00210000"/>
+            <part name="msh.18m" crc="4db92d94" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="msh.15m" crc="ee962057" map="00000021"/>
+            <part name="msh.19m" crc="94a731e8" map="00002100"/>
+            <part name="msh.16m" crc="438da4a0" map="00210000"/>
+            <part name="msh.20m" crc="a2b0c6c0" map="21000000"/>
+        </interleave>
+        <!-- key - starts at 0x2840000 -->
+        <part name="msh.key" crc="b494368e"/>
+        <!-- QSound firmware - starts at 0x2840014 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0x2842014 bytes - 41224 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+</misterromdescription>

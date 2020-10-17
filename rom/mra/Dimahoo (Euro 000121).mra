@@ -1,0 +1,75 @@
+<!--          FPGA compatible core of arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2020. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Dimahoo (Euro 000121)</name>
+    <setname>dimahoo</setname>
+    <rbf>jtcps2</rbf>
+    <rom index="0" zip="dimahoo.zip|qsound.zip" type="merged" md5="None">
+        <part>
+        00 08 00 09 00 29 00 69 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff 22 24 
+        26 28 2a 2c 10 08 04 00 
+        25 40 88 73 ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        01 23 45 67 54 16 30 72 
+        51 51 51 ff ff ff ff ff 
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="gmde.03" crc="968fcecd" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="gmd.04" crc="37485567" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="gmd.05" crc="da269ffb" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="gmd.06" crc="55b483c9" map="12"/>
+        </interleave>
+        <!-- audiocpu - starts at 0x200000 -->
+        <part name="gmd.01" crc="3f9bc985"/>
+        <part name="gmd.02" crc="3fd39dde"/>
+        <!-- qsound - starts at 0x240000 -->
+        <part name="gmd.11m" crc="06a65542"/>
+        <part name="gmd.12m" crc="50bc7a31"/>
+        <!-- gfx - starts at 0xA40000 -->
+        <interleave output="64">
+            <part name="gmd.13m" crc="80dd19f0" map="00000021"/>
+            <part name="gmd.15m" crc="dfd93a78" map="00002100"/>
+            <part name="gmd.17m" crc="16356520" map="00210000"/>
+            <part name="gmd.19m" crc="dfc33031" map="21000000"/>
+        </interleave>
+        <!-- key - starts at 0x1A40000 -->
+        <part name="dimahoo.key" crc="7d6d2db9"/>
+        <!-- QSound firmware - starts at 0x1A40014 -->
+        <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
+        <!-- Total 0x1A42014 bytes - 26888 kBytes -->
+    </rom>
+    <!-- Vertical game -->
+    <rom index="1">
+        <part>01</part>
+    </rom>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+</misterromdescription>
