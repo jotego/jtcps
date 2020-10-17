@@ -7,7 +7,6 @@ popd
 mkdir -p mra/_alt/"Warriors of Fate"
 mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
     -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
