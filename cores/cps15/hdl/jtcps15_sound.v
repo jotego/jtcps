@@ -86,7 +86,12 @@ wire        cen_dsp, cen_cko;
 
 reg         last_pids_n;
 
+`ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
+`else
+assign      dsp_rdy_n = 0;
+`endif
+
 assign      ram_we    = ram_cs && !wr_n;
 assign      main_we   = !m68_busakn && !z80_buswn && (main_addr[16:13]==4'hc || main_addr[16:13]==4'hf);
 
@@ -141,8 +146,9 @@ end
 
 always @(*) begin
     dec_din =  rom_cs ? rom_data : (
+               ram_cs ? ram_dout : (
               qsnd_rd ? { dsp_rdy_n, 3'b111, bank } : 8'hff
-              );
+              ));
 end
 
 jtcps15_z80buslock u_buslock(
@@ -288,6 +294,7 @@ always @(*) begin
         ( !dsp_irq ? cpu2dsp[15:0] : {8'd0, cpu2dsp[23:16]} ) : 16'hffff;
 end
 
+`ifndef NODSP
 jtdsp16 u_dsp16(
     .rst        ( dsp_rst       ),
     .clk        ( clk           ),
@@ -323,6 +330,17 @@ jtdsp16 u_dsp16(
     .prog_data  ( prog_data     ),
     .prog_we    ( prog_we       )
 );
+`else
+assign dsp_pbus_out = 16'd0;
+assign dsp_pods_n   = 1;
+assign dsp_pids_n   = 1;
+assign dsp_do       = 1;
+assign dsp_ock      = 1;
+assign dsp_doen     = 0;
+assign dsp_sadd     = 0;
+assign dsp_psel     = 0;
+assign dsp_ab       = 16'd0;
+`end
 
 endmodule
 
