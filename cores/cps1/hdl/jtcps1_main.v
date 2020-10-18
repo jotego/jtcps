@@ -161,13 +161,12 @@ always @(posedge clk, posedge rst) begin
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             io_cs       <= A[23:20] == 4'b1000;
             rom_cs      <= A[23:22] == 2'b00;
+            pre_ram_cs  <= &A[23:18];
             `ifdef CPS15
-            io15_cs     <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
-            pre_ram_cs  <= &A[23:17];
+            io15_cs      <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
             main2qs_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
             main2qs_addr <= A;
             `else
-            pre_ram_cs  <= &A[23:18];
             `endif
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
@@ -186,10 +185,10 @@ always @(posedge clk, posedge rst) begin
             end
             `ifdef CPS15
             if( io15_cs ) begin
-                joy3_cs   <= A[3:2]==2'd0;
-                joy4_cs   <= A[3:2]==2'd1;
+                joy3_cs   <= A[2:1]==2'd0;
+                joy4_cs   <= A[2:1]==2'd1;
                 // coin2_cs   <= A[3:2]==2'd2;
-                eeprom_cs <= A[3:2]==2'd3;
+                eeprom_cs <= A[2:1]==2'd3;
             end
             `endif
         end else begin
