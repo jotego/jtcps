@@ -99,7 +99,7 @@ void dump_bank( char *data, const char *fname ) {
         a&=0xff;
         b&=0xff;
         a = (a<<8) | b;
-        fout << hex << a << '\n';
+        fout << hex << setw(4) << setfill('0') << a << '\n';
     }
 }
 

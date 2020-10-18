@@ -83,6 +83,7 @@ reg [7:0] pang3_decrypt;
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
+`ifdef CPS1
 always @(*) begin
     pang3 = is_cpu && cpu_addr[19] && decrypt  && (cpu_addr[0]^pang3_bit);
     pang3_decrypt =
@@ -104,6 +105,12 @@ always @(*) begin
     if ( ioctl_data[6] ) pang3_decrypt = pang3_decrypt ^ 8'h08;
     if (~ioctl_data[7] ) pang3_decrypt = pang3_decrypt ^ 8'h88;*/
 end
+`else
+initial begin
+    pang3 = 0;
+    pang3_decrypt = 8'd0;
+end
+`endif
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
