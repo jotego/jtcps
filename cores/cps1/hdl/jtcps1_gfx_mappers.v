@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 // A[22:20]   Usage
 // 000        OBJ
@@ -34,7 +34,7 @@ module jtcps1_gfx_mappers(
 
     input      [ 2:0]  layer,
     input      [ 9:0]  cin,    // pins 2-9, 11,13,15,17,18
-    
+
     output reg [ 3:0]  offset,
     output reg [ 3:0]  mask,
     output reg         unmapped
@@ -80,7 +80,6 @@ always @(posedge clk, posedge rst) begin
                 set_used <= 1'b0;
             end
             `include "mappers.inc"
-
         endcase
     end
 end
