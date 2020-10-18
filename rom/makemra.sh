@@ -15,7 +15,7 @@ mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
     -header-pointer 16 \
     -header-data FF FF \
     -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 2c 00 00 10 08 04 00 \
+    -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
     -header-data 25 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \
@@ -33,7 +33,7 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosa
     -header-pointer 16 \
     -header-data FF FF \
     -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 2c 00 00 10 08 04 00 \
+    -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
     -header-data 5 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \
@@ -69,7 +69,7 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night S
     -header-pointer 16 \
     -header-data 2e c1 \
     -header-data FF FF FF FF \
-    -header-data 16 00 02 28 2a 2c 00 00 04 08 10 00 \
+    -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
     -header-data 10 \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
@@ -87,7 +87,7 @@ mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Muscle Bomber Duo
     -header-pointer 16 \
     -header-data 2e c1 \
     -header-data FF FF FF FF \
-    -header-data 16 00 02 28 2a 2c 00 00 04 08 10 00 \
+    -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
     -header-data 10 \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
