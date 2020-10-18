@@ -76,7 +76,7 @@ wire is_cpu    = bulk_addr[24:10] < snd_start;
 wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
-wire is_qsnd   = bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
+wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -127,7 +127,7 @@ always @(posedge clk) begin
                 if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
             end else if(is_kabuki) begin
                 kabuki_keys <= { kabuki_keys[79:0], ioctl_data };
-            end else begin
+            end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
                 prom_we   <=  is_qsnd;
