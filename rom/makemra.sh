@@ -9,6 +9,7 @@ mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
     -frac 2 gfx 4 -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
+    -order-roms gfx 0 4 1 5 2 6 3 7 \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \

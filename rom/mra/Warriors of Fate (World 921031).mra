@@ -48,14 +48,14 @@
         <!-- gfx - starts at 0x320000 -->
         <interleave output="64">
             <part name="tk2-1m.3a" crc="0d9cb9bf" map="00000021"/>
-            <part name="tk2-2m.4a" crc="c5ca2460" map="00002100"/>
-            <part name="tk2-5m.7a" crc="291f0f0b" map="00210000"/>
-            <part name="tk2-6m.8a" crc="1abd14d6" map="21000000"/>
+            <part name="tk2-3m.5a" crc="45227027" map="00002100"/>
+            <part name="tk2-2m.4a" crc="c5ca2460" map="00210000"/>
+            <part name="tk2-4m.6a" crc="e349551c" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="tk2-3m.5a" crc="45227027" map="00000021"/>
-            <part name="tk2-4m.6a" crc="e349551c" map="00002100"/>
-            <part name="tk2-7m.9a" crc="3edeb949" map="00210000"/>
+            <part name="tk2-5m.7a" crc="291f0f0b" map="00000021"/>
+            <part name="tk2-7m.9a" crc="3edeb949" map="00002100"/>
+            <part name="tk2-6m.8a" crc="1abd14d6" map="00210000"/>
             <part name="tk2-8m.10a" crc="b27948e3" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x720000 -->
