@@ -71,8 +71,8 @@ module jtcps1_main(
     `ifdef CPS15
     ,
     output reg         eeprom_sclk,
-    input              eeprom_sdi,
-    output reg         eeprom_sdo,
+    output reg         eeprom_sdi,
+    input              eeprom_sdo,
     output reg         eeprom_scs,
     input       [ 7:0] main2qs_din,
     output reg  [23:1] main2qs_addr,
@@ -249,13 +249,13 @@ always @(posedge clk, posedge rst) begin
     if( rst ) begin
         eeprom_scs  <= 0;
         eeprom_sclk <= 0;
-        eeprom_sdo  <= 0;
+        eeprom_sdi  <= 0;
     end
     else if(cpu_cen) begin
         if( eeprom_cs && !LDSWn ) begin
             eeprom_scs  <= cpu_dout[7];
             eeprom_sclk <= cpu_dout[6];
-            eeprom_sdo  <= cpu_dout[0];
+            eeprom_sdi  <= cpu_dout[0];
         end
     end
 end
@@ -355,7 +355,7 @@ always @(posedge clk) begin
                     rom_cs                     ? rom_data : (
                     ppu2_cs                    ? mmr_dout : (
                     `ifdef CPS15
-                    eeprom_cs                  ? {~15'd0, eeprom_sdi}  : (
+                    eeprom_cs                  ? {~15'd0, eeprom_sdo}  : (
                     main2qs_cs                 ? {8'hff, main2qs_din} :
                     `else
                     (
