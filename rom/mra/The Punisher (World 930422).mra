@@ -26,24 +26,32 @@
     <rbf>jtcps15</rbf>
     <rom index="0" zip="punisher.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 06 80 06 80 0e 80 1e 
-        ff ff ff ff ff ff ff ff 
-        0e c0 ff ff ff ff 12 14 
-        16 08 0a 00 00 0c 04 02 
-        20 00 17 40 88 73 ff ff 
-        ff ff ff ff ff ff ff ff 
-        67 45 21 03 75 31 60 24 
-        22 22 22 ff ff ff ff ff 
+        00 06 80 06 80 0e 80 1e
+        ff ff ff ff ff ff ff ff
+        0e c0 ff ff ff ff 12 14
+        16 08 0a 00 00 0c 04 02
+        20 00 17 40 88 73 ff ff
+        ff ff ff ff ff ff ff ff
+        67 45 21 03 75 31 60 24
+        22 22 22 ff ff ff ff ff
         </part>
         <!-- maincpu - starts at 0x0 -->
-        <part name="pse_26.11e" crc="389a99d2"/>
-        <part name="pse_30.11f" crc="68fb06ac"/>
-        <part name="pse_27.12e" crc="3eb181c3"/>
-        <part name="pse_31.12f" crc="37108e7b"/>
-        <part name="pse_24.9e" crc="0f434414"/>
-        <part name="pse_28.9f" crc="b732345d"/>
-        <part name="pse_25.10e" crc="b77102e2"/>
-        <part name="pse_29.10f" crc="ec037bce"/>
+        <interleave output="16">
+            <part name="pse_30.11f" crc="68fb06ac" map="01"/>
+            <part name="pse_26.11e" crc="389a99d2" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pse_31.12f" crc="37108e7b" map="01"/>
+            <part name="pse_27.12e" crc="3eb181c3" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pse_28.9f" crc="b732345d" map="01"/>
+            <part name="pse_24.9e" crc="0f434414" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pse_29.10f" crc="ec037bce" map="01"/>
+            <part name="pse_25.10e" crc="b77102e2" map="10"/>
+        </interleave>
         <part name="ps_21.6f" crc="8affa5a9"/>
         <!-- audiocpu - starts at 0x180000 -->
         <part name="ps_q.5k" crc="49ff4446"/>
