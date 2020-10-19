@@ -292,10 +292,12 @@ jtcps1_main u_main(
     // cabinet I/O
     // Cabinet input
     .charger     ( charger          ),
-    .start_button( start_button[1:0]),
-    .coin_input  ( coin_input[1:0]  ),
+    .start_button( start_button     ),
+    .coin_input  ( coin_input       ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
+    .joystick3   ( joystick3        ),
+    .joystick4   ( joystick4        ),
     .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
