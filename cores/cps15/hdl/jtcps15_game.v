@@ -182,7 +182,6 @@ assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM 
 wire [ 1:0] dsn;
 wire        cen16, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
-wire        charger;
 wire        turbo;
 
 `ifdef JTCPS_TURBO
@@ -295,14 +294,14 @@ jtcps1_main u_main(
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
     // Cabinet input
-    .charger     ( charger          ),
+    .charger     ( 1'b0             ),
     .start_button( start_button     ),
     .coin_input  ( coin_input       ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
     .joystick3   ( joystick3        ),
     .joystick4   ( joystick4        ),
-    .service     ( dip_test         ),
+    .service     ( 1'b1             ),
     .tilt        ( 1'b1             ),
     // BUS sharing
     .busreq      ( busreq_cpu       ),
@@ -372,7 +371,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vrender        ( vrender       ),
     .gfx_en         ( gfx_en        ),
     .cpu_speed      ( cpu_speed     ),
-    .charger        ( charger       ),
+    .charger        (               ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

@@ -170,7 +170,7 @@ always @(posedge clk, posedge rst) begin
             pre_ram_cs  <= &A[23:18];
             `ifdef CPS15
             io15_cs      <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
-            main2qs_cs   <= A[23:16]==8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
+            main2qs_cs   <= A[23:16] == 8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
             main2qs_addr <= A;
             rom_cs      <= A[23:21] == 3'b00;
             `else
@@ -193,8 +193,8 @@ always @(posedge clk, posedge rst) begin
             end
             `ifdef CPS15
             if( io15_cs ) begin
-                joy3_cs   <= A[2:1]==2'd0 && RnW;
-                joy4_cs   <= A[2:1]==2'd1 && RnW;
+                joy3_cs   <= A[2:1]==2'd0;
+                joy4_cs   <= A[2:1]==2'd1;
                 // coin2_cs   <= A[3:2]==2'd2;
                 eeprom_cs <= A[2:1]==2'd3;
             end
@@ -330,18 +330,18 @@ always @(posedge clk) begin
     if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
     `ifdef CPS15
     else if( joy3_cs )
-        sys_data <= { start_button[2], coin_input[2], joystick3[7:0] };
+        sys_data <= { 8'hff, start_button[2], coin_input[2], joystick3[5:0] };
     else if( joy4_cs )
-        sys_data <= { start_button[3], coin_input[3], joystick4[7:0] };
+        sys_data <= { 8'hff, start_button[3], coin_input[3], joystick4[5:0] };
     `endif
     else if(sys_cs) begin
         case( A[2:1] )
             2'b00: sys_data <=
             charger ? // Support for SFZ charger version
               { joystick2[9], joystick1[9], start_button[1:0],
-               1'b1, service, joystick2[8], joystick1[8], 8'hff }
+               1'b1, service, joystick2[8], joystick1[8], 8'hff } :
             // Regular CPS1 arcade:
-            : { tilt, 1'b1 /* alternative test dip */, start_button[1:0],
+            { tilt, dip_test /* alternative test dip */, start_button[1:0],
                 1'b1, service, coin_input[1:0], 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
             2'b10: sys_data <= { dipsw_b, 8'hff };
