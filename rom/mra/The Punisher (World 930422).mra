@@ -36,33 +36,15 @@
         22 22 22 ff ff ff ff ff 
         </part>
         <!-- maincpu - starts at 0x0 -->
-        <interleave output="16">
-            <part name="pse_26.11e" crc="389a99d2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_30.11f" crc="68fb06ac" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_27.12e" crc="3eb181c3" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_31.12f" crc="37108e7b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_24.9e" crc="0f434414" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_28.9f" crc="b732345d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_25.10e" crc="b77102e2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pse_29.10f" crc="ec037bce" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ps_21.6f" crc="8affa5a9" map="12"/>
-        </interleave>
+        <part name="pse_26.11e" crc="389a99d2"/>
+        <part name="pse_30.11f" crc="68fb06ac"/>
+        <part name="pse_27.12e" crc="3eb181c3"/>
+        <part name="pse_31.12f" crc="37108e7b"/>
+        <part name="pse_24.9e" crc="0f434414"/>
+        <part name="pse_28.9f" crc="b732345d"/>
+        <part name="pse_25.10e" crc="b77102e2"/>
+        <part name="pse_29.10f" crc="ec037bce"/>
+        <part name="ps_21.6f" crc="8affa5a9"/>
         <!-- audiocpu - starts at 0x180000 -->
         <part name="ps_q.5k" crc="49ff4446"/>
         <!-- qsound - starts at 0x1A0000 -->

@@ -36,15 +36,9 @@
         43 43 43 ff ff ff ff ff 
         </part>
         <!-- maincpu - starts at 0x0 -->
-        <interleave output="16">
-            <part name="cde_23a.8f" crc="8f4e585e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cde_22a.7f" crc="9278aa12" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cde_21a.6f" crc="66d23de2" map="12"/>
-        </interleave>
+        <part name="cde_23a.8f" crc="8f4e585e"/>
+        <part name="cde_22a.7f" crc="9278aa12"/>
+        <part name="cde_21a.6f" crc="66d23de2"/>
         <!-- audiocpu - starts at 0x180000 -->
         <part name="cd_q.5k" crc="605fdb0b"/>
         <!-- qsound - starts at 0x1A0000 -->
@@ -55,14 +49,14 @@
         <!-- gfx - starts at 0x3A0000 -->
         <interleave output="64">
             <part name="cd-1m.3a" crc="8da4f917" map="00000021"/>
-            <part name="cd-2m.4a" crc="09c8fc2d" map="00002100"/>
-            <part name="cd-5m.7a" crc="470befee" map="00210000"/>
-            <part name="cd-6m.8a" crc="e7599ac4" map="21000000"/>
+            <part name="cd-3m.5a" crc="6c40f603" map="00002100"/>
+            <part name="cd-2m.4a" crc="09c8fc2d" map="00210000"/>
+            <part name="cd-4m.6a" crc="637ff38f" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="cd-3m.5a" crc="6c40f603" map="00000021"/>
-            <part name="cd-4m.6a" crc="637ff38f" map="00002100"/>
-            <part name="cd-7m.9a" crc="22bfb7a3" map="00210000"/>
+            <part name="cd-5m.7a" crc="470befee" map="00000021"/>
+            <part name="cd-7m.9a" crc="22bfb7a3" map="00002100"/>
+            <part name="cd-6m.8a" crc="e7599ac4" map="00210000"/>
             <part name="cd-8m.10a" crc="211b4b15" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x7A0000 -->

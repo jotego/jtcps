@@ -25,9 +25,9 @@ mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
 mkdir -p mra/_alt/"Cadillacs and Dinosaurs"
 mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosaurs" \
     -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
+    -order-roms gfx 0 4 1 5 2 6 3 7 \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
@@ -43,7 +43,6 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosa
 mkdir -p mra/_alt/"The Punisher"
 mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
     -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
@@ -61,7 +60,6 @@ mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
 mkdir -p mra/_alt/"Saturday Night Slam Masters"
 mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night Slam Masters" \
     -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
@@ -79,7 +77,6 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night S
 mkdir -p mra/_alt/"Muscle Bomber Duo"
 mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Muscle Bomber Duo" \
     -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \

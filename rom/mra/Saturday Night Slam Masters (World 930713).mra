@@ -26,37 +26,27 @@
     <rbf>jtcps15</rbf>
     <rom index="0" zip="slammast.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 08 80 08 80 18 80 30 
-        ff ff ff ff ff ff ff ff 
-        2e c1 ff ff ff ff 16 00 
-        02 28 2a 00 00 2c 04 08 
-        10 00 10 40 c8 73 f7 ff 
-        ff ff ff ff ff ff ff ff 
-        54 32 10 76 65 43 21 07 
-        31 31 19 ff ff ff ff ff 
+        00 08 80 08 80 18 80 30
+        ff ff ff ff ff ff ff ff
+        2e c1 ff ff ff ff 16 00
+        02 28 2a 00 00 2c 04 08
+        10 00 10 40 c8 73 f7 ff
+        ff ff ff ff ff ff ff ff
+        54 32 10 76 65 43 21 07
+        31 31 19 ff ff ff ff ff
         </part>
         <!-- maincpu - starts at 0x0 -->
+        <part name="mbe_23e.8f" crc="5394057a"/>
         <interleave output="16">
-            <part name="mbe_23e.8f" crc="5394057a" map="12"/>
+            <part name="mbe_24b.9e" crc="95d5e729" map="01"/>
+            <part name="mbe_28b.9f" crc="b1c7cbcb" map="10"/>
         </interleave>
         <interleave output="16">
-            <part name="mbe_24b.9e" crc="95d5e729" map="12"/>
+            <part name="mbe_25b.10e" crc="a50d3fd4" map="01"/>
+            <part name="mbe_29b.10f" crc="08e32e56" map="10"/>
         </interleave>
-        <interleave output="16">
-            <part name="mbe_28b.9f" crc="b1c7cbcb" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mbe_25b.10e" crc="a50d3fd4" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mbe_29b.10f" crc="08e32e56" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mbe_21a.6f" crc="d5007b05" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mbe_20a.5f" crc="aeb557b0" map="12"/>
-        </interleave>
+        <part name="mbe_21a.6f" crc="d5007b05"/>
+        <part name="mbe_20a.5f" crc="aeb557b0"/>
         <!-- audiocpu - starts at 0x200000 -->
         <part name="mb_qa.5k" crc="e21a03c4"/>
         <!-- qsound - starts at 0x220000 -->
