@@ -33,7 +33,7 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosa
     -header-pointer 16 \
     -header-data FF FF \
     -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
+    -header-data 0a 0c 0e 00 02 00 00 04 16 16 16 00 \
     -header-data 5 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \
@@ -51,7 +51,7 @@ mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
     -header-pointer 16 \
     -header-data 0e c0 \
     -header-data FF FF FF FF \
-    -header-data 12 14 16 08 0a 0c 00 00 04 02 20 00 \
+    -header-data 12 14 16 08 0a 00 00 0c 04 02 20 00 \
     -header-data 17 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
     -header-pointer 48 \

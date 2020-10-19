@@ -149,8 +149,13 @@ assign addr_prio0    = `MMR(7)>>1;
 assign addr_prio1    = `MMR(8)>>1;
 assign addr_prio2    = `MMR(9)>>1;
 assign addr_prio3    = `MMR(10)>>1;
+`ifdef CPS15
+assign addr_in2      = 5'd0; // no inputs on CPS-B chip for CPS1.5 games
+assign addr_in3      = 5'd0;
+`else
 assign addr_in2      = `MMR(11)>>1;
 assign addr_in3      = `MMR(12)>>1;
+`endif
 assign addr_pal_page = `MMR(13)>>1;
 assign layer_mask0   = `MMR(14);
 assign layer_mask1   = `MMR(15);
