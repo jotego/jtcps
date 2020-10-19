@@ -185,7 +185,11 @@ wire        cpu_cen, cpu_cenb;
 wire        charger;
 wire        turbo;
 
- assign turbo = status[6];
+`ifdef JTCPS_TURBO
+assign turbo = 1;
+`else
+assign turbo = status[6];
+`endif
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -298,7 +302,7 @@ jtcps1_main u_main(
     .joystick2   ( joystick2        ),
     .joystick3   ( joystick3        ),
     .joystick4   ( joystick4        ),
-    .service     ( 1'b1             ),
+    .service     ( dip_test         ),
     .tilt        ( 1'b1             ),
     // BUS sharing
     .busreq      ( busreq_cpu       ),

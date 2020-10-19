@@ -70,7 +70,7 @@ module mist_dump(
             `ifndef NOMAIN
             $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
-            $shm_probe(UUT.u_game.u_sound.u_buslock, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `endif
             //$shm_probe(UUT.u_game.u_video.u_mmr, "AS");
 
