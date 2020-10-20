@@ -344,7 +344,7 @@ assign scs  = 0;
 `endif
 
 // EEPROM to save game settings
-jt9346 u_eeprom(
+jt9346 #(.DW(8)) u_eeprom(
     .clk    ( clk       ),  // system clock
     .rst    ( rst       ),  // system reset
     // chip interface
