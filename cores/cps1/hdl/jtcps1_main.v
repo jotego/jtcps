@@ -163,6 +163,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
+            rom_cs      <= A[23:22] == 2'b00;
             one_wait    <= A[23] | ~A[22];
             dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
@@ -172,9 +173,6 @@ always @(posedge clk, posedge rst) begin
             io15_cs      <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
             main2qs_cs   <= A[23:16] == 8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
             main2qs_addr <= A;
-            rom_cs      <= A[23:21] == 3'b00;
-            `else
-            rom_cs      <= A[23:22] == 2'b00;
             `endif
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
                 ppu1_cs  <= A[8:6] == 3'b100; // 'h10x

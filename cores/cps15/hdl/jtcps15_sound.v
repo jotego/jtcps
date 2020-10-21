@@ -126,8 +126,8 @@ always @(posedge clk, posedge rst) begin
         if(!mreq_n)
             rom_addr <= A[15] ? ({ 1'b0, bank, A[13:0] } + 19'h8000) : { 4'b0, A[14:0] };
         ram_cs   <= !mreq_n && (A[15:12] == 4'hc || A[15:12]==4'hf);
-        bank_cs  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd2);
-        qsnd_wr  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd3);
+        qsnd_wr  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd2);
+        bank_cs  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]==3'd3);
         qsnd_rd  <= !mreq_n && !rd_n && (A[15:12] == 4'hd && A[2:0]==3'd7);
     end
 end
@@ -158,7 +158,7 @@ always @(posedge clk, posedge rst) begin
 end
 
 always @(*) begin
-    cpu_din =  rom_cs ? dec_dout : (
+    cpu_din =  rom_cs ? ( A[15] ? rom_data : dec_dout ) : (
                ram_cs ? ram_dout : (
               qsnd_rd ? { dsp_rdy_n, 3'b111, bank } : 8'hff
               ));
