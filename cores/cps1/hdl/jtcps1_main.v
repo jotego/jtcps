@@ -341,7 +341,13 @@ always @(posedge clk) begin
               { joystick2[9], joystick1[9], start_button[1:0],
                1'b1, service, joystick2[8], joystick1[8], 8'hff } :
             // Regular CPS1 arcade:
-            { tilt, dip_test /* alternative test dip */, start_button[1:0],
+            { tilt,
+                `ifdef CPS15
+                dip_test /* alternative test dip */,
+                `else
+                1'b1,
+                `endif
+                start_button[1:0],
                 1'b1, service, coin_input[1:0], 8'hff };
             2'b01: sys_data <= { dipsw_a, 8'hff };
             2'b10: sys_data <= { dipsw_b, 8'hff };
