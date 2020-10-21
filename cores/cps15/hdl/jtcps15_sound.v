@@ -90,7 +90,18 @@ reg         last_pids_n;
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 `else
-assign      dsp_rdy_n = 0;
+reg rdy_reads, last_rd;
+assign      dsp_rdy_n = rdy_reads;
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        rdy_reads <= 0;
+        last_rd   <= 0;
+    end else begin
+        last_rd <= qsnd_rd;
+        if( !qsnd_rd && last_rd ) rdy_reads <= ~rdy_reads;
+    end
+end
 `endif
 
 assign      ram_we    = ram_cs && !wr_n;
