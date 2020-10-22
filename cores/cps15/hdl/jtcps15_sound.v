@@ -31,7 +31,7 @@ module jtcps15_sound(
     // Interface with main CPU
     input      [23:1] main_addr,
     input      [ 7:0] main_dout,
-    output     [ 7:0] main_din,
+    output reg [ 7:0] main_din,
     input             main_ldswn,
     input             main_buse_n,
     output            main_busakn,
@@ -60,14 +60,15 @@ module jtcps15_sound(
 );
 
 wire        cpu_cen, cen_extra;
-wire [ 7:0] dec_dout, ram_dout, cpu_dout;
-wire [15:0] A;
+wire [ 7:0] dec_dout, ram_dout, cpu_dout, bus_din;
+wire [15:0] A, bus_A;
 reg  [ 3:0] bank;
 reg  [ 7:0] cpu_din;
 reg         rstn, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
+wire        bus_wrn;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -108,8 +109,14 @@ end
 wire bank_access = rom_cs & A[15];
 `endif
 
-assign      ram_we    = ram_cs && !wr_n;
-assign      main_we   = !main_busakn && !z80_buswn;
+assign ram_we    = ram_cs && !bus_wrn;
+assign bus_A     = main_busakn ?        A : main_addr[16:1];
+assign bus_wrn   = main_busakn ?     wr_n : main_ldswn;
+assign bus_din   = main_busakn ? cpu_dout : main_dout;
+
+always @(posedge clk) begin
+    main_din <= cpu_din; // bus output
+end
 
 always @(negedge clk) begin
     rstn <= ~rst;
@@ -126,13 +133,13 @@ always @(posedge clk, posedge rst) begin
         qsnd_rd   <= 0;
     end else begin
         rom_ok2  <= rom_ok;
-        rom_cs   <= !mreq_n && !rd_n && (!A[15] || A[15:14]==2'b10);
+        rom_cs   <= !mreq_n && !rd_n && (!bus_A[15] || bus_A[15:14]==2'b10);
         if(!mreq_n)
-            rom_addr <= A[15] ? ({ 1'b0, bank, A[13:0] } + 19'h8000) : { 4'b0, A[14:0] };
-        ram_cs   <= !mreq_n && (A[15:12] == 4'hc || A[15:12]==4'hf);
-        qsnd_wr  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]<=3'd2);
-        bank_cs  <= !mreq_n && !wr_n && (A[15:12] == 4'hd && A[2:0]==3'd3);
-        qsnd_rd  <= !mreq_n && !rd_n && (A[15:12] == 4'hd && A[2:0]==3'd7);
+            rom_addr <= bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] };
+        ram_cs   <= !mreq_n && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
+        qsnd_wr  <= !mreq_n && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
+        bank_cs  <= !mreq_n && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
+        qsnd_rd  <= !mreq_n && !rd_n && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd7);
     end
 end
 
@@ -147,14 +154,14 @@ always @(posedge clk, posedge rst) begin
         dsp_rst <= 1;
     end else begin
         if( bank_cs ) begin
-            bank    <= cpu_dout[3:0];
-            dsp_rst <= ~cpu_dout[7];
+            bank    <= bus_din[3:0];
+            dsp_rst <= ~bus_din[7];
         end
         if( qsnd_wr ) begin
             case( A[2:0] )
-                2'd0: cpu2dsp[ 7: 0] <= cpu_dout;
-                2'd1: cpu2dsp[15: 8] <= cpu_dout;
-                2'd2: cpu2dsp[23:16] <= cpu_dout;
+                2'd0: cpu2dsp[ 7: 0] <= bus_din;
+                2'd1: cpu2dsp[15: 8] <= bus_din;
+                2'd2: cpu2dsp[23:16] <= bus_din;
                 default:;
             endcase // A[2:0]
         end
@@ -200,19 +207,13 @@ jtcps15_z80wait u_extrawait(
     .cen_cpu( cen_extra )
 );
 
-jtframe_dual_ram #(.aw(13)) u_z80ram( // 8 kB!
-    .clk0   ( clk       ),
-    .clk1   ( clk       ),
-    // Port 0 - Z80
-    .data0  ( cpu_dout  ),
-    .addr0  ( A[12:0]   ),
-    .we0    ( ram_we    ),
-    .q0     ( ram_dout  ),
-    // Port 1 - M68000
-    .data1  ( main_dout ),
-    .addr1  ( main_addr[13:1] ),
-    .we1    ( main_we   ),
-    .q1     ( main_din  )
+jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
+    .clk    ( clk           ),
+    .cen    ( 1'b1          ),
+    .data   ( bus_din      ),
+    .addr   ( bus_A[12:0]   ),
+    .we     ( ram_we        ),
+    .q      ( ram_dout      )
 );
 
 jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
@@ -444,7 +445,7 @@ wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
                    (m68_addr[23:12]>=12'hf1e && m68_addr[23:12]<12'hf20 ) );
 
 assign z80_buswn = m68_buswen | m68_busakn;
-assign busrq_n   = buse_n | ~shared_addr;
+assign busrq_n   = buse_n; // | ~shared_addr;
 assign m68_busakn= latch[1];
 
 always @(posedge clk, posedge rst) begin

@@ -171,7 +171,9 @@ always @(posedge clk, posedge rst) begin
             pre_ram_cs  <= &A[23:18];
             `ifdef CPS15
             io15_cs      <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
-            main2qs_cs   <= A[23:16] == 8'hf1 && A[15] && (A[14]==A[13]); // F18000~F19FFF F1E000~F1FFFF
+            main2qs_cs   <= A[23:20] == 4'hf  && A[19:17]==3'd0 && (
+                            !A[16] ||                             // F00000-F0FFFF
+                            (A[16] && A[15] && (A[14]==A[13])) ); // F18000~F19FFF F1E000~F1FFFF
             main2qs_addr <= A;
             `endif
             if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
