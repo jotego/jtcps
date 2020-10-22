@@ -134,7 +134,7 @@ always @(posedge clk, posedge rst) begin
         qsnd_rd   <= 0;
     end else begin
         rom_ok2  <= rom_ok;
-        rom_cs   <= !bus_mreqn && !rd_n && (!bus_A[15] || bus_A[15:14]==2'b10);
+        rom_cs   <= !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
         if(!bus_mreqn)
             rom_addr <= bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] };
         ram_cs   <= !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
