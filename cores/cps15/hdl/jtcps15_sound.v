@@ -104,6 +104,10 @@ always @(posedge clk, posedge rst) begin
 end
 `endif
 
+`ifdef SIMULATION
+wire bank_access = rom_cs & A[15];
+`endif
+
 assign      ram_we    = ram_cs && !wr_n;
 assign      main_we   = !main_busakn && !z80_buswn && (main_addr[16:13]==4'hc || main_addr[16:13]==4'hf);
 

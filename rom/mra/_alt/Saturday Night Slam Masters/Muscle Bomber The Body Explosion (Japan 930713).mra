@@ -64,11 +64,11 @@
             <part name="mb_07.9a" crc="b76c70e9"  map="00210000"/>
             <part name="mb_08.10a" crc="e60c9556" map="21000000"/>
         </interleave>
+        <interleave output="64">
             <part name="mb_10.3c" crc="97976ff5" map="00000021"/>
             <part name="mb_11.4c" crc="b350a840" map="00002100"/>
             <part name="mb_12.5c" crc="8fb94743" map="00210000"/>
             <part name="mb_13.6c" crc="da810d5f" map="21000000"/>
-        <interleave output="64">
         </interleave>
         <!-- QSound firmware - starts at 0xC20000 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
