@@ -68,7 +68,7 @@ reg         rstn, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
-wire        bus_wrn;
+wire        bus_wrn, bus_mreqn;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -113,6 +113,7 @@ assign ram_we    = ram_cs && !bus_wrn;
 assign bus_A     = main_busakn ?        A : main_addr[16:1];
 assign bus_wrn   = main_busakn ?     wr_n : main_ldswn;
 assign bus_din   = main_busakn ? cpu_dout : main_dout;
+assign bus_mreqn = main_busakn & mreq_n;
 
 always @(posedge clk) begin
     main_din <= cpu_din; // bus output
@@ -133,13 +134,13 @@ always @(posedge clk, posedge rst) begin
         qsnd_rd   <= 0;
     end else begin
         rom_ok2  <= rom_ok;
-        rom_cs   <= !mreq_n && !rd_n && (!bus_A[15] || bus_A[15:14]==2'b10);
-        if(!mreq_n)
+        rom_cs   <= !bus_mreqn && !rd_n && (!bus_A[15] || bus_A[15:14]==2'b10);
+        if(!bus_mreqn)
             rom_addr <= bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] };
-        ram_cs   <= !mreq_n && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
-        qsnd_wr  <= !mreq_n && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
-        bank_cs  <= !mreq_n && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
-        qsnd_rd  <= !mreq_n && !rd_n && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd7);
+        ram_cs   <= !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
+        qsnd_wr  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
+        bank_cs  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
+        qsnd_rd  <= !bus_mreqn && !rd_n && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd7);
     end
 end
 
