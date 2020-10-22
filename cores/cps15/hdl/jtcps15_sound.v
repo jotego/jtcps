@@ -68,7 +68,7 @@ reg         rstn, rom_ok2;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
-wire        bus_wrn, bus_mreqn;
+wire        bus_wrn, bus_mreqn, main_busn;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -109,11 +109,12 @@ end
 wire bank_access = rom_cs & A[15];
 `endif
 
-assign ram_we    = ram_cs && !bus_wrn;
-assign bus_A     = main_busakn ?        A : main_addr[16:1];
-assign bus_wrn   = main_busakn ?     wr_n : main_ldswn;
-assign bus_din   = main_busakn ? cpu_dout : main_dout;
-assign bus_mreqn = main_busakn & mreq_n;
+assign ram_we      = ram_cs && !bus_wrn;
+assign bus_A       = main_busn ?        A : main_addr[16:1];
+assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
+assign bus_din     = main_busn ? cpu_dout : main_dout;
+assign bus_mreqn   = main_busn & mreq_n;
+assign main_busakn = main_busn | ~( rom_cs && rom_ok2);
 
 always @(posedge clk) begin
     main_din <= cpu_din; // bus output
@@ -187,7 +188,7 @@ jtcps15_z80buslock u_buslock(
     .m68_addr   ( main_addr[23:12] ),
     .m68_buswen ( main_ldswn       ),
     .z80_buswn  ( z80_buswn        ),
-    .m68_busakn ( main_busakn       )
+    .m68_busakn ( main_busn        )
 );
 
 jtcps15_z80int u_z80int(
