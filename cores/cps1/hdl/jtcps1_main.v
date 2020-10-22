@@ -580,10 +580,10 @@ end
 always @(negedge LVBL ) frame_cnt <= frame_cnt+1;
 
 always @(posedge cpu_cen) begin
-    if( main2qs_cs ) begin
+    if( main2qs_cs && !DTACKn ) begin
         if( LDSWn ) begin
             $fdisplay( fqmem, "%04d Write %08X %02X", frame_cnt, A_full, cpu_dout[7:0]);
-        end else if( !DTACKn ) begin
+        end else begin
             $fdisplay( fqmem, "%04d Read  %08X %02X", frame_cnt, A_full, main2qs_din );
 
         end
