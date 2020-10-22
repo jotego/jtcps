@@ -393,6 +393,15 @@ reg        DTACKn;
 reg        last_LVBL;
 (*keep*) reg [23:0] fail_cnt;
 
+reg qs_busakn_s;
+
+always @(posedge clk, posedge rst) begin
+    if( rst )
+        qs_busakn_s <= 1;
+    else if(cpu_cen)
+        qs_busakn_s <= main2qs_busakn;
+end
+
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
@@ -404,7 +413,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn
             `ifdef CPS15
-            || (main2qs_cs && main2qs_busakn) // wait for Z80 bus grant
+            || (main2qs_cs && qs_busakn_s) // wait for Z80 bus grant
             `endif
         ) begin // for falling edge of ASn
             DTACKn <= 1'b1;
@@ -556,6 +565,32 @@ end
 always @(posedge rom_cs) begin
     $fdisplay(fdebug,"%X",A_full);
 end
+`endif
+
+`ifdef CPS15
+`ifdef SIMULATION
+integer fqmem;
+integer frame_cnt;
+
+initial begin
+    fqmem=$fopen("qmem.log","w");
+    frame_cnt = 0;
+end
+
+always @(negedge LVBL ) frame_cnt <= frame_cnt+1;
+
+always @(posedge cpu_cen) begin
+    if( main2qs_cs ) begin
+        if( LDSWn ) begin
+            $fdisplay( fqmem, "%04d Write %08X %02X", frame_cnt, A_full, cpu_dout[7:0]);
+        end else if( !DTACKn ) begin
+            $fdisplay( fqmem, "%04d Read  %08X %02X", frame_cnt, A_full, main2qs_din );
+
+        end
+    end
+end
+
+`endif
 `endif
 
 endmodule
