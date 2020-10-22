@@ -114,7 +114,7 @@ assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
-assign main_busakn = main_busn | ~( rom_cs && rom_ok2);
+assign main_busakn = main_busn | (rom_cs & ~rom_ok2);
 
 always @(posedge clk) begin
     main_din <= cpu_din; // bus output
