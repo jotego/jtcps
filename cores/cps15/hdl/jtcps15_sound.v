@@ -69,6 +69,7 @@ reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
 wire        bus_wrn, bus_mreqn, main_busn;
+reg         main_busn_dly;
 
 // QSound registers
 reg  [23:0] cpu2dsp;
@@ -114,10 +115,11 @@ assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
-assign main_busakn = main_busn | (rom_cs & ~rom_ok2);
+assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok2);
 
 always @(posedge clk) begin
     main_din <= cpu_din; // bus output
+    main_busn_dly <= main_busn;
 end
 
 always @(negedge clk) begin
