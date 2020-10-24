@@ -26,14 +26,14 @@
     <rbf>jtcps15</rbf>
     <rom index="0" zip="mbombrd.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 08 80 08 80 18 80 30
-        ff ff ff ff ff ff ff ff
-        2e c1 ff ff ff ff 16 00
-        02 28 2a 00 00 2c 04 08
-        10 00 10 40 c8 73 f7 ff
-        ff ff ff ff ff ff ff ff
-        54 32 10 76 65 43 21 07
-        31 31 19 ff ff ff ff ff
+        00 08 80 08 80 18 80 30 
+        ff ff ff ff ff ff ff ff 
+        2e c1 ff ff ff ff 16 00 
+        02 28 2a 00 00 2c 04 08 
+        10 00 10 40 c8 73 f7 ff 
+        ff ff ff ff ff ff ff ff 
+        54 32 10 76 65 43 21 07 
+        31 31 19 ff ff ff ff ff 
         </part>
         <!-- maincpu - starts at 0x0 -->
         <interleave output="16">
@@ -68,20 +68,20 @@
         <!-- gfx - starts at 0x620000 -->
         <interleave output="64">
             <part name="mb-1m.3a" crc="41468e06" map="00000021"/>
-            <part name="mb-4m.6a" crc="1eb9841d" map="00002100"/>
-            <part name="mb-6m.8a" crc="b76c70e9" map="00210000"/>
-            <part name="mb-12m.5c" crc="b350a840" map="21000000"/>
+            <part name="mb-3m.5a" crc="f453aa9e" map="00002100"/>
+            <part name="mb-2m.4a" crc="2ffbfea8" map="00210000"/>
+            <part name="mb-4m.6a" crc="1eb9841d" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mb-3m.5a" crc="f453aa9e" map="00000021"/>
-            <part name="mb-5m.7a" crc="506b9dc9" map="00002100"/>
-            <part name="mb-8m.10a" crc="e60c9556" map="00210000"/>
-            <part name="mb-11m.4c" crc="8fb94743" map="21000000"/>
-        </interleave>
-        <interleave output="64">
-            <part name="mb-2m.4a" crc="2ffbfea8" map="00000021"/>
+            <part name="mb-5m.7a" crc="506b9dc9" map="00000021"/>
             <part name="mb-7m.9a" crc="aff8c2fb" map="00002100"/>
-            <part name="mb-10m.3c" crc="97976ff5" map="00210000"/>
+            <part name="mb-6m.8a" crc="b76c70e9" map="00210000"/>
+            <part name="mb-8m.10a" crc="e60c9556" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="mb-10m.3c" crc="97976ff5" map="00000021"/>
+            <part name="mb-12m.5c" crc="b350a840" map="00002100"/>
+            <part name="mb-11m.4c" crc="8fb94743" map="00210000"/>
             <part name="mb-13m.6c" crc="da810d5f" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0xC20000 -->
@@ -91,9 +91,5 @@
     <rom index="1">
         <part>00</part>
     </rom>
-    <switches base="16" default="FF,FF">
-        <!-- DSWC -->
-        <dip name="Freeze" bits="3" ids="On,Off"/>
-    </switches>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Attack,Jump,Action,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>

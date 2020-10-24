@@ -4,12 +4,39 @@ cd $JTFRAME/cc
 make || exit $?
 popd
 
-mkdir -p mra/_alt/"Warriors of Fate"
-mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
-    -frac 2 gfx 4 -qsound \
+MAKEROM=0
+CPS15=1
+CPS2=0
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -rom)
+            MAKEROM=1;;
+        -cps2)
+            shift
+            CPS2=1;;
+        -h|-help)
+            cat <<EOF
+makemra.sh creates MRA files for some cores. Optional arguments:
+    -rom        create .rom files too using the mra tool
+                * not implemented yet *
+    -cps2       enable CPS2 MRA creation
+    -h | -help  shows this message
+EOF
+            exit 1;;
+        *)
+            echo "ERROR: unknown argument " $MAKEROM
+            exit 1;;
+    esac
+    shift
+done
+
+ALTFOLDER=_alt/"_Warriors of Fate"
+mkdir -p mra/"$ALTFOLDER"
+mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    -setword gfx 64 -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
-    -order-roms gfx 0 4 1 5 2 6 3 7 \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
@@ -23,12 +50,12 @@ mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Warriors of Fate" \
     -buttons Attack Jump None None None None \
     -rmdipsw Freeze
 
-mkdir -p mra/_alt/"Cadillacs and Dinosaurs"
-mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosaurs" \
-    -frac 2 gfx 4 -qsound \
+ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
+mkdir -p mra/"$ALTFOLDER"
+mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    -setword gfx 64 -setword maincpu 16 -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
-    -order-roms gfx 0 4 1 5 2 6 3 7 \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
@@ -42,9 +69,10 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Cadillacs and Dinosa
     -buttons Attack Jump None None None None\
     -rmdipsw Freeze
 
-mkdir -p mra/_alt/"The Punisher"
-mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
-    -frac 2 gfx 4 -qsound \
+ALTFOLDER=_alt/"_The Punisher"
+mkdir -p mra/"$ALTFOLDER"
+mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    -setword gfx 64 -setword maincpu 16 reverse -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
@@ -60,9 +88,10 @@ mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder _alt/"The Punisher" \
     -buttons Attack Jump None None None None \
     -rmdipsw Freeze
 
-mkdir -p mra/_alt/"Saturday Night Slam Masters"
-mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night Slam Masters" \
-    -frac 2 gfx 4 -qsound \
+ALTFOLDER=_alt/"_Saturday Night Slam Masters"
+mkdir -p mra/"$ALTFOLDER"
+mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    -setword gfx 64 -setword maincpu 16 reverse -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
@@ -75,12 +104,13 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Saturday Night S
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Attack Jump None None None None \
+    -buttons Attack Jump Action None None None \
     -rmdipsw Freeze
 
-mkdir -p mra/_alt/"Muscle Bomber Duo"
-mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Muscle Bomber Duo" \
-    -frac 2 gfx 4 -qsound \
+ALTFOLDER=_alt/"_Muscle Bomber Duo"
+mkdir -p mra/"$ALTFOLDER"
+mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    -setword gfx 64 -setword maincpu 16 -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
@@ -93,8 +123,15 @@ mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder _alt/"Muscle Bomber Duo
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Attack Jump None None None None \
+    -buttons Attack Jump Action None None None \
     -rmdipsw Freeze
+
+if [ $CPS2 = 0 ]; then
+    exit 0
+fi
+
+echo mal
+exit 0
 
 # CPS2 Titles
 function cps2_mra {

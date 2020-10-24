@@ -65,9 +65,5 @@
     <rom index="1">
         <part>00</part>
     </rom>
-    <switches base="16" default="FF,FF">
-        <!-- DSWC -->
-        <dip name="Freeze" bits="3" ids="On,Off"/>
-    </switches>
     <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>
