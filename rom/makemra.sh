@@ -104,26 +104,26 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Attack Jump Action None None None \
+    -buttons Punch Jump Action None None None \
     -rmdipsw Freeze
 
 ALTFOLDER=_alt/"_Muscle Bomber Duo"
 mkdir -p mra/"$ALTFOLDER"
 mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -setword maincpu 16 -qsound \
+    -setword gfx 64 -setword maincpu 16 reverse -qsound \
     -ignore aboardplds bboardplds cboardplds dboardplds \
     -order maincpu audiocpu qsound gfx \
     -header 64 0xff \
     -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
     -header-pointer 16 \
-    -header-data 2e c1 \
+    -header-data 1e c2 \
     -header-data FF FF FF FF \
-    -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
+    -header-data 2a 2c 2e 30 32 00 00 1c 04 08 10 00 \
     -header-data 10 \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Attack Jump Action None None None \
+    -buttons Punch Attack Jump None None None \
     -rmdipsw Freeze
 
 if [ $CPS2 = 0 ]; then
