@@ -68,8 +68,9 @@ module mist_dump(
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             `ifndef NOMAIN
-            $shm_probe(UUT.u_game.u_main, "A");
+            // $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
+            $shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
             //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
             //$shm_probe(UUT.u_game.u_eeprom,"A");
             //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");

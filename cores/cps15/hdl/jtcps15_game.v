@@ -329,7 +329,10 @@ jtcps1_main u_main(
     .eeprom_sclk ( sclk             ),
     .eeprom_sdi  ( sdi              ),
     .eeprom_sdo  ( sdo              ),
-    .eeprom_scs  ( scs              )
+    .eeprom_scs  ( scs              ),
+    // Unused -stuff from CPS1
+    .snd_latch0  (                  ),
+    .snd_latch1  (                  )
 );
 `else
 assign ram_addr = 17'd0;

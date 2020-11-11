@@ -91,6 +91,15 @@ reg         last_pids_n;
 
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
+/*
+jtframe_frac_cen #(.W(1)) u_dsp_cen(
+    .clk    ( clk     ),
+    .n      ( 10'd5   ),         // numerator
+    .m      ( 10'd8   ),         // denominator
+    .cen    ( cen_dsp ),
+    .cenb   (         ) // 180 shifted
+);*/
+assign cen_dsp = 1;
 `else
 reg rdy_reads, last_rd;
 assign      dsp_rdy_n = rdy_reads;
@@ -317,10 +326,13 @@ always @(*) begin
 end
 
 `ifndef NODSP
+wire dsp_fault;
+
 jtdsp16 u_dsp16(
     .rst        ( dsp_rst       ),
+    //.rst        ( rst           ),
     .clk        ( clk           ),
-    .cen        ( cen_dsp       ),
+    .clk_en     ( cen_dsp       ),
 
     .cen_cko    ( cen_cko       ),
     .ab         ( dsp_ab        ),  // address bus
@@ -350,7 +362,9 @@ jtdsp16 u_dsp16(
     // ROM programming interface
     .prog_addr  ( prog_addr     ),
     .prog_data  ( prog_data     ),
-    .prog_we    ( prog_we       )
+    .prog_we    ( prog_we       ),
+    // Debug
+    .fault      ( dsp_fault     )
 );
 `else
 assign dsp_pbus_out = 16'd0;
