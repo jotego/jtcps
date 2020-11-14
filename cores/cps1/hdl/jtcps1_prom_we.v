@@ -119,7 +119,8 @@ always @(posedge clk) begin
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
-                     is_oki ?  pcm_addr[22:1] + PCM_OFFSET : gfx_addr[22:1] + GFX_OFFSET ));
+                     is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
+                     is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
         prog_bank <= is_cpu ? 2'b01 : ( is_gfx ? 2'b10 : 2'b00 );
         if( ioctl_addr < START_BYTES ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
