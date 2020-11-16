@@ -323,7 +323,10 @@ always @(posedge clk, posedge rst) begin
         if( dsp_pods_n && !last_pods_n) begin
             qsnd_addr[15:0] <= dsp_pbus_out;
         end
-        qsnd_addr[22:16] <= dsp_ab[6:0];
+        if( dsp_ock && !last_ock && dsp_ab[15] ) begin
+            qsnd_addr[22:16] <= dsp_ab[6:0];/*{ dsp_ab[2:0], dsp_ab[4], dsp_ab[5],
+                dsp_ab[6], dsp_ab[7] };*/
+        end
     end
 end
 
@@ -332,7 +335,7 @@ always @(*) begin
 end
 
 `ifndef NODSP
-wire        dsp_fault, qsnd_rq;
+wire        dsp_fault, dsp_ext_rq;
 wire [15:0] dsp_serout;
 
 assign qsnd_cs = 1;
@@ -344,8 +347,8 @@ jtdsp16 u_dsp16(
 
     .cen_cko    ( cen_cko       ),
     .ab         ( dsp_ab        ),  // address bus
-    .rb_din     ( { 8'hff, qsnd_data } ),  // ROM data bus
-    .ext_rq     ( qsnd_rq       ),
+    .rb_din     ( { qsnd_data, 8'h0 } ),  // ROM data bus
+    .ext_rq     ( dsp_ext_rq    ),
     // Parallel I/O
     .pbus_in    ( dsp_pbus_in   ),
     .pbus_out   ( dsp_pbus_out  ),
