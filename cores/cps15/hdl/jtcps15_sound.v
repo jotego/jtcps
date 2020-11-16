@@ -80,7 +80,7 @@ reg  [ 1:0] dsp_datasel;
 
 // DSP16 wires
 wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out;
-reg  [15:0] dsp_pbus_in;
+reg  [15:0] dsp_pbus_in, dsp_serout;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
 wire        dsp_iack;
@@ -305,12 +305,14 @@ always @(posedge clk, posedge rst) begin
         last_vol_down <= vol_down;
         // latch sound data
         last_sadd <= dsp_sadd;
-        if( !dsp_sadd && last_sadd ) audio_ws <= dsp_psel;
-        if( !dsp_ock && last_ock ) begin
+        if( !dsp_sadd && last_sadd ) begin
+            audio_ws <= dsp_psel;
+            // data is taken directly in parallel. The serial
+            // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= { reg_left[14:0],  dsp_do };
+                reg_left  <= dsp_serout;
             else
-                reg_right <= { reg_right[14:0], dsp_do };
+                reg_right <= dsp_serout;
         end
         if( !last_psel && dsp_psel ) begin
             left   <= reg_left;
@@ -323,7 +325,7 @@ always @(posedge clk, posedge rst) begin
         if( dsp_pods_n && !last_pods_n) begin
             qsnd_addr[15:0] <= dsp_pbus_out;
         end
-        if( dsp_ock && !last_ock && dsp_ab[15] ) begin
+        if( dsp_ab[15] ) begin
             qsnd_addr[22:16] <= dsp_ab[6:0];/*{ dsp_ab[2:0], dsp_ab[4], dsp_ab[5],
                 dsp_ab[6], dsp_ab[7] };*/
         end
@@ -336,7 +338,6 @@ end
 
 `ifndef NODSP
 wire        dsp_fault, dsp_ext_rq;
-wire [15:0] dsp_serout;
 
 assign qsnd_cs = 1;
 
