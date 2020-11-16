@@ -328,7 +328,7 @@ always @(posedge clk, posedge rst) begin
 end
 
 always @(*) begin
-    dsp_pbus_in = dsp_datasel[0] ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
+    dsp_pbus_in = dsp_datasel[1] ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
 end
 
 `ifndef NODSP
