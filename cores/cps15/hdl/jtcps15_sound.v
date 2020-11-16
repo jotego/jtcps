@@ -100,7 +100,7 @@ jtframe_frac_cen #(.W(1)) u_dsp_cen(
     .cen    ( cen_dsp ),
     .cenb   (         ) // 180 shifted
 );*/
-assign cen_dsp = 1;
+assign cen_dsp = qsnd_ok;
 `else
 reg rdy_reads, last_rd;
 assign      dsp_rdy_n = rdy_reads;
@@ -332,7 +332,10 @@ always @(*) begin
 end
 
 `ifndef NODSP
-wire dsp_fault;
+wire        dsp_fault, qsnd_rq;
+wire [15:0] dsp_serout;
+
+assign qsnd_cs = 1;
 
 jtdsp16 u_dsp16(
     .rst        ( dsp_rst       ),
@@ -342,7 +345,7 @@ jtdsp16 u_dsp16(
     .cen_cko    ( cen_cko       ),
     .ab         ( dsp_ab        ),  // address bus
     .rb_din     ( { 8'hff, qsnd_data } ),  // ROM data bus
-    .ext_rq     ( qsnd_cs       ),
+    .ext_rq     ( qsnd_rq       ),
     // Parallel I/O
     .pbus_in    ( dsp_pbus_in   ),
     .pbus_out   ( dsp_pbus_out  ),
@@ -354,6 +357,7 @@ jtdsp16 u_dsp16(
     .doen       ( dsp_doen      ),  // data output enable
     .sadd       ( dsp_sadd      ),  // serial address
     .psel       ( dsp_psel      ),  // peripheral select
+    .ser_out    ( dsp_serout    ),
         // Unused by QSound firmware:
     .ose        (               ),  // output shift register empty
     .old        (               ),  // output load

@@ -65,12 +65,16 @@ module mist_dump(
             //$shm_probe(UUT.u_game, "A");
             `ifdef LOADROM
             $shm_probe(UUT.u_game.u_prom_we, "A");
+            $shm_probe(UUT.u_game.u_sound.u_dsp16.u_rom, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             `ifndef NOMAIN
-            // $shm_probe(UUT.u_game.u_main, "A");
+            //$shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
             $shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
+            //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
+            //$shm_probe(UUT.u_game.u_sound.dsp_irq);
+            //$shm_probe(UUT.u_game.u_sound.dsp_rst);
             //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
             //$shm_probe(UUT.u_game.u_eeprom,"A");
             //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
