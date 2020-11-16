@@ -342,7 +342,6 @@ jtdsp16 u_dsp16(
     .cen_cko    ( cen_cko       ),
     .ab         ( dsp_ab        ),  // address bus
     .rb_din     ( { 8'hff, qsnd_data } ),  // ROM data bus
-    .ext_mode   ( 1'b0          ),  // EXM pin, when high internal ROM is disabled
     .ext_rq     ( qsnd_cs       ),
     // Parallel I/O
     .pbus_in    ( dsp_pbus_in   ),
