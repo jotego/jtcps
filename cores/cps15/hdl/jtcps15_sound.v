@@ -76,6 +76,7 @@ reg  [23:0] cpu2dsp;
 reg         dsp_irq; // UR6B in schematics
 reg  [12:0] vol; // volume moves in 2dB steps
 reg  [15:0] reg_left, reg_right;
+reg  [ 1:0] dsp_datasel;
 
 // DSP16 wires
 wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out;
@@ -284,15 +285,21 @@ always @(posedge clk, posedge rst) begin
         sample    <= 0;
         left      <= 16'd0;
         right     <= 16'd0;
+        dsp_datasel <= 2'd0;
     end else begin
         last_pids_n <= dsp_pids_n;
         last_pods_n <= dsp_pods_n;
         last_ock    <= dsp_ock;
         last_psel   <= dsp_psel;
-        if( qs1l_w )
+        if( qs1l_w ) begin
             dsp_irq <= 1; // read MSB
-        else
-            if( dsp_pids_n && !last_pids_n ) dsp_irq <= 0; // read LSB
+            dsp_datasel <= 2'b11;
+        end else begin
+            if( dsp_pids_n && !last_pids_n ) begin
+                dsp_irq <= 0; // read LSB
+                dsp_datasel <= dsp_datasel>>1;
+            end
+        end
         // volume control
         last_vol_up   <= vol_up;
         last_vol_down <= vol_down;
@@ -321,8 +328,7 @@ always @(posedge clk, posedge rst) begin
 end
 
 always @(*) begin
-    dsp_pbus_in = !dsp_pods_n ?
-        ( !dsp_irq ? cpu2dsp[15:0] : {8'd0, cpu2dsp[23:16]} ) : 16'hffff;
+    dsp_pbus_in = dsp_datasel[0] ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
 end
 
 `ifndef NODSP
@@ -330,7 +336,6 @@ wire dsp_fault;
 
 jtdsp16 u_dsp16(
     .rst        ( dsp_rst       ),
-    //.rst        ( rst           ),
     .clk        ( clk           ),
     .clk_en     ( cen_dsp       ),
 

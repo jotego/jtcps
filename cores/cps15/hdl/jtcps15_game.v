@@ -549,9 +549,9 @@ u_sdram_mux(
     .slot7_addr     ( snd_addr          ),
     .slot7_dout     ( snd_data          ),
 
-    .slot5_offset   ( PCM_OFFSET      ),
-    .slot5_addr     ( qsnd_addr        ),
-    .slot5_dout     ( qsnd_data        ),
+    .slot5_offset   ( PCM_OFFSET        ),
+    .slot5_addr     ( qsnd_addr         ),
+    .slot5_dout     ( qsnd_data         ),
     // VRAM read access only
     .slot9_offset   ( VRAM_OFFSET       ),
     .slot9_addr     ( vram_dma_addr     ),
