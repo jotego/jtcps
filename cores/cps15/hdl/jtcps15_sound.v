@@ -79,8 +79,8 @@ reg  [15:0] reg_left, reg_right;
 reg  [ 1:0] dsp_datasel;
 
 // DSP16 wires
-wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out;
-reg  [15:0] dsp_pbus_in, dsp_serout;
+wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out, dsp_serout;
+reg  [15:0] dsp_pbus_in;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
 wire        dsp_iack;
