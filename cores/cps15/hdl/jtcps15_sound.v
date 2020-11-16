@@ -173,9 +173,9 @@ always @(posedge clk, posedge rst) begin
         end
         if( qsnd_wr ) begin
             case( A[2:0] )
-                2'd0: cpu2dsp[ 7: 0] <= bus_din;
-                2'd1: cpu2dsp[15: 8] <= bus_din;
-                2'd2: cpu2dsp[23:16] <= bus_din;
+                2'd0: cpu2dsp[15: 8] <= bus_din; // data word MSB
+                2'd1: cpu2dsp[ 7: 0] <= bus_din; // data word LSB
+                2'd2: cpu2dsp[23:16] <= bus_din; // address
                 default:;
             endcase // A[2:0]
         end
