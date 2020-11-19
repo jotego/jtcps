@@ -96,6 +96,8 @@ reg         last_pids_n;
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
+reg [3:0] dsp_lost;
+
 jtframe_frac_cen #(.W(2)) u_dsp_cen(
     .clk    ( clk96   ),
     .n      ( 10'd5   ),    // numerator
@@ -104,7 +106,29 @@ jtframe_frac_cen #(.W(2)) u_dsp_cen(
     .cenb   (         )     // 180 shifted
 );
 
-always @(posedge clk96) cen_dsp <= cen60 & (qsnd_ok | ~dsp_ext_rq);
+
+always @(posedge clk96, posedge rst) begin
+    if( rst ) begin
+        cen_dsp  <= 1;
+        dsp_lost <= 4'd0;
+    end else begin
+        if( cen60 ) begin
+            if(qsnd_ok | ~dsp_ext_rq )
+                cen_dsp <= 1;
+            else begin
+                cen_dsp <= 0;
+                if( dsp_lost!=4'hf ) dsp_lost <= dsp_lost+4'd1;
+            end
+        end else begin
+            if( dsp_lost == 4'd0 )
+                cen_dsp <= 0;
+            else if( qsnd_ok | ~dsp_ext_rq ) begin
+                cen_dsp <= 1;
+                dsp_lost <= dsp_lost - 4'd1;
+            end
+        end
+    end
+end
 
 `else
 reg rdy_reads, last_rd;
@@ -327,8 +351,8 @@ always @(posedge clk96, posedge rst) begin
                 reg_right <= dsp_serout;
         end
         if( !last_psel && dsp_psel ) begin
-            left   <= reg_left << 2;
-            right  <= reg_right << 2;
+            left   <= reg_left;
+            right  <= reg_right;
             sample <= 1;
         end else begin
             sample <= 0;
