@@ -18,7 +18,8 @@
 
 module jtcps15_sound(
     input             rst,
-    input             clk,
+    input             clk96,
+    input             clk48,
     input             cen8,
     input             vol_up,
     input             vol_down,
@@ -72,40 +73,45 @@ wire        bus_wrn, bus_mreqn, main_busn;
 reg         main_busn_dly;
 
 // QSound registers
-reg  [23:0] cpu2dsp;
-reg         dsp_irq; // UR6B in schematics
-reg  [12:0] vol; // volume moves in 2dB steps
-reg  [15:0] reg_left, reg_right;
-reg  [ 1:0] dsp_datasel;
+reg        [23:0] cpu2dsp;
+reg               dsp_irq; // UR6B in schematics
+reg        [12:0] vol; // volume moves in 2dB steps
+reg        [15:0] qsnd_buf;
+reg        [ 1:0] dsp_datasel;
+reg signed [15:0] reg_left, reg_right;
 
 // DSP16 wires
 wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out, dsp_serout;
 reg  [15:0] dsp_pbus_in;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
-wire        dsp_iack;
+wire        dsp_iack, dsp_ext_rq;
 reg         dsp_rst;
 wire        dsp_psel, dsp_sadd, dsp_rdy_n;
-wire        cen_dsp, cen_cko;
+wire        dsp_cen_cko;
+reg         cen_dsp;
+wire        cen60, cen30;
 
 reg         last_pids_n;
 
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
-/*
-jtframe_frac_cen #(.W(1)) u_dsp_cen(
-    .clk    ( clk     ),
-    .n      ( 10'd5   ),         // numerator
-    .m      ( 10'd8   ),         // denominator
-    .cen    ( cen_dsp ),
-    .cenb   (         ) // 180 shifted
-);*/
-assign cen_dsp = qsnd_ok;
+
+jtframe_frac_cen #(.W(2)) u_dsp_cen(
+    .clk    ( clk96   ),
+    .n      ( 10'd5   ),    // numerator
+    .m      ( 10'd8   ),    // denominator
+    .cen    ( {cen30, cen60 }  ),
+    .cenb   (         )     // 180 shifted
+);
+
+always @(posedge clk96) cen_dsp <= cen60 & (qsnd_ok | ~dsp_ext_rq);
+
 `else
 reg rdy_reads, last_rd;
 assign      dsp_rdy_n = rdy_reads;
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk48, posedge rst) begin
     if( rst ) begin
         rdy_reads <= 0;
         last_rd   <= 0;
@@ -127,16 +133,16 @@ assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
 assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok2);
 
-always @(posedge clk) begin
+always @(posedge clk48) begin
     main_din <= cpu_din; // bus output
     main_busn_dly <= main_busn;
 end
 
-always @(negedge clk) begin
+always @(negedge clk48) begin
     rstn <= ~rst;
 end
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         rom_cs    <= 0;
         rom_ok2   <= 0;
@@ -161,7 +167,7 @@ end
 // wire qs0h_w = qsnd_wr && A[2:0]==2'd1;
 wire qs1l_w = qsnd_wr && A[2:0]==2'd2;
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         bank    <= 4'd0;
         cpu2dsp <= 24'd0;
@@ -190,7 +196,7 @@ always @(*) begin
 end
 
 jtcps15_z80buslock u_buslock(
-    .clk        ( clk              ),
+    .clk        ( clk48            ),
     .rst        ( rst              ),
     .cen8       ( cen8             ),
     .busrq_n    ( busrq_n          ),
@@ -204,7 +210,7 @@ jtcps15_z80buslock u_buslock(
 );
 
 jtcps15_z80int u_z80int(
-    .clk    ( clk       ),
+    .clk    ( clk48     ),
     .rst    ( rst       ),
     .cen8   ( cen8      ),
     .m1_n   ( m1_n      ),
@@ -213,7 +219,7 @@ jtcps15_z80int u_z80int(
 );
 
 jtcps15_z80wait u_extrawait(
-    .clk    ( clk       ),
+    .clk    ( clk48     ),
     .rst    ( rst       ),
     .cen8   ( cen8      ),
     .m1_n   ( m1_n      ),
@@ -222,7 +228,7 @@ jtcps15_z80wait u_extrawait(
 );
 
 jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
-    .clk    ( clk           ),
+    .clk    ( clk48         ),
     .cen    ( 1'b1          ),
     .data   ( bus_din      ),
     .addr   ( bus_A[12:0]   ),
@@ -232,7 +238,7 @@ jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
 
 jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
     .rst_n      ( rstn        ),
-    .clk        ( clk         ),
+    .clk        ( clk48       ),
     .m1_n       ( m1_n        ),
     .mreq_n     ( mreq_n      ),
     .rd_n       ( rd_n        ),
@@ -248,7 +254,7 @@ jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
 
 jtframe_z80_romwait #(0) u_cpu(
     .rst_n      ( rstn        ),
-    .clk        ( clk         ),
+    .clk        ( clk48       ),
     .cen        ( cen_extra   ),
     .cpu_cen    ( cpu_cen     ),
     .int_n      ( int_n       ),
@@ -275,17 +281,18 @@ reg last_sadd, last_ock, last_pods_n, last_psel;
 reg audio_ws;
 
 // DSP16 glue logic
-always @(posedge clk, posedge rst) begin
+always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
-        dsp_irq   <= 0;
-        vol       <= 13'b0;   // I think the volume is never actually read by the DSP
-        audio_ws  <= 0;
-        last_ock  <= 0;
-        qsnd_addr <= 23'd0;
-        sample    <= 0;
-        left      <= 16'd0;
-        right     <= 16'd0;
-        dsp_datasel <= 2'd0;
+        dsp_irq    <= 0;
+        vol        <= 13'b0;   // I think the volume is never actually read by the DSP
+        audio_ws   <= 0;
+        last_ock   <= 0;
+        qsnd_addr  <= 23'd0;
+        sample     <= 0;
+        left       <= 16'd0;
+        right      <= 16'd0;
+        dsp_datasel<= 2'd0;
+        qsnd_buf   <= 16'd0;
     end else begin
         last_pids_n <= dsp_pids_n;
         last_pods_n <= dsp_pods_n;
@@ -315,8 +322,8 @@ always @(posedge clk, posedge rst) begin
                 reg_right <= dsp_serout;
         end
         if( !last_psel && dsp_psel ) begin
-            left   <= reg_left;
-            right  <= reg_right;
+            left   <= reg_left << 2;
+            right  <= reg_right << 2;
             sample <= 1;
         end else begin
             sample <= 0;
@@ -325,7 +332,7 @@ always @(posedge clk, posedge rst) begin
         if( dsp_pods_n && !last_pods_n) begin
             qsnd_addr[15:0] <= dsp_pbus_out;
         end
-        if( dsp_ab[15] ) begin
+        if( dsp_ab[15] && dsp_cen_cko ) begin
             qsnd_addr[22:16] <= dsp_ab[6:0];/*{ dsp_ab[2:0], dsp_ab[4], dsp_ab[5],
                 dsp_ab[6], dsp_ab[7] };*/
         end
@@ -337,16 +344,16 @@ always @(*) begin
 end
 
 `ifndef NODSP
-wire        dsp_fault, dsp_ext_rq;
+wire        dsp_fault;
 
 assign qsnd_cs = 1;
 
 jtdsp16 u_dsp16(
     .rst        ( dsp_rst       ),
-    .clk        ( clk           ),
+    .clk        ( clk96         ),
     .clk_en     ( cen_dsp       ),
 
-    .cen_cko    ( cen_cko       ),
+    .cen_cko    ( dsp_cen_cko   ),
     .ab         ( dsp_ab        ),  // address bus
     .rb_din     ( { qsnd_data, 8'h0 } ),  // ROM data bus
     .ext_rq     ( dsp_ext_rq    ),
