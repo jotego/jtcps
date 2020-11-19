@@ -76,7 +76,6 @@ reg         main_busn_dly;
 reg        [23:0] cpu2dsp;
 reg               dsp_irq; // UR6B in schematics
 reg        [12:0] vol; // volume moves in 2dB steps
-reg        [15:0] qsnd_buf;
 reg        [ 1:0] dsp_datasel;
 reg signed [15:0] reg_left, reg_right;
 
@@ -277,27 +276,17 @@ jtframe_z80_romwait #(0) u_cpu(
 );
 
 reg last_vol_up, last_vol_down;
-reg last_sadd, last_ock, last_pods_n, last_psel;
+reg last_sadd, last_pods_n, last_psel;
 reg audio_ws;
+reg dsp_dsel96;
 
 // DSP16 glue logic
 always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         dsp_irq    <= 0;
-        vol        <= 13'b0;   // I think the volume is never actually read by the DSP
-        audio_ws   <= 0;
-        last_ock   <= 0;
-        qsnd_addr  <= 23'd0;
-        sample     <= 0;
-        left       <= 16'd0;
-        right      <= 16'd0;
         dsp_datasel<= 2'd0;
-        qsnd_buf   <= 16'd0;
     end else begin
         last_pids_n <= dsp_pids_n;
-        last_pods_n <= dsp_pods_n;
-        last_ock    <= dsp_ock;
-        last_psel   <= dsp_psel;
         if( qs1l_w ) begin
             dsp_irq <= 1; // read MSB
             dsp_datasel <= 2'b11;
@@ -307,6 +296,22 @@ always @(posedge clk48, posedge rst) begin
                 dsp_datasel <= dsp_datasel>>1;
             end
         end
+    end
+end
+
+always @(posedge clk96, posedge rst) begin
+    if ( rst ) begin
+        vol        <= 13'b0;   // I think the volume is never actually read by the DSP
+        audio_ws   <= 0;
+        qsnd_addr  <= 23'd0;
+        sample     <= 0;
+        left       <= 16'd0;
+        right      <= 16'd0;
+        dsp_dsel96 <= 0;
+    end else begin
+        last_pods_n <= dsp_pods_n;
+        last_psel   <= dsp_psel;
+        dsp_dsel96  <= dsp_datasel[1];
         // volume control
         last_vol_up   <= vol_up;
         last_vol_down <= vol_down;
@@ -340,7 +345,7 @@ always @(posedge clk48, posedge rst) begin
 end
 
 always @(*) begin
-    dsp_pbus_in = dsp_datasel[1] ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
+    dsp_pbus_in = dsp_dsel96 ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
 end
 
 `ifndef NODSP
