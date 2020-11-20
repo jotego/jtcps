@@ -96,7 +96,7 @@ reg         last_pids_n;
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
-reg [3:0] dsp_lost;
+reg [3:0] dsp_miss;
 
 jtframe_frac_cen #(.W(2)) u_dsp_cen(
     .clk    ( clk96   ),
@@ -110,21 +110,21 @@ jtframe_frac_cen #(.W(2)) u_dsp_cen(
 always @(posedge clk96, posedge rst) begin
     if( rst ) begin
         cen_dsp  <= 1;
-        dsp_lost <= 4'd0;
+        dsp_miss <= 4'd0;
     end else begin
         if( cen60 ) begin
             if(qsnd_ok | ~dsp_ext_rq )
                 cen_dsp <= 1;
             else begin
                 cen_dsp <= 0;
-                if( dsp_lost!=4'hf ) dsp_lost <= dsp_lost+4'd1;
+                if( dsp_miss!=4'hf ) dsp_miss <= dsp_miss+4'd1;
             end
         end else begin
-            if( dsp_lost == 4'd0 )
+            if( dsp_miss == 4'd0 )
                 cen_dsp <= 0;
             else if( qsnd_ok | ~dsp_ext_rq ) begin
                 cen_dsp <= 1;
-                dsp_lost <= dsp_lost - 4'd1;
+                dsp_miss <= dsp_miss - 4'd1;
             end
         end
     end

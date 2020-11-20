@@ -440,7 +440,11 @@ end
 jtcps15_sound u_sound(
     .rst        ( rst               ),
     .clk48      ( clk48             ),
+    `ifndef QSDEBUG
     .clk96      ( clk               ),
+    `else
+    .clk96      ( clk48             ), // for fast compilations
+    `endif
     .cen8       ( cen8              ),
     .vol_up     ( 1'b0              ),
     .vol_down   ( 1'b0              ),
