@@ -323,14 +323,37 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
+reg signed [15:0] pre_l, pre_r;
+reg [11:0] sample_cnt;
+reg        sample2x;
+
+always @(posedge clk96, posedge rst) begin
+    if( rst ) begin
+        sample_cnt <= 12'd0;
+        sample2x   <= 1;
+    end else begin
+        if( sample ) begin
+            sample_cnt <= 12'd0;
+            left  <= (left>>>1) + (pre_l>>>1);
+            right <= (right>>>1) + (pre_r>>>1);
+        end else
+            if(sample_cnt!=12'hFFF) sample_cnt <= sample_cnt + 12'd1;
+        if( sample_cnt == 12'd3996 ) begin
+            left <= pre_l;
+            right <= pre_r;
+        end
+    end
+end
+
+
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
         vol        <= 13'b0;   // I think the volume is never actually read by the DSP
         audio_ws   <= 0;
         qsnd_addr  <= 23'd0;
         sample     <= 0;
-        left       <= 16'd0;
-        right      <= 16'd0;
+        pre_l      <= 16'd0;
+        pre_r      <= 16'd0;
         dsp_dsel96 <= 0;
     end else begin
         last_pods_n <= dsp_pods_n;
@@ -351,8 +374,8 @@ always @(posedge clk96, posedge rst) begin
                 reg_right <= dsp_serout;
         end
         if( !last_psel && dsp_psel ) begin
-            left   <= reg_left;
-            right  <= reg_right;
+            pre_l <= reg_left;
+            pre_r <= reg_right;
             sample <= 1;
         end else begin
             sample <= 0;
