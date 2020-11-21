@@ -190,6 +190,10 @@ end
 // wire qs0h_w = qsnd_wr && A[2:0]==2'd1;
 wire qs1l_w = qsnd_wr && A[2:0]==2'd2;
 
+`ifdef SIMULATION
+reg [23:0] cpu2dsp0=24'd0;
+`endif
+
 always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         bank    <= 4'd0;
@@ -204,7 +208,12 @@ always @(posedge clk48, posedge rst) begin
             case( A[2:0] )
                 2'd0: cpu2dsp[15: 8] <= bus_din; // data word MSB
                 2'd1: cpu2dsp[ 7: 0] <= bus_din; // data word LSB
-                2'd2: cpu2dsp[23:16] <= bus_din; // address
+                2'd2: begin
+                    cpu2dsp[23:16] <= bus_din; // address
+                    `ifdef SIMULATION
+                    cpu2dsp0 <= { bus_din, cpu2dsp[15:0] };
+                    `endif
+                end
                 default:;
             endcase // A[2:0]
         end

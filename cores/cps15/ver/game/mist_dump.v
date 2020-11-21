@@ -70,9 +70,14 @@ module mist_dump(
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             `ifndef NOMAIN
             //$shm_probe(UUT.u_game.u_main, "A");
-            $shm_probe(UUT.u_game.u_sound, "A");
-            $shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
-            //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
+            //$shm_probe(UUT.u_game.u_sound, "A");
+            //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
+            $shm_probe(UUT.u_game.u_sound.cpu2dsp0);
+            $shm_probe(UUT.u_game.u_sound.pre_l );
+            $shm_probe(UUT.u_game.u_sound.pre_r );
+            $shm_probe(UUT.u_game.u_sound.left );
+            $shm_probe(UUT.u_game.u_sound.right);
+            $shm_probe(UUT.u_game.u_sound.sample);
             //$shm_probe(UUT.u_game.u_sound.dsp_irq);
             //$shm_probe(UUT.u_game.u_sound.dsp_rst);
             //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
