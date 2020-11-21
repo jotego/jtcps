@@ -189,10 +189,7 @@ end
 // wire qs0l_w = qsnd_wr && A[2:0]==2'd0;
 // wire qs0h_w = qsnd_wr && A[2:0]==2'd1;
 wire qs1l_w = qsnd_wr && A[2:0]==2'd2;
-
-`ifdef SIMULATION
-reg [23:0] cpu2dsp0=24'd0;
-`endif
+reg [23:0] cpu2dsp_s;
 
 always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
@@ -208,12 +205,7 @@ always @(posedge clk48, posedge rst) begin
             case( A[2:0] )
                 2'd0: cpu2dsp[15: 8] <= bus_din; // data word MSB
                 2'd1: cpu2dsp[ 7: 0] <= bus_din; // data word LSB
-                2'd2: begin
-                    cpu2dsp[23:16] <= bus_din; // address
-                    `ifdef SIMULATION
-                    cpu2dsp0 <= { bus_din, cpu2dsp[15:0] };
-                    `endif
-                end
+                2'd2: cpu2dsp[23:16] <= bus_din; // address
                 default:;
             endcase // A[2:0]
         end
@@ -334,17 +326,22 @@ end
 
 reg signed [15:0] pre_l, pre_r;
 reg [11:0] sample_cnt;
-reg        sample2x;
+(*keep*) reg [23:0] sample_cnt2;
 
 always @(posedge clk96, posedge rst) begin
     if( rst ) begin
         sample_cnt <= 12'd0;
-        sample2x   <= 1;
+        sample_cnt2<= 24'd0;
+        cpu2dsp_s  <= 24'd0;
     end else begin
+        if( sample ) sample_cnt2 <= sample_cnt2 + 1'd1;
+        if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
         if( sample ) begin
             sample_cnt <= 12'd0;
-            left  <= (left>>>1) + (pre_l>>>1);
-            right <= (right>>>1) + (pre_r>>>1);
+            if( !sample_cnt2[23] ) begin // forces saving of sample_cnt2 signal
+                left  <= (left>>>1) + (pre_l>>>1);
+                right <= (right>>>1) + (pre_r>>>1);
+            end
         end else
             if(sample_cnt!=12'hFFF) sample_cnt <= sample_cnt + 12'd1;
         if( sample_cnt == 12'd3996 ) begin
@@ -353,7 +350,6 @@ always @(posedge clk96, posedge rst) begin
         end
     end
 end
-
 
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
@@ -401,7 +397,7 @@ always @(posedge clk96, posedge rst) begin
 end
 
 always @(*) begin
-    dsp_pbus_in = dsp_dsel96 ? {8'd0, cpu2dsp[23:16]} : cpu2dsp[15:0];
+    dsp_pbus_in = dsp_dsel96 ? {8'd0, cpu2dsp_s[23:16]} : cpu2dsp_s[15:0];
 end
 
 `ifndef NODSP
