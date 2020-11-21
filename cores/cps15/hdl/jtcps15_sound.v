@@ -89,42 +89,39 @@ reg         dsp_rst;
 wire        dsp_psel, dsp_sadd, dsp_rdy_n;
 wire        dsp_cen_cko;
 reg         cen_dsp;
-wire        cen60, cen30;
+wire        cen60;
 
 reg         last_pids_n;
 
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
-reg [3:0] dsp_miss;
+reg [4:0] dsp_miss;
 
-jtframe_frac_cen #(.W(2)) u_dsp_cen(
-    .clk    ( clk96   ),
-    .n      ( 10'd5   ),    // numerator
-    .m      ( 10'd8   ),    // denominator
-    .cen    ( {cen30, cen60 }  ),
-    .cenb   (         )     // 180 shifted
-);
+reg [2:0] dsp_cenr;
+assign cen60 = dsp_cenr[2];
 
 
 always @(posedge clk96, posedge rst) begin
     if( rst ) begin
         cen_dsp  <= 1;
         dsp_miss <= 4'd0;
+        dsp_cenr <= 3'b110;
     end else begin
+        dsp_cenr <= { dsp_cenr[1:0], dsp_cenr[2] };
         if( cen60 ) begin
             if(qsnd_ok | ~dsp_ext_rq )
                 cen_dsp <= 1;
             else begin
                 cen_dsp <= 0;
-                if( dsp_miss!=4'hf ) dsp_miss <= dsp_miss+4'd1;
+                if( ~&dsp_miss ) dsp_miss <= dsp_miss+5'd1;
             end
         end else begin
-            if( dsp_miss == 4'd0 )
+            if( dsp_miss==5'd0 )
                 cen_dsp <= 0;
             else if( qsnd_ok | ~dsp_ext_rq ) begin
                 cen_dsp <= 1;
-                dsp_miss <= dsp_miss - 4'd1;
+                dsp_miss <= dsp_miss - 5'd1;
             end
         end
     end
@@ -324,8 +321,7 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
-reg signed [15:0] pre_l, pre_r;
-reg [11:0] sample_cnt, period;
+(*keep*) reg [11:0] sample_cnt, period;
 (*keep*) reg [23:0] sample_cnt2;
 
 always @(posedge clk96, posedge rst) begin
@@ -339,16 +335,7 @@ always @(posedge clk96, posedge rst) begin
         if( sample ) begin
             period <= sample_cnt;
             sample_cnt <= 12'd0;
-            if( !sample_cnt2[23] ) begin // forces saving of sample_cnt2 signal
-                left  <= (left>>>1) + (pre_l>>>1);
-                right <= (right>>>1) + (pre_r>>>1);
-            end
-        end else
-            if(sample_cnt!=12'hFFF) sample_cnt <= sample_cnt + 12'd1;
-        if( sample_cnt == (period>>1) ) begin
-            left  <= pre_l;
-            right <= pre_r;
-        end
+        end else sample_cnt <= sample_cnt + 12'd1;
     end
 end
 
@@ -358,8 +345,6 @@ always @(posedge clk96, posedge rst) begin
         audio_ws   <= 0;
         qsnd_addr  <= 23'd0;
         sample     <= 0;
-        pre_l      <= 16'd0;
-        pre_r      <= 16'd0;
         dsp_dsel96 <= 0;
     end else begin
         last_pods_n <= dsp_pods_n;
@@ -375,13 +360,13 @@ always @(posedge clk96, posedge rst) begin
             // data is taken directly in parallel. The serial
             // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= dsp_serout;
+                reg_left  <= dsp_serout<<1;
             else
-                reg_right <= dsp_serout;
+                reg_right <= dsp_serout<<1;
         end
         if( !last_psel && dsp_psel ) begin
-            pre_l <= reg_left;
-            pre_r <= reg_right;
+            left  <= reg_left;
+            right <= reg_right;
             sample <= 1;
         end else begin
             sample <= 0;
