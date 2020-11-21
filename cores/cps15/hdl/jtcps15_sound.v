@@ -325,7 +325,7 @@ always @(posedge clk48, posedge rst) begin
 end
 
 reg signed [15:0] pre_l, pre_r;
-reg [11:0] sample_cnt;
+reg [11:0] sample_cnt, period;
 (*keep*) reg [23:0] sample_cnt2;
 
 always @(posedge clk96, posedge rst) begin
@@ -337,6 +337,7 @@ always @(posedge clk96, posedge rst) begin
         if( sample ) sample_cnt2 <= sample_cnt2 + 1'd1;
         if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
         if( sample ) begin
+            period <= sample_cnt;
             sample_cnt <= 12'd0;
             if( !sample_cnt2[23] ) begin // forces saving of sample_cnt2 signal
                 left  <= (left>>>1) + (pre_l>>>1);
@@ -344,8 +345,8 @@ always @(posedge clk96, posedge rst) begin
             end
         end else
             if(sample_cnt!=12'hFFF) sample_cnt <= sample_cnt + 12'd1;
-        if( sample_cnt == 12'd3996 ) begin
-            left <= pre_l;
+        if( sample_cnt == (period>>1) ) begin
+            left  <= pre_l;
             right <= pre_r;
         end
     end
