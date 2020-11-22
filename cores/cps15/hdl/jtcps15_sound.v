@@ -55,9 +55,9 @@ module jtcps15_sound(
     input             prog_we,
 
     // Sound output
-    output reg signed [15:0] left,
-    output reg signed [15:0] right,
-    output reg               sample
+    output signed [15:0] left,
+    output signed [15:0] right,
+    output reg           sample
 );
 
 wire        cpu_cen, cen_extra;
@@ -321,23 +321,17 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
-(*keep*) reg [11:0] sample_cnt, period;
-(*keep*) reg [23:0] sample_cnt2;
+reg signed [15:0] pre_l, pre_r;
 
-always @(posedge clk96, posedge rst) begin
-    if( rst ) begin
-        sample_cnt <= 12'd0;
-        sample_cnt2<= 24'd0;
-        cpu2dsp_s  <= 24'd0;
-    end else begin
-        if( sample ) sample_cnt2 <= sample_cnt2 + 1'd1;
-        if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
-        if( sample ) begin
-            period <= sample_cnt;
-            sample_cnt <= 12'd0;
-        end else sample_cnt <= sample_cnt + 12'd1;
-    end
-end
+jtframe_uprate2_fir uprate2(
+    .rst    ( rst       ),
+    .clk    ( clk96     ),
+    .sample ( sample    ),
+    .l_in   ( pre_l     ),
+    .r_in   ( pre_r     ),
+    .l_out  ( left      ),
+    .r_out  ( right     )
+);
 
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
@@ -346,6 +340,9 @@ always @(posedge clk96, posedge rst) begin
         qsnd_addr  <= 23'd0;
         sample     <= 0;
         dsp_dsel96 <= 0;
+        pre_l      <= 16'd0;
+        pre_r      <= 16'd0;
+        cpu2dsp_s  <= 24'd0;
     end else begin
         last_pods_n <= dsp_pods_n;
         last_psel   <= dsp_psel;
@@ -355,6 +352,7 @@ always @(posedge clk96, posedge rst) begin
         last_vol_down <= vol_down;
         // latch sound data
         last_sadd <= dsp_sadd;
+        if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
         if( !dsp_sadd && last_sadd ) begin
             audio_ws <= dsp_psel;
             // data is taken directly in parallel. The serial
@@ -365,8 +363,8 @@ always @(posedge clk96, posedge rst) begin
                 reg_right <= dsp_serout<<1;
         end
         if( !last_psel && dsp_psel ) begin
-            left  <= reg_left;
-            right <= reg_right;
+            pre_l <= reg_left;
+            pre_r <= reg_right;
             sample <= 1;
         end else begin
             sample <= 0;

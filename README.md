@@ -1,6 +1,6 @@
 # jtcps1
 
-Capcom System 1 compatible verilog core for FPGA by Jose Tejada (jotego).
+Capcom System 1/1.5 compatible verilog core for FPGA by Jose Tejada (jotego).
 
 # Control
 
@@ -47,8 +47,19 @@ Known issues:
 
 -Fuel hoses in Carrier Airwing appear on top of the airplane
 -12MHz games may run slightly slower than the original
+-QSound hiss
 
 Please report issues (here)[https://github.com/jotego/jtbin/issues].
+
+## QSound Hiss
+
+The DSP16A clock enable must be an exact multiple of 30MHz. Otherwise the sampling period will not be constant, generating jitter. The effect of jitter is very obvious in the DAC used on MiST because when all sound goes silent an ugly transient occurs. That effect was not noticeable in MiSTer, which uses a different DAC.
+
+Even with the right clock enable, there is still hiss occasionally in MiST(er). Using the FPGA logic analyzer I could check that the period was indeed constant but hiss was present.
+
+# QSound
+
+QSound requires its own firmware rom to work. In MAME this is called qsound.zip. QSound sampling frequency is 3746 ticks of the input clock, when the clock enable applied is 2/3. For a 90MHz input clock, this will result in the correct internal 30MHz and in a sampling frequency of 90MHz/3746=24,025.6Hz
 
 # PAL Dumps
 PAL dumps cam be obtained from MAME rom sets directly. Use the tool jedutil in order to extract the equations from them. The device is usually a gal16v8. For instance:
