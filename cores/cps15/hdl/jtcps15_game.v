@@ -372,7 +372,8 @@ jtcps1_video #(REGSIZE) u_video(
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
-    .gfx_en         ( gfx_en        ),
+    //.gfx_en         ( gfx_en        ),
+    .gfx_en         ( 4'hf          ),
     .cpu_speed      ( cpu_speed     ),
     .charger        (               ),
 
@@ -482,7 +483,10 @@ jtcps15_sound u_sound(
     // Sound output
     .left       ( snd_left          ),
     .right      ( snd_right         ),
-    .sample     ( sample            )
+    .sample     ( sample            ),
+
+    // Debug
+    .gfx_en     ( gfx_en            )
 );
 `else
 assign snd_addr   = 19'd0;

@@ -57,7 +57,10 @@ module jtcps15_sound(
     // Sound output
     output signed [15:0] left,
     output signed [15:0] right,
-    output               sample
+    output               sample,
+
+    // debug
+    input      [ 3:0] gfx_en
 );
 
 wire        cpu_cen, cen_extra;
@@ -88,44 +91,24 @@ wire        dsp_iack, dsp_ext_rq;
 reg         dsp_rst;
 wire        dsp_psel, dsp_sadd, dsp_rdy_n;
 wire        dsp_cen_cko;
-reg         cen_dsp;
+wire        cen_dsp;
 wire        cen60;
+reg         base_sample;
 
 reg         last_pids_n;
 
 `ifndef NODSP
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
-reg [4:0] dsp_miss;
-
-reg [2:0] dsp_cenr;
-assign cen60 = dsp_cenr[2];
-
-
-always @(posedge clk96, posedge rst) begin
-    if( rst ) begin
-        cen_dsp  <= 1;
-        dsp_miss <= 4'd0;
-        dsp_cenr <= 3'b110;
-    end else begin
-        dsp_cenr <= { dsp_cenr[1:0], dsp_cenr[2] };
-        if( cen60 ) begin
-            if(qsnd_ok | ~dsp_ext_rq )
-                cen_dsp <= 1;
-            else begin
-                cen_dsp <= 0;
-                if( ~&dsp_miss ) dsp_miss <= dsp_miss+5'd1;
-            end
-        end else begin
-            if( dsp_miss==5'd0 )
-                cen_dsp <= 0;
-            else if( qsnd_ok | ~dsp_ext_rq ) begin
-                cen_dsp <= 1;
-                dsp_miss <= dsp_miss - 5'd1;
-            end
-        end
-    end
-end
+jtcps15_qsnd_cen u_dspcen(
+    .clk96       ( clk96       ),
+    .rst         ( rst         ),
+    .base_sample ( base_sample ),
+    .qsnd_ok     ( qsnd_ok     ),
+    .ext_rq      ( dsp_ext_rq  ),
+    .fix_en      ( gfx_en[0]   ),
+    .qsnd_cen    ( cen_dsp     )
+);
 
 `else
 reg rdy_reads, last_rd;
@@ -301,7 +284,6 @@ reg last_vol_up, last_vol_down;
 reg last_sadd, last_pods_n, last_psel;
 reg audio_ws;
 reg dsp_dsel96;
-reg base_sample;
 
 // DSP16 glue logic
 always @(posedge clk48, posedge rst) begin
@@ -323,8 +305,8 @@ always @(posedge clk48, posedge rst) begin
 end
 
 reg signed [15:0] pre_l, pre_r;
-
-jtframe_uprate3_fir uprate(
+/*
+jtframe_uprate2_fir uprate(
     .rst     ( dsp_rst       ),
     .clk     ( clk96         ),
     .sample  ( base_sample   ),
@@ -333,7 +315,9 @@ jtframe_uprate3_fir uprate(
     .r_in    ( pre_r         ),
     .l_out   ( left          ),
     .r_out   ( right         )
-);
+);*/
+assign left  = pre_l;
+assign right = pre_r;
 
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
@@ -537,6 +521,40 @@ always @(posedge clk, posedge rst) begin
             latch<=2'b11;
         else if(cen8) begin
             latch <= { latch[0], busrq_n | busak_n };
+        end
+    end
+end
+
+endmodule
+
+module jtcps15_qsnd_cen(
+    input       clk96,
+    input       rst,
+    input       base_sample,
+    input       qsnd_ok,
+    input       ext_rq,
+    input       fix_en,
+    output reg  qsnd_cen
+);
+
+wire [13:0] MAXCNT = fix_en ? 14'd3999 : 14'd3996;
+
+reg [13:0] cnt;
+reg        sleep;
+
+always @(posedge clk96, posedge rst) begin
+    if( rst ) begin
+        cnt      <= 14'd0;
+        sleep    <= 0;
+        qsnd_cen <= 1;
+    end else begin
+        qsnd_cen <= ~sleep & ( qsnd_ok | ~ext_rq );
+        if( cnt == MAXCNT ) begin
+            sleep <= 0;
+            cnt   <= 14'd0;
+        end else begin
+            cnt <= cnt + 14'd1;
+            if( base_sample ) sleep <= 1;
         end
     end
 end
