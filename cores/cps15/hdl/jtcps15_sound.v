@@ -57,7 +57,7 @@ module jtcps15_sound(
     // Sound output
     output signed [15:0] left,
     output signed [15:0] right,
-    output reg           sample
+    output               sample
 );
 
 wire        cpu_cen, cen_extra;
@@ -301,6 +301,7 @@ reg last_vol_up, last_vol_down;
 reg last_sadd, last_pods_n, last_psel;
 reg audio_ws;
 reg dsp_dsel96;
+reg base_sample;
 
 // DSP16 glue logic
 always @(posedge clk48, posedge rst) begin
@@ -323,14 +324,15 @@ end
 
 reg signed [15:0] pre_l, pre_r;
 
-jtframe_uprate2_fir uprate2(
-    .rst    ( rst       ),
-    .clk    ( clk96     ),
-    .sample ( sample    ),
-    .l_in   ( pre_l     ),
-    .r_in   ( pre_r     ),
-    .l_out  ( left      ),
-    .r_out  ( right     )
+jtframe_uprate3_fir uprate(
+    .rst     ( rst           ),
+    .clk     ( clk96         ),
+    .sample  ( base_sample   ),
+    .upsample( sample        ),
+    .l_in    ( pre_l         ),
+    .r_in    ( pre_r         ),
+    .l_out   ( left          ),
+    .r_out   ( right         )
 );
 
 always @(posedge clk96, posedge rst) begin
@@ -338,7 +340,7 @@ always @(posedge clk96, posedge rst) begin
         vol        <= 13'b0;   // I think the volume is never actually read by the DSP
         audio_ws   <= 0;
         qsnd_addr  <= 23'd0;
-        sample     <= 0;
+        base_sample     <= 0;
         dsp_dsel96 <= 0;
         pre_l      <= 16'd0;
         pre_r      <= 16'd0;
@@ -358,16 +360,16 @@ always @(posedge clk96, posedge rst) begin
             // data is taken directly in parallel. The serial
             // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= dsp_serout<<2;
+                reg_left  <= dsp_serout<<3;
             else
-                reg_right <= dsp_serout<<2;
+                reg_right <= dsp_serout<<3;
         end
         if( !last_psel && dsp_psel ) begin
             pre_l <= reg_left;
             pre_r <= reg_right;
-            sample <= 1;
+            base_sample <= 1;
         end else begin
-            sample <= 0;
+            base_sample <= 0;
         end
         // latch QSound ROM address
         if( dsp_pods_n && !last_pods_n) begin
