@@ -32,6 +32,9 @@
 ../../modules/jtdsp16/hdl/jtdsp16_sio.v
 ../../modules/jtdsp16/hdl/jtdsp16.v
 
+# Filter
+../../modules/jtframe/hdl/sound/jtframe_fir.v
+../../modules/jtframe/hdl/sound/jtframe_uprate3_fir.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v

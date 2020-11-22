@@ -325,7 +325,7 @@ end
 reg signed [15:0] pre_l, pre_r;
 
 jtframe_uprate3_fir uprate(
-    .rst     ( rst           ),
+    .rst     ( dsp_rst       ),
     .clk     ( clk96         ),
     .sample  ( base_sample   ),
     .upsample( sample        ),
@@ -360,9 +360,9 @@ always @(posedge clk96, posedge rst) begin
             // data is taken directly in parallel. The serial
             // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= dsp_serout<<3;
+                reg_left  <= dsp_serout<<2;
             else
-                reg_right <= dsp_serout<<3;
+                reg_right <= dsp_serout<<2;
         end
         if( !last_psel && dsp_psel ) begin
             pre_l <= reg_left;
