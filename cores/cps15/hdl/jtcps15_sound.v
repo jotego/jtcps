@@ -358,9 +358,9 @@ always @(posedge clk96, posedge rst) begin
             // data is taken directly in parallel. The serial
             // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= dsp_serout<<1;
+                reg_left  <= dsp_serout<<2;
             else
-                reg_right <= dsp_serout<<1;
+                reg_right <= dsp_serout<<2;
         end
         if( !last_psel && dsp_psel ) begin
             pre_l <= reg_left;
