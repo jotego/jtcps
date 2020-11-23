@@ -34,7 +34,7 @@
 
 # Filter
 ../../modules/jtframe/hdl/sound/jtframe_fir.v
-../../modules/jtframe/hdl/sound/jtframe_uprate3_fir.v
+../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.v
 # SDRAM
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
 ../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
