@@ -80,7 +80,7 @@ reg        [23:0] cpu2dsp;
 reg               dsp_irq; // UR6B in schematics
 reg        [12:0] vol; // volume moves in 2dB steps
 reg        [ 1:0] dsp_datasel;
-reg signed [15:0] reg_left, reg_right;
+reg signed [15:0] reg_left, reg_right, pre_l, pre_r;
 
 // DSP16 wires
 wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out, dsp_serout;
@@ -106,8 +106,13 @@ jtcps15_qsnd_cen u_dspcen(
     .base_sample ( base_sample ),
     .qsnd_ok     ( qsnd_ok     ),
     .ext_rq      ( dsp_ext_rq  ),
-    .fix_en      ( gfx_en[0]   ),
-    .qsnd_cen    ( cen_dsp     )
+    .qsnd_cen    ( cen_dsp     ),
+    // sound resample
+    .l_in        ( pre_l       ),
+    .r_in        ( pre_r       ),
+    .l_out       ( left        ),
+    .r_out       ( right       ),
+    .resample    ( sample      )
 );
 
 `else
@@ -304,7 +309,6 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
-reg signed [15:0] pre_l, pre_r;
 /*
 jtframe_uprate2_fir uprate(
     .rst     ( dsp_rst       ),
@@ -316,8 +320,6 @@ jtframe_uprate2_fir uprate(
     .l_out   ( left          ),
     .r_out   ( right         )
 );*/
-assign left  = pre_l;
-assign right = pre_r;
 
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
@@ -533,11 +535,17 @@ module jtcps15_qsnd_cen(
     input       base_sample,
     input       qsnd_ok,
     input       ext_rq,
-    input       fix_en,
+    // resample
+    input signed [15:0] l_in,
+    input signed [15:0] r_in,
+    output reg signed [15:0] l_out,
+    output reg signed [15:0] r_out,
+    output reg  resample,
+    // clock enable
     output reg  qsnd_cen
 );
 
-wire [13:0] MAXCNT = fix_en ? 14'd3999 : 14'd3996;
+wire [13:0] MAXCNT = 14'd3999;
 
 reg [13:0] cnt;
 reg        sleep;
@@ -547,13 +555,20 @@ always @(posedge clk96, posedge rst) begin
         cnt      <= 14'd0;
         sleep    <= 0;
         qsnd_cen <= 1;
+        resample <= 0;
+        l_out    <= 16'd0;
+        r_out    <= 16'd0;
     end else begin
         qsnd_cen <= ~sleep & ( qsnd_ok | ~ext_rq );
         if( cnt == MAXCNT ) begin
-            sleep <= 0;
-            cnt   <= 14'd0;
+            sleep    <= 0;
+            cnt      <= 14'd0;
+            resample <= 1;
+            l_out    <= l_in;
+            r_out    <= r_in;
         end else begin
-            cnt <= cnt + 14'd1;
+            cnt      <= cnt + 14'd1;
+            resample <= 0;
             if( base_sample ) sleep <= 1;
         end
     end
