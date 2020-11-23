@@ -23,7 +23,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../c
 
 # Up-rate filter
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_fir.v           ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_uprate3_fir.v   ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.v   ]
 
 # SDRAM
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v     ]
