@@ -15,10 +15,9 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 module jtcps1_timing(
-    input              rst,
     input              clk,
     input              cen8,
 

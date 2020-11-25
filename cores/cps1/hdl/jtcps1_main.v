@@ -395,6 +395,7 @@ reg        DTACKn;
 reg        last_LVBL;
 (*keep*) reg [23:0] fail_cnt;
 
+`ifdef CPS15
 reg qs_busakn_s;
 
 always @(posedge clk, posedge rst) begin
@@ -403,6 +404,7 @@ always @(posedge clk, posedge rst) begin
     else if(cpu_cen)
         qs_busakn_s <= main2qs_busakn;
 end
+`endif
 
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;

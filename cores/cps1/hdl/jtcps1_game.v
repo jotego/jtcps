@@ -175,11 +175,7 @@ wire        cpu_cen, cpu_cenb;
 wire        charger;
 wire        turbo;
 
-`ifdef MISTER
- assign turbo = status[6];
- `else
- assign turbo = 0;
- `endif
+assign turbo = status[6];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(

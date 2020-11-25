@@ -59,7 +59,7 @@ Even with the right clock enable, there is still hiss occasionally in MiST(er). 
 
 # QSound
 
-QSound requires its own firmware rom to work. In MAME this is called qsound.zip. QSound sampling frequency is 3746 ticks of the input clock, when the clock enable applied is 2/3. For a 90MHz input clock, this will result in the correct internal 30MHz and in a sampling frequency of 90MHz/3746=24,025.6Hz
+QSound requires its own firmware rom to work. In MAME this is called qsound.zip. QSound sampling frequency is 3746 ticks of the input clock, when the clock enable applied is 2/3. For a 90MHz input clock, this will result in the correct internal 30MHz and in a sampling frequency of 90MHz/3747=24,019.2Hz
 
 # PAL Dumps
 PAL dumps cam be obtained from MAME rom sets directly. Use the tool jedutil in order to extract the equations from them. The device is usually a gal16v8. For instance:

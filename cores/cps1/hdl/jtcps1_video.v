@@ -189,7 +189,6 @@ jtcps1_dma u_dma(
 );
 
 jtcps1_timing u_timing(
-    .rst            ( rst               ),
     .clk            ( clk               ),
     .cen8           ( pxl_cen           ),
 
