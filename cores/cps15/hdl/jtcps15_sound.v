@@ -391,6 +391,7 @@ jtdsp16 u_dsp16(
     .ab         ( dsp_ab        ),  // address bus
     .rb_din     ( { qsnd_data, 8'h0 } ),  // ROM data bus
     .ext_rq     ( dsp_ext_rq    ),
+    .ext_ok     ( qsnd_ok       ),
     // Parallel I/O
     .pbus_in    ( dsp_pbus_in   ),
     .pbus_out   ( dsp_pbus_out  ),
