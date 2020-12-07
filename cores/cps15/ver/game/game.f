@@ -16,6 +16,7 @@
 ../../../cps1/hdl/jtcps1_cpucen.v
 ../../../cps1/hdl/jtcps1_gfx_mappers.v
 ../../../cps1/hdl/jtcps1_dma.v
+../../../cps1/hdl/jtcps1_sdram.v
 # CPS15
 ../../hdl/jtcps15_game.v
 ../../hdl/jtcps15_sound.v
@@ -36,10 +37,8 @@
 ../../modules/jtframe/hdl/sound/jtframe_fir.v
 ../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.v
 # SDRAM
-../../modules/jtframe/hdl/sdram/jtframe_sdram_mux.v
-../../modules/jtframe/hdl/sdram/jtframe_sdram_rq.v
-../../modules/jtframe/hdl/sdram/jtframe_ram_rq.v
-../../modules/jtframe/hdl/sdram/jtframe_romrq.v
+-F $JTFRAME/hdl/sdram/jtframe_sdram_bank.f
+
 ../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
 ../../modules/jtframe/hdl/ram/jtframe_ram.v
 # Z80

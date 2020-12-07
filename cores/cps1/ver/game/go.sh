@@ -15,21 +15,16 @@ OTHER=
 
 while [ $# -gt 0 ]; do
     case $1 in
-        -g|-game)  shift; GAME=$1;;
+        -g|-game)  shift; GAME=$1; touch rom.bin;;
         -p|-patch) shift; PATCH=$1;;
         *) OTHER="$OTHER $1";;
     esac
     shift
 done
 
-if [ ! -e rom2hex ]; then
-    g++ rom2hex.cc -o rom2hex || exit $?
-fi
-
-rom2hex $ROM/$GAME.rom || exit $?
 
 ln -sf $ROM/$GAME.rom rom.bin
-ln -sf sdram_bank0.hex sdram.hex
+make || exit $?
 
 CFG_FILE=../video/cfg/${GAME}_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -46,7 +41,6 @@ export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
 export BIN2PNG_OPTIONS="--scale"
 export CONVERT_OPTIONS="-resize 300%x300%"
-GAME_ROM_LEN=$(stat --dereference -c%s $GAME_ROM_PATH)
 export YM2151=1
 export MSM6295=1
 
@@ -56,13 +50,10 @@ if [ ! -e $GAME_ROM_PATH ]; then
 fi
 
 # Generic simulation script from JTFRAME
-echo "Game ROM length: " $GAME_ROM_LEN
-../../modules/jtframe/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
+$JTFRAME/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
     -sysname cps1  \
-    -d COLORW=8 -d STEREO_GAME=1 -d JTFRAME_WRITEBACK=1 \
-    -d BUTTONS=6 -d JTFRAME_4PLAYERS -d JTFRAME_SDRAM_BANKS\
+    -def ../../hdl/jtcps1.def \
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \
-    -d JTFRAME_MRA_DIP \
+    -d JTCPS_TURBO \
     -videow 384 -videoh 224 \
-    -d JTFRAME_CLK96 \
     $OTHER

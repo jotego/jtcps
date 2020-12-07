@@ -248,12 +248,13 @@ wire sdo;
 `endif
 
 `ifdef SIMULATION
-`ifndef LOADROM
-initial begin
-    regs = { `CPSB_CONFIG };
-    // $display("CPSB_CONFIG = %X", regs );
-end
-`endif
+    // Load the registers if the load ROM process is skipped in simulation
+    `ifndef LOADROM
+    initial regs = { `CPSB_CONFIG };
+    `endif
+    `ifdef FAKE_LOAD
+    initial regs = { `CPSB_CONFIG };
+    `endif
 `endif
 
 `ifdef MMR_FILE

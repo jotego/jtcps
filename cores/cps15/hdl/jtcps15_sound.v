@@ -57,10 +57,7 @@ module jtcps15_sound(
     // Sound output
     output signed [15:0] left,
     output signed [15:0] right,
-    output               sample,
-
-    // debug
-    input      [ 3:0] gfx_en
+    output               sample
 );
 
 localparam QSND_GAIN = 2;
@@ -101,7 +98,7 @@ reg         base_sample;
 
 reg         last_pids_n;
 
-`ifndef NODSP
+`ifndef NOSOUND
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
 jtcps15_qsnd_cen u_dspcen(
@@ -377,7 +374,7 @@ always @(*) begin
     dsp_pbus_in = dsp_dsel96 ? {8'd0, cpu2dsp_s[23:16]} : cpu2dsp_s[15:0];
 end
 
-`ifndef NODSP
+`ifndef NOSOUND
 wire        dsp_fault;
 
 assign qsnd_cs = 1;

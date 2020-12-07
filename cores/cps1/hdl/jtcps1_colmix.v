@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 // Brightness only affects the gain of the signal, not the offset
 // Depending on the impedance of the 74'07 device, the maximum
@@ -79,12 +79,18 @@ reg  [ 3:0] dly_r, dly_g, dly_b;
 
 localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 
+`ifdef GRAY
+assign raw_br   = 4'hf ;
+assign raw_r    = pal_addr[3:0];
+assign raw_g    = pal_addr[3:0];
+assign raw_b    = pal_addr[3:0];
+`else
 assign raw_br   = pal_raw[15:12]; // r
 assign raw_r    = pal_raw[11: 8]; // br
 assign raw_g    = pal_raw[ 7: 4]; // b
 assign raw_b    = pal_raw[ 3: 0]; // g
+`endif
 assign pal_addr = pxl;
-
 /////////////////////////// LAYER MUX ////////////////////////////////////////////
 function [13:0] layer_mux;
     input [ 8:0] obj;
@@ -148,6 +154,8 @@ always @(*) begin
     endcase
 end
 
+localparam [13:0] BLANK_PXL = { 2'b11, 12'hBFF }; // according to DL-0921 RE
+
 // This take 6 clock cycles to process the 6 layers
 always @(posedge clk) begin
     if(pxl_cen) begin
@@ -157,17 +165,17 @@ always @(posedge clk) begin
         check_prio        <= 1'b0;
         //lyren3            <= lyren2;
     end else begin
-        if( (pre_pxl[3:0]==4'hf ||  
+        if( (pre_pxl[3:0]==4'hf ||
             ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio )
-                && lyr_queue[3:0] != 4'hf ))  ) 
+                && lyr_queue[3:0] != 4'hf ))  )
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
             check_prio <= lyr_queue[11:9]!=STA;
-            lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
+            lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
         end
         else begin
             check_prio <= 1'b0;
-            lyr_queue <= { ~14'd0, lyr_queue[QW-1:14] };
+            lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
         end
     end
 end

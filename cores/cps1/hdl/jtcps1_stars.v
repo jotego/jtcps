@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 12-3-2020 */
-    
+
 
 // Star field generator
 // Based on the circuit used for Side Arms, but without the ROM
@@ -91,7 +91,7 @@ module jtcps1_lfsr (
 );
 
 parameter B=0;
-wire bb = B;
+wire bb = B[0];
 
 reg last_load;
 reg [8:0] cnt;

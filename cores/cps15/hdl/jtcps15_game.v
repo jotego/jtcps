@@ -41,27 +41,48 @@ module jtcps15_game(
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
-    input           loop_rst,
-    output          sdram_req,
-    output  [21:0]  sdram_addr,
+
+    // Bank 0: allows R/W
+    output   [21:0] ba0_addr,
+    output          ba0_rd,
+    output          ba0_wr,
+    output   [15:0] ba0_din,
+    output   [ 1:0] ba0_din_m,  // write mask
+    input           ba0_rdy,
+    input           ba0_ack,
+
+    // Bank 1: Read only
+    output   [21:0] ba1_addr,
+    output          ba1_rd,
+    input           ba1_rdy,
+    input           ba1_ack,
+
+    // Bank 2: Read only
+    output   [21:0] ba2_addr,
+    output          ba2_rd,
+    input           ba2_rdy,
+    input           ba2_ack,
+
+    // Bank 3: Read only
+    output   [21:0] ba3_addr,
+    output          ba3_rd,
+    input           ba3_rdy,
+    input           ba3_ack,
+
     input   [31:0]  data_read,
-    output  [ 1:0]  sdram_wrmask,
-    output  [ 1:0]  sdram_bank,
-    output          sdram_rnw,
-    output  [15:0]  data_write,
-    input           data_rdy,
-    input           sdram_ack,
     output          refresh_en,
+
     // ROM LOAD
     input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
     output  [21:0]  prog_addr,
-    output  [ 7:0]  prog_data,
+    output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
-    output  [ 1:0]  prog_bank,
+    output  [ 1:0]  prog_ba,
     output          prog_we,
     output          prog_rd,
+    output          prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input           dip_pause,
@@ -78,12 +99,6 @@ module jtcps15_game(
     // Debug
     input   [3:0]   gfx_en
 );
-
-localparam [21:0] SOUND_OFFSET = 22'h00_0000;
-localparam [21:0] PCM_OFFSET   = 22'h10_0000;
-localparam [21:0] RAM_OFFSET   = 22'h20_0000;
-localparam [21:0] VRAM_OFFSET  = 22'h30_0000;
-localparam [21:0] GFX_OFFSET   = 22'h00_0000; // bank 2
 
 // Support for 48MHz
 // This is useful for faster simulation
@@ -102,7 +117,6 @@ wire        prog_qsnd;
 wire [ 7:0] snd_data, qsnd_data;
 wire [17:1] ram_addr;
 wire [21:1] main_rom_addr;
-wire [21:0] main_ram_offset;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu2_cs, ppu_rstn;
@@ -110,7 +124,7 @@ wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 // Video RAM interface
 wire [17:1] vram_dma_addr;
-(*keep*) wire [15:0] vram_dma_data;
+wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, qsnd_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
@@ -118,13 +132,12 @@ wire        cpu_speed;
 wire        main_rnw, busreq, busack;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire [ 9:0] slot_cs, slot_ok, slot_wr, slot_clr, slot_active;
+wire        vram_clr;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
 wire        cfg_we;
-wire [21:0] gfx0_addr, gfx1_addr;
 
 // QSound - Decode keys
 wire [31:0] swap_key1;
@@ -140,47 +153,14 @@ wire        main2qs_cs, main_busakn;
 // EEPROM
 wire        sclk, sdi, sdo, scs;
 
-
-assign prog_rd    = 1'b0;
-assign dwnld_busy = downloading;
-assign slot_clr[8:0] = 9'd0;
-
-assign slot_cs[0] = main_rom_cs;
-assign slot_cs[1] = main_ram_cs | main_vram_cs;
-assign slot_cs[2] = rom0_cs;
-assign slot_cs[3] = 1'b0;
-assign slot_cs[4] = 1'b0;
-assign slot_cs[5] = qsnd_cs;
-assign slot_cs[6] = rom1_cs;
-assign slot_cs[7] = snd_cs;
-assign slot_cs[8] = 1'b0;
-assign slot_cs[9] = vram_dma_cs;
-
-assign gfx0_addr = {rom0_addr, rom0_half, 1'b0 }; // OBJ
-assign gfx1_addr = {rom1_addr, rom1_half, 1'b0 };
-
-assign main_rom_ok = slot_ok[0];
-assign main_ram_ok = slot_ok[1];
-assign rom0_ok     = slot_ok[2];
-assign qsnd_ok     = slot_ok[5];
-assign rom1_ok     = slot_ok[6];
-assign snd_ok      = slot_ok[7];
-assign vram_dma_ok = slot_ok[9];
-
-assign slot_wr[9:2] = 7'd0;
-assign slot_wr[1]   = ~main_rnw;
-assign slot_wr[0]   = 1'd0;
-
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 assign dip_flip = 0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
 
-assign main_ram_offset = main_ram_cs ? RAM_OFFSET : VRAM_OFFSET; // selects RAM or VRAM
-
 wire [ 1:0] dsn;
-wire        cen16, cen8, cen10b;
+wire        cen16, cen12, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
 wire        turbo;
 
@@ -210,14 +190,12 @@ jtframe_cen48 u_cen48(
     .cen1p5b    (               )
 );
 
-wire nc0, nc1;
-
 `ifdef JTFRAME_CLK96
 jtframe_cen96 u_pxl_cen(
     .clk    ( clk       ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
     .cen8   ( pxl_cen   ),
-    // unused
+    // Unused:
     .cen12  (           ),
     .cen6   (           ),
     .cen6b  (           )
@@ -236,33 +214,6 @@ jtcps1_cpucen u_cpucen(
 );
 
 localparam REGSIZE=24;
-
-jtcps1_prom_we #(
-    .REGSIZE   ( REGSIZE       ),
-    .CPU_OFFSET( 22'd0         ),
-    .SND_OFFSET( SOUND_OFFSET  ),
-    .PCM_OFFSET( PCM_OFFSET   ),
-    .GFX_OFFSET( GFX_OFFSET    )
-) u_prom_we(
-    .clk            ( clk           ),
-    .downloading    ( downloading   ),
-    .ioctl_addr     ( ioctl_addr    ),
-    .ioctl_data     ( ioctl_data    ),
-    .ioctl_wr       ( ioctl_wr      ),
-    .prog_addr      ( prog_addr     ),
-    .prog_data      ( prog_data     ),
-    .prog_mask      ( prog_mask     ),
-    .prog_bank      ( prog_bank     ),
-    .prog_we        ( prog_we       ),
-    .prom_we        ( prog_qsnd     ),
-    .sdram_ack      ( sdram_ack     ),
-    .cfg_we         ( cfg_we        ),
-    // Kabuki keys
-    .swap_key1      ( swap_key1     ),
-    .swap_key2      ( swap_key2     ),
-    .addr_key       ( addr_key      ),
-    .xor_key        ( xor_key       )
-);
 
 // Turbo speed disables DMA
 wire busreq_cpu = busreq & ~turbo;
@@ -357,9 +308,10 @@ jt9346 #(.DW(16),.AW(7)) u_eeprom(
     .scs    ( scs       )   // chip select, active high. Goes low in between instructions
 );
 
-reg rst_video;
+reg rst_video, rst_sdram;
 
 always @(negedge clk) begin
+    rst_sdram <= rst;
     rst_video <= rst;
 end
 
@@ -372,8 +324,7 @@ jtcps1_video #(REGSIZE) u_video(
     .hdump          ( hdump         ),
     .vdump          ( vdump         ),
     .vrender        ( vrender       ),
-    //.gfx_en         ( gfx_en        ),
-    .gfx_en         ( 4'hf          ),
+    .gfx_en         ( gfx_en        ),
     .cpu_speed      ( cpu_speed     ),
     .charger        (               ),
 
@@ -402,7 +353,7 @@ jtcps1_video #(REGSIZE) u_video(
 
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),
-    .cfg_data       ( prog_data     ),
+    .cfg_data       ( prog_data[7:0]),
 
     // Extra inputs read through the C-Board
     .start_button   ( start_button  ),
@@ -417,7 +368,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vram_dma_data  ( vram_dma_data ),
     .vram_dma_ok    ( vram_dma_ok   ),
     .vram_dma_cs    ( vram_dma_cs   ),
-    .vram_dma_clr   ( slot_clr[9]   ),
+    .vram_dma_clr   ( vram_clr      ),
 
     // GFX ROM interface
     .rom1_addr      ( rom1_addr     ),
@@ -432,12 +383,8 @@ jtcps1_video #(REGSIZE) u_video(
     .rom0_ok        ( rom0_ok       )
 );
 
-`ifndef NOSOUND
-(*keep*) reg [3:0] rst_snd;
-always @(negedge clk48) begin
-    rst_snd <= { rst_snd[2:0], rst };
-end
-
+// Sound CPU cannot be disabled as there is
+// interaction between both CPUs at power up
 jtcps15_sound u_sound(
     .rst        ( rst               ),
     .clk48      ( clk48             ),
@@ -477,144 +424,125 @@ jtcps15_sound u_sound(
 
     // ROM programming interface
     .prog_addr  ( prog_addr[12:0]   ),
-    .prog_data  ( prog_data         ),
+    .prog_data  ( prog_data[7:0]    ),
     .prog_we    ( prog_qsnd         ),
 
     // Sound output
     .left       ( snd_left          ),
     .right      ( snd_right         ),
-    .sample     ( sample            ),
-
-    // Debug
-    .gfx_en     ( gfx_en            )
+    .sample     ( sample            )
 );
-`else
-assign snd_addr   = 19'd0;
-assign snd_cs     = 0;
-assign snd_left   = 16'd0;
-assign snd_right  = 16'd0;
-assign qsnd_addr  = 23'd0;
-assign qsnd_cs    = 0;
-assign sample     = 0;
-`endif
 
-reg rst_sdram;
+jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
+    .rst         ( rst           ),
+    .clk         ( clk           ),        // 96   MHz
+    .LVBL        ( LVBL          ),
 
-always @(negedge clk) begin
-    rst_sdram <= rst;
-end
+    .downloading ( downloading   ),
+    .dwnld_busy  ( dwnld_busy    ),
+    .cfg_we      ( cfg_we        ),
 
-// Same as CPS1, no need for extra space
-assign sdram_bank = slot_active[0] ? 2'b01 :    // CPU goes in bank 1. Max 2MB
-    ( slot_active[2] | slot_active[6] ? 2'b10 : // GFX goes in bank 2. Max 6MB
-    2'b00 );                                    // Sound in bank 0. Max 4.25 MB
-
-jtframe_sdram_mux #(
-    // Main CPU
-    .SLOT0_AW   ( 21    ),  // Max 4 Megabytes
-    .SLOT1_AW   ( 17    ),  // 64 kB RAM, 192 kB VRAM
-
-    .SLOT0_DW   ( 16    ),
-    .SLOT1_DW   ( 16    ),
-
-    .SLOT1_TYPE ( 2     ), // R/W access
-
-    // Sound
-    .SLOT5_AW   ( 23    ),  // PCM samples
-    .SLOT5_DW   (  8    ),
-
-    .SLOT7_AW   ( 19    ),  // Z80
-    .SLOT7_DW   (  8    ),
-
-    // VRAM read access:
-    .SLOT9_AW   ( 17    ),  // OBJ VRAM
-    .SLOT9_DW   ( 16    ),
-
-    // GFX ROM
-    .SLOT2_AW   ( 22    ),  // OBJ VRAM
-    .SLOT6_AW   ( 22    ),  //6
-
-    .SLOT2_DW   ( 32    ),
-    .SLOT6_DW   ( 32    )
-)
-u_sdram_mux(
-    .rst            ( rst_sdram     ),
-    .clk            ( clk           ),
-    .vblank         ( VB            ),
+    // ROM LOAD
+    .ioctl_addr  ( ioctl_addr    ),
+    .ioctl_data  ( ioctl_data    ),
+    .ioctl_wr    ( ioctl_wr      ),
+    .prog_addr   ( prog_addr     ),
+    .prog_data   ( prog_data     ),
+    .prog_mask   ( prog_mask     ),
+    .prog_ba     ( prog_ba       ),
+    .prog_we     ( prog_we       ),
+    .prog_rd     ( prog_rd       ),
+    .prog_rdy    ( prog_rdy      ),
+    .prog_qsnd   ( prog_qsnd     ),
+    // Kabuki decoder (CPS 1.5)
+    .swap_key1   ( swap_key1     ),
+    .swap_key2   ( swap_key2     ),
+    .addr_key    ( addr_key      ),
+    .xor_key     ( xor_key       ),
 
     // Main CPU
-    .slot0_offset   ( 22'd0             ),
-    .slot0_addr     ( main_rom_addr     ),
-    .slot0_dout     ( main_rom_data     ),
+    .main_rom_cs    ( main_rom_cs   ),
+    .main_rom_ok    ( main_rom_ok   ),
+    .main_rom_addr  ( main_rom_addr ),
+    .main_rom_data  ( main_rom_data ),
 
-    .slot1_offset   ( main_ram_offset   ),
-    .slot1_addr     ( ram_addr          ),
-    .slot1_dout     ( main_ram_data     ),
-    .slot1_din      ( main_dout         ),
-    .slot1_wrmask   ( dsn               ),
+    // VRAM
+    .vram_clr       ( vram_clr      ),
+    .vram_dma_cs    ( vram_dma_cs   ),
+    .main_ram_cs    ( main_ram_cs   ),
+    .main_vram_cs   ( main_vram_cs  ),
 
-    // Sound
-    .slot7_offset   ( SOUND_OFFSET      ),
-    .slot7_addr     ( snd_addr          ),
-    .slot7_dout     ( snd_data          ),
+    .dsn            ( dsn           ),
+    .main_dout      ( main_dout     ),
+    .main_rnw       ( main_rnw      ),
 
-    .slot5_offset   ( PCM_OFFSET        ),
-    .slot5_addr     ( qsnd_addr         ),
-    .slot5_dout     ( qsnd_data         ),
-    // VRAM read access only
-    .slot9_offset   ( VRAM_OFFSET       ),
-    .slot9_addr     ( vram_dma_addr     ),
-    .slot9_dout     ( vram_dma_data     ),
+    .main_ram_ok    ( main_ram_ok   ),
+    .vram_dma_ok    ( vram_dma_ok   ),
 
-    // GFX ROM
-    .slot2_offset   ( GFX_OFFSET        ),
-    .slot2_addr     ( gfx0_addr         ),  // objects
-    .slot2_dout     ( rom0_data         ),
+    .main_ram_addr  ( ram_addr      ),
+    .vram_dma_addr  ( vram_dma_addr ),
 
-    .slot6_offset   ( GFX_OFFSET        ),
-    .slot6_addr     ( gfx1_addr         ),  // scroll tiles
-    .slot6_dout     ( rom1_data         ),
+    .main_ram_data  ( main_ram_data ),
+    .vram_dma_data  ( vram_dma_data ),
 
-    // bus signals
-    .slot_cs        ( slot_cs           ),
-    .slot_ok        ( slot_ok           ),
-    .slot_wr        ( slot_wr           ),
-    .slot_clr       ( slot_clr          ),
-    .slot_active    ( slot_active       ),
+    // Sound CPU and PCM
+    .snd_cs      ( snd_cs        ),
+    .pcm_cs      ( qsnd_cs       ),
 
-    // SDRAM controller interface
-    .downloading    ( downloading       ),
-    .loop_rst       ( loop_rst          ),
-    .sdram_ack      ( sdram_ack         ),
-    .sdram_req      ( sdram_req         ),
-    .refresh_en     ( refresh_en        ),
-    .sdram_addr     ( sdram_addr        ),
-    .sdram_rnw      ( sdram_rnw         ),
-    .sdram_wrmask   ( sdram_wrmask      ),
-    .data_rdy       ( data_rdy          ),
-    .data_read      ( data_read         ),
-    .data_write     ( data_write        ),
+    .snd_ok      ( snd_ok        ),
+    .pcm_ok      ( qsnd_ok       ),
 
-    // Unused
-    .slot3_dout     (                   ),
-    .slot4_dout     (                   ),
-    .slot8_dout     (                   ),
-    .ready          (                   ),
-    .slot3_addr     (                   ),
-    .slot4_addr     (                   ),
-    .slot8_addr     (                   ),
-    .slot3_offset   (                   ),
-    .slot4_offset   (                   ),
-    .slot8_offset   (                   ),
-    .slot0_din      (                   ),
-    .slot2_din      (                   ),
-    .slot3_din      (                   ),
-    .slot4_din      (                   ),
-    .slot5_din      (                   ),
-    .slot6_din      (                   ),
-    .slot7_din      (                   ),
-    .slot8_din      (                   ),
-    .slot9_din      (                   )
+    .snd_addr    ( snd_addr      ),
+    .pcm_addr    ( qsnd_addr     ),
+
+    .snd_data    ( snd_data      ),
+    .pcm_data    ( qsnd_data     ),
+
+    // Graphics
+    .rom0_cs     ( rom0_cs       ),
+    .rom1_cs     ( rom1_cs       ),
+
+    .rom0_ok     ( rom0_ok       ),
+    .rom1_ok     ( rom1_ok       ),
+
+    .rom0_addr   ( rom0_addr     ),
+    .rom1_addr   ( rom1_addr     ),
+
+    .rom0_half   ( rom0_half     ),
+    .rom1_half   ( rom1_half     ),
+
+    .rom0_data   ( rom0_data     ),
+    .rom1_data   ( rom1_data     ),
+
+    // Bank 0: allows R/W
+    .ba0_addr    ( ba0_addr      ),
+    .ba0_rd      ( ba0_rd        ),
+    .ba0_wr      ( ba0_wr        ),
+    .ba0_ack     ( ba0_ack       ),
+    .ba0_rdy     ( ba0_rdy       ),
+    .ba0_din     ( ba0_din       ),
+    .ba0_din_m   ( ba0_din_m     ),
+
+    // Bank 1: Read only
+    .ba1_addr    ( ba1_addr      ),
+    .ba1_rd      ( ba1_rd        ),
+    .ba1_ack     ( ba1_ack       ),
+    .ba1_rdy     ( ba1_rdy       ),
+
+    // Bank 2: Read only
+    .ba2_addr    ( ba2_addr      ),
+    .ba2_rd      ( ba2_rd        ),
+    .ba2_ack     ( ba2_ack       ),
+    .ba2_rdy     ( ba2_rdy       ),
+
+    // Bank 3: Read only
+    .ba3_addr    ( ba3_addr      ),
+    .ba3_rd      ( ba3_rd        ),
+    .ba3_ack     ( ba3_ack       ),
+    .ba3_rdy     ( ba3_rdy       ),
+
+    .data_read   ( data_read     ),
+    .refresh_en  ( refresh_en    )
 );
 
 endmodule

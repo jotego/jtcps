@@ -12,7 +12,7 @@ function copy {
 	fi
 }
 
-parallel mra {} -z ~/mame217 -A ::: *.mra
+parallel mra {} -z /opt/mame -A ::: *.mra
 
 copy MIST $1
 copy SIDI $1

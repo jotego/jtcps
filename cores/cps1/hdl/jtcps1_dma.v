@@ -88,7 +88,7 @@ module jtcps1_dma(
     output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
     input              vram_ok,
-    output reg         vram_clr,
+    output             vram_clr,
     output             vram_cs,
     output reg         br,
     input              bg
@@ -121,7 +121,7 @@ reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok;
 
 wire        HB_edge  = !last_HB && HB;
 wire        tile_ok  = vrender1<9'd240 || vrender1>9'd257; // VB is 38 lines
-wire        tile_vs  = vrender1== flip ? 9'd17 : 9'd12; // Vertical start, use for SCR3
+wire        tile_vs  = vrender1 == (flip ? 9'd17 : 9'd12); // Vertical start, use for SCR3
     // 9'd17 was needed for 1941 logo screen on flip mode
     // 9'd12 was the previous value used for non flip images
 
@@ -152,6 +152,7 @@ always @(posedge clk) begin
     vram_ok_dly <= vram_ok;
 end
 
+assign vram_clr = 0;
 
 // Tile cache
 jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
@@ -357,7 +358,7 @@ always @(posedge clk) begin
                 if( next_task[SCR3]) begin
                     vn        <= vscr3[10:0];
                     hn        <= 11'h20 + { hpos3[10:5], 5'b0 };
-                    scr_cnt   <= LAST_SCR2+1;
+                    scr_cnt   <= LAST_SCR2+8'd1;
                     scr_over  <= LAST_SCR3;
                     swap[2]   <= 1'b1;
                     vram_scr_base <= vram3_base[9:1];
@@ -403,7 +404,7 @@ always @(posedge clk) begin
                                 if( cur_task[SCR3] ) tasks[SCR3] <= 0;
                             end
                             else begin
-                                scr_cnt <= scr_cnt+1;
+                                scr_cnt <= scr_cnt+8'd1;
                                 if( scr_cnt[0] )
                                     hn <= hn + hstep;
                             end

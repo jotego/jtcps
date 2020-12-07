@@ -23,12 +23,12 @@ module jtcps1_prom_we(
     input      [ 7:0]    ioctl_data,
     input                ioctl_wr,
     output reg [21:0]    prog_addr,
-    output reg [ 7:0]    prog_data,
+    output     [15:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
     output reg [ 1:0]    prog_bank,
     output reg           prog_we,
     output reg           prom_we,   // for Q-Sound internal ROM
-    input                sdram_ack,
+    input                prog_rdy,
     output reg           cfg_we,
     // Kabuki decoder (CPS 1.5)
     output     [31:0]    swap_key1,
@@ -37,38 +37,41 @@ module jtcps1_prom_we(
     output     [ 7:0]    xor_key
 );
 
+parameter        CPS=1; // 1, 15, or 2
 parameter        REGSIZE=24; // This is defined at _game level
-parameter [21:0] CPU_OFFSET=22'h0;
-parameter [21:0] SND_OFFSET=22'h0;
-parameter [21:0] PCM_OFFSET=22'h0;
-parameter [21:0] GFX_OFFSET=22'h0;
+parameter [21:0] CPU_OFFSET=22'h0,
+                 SND_OFFSET=22'h0,
+                 PCM_OFFSET=22'h0,
+                 GFX_OFFSET=22'h0;
 parameter [ 5:0] CFG_BYTE  =6'd39; // location of the byte with encoder information
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
-localparam START_BYTES  = 8;
-localparam START_HEADER = 16;
-localparam STARTW=8*START_BYTES;
-localparam FULL_HEADER   = 25'd64;
-localparam KABUKI_HEADER = 25'd48;
-localparam KABUKI_END    = KABUKI_HEADER + 25'd11;
+localparam START_BYTES   = 8,
+           START_HEADER  = 16,
+           STARTW        = 8*START_BYTES,
+           FULL_HEADER   = 25'd64,
+           KABUKI_HEADER = 25'd48,
+           KABUKI_END    = KABUKI_HEADER + 25'd11;
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
 reg        [87:0] kabuki_keys;
+reg        [ 7:0] pre_data;
 
 assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
+assign prog_data = {2{pre_data}};
 
 assign { swap_key1, swap_key2, addr_key, xor_key } = kabuki_keys;
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
-wire [24:0] snd_addr  = bulk_addr - { snd_start, 10'd0 };
-wire [24:0] pcm_addr  = bulk_addr - { pcm_start, 10'd0 };
-wire [24:0] gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
+wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
+wire [24:0] pcm_addr  = bulk_addr - { pcm_start[14:0], 10'd0 };
+wire [24:0] gfx_addr  = bulk_addr - { gfx_start[14:0], 10'd0 };
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
@@ -83,46 +86,38 @@ reg [7:0] pang3_decrypt;
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
-`ifdef CPS1
 always @(*) begin
-    pang3 = is_cpu && cpu_addr[19] && decrypt  && (cpu_addr[0]^pang3_bit);
-    pang3_decrypt =
-        (((((((ioctl_data[0] ? 8'h04 : 8'h00)  ^
-              (ioctl_data[1] ? 8'h21 : 8'h00)) ^
-              (ioctl_data[2] ? 8'h01 : 8'h00)) ^
-              (ioctl_data[3] ? 8'h00 : 8'h50)) ^
-              (ioctl_data[4] ? 8'h40 : 8'h00)) ^
-              (ioctl_data[5] ? 8'h06 : 8'h00)) ^
-              (ioctl_data[6] ? 8'h08 : 8'h00)) ^
-              (ioctl_data[7] ? 8'h00 : 8'h88);
-    /*pang3_decrypt = 8'd0;
-    if ( ioctl_data[0] ) pang3_decrypt = pang3_decrypt ^ 8'h04;
-    if ( ioctl_data[1] ) pang3_decrypt = pang3_decrypt ^ 8'h21;
-    if ( ioctl_data[2] ) pang3_decrypt = pang3_decrypt ^ 8'h01;
-    if (~ioctl_data[3] ) pang3_decrypt = pang3_decrypt ^ 8'h50;
-    if ( ioctl_data[4] ) pang3_decrypt = pang3_decrypt ^ 8'h40;
-    if ( ioctl_data[5] ) pang3_decrypt = pang3_decrypt ^ 8'h06;
-    if ( ioctl_data[6] ) pang3_decrypt = pang3_decrypt ^ 8'h08;
-    if (~ioctl_data[7] ) pang3_decrypt = pang3_decrypt ^ 8'h88;*/
+    if( CPS==1 ) begin
+        pang3 = is_cpu && cpu_addr[19] && decrypt  && (cpu_addr[0]^pang3_bit);
+        pang3_decrypt =
+            (((((((ioctl_data[0] ? 8'h04 : 8'h00)  ^
+                  (ioctl_data[1] ? 8'h21 : 8'h00)) ^
+                  (ioctl_data[2] ? 8'h01 : 8'h00)) ^
+                  (ioctl_data[3] ? 8'h00 : 8'h50)) ^
+                  (ioctl_data[4] ? 8'h40 : 8'h00)) ^
+                  (ioctl_data[5] ? 8'h06 : 8'h00)) ^
+                  (ioctl_data[6] ? 8'h08 : 8'h00)) ^
+                  (ioctl_data[7] ? 8'h00 : 8'h88);
+    end else begin
+        pang3 = 0;
+        pang3_decrypt = 8'd0;
+    end
 end
-`else
-initial begin
-    pang3 = 0;
-    pang3_decrypt = 8'd0;
-end
-`endif
 
 always @(posedge clk) begin
     if ( ioctl_wr && downloading ) begin
-        prog_data <= pang3 ?
+        pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
         prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_bank <= is_cpu ? 2'b01 : ( is_gfx ? 2'b10 : 2'b00 );
-        if( ioctl_addr < START_BYTES ) begin
+        prog_bank <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
+        if(is_kabuki) begin
+            kabuki_keys <= { kabuki_keys[79:0], ioctl_data };
+        end
+        if( ioctl_addr < START_BYTES[24:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
@@ -133,8 +128,6 @@ always @(posedge clk) begin
                 prog_we   <= 1'b0;
                 prom_we   <= 1'b0;
                 if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
-            end else if(is_kabuki) begin
-                kabuki_keys <= { kabuki_keys[79:0], ioctl_data };
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
@@ -143,7 +136,7 @@ always @(posedge clk) begin
         end
     end
     else begin
-        if(!downloading || sdram_ack) prog_we  <= 1'b0;
+        if(!downloading || prog_rdy) prog_we  <= 1'b0;
         if( !downloading ) begin
             decrypt <= 0;
             prom_we <= 0;

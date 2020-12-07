@@ -45,7 +45,8 @@ module mister_dump(
         `ifdef DEEPDUMP
             $shm_probe(mister_test,"AS");
         `else
-            $shm_probe(UUT.u_game.u_prom_we,"AS");
+            $shm_probe(UUT.u_game.u_sdram,"A");
+            $shm_probe(UUT.u_game.u_sdram.u_prom_we,"A");
             $shm_probe(UUT.u_base.u_sdram,"AS");
         `endif
     end

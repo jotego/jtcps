@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
         // Main CPU
         clear_bank( data );
         read_bank( data, fin, 0, snd_start );
-        dump_bank( data, "sdram_bank1.hex" );
+        dump_bank( data, "sdram_bank3.hex" );
         // GFX
         clear_bank( data );
         read_bank( data, fin, gfx_start, 0 );
@@ -69,8 +69,8 @@ int main(int argc, char *argv[]) {
         // Sound
         clear_bank( data );
         read_bank( data, fin, snd_start, pcm_start );
-        read_bank( data, fin, pcm_start, gfx_start, 0x10000<<1 );
-        dump_bank( data, "sdram_bank0.hex" );
+        read_bank( data, fin, pcm_start, gfx_start, 0x10'0000<<1 );
+        dump_bank( data, "sdram_bank1.hex" );
         // QSound firmware
         if( qnsd_game ) {
             read_bank( data, fin, qsnd_start, qsnd_start+0x2000 );
@@ -99,6 +99,7 @@ void dump_bank( char *data, const char *fname ) {
         a&=0xff;
         b&=0xff;
         a = (a<<8) | b;
+        //fout << hex << setw(4) << setfill('0') << a << '\n';
         fout << hex << setw(4) << setfill('0') << a << '\n';
     }
 }
@@ -115,7 +116,7 @@ void read_bank(char *data, ifstream& fin, int start, int end, int offset ) {
     fin.seekg( start, ios_base::beg );
     if( fin.eof() ) throw "input file reached EOF";
     if( !fin.good() ) throw "Cannot seek inside input file";
-    const int len=end-start+1;
+    const int len=end-start;
     if( len <=0 ) throw "Wrong offsets";
     data += offset;
     fin.read(data,len);

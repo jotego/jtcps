@@ -64,19 +64,20 @@ module mist_dump(
 
             //$shm_probe(UUT.u_game, "A");
             `ifdef LOADROM
-            $shm_probe(UUT.u_game.u_prom_we, "A");
-            $shm_probe(UUT.u_game.u_sound.u_dsp16.u_rom, "A");
+                $shm_probe(UUT.u_game.u_sdram, "A");
+                $shm_probe(UUT.u_game.u_sdram.u_prom_we, "A");
+                `ifndef NODSP
+                    $shm_probe(UUT.u_game.u_sound.u_dsp16.u_rom, "A");
+                `endif
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
+            $shm_probe(UUT.u_game.u_main, "A");
+            $shm_probe(UUT.u_game.u_sound, "A");
             `ifndef NOMAIN
-            //$shm_probe(UUT.u_game.u_main, "A");
-            //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
             $shm_probe(UUT.u_game.u_sound.cpu2dsp_s);
             //$shm_probe(UUT.u_game.u_sound.sample_cnt);
-            $shm_probe(UUT.u_game.u_sound.period);
-            $shm_probe(UUT.u_game.u_sound.pre_l );
-            $shm_probe(UUT.u_game.u_sound.pre_r );
+            //$shm_probe(UUT.u_game.u_sound.uprate.period);
             $shm_probe(UUT.u_game.u_sound.left );
             $shm_probe(UUT.u_game.u_sound.right);
             $shm_probe(UUT.u_game.u_sound.sample);

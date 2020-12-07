@@ -135,6 +135,7 @@ wire       [15:0]  bank_mask;
 wire       [ 7:0]  tile_addr;
 wire       [15:0]  tile_data, row_scr, obj_cache_data;
 wire       [ 9:0]  obj_cache_addr;
+wire               obj_dma_ok;
 
 jtcps1_dma u_dma(
     .rst            ( rst               ),

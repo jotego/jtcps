@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GAME=wof
+GAME=punisher
 PATCH=
 OTHER=
 GOOD=0
@@ -31,7 +31,6 @@ make || exit $?
 rom2hex $ROM/$GAME.rom || exit $?
 
 ln -sf $ROM/$GAME.rom rom.bin
-ln -sf sdram_bank0.hex sdram.hex
 
 CFG_FILE=cps_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -42,11 +41,9 @@ fi
 
 CPSB_CONFIG=$(cat $CFG_FILE)
 
-
 export GAME_ROM_PATH=rom.bin
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
-export BIN2PNG_OPTIONS="--scale"
 export CONVERT_OPTIONS="-resize 300%x300%"
 
 if [ ! -e $GAME_ROM_PATH ]; then
@@ -55,8 +52,7 @@ if [ ! -e $GAME_ROM_PATH ]; then
 fi
 
 # Generic simulation script from JTFRAME
-echo "Game ROM length: " $GAME_ROM_LEN
-../../modules/jtframe/bin/sim.sh -mist \
+$JTFRAME/bin/sim.sh -mist \
     -sysname cps15 \
     -def ../../hdl/jtcps15.def \
     -d CPSB_CONFIG="$CPSB_CONFIG" -d JTCPS_TURBO \

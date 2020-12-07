@@ -104,17 +104,17 @@ Offset | Length | Use
 
 # SDRAM Usage
 
-## CPS 1
+## CPS 1/CPS 1.5
 
-Some games do not fit in one memory bank (8MB) so three banks are used. The largest game (SF2) uses 6MB for GFX.
 
 SDRAM bank | Usage
 -----------|-------
-0          | Sound: Z80 plus samples
-1          | M68000
+0          | RAM/VRAM
+1          | Sound CPU/PCM samples
 2          | GFX
+3          | M68000 ROM
 
-## CPS 1.5
+## CPS 1.5 ROM Size
 
 The SDRAM layout is the same as for CPS 1. Although samples are much larger than in CPS 1 titles, they still fit in one SDRAM bank sharing space with the Z80 ROM.
 
@@ -127,7 +127,7 @@ S.N. Slam Masters     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
 Muscle Bomber Duo     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
 
 
-## CPS 2
+## CPS 2 ROM Size
 
 Game                  | CPU     |   Z80       | GFX     | Q-Sound |
 ----------------------|---------|-------------|---------|---------|
@@ -193,6 +193,7 @@ Some Verilog macros:
 1. FORCE_GRAY ignore palette and use a 4-bit gray scale for everything
 2. REPORT_DELAY will print the average CPU delay at the end of each frame
    in system ticks (number of 48MHz clocks)
+3. JTCPS_TURBO forces turbo mode, speeding up -slightly- the game speed, especially on boot-up
 
 ## Video
 

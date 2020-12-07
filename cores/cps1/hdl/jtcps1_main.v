@@ -91,9 +91,9 @@ module jtcps1_main(
 wire [23:1] A;
 wire        BERRn = 1'b1;
 
-//`ifdef SIMULATION
-(*keep*) wire [24:0] A_full = {A,1'b0};
-//`endif
+`ifdef SIMULATION
+wire [24:0] A_full = {A,1'b0};
+`endif
 
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
@@ -200,7 +200,7 @@ always @(posedge clk, posedge rst) begin
             end
             `endif
         end else begin
-            rom_addr    <= last_fail[20:0]; // this is a trick so the compiler
+            rom_addr[4:1] <= last_fail[3:0]; // this is a trick so the compiler
                 // won't get rid of last_fail, as I need to see it in signal tap
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
@@ -393,7 +393,7 @@ reg [2:0]  wait_cycles;
 //                          wait_cycles[0] };
 reg        DTACKn;
 reg        last_LVBL;
-(*keep*) reg [23:0] fail_cnt;
+(*keep*) reg [3:0] fail_cnt;
 
 `ifdef CPS15
 reg qs_busakn_s;
@@ -406,14 +406,18 @@ always @(posedge clk, posedge rst) begin
 end
 `endif
 
+reg fail_cnt_ok;
+
 always @(posedge clk, posedge rst) begin : dtack_gen
     reg       last_ASn;
     if( rst ) begin
         DTACKn      <= 1'b1;
         wait_cycles <= 3'b111;
-        fail_cnt    <= 24'd0;
-        last_fail   <= 24'd0;
+        fail_cnt    <= 4'd0;
+        fail_cnt_ok <= 0;
+        last_fail   <= 4'd0;
     end else /*if(cen10b)*/ begin
+        if( rom_ok ) fail_cnt_ok <= 1;
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn
             `ifdef CPS15
@@ -435,28 +439,21 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             if( bus_cs ) begin
                 // we avoid accumulating delay by counting it
                 // and skipping wait cycles when necessary
-                // the resolution of this compensation is 20.8ns
-                // or one system clock
-                // At any given time, fail_cnt contains the accumulated
-                // delay. Worst values seen in simulation are about 125ns
-                // which get resolved to zero within the next 2.8us
-                // The origin of the delay is the SDRAM multiplexing
-                // it would be possible to reduce the ammount of multiplexing
-                // by moving the CPU RAM (not the VRAM) to a BRAM block inside
-                // the FPGA, but many FPGA models don't have the resources
-                // and average delay is below 3ns, so it doesn't need improvement.
+                // the resolution of this compensation is one CPU clock
+                // Recovery is done by shortening the normal bus wait
+                // by one cycle
                 // Average delay can be displayed in simulation by defining the
                 // macro REPORT_DELAY
-                if( !wait_cycles[0] && bus_busy ) fail_cnt<=fail_cnt+1;
-                if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=0&&wait_cycles==3'b001) ) ) begin
+                if( !wait_cycles[0] && bus_busy && fail_cnt_ok && cen10 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
+                if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=4'd0&&wait_cycles==3'b011) ) ) begin
                     DTACKn <= 1'b0;
-                    if( wait_cycles[0] ) fail_cnt<=fail_cnt-1; // one bus cycle recovered
+                    if( wait_cycles[0] && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
                 end
             end
             else DTACKn <= 1'b0;
         end
         if( !LVBL && last_LVBL ) begin
-            fail_cnt <= 24'd0;
+            fail_cnt <= 4'd0;
             last_fail <= fail_cnt;
         end
     end
@@ -470,7 +467,7 @@ always @(posedge clk) begin
     if( !LVBL && last_LVBL ) begin
         ticks <= 0;
         dly_cnt <= 0;
-        if( ticks ) $display("INFO: average CPU delay = %.2f ticks",dly_cnt/ticks);
+        if( ticks ) $display("INFO: average CPU delay = %.2f CPU clock ticks",dly_cnt/ticks);
     end else begin
         dly_cnt <= dly_cnt+fail_cnt;
         ticks <= ticks+1;
@@ -485,13 +482,13 @@ reg        int1, // VBLANK
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen
-    reg last_V256;
+    //reg last_V256;
     if( rst ) begin
         int1 <= 1'b1;
         int2 <= 1'b1;
     end else begin
         last_LVBL <= LVBL;
-        last_V256 <= V[8];
+        //last_V256 <= V[8];
 
         if( !inta_n ) begin
             int1 <= 1'b1;
