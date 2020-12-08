@@ -78,14 +78,14 @@ module jtcps1_sdram #( parameter
     input           snd_cs,
     input           pcm_cs,
 
-    output          snd_ok,
+    output reg      snd_ok,
     output          pcm_ok,
 
     input [Z80_AW-1:0] snd_addr,
     input [PCM_AW-1:0] pcm_addr,
 
-    output    [7:0] snd_data,
-    output    [7:0] pcm_data,
+    output reg [7:0] snd_data,
+    output     [7:0] pcm_data,
 
     // Graphics
     input           rom0_cs,
@@ -222,6 +222,19 @@ jtframe_ram_2slots #(
 );
 
 // Z80 code and samples in bank 1
+wire [7:0] pre_snd_data;
+wire       pre_snd_ok;
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        snd_ok   <= 0;
+        snd_data <= 8'd0;
+    end else begin
+        snd_data <= pre_snd_data;
+        snd_ok   <= pre_snd_ok;
+    end
+end
+
 jtframe_rom_2slots #(
     .SLOT0_AW    ( Z80_AW        ), // Sound CPU
     .SLOT0_DW    (  8            ),
@@ -237,13 +250,13 @@ jtframe_rom_2slots #(
     .slot0_cs    ( snd_cs        ),
     .slot1_cs    ( pcm_cs        ),
 
-    .slot0_ok    ( snd_ok        ),
+    .slot0_ok    ( pre_snd_ok    ),
     .slot1_ok    ( pcm_ok        ),
 
     .slot0_addr  ( snd_addr      ),
     .slot1_addr  ( pcm_addr      ),
 
-    .slot0_dout  ( snd_data      ),
+    .slot0_dout  ( pre_snd_data  ),
     .slot1_dout  ( pcm_data      ),
 
     .sdram_addr  ( ba1_addr      ),

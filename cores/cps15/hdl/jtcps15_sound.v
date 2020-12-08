@@ -60,14 +60,14 @@ module jtcps15_sound(
     output               sample
 );
 
-localparam QSND_GAIN = 1; // More than this causes distortion in Warriors of Fate
+localparam QSND_GAIN = 0; // More than this causes distortion in Warriors of Fate
 
 wire        cpu_cen, cen_extra;
 wire [ 7:0] dec_dout, ram_dout, cpu_dout, bus_din;
 wire [15:0] A, bus_A;
 reg  [ 3:0] bank;
 reg  [ 7:0] cpu_din;
-reg         rstn, rom_ok2;
+reg         rstn;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
 wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
@@ -141,7 +141,7 @@ assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
-assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok2);
+assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok);
 
 always @(posedge clk48) begin
     main_din <= cpu_din; // bus output
@@ -155,14 +155,12 @@ end
 always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         rom_cs    <= 0;
-        rom_ok2   <= 0;
         rom_addr  <= 16'd0;
         ram_cs    <= 0;
         bank_cs   <= 0;
         qsnd_wr   <= 0;
         qsnd_rd   <= 0;
     end else begin
-        rom_ok2  <= rom_ok;
         rom_cs   <= !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
         if(!bus_mreqn)
             rom_addr <= bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] };
@@ -247,7 +245,7 @@ jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
     .q      ( ram_dout      )
 );
 
-jtframe_kabuki /*#(.LATCH(1)) */ u_kabuki(
+jtframe_kabuki u_kabuki(
     .rst_n      ( rstn        ),
     .clk        ( clk48       ),
     .m1_n       ( m1_n        ),
@@ -284,7 +282,7 @@ jtframe_z80_romwait #(0) u_cpu(
     .dout       ( cpu_dout    ),
     // manage access to ROM data from SDRAM
     .rom_cs     ( rom_cs      ),
-    .rom_ok     ( rom_ok & rom_ok2     )
+    .rom_ok     ( rom_ok      )
 );
 
 reg last_vol_up, last_vol_down;
