@@ -562,7 +562,7 @@ always @(posedge clk96, posedge rst) begin
         l_out    <= 16'd0;
         r_out    <= 16'd0;
     end else begin
-        qsnd_cen <= ~sleep & ( qsnd_ok | ~ext_rq );
+        qsnd_cen <= ~sleep & qsnd_ok;
         if( cnt == MAXCNT ) begin
             sleep    <= 0;
             cnt      <= 14'd0;
