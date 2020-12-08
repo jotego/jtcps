@@ -60,7 +60,7 @@ module jtcps15_sound(
     output               sample
 );
 
-localparam QSND_GAIN = 2;
+localparam QSND_GAIN = 1; // More than this causes distortion in Warriors of Fate
 
 wire        cpu_cen, cen_extra;
 wire [ 7:0] dec_dout, ram_dout, cpu_dout, bus_din;
