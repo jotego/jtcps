@@ -81,7 +81,7 @@ reg         [12:0] vol; // volume moves in 2dB steps
 reg         [ 1:0] dsp_datasel;
 reg  signed [15:0] reg_left, reg_right, pre_l, pre_r;
 wire signed [15:0] fxd_l, fxd_r;
-wire               resample;
+wire               resample48;
 
 // DSP16 wires
 wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out, dsp_serout;
@@ -103,6 +103,7 @@ assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
 
 jtcps15_qsnd_cen u_dspcen(
     .clk96       ( clk96       ),
+    .clk48       ( clk48       ),
     .rst         ( rst         ),
     .base_sample ( base_sample ),
     .qsnd_ok     ( qsnd_ok     ),
@@ -113,7 +114,7 @@ jtcps15_qsnd_cen u_dspcen(
     .r_in        ( pre_r       ),
     .l_out       ( fxd_l       ),
     .r_out       ( fxd_r       ),
-    .resample    ( resample    )
+    .resample48  ( resample48  )
 );
 
 `else
@@ -310,12 +311,12 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
-wire signed [15:0] fir_l, fir_r;
+// The uprate filter runs at 48MHz to ease synthesis
 
 jtframe_uprate2_fir uprate(
     .rst     ( dsp_rst       ),
-    .clk     ( clk96         ),
-    .sample  ( resample      ),
+    .clk     ( clk48         ),
+    .sample  ( resample48    ),
     .upsample( sample        ),
     .l_in    ( fxd_l         ),
     .r_in    ( fxd_r         ),
@@ -534,6 +535,7 @@ endmodule
 
 module jtcps15_qsnd_cen(
     input       clk96,
+    input       clk48,
     input       rst,
     input       base_sample,
     input       qsnd_ok,
@@ -543,7 +545,7 @@ module jtcps15_qsnd_cen(
     input signed [15:0] r_in,
     output reg signed [15:0] l_out,
     output reg signed [15:0] r_out,
-    output reg  resample,
+    output reg  resample48,
     // clock enable
     output reg  qsnd_cen
 );
@@ -552,6 +554,7 @@ wire [13:0] MAXCNT = 14'd3999;
 
 reg [13:0] cnt;
 reg        sleep;
+reg [ 1:0] resample;
 
 always @(posedge clk96, posedge rst) begin
     if( rst ) begin
@@ -566,15 +569,19 @@ always @(posedge clk96, posedge rst) begin
         if( cnt == MAXCNT ) begin
             sleep    <= 0;
             cnt      <= 14'd0;
-            resample <= 1;
+            resample <= 2'b11;
             l_out    <= l_in;
             r_out    <= r_in;
         end else begin
             cnt      <= cnt + 14'd1;
-            resample <= 0;
+            resample <= resample<<1;
             if( base_sample ) sleep <= 1;
         end
     end
+end
+
+always @(posedge clk48, posedge rst) begin
+    resample48 <= resample[1];
 end
 
 endmodule

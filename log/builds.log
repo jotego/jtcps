@@ -506,3 +506,8 @@ cps15         	mist	20201208	1	FAIL	bac12ec	607bb8d
 cps15         	mist	20201208	1	FAIL	bac12ec	607bb8d
 cps15         	mist	20201208	1	FAIL	d74ef6c	607bb8d
 cps15         	mister	20201208	1	FAIL	d74ef6c	607bb8d
+cps15         	mister	20201208	1	FAIL	09e6131	5a44d86
+cps15         	mister	20201208	1	FAIL	09e6131	607bb8d
+cps1          	mist	20201208	1	PASS	09e6131	607bb8d
+cps15         	mist	20201208	1	FAIL	09e6131	607bb8d
+cps1          	mister	20201208	1	FAIL	09e6131	607bb8d
