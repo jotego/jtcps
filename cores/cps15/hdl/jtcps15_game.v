@@ -294,23 +294,24 @@ assign sdo  = 0;
 assign scs  = 0;
 `endif
 
+reg rst_video, rst_sdram, rst_eprom;
+
+always @(negedge clk) begin
+    rst_sdram <= rst;
+    rst_video <= rst;
+    rst_eprom <= rst;
+end
+
 // EEPROM to save game settings
 jt9346 #(.DW(16),.AW(7)) u_eeprom(
     .clk    ( clk       ),  // system clock
-    .rst    ( rst       ),  // system reset
+    .rst    ( rst_eprom ),  // system reset
     // chip interface
     .sclk   ( sclk      ),  // serial clock
     .sdi    ( sdi       ),  // serial data in
     .sdo    ( sdo       ),  // serial data out and ready/not busy signal
     .scs    ( scs       )   // chip select, active high. Goes low in between instructions
 );
-
-reg rst_video, rst_sdram;
-
-always @(negedge clk) begin
-    rst_sdram <= rst;
-    rst_video <= rst;
-end
 
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
