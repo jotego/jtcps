@@ -44,10 +44,7 @@ module jtcps1_sdram #( parameter
     output          prog_qsnd,
 
     // Kabuki decoder (CPS 1.5)
-    output   [31:0] swap_key1,
-    output   [31:0] swap_key2,
-    output   [15:0] addr_key,
-    output   [ 7:0] xor_key,
+    output          kabuki_we,
 
     // Main CPU
     input           main_rom_cs,
@@ -173,10 +170,7 @@ jtcps1_prom_we #(
     .cfg_we         ( cfg_we        ),
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
-    .swap_key1      ( swap_key1     ),
-    .swap_key2      ( swap_key2     ),
-    .addr_key       ( addr_key      ),
-    .xor_key        ( xor_key       )
+    .kabuki_we      ( kabuki_we     )
 );
 
 // RAM and VRAM in bank 0

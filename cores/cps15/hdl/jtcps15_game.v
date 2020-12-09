@@ -140,10 +140,7 @@ wire        rom0_half, rom1_half;
 wire        cfg_we;
 
 // QSound - Decode keys
-wire [31:0] swap_key1;
-wire [31:0] swap_key2;
-wire [15:0] addr_key;
-wire [ 7:0] xor_key;
+wire        kabuki_we;
 
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
@@ -397,10 +394,7 @@ jtcps15_sound u_sound(
     .vol_up     ( 1'b0              ),
     .vol_down   ( 1'b0              ),
     // Decode keys
-    .swap_key1  ( swap_key1         ),
-    .swap_key2  ( swap_key2         ),
-    .addr_key   ( addr_key          ),
-    .xor_key    ( xor_key           ),
+    .kabuki_we  ( kabuki_we         ),
 
     // Interface with main CPU
     .main_addr  ( main2qs_addr      ),
@@ -455,10 +449,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .prog_rdy    ( prog_rdy      ),
     .prog_qsnd   ( prog_qsnd     ),
     // Kabuki decoder (CPS 1.5)
-    .swap_key1   ( swap_key1     ),
-    .swap_key2   ( swap_key2     ),
-    .addr_key    ( addr_key      ),
-    .xor_key     ( xor_key       ),
+    .kabuki_we   ( kabuki_we     ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),

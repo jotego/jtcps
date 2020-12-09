@@ -24,10 +24,7 @@ module jtcps15_sound(
     input             vol_up,
     input             vol_down,
     // Decode keys
-    input      [31:0] swap_key1,
-    input      [31:0] swap_key2,
-    input      [15:0] addr_key,
-    input      [ 7:0] xor_key,
+    input             kabuki_we,
 
     // Interface with main CPU
     input      [23:1] main_addr,
@@ -69,7 +66,7 @@ reg  [ 3:0] bank;
 reg  [ 7:0] cpu_din;
 reg         rstn;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
-wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n;
+wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n, m1_n, iorq_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
 wire        bus_wrn, bus_mreqn, main_busn;
 reg         main_busn_dly;
@@ -246,18 +243,15 @@ jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
 );
 
 jtframe_kabuki u_kabuki(
-    .rst_n      ( rstn        ),
-    .clk        ( clk48       ),
+    .clk        ( clk96       ),    // Uses same clock as u_prom_we
     .m1_n       ( m1_n        ),
     .mreq_n     ( mreq_n      ),
     .rd_n       ( rd_n        ),
     .addr       ( A           ),
     .din        ( rom_data    ),
     // Decode keys
-    .swap_key1  ( swap_key1   ),
-    .swap_key2  ( swap_key2   ),
-    .addr_key   ( addr_key    ),
-    .xor_key    ( xor_key     ),
+    .prog_data  ( prog_data   ),
+    .prog_we    ( kabuki_we   ),
     .dout       ( dec_dout    )
 );
 
@@ -578,7 +572,7 @@ always @(posedge clk96, posedge rst) begin
     end
 end
 
-always @(posedge clk48, posedge rst) begin
+always @(posedge clk48) begin
     resample48 <= resample[1];
 end
 

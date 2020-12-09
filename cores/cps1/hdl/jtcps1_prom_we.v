@@ -31,10 +31,7 @@ module jtcps1_prom_we(
     input                prog_rdy,
     output reg           cfg_we,
     // Kabuki decoder (CPS 1.5)
-    output     [31:0]    swap_key1,
-    output     [31:0]    swap_key2,
-    output     [15:0]    addr_key,
-    output     [ 7:0]    xor_key
+    output reg           kabuki_we
 );
 
 parameter        CPS=1; // 1, 15, or 2
@@ -56,7 +53,6 @@ localparam START_BYTES   = 8,
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
-reg        [87:0] kabuki_keys;
 reg        [ 7:0] pre_data;
 
 assign snd_start  = starts[15: 0];
@@ -64,8 +60,6 @@ assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
 assign prog_data = {2{pre_data}};
-
-assign { swap_key1, swap_key2, addr_key, xor_key } = kabuki_keys;
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
@@ -114,9 +108,7 @@ always @(posedge clk) begin
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
         prog_bank <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
-        if(is_kabuki) begin
-            kabuki_keys <= { kabuki_keys[79:0], ioctl_data };
-        end
+        kabuki_we <= is_kabuki;
         if( ioctl_addr < START_BYTES[24:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
@@ -138,9 +130,10 @@ always @(posedge clk) begin
     else begin
         if(!downloading || prog_rdy) prog_we  <= 1'b0;
         if( !downloading ) begin
-            decrypt <= 0;
-            prom_we <= 0;
+            decrypt   <= 0;
+            prom_we   <= 0;
         end
+        kabuki_we <= 0;
         cfg_we   <= 1'b0;
     end
 end
