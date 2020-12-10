@@ -140,7 +140,7 @@ wire        rom0_half, rom1_half;
 wire        cfg_we;
 
 // QSound - Decode keys
-wire        kabuki_we;
+wire        kabuki_we, kabuki_en;
 
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
@@ -205,7 +205,7 @@ assign pxl_cen  = cen8;
 jtcps1_cpucen u_cpucen(
     .clk        ( clk48              ),
     .cen12      ( cen12              ),
-    .cpu_speed  ( cpu_speed | turbo  ),
+    .cpu_speed  ( 1'b1               ), // always at 12MHz for CPS 1.5
     .cpu_cen    ( cpu_cen            ),
     .cpu_cenb   ( cpu_cenb           )
 );
@@ -304,7 +304,7 @@ end
 
 // EEPROM to save game settings
 jt9346 #(.DW(16),.AW(7)) u_eeprom(
-    .clk    ( clk       ),  // system clock
+    .clk    ( clk48     ),  // same as main CPU. It works with clk96 too, though
     .rst    ( rst_eprom ),  // system reset
     // chip interface
     .sclk   ( sclk      ),  // serial clock
@@ -325,6 +325,7 @@ jtcps1_video #(REGSIZE) u_video(
     .gfx_en         ( gfx_en        ),
     .cpu_speed      ( cpu_speed     ),
     .charger        (               ),
+    .kabuki_en      ( kabuki_en     ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),
@@ -396,6 +397,7 @@ jtcps15_sound u_sound(
     .vol_down   ( 1'b0              ),
     // Decode keys
     .kabuki_we  ( kabuki_we         ),
+    .kabuki_en  ( kabuki_en         ),
 
     // Interface with main CPU
     .main_addr  ( main2qs_addr      ),

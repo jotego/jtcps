@@ -42,6 +42,7 @@ module jtcps1_video(
     output  [15:0]     mmr_dout,
     output             cpu_speed,
     output             charger,
+    output             kabuki_en,
     // BUS sharing
     output             busreq,
     input              busack,
@@ -238,6 +239,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
 
     .cpu_speed      ( cpu_speed         ),
     .charger        ( charger           ),
+    .kabuki_en      ( kabuki_en         ),
 
     // OBJ DMA
     .obj_dma_ok     ( obj_dma_ok        ),

@@ -101,6 +101,15 @@ Offset | Length | Use
 
 * All offset values are expressed in kilobytes and stored with MSB byte second
 
+CPS-A board type format:
+
+Bits   |  Use
+-------|----------------------------
+0      | CPU speed. 0=10MHz, 1=12MHz
+3:1    | Enables additional inputs on CPS-B chip side
+4      | High for charger games
+5      | 0 = Disables Kabuki decryption
+
 
 # SDRAM Usage
 

@@ -25,6 +25,7 @@ module jtcps15_sound(
     input             vol_down,
     // Decode keys
     input             kabuki_we,
+    input             kabuki_en,
 
     // Interface with main CPU
     input      [23:1] main_addr,
@@ -249,6 +250,7 @@ jtframe_kabuki u_kabuki(
     .rd_n       ( rd_n        ),
     .addr       ( A           ),
     .din        ( rom_data    ),
+    .en         ( kabuki_en   ),
     // Decode keys
     .prog_data  ( prog_data   ),
     .prog_we    ( kabuki_we   ),
