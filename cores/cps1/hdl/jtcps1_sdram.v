@@ -25,6 +25,7 @@ module jtcps1_sdram #( parameter
     input           rst,
     input           clk,        // 96   MHz
     input           LVBL,
+    input           LHBL,
 
     input           downloading,
     output          dwnld_busy,
@@ -148,7 +149,7 @@ assign dwnld_busy  = downloading;
 assign prog_rd     = 0;
 
 always @(posedge clk)
-    refresh_en <= ~LVBL;
+    refresh_en <= ~LVBL | ~LHBL;
 
 jtcps1_prom_we #(
     .CPS       ( CPS           ),
@@ -233,10 +234,12 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( Z80_AW        ), // Sound CPU
     .SLOT0_DW    (  8            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
+    .SLOT0_REPACK( 1             ),
 
     .SLOT1_AW    ( PCM_AW        ), // PCM
     .SLOT1_DW    (  8            ),
-    .SLOT1_OFFSET( PCM_OFFSET    )
+    .SLOT1_OFFSET( PCM_OFFSET    ),
+    .SLOT1_REPACK( 1             )
 ) u_bank1 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -265,10 +268,12 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 22            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
+    //.SLOT0_REPACK( 1             ),
 
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
     .SLOT1_OFFSET( ZERO_OFFSET   )
+    //.SLOT1_REPACK( 1             )
 ) u_bank2 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -306,7 +311,7 @@ always @(posedge clk, posedge rst ) begin
     end
 end
 
-jtframe_romrq #(.AW(21),.DW(16)) u_bank3(
+jtframe_romrq #(.AW(21),.DW(16),.REPACK(1)) u_bank3(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .clr       ( 1'b0                   ),

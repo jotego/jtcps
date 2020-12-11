@@ -434,6 +434,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),        // 96   MHz
     .LVBL        ( LVBL          ),
+    .LHBL        ( LHBL          ),
 
     .downloading ( downloading   ),
     .dwnld_busy  ( dwnld_busy    ),

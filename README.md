@@ -228,3 +228,51 @@ You can show your appreciation through
 # Licensing
 
 Contact the author for special licensing needs. Otherwise follow the GPLv3 license attached.
+
+# Patron Acknowledgement
+
+The following patrons supported the development of CPS1.5
+
+3style              Chris Harvey        Joeri van Dooren    Oliver Wndmth
+80's spaceman       cohge               Johan Smolinski     Oriez
+Adam Davis          Coldheat007         John Casey          Oscar Laguna Garcia
+Alan Shurvinton     Dakken              Jonathan Loor       Oskar Sigvardsson
+Alfredo Henriquez   Dan                 Jonathan Tuttle     Patrick Roman Fabri
+Alonso J. Núñez     Daniel Bauza        Jorge Slowfret      Paweł Mandes
+Anders Rensberg     Daniel Estreito     Josiah Wilson       Per Sweden
+Andrea Chiavazza    dannahan            JPS (RetroFPGA)     Phillip McMahon
+Andreas Micklei     Darren Wootton      Juan E. Gayon       PsyFX
+Andrew Ajello       Dasutin             Justin D'Arcangelo  Purple Tinker
+Andrew Boudreau     David Ashby         Kitsuake            Rachael Netz
+Andrew Francomb     David Fleetwood     KnC                 RandomRetro
+Andrew Moore        David Jones         Kyle Good           RetroDriven
+Andy Palmer         David Mills         Lee Osborne         Richard Eng
+Andyways            derFunkenstein      Leslie Law          Richard Murillo
+angel_killah        DJ Lethal           Lionel LENOBLE      Richard Simpson
+Angelo Kanaris      Don Gafford         Louis Martinez      Robert Bergman
+Anthony Monaco      DrMnike             Luc JOLY            Robert Forbes
+Anton Gale          Ed Balan            Magnus Kvevlander   Robert MacLean
+Antonio Villena     Edward Rana         Manuel Astudillo    Robert Mullings
+Aquijacks           Eric J Faulkes      Marcus Hogue        Roman Buser
+Arcade Express      Filip Kindt         Martin Di Palma     rsn8887
+Arjan de Lang       Francis B           Matt Evans          Ryan Fig
+asdfgasfhsn         Frank Hoedemakers   Matt ODonnell       Sassbasket Silvercloud
+atrac17             Frédéric Mahé       Matthew Humphrey    Sebastien Goutal
+Bear S              Gary Greenan        Matthew Woodford    Skeeter
+Ben Toman           Gavin               Matthew Young       Sofia Rose
+Bender              Greg                Max Schütz          Spank Minister
+Bliz 452            Gregory Val         Michael Deshaies    Spencer Bradley
+Bob Gallardo        Gus Douboulidis     Michael Yount       Stephen Goldberg
+Brent Fraser        Handheld Obsession  Mick Stone          Steven Wilson
+Brett T Davis       Hard Rich           Mike Jegenjan       Steven Yedwab
+brian burney        Henrik Nordström    Mike Parks          Thomas Irwin
+Brian Sallee        HFSPlay             MiSTerFPGA.co.uk    Toby Boreham
+Carrboroman         hyp36rmax           mottzilla .         Travis Brown
+Charles             Jacob Hoffman       Nailbomb            Trifle
+Chi Wai Tran        Jeff Roberts        natalie             Ulf Skutnabba
+Chris Jardine       Jeremy Hasse        Neil St Clair       Ultrarobotninja
+Chris smith         Jeremy Kelaher      Nico Stamp          Victor Bly
+Chris W Miller      Jesse Clark         nonamebear          Victor Fontanez
+Christian           Jim Knowler         nullobject          Víctor Gomariz Ladrón de Guevara
+Christian Bailey    Jo Tomiyori         Oliver Jaksch       Xzarian
+Christopher Gelatt                                          yoaarond
