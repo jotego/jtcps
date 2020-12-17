@@ -11,8 +11,16 @@ MACROPREFIX=-D
 EXTRA=
 MMR=regs.hex
 
+if which cvc64; then
+    MACROPREFIX=+define+
+    SIM=cvc64
+else
 if which ncverilog; then
     MACROPREFIX=+define+
+    SIM=ncverilog
+else
+    SIM=iverilog
+fi
 fi
 
 GAME=ghouls
@@ -31,7 +39,7 @@ while [ $# -gt 0 ]; do
             RESIZE=
             ;;
         -ar)
-            RESIZE="-resize 768x576!";;            
+            RESIZE="-resize 768x576!";;
         -h|-help)
             echo "-g|-game: selects the game. There must be a folder with the same name"
             echo "-s|-save: selects the save state number"

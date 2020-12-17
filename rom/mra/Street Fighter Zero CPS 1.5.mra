@@ -41,7 +41,7 @@
         <part> 32 FF 00 02 04 06 26 28 2A 2C 2E 00 00 30 02 04 08 30 </part>
         <!-- Mapper for  -->
         <part> 20 00 00 FF FF </part>
-        <part> 01 </part> <!-- Disables Kabuki -->
+        <part> 11 </part> <!-- Charger game / Disables Kabuki -->
         <part repeat="24">FF</part>
         <!-- maincpu  -->
         <!-- code has been modified to interface with QSound hardware -->
@@ -103,7 +103,7 @@
          Set bit 2 for games using 4-way joysticks -->
     <rom index="1"><part> 00 </part></rom>
 
-    <buttons names="B0,B1,B2,B3,B4,B5,Start,Coin,Pause"
+    <buttons names="B0,B1,B2,B3,B4,B5,Start,Pause,Credits"
         default="A,B,X,Y,R,L,Select,Select,Start"/>
     <switches default="FF,FF,FF" base="8">
         <dip bits="0,7"	 name="Unknown" ids="On,Off"/>

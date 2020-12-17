@@ -339,7 +339,7 @@ always @(posedge clk) begin
             2'b00: sys_data <=
             charger ? // Support for SFZ charger version
               { joystick2[9], joystick1[9], start_button[1:0],
-               1'b1, service, joystick2[8], joystick1[8], 8'hff } :
+               &coin_input[1:0], service, joystick2[8], joystick1[8], 8'hff } :
             // Regular CPS1 arcade:
             { tilt,
                 `ifdef CPS15

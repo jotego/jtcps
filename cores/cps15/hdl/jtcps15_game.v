@@ -138,6 +138,7 @@ wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
 wire        cfg_we;
+wire        charger;
 
 // QSound - Decode keys
 wire        kabuki_we, kabuki_en;
@@ -242,7 +243,7 @@ jtcps1_main u_main(
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
     // Cabinet input
-    .charger     ( 1'b0             ),
+    .charger     ( charger          ),
     .start_button( start_button     ),
     .coin_input  ( coin_input       ),
     .joystick1   ( joystick1        ),
@@ -324,7 +325,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vrender        ( vrender       ),
     .gfx_en         ( gfx_en        ),
     .cpu_speed      ( cpu_speed     ),
-    .charger        (               ),
+    .charger        ( charger       ),
     .kabuki_en      ( kabuki_en     ),
 
     // CPU interface
