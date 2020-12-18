@@ -172,7 +172,7 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
-assign { kabuki_en, charger, cpsb_inputs, cpu_speed }  = `MMR(23);
+assign { kabuki_en /* bit 5*/, charger /* bit 4*/, cpsb_inputs, cpu_speed }  = `MMR(23);
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;

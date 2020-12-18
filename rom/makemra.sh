@@ -45,6 +45,7 @@ mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
     -header-data 25 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
+    -header-data 20 \
     -header-pointer 48 \
     -header-data 01 23 45 67 54 16 30 72 51 51 51 \
     -buttons Attack Jump None None None None \
@@ -64,6 +65,7 @@ mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data 0a 0c 0e 00 02 00 00 04 16 16 16 00 \
     -header-data 5 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
+    -header-data 20 \
     -header-pointer 48 \
     -header-data 76 54 32 10 24 60 13 57 43 43 43 \
     -buttons Attack Jump None None None None\
@@ -83,6 +85,7 @@ mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data 12 14 16 08 0a 00 00 0c 04 02 20 00 \
     -header-data 17 \
     -header-data $(mapper_offset.py 8000 8000 0 0) \
+    -header-data 20 \
     -header-pointer 48 \
     -header-data 67 45 21 03 75 31 60 24 22 22 22 \
     -buttons Attack Jump None None None None \
@@ -102,6 +105,7 @@ mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
     -header-data 10 \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
+    -header-data 20 \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
     -buttons Punch Jump Action None None None \
@@ -121,6 +125,7 @@ mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
     -header-data 2a 2c 2e 30 32 00 00 1c 04 08 10 00 \
     -header-data 10 \
     -header-data $(mapper_offset.py 8000 8000 8000 0) \
+    -header-data 20 \
     -header-pointer 48 \
     -header-data 54 32 10 76 65 43 21 07 31 31 19 \
     -buttons Punch Attack Jump None None None \
