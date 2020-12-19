@@ -257,11 +257,12 @@ jtframe_kabuki u_kabuki(
     .dout       ( dec_dout    )
 );
 
-jtframe_z80_romwait #(0) u_cpu(
+jtframe_z80_romwait u_cpu(
     .rst_n      ( rstn        ),
     .clk        ( clk48       ),
     .cen        ( cen_extra   ),
     .cpu_cen    ( cpu_cen     ),
+    .start      ( 1'b1        ),
     .int_n      ( int_n       ),
     .nmi_n      ( 1'b1        ),
     .busrq_n    ( busrq_n     ),
