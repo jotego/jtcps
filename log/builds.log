@@ -748,3 +748,9 @@ cps15         	mister	20201219	1	FAIL	2d151b4	620548e
 cps1          	mister	20201219	1	FAIL	2d151b4	620548e
 cps15         	mister	20201219	9071	PASS	2d151b4	620548e
 cps1          	mister	20201219	1	FAIL	2d151b4	620548e
+cps1          	mister	20201219	14111	PASS	52ab3d5	620548e
+cps1          	mister	20201219	10882	PASS	52ab3d5	620548e
+cps1          	mister	20201219	10496	FAIL	52ab3d5	620548e
+cps1          	mister	20201219	15028	PASS	52ab3d5	620548e
+cps1          	mister	20201219	18123	PASS	52ab3d5	620548e
+cps15         	mist	20201219	1	FAIL	52ab3d5	620548e

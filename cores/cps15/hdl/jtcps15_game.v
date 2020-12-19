@@ -305,13 +305,17 @@ end
 
 // EEPROM to save game settings
 jt9346 #(.DW(16),.AW(7)) u_eeprom(
-    .clk    ( clk48     ),  // same as main CPU. It works with clk96 too, though
-    .rst    ( rst_eprom ),  // system reset
+    .clk        ( clk48     ),  // same as main CPU. It works with clk96 too, though
+    .rst        ( rst_eprom ),  // system reset
     // chip interface
-    .sclk   ( sclk      ),  // serial clock
-    .sdi    ( sdi       ),  // serial data in
-    .sdo    ( sdo       ),  // serial data out and ready/not busy signal
-    .scs    ( scs       )   // chip select, active high. Goes low in between instructions
+    .sclk       ( sclk      ),  // serial clock
+    .sdi        ( sdi       ),  // serial data in
+    .sdo        ( sdo       ),  // serial data out and ready/not busy signal
+    .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
+    // Dump access
+    .dump_clk   (           ),
+    .dump_addr  (           ),
+    .dump_data  (           )
 );
 
 jtcps1_video #(REGSIZE) u_video(
