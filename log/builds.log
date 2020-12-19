@@ -765,3 +765,6 @@ cps1          	mist	20201219	1	FAIL	344ec61	73c001b
 cps1          	mist	20201219	1	PASS	344ec61	73c001b
 cps15         	mist	20201219	1	PASS	344ec61	73c001b
 cps1          	mist	20201219	1	PASS	344ec61	73c001b
+cps1          	mister	20201219	1	FAIL	ec53ff3	e6dfe83
+cps1          	mister	20201219	1	PASS	ec53ff3	e6dfe83
+cps15         	mister	20201219	1	PASS	ec53ff3	e6dfe83
