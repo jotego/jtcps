@@ -435,6 +435,7 @@ end
 jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),        // 96   MHz
+    .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),

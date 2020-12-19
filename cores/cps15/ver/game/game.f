@@ -17,6 +17,7 @@
 ../../../cps1/hdl/jtcps1_gfx_mappers.v
 ../../../cps1/hdl/jtcps1_dma.v
 ../../../cps1/hdl/jtcps1_sdram.v
+../../../cps1/hdl/jtcps1_ram.v
 # CPS15
 ../../hdl/jtcps15_game.v
 ../../hdl/jtcps15_sound.v

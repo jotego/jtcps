@@ -434,6 +434,7 @@ jtcps15_sound u_sound(
 jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),        // 96   MHz
+    .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
     .LHBL        ( LHBL          ),
 

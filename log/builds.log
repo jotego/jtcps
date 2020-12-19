@@ -734,3 +734,17 @@ cps15         	mist	20201218	1	PASS	e35fa5e	ed762ef
 cps15         	sidi	20201218	1	FAIL	e35fa5e	ed762ef
 cps15         	mister	20201218	1	FAIL	e35fa5e	ed762ef
 cps15         	sidi	20201218	28887	PASS	e35fa5e	ed762ef
+cps15         	mist	20201218	1	FAIL	460d474	ebc0281
+cps15         	mist	20201218	1	FAIL	460d474	620548e
+cps15         	mist	20201218	1	PASS	460d474	620548e
+cps15         	mister	20201218	1	PASS	460d474	620548e
+cps15         	mister	20201219	1	PASS	460d474	620548e
+cps15         	mister	20201219	1	FAIL	460d474	620548e
+cps15         	mister	20201219	1	PASS	460d474	620548e
+cps15         	mister	20201219	1	PASS	460d474	620548e
+cps15         	mister	20201219	1	PASS	41ebe87	620548e
+cps1          	mister	20201219	1	FAIL	2d151b4	620548e
+cps15         	mister	20201219	1	FAIL	2d151b4	620548e
+cps1          	mister	20201219	1	FAIL	2d151b4	620548e
+cps15         	mister	20201219	9071	PASS	2d151b4	620548e
+cps1          	mister	20201219	1	FAIL	2d151b4	620548e

@@ -138,18 +138,4 @@ always @(posedge clk) begin
     end
 end
 
-// Load the kabuki keys only if it is a simulation with no rom loading
-// of CPS 1.5
-`ifdef CPS15
-`ifdef SIMULATION
-`ifndef LOADROM
-reg [87:0] kabuki_aux[0:0];
-initial begin
-    $readmemh("kabuki.hex", kabuki_aux);
-    kabuki_keys = kabuki_aux[0];
-end
-`endif
-`endif
-`endif
-
 endmodule

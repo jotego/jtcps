@@ -24,6 +24,7 @@ module jtcps1_sdram #( parameter
 ) (
     input           rst,
     input           clk,        // 96   MHz
+    input           clk_cpu,    // 48   MHz
     input           LVBL,
     input           LHBL,
 
@@ -174,47 +175,77 @@ jtcps1_prom_we #(
     .kabuki_we      ( kabuki_we     )
 );
 
-// RAM and VRAM in bank 0
-jtframe_ram_2slots #(
-    .SLOT0_AW    ( 17            ), // Main CPU RAM
-    .SLOT0_DW    ( 16            ),
+// RAM and VRAM in bank 0 or BRAM
+`ifdef JTCPS_BRAM
+    // Work around for 128MB modules, where R/W at 96MHz is compromised
+    jtcps1_ram u_bram(
+        .rst        ( rst       ),
+        .clk_gfx    ( clk       ),    // 96   MHz
+        .clk_cpu    ( clk_cpu   ),    // 48   MHz
 
-    .SLOT1_AW    ( 17            ), // VRAM - read only access
-    .SLOT1_DW    ( 16            )
-) u_bank0 (
-    .rst         ( rst           ),
-    .clk         ( clk           ),
+        // VRAM
+        .vram_dma_cs    ( vram_dma_cs   ),
+        .main_ram_cs    ( main_ram_cs   ),
+        .main_vram_cs   ( main_vram_cs  ),
 
-    .offset0     ( main_offset   ),
-    .offset1     ( VRAM_OFFSET   ),
+        .dsn            ( dsn           ),
+        .main_dout      ( main_dout     ),
+        .main_rnw       ( main_rnw      ),
 
-    .slot0_cs    ( ram_vram_cs   ),
-    .slot0_wen   ( !main_rnw     ),
-    .slot1_cs    ( vram_dma_cs   ),
-    .slot1_clr   ( vram_clr      ),
+        .main_ram_ok    ( main_ram_ok   ),
+        .vram_dma_ok    ( vram_dma_ok   ),
 
-    .slot0_ok    ( main_ram_ok   ),
-    .slot1_ok    ( vram_dma_ok   ),
+        .main_ram_addr  ( main_ram_addr ),
+        .vram_dma_addr  ( vram_dma_addr ),
 
-    .slot0_din   ( main_dout     ),
-    .slot0_wrmask( dsn           ),
+        .main_ram_data  ( main_ram_data ),
+        .vram_dma_data  ( vram_dma_data )
+    );
+    assign ba0_rd = 0;
+    assign ba0_wr = 0;
+`else
+    // MiST and SiDi can handle the 96MHz correctly
+    jtframe_ram_2slots #(
+        .SLOT0_AW    ( 17            ), // Main CPU RAM
+        .SLOT0_DW    ( 16            ),
 
-    .slot0_addr  ( main_ram_addr ),
-    .slot1_addr  ( vram_dma_addr ),
+        .SLOT1_AW    ( 17            ), // VRAM - read only access
+        .SLOT1_DW    ( 16            )
+    ) u_bank0 (
+        .rst         ( rst           ),
+        .clk         ( clk           ),
 
-    .slot0_dout  ( main_ram_data ),
-    .slot1_dout  ( vram_dma_data ),
+        .offset0     ( main_offset   ),
+        .offset1     ( VRAM_OFFSET   ),
 
-    // SDRAM interface
-    .sdram_addr  ( ba0_addr      ),
-    .sdram_rd    ( ba0_rd        ),
-    .sdram_wr    ( ba0_wr        ),
-    .sdram_ack   ( ba0_ack       ),
-    .data_rdy    ( ba0_rdy       ),
-    .data_write  ( ba0_din       ),
-    .sdram_wrmask( ba0_din_m     ),
-    .data_read   ( data_read     )
-);
+        .slot0_cs    ( ram_vram_cs   ),
+        .slot0_wen   ( !main_rnw     ),
+        .slot1_cs    ( vram_dma_cs   ),
+        .slot1_clr   ( vram_clr      ),
+
+        .slot0_ok    ( main_ram_ok   ),
+        .slot1_ok    ( vram_dma_ok   ),
+
+        .slot0_din   ( main_dout     ),
+        .slot0_wrmask( dsn           ),
+
+        .slot0_addr  ( main_ram_addr ),
+        .slot1_addr  ( vram_dma_addr ),
+
+        .slot0_dout  ( main_ram_data ),
+        .slot1_dout  ( vram_dma_data ),
+
+        // SDRAM interface
+        .sdram_addr  ( ba0_addr      ),
+        .sdram_rd    ( ba0_rd        ),
+        .sdram_wr    ( ba0_wr        ),
+        .sdram_ack   ( ba0_ack       ),
+        .data_rdy    ( ba0_rdy       ),
+        .data_write  ( ba0_din       ),
+        .sdram_wrmask( ba0_din_m     ),
+        .data_read   ( data_read     )
+    );
+`endif
 
 // Z80 code and samples in bank 1
 wire [7:0] pre_snd_data;

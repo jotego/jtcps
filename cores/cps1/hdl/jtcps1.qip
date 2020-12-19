@@ -14,6 +14,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_obj_line.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_prom_we.v        ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_sdram.v          ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_ram.v            ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_sound.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_stars.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps1_gfx_mappers.v    ]

@@ -18,6 +18,8 @@
 ../../hdl/jtcps1_cpucen.v
 ../../hdl/jtcps1_gfx_mappers.v
 ../../hdl/jtcps1_dma.v
+../../hdl/jtcps1_sdram.v
+../../hdl/jtcps1_ram.v
 # SDRAM
 -F $JTFRAME/hdl/sdram/jtframe_sdram_bank.f
 
