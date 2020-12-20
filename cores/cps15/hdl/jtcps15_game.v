@@ -72,10 +72,12 @@ module jtcps15_game(
     input   [31:0]  data_read,
     output          refresh_en,
 
-    // ROM LOAD
+    // RAM/ROM LOAD
     input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
+    output  [ 7:0]  ioctl_data_out,
+    input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
     output  [21:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
@@ -303,6 +305,26 @@ always @(negedge clk) begin
     rst_eprom <= rst;
 end
 
+// EEPROM 16 bit parallel interface <-> 8 bit dump interface
+assign ioctl_data_out = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
+wire  [6:0] dump_addr = ioctl_addr[7:1];
+reg         dump_we;
+reg  [15:0] dump_din;
+wire [15:0] dump_dout;
+
+always @(posedge clk) begin
+	dump_we <= 0;
+	if (ioctl_wr & ioctl_ram) begin
+		if(ioctl_addr[0]) begin
+			dump_din[15:8] <= ioctl_data;
+			dump_we <= 1;
+		end else begin
+			dump_din[7:0] <= ioctl_data;
+		end
+	end
+end
+
+
 // EEPROM to save game settings
 jt9346 #(.DW(16),.AW(7)) u_eeprom(
     .clk        ( clk48     ),  // same as main CPU. It works with clk96 too, though
@@ -313,9 +335,11 @@ jt9346 #(.DW(16),.AW(7)) u_eeprom(
     .sdo        ( sdo       ),  // serial data out and ready/not busy signal
     .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
     // Dump access
-    .dump_clk   (           ),
-    .dump_addr  (           ),
-    .dump_data  (           )
+    .dump_clk   ( clk       ),
+    .dump_addr  ( dump_addr ),
+    .dump_we    ( dump_we   ),
+    .dump_din   ( dump_din  ),
+    .dump_dout  ( dump_dout )
 );
 
 jtcps1_video #(REGSIZE) u_video(
@@ -449,7 +473,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     // ROM LOAD
     .ioctl_addr  ( ioctl_addr    ),
     .ioctl_data  ( ioctl_data    ),
-    .ioctl_wr    ( ioctl_wr      ),
+    .ioctl_wr    ( ioctl_wr & !ioctl_ram ),
     .prog_addr   ( prog_addr     ),
     .prog_data   ( prog_data     ),
     .prog_mask   ( prog_mask     ),
