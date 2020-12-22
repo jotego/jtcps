@@ -150,7 +150,7 @@ assign dwnld_busy  = downloading;
 assign prog_rd     = 0;
 
 always @(posedge clk)
-    refresh_en <= ~LVBL | ~LHBL;
+    refresh_en <= ~LVBL;
 
 jtcps1_prom_we #(
     .CPS       ( CPS           ),
