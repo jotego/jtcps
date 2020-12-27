@@ -26,7 +26,6 @@ module jtcps1_sdram #( parameter
     input           clk,        // 96   MHz
     input           clk_cpu,    // 48   MHz
     input           LVBL,
-    input           LHBL,
 
     input           downloading,
     output          dwnld_busy,
@@ -146,7 +145,6 @@ assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
 assign ram_vram_cs = main_ram_cs | main_vram_cs;
 assign main_offset = main_ram_cs ? ZERO_OFFSET : VRAM_OFFSET;
-assign dwnld_busy  = downloading;
 assign prog_rd     = 0;
 
 always @(posedge clk)
@@ -170,6 +168,7 @@ jtcps1_prom_we #(
     .prog_we        ( prog_we       ),
     .prog_rdy       ( prog_rdy      ),
     .cfg_we         ( cfg_we        ),
+    .dwnld_busy     ( dwnld_busy    ),
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
     .kabuki_we      ( kabuki_we     )

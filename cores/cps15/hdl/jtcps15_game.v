@@ -306,11 +306,12 @@ always @(negedge clk) begin
 end
 
 // EEPROM 16 bit parallel interface <-> 8 bit dump interface
-assign ioctl_data_out = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
 wire  [6:0] dump_addr = ioctl_addr[7:1];
 reg         dump_we;
 reg  [15:0] dump_din;
 wire [15:0] dump_dout;
+
+assign ioctl_data_out = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
 
 always @(posedge clk) begin
 	dump_we <= 0;
@@ -464,7 +465,6 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .clk         ( clk           ),        // 96   MHz
     .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
-    .LHBL        ( LHBL          ),
 
     .downloading ( downloading   ),
     .dwnld_busy  ( dwnld_busy    ),

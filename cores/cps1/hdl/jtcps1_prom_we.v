@@ -30,6 +30,7 @@ module jtcps1_prom_we(
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
+    output reg           dwnld_busy=0,
     // Kabuki decoder (CPS 1.5)
     output reg           kabuki_we
 );
@@ -75,6 +76,9 @@ wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
 
+reg  last_dwnldng;
+reg  clr_ram = 0; // I have to add a proper reset pin to this module
+
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
 
@@ -99,7 +103,9 @@ always @(*) begin
 end
 
 always @(posedge clk) begin
+    last_dwnldng <= downloading;
     if ( ioctl_wr && downloading ) begin
+        dwnld_busy <= 1;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
@@ -128,13 +134,35 @@ always @(posedge clk) begin
         end
     end
     else begin
-        if(!downloading || prog_rdy) prog_we  <= 1'b0;
-        if( !downloading ) begin
-            decrypt   <= 0;
-            prom_we   <= 0;
+        if( clr_ram ) begin
+            if( prog_rdy ) begin
+                prog_we   <= 0;
+                prog_addr <= prog_addr + 1'd1;
+            end else begin
+                if( prog_addr == 23'h2_0000 ) begin
+                    clr_ram    <= 0;
+                    dwnld_busy <= 0;
+                end else begin
+                    prog_we <= 1;
+                end
+            end
+        end else begin
+            if(!downloading || prog_rdy) prog_we  <= 1'b0;
+            if( !downloading ) begin
+                decrypt   <= 0;
+                prom_we   <= 0;
+                if( last_dwnldng ) begin
+                    prog_addr <= 22'd0;
+                    prog_bank <= 2'd0;
+                    prog_mask <= 2'd0;
+                    pre_data  <= 8'h0;
+                    clr_ram   <= 1;
+                    prog_we   <= 1;
+                end
+            end
+            kabuki_we <= 0;
+            cfg_we   <= 1'b0;
         end
-        kabuki_we <= 0;
-        cfg_we   <= 1'b0;
     end
 end
 

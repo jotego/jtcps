@@ -15,7 +15,14 @@ OTHER=
 
 while [ $# -gt 0 ]; do
     case $1 in
-        -g|-game)  shift; GAME=$1; touch rom.bin;;
+        -g|-game)
+            shift;
+            GAME=$1;
+            if [ ! -e $ROM/$GAME.rom ]; then
+                echo Cannot find $ROM/$GAME.rom
+                exit 1;
+            fi
+            touch rom.bin;;
         -p|-patch) shift; PATCH=$1;;
         *) OTHER="$OTHER $1";;
     esac
@@ -43,11 +50,6 @@ export BIN2PNG_OPTIONS="--scale"
 export CONVERT_OPTIONS="-resize 300%x300%"
 export YM2151=1
 export MSM6295=1
-
-if [ ! -e $GAME_ROM_PATH ]; then
-    echo Missing file $GAME_ROM_PATH
-    exit 1
-fi
 
 # Generic simulation script from JTFRAME
 $JTFRAME/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \

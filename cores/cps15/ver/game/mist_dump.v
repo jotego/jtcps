@@ -70,6 +70,9 @@ module mist_dump(
                     $shm_probe(UUT.u_game.u_sound.u_dsp16.u_rom, "A");
                 `endif
             `endif
+            `ifdef JTFRAME_SDRAM_STATS
+            $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
+            `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_sound, "A");

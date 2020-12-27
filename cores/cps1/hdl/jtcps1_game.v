@@ -453,12 +453,10 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .prog_we     ( prog_we       ),
     .prog_rd     ( prog_rd       ),
     .prog_rdy    ( prog_rdy      ),
+
+    // Unused QSound ports
     .prog_qsnd   (               ),
-    // Kabuki decoder (CPS 1.5)
-    .swap_key1   (               ),
-    .swap_key2   (               ),
-    .addr_key    (               ),
-    .xor_key     (               ),
+    .kabuki_we   (               ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
