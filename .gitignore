@@ -15,8 +15,10 @@ rom/*.rom
 *.wav
 *.xml
 sim
-mist/*
-sidi/*
-mister/*
+cores/cps*/mist/*
+cores/cps*/sidi/*
+cores/cps*/mister/*
 history
-
+shift
+sweep
+rom/unzip

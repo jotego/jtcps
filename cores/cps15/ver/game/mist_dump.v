@@ -77,20 +77,20 @@ module mist_dump(
             $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
             `ifndef NOMAIN
-            //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
-            $shm_probe(UUT.u_game.u_sound.cpu2dsp_s);
-            //$shm_probe(UUT.u_game.u_sound.sample_cnt);
-            //$shm_probe(UUT.u_game.u_sound.uprate.period);
-            $shm_probe(UUT.u_game.u_sound.left );
-            $shm_probe(UUT.u_game.u_sound.right);
-            $shm_probe(UUT.u_game.u_sound.sample);
-            //$shm_probe(UUT.u_game.u_sound.dsp_irq);
-            //$shm_probe(UUT.u_game.u_sound.dsp_rst);
-            //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
-            //$shm_probe(UUT.u_game.u_eeprom,"A");
-            //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
+                //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
+                $shm_probe(UUT.u_game.u_sound.cpu2dsp_s);
+                //$shm_probe(UUT.u_game.u_sound.sample_cnt);
+                //$shm_probe(UUT.u_game.u_sound.uprate.period);
+                $shm_probe(UUT.u_game.u_sound.left );
+                $shm_probe(UUT.u_game.u_sound.right);
+                $shm_probe(UUT.u_game.u_sound.sample);
+                //$shm_probe(UUT.u_game.u_sound.dsp_irq);
+                //$shm_probe(UUT.u_game.u_sound.dsp_rst);
+                //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
+                //$shm_probe(UUT.u_game.u_eeprom,"A");
+                //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `endif
-            //$shm_probe(UUT.u_game.u_video, "A");
+            $shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
 
             /*

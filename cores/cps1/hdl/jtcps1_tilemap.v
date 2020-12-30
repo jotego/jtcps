@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 // Scroll 1 is 512x512, 8x8 tiles
 // Scroll 2 is 1024x1024 16x16 tiles
@@ -68,6 +68,9 @@ reg  [ 2:0] layer;
 reg  [ 3:0] offset, mask;
 reg         unmapped;
 
+reg         rom_ok_dly;
+wire        rom_ok_and;
+
 wire [ 3:0] pre_offset1, pre_mask1;
 wire [ 3:0] pre_offset2, pre_mask2;
 wire [ 3:0] pre_offset3, pre_mask3;
@@ -75,6 +78,7 @@ wire        pre_unmapped1;
 wire        pre_unmapped2;
 wire        pre_unmapped3;
 
+assign rom_ok_and = rom_ok & rom_ok_dly;
 
 always @(*) begin
     case(size)
@@ -161,7 +165,7 @@ end
 function [3:0] colour;
     input [31:0] c;
     input        flip;
-    colour = flip ? { c[24], c[16], c[ 8], c[0] } : 
+    colour = flip ? { c[24], c[16], c[ 8], c[0] } :
                     { c[31], c[23], c[15], c[7] };
 endfunction
 
@@ -181,9 +185,11 @@ always @(posedge clk or posedge rst) begin
         buf_addr        <= 9'd0;
         buf_wr          <= 1'b0;
         buf_data        <= 11'd0;
+        rom_ok_dly      <= 0;
     end else begin
+        rom_ok_dly <= rom_ok;
         st <= st+6'd1;
-        case( st ) 
+        case( st )
             0: begin
                 rom_cs   <= 1'b0;
                 /* verilator lint_off WIDTH */
@@ -224,14 +230,18 @@ always @(posedge clk or posedge rst) begin
                 tile_addr<= tile_addr+8'd1;
             end
             // 5: wait state
-            6: if(rom_ok) begin
+            6: if(rom_ok_and) begin
                 pxl_data  <= rom_data;   // 32 bits = 32/4 = 8 pixels
-                if(!size[0]) rom_half <= ~rom_half; // not needed for scroll1
+                if(!size[0]) begin
+                    rom_half <= ~rom_half; // not needed for scroll1
+                end
+                rom_cs <= 0;
             end else st<=6;
-            7,8,9,10,    11,12,13,14, 
+            7,8,9,10,    11,12,13,14,
             16,17,18,19, 20,21,22,23,
             25,26,27,28, 29,30,31,32,
             34,35,36,37, 38,39,40,41: begin
+                if(!size[0]) rom_cs <= 1;
                 buf_wr   <= 1'b1;
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= { group, pal, unmapped ? 4'hf : colour(pxl_data, hflip) };
@@ -241,27 +251,32 @@ always @(posedge clk or posedge rst) begin
                 buf_wr <= 1'b0;
                 if( size[0] /*8*/) begin
                     st <= 6'd1; // scan again
-                end else if(rom_ok) begin
+                    rom_cs <= 0;
+                end else if(rom_ok_and) begin
+                    rom_cs <= 0;
                     pxl_data <= rom_data;
                     if(size[2] /*32*/) begin
-                        rom_half <= ~rom_half;
+                        rom_half    <= ~rom_half;
                         rom_addr[0] <= ~rom_addr[0];
-                    end else rom_cs <= 1'b0; /* 16 */
+                    end
                 end else st<=st;
             end
             24: begin
                 buf_wr <= 1'b0;
                 if( size[1] /*16*/ ) begin
                     st <= 1; // scan again
-                end else if(rom_ok) begin
+                    rom_cs   <= 0;
+                end else if(rom_ok_and) begin
+                    rom_cs   <= 0;
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
                 end else st<=st;
             end
             33: begin
-                if(rom_ok) begin
+                if(rom_ok_and) begin
                     pxl_data <= rom_data;
                     rom_half <= ~rom_half;
+                    rom_cs   <= 0;
                 end else st<=st;
             end
             42: begin

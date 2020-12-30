@@ -34,6 +34,7 @@ module jtcps15_sound(
     input             main_ldswn,
     input             main_buse_n,
     output            main_busakn,
+    output            main_waitn,
 
     // ROM
     output reg [18:0] rom_addr, // 512 kByte
@@ -67,7 +68,7 @@ reg  [ 3:0] bank;
 reg  [ 7:0] cpu_din;
 reg         rstn;
 reg         ram_cs, bank_cs, qsnd_wr, qsnd_rd;
-wire        ram_we, main_we, int_n, mreq_n, wr_n, rd_n, m1_n, iorq_n;
+wire        ram_we, int_n, mreq_n, wr_n, rd_n, m1_n, iorq_n;
 wire        busrq_n, busak_n, halt_n, z80_buswn;
 wire        bus_wrn, bus_mreqn, main_busn;
 reg         main_busn_dly;
@@ -82,7 +83,7 @@ wire signed [15:0] fxd_l, fxd_r;
 wire               resample48;
 
 // DSP16 wires
-wire [15:0] dsp_ab, dsp_rb_din, dsp_pbus_out, dsp_serout;
+wire [15:0] dsp_ab, dsp_pbus_out, dsp_serout;
 reg  [15:0] dsp_pbus_in;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
@@ -91,7 +92,6 @@ reg         dsp_rst;
 wire        dsp_psel, dsp_sadd, dsp_rdy_n;
 wire        dsp_cen_cko;
 wire        cen_dsp;
-wire        cen60;
 reg         base_sample;
 
 reg         last_pids_n;
@@ -140,6 +140,7 @@ assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
 assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok);
+assign main_waitn  = main_busn | ~rom_cs | rom_ok;
 
 always @(posedge clk48) begin
     main_din <= cpu_din; // bus output
@@ -160,8 +161,13 @@ always @(posedge clk48, posedge rst) begin
         qsnd_rd   <= 0;
     end else begin
         rom_cs   <= !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
-        if(!bus_mreqn)
-            rom_addr <= bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] };
+        if(!bus_mreqn) begin
+            rom_addr <= main_busn ?
+                // Z80
+                (bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] }) :
+                // M68000
+                main_addr[19:1];
+        end
         ram_cs   <= !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
         qsnd_wr  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
         bank_cs  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
@@ -244,7 +250,7 @@ jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
 );
 
 jtframe_kabuki u_kabuki(
-    .clk        ( clk96       ),    // Uses same clock as u_prom_we
+    .clk        ( clk48       ),    // Uses same clock as u_prom_we
     .m1_n       ( m1_n        ),
     .mreq_n     ( mreq_n      ),
     .rd_n       ( rd_n        ),
@@ -262,7 +268,6 @@ jtframe_z80_romwait u_cpu(
     .clk        ( clk48       ),
     .cen        ( cen_extra   ),
     .cpu_cen    ( cpu_cen     ),
-    .start      ( 1'b1        ),
     .int_n      ( int_n       ),
     .nmi_n      ( 1'b1        ),
     .busrq_n    ( busrq_n     ),
@@ -512,7 +517,8 @@ wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
 
 assign z80_buswn = m68_buswen | m68_busakn;
 assign busrq_n   = buse_n; // | ~shared_addr;
-assign m68_busakn= latch[1];
+assign m68_busakn= latch[1] | busrq_n; // OR so that we catch when the m68K
+                                       // releases the bus
 
 always @(posedge clk, posedge rst) begin
     if( rst )

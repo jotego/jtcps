@@ -67,10 +67,10 @@ assign din_hi = main_dout[15:8];
 
 always @(*) begin
     vram_sel = 3'd0;
-    vram_sel[ main_ram_addr[16:15] ] <= main_vram_cs;
+    vram_sel[ main_ram_addr[16:15] ] = main_vram_cs;
 
     dma_sel = 3'd0;
-    dma_sel[ vram_dma_addr[16:15] ] <= vram_dma_cs;
+    dma_sel[ vram_dma_addr[16:15] ] = vram_dma_cs;
 
     main_edge = (main_ram_cs || main_vram_cs) && !main_last;
 end

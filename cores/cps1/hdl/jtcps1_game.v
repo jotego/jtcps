@@ -18,9 +18,9 @@
 
 module jtcps1_game(
     input           rst,
-    input           clk,        // 96   MHz
+    input           clk,      // 48   MHz
     `ifdef JTFRAME_CLK96
-    input           clk48,      // 48   MHz
+    input           clk96,    // 96   MHz
     `endif
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
@@ -76,13 +76,15 @@ module jtcps1_game(
     input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
+    output  [ 7:0]  ioctl_data2sd,
+    input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
     output  [21:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output  [ 1:0]  prog_ba,
     output          prog_we,
     output          prog_rd,
-    output          prog_rdy,
+    input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input           dip_pause,
@@ -100,12 +102,7 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
-// Support for 48MHz
-// This is useful for faster simulation
-`ifndef JTFRAME_CLK96
-wire clk48 = clk;
-`endif
-
+wire        clk_gfx;
 wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
@@ -132,12 +129,15 @@ wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire        vram_clr;
+wire        vram_clr, vram_rfsh_en;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
 wire        cfg_we;
+
+// EEPROM
+wire        sclk, sdi, sdo, scs;
 
 `ifndef SIMULATION
     assign { dipsw_c, dipsw_b, dipsw_a } = dipsw[23:0];
@@ -157,14 +157,14 @@ wire        charger;
 wire        turbo;
 
 `ifdef JTCPS_TURBO
-assign turbo=1;
+assign turbo = 1;
 `else
 assign turbo = status[6];
 `endif
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
-    .clk        ( clk48         ),
+    .clk        ( clk           ),
     .cen16      ( cen16         ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
@@ -183,22 +183,24 @@ jtframe_cen48 u_cen48(
 );
 
 `ifdef JTFRAME_CLK96
-jtframe_cen96 u_pxl_cen(
-    .clk    ( clk       ),    // 96 MHz
-    .cen16  ( pxl2_cen  ),
-    .cen12  (           ),
-    .cen8   ( pxl_cen   ),
-    // Unused:
-    .cen6   (           ),
-    .cen6b  (           )
-);
+    jtframe_cen96 u_pxl_cen(
+        .clk    ( clk96     ),    // 96 MHz
+        .cen16  ( pxl2_cen  ),
+        .cen12  (           ),
+        .cen8   ( pxl_cen   ),
+        // Unused:
+        .cen6   (           ),
+        .cen6b  (           )
+    );
+    assign clk_gfx = clk96;
 `else
-assign pxl2_cen = cen16;
-assign pxl_cen  = cen8;
+    assign pxl2_cen = cen16;
+    assign pxl_cen  = cen8;
+    assign clk_gfx = clk;
 `endif
 
 jtcps1_cpucen u_cpucen(
-    .clk        ( clk48              ),
+    .clk        ( clk                ),
     .cen12      ( cen12              ),
     .cpu_speed  ( cpu_speed | turbo  ),
     .cpu_cen    ( cpu_cen            ),
@@ -215,7 +217,7 @@ assign busack = busack_cpu | turbo;
 `ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
-    .clk        ( clk48             ),
+    .clk        ( clk               ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
@@ -282,7 +284,7 @@ end
 
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
-    .clk            ( clk           ),
+    .clk            ( clk_gfx       ),
     .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
 
@@ -292,6 +294,7 @@ jtcps1_video #(REGSIZE) u_video(
     .gfx_en         ( gfx_en        ),
     .cpu_speed      ( cpu_speed     ),
     .charger        ( charger       ),
+    .kabuki_en      (               ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),
@@ -320,6 +323,12 @@ jtcps1_video #(REGSIZE) u_video(
     .cfg_we         ( cfg_we        ),
     .cfg_data       ( prog_data[7:0]),
 
+    // EEPROM
+    .sclk           ( sclk          ),
+    .sdi            ( sdi           ),
+    .sdo            ( sdo           ),
+    .scs            ( scs           ),
+
     // Extra inputs read through the C-Board
     .start_button   ( start_button  ),
     .coin_input     ( coin_input    ),
@@ -334,6 +343,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vram_dma_ok    ( vram_dma_ok   ),
     .vram_dma_cs    ( vram_dma_cs   ),
     .vram_dma_clr   ( vram_clr      ),
+    .vram_rfsh_en   ( vram_rfsh_en  ),
 
     // GFX ROM interface
     .rom1_addr      ( rom1_addr     ),
@@ -384,13 +394,13 @@ end
 `endif
 
 (*keep*) reg [3:0] rst_snd;
-always @(negedge clk48) begin
+always @(negedge clk) begin
     rst_snd <= { rst_snd[2:0], rst };
 end
 
 jtcps1_sound u_sound(
     .rst            ( rst_snd[3]    ),
-    .clk            ( clk48         ),
+    .clk            ( clk           ),
 
     .enable_adpcm   ( enable_psg    ),
     .enable_fm      ( enable_fm     ),
@@ -426,16 +436,10 @@ assign adpcm_cs   = 1'b0;
 assign sample   = 1'b0;
 `endif
 
-reg rst_sdram;
-
-always @(negedge clk) begin
-    rst_sdram <= rst;
-end
-
 jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),        // 96   MHz
-    .clk_cpu     ( clk48         ),
+    .clk_gfx     ( clk_gfx       ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),
@@ -445,7 +449,9 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     // ROM LOAD
     .ioctl_addr  ( ioctl_addr    ),
     .ioctl_data  ( ioctl_data    ),
+    .ioctl_data2sd(ioctl_data2sd ),
     .ioctl_wr    ( ioctl_wr      ),
+    .ioctl_ram   ( ioctl_ram     ),
     .prog_addr   ( prog_addr     ),
     .prog_data   ( prog_data     ),
     .prog_mask   ( prog_mask     ),
@@ -453,10 +459,15 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .prog_we     ( prog_we       ),
     .prog_rd     ( prog_rd       ),
     .prog_rdy    ( prog_rdy      ),
-
     // Unused QSound ports
     .prog_qsnd   (               ),
     .kabuki_we   (               ),
+
+    // EEPROM
+    .sclk           ( sclk          ),
+    .sdi            ( sdi           ),
+    .sdo            ( sdo           ),
+    .scs            ( scs           ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
@@ -469,6 +480,7 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .vram_dma_cs    ( vram_dma_cs   ),
     .main_ram_cs    ( main_ram_cs   ),
     .main_vram_cs   ( main_vram_cs  ),
+    .vram_rfsh_en   ( vram_rfsh_en  ),
 
     .dsn            ( dsn           ),
     .main_dout      ( main_dout     ),

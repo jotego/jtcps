@@ -28,9 +28,8 @@ fi
 
 # Prepare ROM file and config file
 make || exit $?
-rom2hex $ROM/$GAME.rom || exit $?
-
 ln -sf $ROM/$GAME.rom rom.bin
+rom2hex rom.bin || exit $?
 
 CFG_FILE=cps_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -41,21 +40,15 @@ fi
 
 CPSB_CONFIG=$(cat $CFG_FILE)
 
-export GAME_ROM_PATH=rom.bin
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
 export CONVERT_OPTIONS="-resize 300%x300%"
-
-if [ ! -e $GAME_ROM_PATH ]; then
-    echo Missing file $GAME_ROM_PATH
-    exit 1
-fi
 
 # Generic simulation script from JTFRAME
 $JTFRAME/bin/sim.sh -mist \
     -sysname cps15 \
     -def ../../hdl/jtcps15.def \
     -d CPSB_CONFIG="$CPSB_CONFIG" -d JTCPS_TURBO \
-    -d JT9346_SIMULATION -d JTDSP16_FWLOAD \
+    -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
     -videow 384 -videoh 224 \
     $OTHER

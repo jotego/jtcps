@@ -65,6 +65,7 @@ module jtcps1_video(
     input              vram_dma_ok,
     output             vram_dma_cs,
     output             vram_dma_clr,
+    output             vram_rfsh_en,
 
     // Video signal
     output             HS,
@@ -94,6 +95,14 @@ module jtcps1_video(
     // output     [ 8:0]  line_addr,
     // output             line_wr,
     // input              line_wr_ok
+
+    `ifdef CPS1
+    // EEPROM
+    ,output            sclk,
+    output             sdi,
+    output             scs,
+    input              sdo
+    `endif
 );
 
 parameter REGSIZE=24;
@@ -187,7 +196,8 @@ jtcps1_dma u_dma(
     .vram_data      ( vram_dma_data     ),
     .vram_ok        ( vram_dma_ok       ),
     .vram_clr       ( vram_dma_clr      ),
-    .vram_cs        ( vram_dma_cs       )
+    .vram_cs        ( vram_dma_cs       ),
+    .rfsh_en        ( vram_rfsh_en      )
 );
 
 jtcps1_timing u_timing(
@@ -281,6 +291,12 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .prio2          ( prio2             ),
     .prio3          ( prio3             ),
     .pal_page_en    ( pal_page_en       )
+    `ifdef CPS1
+    ,.sclk          ( sclk              ),
+    .sdi            ( sdi               ),
+    .sdo            ( sdo               ),
+    .scs            ( scs               )
+    `endif
 );
 
 //`define NOSCROLL1

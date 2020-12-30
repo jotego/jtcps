@@ -42,20 +42,18 @@ fi
 
 CPSB_CONFIG=$(cat $CFG_FILE)
 
-
-export GAME_ROM_PATH=rom.bin
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
-export BIN2PNG_OPTIONS="--scale"
 export CONVERT_OPTIONS="-resize 300%x300%"
 export YM2151=1
 export MSM6295=1
 
 # Generic simulation script from JTFRAME
-$JTFRAME/bin/sim.sh -mist -d GAME_ROM_LEN=$GAME_ROM_LEN \
+$JTFRAME/bin/sim.sh -mist \
     -sysname cps1  \
     -def ../../hdl/jtcps1.def \
-    -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d CPSB_CONFIG="$CPSB_CONFIG" \
     -d JTCPS_TURBO \
+    -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d SKIP_RAMCLR\
     -videow 384 -videoh 224 \
     $OTHER
+    #-d CPSB_CONFIG="$CPSB_CONFIG" \

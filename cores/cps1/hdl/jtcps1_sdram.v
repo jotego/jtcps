@@ -23,8 +23,8 @@ module jtcps1_sdram #( parameter
            PCM_AW  = CPS==1 ? 18 : 23
 ) (
     input           rst,
-    input           clk,        // 96   MHz
-    input           clk_cpu,    // 48   MHz
+    input           clk,        // 48 MHz (SDRAM and CPUs)
+    input           clk_gfx,    // 96 MHz
     input           LVBL,
 
     input           downloading,
@@ -34,7 +34,9 @@ module jtcps1_sdram #( parameter
     // ROM LOAD
     input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
+    output  [ 7:0]  ioctl_data2sd,
     input           ioctl_wr,
+    input           ioctl_ram,
     output  [21:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
@@ -43,6 +45,12 @@ module jtcps1_sdram #( parameter
     output          prog_rd,
     input           prog_rdy,
     output          prog_qsnd,
+
+    // EEPROM
+    input           sclk,
+    input           sdi,
+    output          sdo,
+    input           scs,
 
     // Kabuki decoder (CPS 1.5)
     output          kabuki_we,
@@ -58,6 +66,7 @@ module jtcps1_sdram #( parameter
     input           vram_dma_cs,
     input           main_ram_cs,
     input           main_vram_cs,
+    input           vram_rfsh_en,
 
     input    [ 1:0] dsn,
     input    [15:0] main_dout,
@@ -136,10 +145,21 @@ localparam [21:0] PCM_OFFSET   = 22'h10_0000,
                   VRAM_OFFSET  = 22'h10_0000,
                   ZERO_OFFSET  = 22'h0;
 
+`ifdef CPS1
+localparam EEPROM_AW=6;
+`else
+localparam EEPROM_AW=7;
+`endif
 
 wire [21:0] gfx0_addr, gfx1_addr;
 wire [21:0] main_offset;
 wire        ram_vram_cs;
+wire        ba2_rdy_gfx, ba2_ack_gfx;
+
+// EEPROM
+wire [EEPROM_AW-1:0] dump_addr;
+wire [15:0] dump_din, dump_dout;
+wire        dump_we;
 
 assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
@@ -148,27 +168,36 @@ assign main_offset = main_ram_cs ? ZERO_OFFSET : VRAM_OFFSET;
 assign prog_rd     = 0;
 
 always @(posedge clk)
-    refresh_en <= ~LVBL;
+    refresh_en <= ~LVBL & vram_rfsh_en;
 
 jtcps1_prom_we #(
-    .CPS       ( CPS           ),
-    .REGSIZE   ( REGSIZE       ),
-    .CPU_OFFSET( 22'd0         ),
-    .PCM_OFFSET( PCM_OFFSET    )
+    .CPS        ( CPS           ),
+    .REGSIZE    ( REGSIZE       ),
+    .CPU_OFFSET ( ZERO_OFFSET   ),
+    .PCM_OFFSET ( PCM_OFFSET    ),
+    .VRAM_OFFSET( VRAM_OFFSET   ),
+    .EEPROM_AW  ( EEPROM_AW     )
 ) u_prom_we(
     .clk            ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
+    .ioctl_data2sd  ( ioctl_data2sd ),
     .ioctl_wr       ( ioctl_wr      ),
+    .ioctl_ram      ( ioctl_ram     ),
     .prog_addr      ( prog_addr     ),
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ),
-    .prog_bank      ( prog_ba       ),
+    .prog_ba        ( prog_ba       ),
     .prog_we        ( prog_we       ),
     .prog_rdy       ( prog_rdy      ),
     .cfg_we         ( cfg_we        ),
     .dwnld_busy     ( dwnld_busy    ),
+    // EEPROM
+    .dump_din       ( dump_din      ),
+    .dump_dout      ( dump_dout     ),
+    .dump_addr      ( dump_addr     ),
+    .dump_we        ( dump_we       ),
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
     .kabuki_we      ( kabuki_we     )
@@ -179,8 +208,8 @@ jtcps1_prom_we #(
     // Work around for 128MB modules, where R/W at 96MHz is compromised
     jtcps1_ram u_bram(
         .rst        ( rst       ),
-        .clk_gfx    ( clk       ),    // 96   MHz
-        .clk_cpu    ( clk_cpu   ),    // 48   MHz
+        .clk_gfx    ( clk_gfx   ),    // 96   MHz
+        .clk_cpu    ( clk       ),    // 48   MHz
 
         // VRAM
         .vram_dma_cs    ( vram_dma_cs   ),
@@ -293,20 +322,35 @@ jtframe_rom_2slots #(
     .data_read   ( data_read     )
 );
 
-// GFX data in bank 2
+`ifdef JTFRAME_CLK96
+    // GFX data in bank 2. Operates at clk_gfx
+    jtframe_rom_sync u_sync(
+        .clk    ( clk_gfx       ),
+        .rdy_in ( ba2_rdy       ),
+        .ack_in ( ba2_ack       ),
+        .rdy_out( ba2_rdy_gfx   ),
+        .ack_out( ba2_ack_gfx   )
+    );
+`else
+    assign ba2_rdy_gfx = ba2_rdy;
+    assign ba2_ack_gfx = ba2_ack;
+`endif
+
 jtframe_rom_2slots #(
+    // Slot 0: Obj
     .SLOT0_AW    ( 22            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
     //.SLOT0_REPACK( 1             ),
 
+    // Slot 1: Scroll
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
     .SLOT1_OFFSET( ZERO_OFFSET   )
     //.SLOT1_REPACK( 1             )
 ) u_bank2 (
     .rst         ( rst           ),
-    .clk         ( clk           ),
+    .clk         ( clk_gfx       ),
 
     .slot0_cs    ( rom0_cs       ),
     .slot1_cs    ( rom1_cs       ),
@@ -322,8 +366,8 @@ jtframe_rom_2slots #(
 
     .sdram_addr  ( ba2_addr      ),
     .sdram_req   ( ba2_rd        ),
-    .sdram_ack   ( ba2_ack       ),
-    .data_rdy    ( ba2_rdy       ),
+    .sdram_ack   ( ba2_ack_gfx   ),
+    .data_rdy    ( ba2_rdy_gfx   ),
     .data_read   ( data_read     )
 );
 
@@ -355,6 +399,23 @@ jtframe_romrq #(.AW(21),.DW(16),.REPACK(1)) u_bank3(
     .req       ( ba3_rd                 ),
     .data_ok   ( main_rom_ok            ),
     .we        ( ba3_we                 )
+);
+
+// EEPROM used by Pang 3 and by CPS1.5/2
+jt9346 #(.DW(16),.AW(EEPROM_AW)) u_eeprom(
+    .rst        ( rst       ),  // system reset
+    .clk        ( clk       ),  // system clock
+    // chip interface
+    .sclk       ( sclk      ),  // serial clock
+    .sdi        ( sdi       ),  // serial data in
+    .sdo        ( sdo       ),  // serial data out and ready/not busy signal
+    .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
+    // Dump access
+    .dump_clk   ( clk       ),  // same as prom_we module
+    .dump_addr  ( dump_addr ),
+    .dump_we    ( dump_we   ),
+    .dump_din   ( dump_din  ),
+    .dump_dout  ( dump_dout )
 );
 
 endmodule

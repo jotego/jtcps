@@ -18,10 +18,8 @@
 
 module jtcps15_game(
     input           rst,
-    input           clk,        // 96   MHz
-    `ifdef JTFRAME_CLK96
-    input           clk48,      // 48   MHz
-    `endif
+    input           clk,      // 48   MHz
+    input           clk96,    // 96   MHz -required for QSound
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
     output   [7:0]  red,
@@ -76,7 +74,7 @@ module jtcps15_game(
     input   [24:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
-    output  [ 7:0]  ioctl_data_out,
+    output  [ 7:0]  ioctl_data2sd,
     input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
     output  [21:0]  prog_addr,
     output  [15:0]  prog_data,
@@ -84,14 +82,13 @@ module jtcps15_game(
     output  [ 1:0]  prog_ba,
     output          prog_we,
     output          prog_rd,
-    output          prog_rdy,
+    input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
     input           dip_pause,
     inout           dip_flip,
     input           dip_test,
     input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB
-    input   [31:0]  dipsw,
     // Sound output
     output  signed [15:0] snd_left,
     output  signed [15:0] snd_right,
@@ -102,12 +99,7 @@ module jtcps15_game(
     input   [3:0]   gfx_en
 );
 
-// Support for 48MHz
-// This is useful for faster simulation
-`ifndef JTFRAME_CLK96
-wire clk48 = clk;
-`endif
-
+wire        clk_gfx;
 wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, qsnd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
@@ -134,7 +126,7 @@ wire        cpu_speed;
 wire        main_rnw, busreq, busack;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
-wire        vram_clr;
+wire        vram_clr, vram_rfsh_en;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
@@ -148,7 +140,7 @@ wire        kabuki_we, kabuki_en;
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
-wire        main2qs_cs, main_busakn;
+wire        main2qs_cs, main_busakn, main_waitn;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
@@ -172,7 +164,7 @@ assign turbo = status[6];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
-    .clk        ( clk48         ),
+    .clk        ( clk           ),
     .cen16      ( cen16         ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
@@ -190,23 +182,19 @@ jtframe_cen48 u_cen48(
     .cen1p5b    (               )
 );
 
-`ifdef JTFRAME_CLK96
 jtframe_cen96 u_pxl_cen(
-    .clk    ( clk       ),    // 96 MHz
+    .clk    ( clk96     ),    // 96 MHz
     .cen16  ( pxl2_cen  ),
+    .cen12  (           ),
     .cen8   ( pxl_cen   ),
     // Unused:
-    .cen12  (           ),
     .cen6   (           ),
     .cen6b  (           )
 );
-`else
-assign pxl2_cen = cen16;
-assign pxl_cen  = cen8;
-`endif
+assign clk_gfx = clk96;
 
 jtcps1_cpucen u_cpucen(
-    .clk        ( clk48              ),
+    .clk        ( clk                ),
     .cen12      ( cen12              ),
     .cpu_speed  ( 1'b1               ), // always at 12MHz for CPS 1.5
     .cpu_cen    ( cpu_cen            ),
@@ -223,7 +211,7 @@ assign busack = busack_cpu | turbo;
 `ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
-    .clk        ( clk48             ),
+    .clk        ( clk               ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
@@ -241,6 +229,7 @@ jtcps1_main u_main(
     .main2qs_addr( main2qs_addr     ),
     .main2qs_cs  ( main2qs_cs       ),
     .main2qs_busakn( main_busakn    ),
+    .main2qs_waitn( main_waitn      ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
     // cabinet I/O
@@ -297,55 +286,16 @@ assign sdo  = 0;
 assign scs  = 0;
 `endif
 
-reg rst_video, rst_sdram, rst_eprom;
+reg rst_video, rst_sdram;
 
 always @(negedge clk) begin
     rst_sdram <= rst;
     rst_video <= rst;
-    rst_eprom <= rst;
 end
-
-// EEPROM 16 bit parallel interface <-> 8 bit dump interface
-wire  [6:0] dump_addr = ioctl_addr[7:1];
-reg         dump_we;
-reg  [15:0] dump_din;
-wire [15:0] dump_dout;
-
-assign ioctl_data_out = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
-
-always @(posedge clk) begin
-	dump_we <= 0;
-	if (ioctl_wr & ioctl_ram) begin
-		if(ioctl_addr[0]) begin
-			dump_din[15:8] <= ioctl_data;
-			dump_we <= 1;
-		end else begin
-			dump_din[7:0] <= ioctl_data;
-		end
-	end
-end
-
-
-// EEPROM to save game settings
-jt9346 #(.DW(16),.AW(7)) u_eeprom(
-    .clk        ( clk48     ),  // same as main CPU. It works with clk96 too, though
-    .rst        ( rst_eprom ),  // system reset
-    // chip interface
-    .sclk       ( sclk      ),  // serial clock
-    .sdi        ( sdi       ),  // serial data in
-    .sdo        ( sdo       ),  // serial data out and ready/not busy signal
-    .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
-    // Dump access
-    .dump_clk   ( clk       ),
-    .dump_addr  ( dump_addr ),
-    .dump_we    ( dump_we   ),
-    .dump_din   ( dump_din  ),
-    .dump_dout  ( dump_dout )
-);
 
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
-    .clk            ( clk           ),
+    .clk            ( clk_gfx       ),
     .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
 
@@ -398,6 +348,7 @@ jtcps1_video #(REGSIZE) u_video(
     .vram_dma_ok    ( vram_dma_ok   ),
     .vram_dma_cs    ( vram_dma_cs   ),
     .vram_dma_clr   ( vram_clr      ),
+    .vram_rfsh_en   ( vram_rfsh_en  ),
 
     // GFX ROM interface
     .rom1_addr      ( rom1_addr     ),
@@ -416,12 +367,8 @@ jtcps1_video #(REGSIZE) u_video(
 // interaction between both CPUs at power up
 jtcps15_sound u_sound(
     .rst        ( rst               ),
-    .clk48      ( clk48             ),
-    `ifndef QSDEBUG
-    .clk96      ( clk               ),
-    `else
-    .clk96      ( clk48             ), // for fast compilations
-    `endif
+    .clk48      ( clk               ),
+    .clk96      ( clk96             ),
     .cen8       ( cen8              ),
     .vol_up     ( 1'b0              ),
     .vol_down   ( 1'b0              ),
@@ -436,6 +383,7 @@ jtcps15_sound u_sound(
     .main_ldswn ( dsn[0]            ),
     .main_buse_n( ~main2qs_cs       ),
     .main_busakn( main_busakn       ),
+    .main_waitn ( main_waitn        ),
 
     // ROM
     .rom_addr   ( snd_addr          ),
@@ -463,7 +411,7 @@ jtcps15_sound u_sound(
 jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),        // 96   MHz
-    .clk_cpu     ( clk48         ),
+    .clk_gfx     ( clk_gfx       ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),
@@ -473,7 +421,9 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     // ROM LOAD
     .ioctl_addr  ( ioctl_addr    ),
     .ioctl_data  ( ioctl_data    ),
-    .ioctl_wr    ( ioctl_wr & !ioctl_ram ),
+    .ioctl_data2sd(ioctl_data2sd ),
+    .ioctl_wr    ( ioctl_wr      ),
+    .ioctl_ram   ( ioctl_ram     ),
     .prog_addr   ( prog_addr     ),
     .prog_data   ( prog_data     ),
     .prog_mask   ( prog_mask     ),
@@ -484,6 +434,12 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .prog_qsnd   ( prog_qsnd     ),
     // Kabuki decoder (CPS 1.5)
     .kabuki_we   ( kabuki_we     ),
+
+    // EEPROM
+    .sclk           ( sclk          ),
+    .sdi            ( sdi           ),
+    .sdo            ( sdo           ),
+    .scs            ( scs           ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
@@ -496,6 +452,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .vram_dma_cs    ( vram_dma_cs   ),
     .main_ram_cs    ( main_ram_cs   ),
     .main_vram_cs   ( main_vram_cs  ),
+    .vram_rfsh_en   ( vram_rfsh_en  ),
 
     .dsn            ( dsn           ),
     .main_dout      ( main_dout     ),

@@ -40,6 +40,10 @@
 // Copying OBJ during PAL is needed also in order to be able to transfer
 // the whole OBJ table within one frame
 
+// There is no need to delay or latch vram_ok because the DMA state machine
+// operates at 4MHz, so there is plenty of time for the SDRAM mux to set
+// vram_ok low at an address change before it is checked here
+
 module jtcps1_dma(
     input              rst,
     input              clk,
@@ -87,9 +91,10 @@ module jtcps1_dma(
 
     output reg [17:1]  vram_addr,
     input      [15:0]  vram_data,
-    input              vram_ok,
+    input              vram_ok, // there is no need to delay or latch vram_ok
     output             vram_clr,
     output             vram_cs,
+    output reg         rfsh_en,
     output reg         br,
     input              bg
 );
@@ -111,7 +116,7 @@ reg  [ 3:0] step;
 reg  [ 2:0] active, swap, pal_rd_page, pal_wr_page;
 
 wire [ TASKW-1:0] next_step_task, next_task;
-reg  [ TASKW-1:0] tasks, old_tasks, step_task, cur_task;
+reg  [ TASKW-1:0] tasks, step_task, cur_task;
 
 reg         last_HB, line_req, last_pal_dma_ok, pal_busy;
 reg         rd_bank, wr_bank, adv, check_adv;
@@ -143,13 +148,11 @@ always @(*) begin
 end
 
 reg [15:0] tile_din, obj_din, pal_din;
-reg        vram_ok_dly;
 
 always @(posedge clk) begin
     tile_din    <= vram_data;
     obj_din     <= vram_data & {16{~obj_fill}};
     pal_din     <= vram_data;
-    vram_ok_dly <= vram_ok;
 end
 
 assign vram_clr = 0;
@@ -200,9 +203,9 @@ jtframe_dual_ram #(.dw(16), .aw(12)) u_pal_ram(
     // Port 1: read
     .data1  ( ~16'd0        ),
     .addr1  ( colmix_addr   ),
-    .we1    ( 1'b0          ),
+    .we1    ( 1'b0          )
     `ifndef FORCE_GRAY
-    .q1     ( pal_data      )
+    ,.q1    ( pal_data      )
     `endif
 );
 
@@ -247,7 +250,6 @@ always @(posedge clk) begin
         tasks       <= {TASKW{1'b0}};
         cur_task    <= {TASKW{1'b0}};
         step_task   <= {TASKW{1'b0}};
-        old_tasks   <= {TASKW{1'b0}};
         last_HB     <= 1;
         br          <= 0;
         adv         <= 0;
@@ -258,7 +260,12 @@ always @(posedge clk) begin
         swap        <= 3'b0;
         last_obj_dma_ok <= 0;
         pal_cnt     <= 9'd0;
+        // SDRAM management
         misses      <= 5'd0;
+        rfsh_en     <= 1;
+        // Palette
+        pal_rd_page <= 3'd0;
+        pal_wr_page <= 3'd0;
         // banks
         rd_obj_bank <= 0;
         wr_obj_bank <= 1;
@@ -328,14 +335,18 @@ always @(posedge clk) begin
             adv       <= |tasks[SCR3:0];
             check_adv <= 0;
             br        <= |tasks;
+            rfsh_en   <= ~&tasks[SCR3:SCR1]; // no SDRAM refresh allowed
+                // if all scrolls are to be copied in order to decrease latency
         end else
         if( bg && br ) begin
             if( adv ) begin
                 step_task <= next_step_task;
                 cur_task  <= next_task;
-                if( ~|tasks )
-                    br <= 0;
-                else
+                if( ~|tasks ) begin
+                    br      <= 0;
+                    misses  <= 5'd0; // no oportunity to recover in the next cycle
+                    rfsh_en <= 1;
+                end else
                     step      <= 4'b1;
                 adv <= ~|next_task;
                 // Update SCR base pointer
@@ -365,10 +376,10 @@ always @(posedge clk) begin
                 end
             end
             else begin
-                if( step[2] && !vram_ok_dly ) begin
+                if( step[2] && !vram_ok ) begin
                     if( ~&misses ) misses <= misses + 5'd1;    // wait for SDRAM
                 end else begin
-                    if( step[1] && vram_ok_dly && misses>5'd0 ) begin
+                    if( step[1] && vram_ok && misses>5'd0 ) begin
                         misses <= misses - 5'd1;
                         step <= 4'b1000; // skip one to recover a cycle
                     end else begin
@@ -382,7 +393,7 @@ always @(posedge clk) begin
                                       cur_task[OBJ]       ? vobj_addr :
                                       vpal_addr ));
                     end
-                    default: if(vram_ok_dly) begin // collect data
+                    default: if(vram_ok) begin // collect data
                         scr_wr <= |cur_task[SCR3:SCR1];
                         obj_wr <= cur_task[OBJ] | obj_fill;
                         pal_wr <= |cur_task[PAL5:PAL0];

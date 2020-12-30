@@ -84,7 +84,8 @@ module jtcps1_main(
     input       [ 7:0] main2qs_din,
     output reg  [23:1] main2qs_addr,
     output reg         main2qs_cs,
-    input              main2qs_busakn
+    input              main2qs_busakn,
+    input              main2qs_waitn
     `endif
 );
 
@@ -97,7 +98,7 @@ wire [24:0] A_full = {A,1'b0};
 
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
-reg         dbus_cs, io_cs, joy_cs, eeprom_cs,
+reg         io_cs, joy_cs, eeprom_cs,
             sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
@@ -140,7 +141,7 @@ always @(posedge clk, posedge rst) begin
         rom_cs      <= 1'b0;
         pre_ram_cs  <= 1'b0;
         pre_vram_cs <= 1'b0;
-        dbus_cs     <= 1'b0;
+        // dbus_cs     <= 1'b0;
         io_cs       <= 1'b0;
         joy_cs      <= 1'b0;
         sys_cs      <= 1'b0;
@@ -165,7 +166,7 @@ always @(posedge clk, posedge rst) begin
             rom_addr    <= A[21:1];
             rom_cs      <= A[23:22] == 2'b00;
             one_wait    <= A[23] | ~A[22];
-            dbus_cs     <= ~|A[23:18]; // all must be zero
+            // dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             io_cs       <= A[23:20] == 4'b1000;
             pre_ram_cs  <= &A[23:18];
@@ -205,7 +206,7 @@ always @(posedge clk, posedge rst) begin
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
-            dbus_cs     <= 1'b0;
+            // dbus_cs     <= 1'b0;
             io_cs       <= 1'b0;
             joy_cs      <= 1'b0;
             sys_cs      <= 1'b0;
@@ -388,8 +389,13 @@ end
 // DTACKn generation
 wire       inta_n;
 reg [2:0]  wait_cycles;
-(*keep*) wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
-(*keep*) wire       bus_busy = |{ rom_cs & ~rom_ok2, (pre_ram_cs|pre_vram_cs) & ~ram_ok };
+wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
+wire       bus_busy = |{ rom_cs & ~rom_ok2,
+                    (pre_ram_cs|pre_vram_cs) & ~ram_ok
+                    `ifdef CPS15
+                    , main2qs_cs & ~main2qs_waitn
+                    `endif
+                     };
 //                          wait_cycles[0] };
 reg        DTACKn;
 reg        last_LVBL;

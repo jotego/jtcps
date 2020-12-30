@@ -91,6 +91,14 @@ module jtcps1_mmr(
     output     [ 7:0]  layer_mask2,
     output     [ 7:0]  layer_mask3,
     output     [ 7:0]  layer_mask4
+
+    `ifdef CPS1
+    // EEPROM
+    ,output reg        sclk,
+    output  reg        sdi,
+    output  reg        scs,
+    input              sdo
+    `endif
 );
 
 // Shift register configuration
@@ -133,7 +141,8 @@ wire [7:0]  cpsb_id;
 reg  [15:0]  mult1, mult2;
 reg  [15:0]  rslt1, rslt0;
 reg  [ 7:0]  in2, in3;
-(*keep*) wire [ 2:0]  cpsb_inputs;
+reg          last_cfg_we;
+wire [ 2:0]  cpsb_inputs;
 
 always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
@@ -216,19 +225,9 @@ always @(*) begin
     end
 end
 
-`ifdef SIMULATION
-    `ifndef CPSB_CONFIG
-    //`define CPSB_CONFIG {REGSIZE{8'b0}}
-    `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 8'hff,8'hf3,8'h44,8'h40,8'h0,8'h14,8'h20,8'h8,8'h2,8'h32,8'h0,8'h0,8'h30,8'h2e,8'h2c,8'h2a,8'h28,8'hff,8'hff,8'hff,8'hff,8'h5,8'h20
-        //{{16{8'b0}}} }
-    // Ffight  FF F7 44 40 07
-    // Ghouls  F1 17 65 40 0A
-    // Strider FF 77 00 40 1D
-    `endif
-`endif
-
 always@(posedge clk) begin
-    if( cfg_we ) begin
+    last_cfg_we <= cfg_we;
+    if( cfg_we && !last_cfg_we ) begin // catching the edge for mixed 48/96MHz operation
         regs <= { cfg_data, regs[8*REGSIZE-1:8] };
     end
 end
@@ -236,32 +235,20 @@ end
 wire reg_rst;
 reg  pre_copy, pre_dma_ok;
 
-// EEPROM
-reg  sclk, sdi, scs;
-wire sdo;
 
 // For quick simulation of the video alone
 // it is possible to load the regs from a file
 // defined by the macro MMR_FILE
 
-`ifndef SIMULATION
-`undef MMR_FILE
-`endif
-
-`ifdef SIMULATION
-    // Load the registers if the load ROM process is skipped in simulation
-    `ifndef LOADROM
-    initial regs = { `CPSB_CONFIG };
-    `endif
-    `ifdef FAKE_LOAD
-    initial regs = { `CPSB_CONFIG };
-    `endif
-`endif
-
+// Load MMR configuration and contents directly for video-only simulations
 `ifdef MMR_FILE
 reg [15:0] mmr_regs[0:19];
 integer aux;
 initial begin
+    // CPSB_CONFIG samples:
+    //      `define CPSB_CONFIG {REGSIZE{8'b0}}
+    //      `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 8'hff,8'hf3,8'h44,8'h40,8'h0,8'h14,8'h20,8'h8,8'h2,8'h32,8'h0,8'h0,8'h30,8'h2e,8'h2c,8'h2a,8'h28,8'hff,8'hff,8'hff,8'hff,8'h5,8'h20
+    regs = { `CPSB_CONFIG };
     $display("Layer control address: %X", `MMR(6) );
     $display("Palette page  address: %X", `MMR(11));
     $display("INFO: MMR initial values read from %s", `MMR_FILE );
@@ -335,9 +322,11 @@ always @(posedge clk, posedge reg_rst) begin
         pal_copy      <= 1'b0;
         pre_copy      <= 1'b0;
         mmr_dout      <= 16'hffff;
+        `ifdef CPS1
         sclk          <= 1'b0;
         sdi           <= 1'b0;
         scs           <= 1'b0;
+        `endif
 
         obj_dma_ok    <= 1'b0;
     end else begin
@@ -400,18 +389,5 @@ always @(posedge clk, posedge reg_rst) begin
         end
     end
 end
-
-`ifdef CPS1
-// EEPROM used by Pang 3
-jt9346 u_eeprom(
-    .clk    ( clk       ),  // system clock
-    .rst    ( rst       ),  // system reset
-    // chip interface
-    .sclk   ( sclk      ),  // serial clock
-    .sdi    ( sdi       ),  // serial data in
-    .sdo    ( sdo       ),  // serial data out and ready/not busy signal
-    .scs    ( scs       )   // chip select, active high. Goes low in between instructions
-);
-`endif
 
 endmodule

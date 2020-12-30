@@ -14,3 +14,6 @@ rm -rf video
 mkdir video
 convert -size 384x224 -depth 8 RGBA:$RAW -resize 200% video/video.jpg
 $DELETE
+
+cd video
+rmdup.sh

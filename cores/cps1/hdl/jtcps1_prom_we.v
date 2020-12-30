@@ -16,32 +16,42 @@
     Version: 1.0
     Date: 30-1-2020 */
 
-module jtcps1_prom_we(
+module jtcps1_prom_we #(
+parameter        CPS=1, // 1, 15, or 2
+                 REGSIZE=24, // This is defined at _game level
+parameter [21:0] CPU_OFFSET =22'h0,
+                 SND_OFFSET =22'h0,
+                 PCM_OFFSET =22'h0,
+                 GFX_OFFSET =22'h0,
+                 VRAM_OFFSET=22'h0,
+parameter [ 5:0] CFG_BYTE   =6'd39, // location of the byte with encoder information
+parameter        EEPROM_AW  = 7
+)(
     input                clk,
     input                downloading,
     input      [24:0]    ioctl_addr,    // max 32 MB
     input      [ 7:0]    ioctl_data,
+    output     [ 7:0]    ioctl_data2sd,
     input                ioctl_wr,
+    input                ioctl_ram,
     output reg [21:0]    prog_addr,
     output     [15:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
-    output reg [ 1:0]    prog_bank,
+    output reg [ 1:0]    prog_ba,
     output reg           prog_we,
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
     output reg           dwnld_busy=0,
+    // EEPROM
+    output reg [15:0]    dump_din,
+    input      [15:0]    dump_dout,
+    output     [EEPROM_AW-1:0]    dump_addr,
+    output reg           dump_we,
     // Kabuki decoder (CPS 1.5)
     output reg           kabuki_we
 );
 
-parameter        CPS=1; // 1, 15, or 2
-parameter        REGSIZE=24; // This is defined at _game level
-parameter [21:0] CPU_OFFSET=22'h0,
-                 SND_OFFSET=22'h0,
-                 PCM_OFFSET=22'h0,
-                 GFX_OFFSET=22'h0;
-parameter [ 5:0] CFG_BYTE  =6'd39; // location of the byte with encoder information
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
@@ -104,7 +114,7 @@ end
 
 always @(posedge clk) begin
     last_dwnldng <= downloading;
-    if ( ioctl_wr && downloading ) begin
+    if ( ioctl_wr && !ioctl_ram && downloading ) begin
         dwnld_busy <= 1;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
@@ -113,7 +123,7 @@ always @(posedge clk) begin
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_bank <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
+        prog_ba   <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
         kabuki_we <= is_kabuki;
         if( ioctl_addr < START_BYTES[24:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
@@ -137,9 +147,10 @@ always @(posedge clk) begin
         if( clr_ram ) begin
             if( prog_rdy ) begin
                 prog_we   <= 0;
-                prog_addr <= prog_addr + 1'd1;
+                prog_addr <= (prog_addr==23'h3_FFFF) ?
+                    VRAM_OFFSET : (prog_addr + 1'd1);
             end else begin
-                if( prog_addr == 23'h2_0000 ) begin
+                if( prog_addr == (VRAM_OFFSET + 23'h3_FFFF) ) begin
                     clr_ram    <= 0;
                     dwnld_busy <= 0;
                 end else begin
@@ -151,17 +162,42 @@ always @(posedge clk) begin
             if( !downloading ) begin
                 decrypt   <= 0;
                 prom_we   <= 0;
-                if( last_dwnldng ) begin
-                    prog_addr <= 22'd0;
-                    prog_bank <= 2'd0;
-                    prog_mask <= 2'd0;
-                    pre_data  <= 8'h0;
-                    clr_ram   <= 1;
-                    prog_we   <= 1;
-                end
+                `ifndef SKIP_RAMCLR
+                    if( last_dwnldng ) begin
+                        prog_addr <= 22'd0;
+                        prog_ba   <= 2'd0;
+                        prog_mask <= 2'd0;
+                        pre_data  <= 8'h0;
+                        clr_ram   <= 1;
+                        prog_we   <= 1;
+                    end
+                `else
+                    dwnld_busy <= 0;
+                `endif
             end
             kabuki_we <= 0;
             cfg_we   <= 1'b0;
+        end
+    end
+end
+
+// EEPROM 16 bit parallel interface <-> 8 bit dump interface
+assign dump_addr = ioctl_addr[EEPROM_AW:1];
+assign ioctl_data2sd = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
+
+initial begin
+    dump_we  = 0;
+    dump_din = 16'd0;
+end
+
+always @(posedge clk) begin
+    dump_we <= 0;
+    if (ioctl_wr && ioctl_ram) begin
+        if(ioctl_addr[0]) begin
+            dump_din[15:8] <= ioctl_data;
+            dump_we <= 1;
+        end else begin
+            dump_din[7:0] <= ioctl_data;
         end
     end
 end
