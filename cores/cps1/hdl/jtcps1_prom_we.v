@@ -86,7 +86,7 @@ wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
 
-reg  last_dwnldng;
+reg  last_dwnldng = 0;
 reg  clr_ram = 0; // I have to add a proper reset pin to this module
 
 reg       decrypt, pang3, pang3_bit;
@@ -113,8 +113,9 @@ always @(*) begin
 end
 
 always @(posedge clk) begin
-    last_dwnldng <= downloading;
-    if ( ioctl_wr && !ioctl_ram && downloading ) begin
+    if ( ioctl_wr && !ioctl_ram ) begin
+        last_dwnldng <= 1;
+        clr_ram      <= 0;
         dwnld_busy <= 1;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
@@ -147,10 +148,9 @@ always @(posedge clk) begin
         if( clr_ram ) begin
             if( prog_rdy ) begin
                 prog_we   <= 0;
-                prog_addr <= (prog_addr==23'h3_FFFF) ?
-                    VRAM_OFFSET : (prog_addr + 1'd1);
+                prog_addr <= prog_addr + 1'd1;
             end else begin
-                if( prog_addr == (VRAM_OFFSET + 23'h3_FFFF) ) begin
+                if( &prog_addr ) begin
                     clr_ram    <= 0;
                     dwnld_busy <= 0;
                 end else begin
@@ -164,19 +164,20 @@ always @(posedge clk) begin
                 prom_we   <= 0;
                 `ifndef SKIP_RAMCLR
                     if( last_dwnldng ) begin
-                        prog_addr <= 22'd0;
-                        prog_ba   <= 2'd0;
-                        prog_mask <= 2'd0;
-                        pre_data  <= 8'h0;
-                        clr_ram   <= 1;
-                        prog_we   <= 1;
+                        prog_addr    <= 22'd0;
+                        prog_ba      <= 2'd0;
+                        prog_mask    <= 2'd0;
+                        pre_data     <= 8'h0;
+                        clr_ram      <= 1;
+                        prog_we      <= 1;
+                        last_dwnldng <= 0;
                     end
                 `else
                     dwnld_busy <= 0;
                 `endif
             end
             kabuki_we <= 0;
-            cfg_we   <= 1'b0;
+            cfg_we    <= 0;
         end
     end
 end

@@ -123,10 +123,16 @@ assign LDSWn = RnW | LDSn;
 assign ram_cs  = dsn_dly ? reg_ram_cs  : pre_ram_cs;
 assign vram_cs = dsn_dly ? reg_vram_cs : pre_vram_cs;
 
-always @(posedge clk) if(cen10) begin
-    reg_ram_cs  <= pre_ram_cs;
-    reg_vram_cs <= pre_vram_cs;
-    dsn_dly     <= &{UDSWn,LDSWn}; // low if any DSWn was low
+always @(posedge clk) begin
+    if( rst ) begin
+        reg_ram_cs  <= 0;
+        reg_vram_cs <= 0;
+        dsn_dly     <= 1;
+    end else if(cen10) begin
+        reg_ram_cs  <= pre_ram_cs;
+        reg_vram_cs <= pre_vram_cs;
+        dsn_dly     <= &{UDSWn,LDSWn}; // low if any DSWn was low
+    end
 end
 
 // PAL BUF1 16H
