@@ -48,7 +48,8 @@ export CONVERT_OPTIONS="-resize 300%x300%"
 $JTFRAME/bin/sim.sh -mist \
     -sysname cps15 \
     -def ../../hdl/jtcps15.def \
-    -d CPSB_CONFIG="$CPSB_CONFIG" -d JTCPS_TURBO \
+    -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
     -videow 384 -videoh 224 \
     $OTHER
+# -d JTCPS_TURBO

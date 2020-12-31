@@ -130,11 +130,19 @@ wire        tile_vs  = vrender1 == (flip ? 9'd17 : 9'd12); // Vertical start, us
     // 9'd17 was needed for 1941 logo screen on flip mode
     // 9'd12 was the previous value used for non flip images
 
-// various addresses
-wire [17:1] vrow_addr = { vram_row_base[9:3], row_offset[9:0] + vrenderf[9:0] },
-            vscr_addr = { vram_scr_base[8:5], scan, scr_cnt[0] },
-            vobj_addr = { vram_obj_base[9:3], obj_cnt },
-            vpal_addr = { vram_pal_base[9:5], pal_rd_page , pal_cnt };
+// various addresses: note that the base address is added, and not just
+// concatenated. This can be seen in Ghouls start where the palette base
+// address is 9105, the LSB cannot be discarded
+// Although I have only seen evidence for the palette, I am treating all
+// base address operations as additive
+wire [17:1] //vrow_addr = { vram_row_base[9:3], row_offset[9:0] + vrenderf[9:0] },
+            vrow_addr = { vram_row_base[9:0], 7'd0 } + { 7'd0, row_offset[9:0] + vrenderf[9:0] },
+            //vscr_addr = { vram_scr_base[8:5], scan, scr_cnt[0] },
+            vscr_addr = { vram_scr_base[8:0], 8'd0 } + { 4'd0, scan, scr_cnt[0] },
+            // vobj_addr = { vram_obj_base[9:3], obj_cnt },
+            vobj_addr = { vram_obj_base[9:0], 7'd0  } + { 7'd0, obj_cnt },
+            //vpal_addr = { vram_pal_base[9:5], pal_rd_page , pal_cnt };
+            vpal_addr = { vram_pal_base[9:0], 7'd0 } + { 5'd0, pal_rd_page , pal_cnt };
 
 always @(*) begin
     casez( scr_cnt[7:5] )
@@ -442,7 +450,7 @@ always @(posedge clk) begin
                                 adv <= 1;
                                 // Update palette page
                                 pal_wr_page <= pal_wr_page+3'd1;
-                                pal_rd_page<=pal_rd_page+3'd1;
+                                pal_rd_page <= pal_rd_page+3'd1;
                             end
                         end
                     end
