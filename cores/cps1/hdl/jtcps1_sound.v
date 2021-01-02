@@ -45,15 +45,16 @@ module jtcps1_sound(
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
-wire signed [13:0] adpcm_snd;
+wire signed [13:0] oki_pre;
+wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h10; // 7 -> 5 >  < 1
+localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h18; // 7 -> 5 >  < 1
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
 
-jtframe_mixer #(.W1(14),.WOUT(16)) u_left(
+jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
     .clk    ( clk       ),
     .cen    ( 1'b1      ),
     // input signals
@@ -69,7 +70,7 @@ jtframe_mixer #(.W1(14),.WOUT(16)) u_left(
     .mixed  ( left      )
 );
 
-jtframe_mixer #(.W1(14),.WOUT(16)) u_right(
+jtframe_mixer #(.W1(16),.WOUT(16)) u_right(
     .clk    ( clk       ),
     .cen    ( 1'b1      ),
     // input signals
@@ -258,7 +259,22 @@ jt6295 u_adpcm(
     .rom_data   ( adpcm_data),
     .rom_ok     ( adpcm_ok  ),
     // Sound output
-    .sound      ( adpcm_snd )
+    .sound      ( oki_pre   ),
+    .sample     ( oki_sample)
+);
+
+// ADPCM needs a proper FIR interpolator not to ruin high-pitch sounds
+// using the internal linear interpolator in JT6295 kills some sounds
+// like the beat in Chun Li's theme
+jtframe_uprate2_fir(
+    .rst        ( rst            ),
+    .clk        ( clk            ),
+    .sample     ( oki_sample     ),
+    .upsample   (                ),
+    .l_in       ( {oki_pre,2'd0} ),
+    .r_in       (     16'd0      ),
+    .l_out      ( adpcm_snd      ),
+    .r_out      (                )
 );
 
 endmodule

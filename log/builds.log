@@ -896,3 +896,9 @@ cps15         	sidi	20210101	1	FAIL	5b6c49d	438ea0e
 cps15         	mister	20210101	1	FAIL	5b6c49d	438ea0e
 cps15         	sidi	20210101	28382	PASS	5b6c49d	438ea0e
 cps1          	mist	20210102	1	PASS	5b6c49d	83fc2c7
+cps1          	sidi	20210102	1	PASS	24b7e47	83fc2c7
+cps1          	mister	20210102	1	FAIL	24b7e47	83fc2c7
+cps1          	mist	20210102	1	PASS	24b7e47	83fc2c7
+cps1          	mist	20210102	1	PASS	24b7e47	83fc2c7
+cps1          	mister	20210102	1	FAIL	24b7e47	83fc2c7
+cps1          	sidi	20210102	1	PASS	24b7e47	83fc2c7
