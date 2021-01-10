@@ -84,6 +84,7 @@ module jtcps1_game(
     output  [ 1:0]  prog_ba,
     output          prog_we,
     output          prog_rd,
+    input           prog_ack,
     input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
@@ -361,10 +362,10 @@ jtcps1_video #(REGSIZE) u_video(
 `ifndef NOSOUND
 `ifdef FAKE_LATCH
 integer snd_frame_cnt=0;
-reg [7:0] fake_latch = 8'hff;
-assign snd_latch1 = 8'd0;
-assign snd_latch0 = fake_latch;
-localparam FAKE0=10;
+reg [7:0] fake_latch0 = 8'h0, fake_latch1 = 8'h0;
+assign snd_latch1 = fake_latch1;
+assign snd_latch0 = fake_latch0;
+localparam FAKE0=20;
 localparam FAKE1=1000;
 always @(posedge VB) begin
     snd_frame_cnt <= snd_frame_cnt+1;
@@ -381,14 +382,40 @@ always @(posedge VB) begin
         //FAKE0+1: fake_latch <= 8'h2;
         //FAKE0+2: fake_latch <= 8'h0;
         // KOD
-        FAKE0: fake_latch <= 8'h6;
+        //FAKE0: fake_latch <= 8'h6;
         // Magic Sword
         //FAKE0: fake_latch <= 8'h1e;
         //FAKE1: fake_latch <= 8'h0;
         //FAKE1+1: fake_latch <= 8'h4;
         //FAKE1+2: fake_latch <= 8'h0;
+        // SF2, Chun Li
+        FAKE0: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'hf0;
+        end
 
-        default: fake_latch <= 8'hff;
+        FAKE0+10: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'hff;
+        end
+        FAKE0+11: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'hf7;
+        end
+        FAKE0+12: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'hff;
+        end
+        FAKE0+13: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'h06;
+        end
+        FAKE0+14: begin
+            fake_latch1 <= 8'h00;
+            fake_latch0 <= 8'hff;
+        end
+
+        //default: fake_latch <= 8'hff;
     endcase
 end
 `endif
