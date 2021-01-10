@@ -266,15 +266,29 @@ jt6295 u_adpcm(
 // ADPCM needs a proper FIR interpolator not to ruin high-pitch sounds
 // using the internal linear interpolator in JT6295 kills some sounds
 // like the beat in Chun Li's theme
-jtframe_uprate2_fir(
+
+wire signed [15:0] oki2x;
+wire               oki2x_sample;
+
+jtframe_uprate2_fir u_fir1(
     .rst        ( rst            ),
     .clk        ( clk            ),
     .sample     ( oki_sample     ),
-    .upsample   (                ),
+    .upsample   ( oki2x_sample   ),
     .l_in       ( {oki_pre,2'd0} ),
+    .r_in       (     16'd0      ),
+    .l_out      ( oki2x          ),
+    .r_out      (                )
+);
+
+jtframe_uprate2_fir u_fi2r(
+    .rst        ( rst            ),
+    .clk        ( clk            ),
+    .sample     ( oki2x_sample   ),
+    .upsample   (                ),
+    .l_in       ( oki2x          ),
     .r_in       (     16'd0      ),
     .l_out      ( adpcm_snd      ),
     .r_out      (                )
 );
-
 endmodule
