@@ -42,6 +42,9 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../.
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/jtframe_z80wait.v    ]
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/cpu/t80/T80.qip      ]
 
+#Interpolator
+set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.qip      ]
+
 # JT51 (YM2151)
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) ../../../modules/jt51/hdl/jt51.qip     ]
 
