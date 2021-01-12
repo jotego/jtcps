@@ -54,6 +54,8 @@ localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h10;
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
 
+wire               oki2x_sample;
+
 jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
     .clk    ( clk       ),
     .cen    ( 1'b1      ),
@@ -263,9 +265,6 @@ jt6295 #(.INTERPOL(1)) u_adpcm(
     .sample     ( oki_sample)   // ~26kHz
 );
 
-wire signed [15:0] oki2x;
-wire               oki2x_sample;
-
 jtframe_uprate2_fir u_fir1(
     .rst        ( rst            ),
     .clk        ( clk            ),
@@ -273,7 +272,7 @@ jtframe_uprate2_fir u_fir1(
     .upsample   ( oki2x_sample   ), // ~52kHz, close to JT51's 55kHz
     .l_in       ( {oki_pre,2'd0} ),
     .r_in       (     16'd0      ),
-    .l_out      ( oki2x          ),
+    .l_out      ( adpcm_snd      ),
     .r_out      (                )
 );
 
