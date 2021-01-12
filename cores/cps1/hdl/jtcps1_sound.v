@@ -49,7 +49,7 @@ wire signed [13:0] oki_pre;
 wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h18; // 7 -> 5 >  < 1
+localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h10;
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
@@ -245,7 +245,7 @@ jt51 u_jt51(
 
 assign adpcm_cs = 1'b1;
 
-jt6295 u_adpcm(
+jt6295 #(.INTERPOL(1)) u_adpcm(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .cen        ( cen_oki   ),
@@ -260,12 +260,8 @@ jt6295 u_adpcm(
     .rom_ok     ( adpcm_ok  ),
     // Sound output
     .sound      ( oki_pre   ),
-    .sample     ( oki_sample)
+    .sample     ( oki_sample)   // ~26kHz
 );
-
-// ADPCM needs a proper FIR interpolator not to ruin high-pitch sounds
-// using the internal linear interpolator in JT6295 kills some sounds
-// like the beat in Chun Li's theme
 
 wire signed [15:0] oki2x;
 wire               oki2x_sample;
@@ -274,21 +270,11 @@ jtframe_uprate2_fir u_fir1(
     .rst        ( rst            ),
     .clk        ( clk            ),
     .sample     ( oki_sample     ),
-    .upsample   ( oki2x_sample   ),
+    .upsample   ( oki2x_sample   ), // ~52kHz, close to JT51's 55kHz
     .l_in       ( {oki_pre,2'd0} ),
     .r_in       (     16'd0      ),
     .l_out      ( oki2x          ),
     .r_out      (                )
 );
 
-jtframe_uprate2_fir u_fi2r(
-    .rst        ( rst            ),
-    .clk        ( clk            ),
-    .sample     ( oki2x_sample   ),
-    .upsample   (                ),
-    .l_in       ( oki2x          ),
-    .r_in       (     16'd0      ),
-    .l_out      ( adpcm_snd      ),
-    .r_out      (                )
-);
 endmodule

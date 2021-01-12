@@ -44,3 +44,8 @@ $JTFRAME/hdl/jtframe_sh.v
 $JTFRAME/hdl/keyboard/jt4701.v
 $JTFRAME/hdl/keyboard/jtframe_4wayjoy.v
 $JTFRAME/hdl/sound/jtframe_mixer.v
+
+# Filters
+$JTFRAME/hdl/sound/jtframe_uprate2_fir.v
+$JTFRAME/hdl/sound/jtframe_fir_mono.v
+$JTFRAME/hdl/sound/jtframe_fir.v

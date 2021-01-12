@@ -31,6 +31,7 @@ done
 
 
 ln -sf $ROM/$GAME.rom rom.bin
+ln -sf $JTFRAME/hdl/sound/uprate2.hex
 make || exit $?
 
 CFG_FILE=../video/cfg/${GAME}_cfg.hex

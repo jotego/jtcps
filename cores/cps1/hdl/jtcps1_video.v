@@ -449,6 +449,8 @@ assign LHBL_colmix = ~HB;
 assign LVBL_colmix = ~VB;
 assign vpal_cs   = 1'b0;
 assign vpal_addr = 17'd0;
+assign LVBL_dly  = ~VB;
+assign LHBL_dly  = ~HB;
 `endif
 
 endmodule
