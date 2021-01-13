@@ -52,7 +52,7 @@ wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 wire               peak_l, peak_r;
 
-localparam [7:0] FMGAIN = 8'h06, PCMGAIN = 8'h10;
+localparam [7:0] FMGAIN = 8'h06, PCMGAIN = 8'h18;
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
@@ -255,7 +255,7 @@ jt51 u_jt51(
 assign adpcm_cs = 1'b1;
 assign pole_a = oki7 ? 7'd108 : 7'd104; // Pole at 770 Hz
 
-jt6295 #(.INTERPOL(1)) u_adpcm(
+jt6295 #(.INTERPOL(2)) u_adpcm(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .cen        ( cen_oki   ),
