@@ -99,6 +99,7 @@ module jtcps1_game(
     output          sample,
     input           enable_psg,
     input           enable_fm,
+    output          game_led,
     // Debug
     input   [3:0]   gfx_en
 );
@@ -451,7 +452,8 @@ jtcps1_sound u_sound(
     // Sound output
     .left           ( snd_left      ),
     .right          ( snd_right     ),
-    .sample         ( sample        )
+    .sample         ( sample        ),
+    .peak           ( game_led      )
 );
 `else
 assign snd_addr   = 16'd0;

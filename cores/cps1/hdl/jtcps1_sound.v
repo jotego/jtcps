@@ -41,7 +41,8 @@ module jtcps1_sound(
     // Sound output
     output signed [15:0] left,
     output signed [15:0] right,
-    output               sample
+    output               sample,
+    output reg           peak
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
@@ -49,16 +50,17 @@ wire signed [13:0] oki_pre;
 wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
-localparam [7:0] FMGAIN = 8'h08, PCMGAIN = 8'h10;
+localparam [7:0] FMGAIN = 8'h06, PCMGAIN = 8'h10;
 
 wire [7:0] fmgain  = enable_fm    ? FMGAIN  : 8'h0,
            pcmgain = enable_adpcm ? PCMGAIN : 8'h0;
 
-wire               oki2x_sample;
+always @(posedge clk) peak <= peak_r | peak_l;
 
 jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
+    .rst    ( rst       ),
     .clk    ( clk       ),
-    .cen    ( 1'b1      ),
+    .cen    ( sample    ),
     // input signals
     .ch0    ( fm_left   ),
     .ch1    ( adpcm_snd ),
@@ -69,12 +71,13 @@ jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
     .gain1  ( pcmgain   ),
     .gain2  ( 8'h00     ),
     .gain3  ( 8'h00     ),
-    .mixed  ( left      )
+    .mixed  ( left      ),
+    .peak   ( peak_l    )
 );
 
 jtframe_mixer #(.W1(16),.WOUT(16)) u_right(
     .clk    ( clk       ),
-    .cen    ( 1'b1      ),
+    .cen    ( sample    ),
     // input signals
     .ch0    ( fm_right  ),
     .ch1    ( adpcm_snd ),
@@ -85,7 +88,8 @@ jtframe_mixer #(.W1(16),.WOUT(16)) u_right(
     .gain1  ( pcmgain   ),
     .gain2  ( 8'h00     ),
     .gain3  ( 8'h00     ),
-    .mixed  ( right     )
+    .mixed  ( right     ),
+    .peak   ( peak_r    )
 );
 
 jtframe_cen3p57 u_fmcen(
@@ -269,7 +273,7 @@ jtframe_uprate2_fir u_fir1(
     .rst        ( rst            ),
     .clk        ( clk            ),
     .sample     ( oki_sample     ),
-    .upsample   ( oki2x_sample   ), // ~52kHz, close to JT51's 55kHz
+    .upsample   (                ), // ~52kHz, close to JT51's 55kHz
     .l_in       ( {oki_pre,2'd0} ),
     .r_in       (     16'd0      ),
     .l_out      ( adpcm_snd      ),
