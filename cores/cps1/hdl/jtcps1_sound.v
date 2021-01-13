@@ -50,6 +50,7 @@ wire signed [13:0] oki_pre, oki_pole;
 wire        [ 6:0] pole_a;
 wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
+wire               peak_l, peak_r;
 
 localparam [7:0] FMGAIN = 8'h06, PCMGAIN = 8'h10;
 
@@ -77,6 +78,7 @@ jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
 );
 
 jtframe_mixer #(.W1(16),.WOUT(16)) u_right(
+    .rst    ( rst       ),
     .clk    ( clk       ),
     .cen    ( sample    ),
     // input signals

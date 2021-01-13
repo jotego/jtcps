@@ -49,3 +49,4 @@ $JTFRAME/hdl/sound/jtframe_mixer.v
 $JTFRAME/hdl/sound/jtframe_uprate2_fir.v
 $JTFRAME/hdl/sound/jtframe_fir_mono.v
 $JTFRAME/hdl/sound/jtframe_fir.v
+$JTFRAME/hdl/sound/jtframe_pole.v

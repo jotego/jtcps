@@ -74,6 +74,7 @@ module mist_dump(
             // No load ROM sim:
                 `ifdef FAKE_LATCH
                     $shm_probe(UUT.u_game.u_sound, "A");
+                    $shm_probe(UUT.u_game.u_sound.u_pole, "A");
                     $shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
                     $shm_probe(UUT.u_game.u_sound.u_adpcm.u_ctrl, "A");
                     $shm_probe(UUT.u_game.u_sound.u_adpcm.u_serial, "A");
