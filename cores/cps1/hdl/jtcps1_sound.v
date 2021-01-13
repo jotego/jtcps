@@ -46,7 +46,8 @@ module jtcps1_sound(
 );
 
 (*keep*) wire cen_fm, cen_fm2, cen_oki, nc, cpu_cen;
-wire signed [13:0] oki_pre;
+wire signed [13:0] oki_pre, oki_pole;
+wire        [ 6:0] pole_a;
 wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 
@@ -250,6 +251,7 @@ jt51 u_jt51(
 );
 
 assign adpcm_cs = 1'b1;
+assign pole_a = oki7 ? 7'd108 : 7'd104; // Pole at 770 Hz
 
 jt6295 #(.INTERPOL(1)) u_adpcm(
     .rst        ( rst       ),
@@ -269,12 +271,21 @@ jt6295 #(.INTERPOL(1)) u_adpcm(
     .sample     ( oki_sample)   // ~26kHz
 );
 
+jtframe_pole #(.WS(14)) u_pole(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .sample     ( oki_sample),
+    .a          ( pole_a    ),
+    .sin        ( oki_pre   ),
+    .sout       ( oki_pole  )
+);
+
 jtframe_uprate2_fir u_fir1(
     .rst        ( rst            ),
     .clk        ( clk            ),
     .sample     ( oki_sample     ),
     .upsample   (                ), // ~52kHz, close to JT51's 55kHz
-    .l_in       ( {oki_pre,2'd0} ),
+    .l_in       ({oki_pole,2'd0} ),
     .r_in       (     16'd0      ),
     .l_out      ( adpcm_snd      ),
     .r_out      (                )
