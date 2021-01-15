@@ -94,6 +94,7 @@ module jtcps15_game(
     output  signed [15:0] snd_left,
     output  signed [15:0] snd_right,
     output          sample,
+    output          game_led,
     input           enable_psg,
     input           enable_fm,
     // Debug
@@ -148,6 +149,7 @@ wire        sclk, sdi, sdo, scs;
 
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 assign dip_flip = 0;
+assign game_led = 0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;

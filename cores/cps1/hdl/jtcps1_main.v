@@ -177,7 +177,7 @@ always @(posedge clk, posedge rst) begin
             io_cs       <= A[23:20] == 4'b1000;
             pre_ram_cs  <= &A[23:18];
             `ifdef CPS15
-            io15_cs      <= A[23:16] == 8'hf1 && A[15:14]==2'b11;
+            io15_cs      <= A[23:12] == 12'hf1C;
             main2qs_cs   <= A[23:20] == 4'hf  && A[19:17]==3'd0 && (
                             !A[16] ||                             // F00000-F0FFFF
                             (A[16] && A[15] && (A[14]==A[13])) ); // F18000~F19FFF F1E000~F1FFFF
@@ -337,9 +337,9 @@ always @(posedge clk) begin
     if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
     `ifdef CPS15
     else if( joy3_cs )
-        sys_data <= { 8'hff, start_button[2], coin_input[2], joystick3[5:0] };
+        sys_data <= { 2{start_button[2], coin_input[2], joystick3[5:0] }};
     else if( joy4_cs )
-        sys_data <= { 8'hff, start_button[3], coin_input[3], joystick4[5:0] };
+        sys_data <= { 2{start_button[3], coin_input[3], joystick4[5:0] }};
     `endif
     else if(sys_cs) begin
         case( A[2:1] )

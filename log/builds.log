@@ -964,3 +964,12 @@ cps1          	mist	20210113	1	FAIL	9c72954	4c40d8e
 cps1          	mist	20210113	1	PASS	9c72954	4c40d8e
 cps1          	sidi	20210113	1	FAIL	9c72954	4c40d8e
 cps1          	mister	20210113	1	FAIL	9c72954	4c40d8e
+cps1          	mister	20210113	1	FAIL	6e1934a	74412e6
+cps15         	mist	20210115	1	PASS	6e1934a	bc9eae6
+cps15         	mist	20210115	1	PASS	6e1934a	bc9eae6
+cps15         	mister	20210115	1	FAIL	6e1934a	bc9eae6
+cps15         	sidi	20210115	1	PASS	6e1934a	bc9eae6
+cps15         	mist	20210115	1	PASS	6e1934a	bc9eae6
+cps1          	sidi	20210115	1	FAIL	6e1934a	bc9eae6
+cps1          	mist	20210115	1	PASS	6e1934a	bc9eae6
+cps1          	mister	20210115	1	FAIL	6e1934a	bc9eae6

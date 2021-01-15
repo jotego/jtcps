@@ -59,8 +59,6 @@ module jtcps15_sound(
     output               sample
 );
 
-localparam QSND_GAIN = 0; // More than this causes distortion in Warriors of Fate
-
 wire        cpu_cen, cen_extra;
 wire [ 7:0] dec_dout, ram_dout, cpu_dout, bus_din;
 wire [15:0] A, bus_A;
@@ -349,9 +347,9 @@ always @(posedge clk96, posedge rst) begin
             // data is taken directly in parallel. The serial
             // interface is bypassed for simplificty
             if( !dsp_psel )
-                reg_left  <= dsp_serout << QSND_GAIN;
+                reg_left  <= dsp_serout;
             else
-                reg_right <= dsp_serout << QSND_GAIN;
+                reg_right <= dsp_serout;
         end
         if( !last_psel && dsp_psel ) begin
             pre_l <= reg_left;
