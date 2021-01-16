@@ -984,3 +984,6 @@ cps1          	sidi	20210116	1	PASS	57d2aa7	3d58e7e
 cps1          	mist	20210116	1	PASS	57d2aa7	3d58e7e
 cps1          	mister	20210116	1	FAIL	57d2aa7	3d58e7e
 cps15         	mist	20210116	1	PASS	57d2aa7	3d58e7e
+cps15         	mist	20210116	1	PASS	9e56601	f5bf012
+cps1          	mister	20210116	24	PASS	9e56601	f5bf012
+cps15         	mister	20210116	1	PASS	9e56601	f5bf012
