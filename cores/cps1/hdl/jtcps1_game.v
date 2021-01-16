@@ -281,7 +281,7 @@ assign main_rnw = 1'b1;
 
 reg rst_video;
 
-always @(negedge clk) begin
+always @(negedge clk_gfx) begin
     rst_video <= rst;
 end
 
@@ -470,7 +470,7 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
-    .clk_cpu     ( clk_cpu       ),
+    .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),

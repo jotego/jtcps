@@ -977,3 +977,10 @@ cps1          	mister	20210116	1	FAIL	60d923e	60e9a97
 cps1          	mister	20210116	1	FAIL	60d923e	465ff32
 cps1          	mist	20210116	1	FAIL	60d923e	42ff5b8
 cps1          	mist	20210116	1	PASS	60d923e	42ff5b8
+cps15         	mister	20210116	1	FAIL	57d2aa7	3d58e7e
+cps15         	sidi	20210116	1	PASS	57d2aa7	3d58e7e
+cps15         	mist	20210116	1	PASS	57d2aa7	3d58e7e
+cps1          	sidi	20210116	1	PASS	57d2aa7	3d58e7e
+cps1          	mist	20210116	1	PASS	57d2aa7	3d58e7e
+cps1          	mister	20210116	1	FAIL	57d2aa7	3d58e7e
+cps15         	mist	20210116	1	PASS	57d2aa7	3d58e7e

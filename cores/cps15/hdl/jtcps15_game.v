@@ -18,8 +18,9 @@
 
 module jtcps15_game(
     input           rst,
-    input           clk,      // 48   MHz
+    input           clk,      // SDRAM 96/48
     input           clk96,    // 96   MHz -required for QSound
+    input           clk48,    // 48
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
     output   [7:0]  red,
@@ -167,7 +168,7 @@ assign turbo = status[6];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
-    .clk        ( clk           ),
+    .clk        ( clk48         ),
     .cen16      ( cen16         ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
@@ -194,10 +195,11 @@ jtframe_cen96 u_pxl_cen(
     .cen6   (           ),
     .cen6b  (           )
 );
+
 assign clk_gfx = clk96;
 
 jtcps1_cpucen u_cpucen(
-    .clk        ( clk                ),
+    .clk        ( clk48              ),
     .cen12      ( cen12              ),
     .cpu_speed  ( 1'b1               ), // always at 12MHz for CPS 1.5
     .cpu_cen    ( cpu_cen            ),
@@ -214,7 +216,7 @@ assign busack = busack_cpu | turbo;
 `ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
-    .clk        ( clk               ),
+    .clk        ( clk48             ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
@@ -291,9 +293,12 @@ assign scs  = 0;
 
 reg rst_video, rst_sdram;
 
+always @(negedge clk_gfx) begin
+    rst_video <= rst;
+end
+
 always @(negedge clk) begin
     rst_sdram <= rst;
-    rst_video <= rst;
 end
 
 jtcps1_video #(REGSIZE) u_video(
@@ -370,7 +375,7 @@ jtcps1_video #(REGSIZE) u_video(
 // interaction between both CPUs at power up
 jtcps15_sound u_sound(
     .rst        ( rst               ),
-    .clk48      ( clk               ),
+    .clk48      ( clk48             ),
     .clk96      ( clk96             ),
     .cen8       ( cen8              ),
     .vol_up     ( 1'b0              ),
@@ -413,8 +418,9 @@ jtcps15_sound u_sound(
 
 jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
-    .clk         ( clk           ),        // 96   MHz
+    .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
+    .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),
