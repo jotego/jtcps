@@ -18,7 +18,8 @@
 
 module jtcps1_game(
     input           rst,
-    input           clk,      // 48   MHz
+    input           clk,      // SDRAM
+    input           clk48,    // 48   MHz
     `ifdef JTFRAME_CLK96
     input           clk96,    // 96   MHz
     `endif
@@ -166,7 +167,7 @@ assign turbo = status[6];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
-    .clk        ( clk           ),
+    .clk        ( clk48         ),
     .cen16      ( cen16         ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
@@ -202,7 +203,7 @@ jtframe_cen48 u_cen48(
 `endif
 
 jtcps1_cpucen u_cpucen(
-    .clk        ( clk                ),
+    .clk        ( clk48              ),
     .cen12      ( cen12              ),
     .cpu_speed  ( cpu_speed | turbo  ),
     .cpu_cen    ( cpu_cen            ),
@@ -219,7 +220,7 @@ assign busack = busack_cpu | turbo;
 `ifndef NOMAIN
 jtcps1_main u_main(
     .rst        ( rst               ),
-    .clk        ( clk               ),
+    .clk        ( clk48             ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
@@ -428,7 +429,7 @@ end
 
 jtcps1_sound u_sound(
     .rst            ( rst_snd[3]    ),
-    .clk            ( clk           ),
+    .clk            ( clk48         ),
 
     .enable_adpcm   ( enable_psg    ),
     .enable_fm      ( enable_fm     ),
@@ -467,8 +468,9 @@ assign sample   = 1'b0;
 
 jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
-    .clk         ( clk           ),        // 96   MHz
+    .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
+    .clk_cpu     ( clk_cpu       ),
     .LVBL        ( LVBL          ),
 
     .downloading ( downloading   ),

@@ -23,8 +23,9 @@ module jtcps1_sdram #( parameter
            PCM_AW  = CPS==1 ? 18 : 23
 ) (
     input           rst,
-    input           clk,        // 48 MHz (SDRAM and CPUs)
+    input           clk,        // SDRAM clock (48/96)
     input           clk_gfx,    // 96 MHz
+    input           clk_cpu,    // 48 MHz
     input           LVBL,
 
     input           downloading,
@@ -209,7 +210,7 @@ jtcps1_prom_we #(
     jtcps1_ram u_bram(
         .rst        ( rst       ),
         .clk_gfx    ( clk_gfx   ),    // 96   MHz
-        .clk_cpu    ( clk       ),    // 48   MHz
+        .clk_cpu    ( clk_cpu   ),    // 48   MHz
 
         // VRAM
         .vram_dma_cs    ( vram_dma_cs   ),
@@ -323,14 +324,19 @@ jtframe_rom_2slots #(
 );
 
 `ifdef JTFRAME_CLK96
-    // GFX data in bank 2. Operates at clk_gfx
-    jtframe_rom_sync u_sync(
-        .clk    ( clk_gfx       ),
-        .rdy_in ( ba2_rdy       ),
-        .ack_in ( ba2_ack       ),
-        .rdy_out( ba2_rdy_gfx   ),
-        .ack_out( ba2_ack_gfx   )
-    );
+    `ifndef JTFRAME_SDRAM96
+        // GFX data in bank 2. Operates at clk_gfx
+        jtframe_rom_sync u_sync(
+            .clk    ( clk_gfx       ),
+            .rdy_in ( ba2_rdy       ),
+            .ack_in ( ba2_ack       ),
+            .rdy_out( ba2_rdy_gfx   ),
+            .ack_out( ba2_ack_gfx   )
+        );
+    `else
+        assign ba2_rdy_gfx = ba2_rdy;
+        assign ba2_ack_gfx = ba2_ack;
+    `endif
 `else
     assign ba2_rdy_gfx = ba2_rdy;
     assign ba2_ack_gfx = ba2_ack;
@@ -350,7 +356,7 @@ jtframe_rom_2slots #(
     //.SLOT1_REPACK( 1             )
 ) u_bank2 (
     .rst         ( rst           ),
-    .clk         ( clk_gfx       ),
+    .clk         ( clk_gfx       ), // do not use clk
 
     .slot0_cs    ( rom0_cs       ),
     .slot1_cs    ( rom1_cs       ),
