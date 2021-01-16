@@ -49,7 +49,7 @@ parameter        EEPROM_AW  = 7
     output     [EEPROM_AW-1:0]    dump_addr,
     output reg           dump_we,
     // Kabuki decoder (CPS 1.5)
-    output reg           kabuki_we
+    output               kabuki_we
 );
 
 
@@ -65,12 +65,14 @@ localparam START_BYTES   = 8,
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
 reg        [ 7:0] pre_data;
+reg        [ 1:0] kabuki_sr; // For 96MHz the write pulse must last two cycles
 
 assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
-assign prog_data = {2{pre_data}};
+assign prog_data  = {2{pre_data}};
+assign kabuki_we  = kabuki_sr[0];
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
@@ -125,7 +127,8 @@ always @(posedge clk) begin
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
         prog_ba   <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
-        kabuki_we <= is_kabuki;
+        if( is_kabuki )
+            kabuki_sr <= 2'b11;
         if( ioctl_addr < START_BYTES[24:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
@@ -176,8 +179,8 @@ always @(posedge clk) begin
                     dwnld_busy <= 0;
                 `endif
             end
-            kabuki_we <= 0;
-            cfg_we    <= 0;
+            kabuki_sr <= kabuki_sr>>1;
+            cfg_we      <= 0;
         end
     end
 end
