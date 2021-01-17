@@ -157,13 +157,19 @@ wire [ 1:0] dsn;
 wire        cen16, cen12, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
 wire        charger;
-wire        turbo;
+wire        turbo, pcmfilter_en;
 
 `ifdef JTCPS_TURBO
 assign turbo = 1;
 `else
-assign turbo = status[6];
+    `ifdef MISTER
+        assign turbo = status[13];
+    `else
+        assign turbo = status[5];
+    `endif
 `endif
+
+assign pcmfilter_en = status[1];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -433,6 +439,12 @@ jtcps1_sound u_sound(
 
     .enable_adpcm   ( enable_psg    ),
     .enable_fm      ( enable_fm     ),
+    `ifdef MISTER
+        .fxlevel    ( dip_fxlevel   ),
+    `else
+        .fxlevel    ( 2'd2          ), // not enough bits in MiST's OSD
+    `endif
+    .pcmfilter_en   ( pcmfilter_en  ),
 
     // Interface with main CPU
     .snd_latch0     ( snd_latch0    ),

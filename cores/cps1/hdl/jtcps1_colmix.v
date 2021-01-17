@@ -17,11 +17,7 @@
     Date: 13-1-2020 */
 
 
-// Brightness only affects the gain of the signal, not the offset
-// Depending on the impedance of the 74'07 device, the maximum
-// attenuation can be as much as 40% for brightness setting of 15
-// If NMOS RON is comparable to the R2R ladder, attenuation will be
-// lower (~27%)
+// See file cc/brightness.cc for the LUT generation
 
 module jtcps1_colmix(
     input              rst,
@@ -66,7 +62,10 @@ reg  [11:0] pxl;
 
 // Palette
 wire [ 3:0] raw_r, raw_g, raw_b, raw_br;
-reg  [ 3:0] dly_r, dly_g, dly_b;
+reg  [ 7:0] lut_r, lut_g, lut_b;
+reg  [ 3:0] lut_addr;
+wire [ 7:0] lut_dout;
+reg  [ 2:0] lut_k; // counter
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
@@ -129,6 +128,48 @@ reg [QW-1:0] lyr_queue;
 reg [11:0] pre_pxl;
 reg [ 1:0] group;
 
+jtframe_ram #(.aw(8),.synfile("pal_lut.hex")) u_lut (
+    .clk    ( clk                  ),
+    .cen    ( 1'b1                 ),
+    .data   ( 8'd0                 ),
+    .addr   ( { raw_br, lut_addr } ),
+    .we     ( 1'b0                 ),
+    .q      ( lut_dout             )
+);
+
+always @(posedge clk, posedge rst) begin
+    if(rst) begin
+        lut_r    <= 8'h0;
+        lut_g    <= 8'h0;
+        lut_b    <= 8'h0;
+        lut_k    <= 3'd0;
+        lut_addr <= 4'd0;
+    end else begin // the clock frequency must be a multiple of 3*8=24MHz
+        if( pxl_cen ) begin
+            lut_k <= 3'd0;
+        end else if( lut_k != 3'd7 )
+            lut_k <= lut_k+3'd1;
+        case( lut_k )
+            3'd2: begin
+                lut_addr <= raw_r;
+            end
+            3'd3: begin
+                lut_addr <= raw_g ;
+            end
+            3'd4: begin
+                lut_r    <= lut_dout;
+                lut_addr <= raw_b;
+            end
+            3'd5: begin
+                lut_g    <= lut_dout;
+            end
+            3'd6: begin
+                lut_b    <= lut_dout;
+            end
+        endcase
+    end
+end
+
 always @(posedge clk) if(pxl_cen) begin
     lyr5 <= { 2'b00, STA, sta1_mask };
     lyr4 <= { 2'b00, STA, sta0_mask };
@@ -180,25 +221,6 @@ always @(posedge clk) begin
     end
 end
 
-reg [7:0] mul_r, mul_g, mul_b;
-wire [3:0] inv_br = ~raw_br; // if operator ~ is mixed in the multiplication
-    // it seems to extend the sign or the bit width and
-    // the result is wrong
-
-// Use multiplier for brightness as these
-// are cheap in most FPGAs
-always @(posedge clk, posedge rst) begin
-    if(rst) begin
-        mul_r <= 8'd0;
-        mul_g <= 8'd0;
-        mul_b <= 8'd0;
-    end else begin
-        mul_r <= raw_r * inv_br; // mul = signal * 15
-        mul_g <= raw_g * inv_br;
-        mul_b <= raw_b * inv_br;
-        { dly_r, dly_g, dly_b } <= { raw_r, raw_g, raw_b };
-    end
-end
 
 wire vb1, hb1;
 
@@ -228,15 +250,9 @@ always @(posedge clk, posedge rst) begin
             green <= 8'd0;
             blue  <= 8'd0;
         end else begin
-            `ifdef NOBRIGHT
-            red   <= {2{raw_r}};
-            green <= {2{raw_g}};
-            blue  <= {2{raw_b}};
-            `else
-            red   <= {2{dly_r}} - (mul_r>>1) - (mul_r>>2);
-            green <= {2{dly_g}} - (mul_g>>1) - (mul_g>>2);
-            blue  <= {2{dly_b}} - (mul_b>>1) - (mul_b>>2);
-            `endif
+            red   <= lut_r;
+            green <= lut_g;
+            blue  <= lut_b;
         end
     end
 end
