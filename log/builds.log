@@ -1017,3 +1017,10 @@ cps1          	mist	20210117	1	PASS	9017e57	bafc387
 cps15         	mister	20210117	1	FAIL	9017e57	bafc387
 cps15         	mist	20210117	1	FAIL	9017e57	bafc387
 cps15         	mister	20210117	23816	FAIL	9017e57	bafc387
+cps1          	mister	20210117	25373	FAIL	4645f20	bafc387
+cps15         	mister	20210117	24600	PASS	4645f20	bafc387
+cps1          	mister	20210117	7408	PASS	4645f20	bafc387
+cps15         	mist	20210117	4146	PASS	4645f20	f0dc399
+cps15         	sidi	20210117	1	FAIL	4645f20	f0dc399
+cps1          	sidi	20210117	2867	PASS	4645f20	f0dc399
+cps15         	sidi	20210117	4519	PASS	4645f20	f0dc399
