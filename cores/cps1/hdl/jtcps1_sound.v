@@ -255,7 +255,7 @@ jt51 u_jt51(
 assign adpcm_cs = 1'b1;
 assign pole_a = oki7 ? 7'd108 : 7'd104; // Pole at 770 Hz
 
-jt6295 #(.INTERPOL(2)) u_adpcm(
+jt6295 #(.INTERPOL(1)) u_adpcm(
     .rst        ( rst       ),
     .clk        ( clk       ),
     .cen        ( cen_oki   ),
