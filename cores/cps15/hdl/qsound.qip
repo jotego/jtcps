@@ -1,0 +1,11 @@
+# Kabuki
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/cpu/jtframe_kabuki.v ]
+
+# DSP16A
+set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../../modules/jtdsp16/hdl/jtdsp16.qip      ]
+
+# Up-rate filter
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_fir.v           ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.v   ]
+
+

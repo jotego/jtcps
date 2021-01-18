@@ -1,26 +1,34 @@
 #!/bin/bash
-pushd .
+
+if [ ! -e mame.xml ]; then
+    echo Creating mame.xml
+    mame -listxml > mame.xml || ( echo "Error creating mame.xml"; exit 1 )
+fi
+
+pushd . > /dev/null
 cd $JTFRAME/cc
-make || exit $?
-popd
+make > /dev/null || ( echo "Error while compiling JTFRAME/cc files"; exit $? )
+popd > /dev/null
 
 MAKEROM=0
-CPS15=1
+CPS15=0
 CPS2=0
 
 while [ $# -gt 0 ]; do
     case $1 in
         -rom)
             MAKEROM=1;;
+        -cps15)
+            CPS15=1;;
         -cps2)
-            shift
             CPS2=1;;
         -h|-help)
             cat <<EOF
 makemra.sh creates MRA files for some cores. Optional arguments:
     -rom        create .rom files too using the mra tool
                 * not implemented yet *
-    -cps2       enable CPS2 MRA creation
+    -cps1.5     enable CPS1.5 MRA creation
+    -cps2       enable CPS2   MRA creation
     -h | -help  shows this message
 EOF
             exit 1;;
@@ -31,139 +39,145 @@ EOF
     shift
 done
 
-ALTFOLDER=_alt/"_Warriors of Fate"
-mkdir -p mra/"$ALTFOLDER"
-mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -qsound \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data FF FF \
-    -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
-    -header-data 25 \
-    -header-data $(mapper_offset.py 8000 8000 0 0) \
-    -header-data 20 \
-    -header-pointer 48 \
-    -header-data 01 23 45 67 54 16 30 72 51 51 51 \
-    -buttons Attack Jump None None None None \
-    -rmdipsw Freeze -nvram 256
+if [[ $CPS15 = 0 && $CPS2 = 0 ]]; then
+    echo You must specify at least -cps15 or -cps2
+    exit 1
+fi
 
-ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
-mkdir -p mra/"$ALTFOLDER"
-mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -setword maincpu 16 -qsound \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data FF FF \
-    -header-data FF FF FF FF \
-    -header-data 0a 0c 0e 00 02 00 00 04 16 16 16 00 \
-    -header-data 5 \
-    -header-data $(mapper_offset.py 8000 8000 0 0) \
-    -header-data 20 \
-    -header-pointer 48 \
-    -header-data 76 54 32 10 24 60 13 57 43 43 43 \
-    -buttons Attack Jump None None None None\
-    -rmdipsw Freeze -nvram 256
+if [ $CPS15 = 1 ]; then
 
-ALTFOLDER=_alt/"_The Punisher"
-mkdir -p mra/"$ALTFOLDER"
-mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -setword maincpu 16 reverse -qsound \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data 0e c0 \
-    -header-data FF FF FF FF \
-    -header-data 12 14 16 08 0a 00 00 0c 04 02 20 00 \
-    -header-data 17 \
-    -header-data $(mapper_offset.py 8000 8000 0 0) \
-    -header-data 20 \
-    -header-pointer 48 \
-    -header-data 67 45 21 03 75 31 60 24 22 22 22 \
-    -buttons Attack Jump None None None None \
-    -rmdipsw Freeze -nvram 256
+    ALTFOLDER=_alt/"_Warriors of Fate"
+    mkdir -p mra/"$ALTFOLDER"
+    mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+        -setword gfx 64 -qsound \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data FF FF \
+        -header-data FF FF FF FF \
+        -header-data 22 24 26 28 2a 00 00 2c 10 08 04 00 \
+        -header-data 25 \
+        -header-data $(mapper_offset.py 8000 8000 0 0) \
+        -header-data 20 \
+        -header-pointer 48 \
+        -header-data 01 23 45 67 54 16 30 72 51 51 51 \
+        -buttons Attack Jump None None None None \
+        -rmdipsw Freeze -nvram 256
 
-ALTFOLDER=_alt/"_Saturday Night Slam Masters"
-mkdir -p mra/"$ALTFOLDER"
-mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -setword maincpu 16 reverse -qsound \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data 2e c1 \
-    -header-data FF FF FF FF \
-    -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
-    -header-data 10 \
-    -header-data $(mapper_offset.py 8000 8000 8000 0) \
-    -header-data 20 \
-    -header-pointer 48 \
-    -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Punch Jump Action None None None \
-    -rmdipsw Freeze -nvram 256
+    ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
+    mkdir -p mra/"$ALTFOLDER"
+    mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+        -setword gfx 64 -setword maincpu 16 -qsound \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data FF FF \
+        -header-data FF FF FF FF \
+        -header-data 0a 0c 0e 00 02 00 00 04 16 16 16 00 \
+        -header-data 5 \
+        -header-data $(mapper_offset.py 8000 8000 0 0) \
+        -header-data 20 \
+        -header-pointer 48 \
+        -header-data 76 54 32 10 24 60 13 57 43 43 43 \
+        -buttons Attack Jump None None None None\
+        -rmdipsw Freeze -nvram 256
 
-ALTFOLDER=_alt/"_Muscle Bomber Duo"
-mkdir -p mra/"$ALTFOLDER"
-mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
-    -setword gfx 64 -setword maincpu 16 reverse -qsound \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data 1e c2 \
-    -header-data FF FF FF FF \
-    -header-data 2a 2c 2e 30 32 00 00 1c 04 08 10 00 \
-    -header-data 10 \
-    -header-data $(mapper_offset.py 8000 8000 8000 0) \
-    -header-data 20 \
-    -header-pointer 48 \
-    -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-    -buttons Punch Attack Jump None None None \
-    -rmdipsw Freeze -nvram 256
+    ALTFOLDER=_alt/"_The Punisher"
+    mkdir -p mra/"$ALTFOLDER"
+    mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+        -setword gfx 64 -setword maincpu 16 reverse -qsound \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data 0e c0 \
+        -header-data FF FF FF FF \
+        -header-data 12 14 16 08 0a 00 00 0c 04 02 20 00 \
+        -header-data 17 \
+        -header-data $(mapper_offset.py 8000 8000 0 0) \
+        -header-data 20 \
+        -header-pointer 48 \
+        -header-data 67 45 21 03 75 31 60 24 22 22 22 \
+        -buttons Attack Jump None None None None \
+        -rmdipsw Freeze -nvram 256
+
+    ALTFOLDER=_alt/"_Saturday Night Slam Masters"
+    mkdir -p mra/"$ALTFOLDER"
+    mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+        -setword gfx 64 -setword maincpu 16 reverse -qsound \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data 2e c1 \
+        -header-data FF FF FF FF \
+        -header-data 16 00 02 28 2a 00 00 2c 04 08 10 00 \
+        -header-data 10 \
+        -header-data $(mapper_offset.py 8000 8000 8000 0) \
+        -header-data 20 \
+        -header-pointer 48 \
+        -header-data 54 32 10 76 65 43 21 07 31 31 19 \
+        -buttons Punch Jump Action None None None \
+        -rmdipsw Freeze -nvram 256
+
+    ALTFOLDER=_alt/"_Muscle Bomber Duo"
+    mkdir -p mra/"$ALTFOLDER"
+    mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+        -setword gfx 64 -setword maincpu 16 reverse -qsound \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data 1e c2 \
+        -header-data FF FF FF FF \
+        -header-data 2a 2c 2e 30 32 00 00 1c 04 08 10 00 \
+        -header-data 10 \
+        -header-data $(mapper_offset.py 8000 8000 8000 0) \
+        -header-data 20 \
+        -header-pointer 48 \
+        -header-data 54 32 10 76 65 43 21 07 31 31 19 \
+        -buttons Punch Attack Jump None None None \
+        -rmdipsw Freeze -nvram 256
+fi
 
 if [ $CPS2 = 0 ]; then
     exit 0
 fi
 
-echo mal
-exit 0
-
 # CPS2 Titles
 function cps2_mra {
-if [ ! -e $1.xml ]; then
-    mamefilter $1 > $1.xml
-fi
+    if [ ! -e $1.xml ]; then
+        mamefilter $1 > $1.xml
+    fi
 
-mkdir -p mra/_alt/"$2"
-mame2dip $1.xml -rbf jtcps2 -outdir mra -altfolder _alt/"$2" \
-    -frac 2 gfx 4 -qsound \
-    -swapbytes maincpu \
-    -ignore aboardplds bboardplds cboardplds dboardplds \
-    -order maincpu audiocpu qsound gfx \
-    -header 64 0xff \
-    -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
-    -header-pointer 16 \
-    -header-data FF FF \
-    -header-data FF FF FF FF \
-    -header-data 22 24 26 28 2a 2c 10 08 04 00 \
-    -header-data 25 \
-    -header-data $(mapper_offset.py 8000 8000 0 0) \
-    -header-pointer 48 \
-    -header-data 01 23 45 67 54 16 30 72 51 51 51 \
-    -buttons Attack Jump None None None None
+    ALT=_alt/_"$2"
+    mkdir -p mra/"$ALT"
+    mame2dip $1.xml -rbf jtcps2 -outdir mra -altfolder "$ALT" \
+        -frac 2 gfx 4 -qsound \
+        -swapbytes maincpu \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order maincpu audiocpu qsound gfx \
+        -header 64 0xff \
+        -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
+        -header-pointer 16 \
+        -header-data FF FF \
+        -header-data FF FF FF FF \
+        -header-data 22 24 26 28 2a 2c 10 08 04 00 \
+        -header-data 25 \
+        -header-data $(mapper_offset.py 8000 8000 0 0) \
+        -header-pointer 48 \
+        -header-data 01 23 45 67 54 16 30 72 51 51 51 \
+        -buttons Attack Jump None None None None
 }
 
-cps2_mra ddtod "DnD Tower of Doom"
+cps2_mra ddtod      "DnD Tower of Doom"
 cps2_mra ssf2       "Super Street Fighter II: The New Challengers (World 931005)"
 cps2_mra ssf2t      "Super Street Fighter II Turbo (World 940223)"
 cps2_mra ecofghtr   "Eco Fighters (World 931203)"
