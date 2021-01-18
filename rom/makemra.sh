@@ -172,8 +172,6 @@ function cps2_mra {
         -header-data 22 24 26 28 2a 2c 10 08 04 00 \
         -header-data 25 \
         -header-data $(mapper_offset.py 8000 8000 0 0) \
-        -header-pointer 48 \
-        -header-data 01 23 45 67 54 16 30 72 51 51 51 \
         -buttons Attack Jump None None None None
 }
 
