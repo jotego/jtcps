@@ -78,6 +78,8 @@ module jtcps2_main(
 wire [23:1] A;
 wire        BERRn = 1'b1;
 
+reg  [15:0] in0, in1, in2;
+
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
 `endif
@@ -85,7 +87,7 @@ wire [24:0] A_full = {A,1'b0};
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
 reg         io_cs, joy_cs, eeprom_cs,
-            sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
+            sys_cs, olatch_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
@@ -138,60 +140,23 @@ always @(posedge clk, posedge rst) begin
         joy_cs      <= 1'b0;
         sys_cs      <= 1'b0;
         olatch_cs   <= 1'b0;
-        snd1_cs     <= 1'b0;
-        snd0_cs     <= 1'b0;
-        ppu1_cs     <= 1'b0;
-        ppu2_cs     <= 1'b0;
         one_wait    <= 1'b0;
-        dial_cs     <= 1'b0;
         rom_addr    <= 21'd0;
-        `ifdef CPS15
-        io15_cs     <= 0;
-        joy3_cs     <= 0;
-        joy4_cs     <= 0;
-        eeprom_cs   <= 0;
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
-        `endif
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
             rom_cs      <= A[23:22] == 2'b00;
-            one_wait    <= A[23] | ~A[22];
+            one_wait    <= A[23] | ~A[22]; // valid for CPS2?
             // dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
-            io_cs       <= A[23:20] == 4'b1000;
-            pre_ram_cs  <= &A[23:18];
-            `ifdef CPS15
-            io15_cs      <= A[23:12] == 12'hf1C;
-            main2qs_cs   <= A[23:20] == 4'hf  && A[19:17]==3'd0 && (
-                            !A[16] ||                             // F00000-F0FFFF
-                            (A[16] && A[15] && (A[14]==A[13])) ); // F18000~F19FFF F1E000~F1FFFF
+            io_cs       <= A[23:19] == 5'b1000_0;
+            pre_ram_cs  <= &A[23:16];
+            // QSound
+            //io15_cs      <= A[23:12] == 12'hf1C;
+            main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
-            `endif
-            if( io_cs ) begin // PAL IOA1 (16P8B @ 12F)
-                ppu1_cs  <= A[8:6] == 3'b100; // 'h10x
-                ppu2_cs  <= A[8:6] == 3'b101 /* 'h14x */ || A[8:6] == 3'b111; /* 'h1Cx */
-                dial_cs  <= A[8:5] == 4'b0_010;    // 0x800040/50
-                if( RnW ) begin
-                    joy_cs  <= A[8:3] == 6'b0_0000_0; // 0x800000
-                    sys_cs  <= A[8:3] == 6'b0_0001_1; // 0x800018
-                end else begin // outputs
-                    olatch_cs <= !UDSWn && A[8:3]==6'b00_0110;
-                    `ifndef CPS15
-                    snd1_cs   <= !LDSWn && A[8:3]==6'b11_0001;
-                    snd0_cs   <= !LDSWn && A[8:3]==6'b11_0000;
-                    `endif
-                end
-            end
-            `ifdef CPS15
-            if( io15_cs ) begin
-                joy3_cs   <= A[2:1]==2'd0;
-                joy4_cs   <= A[2:1]==2'd1;
-                // coin2_cs   <= A[3:2]==2'd2;
-                eeprom_cs <= A[2:1]==2'd3;
-            end
-            `endif
         end else begin
             rom_addr[4:1] <= last_fail[3:0]; // this is a trick so the compiler
                 // won't get rid of last_fail, as I need to see it in signal tap
@@ -199,52 +164,40 @@ always @(posedge clk, posedge rst) begin
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
             // dbus_cs     <= 1'b0;
-            io_cs       <= 1'b0;
-            joy_cs      <= 1'b0;
             sys_cs      <= 1'b0;
             olatch_cs   <= 1'b0;
-            snd1_cs     <= 1'b0;
-            snd0_cs     <= 1'b0;
             ppu1_cs     <= 1'b0;
             ppu2_cs     <= 1'b0;
             one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
-            `ifdef CPS15
-            io15_cs     <= 0;
-            eeprom_cs   <= 0;
-            joy3_cs     <= 0;
-            joy4_cs     <= 0;
-            `endif
         end
     end
 end
 
-/*
-`ifdef SIMULATION
-always @(posedge one_wait) begin
-    $display("one_wait went high at %t",$time());
-    #1000 $finish;
+always @(*) begin
+    ppu1_cs   = io_cs && A[8:6] == 3'b100; // CPS-A
+    ppu2_cs   = io_cs && A[8:6] == 3'b101; // CPS-B
+    in0_cs    = io_cs && A[8:3] == 6'h0;
+    in1_cs    = io_cs && A[8:3] == 6'h1;
+    in2_cs    = io_cs && A[8:3] == 6'h2;
+    vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
+    // coin_cs  = io_cs && A[8:3] == 6'b001_000 && !RnW;
+    eeprom_cs = io_cs && A[8:3] == 6'b001_000 && !RnW && !UDSWn;
 end
-`endif
-*/
+
 // special registers
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         ppu_rstn   <= 1'b0;
-        snd_latch0 <= 8'd0;
-        snd_latch1 <= 8'd0;
     end
     else if(cpu_cen) begin
         if( olatch_cs ) begin
             // coin counters and lockers should go in here too
             ppu_rstn <= ~cpu_dout[15];
         end
-        if( snd0_cs ) snd_latch0 <= cpu_dout[7:0];
-        if( snd1_cs ) snd_latch1 <= cpu_dout[7:0];
     end
 end
 
-`ifdef CPS15
 // EEPROM control in CPS 1.5 games
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -260,7 +213,6 @@ always @(posedge clk, posedge rst) begin
         end
     end
 end
-`endif
 
 // incremental encoder counter
 wire [7:0] dial_dout;

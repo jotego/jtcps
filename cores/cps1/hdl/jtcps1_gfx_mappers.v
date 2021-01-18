@@ -79,7 +79,9 @@ always @(posedge clk, posedge rst) begin
                 bank_b   <= 4'd0;
                 set_used <= 1'b0;
             end
-            `include "mappers.inc"
+            `ifndef CPS2
+                `include "mappers.inc"
+            `endif
         endcase
     end
 end

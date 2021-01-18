@@ -2,7 +2,7 @@
 
 Device          |    CPS2          |   CPS 1.5        | Remarks
 ----------------|------------------|------------------|-----------
- ROM            | 0-3F'FFFF        |   0-1F'FFFF      |
+ ROM            | 00'0000-3F'FFFF  |   0-1F'FFFF      |
  "output"       | 40'0000-40'000B  |                  |
  QSound RAM 1   | 61'8000-61'9FFF  | F1'8000-F1'9FFF  |
  RAM A          | 66'0000-66'3FFF  |                  |
