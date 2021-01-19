@@ -1,6 +1,5 @@
 # CPS core files
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps15_game.v           ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps15_sound.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_main.v  ]
 
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../cps1/hdl/common.qip      ]

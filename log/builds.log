@@ -1029,3 +1029,7 @@ cps1          	mist	20210118	1	FAIL	9ac8906	f0dc399
 cps1          	mist	20210118	1	FAIL	9ac8906	f0dc399
 cps15         	mist	20210118	1	FAIL	9ac8906	f0dc399
 cps1          	mist	20210118	1	PASS	5e63e7b	4a2d0ca
+cps2          	mist	20210119	1	FAIL	9525167	4a2d0ca
+cps2          	mist	20210119	1	FAIL	9525167	4a2d0ca
+cps2          	mist	20210119	1	PASS	9525167	4a2d0ca
+cps2          	mist	20210119	1	PASS	f495d8e	4a2d0ca
