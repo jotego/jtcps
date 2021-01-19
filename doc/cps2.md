@@ -21,5 +21,5 @@ Device          |    CPS2          |   CPS 1.5        | Remarks
  ?              | 80'40a0-80'40a1  |                  |
  Kludge?        | 80'40b0-80'40b3  |                  |
  Obj bank       | 80'40e0-80'40e1  |                  |
- Video RAM      | 90'0000-92'FFFF  | idem             |
- Work RAM       | FF'0000-FF'FFFF  | idem             |
+ Video RAM      | 90'0000-92'FFFF  | idem             | 64*3 = 192 kB
+ Work  RAM      | FF'0000-FF'FFFF  | idem             | "Stack" RAM

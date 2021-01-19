@@ -137,9 +137,7 @@ always @(posedge clk, posedge rst) begin
         pre_vram_cs <= 1'b0;
         // dbus_cs     <= 1'b0;
         io_cs       <= 1'b0;
-        joy_cs      <= 1'b0;
         sys_cs      <= 1'b0;
-        olatch_cs   <= 1'b0;
         one_wait    <= 1'b0;
         rom_addr    <= 21'd0;
         main2qs_cs   <= 0;
@@ -166,14 +164,13 @@ always @(posedge clk, posedge rst) begin
             // dbus_cs     <= 1'b0;
             sys_cs      <= 1'b0;
             olatch_cs   <= 1'b0;
-            ppu1_cs     <= 1'b0;
-            ppu2_cs     <= 1'b0;
             one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
         end
     end
 end
 
+// I/O
 always @(*) begin
     ppu1_cs   = io_cs && A[8:6] == 3'b100; // CPS-A
     ppu2_cs   = io_cs && A[8:6] == 3'b101; // CPS-B
