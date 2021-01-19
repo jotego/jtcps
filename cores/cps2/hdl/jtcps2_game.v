@@ -195,6 +195,11 @@ jtframe_cen96 u_pxl_cen(
 assign clk_gfx = clk96;
 assign cpu_cen = cen16;
 assign cpu_cenb= cen16b;
+// reg [1:0] aux;
+// assign cpu_cen = cen12;
+// always @(posedge clk48 ) aux<={ aux[0], cen12};
+// assign cpu_cenb = aux==2'b10;
+
 
 localparam REGSIZE=24;
 

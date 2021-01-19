@@ -116,6 +116,12 @@ Offset    | Length | Use
 
 * All offset values are expressed in kilobytes and stored with MSB byte second
 
+The offset for each graphic bank is comprised of two bytes. Each offset data is packed in 4 bits, with the MSB used for bank 3:
+
+{ Offset_bank3, ..bank2, bank1, bank0 } = { byte 24h, byte 23h }
+
+The 4-bit offset makes the MSB of the 20-bit GFX ROM address.
+
 CPS-A board type format:
 
 Bits   |  Use

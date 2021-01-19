@@ -71,9 +71,10 @@ module mist_dump(
             $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
+            $shm_probe(UUT.u_game, "AS");
             $shm_probe(UUT.u_game.u_main, "A");
             $shm_probe(UUT.u_game.u_video, "A");
-            //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
+            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
 
             //$shm_probe(UUT.u_game.u_video.VB );
             //$shm_probe(UUT.u_game.u_video.HB );

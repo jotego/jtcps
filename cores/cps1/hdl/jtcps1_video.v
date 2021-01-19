@@ -403,6 +403,7 @@ jtcps1_obj u_obj(
 `else
 assign vram_obj_cs = 1'b0;
 assign rom0_cs     = 1'b0;
+assign rom0_half   = 1'b0;
 assign rom0_addr   = 20'd0;
 assign obj_pxl     = 9'h1ff;
 `endif

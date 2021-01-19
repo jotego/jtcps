@@ -99,50 +99,62 @@ end
 
 reg [9:0] mapper_in;
 
-jtcps1_gfx_mappers u_mapper1(
-    .clk        ( clk             ),
-    .rst        ( rst             ),
-    .game       ( game            ),
-    .bank_offset( bank_offset     ),
-    .bank_mask  ( bank_mask       ),
+`ifndef CPS2
+    jtcps1_gfx_mappers u_mapper1(
+        .clk        ( clk             ),
+        .rst        ( rst             ),
+        .game       ( game            ),
+        .bank_offset( bank_offset     ),
+        .bank_mask  ( bank_mask       ),
 
-    .layer      ( 3'd1            ),
-    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
+        .layer      ( 3'd1            ),
+        .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
 
-    .offset     ( pre_offset1     ),
-    .mask       ( pre_mask1       ),
-    .unmapped   ( pre_unmapped1   )
+        .offset     ( pre_offset1     ),
+        .mask       ( pre_mask1       ),
+        .unmapped   ( pre_unmapped1   )
+    );
+
+    jtcps1_gfx_mappers u_mapper2(
+        .clk        ( clk             ),
+        .rst        ( rst             ),
+        .game       ( game            ),
+        .bank_offset( bank_offset     ),
+        .bank_mask  ( bank_mask       ),
+
+        .layer      ( 3'd2            ),
+        .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
+
+        .offset     ( pre_offset2     ),
+        .mask       ( pre_mask2       ),
+        .unmapped   ( pre_unmapped2   )
+    );
+
+    jtcps1_gfx_mappers u_mapper3(
+        .clk        ( clk             ),
+        .rst        ( rst             ),
+        .game       ( game            ),
+        .bank_offset( bank_offset     ),
+        .bank_mask  ( bank_mask       ),
+
+        .layer      ( 3'd3            ),
+        .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
+
+        .offset     ( pre_offset3     ),
+        .mask       ( pre_mask3       ),
+        .unmapped   ( pre_unmapped3   )
 );
-
-jtcps1_gfx_mappers u_mapper2(
-    .clk        ( clk             ),
-    .rst        ( rst             ),
-    .game       ( game            ),
-    .bank_offset( bank_offset     ),
-    .bank_mask  ( bank_mask       ),
-
-    .layer      ( 3'd2            ),
-    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
-
-    .offset     ( pre_offset2     ),
-    .mask       ( pre_mask2       ),
-    .unmapped   ( pre_unmapped2   )
-);
-
-jtcps1_gfx_mappers u_mapper3(
-    .clk        ( clk             ),
-    .rst        ( rst             ),
-    .game       ( game            ),
-    .bank_offset( bank_offset     ),
-    .bank_mask  ( bank_mask       ),
-
-    .layer      ( 3'd3            ),
-    .cin        ( mapper_in       ),    // pins 2-9, 11,13,15,17,18
-
-    .offset     ( pre_offset3     ),
-    .mask       ( pre_mask3       ),
-    .unmapped   ( pre_unmapped3   )
-);
+`else
+    assign pre_offset1   = 4'd0;
+    assign pre_offset2   = 4'd0;
+    assign pre_offset3   = 4'd0;
+    assign pre_mask1     = 4'hf;
+    assign pre_mask2     = 4'hf;
+    assign pre_mask3     = 4'hf;
+    assign pre_unmapped1 = 1'b0;
+    assign pre_unmapped2 = 1'b0;
+    assign pre_unmapped3 = 1'b0;
+`endif
 
 reg  [1:0] group;
 reg        vflip;
