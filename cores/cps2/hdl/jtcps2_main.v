@@ -29,7 +29,7 @@ module jtcps2_main(
     // PPU
     output reg         ppu1_cs,
     output reg         ppu2_cs,
-    output reg         ppu_rstn,
+    output             ppu_rstn,
     input   [15:0]     mmr_dout,
     // Sound
     output             UDSWn,
@@ -63,11 +63,15 @@ module jtcps2_main(
     // DIP switches
     input              dip_test,
     input              dip_pause,
-    // QSound
+
+    // EEPROM
     output reg         eeprom_sclk,
     output reg         eeprom_sdi,
     input              eeprom_sdo,
     output reg         eeprom_scs,
+
+    // QSound
+    output reg         z80_rstn,
     input       [ 7:0] main2qs_din,
     output reg  [23:1] main2qs_addr,
     output reg         main2qs_cs,
@@ -79,6 +83,7 @@ wire [23:1] A;
 wire        BERRn = 1'b1;
 
 reg  [15:0] in0, in1, in2;
+reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs;
 
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
@@ -91,9 +96,6 @@ reg         io_cs, joy_cs, eeprom_cs,
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
-`ifdef CPS15
-reg         io15_cs, joy3_cs, joy4_cs;
-`endif
 
 assign cpu_cen   = cen16;
 // As RAM and VRAM share contiguous spaces in the SDRAM
@@ -108,8 +110,9 @@ assign LDSWn = RnW | LDSn;
 // ram_cs and vram_cs signals go down before DSWn signals
 // that causes a false read request to the SDRAM. In order
 // to avoid that a little bit of logic is needed:
-assign ram_cs  = dsn_dly ? reg_ram_cs  : pre_ram_cs;
-assign vram_cs = dsn_dly ? reg_vram_cs : pre_vram_cs;
+assign ram_cs   = dsn_dly ? reg_ram_cs  : pre_ram_cs;
+assign vram_cs  = dsn_dly ? reg_vram_cs : pre_vram_cs;
+assign ppu_rstn = 1'b1;
 
 always @(posedge clk) begin
     if( rst ) begin
@@ -137,7 +140,6 @@ always @(posedge clk, posedge rst) begin
         pre_vram_cs <= 1'b0;
         // dbus_cs     <= 1'b0;
         io_cs       <= 1'b0;
-        sys_cs      <= 1'b0;
         one_wait    <= 1'b0;
         rom_addr    <= 21'd0;
         main2qs_cs   <= 0;
@@ -162,7 +164,6 @@ always @(posedge clk, posedge rst) begin
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
             // dbus_cs     <= 1'b0;
-            sys_cs      <= 1'b0;
             olatch_cs   <= 1'b0;
             one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
@@ -178,21 +179,9 @@ always @(*) begin
     in1_cs    = io_cs && A[8:3] == 6'h1;
     in2_cs    = io_cs && A[8:3] == 6'h2;
     vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
-    // coin_cs  = io_cs && A[8:3] == 6'b001_000 && !RnW;
+    out_cs    = io_cs && A[8:3] == 6'b001_000 && !RnW && !LDSWn;
     eeprom_cs = io_cs && A[8:3] == 6'b001_000 && !RnW && !UDSWn;
-end
-
-// special registers
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        ppu_rstn   <= 1'b0;
-    end
-    else if(cpu_cen) begin
-        if( olatch_cs ) begin
-            // coin counters and lockers should go in here too
-            ppu_rstn <= ~cpu_dout[15];
-        end
-    end
+    sys_cs    = in0_cs | in1_cs | in2_cs | eeprom_cs;
 end
 
 // EEPROM control in CPS 1.5 games
@@ -201,12 +190,16 @@ always @(posedge clk, posedge rst) begin
         eeprom_scs  <= 0;
         eeprom_sclk <= 0;
         eeprom_sdi  <= 0;
+        z80_rstn    <= 0;
     end
     else if(cpu_cen) begin
-        if( eeprom_cs && !LDSWn ) begin
-            eeprom_scs  <= cpu_dout[7];
-            eeprom_sclk <= cpu_dout[6];
-            eeprom_sdi  <= cpu_dout[0];
+        if( eeprom_cs ) begin
+            eeprom_sdi  <= cpu_dout[12];
+            eeprom_sclk <= cpu_dout[13];
+            eeprom_scs  <= cpu_dout[14];
+        end
+        if( out_cs ) begin
+            z80_rstn <= cpu_dout[3];
         end
     end
 end
@@ -268,60 +261,32 @@ assign dial_dout = 8'd0;
 
 always @(posedge clk) begin
     // This still doesn't cover all cases
-    case( joymode )
-        default: begin
+//    case( joymode )
+//        default: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
             in1 <= { joystick4[7:0], joystick3[7:0] };
             in2 <= { coin_input, start_button, 2'b11, ~dip_test, eeprom_sdi };
-        end
-        BUT6: begin
-            in0 <= { joystick2[7:0], joystick1[7:0] };
-            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
-            in2 <= { 1'b1, joystick2[9],
-                coin_input[1:0], start_button, 2'b11, ~dip_test, eeprom_sdi };
-        end
-        BUTX: begin // buttons only
-            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };
-            in1 <= { joystick4[7:0], joystick3[7:0] };
-            in2 <= { coin_input, start_button, 2'b11, ~dip_test, eeprom_sdi };
-        end
-    endcase
+//        end
+//        BUT6: begin
+//            in0 <= { joystick2[7:0], joystick1[7:0] };
+//            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
+//            in2 <= { 1'b1, joystick2[9],
+//                coin_input[1:0], start_button, 2'b11, ~dip_test, eeprom_sdi };
+//        end
+//        BUTX: begin // buttons only
+//            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };
+//            in1 <= { joystick4[7:0], joystick3[7:0] };
+//            in2 <= { coin_input, start_button, 2'b11, ~dip_test, eeprom_sdi };
+//        end
+//    endcase
 end
 
 reg [15:0] sys_data;
 
 always @(posedge clk) begin
-    if( joy_cs ) sys_data <= { joystick2[7:0], joystick1[7:0] };
-    `ifdef CPS15
-    else if( joy3_cs )
-        sys_data <= { 2{start_button[2], coin_input[2], joystick3[5:0] }};
-    else if( joy4_cs )
-        sys_data <= { 2{start_button[3], coin_input[3], joystick4[5:0] }};
-    `endif
-    else if(sys_cs) begin
-        case( A[2:1] )
-            2'b00: sys_data <=
-            charger ? // Support for SFZ charger version
-              { joystick2[9], joystick1[9], start_button[1:0],
-               &coin_input[1:0], service, joystick2[8], joystick1[8], 8'hff } :
-            // Regular CPS1 arcade:
-            { tilt,
-                `ifdef CPS15
-                dip_test /* alternative test dip */,
-                `else
-                1'b1,
-                `endif
-                start_button[1:0],
-                1'b1, service, coin_input[1:0], 8'hff };
-            2'b01: sys_data <= { dipsw_a, 8'hff };
-            2'b10: sys_data <= { dipsw_b, 8'hff };
-            2'b11: sys_data <= { dipsw_c, 8'hff };
-        endcase
-    end
-    else if( dial_cs && A[4] && RnW ) begin
-            sys_data <= { 8'hff, dial_dout };
-    end
-    else sys_data <= 16'hffff;
+    sys_data <= in0_cs ? in0 : (
+                in1_cs ? in1 : (
+                in2_cs ? in2 : 16'hFFFF ));
 end
 
 // Data bus input
@@ -334,17 +299,13 @@ always @(posedge clk) begin
         rom_ok2 <= 1'b0;
     end else begin
         rom_ok2 <= rom_ok;
-        cpu_din <= (dial_cs | joy_cs | sys_cs) ? sys_data : (
-                   (ram_cs | vram_cs )         ? ram_data : (
-                    rom_cs                     ? rom_data : (
-                    ppu2_cs                    ? mmr_dout : (
-                    `ifdef CPS15
-                    eeprom_cs                  ? {~15'd0, eeprom_sdo}  : (
-                    main2qs_cs                 ? {8'hff, main2qs_din} :
-                    `else
-                    (
-                    `endif
-                                                 16'hFFFF )))));
+        cpu_din <= sys_cs ? sys_data : (
+                   (ram_cs | vram_cs )  ? ram_data : (
+                    rom_cs              ? rom_data : (
+                    ppu2_cs             ? mmr_dout : (
+                    eeprom_cs           ? {~15'd0, eeprom_sdo}  : (
+                    main2qs_cs          ? {8'hff, main2qs_din} :
+                                          16'hFFFF )))));
 
     end
 end

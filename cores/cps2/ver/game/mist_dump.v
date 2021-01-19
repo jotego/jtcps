@@ -66,48 +66,14 @@ module mist_dump(
             `ifdef LOADROM
                 $shm_probe(UUT.u_game.u_sdram, "A");
                 $shm_probe(UUT.u_game.u_sdram.u_prom_we, "A");
-                `ifndef NODSP
-                    $shm_probe(UUT.u_game.u_sound.u_dsp16.u_rom, "A");
-                `endif
             `endif
             `ifdef JTFRAME_SDRAM_STATS
             $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             $shm_probe(UUT.u_game.u_main, "A");
-            $shm_probe(UUT.u_game.u_sound, "A");
-            `ifndef NOMAIN
-                //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
-                $shm_probe(UUT.u_game.u_sound.cpu2dsp_s);
-                //$shm_probe(UUT.u_game.u_sound.sample_cnt);
-                //$shm_probe(UUT.u_game.u_sound.uprate.period);
-                $shm_probe(UUT.u_game.u_sound.left );
-                $shm_probe(UUT.u_game.u_sound.right);
-                $shm_probe(UUT.u_game.u_sound.sample);
-                //$shm_probe(UUT.u_game.u_sound.dsp_irq);
-                //$shm_probe(UUT.u_game.u_sound.dsp_rst);
-                //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
-                //$shm_probe(UUT.u_game.u_eeprom,"A");
-                //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
-            `endif
             $shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
-
-            /*
-            $shm_probe(UUT.u_game.u_video.u_dma.step );
-            $shm_probe(UUT.u_game.u_video.u_dma.misses );
-            $shm_probe(UUT.u_game.u_video.u_dma.br  );
-            $shm_probe(UUT.u_game.u_video.u_dma.adv );
-            $shm_probe(UUT.u_game.u_video.u_dma.obj_end  );
-            $shm_probe(UUT.u_game.u_video.u_dma.obj_fill );
-            $shm_probe(UUT.u_game.u_video.u_dma.vram_ok );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_scr1 );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_scr2 );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_scr3 );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_row  );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_obj  );
-            $shm_probe(UUT.u_game.u_video.u_dma.on_pal  );
-            */
 
             //$shm_probe(UUT.u_game.u_video.VB );
             //$shm_probe(UUT.u_game.u_video.HB );

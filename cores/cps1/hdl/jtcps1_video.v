@@ -147,6 +147,10 @@ wire       [15:0]  tile_data, row_scr, obj_cache_data;
 wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 
+`ifdef CPS2
+assign obj_dma_ok = 0;
+`endif
+
 jtcps1_dma u_dma(
     .rst            ( rst               ),
     .clk            ( clk               ),
@@ -252,7 +256,11 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .kabuki_en      ( kabuki_en         ),
 
     // OBJ DMA
-    .obj_dma_ok     ( obj_dma_ok        ),
+    `ifndef CPS2
+        .obj_dma_ok ( obj_dma_ok        ),
+    `else
+        .obj_dma_ok (                   ),
+    `endif
 
     .start_button   ( start_button      ),
     .coin_input     ( coin_input        ),
@@ -361,7 +369,7 @@ assign scr3_pxl   = 11'h1ff;
 `endif
 
 // Objects
-`ifndef NOOBJ
+`ifndef CPS1_NOOBJ
 jtcps1_obj u_obj(
     .rst        ( rst           ),
     .clk        ( clk           ),

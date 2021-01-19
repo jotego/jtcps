@@ -1,6 +1,6 @@
 [all]
 CPS2
-GAMETOP=jtcps15_game
+GAMETOP=jtcps2_game
 CORENAME="JTCPS2"
 
 # Clocks
@@ -30,7 +30,7 @@ JTFRAME_4PLAYERS
 
 # Other
 STEREO_GAME
-
+CPS1_NOOBJ
 
 [mist|sidi]
 VIDEO_WIDTH=512

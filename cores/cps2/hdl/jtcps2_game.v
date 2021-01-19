@@ -165,6 +165,7 @@ assign turbo = status[6];
 jtframe_cen48 u_cen48(
     .clk        ( clk48         ),
     .cen16      ( cen16         ),
+    .cen16b     ( cen16b        ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
     .cen6       (               ),

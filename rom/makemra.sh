@@ -167,11 +167,9 @@ function cps2_mra {
         -header 64 0xff \
         -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
         -header-pointer 16 \
-        -header-data FF FF \
-        -header-data FF FF FF FF \
-        -header-data 22 24 26 28 2a 2c 10 08 04 00 \
-        -header-data 25 \
-        -header-data $(mapper_offset.py 8000 8000 0 0) \
+        -header-data 32 FF 00 \
+        -header-data 02 04 06 \
+        -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
         -buttons Attack Jump None None None None
 }
 
