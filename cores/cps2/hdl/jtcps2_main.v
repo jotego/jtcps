@@ -141,16 +141,14 @@ always @(posedge clk, posedge rst) begin
         pre_ram_cs  <= 1'b0;
         pre_vram_cs <= 1'b0;
         pre_oram_cs <= 1'b0;
-        // dbus_cs     <= 1'b0;
-        io_cs       <= 1'b0;
-        rom_addr    <= 21'd0;
+        io_cs        <= 1'b0;
+        rom_addr     <= 21'd0;
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
     end else begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
             rom_cs      <= A[23:22] == 2'b00;
-            // dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_ram_cs  <= &A[23:16];
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             pre_oram_cs <= A[23:16] == 8'h70;
@@ -163,7 +161,6 @@ always @(posedge clk, posedge rst) begin
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
             pre_oram_cs <= 1'b0;
-            // dbus_cs     <= 1'b0;
             olatch_cs   <= 1'b0;
             dial_cs     <= 1'b0;
         end
@@ -264,7 +261,7 @@ always @(posedge clk) begin
 //        default: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
             in1 <= { joystick4[7:0], joystick3[7:0] };
-            in2 <= { coin_input, start_button, 2'b11, ~dip_test, eeprom_sdi };
+            in2 <= { coin_input, start_button, 2'b11, dip_test, eeprom_sdo };
 //        end
 //        BUT6: begin
 //            in0 <= { joystick2[7:0], joystick1[7:0] };
@@ -302,9 +299,8 @@ always @(posedge clk) begin
                    (ram_cs | vram_cs | oram_cs ) ? ram_data : (
                     rom_cs      ? rom_data : (
                     ppu2_cs     ? mmr_dout : (
-                    eeprom_cs   ? {~15'd0, eeprom_sdo}  : (
                     main2qs_cs  ? {8'hff, main2qs_din} :
-                                16'hFFFF )))));
+                                16'hFFFF ))));
 
     end
 end
