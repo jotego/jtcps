@@ -172,8 +172,8 @@ always @(*) begin
     ppu1_cs   = io_cs && A[8:6] == 3'b100; // CPS-A
     ppu2_cs   = io_cs && A[8:6] == 3'b101; // CPS-B
     in0_cs    = io_cs && A[8:3] == 6'h0;
-    in1_cs    = io_cs && A[8:3] == 6'b00_0100;
-    in2_cs    = io_cs && A[8:3] == 6'b00_1000;
+    in1_cs    = io_cs && A[8:3] == 6'b00_0010;
+    in2_cs    = io_cs && A[8:3] == 6'b00_0100;
     vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
     out_cs    = io_cs && A[8:3] == 6'b001_000 && !RnW && !LDSWn;
     eeprom_cs = io_cs && A[8:3] == 6'b001_000 && !RnW && !UDSWn;
