@@ -53,14 +53,10 @@ module mist_dump(
             $display("NC Verilog: will dump selected signals");
             $shm_probe(frame_cnt);
             //$shm_probe(UUT.u_game.u_prom_we, "A");
-            //$shm_probe(UUT.u_game.u_sound, "A");
+            $shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
-            //$shm_probe(UUT.u_game.u_sdram_mux, "A");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot1, "AS");
-            //$shm_probe(UUT.u_game.u_sdram_mux.u_slot9, "AS");
+            //$shm_probe(UUT.u_game.u_sdram, "AS");
             //$shm_probe(UUT.u_game,"A");
-            //$shm_probe(UUT.u_game.u_sdram_mux,"A");
 
             //$shm_probe(UUT.u_game, "A");
             `ifdef LOADROM

@@ -53,6 +53,7 @@ module jtcps2_main(
     // RAM access
     output             ram_cs,
     output             vram_cs,
+    output             oram_cs,
     input       [15:0] ram_data,
     input              ram_ok,
     // ROM access
@@ -83,7 +84,7 @@ wire [23:1] A;
 wire        BERRn = 1'b1;
 
 reg  [15:0] in0, in1, in2;
-reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obj_ram_cs;
+reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs;
 
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
@@ -93,9 +94,9 @@ wire [24:0] A_full = {A,1'b0};
 (*keep*) wire        ASn;
 reg         io_cs, joy_cs, eeprom_cs,
             sys_cs, olatch_cs, dial_cs;
-reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
+reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
+            reg_ram_cs, reg_vram_cs, reg_oram_cs;
 reg         dsn_dly;
-reg         one_wait;
 
 assign cpu_cen   = cen16;
 // As RAM and VRAM share contiguous spaces in the SDRAM
@@ -112,16 +113,19 @@ assign LDSWn = RnW | LDSn;
 // to avoid that a little bit of logic is needed:
 assign ram_cs   = dsn_dly ? reg_ram_cs  : pre_ram_cs;
 assign vram_cs  = dsn_dly ? reg_vram_cs : pre_vram_cs;
+assign oram_cs  = dsn_dly ? reg_oram_cs : pre_oram_cs;
 assign ppu_rstn = 1'b1;
 
 always @(posedge clk) begin
     if( rst ) begin
         reg_ram_cs  <= 0;
         reg_vram_cs <= 0;
+        reg_oram_cs <= 0;
         dsn_dly     <= 1;
     end else if(cen16) begin
         reg_ram_cs  <= pre_ram_cs;
         reg_vram_cs <= pre_vram_cs;
+        reg_oram_cs <= pre_oram_cs;
         dsn_dly     <= &{UDSWn,LDSWn}; // low if any DSWn was low
     end
 end
@@ -131,17 +135,14 @@ end
 // buf1 = A[23:16]==1001_0001 = 8'h91
 // buf2 = A[23:16]==1001_0010 = 8'h92
 
-(*keep*) reg [23:0] last_fail;
-
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         rom_cs      <= 1'b0;
         pre_ram_cs  <= 1'b0;
         pre_vram_cs <= 1'b0;
-        obj_ram_cs  <= 1'b0;
+        pre_oram_cs <= 1'b0;
         // dbus_cs     <= 1'b0;
         io_cs       <= 1'b0;
-        one_wait    <= 1'b0;
         rom_addr    <= 21'd0;
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
@@ -149,65 +150,25 @@ always @(posedge clk, posedge rst) begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
             rom_cs      <= A[23:22] == 2'b00;
-            one_wait    <= A[23] | ~A[22]; // valid for CPS2?
             // dbus_cs     <= ~|A[23:18]; // all must be zero
-            pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
-            io_cs       <= A[23:19] == 5'b1000_0;
-            obj_ram_cs  <= A[23:16] == 8'h70;
             pre_ram_cs  <= &A[23:16];
+            pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
+            pre_oram_cs <= A[23:16] == 8'h70;
+            io_cs       <= A[23:19] == 5'b1000_0;
             // QSound
-            //io15_cs      <= A[23:12] == 12'hf1C;
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
         end else begin
-            rom_addr[4:1] <= last_fail[3:0]; // this is a trick so the compiler
-                // won't get rid of last_fail, as I need to see it in signal tap
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
-            obj_ram_cs  <= 1'b0;
+            pre_oram_cs <= 1'b0;
             // dbus_cs     <= 1'b0;
             olatch_cs   <= 1'b0;
-            one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
         end
     end
 end
-
-wire [ 7:0] obj_lo, obj_hi;
-wire [15:0] obj_dout = { obj_hi, obj_lo };
-wire        obj_hi_we = !UDSWn && obj_ram_cs;
-wire        obj_lo_we = !LDSWn && obj_ram_cs;
-
-jtframe_dual_ram #(.dw(16), .aw(13)) u_obj_hi(
-    .clk0   ( clk       ),
-    .clk1   ( clk       ),
-    // Port 0: CPU
-    .data0  ( cpu_dout[15:8]     ),
-    .addr0  ( { A[15], A[12:1] } ),
-    .we0    ( obj_hi_we ),
-    .q0     ( obj_hi    ),
-    // Port 1: OBJ Engine
-    .data1  ( ~11'd0    ),
-    .addr1  ( 13'd0     ),
-    .we1    ( 1'b0      ),
-    .q1     (           )
-);
-
-jtframe_dual_ram #(.dw(16), .aw(13)) u_obj_lo(
-    .clk0   ( clk       ),
-    .clk1   ( clk       ),
-    // Port 0: CPU
-    .data0  ( cpu_dout[7:0]      ),
-    .addr0  ( { A[15], A[12:1] } ),
-    .we0    ( obj_lo_we ),
-    .q0     ( obj_lo    ),
-    // Port 1: OBJ Engine
-    .data1  ( ~11'd0    ),
-    .addr1  ( 13'd0     ),
-    .we1    ( 1'b0      ),
-    .q1     (           )
-);
 
 // I/O
 always @(*) begin
@@ -338,13 +299,12 @@ always @(posedge clk) begin
     end else begin
         rom_ok2 <= rom_ok;
         cpu_din <= sys_cs ? sys_data : (
-                   (ram_cs | vram_cs )  ? ram_data : (
-                    rom_cs              ? rom_data : (
-                    ppu2_cs             ? mmr_dout : (
-                    eeprom_cs           ? {~15'd0, eeprom_sdo}  : (
-                    main2qs_cs          ? {8'hff, main2qs_din} : (
-                    obj_ram_cs          ? obj_dout :
-                                          16'hFFFF ))))));
+                   (ram_cs | vram_cs | oram_cs ) ? ram_data : (
+                    rom_cs      ? rom_data : (
+                    ppu2_cs     ? mmr_dout : (
+                    eeprom_cs   ? {~15'd0, eeprom_sdo}  : (
+                    main2qs_cs  ? {8'hff, main2qs_din} :
+                                16'hFFFF )))));
 
     end
 end
@@ -352,19 +312,16 @@ end
 // DTACKn generation
 wire       inta_n;
 reg [2:0]  wait_cycles;
-wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
+wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs, pre_oram_cs };
 wire       bus_busy = |{ rom_cs & ~rom_ok2,
-                    (pre_ram_cs|pre_vram_cs) & ~ram_ok
-                    `ifdef CPS15
-                    , main2qs_cs & ~main2qs_waitn
-                    `endif
+                    (pre_ram_cs|pre_vram_cs|pre_oram_cs) & ~ram_ok,
+                    main2qs_cs & ~main2qs_waitn
                      };
 //                          wait_cycles[0] };
 reg        DTACKn;
 reg        last_LVBL;
 (*keep*) reg [3:0] fail_cnt;
 
-`ifdef CPS15
 reg qs_busakn_s;
 
 always @(posedge clk, posedge rst) begin
@@ -373,7 +330,6 @@ always @(posedge clk, posedge rst) begin
     else if(cpu_cen)
         qs_busakn_s <= main2qs_busakn;
 end
-`endif
 
 reg fail_cnt_ok;
 
@@ -384,27 +340,19 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         wait_cycles <= 3'b111;
         fail_cnt    <= 4'd0;
         fail_cnt_ok <= 0;
-        last_fail   <= 4'd0;
     end else /*if(cen16b)*/ begin
         if( rom_ok ) fail_cnt_ok <= 1;
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn
-            `ifdef CPS15
             || (main2qs_cs && qs_busakn_s) // wait for Z80 bus grant
-            `endif
         ) begin // for falling edge of ASn
             DTACKn <= 1'b1;
             wait_cycles <= 3'b111;
         end else if( !ASn  ) begin
-            // The original hardware always waits for 250ns
-            // on each bus access, except if one_wait signal is
-            // set low. Then it waits on a secondary input, which
-            // seems to be tied high on the schematics.
             if( cen16 ) begin
                 wait_cycles[2] <= 1'b0;
-                wait_cycles[1] <= wait_cycles[2];
+                wait_cycles[1:0] <= wait_cycles[2:1];
             end
-            if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
             if( bus_cs ) begin
                 // we avoid accumulating delay by counting it
                 // and skipping wait cycles when necessary
@@ -423,7 +371,6 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         end
         if( !LVBL && last_LVBL ) begin
             fail_cnt <= 4'd0;
-            last_fail <= fail_cnt;
         end
     end
 end

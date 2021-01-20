@@ -104,7 +104,8 @@ module jtcps2_game(
 
 wire        clk_gfx;
 wire        LHBL, LVBL; // internal blanking signals
-wire        snd_cs, qsnd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
+wire        snd_cs, qsnd_cs,
+            main_ram_cs, main_vram_cs, main_oram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
 wire        HB, VB;
@@ -251,6 +252,7 @@ jtcps2_main u_main(
     .cpu_dout    ( main_dout        ),
     .ram_cs      ( main_ram_cs      ),
     .vram_cs     ( main_vram_cs     ),
+    .oram_cs     ( main_oram_cs     ),
     .ram_data    ( main_ram_data    ),
     .ram_ok      ( main_ram_ok      ),
     // ROM access
@@ -448,6 +450,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .vram_dma_cs    ( vram_dma_cs   ),
     .main_ram_cs    ( main_ram_cs   ),
     .main_vram_cs   ( main_vram_cs  ),
+    .main_oram_cs   ( main_oram_cs  ),
     .vram_rfsh_en   ( vram_rfsh_en  ),
 
     .dsn            ( dsn           ),

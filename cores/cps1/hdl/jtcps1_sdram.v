@@ -67,6 +67,7 @@ module jtcps1_sdram #( parameter
     input           vram_dma_cs,
     input           main_ram_cs,
     input           main_vram_cs,
+    input           main_oram_cs,
     input           vram_rfsh_en,
 
     input    [ 1:0] dsn,
@@ -144,6 +145,7 @@ module jtcps1_sdram #( parameter
 
 localparam [21:0] PCM_OFFSET   = 22'h10_0000,
                   VRAM_OFFSET  = 22'h10_0000,
+                  ORAM_OFFSET  = 22'h20_0000,
                   ZERO_OFFSET  = 22'h0;
 
 `ifdef CPS1
@@ -164,8 +166,9 @@ wire        dump_we;
 
 assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
-assign ram_vram_cs = main_ram_cs | main_vram_cs;
-assign main_offset = main_ram_cs ? ZERO_OFFSET : VRAM_OFFSET;
+assign ram_vram_cs = main_ram_cs | main_vram_cs | main_oram_cs;
+assign main_offset = main_oram_cs ? ORAM_OFFSET :
+                    (main_ram_cs  ? ZERO_OFFSET : VRAM_OFFSET );
 assign prog_rd     = 0;
 
 always @(posedge clk)
