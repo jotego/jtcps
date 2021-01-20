@@ -93,7 +93,7 @@ wire [24:0] A_full = {A,1'b0};
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
 reg         io_cs, joy_cs, eeprom_cs,
-            sys_cs, olatch_cs, dial_cs;
+            sys_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
 reg         dsn_dly;
@@ -157,12 +157,12 @@ always @(posedge clk, posedge rst) begin
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
         end else begin
-            rom_cs      <= 1'b0;
-            pre_ram_cs  <= 1'b0;
-            pre_vram_cs <= 1'b0;
-            pre_oram_cs <= 1'b0;
-            olatch_cs   <= 1'b0;
-            dial_cs     <= 1'b0;
+            rom_cs      <= 0;
+            pre_ram_cs  <= 0;
+            pre_vram_cs <= 0;
+            pre_oram_cs <= 0;
+            io_cs       <= 0;
+            main2qs_cs  <= 0;
         end
     end
 end
@@ -172,8 +172,8 @@ always @(*) begin
     ppu1_cs   = io_cs && A[8:6] == 3'b100; // CPS-A
     ppu2_cs   = io_cs && A[8:6] == 3'b101; // CPS-B
     in0_cs    = io_cs && A[8:3] == 6'h0;
-    in1_cs    = io_cs && A[8:3] == 6'h1;
-    in2_cs    = io_cs && A[8:3] == 6'h2;
+    in1_cs    = io_cs && A[8:3] == 6'b00_0100;
+    in2_cs    = io_cs && A[8:3] == 6'b00_1000;
     vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
     out_cs    = io_cs && A[8:3] == 6'b001_000 && !RnW && !LDSWn;
     eeprom_cs = io_cs && A[8:3] == 6'b001_000 && !RnW && !UDSWn;

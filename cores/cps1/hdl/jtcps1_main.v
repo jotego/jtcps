@@ -228,6 +228,7 @@ always @(posedge clk, posedge rst) begin
             eeprom_cs   <= 0;
             joy3_cs     <= 0;
             joy4_cs     <= 0;
+            main2qs_cs  <= 0;
             `endif
         end
     end
