@@ -55,7 +55,7 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_prom_we, "A");
             $shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
-            //$shm_probe(UUT.u_game.u_sdram, "AS");
+            $shm_probe(UUT.u_game.u_sdram.u_eeprom, "A");
             //$shm_probe(UUT.u_game,"A");
 
             //$shm_probe(UUT.u_game, "A");
