@@ -28,12 +28,12 @@
         <part>
         00 08 80 08 80 18 80 38 
         ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff 22 24 
-        26 28 2a 2c 10 08 04 00 
-        25 40 88 73 ff ff ff ff 
+        32 ff 00 02 04 06 26 28 
+        2a 2c 2e 00 00 30 02 04 
+        08 30 ff ff ff ff ff ff 
         ff ff ff ff ff ff ff ff 
-        01 23 45 67 54 16 30 72 
-        51 51 51 ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
         </part>
         <!-- maincpu - starts at 0x0 -->
         <interleave output="16">
@@ -60,11 +60,9 @@
             <part name="tqz.18m" crc="42f132ff" map="00210000"/>
             <part name="tqz.20m" crc="b2e128a3" map="21000000"/>
         </interleave>
-        <!-- key - starts at 0xE20000 -->
-        <part name="qndream.key" crc="97eee4ff"/>
-        <!-- QSound firmware - starts at 0xE20014 -->
+        <!-- QSound firmware - starts at 0xE20000 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0xE22014 bytes - 14472 kBytes -->
+        <!-- Total 0xE22000 bytes - 14472 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>
