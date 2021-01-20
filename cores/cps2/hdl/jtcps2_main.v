@@ -83,7 +83,7 @@ wire [23:1] A;
 wire        BERRn = 1'b1;
 
 reg  [15:0] in0, in1, in2;
-reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs;
+reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obj_ram_cs;
 
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
@@ -138,6 +138,7 @@ always @(posedge clk, posedge rst) begin
         rom_cs      <= 1'b0;
         pre_ram_cs  <= 1'b0;
         pre_vram_cs <= 1'b0;
+        obj_ram_cs  <= 1'b0;
         // dbus_cs     <= 1'b0;
         io_cs       <= 1'b0;
         one_wait    <= 1'b0;
@@ -152,6 +153,7 @@ always @(posedge clk, posedge rst) begin
             // dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             io_cs       <= A[23:19] == 5'b1000_0;
+            obj_ram_cs  <= A[23:16] == 8'h70;
             pre_ram_cs  <= &A[23:16];
             // QSound
             //io15_cs      <= A[23:12] == 12'hf1C;
@@ -163,6 +165,7 @@ always @(posedge clk, posedge rst) begin
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
+            obj_ram_cs  <= 1'b0;
             // dbus_cs     <= 1'b0;
             olatch_cs   <= 1'b0;
             one_wait    <= 1'b0;
@@ -170,6 +173,41 @@ always @(posedge clk, posedge rst) begin
         end
     end
 end
+
+wire [ 7:0] obj_lo, obj_hi;
+wire [15:0] obj_dout = { obj_hi, obj_lo };
+wire        obj_hi_we = !UDSWn && obj_ram_cs;
+wire        obj_lo_we = !LDSWn && obj_ram_cs;
+
+jtframe_dual_ram #(.dw(16), .aw(13)) u_obj_hi(
+    .clk0   ( clk       ),
+    .clk1   ( clk       ),
+    // Port 0: CPU
+    .data0  ( cpu_dout[15:8]     ),
+    .addr0  ( { A[15], A[12:1] } ),
+    .we0    ( obj_hi_we ),
+    .q0     ( obj_hi    ),
+    // Port 1: OBJ Engine
+    .data1  ( ~11'd0    ),
+    .addr1  ( 13'd0     ),
+    .we1    ( 1'b0      ),
+    .q1     (           )
+);
+
+jtframe_dual_ram #(.dw(16), .aw(13)) u_obj_lo(
+    .clk0   ( clk       ),
+    .clk1   ( clk       ),
+    // Port 0: CPU
+    .data0  ( cpu_dout[7:0]      ),
+    .addr0  ( { A[15], A[12:1] } ),
+    .we0    ( obj_lo_we ),
+    .q0     ( obj_lo    ),
+    // Port 1: OBJ Engine
+    .data1  ( ~11'd0    ),
+    .addr1  ( 13'd0     ),
+    .we1    ( 1'b0      ),
+    .q1     (           )
+);
 
 // I/O
 always @(*) begin
@@ -304,8 +342,9 @@ always @(posedge clk) begin
                     rom_cs              ? rom_data : (
                     ppu2_cs             ? mmr_dout : (
                     eeprom_cs           ? {~15'd0, eeprom_sdo}  : (
-                    main2qs_cs          ? {8'hff, main2qs_din} :
-                                          16'hFFFF )))));
+                    main2qs_cs          ? {8'hff, main2qs_din} : (
+                    obj_ram_cs          ? obj_dout :
+                                          16'hFFFF ))))));
 
     end
 end

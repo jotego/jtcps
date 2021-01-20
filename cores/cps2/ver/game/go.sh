@@ -53,6 +53,6 @@ $JTFRAME/bin/sim.sh -mist \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
-    -videow 384 -videoh 224 \
+    -videow 384 -videoh 224 -d JTCPS_TURBO \
     $OTHER
 # -d JTCPS_TURBO
