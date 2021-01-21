@@ -78,7 +78,7 @@ wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
 wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
 wire [24:0] pcm_addr  = bulk_addr - { pcm_start[14:0], 10'd0 };
-wire [24:0] gfx_addr  = bulk_addr - { gfx_start[14:0], 10'd0 };
+reg  [24:0] gfx_addr;
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
@@ -93,6 +93,18 @@ reg  clr_ram = 0; // I have to add a proper reset pin to this module
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
+
+//localparam SWM=19, SWL=3;
+//localparam SWM=24, SWL=2;
+localparam SWM=24, SWL=4;
+
+always @(*) begin
+    gfx_addr  = bulk_addr - { gfx_start[14:0], 10'd0 };
+`ifdef CPS2
+    // CPS2 address lines are scrambled
+    gfx_addr = { gfx_addr[24:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
+`endif
+end
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
