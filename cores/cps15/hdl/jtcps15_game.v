@@ -463,6 +463,9 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .main_vram_cs   ( main_vram_cs  ),
     .vram_rfsh_en   ( vram_rfsh_en  ),
 
+    // Object RAM (CPS2)
+    .main_oram_cs   ( 1'b0          ),
+
     .dsn            ( dsn           ),
     .main_dout      ( main_dout     ),
     .main_rnw       ( main_rnw      ),
