@@ -47,7 +47,7 @@ if [ -n "$SCENE" ]; then
         exit 1
     fi
     MMR_FILE="-d MMR_FILE=\"$GAME/regs${SCENE}.hex\""
-    OTHER="$OTHER -d NOMAIN -d NOSOUND -video 4"
+    OTHER="$OTHER -d NOMAIN -d NOSOUND -video 3"
     SCENE="-game $GAME -scene $SCENE"
     rm sdram_bank?.hex
 else
