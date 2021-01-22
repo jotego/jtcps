@@ -108,6 +108,7 @@ wire        snd_cs, qsnd_cs,
             main_ram_cs, main_vram_cs, main_oram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
+wire        obank;  // OBJ bank
 wire        HB, VB;
 wire [18:0] snd_addr;
 wire [22:0] qsnd_addr;
@@ -253,6 +254,7 @@ jtcps2_main u_main(
     .ram_cs      ( main_ram_cs      ),
     .vram_cs     ( main_vram_cs     ),
     .oram_cs     ( main_oram_cs     ),
+    .obank       ( obank            ),
     .ram_data    ( main_ram_data    ),
     .ram_ok      ( main_ram_ok      ),
     // ROM access
@@ -451,6 +453,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .main_ram_cs    ( main_ram_cs   ),
     .main_vram_cs   ( main_vram_cs  ),
     .main_oram_cs   ( main_oram_cs  ),
+    .obank          ( obank         ),
     .vram_rfsh_en   ( vram_rfsh_en  ),
 
     .dsn            ( dsn           ),

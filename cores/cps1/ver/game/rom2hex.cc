@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -29,8 +31,21 @@ void read_bank(char *data, ifstream& fin, int start, int end, int offset=0 );
 void dump_cfg( char header[64]);
 void dump_kabuki( char header[64]);
 void dump_qsnd( char *data );
+void rewrite( uint64_t* io );
 
 int main(int argc, char *argv[]) {
+    bool cps2=false;
+
+    for( int k=2; k<argc; k++ ) {
+        if( strcmp(argv[k], "-cps2")==0 ) {
+            // printf("rom2hex: CPS2 mode enabled\n");
+            cps2=true;
+            continue;
+        }
+        printf("rom2hex: unsupported argument '%s'\n", argv[k] );
+        return 1;
+    }
+
     ifstream fin( argv[1], ios_base::binary );
     if( !fin.good() ) {
         cout << "ERROR: cannot open file " << argv[1] << '\n';
@@ -65,6 +80,11 @@ int main(int argc, char *argv[]) {
         // GFX
         clear_bank( data );
         read_bank( data, fin, gfx_start, 0 );
+        if( cps2 ) {
+            const int banksize=0x20'0000;
+            for (int i = 0; i < 0x80'0000; i += banksize)
+                rewrite( (uint64_t *)(data+i) );
+        }
         dump_bank( data, "sdram_bank2.hex" );
         // Sound
         clear_bank( data );
@@ -82,6 +102,17 @@ int main(int argc, char *argv[]) {
 
     delete []data;
     return 0;
+}
+
+void rewrite( uint64_t* io ) {
+    uint64_t *copy = new uint64_t[0x20'0000/8];
+    memcpy( copy, io, 0x20'0000 );
+    for( int k=0; k<0x20'0000/8; k++ ) {
+        // gfx_addr = { gfx_addr[24:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
+        int kx = (k>>1)  | ((k&1)<<17);
+        io[kx]=copy[k];
+    }
+    delete[] copy;
 }
 
 void clear_bank( char *data ) {

@@ -40,6 +40,7 @@ $JTFRAME/hdl/sound/jtframe_fir.v
 $JTFRAME/hdl/sound/jtframe_uprate2_fir.v
 # SDRAM
 -F $JTFRAME/hdl/sdram/jtframe_sdram_bank.f
+$JTFRAME/hdl/sdram/jtframe_sdram_stats.v
 
 $JTFRAME/hdl/ram/jtframe_dual_ram.v
 $JTFRAME/hdl/ram/jtframe_ram.v

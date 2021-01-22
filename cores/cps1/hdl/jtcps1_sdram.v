@@ -68,6 +68,7 @@ module jtcps1_sdram #( parameter
     input           main_ram_cs,
     input           main_vram_cs,
     input           main_oram_cs,
+    input           obank,
     input           vram_rfsh_en,
 
     input    [ 1:0] dsn,
@@ -148,6 +149,12 @@ localparam [21:0] PCM_OFFSET   = 22'h10_0000,
                   ORAM_OFFSET  = 22'h20_0000,
                   ZERO_OFFSET  = 22'h0;
 
+`ifdef CPS2
+    localparam [21:0] SCR_OFFSET = 22'h00_0000; // change this when moving to 8MB+ GFX
+`else
+    localparam [21:0] SCR_OFFSET = ZERO_OFFSET;
+`endif
+
 `ifdef CPS15
 localparam EEPROM_AW=7;
 `else
@@ -158,6 +165,7 @@ wire [21:0] gfx0_addr, gfx1_addr;
 wire [21:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
+reg  [16:0] main_addr_x; // main addr modified for object bank access
 
 // EEPROM
 wire [EEPROM_AW-1:0] dump_addr;
@@ -170,6 +178,14 @@ assign ram_vram_cs = main_ram_cs | main_vram_cs | main_oram_cs;
 assign main_offset = main_oram_cs ? ORAM_OFFSET :
                     (main_ram_cs  ? ZERO_OFFSET : VRAM_OFFSET );
 assign prog_rd     = 0;
+
+always @(*) begin
+    main_addr_x = main_ram_addr;
+    `ifdef CPS2
+    if( main_oram_cs )
+        main_addr_x[12] = main_ram_addr[12] ^ obank;
+    `endif
+end
 
 always @(posedge clk)
     refresh_en <= ~LVBL & vram_rfsh_en;
@@ -261,7 +277,7 @@ jtcps1_prom_we #(
         .slot0_din   ( main_dout     ),
         .slot0_wrmask( dsn           ),
 
-        .slot0_addr  ( main_ram_addr ),
+        .slot0_addr  ( main_addr_x   ),
         .slot1_addr  ( vram_dma_addr ),
 
         .slot0_dout  ( main_ram_data ),
@@ -355,7 +371,7 @@ jtframe_rom_2slots #(
     // Slot 1: Scroll
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
-    .SLOT1_OFFSET( ZERO_OFFSET   )
+    .SLOT1_OFFSET( SCR_OFFSET    )
     //.SLOT1_REPACK( 1             )
 ) u_bank2 (
     .rst         ( rst           ),

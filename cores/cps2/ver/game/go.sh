@@ -32,7 +32,7 @@ fi
 # Prepare ROM file and config file
 make || exit $?
 ln -sf $ROM/$GAME.rom rom.bin
-rom2hex rom.bin || exit $?
+rom2hex rom.bin -cps2 || exit $?
 
 CFG_FILE=cps_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then

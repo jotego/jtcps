@@ -54,6 +54,7 @@ module jtcps2_main(
     output             ram_cs,
     output             vram_cs,
     output             oram_cs,
+    output reg         obank,
     input       [15:0] ram_data,
     input              ram_ok,
     // ROM access
@@ -84,7 +85,7 @@ wire [23:1] A;
 wire        BERRn = 1'b1;
 
 reg  [15:0] in0, in1, in2;
-reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs;
+reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
@@ -175,8 +176,9 @@ always @(*) begin
     in1_cs    = io_cs && A[8:3] == 6'b00_0010;
     in2_cs    = io_cs && A[8:3] == 6'b00_0100;
     vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
-    out_cs    = io_cs && A[8:3] == 6'b001_000 && !RnW && !LDSWn;
-    eeprom_cs = io_cs && A[8:3] == 6'b001_000 && !RnW && !UDSWn;
+    out_cs    = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !LDSWn;
+    eeprom_cs = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !UDSWn;
+    obank_cs  = io_cs && A[8:3] == 6'b0_1110_0 && !RnW && !LDSWn;
     sys_cs    = in0_cs | in1_cs | in2_cs | eeprom_cs;
 end
 
@@ -187,6 +189,7 @@ always @(posedge clk, posedge rst) begin
         eeprom_sclk <= 0;
         eeprom_sdi  <= 0;
         z80_rstn    <= 0;
+        obank       <= 0;
     end
     else if(cpu_cen) begin
         if( eeprom_cs ) begin
@@ -197,6 +200,7 @@ always @(posedge clk, posedge rst) begin
         if( out_cs ) begin
             z80_rstn <= cpu_dout[3];
         end
+        if( obank_cs ) obank <= cpu_dout[0];
     end
 end
 
