@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Video-only simulations have been integrated into the main 'game' simulation"
+exit 0
+
+
 # The simulation can work loading a local .hex file
 # for SDRAM, but it has to be provided in a 8-bit per line format
 # use macro SDRAM_HEXFILE or argument -hex to enable this

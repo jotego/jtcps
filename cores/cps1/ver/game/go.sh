@@ -12,27 +12,51 @@
 GAME=ghouls
 PATCH=
 OTHER=
+SCENE=
 
 while [ $# -gt 0 ]; do
     case $1 in
         -g|-game)
-            shift;
-            GAME=$1;
+            shift
+            GAME=$1
             if [ ! -e $ROM/$GAME.rom ]; then
                 echo Cannot find $ROM/$GAME.rom
                 exit 1;
             fi
             touch rom.bin;;
+        -s|-scene)
+            shift
+            SCENE=$1;;
         -p|-patch) shift; PATCH=$1;;
+        -h|-help)
+            echo "CPS simulation specific commands"
+            echo "   -g|-game   selects game. Use MAME names"
+            echo "   -s|-scene  selects simulation scene. Turns off MAIN/SOUND simulation"
+            echo "   ---------------------- "
+            $JTFRAME/bin/sim.sh -sysname cps1 -help
+            exit 0;;
         *) OTHER="$OTHER $1";;
     esac
     shift
 done
 
+# Check that the scene exists
+if [ -n "$SCENE" ]; then
+    if [[ ! -e $GAME/vram${SCENE}.bin || ! -e $GAME/regs${SCENE}.hex ]]; then
+        echo "Error: cannot find scene $SCENE files in $GAME folder"
+        exit 1
+    fi
+    MMR_FILE="-d MMR_FILE=\"$GAME/regs${SCENE}.hex\""
+    OTHER="$OTHER -d NOMAIN -d NOSOUND -video 4"
+    SCENE="-game $GAME -scene $SCENE"
+    rm sdram_bank?.hex
+else
+    MMR_FILE=
+fi
 
 ln -sf $ROM/$GAME.rom rom.bin
 ln -sf $JTFRAME/hdl/sound/uprate2.hex
-make || exit $?
+make SCENE="$SCENE" || exit $?
 
 CFG_FILE=../video/cfg/${GAME}_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -55,6 +79,6 @@ $JTFRAME/bin/sim.sh -mist \
     -def ../../hdl/jtcps1.def \
     -d JTCPS_TURBO \
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d SKIP_RAMCLR\
-    -videow 384 -videoh 224 \
-    $OTHER
+    -videow 384 -videoh 224 $MMR_FILE -d JTFRAME_SIM_ROMRQ_NOCHECK \
+    -d VIDEO_START=2 $OTHER
     #-d CPSB_CONFIG="$CPSB_CONFIG" \

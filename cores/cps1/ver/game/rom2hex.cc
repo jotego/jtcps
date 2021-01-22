@@ -12,6 +12,8 @@
 #include <iomanip>
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
+#include <string>
 
 using namespace std;
 
@@ -27,7 +29,8 @@ int get_offset( char *b, int s ) {
 
 void clear_bank( char *data );
 void dump_bank( char *data, const char *fname );
-void read_bank(char *data, ifstream& fin, int start, int end, int offset=0 );
+void read_bank( char *data, ifstream& fin, int start, int end, int offset=0 );
+void read_vram( char *data, const string& game, const string& scene );
 void dump_cfg( char header[64]);
 void dump_kabuki( char header[64]);
 void dump_qsnd( char *data );
@@ -35,11 +38,22 @@ void rewrite( uint64_t* io );
 
 int main(int argc, char *argv[]) {
     bool cps2=false;
+    string game, scene;
 
     for( int k=2; k<argc; k++ ) {
         if( strcmp(argv[k], "-cps2")==0 ) {
             // printf("rom2hex: CPS2 mode enabled\n");
             cps2=true;
+            continue;
+        }
+        if( strcmp(argv[k], "-game")==0 ) {
+            assert( k+1 < argc );
+            game=argv[++k];
+            continue;
+        }
+        if( strcmp(argv[k], "-scene")==0 ) {
+            assert( k+1 < argc );
+            scene=argv[++k];
             continue;
         }
         printf("rom2hex: unsupported argument '%s'\n", argv[k] );
@@ -73,6 +87,12 @@ int main(int argc, char *argv[]) {
 
     char *data = new char[8*1024*1024];
     try{
+        // VRAM
+        if( game.size() && scene.size() ) {
+            clear_bank(data);
+            read_vram( data, game, scene );
+            dump_bank( data, "sdram_bank0.hex" );
+        }
         // Main CPU
         clear_bank( data );
         read_bank( data, fin, 0, snd_start );
@@ -131,7 +151,11 @@ void dump_bank( char *data, const char *fname ) {
         b&=0xff;
         a = (a<<8) | b;
         //fout << hex << setw(4) << setfill('0') << a << '\n';
-        fout << hex << setw(4) << setfill('0') << a << '\n';
+        fout << hex << setw(4) << setfill('0') << a;
+        if( (k&0xe) == 0xe )
+            fout << '\n';
+        else
+            fout << ' ';
     }
 }
 
@@ -183,5 +207,22 @@ void dump_qsnd( char *data ) {
         flsb << hex << (d&0xff) << '\n';
         d = data[k++];
         fmsb << hex << (d&0xff) << '\n';
+    }
+}
+
+void read_vram( char *data, const string& game, const string& scene ) {
+    string vram_name = game +"/"+"vram"+scene+".bin";
+    ifstream fin( vram_name, ios_base::binary );
+    if( fin ) {
+        const int offset=0x10'0000 << 1;
+        fin.read( data+offset, 192*1024 );
+        char *b = data+offset;
+        for( int k=0; k<192*1024; k+=2 ) {
+            char a = b[k+0];
+            b[k+0] = b[k+1];
+            b[k+1] = a;
+        }
+    } else {
+        printf("Error: cannot open file %s", vram_name.c_str());
     }
 }

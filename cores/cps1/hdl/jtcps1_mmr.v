@@ -248,7 +248,9 @@ initial begin
     // CPSB_CONFIG samples:
     //      `define CPSB_CONFIG {REGSIZE{8'b0}}
     //      `define CPSB_CONFIG 16'hfff7, 16'h4440, 8'h07, 8'hff,8'hf3,8'h44,8'h40,8'h0,8'h14,8'h20,8'h8,8'h2,8'h32,8'h0,8'h0,8'h30,8'h2e,8'h2c,8'h2a,8'h28,8'hff,8'hff,8'hff,8'hff,8'h5,8'h20
-    regs = { `CPSB_CONFIG };
+    `ifdef CPSB_CONFIG
+        regs = { `CPSB_CONFIG };
+    `endif
     $display("Layer control address: %X", `MMR(6) );
     $display("Palette page  address: %X", `MMR(11));
     $display("INFO: MMR initial values read from %s", `MMR_FILE );
