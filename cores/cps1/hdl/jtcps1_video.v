@@ -67,6 +67,13 @@ module jtcps1_video(
     output             vram_dma_clr,
     output             vram_rfsh_en,
 
+    // Object Table (CPS2 only)
+    `ifdef CPS2
+        input  [15:0]  objtable_data,
+        output [11:0]  objtable_addr,
+        input          objtable_ok,
+    `endif
+
     // Video signal
     output             HS,
     output             VS,
@@ -143,12 +150,13 @@ wire       [15:0]  bank_offset;
 wire       [15:0]  bank_mask;
 
 wire       [ 7:0]  tile_addr;
-wire       [15:0]  tile_data, row_scr, obj_cache_data;
+wire       [15:0]  tile_data, row_scr;
 wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 
 `ifdef CPS2
 assign obj_dma_ok = 0;
+assign objtable_addr = { 2'd0, obj_cache_addr};
 `endif
 
 jtcps1_dma u_dma(
@@ -190,8 +198,13 @@ jtcps1_dma u_dma(
 
     // Objects
     .vram_obj_base  ( vram_obj_base     ),
-    .obj_table_addr ( obj_cache_addr    ),
-    .obj_table_data ( obj_cache_data    ),
+    `ifdef CPS2
+        .obj_table_addr ( 10'd0         ),
+        .obj_table_data (               ),
+    `else
+        .obj_table_addr (obj_cache_addr ),
+        .obj_table_data (objtable_data  ),
+    `endif
     .obj_dma_ok     ( obj_dma_ok        ),
 
     .br             ( busreq            ),
@@ -377,7 +390,6 @@ assign scr3_pxl   = 11'h1ff;
 `endif
 
 // Objects
-`ifndef CPS1_NOOBJ
 jtcps1_obj u_obj(
     .rst        ( rst           ),
     .clk        ( clk           ),
@@ -386,7 +398,7 @@ jtcps1_obj u_obj(
 
     // Cache access
     .frame_addr ( obj_cache_addr),
-    .frame_data ( obj_cache_data),
+    .frame_data ( objtable_data ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
@@ -407,13 +419,6 @@ jtcps1_obj u_obj(
 
     .pxl        ( obj_pxl       )
 );
-`else
-assign vram_obj_cs = 1'b0;
-assign rom0_cs     = 1'b0;
-assign rom0_half   = 1'b0;
-assign rom0_addr   = 20'd0;
-assign obj_pxl     = 9'h1ff;
-`endif
 
 `ifndef NOCOLMIX
 jtcps1_colmix u_colmix(

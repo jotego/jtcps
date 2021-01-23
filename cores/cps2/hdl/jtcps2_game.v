@@ -140,6 +140,7 @@ wire        cfg_we;
 // CPS2 Objects
 wire [11:0] otable_addr;
 wire [15:0] otable_dout;
+wire        otable_ok;
 
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
@@ -323,6 +324,11 @@ jtcps1_video #(REGSIZE) u_video(
     .busreq         ( busreq        ),
     .busack         ( busack        ),
 
+    // Object table
+    .objtable_addr  ( otable_addr   ),
+    .objtable_data  ( otable_dout   ),
+    .objtable_ok    ( otable_ok     ),
+
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
@@ -446,8 +452,9 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .scs            ( scs           ),
 
     // CPS2 Objecs
-    .obj_addr       ( otable_addr   ),
-    .obj_dout       ( otable_dout   ),
+    .objtable_addr  ( otable_addr   ),
+    .objtable_data  ( otable_dout   ),
+    .objtable_ok    ( otable_ok     ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
