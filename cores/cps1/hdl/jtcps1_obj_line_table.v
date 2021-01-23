@@ -236,7 +236,7 @@ always @(posedge clk, posedge rst) begin
                 end else begin
                     dr_attr <= { 4'd0, vsub, obj_attr[7:0] };
                     dr_code <= code_mn;
-                    dr_hpos <= eff_x[8:0];
+                    dr_hpos <= eff_x[8:0] - 9'd1;
                     dr_start <= 1;
                 end
             end
