@@ -68,11 +68,14 @@ module mist_dump(
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             //$shm_probe(UUT.u_game, "AS");
-            $shm_probe(UUT.u_game.u_main, "A");
+            `ifdef NOMAIN
+                $shm_probe(UUT.u_game.u_video, "AS");
+            `else
+                $shm_probe(UUT.u_game.u_main, "A");
+            `endif
             //$shm_probe(UUT.u_game.u_main.obank);
             //$shm_probe(UUT.u_game.LVBL);
             //$shm_probe(UUT.u_game.LHBL);
-            //$shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
 
             //$shm_probe(UUT.u_game.u_video.VB );

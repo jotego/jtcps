@@ -282,9 +282,10 @@ assign main_vram_cs = 1'b0;
 assign main_rom_cs = 1'b0;
 assign dsn = 2'b11;
 assign main_rnw = 1'b1;
-assign sclk = 0;
-assign sdo  = 0;
-assign scs  = 0;
+assign sclk     = 0;
+assign sdo      = 0;
+assign scs      = 0;
+assign obank    = 0;
 `endif
 
 reg rst_video, rst_sdram;
@@ -297,7 +298,7 @@ always @(negedge clk) begin
     rst_sdram <= rst;
 end
 
-jtcps1_video #(REGSIZE) u_video(
+jtcps1_video #(.REGSIZE(REGSIZE),.TW(12)) u_video(
     .rst            ( rst_video     ),
     .clk            ( clk_gfx       ),
     .pxl2_cen       ( pxl2_cen      ),

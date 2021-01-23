@@ -60,9 +60,8 @@ if [ $GOOD = 0 ]; then
 fi
 
 # Prepare ROM file and config file
-make SCENE="$SCENE" || exit $?
 ln -sf $ROM/$GAME.rom rom.bin
-rom2hex rom.bin -cps2 || exit $?
+make SCENE="$SCENE" || exit $?
 
 CFG_FILE=cps_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then
@@ -84,5 +83,5 @@ $JTFRAME/bin/sim.sh -mist \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
     -videow 384 -videoh 224 $MMR_FILE \
-    -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO
+    -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO \
     $OTHER

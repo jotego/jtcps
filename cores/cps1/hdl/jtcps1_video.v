@@ -112,7 +112,7 @@ module jtcps1_video(
     `endif
 );
 
-parameter REGSIZE=24;
+parameter REGSIZE=24, TW=10;
 
 // use for CPU only simulations:
 `ifdef NOVIDEO
@@ -151,12 +151,12 @@ wire       [15:0]  bank_mask;
 
 wire       [ 7:0]  tile_addr;
 wire       [15:0]  tile_data, row_scr;
-wire       [ 9:0]  obj_cache_addr;
+wire     [TW-1:0]  obj_cache_addr;
 wire               obj_dma_ok;
 
 `ifdef CPS2
 assign obj_dma_ok = 0;
-assign objtable_addr = { 2'd0, obj_cache_addr};
+assign objtable_addr = obj_cache_addr;
 `else
 wire       [15:0]  objtable_data;
 wire               objtable_ok = 1'b1;
@@ -393,7 +393,7 @@ assign scr3_pxl   = 11'h1ff;
 `endif
 
 // Objects
-jtcps1_obj u_obj(
+jtcps1_obj #(.TW(TW)) u_obj(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),

@@ -17,14 +17,14 @@
     Date: 13-1-2020 */
 
 
-module jtcps1_obj(
+module jtcps1_obj #(parameter TW=10) (
     input              rst,
     input              clk,
     input              pxl_cen,
     input              flip,
 
     // cache interface
-    output     [ 9:0]  frame_addr,
+    output   [TW-1:0]  frame_addr,
     input      [15:0]  frame_data,
     input              frame_ok,
 
@@ -58,31 +58,55 @@ wire [ 8:0] line_addr;
 wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
 
-jtcps1_obj_line_table u_line_table(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .flip       ( flip          ),
+`ifndef CPS2
+    jtcps1_obj_line_table u_line_table(
+        .rst        ( rst           ),
+        .clk        ( clk           ),
+        .flip       ( flip          ),
 
-    .start      ( start         ),
-    .vrender    ( vrender       ),
+        .start      ( start         ),
+        .vrender    ( vrender       ),
 
-    // ROM banks
-    .game       ( game          ),
-    .bank_offset( bank_offset   ),
-    .bank_mask  ( bank_mask     ),
+        // ROM banks
+        .game       ( game          ),
+        .bank_offset( bank_offset   ),
+        .bank_mask  ( bank_mask     ),
 
-    // interface with frame table
-    .frame_addr ( frame_addr    ),
-    .frame_data ( frame_data    ),
+        // interface with frame table
+        .frame_addr ( frame_addr    ),
+        .frame_data ( frame_data    ),
 
-    // interface with renderer
-    .dr_start   ( dr_start      ),
-    .dr_idle    ( dr_idle       ),
+        // interface with renderer
+        .dr_start   ( dr_start      ),
+        .dr_idle    ( dr_idle       ),
 
-    .dr_code    ( dr_code       ),
-    .dr_attr    ( dr_attr       ),
-    .dr_hpos    ( dr_hpos       )
-);
+        .dr_code    ( dr_code       ),
+        .dr_attr    ( dr_attr       ),
+        .dr_hpos    ( dr_hpos       )
+    );
+`else
+    jtcps2_obj_table u_line_table(
+        .rst        ( rst           ),
+        .clk        ( clk           ),
+        .flip       ( flip          ),
+
+        .start      ( start         ),
+        .vrender    ( vrender       ),
+
+        // interface with frame table
+        .frame_addr ( frame_addr    ),
+        .frame_data ( frame_data    ),
+        .frame_ok   ( frame_ok      ),
+
+        // interface with renderer
+        .dr_start   ( dr_start      ),
+        .dr_idle    ( dr_idle       ),
+
+        .dr_code    ( dr_code       ),
+        .dr_attr    ( dr_attr       ),
+        .dr_hpos    ( dr_hpos       )
+    );
+`endif
 
 jtcps1_obj_draw u_draw(
     .rst        ( rst           ),
