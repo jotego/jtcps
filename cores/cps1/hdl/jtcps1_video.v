@@ -159,6 +159,7 @@ assign obj_dma_ok = 0;
 assign objtable_addr = { 2'd0, obj_cache_addr};
 `else
 wire       [15:0]  objtable_data;
+wire               objtable_ok = 1'b1;
 `endif
 
 jtcps1_dma u_dma(
@@ -401,6 +402,7 @@ jtcps1_obj u_obj(
     // Cache access
     .frame_addr ( obj_cache_addr),
     .frame_data ( objtable_data ),
+    .frame_ok   ( objtable_ok   ),
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),

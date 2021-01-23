@@ -26,6 +26,7 @@ module jtcps1_obj(
     // cache interface
     output     [ 9:0]  frame_addr,
     input      [15:0]  frame_data,
+    input              frame_ok,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump

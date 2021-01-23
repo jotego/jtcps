@@ -171,6 +171,7 @@ wire [21:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
 reg  [16:0] main_addr_x; // main addr modified for object bank access
+reg         ocache_clr, obank_last;
 
 // EEPROM
 wire [EEPROM_AW-1:0] dump_addr;
@@ -187,13 +188,18 @@ assign prog_rd     = 0;
 always @(*) begin
     main_addr_x = main_ram_addr;
     `ifdef CPS2
-    if( main_oram_cs )
+    if( main_oram_cs ) begin
+        main_addr_x[16:13]  = 4'd0;
         main_addr_x[12] = main_ram_addr[12] ^ obank;
+    end
     `endif
 end
 
-always @(posedge clk)
+always @(posedge clk) begin
     refresh_en <= ~LVBL & vram_rfsh_en;
+    obank_last <= obank;
+    ocache_clr <= obank != obank_last;
+end
 
 jtcps1_prom_we #(
     .CPS        ( CPS           ),
@@ -251,7 +257,7 @@ jtframe_ram_3slots #(
     .slot1_cs    ( vram_dma_cs   ),
     .slot1_clr   ( vram_clr      ),
     .slot2_cs    ( 1'b1          ),
-    .slot2_clr   ( 1'b0          ),
+    .slot2_clr   ( ocache_clr    ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),

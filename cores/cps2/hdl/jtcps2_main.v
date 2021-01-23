@@ -93,7 +93,7 @@ wire [24:0] A_full = {A,1'b0};
 
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
-reg         io_cs, joy_cs, eeprom_cs,
+reg         io_cs, eeprom_cs,
             sys_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
