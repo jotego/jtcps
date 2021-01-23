@@ -30,7 +30,7 @@ int get_offset( char *b, int s ) {
 void clear_bank( char *data );
 void dump_bank( char *data, const char *fname );
 void read_bank( char *data, ifstream& fin, int start, int end, int offset=0 );
-void read_vram( char *data, const string& game, const string& scene );
+void read_vram( char *data, const string& game, const string& scene, const char *fn, int offset, int len );
 void dump_cfg( char header[64]);
 void dump_kabuki( char header[64]);
 void dump_qsnd( char *data );
@@ -90,7 +90,10 @@ int main(int argc, char *argv[]) {
         // VRAM
         if( game.size() && scene.size() ) {
             clear_bank(data);
-            read_vram( data, game, scene );
+            read_vram( data, game, scene, "vram", 0x10'0000, 192 );
+            if( cps2 ) {
+                read_vram( data, game, scene, "obj", 0x20'0000, 8 );
+            }
             dump_bank( data, "sdram_bank0.hex" );
         }
         // Main CPU
@@ -210,14 +213,15 @@ void dump_qsnd( char *data ) {
     }
 }
 
-void read_vram( char *data, const string& game, const string& scene ) {
-    string vram_name = game +"/"+"vram"+scene+".bin";
+void read_vram( char *data, const string& game, const string& scene,
+                const char *fn, int offset, int len ) {
+    string vram_name = (game +"/")+(fn+scene)+".bin";
     ifstream fin( vram_name, ios_base::binary );
     if( fin ) {
-        const int offset=0x10'0000 << 1;
-        fin.read( data+offset, 192*1024 );
+        offset <<=1;
+        fin.read( data+offset, len*1024 );
         char *b = data+offset;
-        for( int k=0; k<192*1024; k+=2 ) {
+        for( int k=0; k<len*1024; k+=2 ) {
             char a = b[k+0];
             b[k+0] = b[k+1];
             b[k+1] = a;

@@ -3,12 +3,27 @@
 GAME=spf2t
 PATCH=
 OTHER=
+SCENE=
 GOOD=0
+TURBO=
 
 while [ $# -gt 0 ]; do
     case $1 in
         -g|-game)  shift; GAME=$1;;
+        -s|-scene)
+            shift
+            SCENE=$1;;
         -p|-patch) shift; PATCH=$1;;
+        -turbo)
+            TURBO="-d JTCPS_TURBO";;
+        -h|-help)
+            echo "CPS simulation specific commands"
+            echo "   -g|-game   selects game. Use MAME names"
+            echo "   -s|-scene  selects simulation scene. Turns off MAIN/SOUND simulation"
+            echo "   -turbo     enables turbo mode: DMA does not pause the CPU"
+            echo "   ---------------------- "
+            $JTFRAME/bin/sim.sh -sysname cps2 -help
+            exit 0;;
         *) OTHER="$OTHER $1";;
     esac
     shift
@@ -24,13 +39,28 @@ for i in ddtod ssf2 ssf2t ecofghtr avsp dstlk ringdest \
     fi
 done
 
+# Check that the scene exists
+if [ -n "$SCENE" ]; then
+    if [[ ! -e $GAME/vram${SCENE}.bin || ! -e $GAME/regs${SCENE}.hex \
+       || ! -e $GAME/obj${SCENE}.bin ]]; then
+        echo "Error: cannot find scene $SCENE files in $GAME folder"
+        exit 1
+    fi
+    MMR_FILE="-d MMR_FILE=\"$GAME/regs${SCENE}.hex\""
+    OTHER="$OTHER -d NOMAIN -d NOSOUND -video 3"
+    SCENE="-game $GAME -scene $SCENE"
+    rm sdram_bank?.hex
+else
+    MMR_FILE=
+fi
+
 if [ $GOOD = 0 ]; then
     echo "The specified game is not a CPS2 title"
     exit 1
 fi
 
 # Prepare ROM file and config file
-make || exit $?
+make SCENE="$SCENE" || exit $?
 ln -sf $ROM/$GAME.rom rom.bin
 rom2hex rom.bin -cps2 || exit $?
 
@@ -53,6 +83,6 @@ $JTFRAME/bin/sim.sh -mist \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
-    -videow 384 -videoh 224 -d JTCPS_TURBO -d JTFRAME_SIM_ROMRQ_NOCHECK \
+    -videow 384 -videoh 224 $MMR_FILE \
+    -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO
     $OTHER
-# -d JTCPS_TURBO

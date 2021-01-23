@@ -150,7 +150,6 @@ wire        main2qs_cs, main_busakn, main_waitn;
 // EEPROM
 wire        sclk, sdi, sdo, scs;
 
-assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 assign dip_flip = 0;
 assign game_led = 0;
 
