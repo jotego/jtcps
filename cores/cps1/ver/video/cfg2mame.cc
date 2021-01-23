@@ -1,15 +1,28 @@
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <string>
 #include <cstring>
 
 using namespace std;
 
-void cpsa();
+void cpsa( ofstream& fout );
 
-int main() {
+int main( int argc, char *argv[] ) {
     char cfg[256];
-    cin.getline( cfg, 256 );
+
+    if( argc!=2 ) {
+        printf("Error: expecting as argument the path to the CPSB config file\n");
+        printf("       cfg2mame cfg/sf2_cfg.hex -> creates regs.mame to use in MAME\n");
+        return 1;
+    }
+    ifstream fin(argv[1]);
+    if( !fin ) {
+        printf("Error: cannot open file %s\n", argv[1] );
+        return 1;
+    }
+
+    fin.getline( cfg, 256 );
     char *aux=strtok(cfg,"h");
     aux = strtok(NULL, "h");
     int reg_addr[32];
@@ -17,41 +30,45 @@ int main() {
     const char *names[] = {
         "ADDR ID",
         "CPSB ID",
-        "mult1",   
-        "mult2",   
-        "rslt0",   
-        "rslt1",   
-        "12-layer",   
-        "17-prio0",   
-        "18-prio1",   
-        "19-prio2",   
-        "20-prio3",   
-        "in2",     
-        "in3",     
+        "mult1",
+        "mult2",
+        "rslt0",
+        "rslt1",
+        "12-layer",
+        "17-prio0",
+        "18-prio1",
+        "19-prio2",
+        "20-prio3",
+        "in2",
+        "in3",
         "13-pal_page",
         "layer_mask0",
         "layer_mask1",
         "layer_mask2",
-        "layer_mask3"        
+        "layer_mask3"
     };
+    ofstream fout("regs.mame");
+    if( !fout ) {
+        printf("Cannot open regs.mame for writting\n");
+        return 1;
+    }
     while( aux && cnt>=0 ) {
         sscanf(aux, "%X,", &reg_addr[cnt]);
         // cout << dec << cnt << " --> " << hex << reg_addr[cnt] << '\n';
         cnt--;
         aux = strtok(NULL, "h");
     }
-    cpsa();
+    cpsa(fout);
     for( int k=2; k<14; k++ ) {
         if( reg_addr[k] == 0xff ) continue;
         int addr = 0x800140+reg_addr[k];
-        //cout << dec << k << ":" << hex << addr << " - " << reg_addr[k] << '\n';
-        cout << "wp " << hex << addr << ",2,w,1,{printf \"" << names[k] << " = %X\",wpdata;g}\n";
+        fout << "wp " << hex << addr << ",2,w,1,{printf \"" << names[k] << " = %X\",wpdata;g}\n";
     }
     return 0;
 }
 
-void cpsa() {
-    cout << 
+void cpsa( ofstream& fout ) {
+    fout <<
 "wp 800100,2,w,1,{printf \"1-OBJ     base = %X\",wpdata; g}\n"
 "wp 800102,2,w,1,{printf \"2-SCROLL1 base = %X\",wpdata; g}\n"
 "wp 800104,2,w,1,{printf \"3-SCROLL2 base = %X\",wpdata; g}\n"
