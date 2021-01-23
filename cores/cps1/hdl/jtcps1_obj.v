@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 module jtcps1_obj(
     input              rst,
@@ -47,6 +47,11 @@ module jtcps1_obj(
     output     [ 8:0]  pxl
 );
 
+wire [15:0] dr_code, dr_attr;
+wire [ 8:0] dr_hpos;
+
+wire        dr_start, dr_idle;
+
 wire [15:0] line_data;
 wire [ 8:0] line_addr;
 
@@ -71,18 +76,24 @@ jtcps1_obj_line_table u_line_table(
     .frame_data ( frame_data    ),
 
     // interface with renderer
-    .line_addr  ( line_addr     ),
-    .line_data  ( line_data     )
+    .dr_start   ( dr_start      ),
+    .dr_idle    ( dr_idle       ),
+
+    .dr_code    ( dr_code       ),
+    .dr_attr    ( dr_attr       ),
+    .dr_hpos    ( dr_hpos       )
 );
 
 jtcps1_obj_draw u_draw(
     .rst        ( rst           ),
     .clk        ( clk           ),
 
-    .start      ( start         ),
+    .start      ( dr_start      ),
+    .idle       ( dr_idle       ),
 
-    .table_addr ( line_addr     ),
-    .table_data ( line_data     ),
+    .obj_code   ( dr_code       ),
+    .obj_attr   ( dr_attr       ),
+    .obj_hpos   ( dr_hpos       ),
 
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),

@@ -15,7 +15,7 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 module jtcps1_obj_line_table(
     input              rst,
@@ -35,21 +35,23 @@ module jtcps1_obj_line_table(
     input      [15:0]  frame_data,
 
     // interface with renderer
-    input      [ 8:0]  line_addr,
-    output reg [15:0]  line_data
+    output reg         dr_start,
+    input              dr_idle,
+
+    output reg [15:0]  dr_code,
+    output reg [15:0]  dr_attr,
+    output reg [ 8:0]  dr_hpos
 );
 
-reg  [15:0] line_buf[0:1023]; // up to 128 sprites per line
-reg  [ 6:0] line_cnt;
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-reg  [15:0] obj_x, obj_y, obj_code, obj_attr;
+reg  [15:0] obj_code, obj_attr, obj_x, obj_y;
 reg  [15:0] last_x, last_y, last_code, last_attr;
 reg  [15:0] pre_code;
 wire [15:0] eff_x;
 
-wire  repeated = (obj_x==last_x) && (obj_y==last_y) && 
+wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
                  (obj_code==last_code) && (obj_attr==last_attr);
 
 reg         first, done, inzone;
@@ -71,19 +73,6 @@ assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for m
 
 reg  [15:0] code_mn;
 reg  [ 4:0] st;
-
-wire [ 9:0] rd_addr = {~vrenderf[0], line_addr};
-`ifdef SIMULATION
-wire [ 7:0] rd_cnt  = line_addr>>2;
-wire [ 1:0] rd_sub  = line_addr[1:0];
-`endif
-
-always @(posedge clk, posedge rst) begin
-    if( rst )
-        line_data <= 16'd0;
-    else
-        line_data <= line_buf[ rd_addr ];
-end
 
 jtcps1_gfx_mappers u_mapper(
     .clk        ( clk             ),
@@ -147,11 +136,11 @@ always @(*) begin
     case( {tile_m!=4'd0, tile_n!=4'd0 } )
         2'b00: code_mn = obj_code;
         2'b01: code_mn = { obj_code[15:4], obj_code[3:0]+n };
-        2'b10: code_mn = { obj_code[15:8], 
+        2'b10: code_mn = { obj_code[15:8],
                            obj_code[7:4]+ (vflip ? mflip : m),
                            obj_code[3:0] };
-        2'b11: code_mn = { obj_code[15:8], 
-                           obj_code[7:4]+ (vflip ? mflip : m), 
+        2'b11: code_mn = { obj_code[15:8],
+                           obj_code[7:4]+ (vflip ? mflip : m),
                            obj_code[3:0]+n };
     endcase
 end
@@ -166,16 +155,21 @@ always @(posedge clk, posedge rst) begin
         obj_x      <= 16'd0;
         pre_code   <= 16'd0;
         obj_y      <= 16'd0;
+        dr_start   <= 0;
+        dr_code    <= 16'h0;
+        dr_attr    <= 16'h0;
+        dr_hpos    <=  9'd0;
     end else begin
         st <= st+5'd1;
         case( st )
             0: begin
-                if( !start ) st<=5'd0;
-                else begin
+                if( !start ) begin
+                    st       <= 5'd0;
+                    dr_start <= 0;
+                end else begin
                     frame_addr <= 10'd0;
                     wait_cycle <= 3'b011;
                     last_tile  <= 1'b0;
-                    line_cnt   <= 7'd0;
                     done       <= 0;
                     first      <= 1'b1;
                     vrenderf   <= vrender1 ^ {1'b0,{8{flip}}};
@@ -194,9 +188,9 @@ always @(posedge clk, posedge rst) begin
                     wait_cycle <= 3'b011; // leave it ready for next round
                     //if( frame_data[15:8] == 8'hff ) st<=10; // end of valid table entries
                 end else st<=1;
-                if(last_tile) begin                    
-                    st   <= 10; // fill
-                end                    
+                if(last_tile) begin
+                    st   <= 0; // done
+                end
             end
             2: begin
                 last_code  <= pre_code;
@@ -234,34 +228,36 @@ always @(posedge clk, posedge rst) begin
                     first <= 1'b0;
                 end
             end
-            6: line_buf[ {vrenderf[0], line_cnt, 2'd0} ] <= { 4'd0, vsub, obj_attr[7:0] };
-            7: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= code_mn;
-            8: line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= eff_x;
+            6: begin
+                // 7: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= code_mn;
+                // 8: line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= eff_x;
+                if( !dr_idle ) begin
+                    st <= 6;
+                end else begin
+                    dr_attr <= { 4'd0, vsub, obj_attr[7:0] };
+                    dr_code <= code_mn;
+                    dr_hpos <= eff_x[8:0];
+                    dr_start <= 1;
+                end
+            end
+            7: begin
+                dr_start <= 0;
+                st <= 8;
+            end
             9: begin
-                if( line_cnt==7'h7f ) begin
+                /*if( line_cnt==7'h7f ) begin
                     st   <= 0; // line full
                     done <= 1;
-                end else begin
-                    if( eff_x>9'h30 && eff_x<9'd448) line_cnt <= line_cnt+7'd1;
-                    if( n == tile_n ) st <= 1; // next element
-                    else begin // prepare for next tile
+                end else begin*/
+                    //if( eff_x>9'h30 && eff_x<9'd448) line_cnt <= line_cnt+7'd1;
+                    if( n == tile_n ) begin
+                        st <= 1; // next element
+                    end else begin // prepare for next tile
                         n <= n + 4'd1;
                         npos <= hflip ? npos-4'd1 : npos+4'd1;
                         st <= 6;
                     end
-                end
-            end
-            // fill the rest of the table
-            10: line_buf[ {vrenderf[0], line_cnt, 2'd0} ] <= ~16'h0;
-            11: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= ~16'h0;
-            12: begin
-                line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= ~16'h0;
-                line_cnt <= line_cnt+7'd1;
-                if( line_cnt==7'h7f ) begin
-                    st   <= 0; // line full
-                    done <= 1;
-                end
-                else st <= 10;
+                //end
             end
         endcase
     end
