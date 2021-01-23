@@ -157,6 +157,8 @@ wire               obj_dma_ok;
 `ifdef CPS2
 assign obj_dma_ok = 0;
 assign objtable_addr = { 2'd0, obj_cache_addr};
+`else
+wire       [15:0]  objtable_data;
 `endif
 
 jtcps1_dma u_dma(
