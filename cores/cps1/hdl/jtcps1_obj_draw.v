@@ -103,6 +103,7 @@ always @(posedge clk, posedge rst) begin
                 end
             end else begin
                 if( read ) begin
+                    buf_wr <= 0;
                     if( rom_good ) begin
                         pxl_data <= rom_data;
                         if( read[1] )
