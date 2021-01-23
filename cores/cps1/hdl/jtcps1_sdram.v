@@ -97,6 +97,10 @@ module jtcps1_sdram #( parameter
     output reg [7:0] snd_data,
     output     [7:0] pcm_data,
 
+    // Object RAM (CPS2)
+    input    [11:0] obj_addr,
+    output   [15:0] obj_dout,
+
     // Graphics
     input           rom0_cs,
     input           rom1_cs,
@@ -163,7 +167,7 @@ localparam EEPROM_AW=6;
 wire [15:0] pre_main_data, oram_dout;
 wire [21:0] gfx0_addr, gfx1_addr;
 wire [21:0] main_offset;
-wire        ram_vram_cs;
+wire        ram_vram_cs, pre_main_ok;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
 
 // EEPROM

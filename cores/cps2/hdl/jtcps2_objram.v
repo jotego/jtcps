@@ -46,13 +46,13 @@ assign we[1] = ~dsn[1] & cs;
 assign cpu_addr = {  obank^main_addr[12], main_addr[11:0] };
 assign gfx_addr = { ~obank, obj_addr        };
 
-always @(posedge clk) begin
+always @(posedge clk_cpu) begin
     ok <= cs;
 end
 
 jtframe_dual_ram #(.dw(8),.aw(13)) u_low(
     .clk0       ( clk_cpu           ),
-    .clk1       ( clk               ),
+    .clk1       ( clk_gfx           ),
     // Port 0: CPU
     .data0      ( main_dout[7:0]    ),
     .addr0      ( cpu_addr          ),
@@ -67,7 +67,7 @@ jtframe_dual_ram #(.dw(8),.aw(13)) u_low(
 
 jtframe_dual_ram #(.dw(8),.aw(13)) u_high(
     .clk0       ( clk_cpu           ),
-    .clk1       ( clk               ),
+    .clk1       ( clk_gfx           ),
     // Port 0: CPU
     .data0      ( main_dout[15:8]   ),
     .addr0      ( cpu_addr          ),

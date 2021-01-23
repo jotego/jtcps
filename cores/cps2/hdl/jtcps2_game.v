@@ -137,6 +137,10 @@ wire [ 8:0] vdump, vrender;
 wire        rom0_half, rom1_half;
 wire        cfg_we;
 
+// CPS2 Objects
+wire [11:0] otable_addr;
+wire [15:0] otable_dout;
+
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
@@ -440,6 +444,10 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .sdi            ( sdi           ),
     .sdo            ( sdo           ),
     .scs            ( scs           ),
+
+    // CPS2 Objecs
+    .obj_addr       ( otable_addr   ),
+    .obj_dout       ( otable_dout   ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
