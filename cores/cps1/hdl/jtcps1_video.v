@@ -390,7 +390,6 @@ jtcps1_obj u_obj(
 
     .start      ( line_start    ),
     .vrender    ( vrender       ),
-    .vrender1   ( vrender1      ),
     .vdump      ( vdump         ),
     .hdump      ( hdump         ),
 

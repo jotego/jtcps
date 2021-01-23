@@ -29,7 +29,6 @@ module jtcps1_obj(
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
-    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
 
@@ -64,7 +63,7 @@ jtcps1_obj_line_table u_line_table(
     .flip       ( flip          ),
 
     .start      ( start         ),
-    .vrender1   ( vrender1      ),
+    .vrender    ( vrender       ),
 
     // ROM banks
     .game       ( game          ),

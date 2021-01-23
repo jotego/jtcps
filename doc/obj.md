@@ -35,3 +35,11 @@ is being accessed with a latch.
 
 A frame buffer is also used in CPS2.
 
+### JTCPS2
+
+Memory bits available without OBJ logic: 249'117 (MiST) => 27 9MK blocks free
+
+The SDRAM does not limit the number of elements:
+    -SDRAM limit: 96MHz / 8 * 4 bytes = 48 MByte
+    -GFX data 4bpp, 16 pixels => 1 pixel = 8 bytes
+    -SDRAM limit in pixels = 48Mbyte/8 = 6MByte => >12k horizontal lines

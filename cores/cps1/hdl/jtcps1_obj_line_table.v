@@ -22,7 +22,7 @@ module jtcps1_obj_line_table(
     input              clk,
     input              flip,
 
-    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
+    input      [ 8:0]  vrender, // 1 line ahead of vdump
     input              start,
 
     // ROM banks
@@ -172,7 +172,7 @@ always @(posedge clk, posedge rst) begin
                     last_tile  <= 1'b0;
                     done       <= 0;
                     first      <= 1'b1;
-                    vrenderf   <= vrender1 ^ {1'b0,{8{flip}}};
+                    vrenderf   <= vrender ^ {1'b0,{8{flip}}};
                 end
             end
             1: begin
