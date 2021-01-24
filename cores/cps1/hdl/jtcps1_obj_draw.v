@@ -61,6 +61,10 @@ function [3:0] colour;
                     { c[31], c[23], c[15], c[7] };
 endfunction
 
+`ifdef SIMULATION
+wire skipped = draw && draw_cnt[0] && &pxl_data;
+`endif
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         rom_addr   <= 20'd0;
@@ -94,9 +98,9 @@ always @(posedge clk, posedge rst) begin
                 buf_wr   <= 1;
                 buf_addr <= buf_addr+9'd1;
                 buf_data <= { pal, colour(pxl_data, hflip) };
-                pxl_data <= hflip ? pxl_data>>1 : pxl_data<<1;
+                pxl_data <= hflip ? {1'b1,pxl_data[31:1]} : {pxl_data[30:0],1'b1};
                 draw_cnt <= draw_cnt>>1;
-                if( draw_cnt[0] ) begin
+                if( draw_cnt[0] || &pxl_data ) begin
                     draw <= 0;
                     read <= read>>1;
                     if(!read[1]) idle<=1;

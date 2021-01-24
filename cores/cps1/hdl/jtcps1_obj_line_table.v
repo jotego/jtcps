@@ -211,16 +211,14 @@ always @(posedge clk, posedge rst) begin
                 obj_x      <= { 7'd0, frame_data[8:0] };
                 //frame_addr <= frame_addr-10'd1;
                 if( frame_addr[9:2]==8'd0 ) last_tile <= 1'b1;
-                st <= 13;
+                st <= 5;
             end
-            13: begin
+            5: begin
                 obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
                 if( unmapped  || (pre_code[15:12]&~mask) )
                     st <= 1; // skip
-                else
-                    st <= 5;
             end
-            5: begin // check whether sprite is visible
+            6: begin // check whether sprite is visible
                 if( (repeated && !first ) || !inzone ) begin
                     st<= 1; // try next one
                 end
@@ -228,11 +226,11 @@ always @(posedge clk, posedge rst) begin
                     first <= 1'b0;
                 end
             end
-            6: begin
+            7: begin
                 // 7: line_buf[ {vrenderf[0], line_cnt, 2'd1} ] <= code_mn;
                 // 8: line_buf[ {vrenderf[0], line_cnt, 2'd2} ] <= eff_x;
                 if( !dr_idle ) begin
-                    st <= 6;
+                    st <= 7;
                 end else begin
                     dr_attr <= { 4'd0, vsub, obj_attr[7:0] };
                     dr_code <= code_mn;
@@ -240,9 +238,8 @@ always @(posedge clk, posedge rst) begin
                     dr_start <= 1;
                 end
             end
-            7: begin
+            8: begin
                 dr_start <= 0;
-                st <= 8;
             end
             9: begin
                 /*if( line_cnt==7'h7f ) begin
@@ -255,7 +252,7 @@ always @(posedge clk, posedge rst) begin
                     end else begin // prepare for next tile
                         n <= n + 4'd1;
                         npos <= hflip ? npos-4'd1 : npos+4'd1;
-                        st <= 6;
+                        st <= 7;
                     end
                 //end
             end
