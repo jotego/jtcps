@@ -298,9 +298,10 @@ always @(negedge clk) begin
     rst_sdram <= rst;
 end
 
-jtcps1_video #(.REGSIZE(REGSIZE),.TW(12)) u_video(
+jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
     .clk            ( clk_gfx       ),
+    .clk_cpu        ( clk48         ),
     .pxl2_cen       ( pxl2_cen      ),
     .pxl_cen        ( pxl_cen       ),
 
@@ -316,7 +317,7 @@ jtcps1_video #(.REGSIZE(REGSIZE),.TW(12)) u_video(
     .ppu_rstn       ( ppu_rstn      ),
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( ppu2_cs       ),
-    .addr           ( ram_addr[5:1] ),
+    .addr           ( ram_addr[13:1]),
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
@@ -324,10 +325,9 @@ jtcps1_video #(.REGSIZE(REGSIZE),.TW(12)) u_video(
     .busreq         ( busreq        ),
     .busack         ( busack        ),
 
-    // Object table
-    .objtable_addr  ( otable_addr   ),
-    .objtable_data  ( otable_dout   ),
-    .objtable_ok    ( otable_ok     ),
+    // Object RAM
+    .obank          ( obank         ),
+    .objram_cs      ( main_oram_cs  ),
 
     // Video signal
     .HS             ( HS            ),
@@ -450,11 +450,6 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .sdi            ( sdi           ),
     .sdo            ( sdo           ),
     .scs            ( scs           ),
-
-    // CPS2 Objecs
-    .objtable_addr  ( otable_addr   ),
-    .objtable_data  ( otable_dout   ),
-    .objtable_ok    ( otable_ok     ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),

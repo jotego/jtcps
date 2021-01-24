@@ -61,7 +61,9 @@ fi
 
 # Prepare ROM file and config file
 ln -sf $ROM/$GAME.rom rom.bin
-make SCENE="$SCENE" || exit $?
+touch rom.bin
+g++ rom2hex.cc -o rom2hex || exit $?
+rom2hex rom.bin -cps2 $SCENE
 
 CFG_FILE=cps_cfg.hex
 if [[ ! -e $CFG_FILE ]]; then

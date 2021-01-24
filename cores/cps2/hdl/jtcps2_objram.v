@@ -36,7 +36,6 @@ module jtcps2_objram(
     output reg      ok,
     input    [ 1:0] dsn,
     input    [15:0] main_dout,
-    input           main_rnw,
     input    [13:1] main_addr,
     // output   [15:0] dout2cpu,
 
@@ -58,7 +57,7 @@ assign weattr[0] = ~dsn[0] & cs &  main_addr[2];
 assign weattr[1] = ~dsn[1] & cs &  main_addr[2];
 
 assign wr_addr  = {  obank^main_addr[13], main_addr[AW-1:3], main_addr[1] };
-assign gfx_addr = { ~obank, obj_addr[AW-2:0] };
+assign gfx_addr = { ~obank, obj_addr[AW-3:0] };
 
 always @(posedge clk_cpu) begin
     ok <= cs;

@@ -242,6 +242,8 @@ void cps2split( char *buf, const string name, int start ) {
     for( int k=start; k<8*1024; k+=4 )
         *p++ = buf[k];
     fout.write( aux, 2*1024 );
+    // copy it twice, once per bank
+    fout.write( aux, 2*1024 );
     delete []aux;
 }
 
@@ -251,6 +253,12 @@ void dump_cps2obj( const string& game, const string& scene ) {
     ifstream fin( fname, ios_base::binary );
     if( fin ) {
         fin.read( buf, 8*1024 );
+        // reverse order
+        for( int k=0; k<8*1024; k+=2 ) {
+            char x   = buf[k];
+            buf[k]   = buf[k+1];
+            buf[k+1] = x;
+        }
         // split data in 4 files
         cps2split( buf, "objxy_lo",   0 );
         cps2split( buf, "objxy_hi",   1 );

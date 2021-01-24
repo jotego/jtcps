@@ -24,6 +24,7 @@
 module jtcps1_video(
     input              rst,
     input              clk,
+    input              clk_cpu,
     input              pxl2_cen,        // pixel clock enable
     input              pxl_cen,        // pixel clock enable
 
@@ -31,6 +32,11 @@ module jtcps1_video(
     output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
     input      [ 3:0]  gfx_en,
+
+    `ifdef CPS2
+    input              obank,
+    input              objram_cs,
+    `endif
 
     // CPU interface
     input              ppu_rstn,
@@ -193,7 +199,6 @@ jtcps1_dma u_dma(
     .vram_obj_base  ( vram_obj_base     ),
     `ifdef CPS2
         .obj_table_addr ( 10'd0         ),
-        .obj_table_data (               ),
     `else
         .obj_table_addr (obj_cache_addr ),
     `endif
@@ -417,15 +422,16 @@ assign scr3_pxl   = 11'h1ff;
     jtcps2_obj u_obj(
         .rst        ( rst           ),
         .clk        ( clk           ),
+        .clk_cpu    ( clk_cpu       ),
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
 
+        .obank      ( obank         ),
         // Interface with CPU
         .objram_cs  ( objram_cs     ),
-        .main_dsn   ( main_dsn      ),
-        .main_dout  ( main_dout     ),
-        .main_rnw   ( main_rnw      ),
-        .main_addr  ( main_addr     ),
+        .main_dsn   ( dsn           ),
+        .main_dout  ( cpu_dout      ),
+        .main_addr  ( addr          ),
 
         .start      ( line_start    ),
         .vrender    ( vrender       ),

@@ -20,6 +20,7 @@
 module jtcps2_obj(
     input              rst,
     input              clk,
+    input              clk_cpu,
     input              pxl_cen,
     input              flip,
 
@@ -27,8 +28,9 @@ module jtcps2_obj(
     input              objram_cs,
     input      [ 1:0]  main_dsn,
     input      [15:0]  main_dout,
-    input              main_rnw,
     input      [13:1]  main_addr,
+
+    input              obank,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
@@ -56,13 +58,13 @@ wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
 
 // shadow RAM interface
-wire [10:0] frame_addr;
-wire [15:0] frame_data, obj_xy, obj_attr;
+wire [10:0] table_attr;
+wire [15:0] obj_xy, obj_attr;
 
 jtcps2_objram u_objram(
     .rst        ( rst           ),
     .clk_cpu    ( clk_cpu       ),
-    .clk_gfx    ( clk_gfx       ),
+    .clk_gfx    ( clk           ),
 
     .obank      ( obank         ),
 
@@ -71,16 +73,15 @@ jtcps2_objram u_objram(
     .ok         (               ),
     .dsn        ( main_dsn      ),
     .main_dout  ( main_dout     ),
-    .main_rnw   ( main_rnw      ),
     .main_addr  ( main_addr     ),
 
     // Interface with OBJ engine
-    .obj_addr   ( frame_addr    ),
+    .obj_addr   ( table_attr    ),
     .obj_xy     ( obj_xy        ),
     .obj_attr   ( obj_attr      )
 );
 
-jtcps2_obj_table u_line_table(
+jtcps2_obj_scan u_scan(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .flip       ( flip          ),
@@ -89,8 +90,9 @@ jtcps2_obj_table u_line_table(
     .vrender    ( vrender       ),
 
     // interface with frame table
-    .frame_addr ( frame_addr    ),
-    .frame_data ( frame_data    ),
+    .table_addr ( table_attr    ),
+    .table_xy   ( obj_xy        ),
+    .table_attr ( obj_attr      ),
 
     // interface with renderer
     .dr_start   ( dr_start      ),

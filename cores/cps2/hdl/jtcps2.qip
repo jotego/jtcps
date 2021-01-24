@@ -3,6 +3,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_main.v              ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_obj.v               ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_objram.v            ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_obj_scan.v          ]
 
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../cps1/hdl/common.qip  ]
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../cps15/hdl/qsound.qip ]

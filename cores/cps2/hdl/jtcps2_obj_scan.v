@@ -14,10 +14,10 @@
 
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
-    Date: 13-1-2020 */
+    Date: 24-1-2021 */
 
 
-module jtcps2_obj_table(
+module jtcps2_obj_scan(
     input              rst,
     input              clk,
     input              flip,
@@ -26,7 +26,7 @@ module jtcps2_obj_table(
     input              start,
 
     // interface with frame table
-    output reg [11:0]  table_addr,
+    output reg [10:0]  table_addr,
     input      [15:0]  table_xy,
     input      [15:0]  table_attr,
 
@@ -48,6 +48,7 @@ reg  [12:0] obj_y, last_y;
 reg  [15:0] last_x, last_attr;
 reg  [15:0] pre_code;
 wire [15:0] eff_x;
+reg  [ 1:0] obj_bank;
 
 wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
                  (obj_code==last_code) && (obj_attr==last_attr);
@@ -125,9 +126,13 @@ always @(*) begin
     endcase
 end
 
+reg last_start;
+reg newline;
+reg init;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        table_addr <= ~10'd0;
+        table_addr <= 11'd0;
         st         <= 0;
         done       <= 1'b0;
         first      <= 1'b1;
@@ -139,20 +144,25 @@ always @(posedge clk, posedge rst) begin
         dr_code    <= 16'h0;
         dr_attr    <= 16'h0;
         dr_hpos    <=  9'd0;
+        newline    <= 0;
+        last_start <= 0;
     end else begin
+        last_start <= start;
         st <= st+5'd1;
         case( st )
             0: begin
-                if( !start ) begin
+                if( !newline ) begin
                     st       <= 5'd0;
                     dr_start <= 0;
                 end else begin
-                    table_addr <= 12'd0;
+                    newline    <= 0;
+                    table_addr <= 11'd0;
                     wait_cycle <= 3'b011;
                     last_tile  <= 1'b0;
                     done       <= 0;
                     first      <= 1'b1;
                     vrenderf   <= vrender ^ {1'b0,{8{flip}}};
+                    init       <= 1;
                 end
             end
             1: begin
@@ -162,14 +172,21 @@ always @(posedge clk, posedge rst) begin
                     n          <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
-                    obj_y      <= frame_xy[12:0];
-                    obj_bank   <= frame_xy[14:13];
+                    obj_y      <= table_xy[12:0];
+                    obj_bank   <= table_xy[14:13];
                     last_y     <= obj_y;
-                    npos       <= frame_attr[5] /* flip */ ? frame_attr[11: 8] /* tile_n */ : 4'd0;
-                    obj_attr   <= frame_data;
+                    npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
+                    obj_attr   <= table_attr;
                     last_attr  <= obj_attr;
                     wait_cycle <= 3'b011; // leave it ready for next round
-                    //if( frame_data[15:8] == 8'hff ) st<=10; // end of valid table entries
+                    if( table_xy[15] )
+                        st<=1;  // skip this entry
+                    if( init ) begin
+                        if( !table_xy[15] )
+                            st <= 1;
+                        else
+                            init <= 0;
+                    end
                 end else st<=1;
                 if(last_tile) begin
                     st   <= 0; // done
@@ -177,11 +194,10 @@ always @(posedge clk, posedge rst) begin
             end
             2: begin
                 last_code  <= obj_code;
-                obj_code   <= frame_attr;
+                obj_code   <= table_attr;
                 last_x     <= obj_x;
-                obj_x      <= { 7'd0, frame_data[8:0] };
-                if( table_addr[11:1]==11'd0 ) last_tile <= 1'b1;
-                if( obj_y[15] ) st <= 1; // skip
+                obj_x      <= { 7'd0, table_xy[8:0] };
+                if( table_addr[10:1]==10'd0 ) last_tile <= 1'b1;
             end
             3: begin // check whether sprite is visible
                 if( (repeated && !first ) || !inzone ) begin
@@ -215,6 +231,11 @@ always @(posedge clk, posedge rst) begin
                 end
             end
         endcase
+        // This must be after the case statement
+        if( start && !last_start ) begin
+            newline <= 1;
+            st <= 0;
+        end
     end
 end
 
