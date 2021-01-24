@@ -35,6 +35,8 @@ void dump_cfg( char header[64]);
 void dump_kabuki( char header[64]);
 void dump_qsnd( char *data );
 void rewrite( uint64_t* io );
+void cps2split( char *buf, const string name, int start );
+void dump_cps2obj( const string& game, const string& scene );
 
 int main(int argc, char *argv[]) {
     bool cps2=false;
@@ -93,6 +95,7 @@ int main(int argc, char *argv[]) {
             read_vram( data, game, scene, "vram", 0x10'0000, 192 );
             if( cps2 ) {
                 read_vram( data, game, scene, "obj", 0x20'0000, 8 );
+                dump_cps2obj( game, scene );
             }
             dump_bank( data, "sdram_bank0.hex" );
         }
@@ -229,4 +232,32 @@ void read_vram( char *data, const string& game, const string& scene,
     } else {
         printf("Error: cannot open file %s", vram_name.c_str());
     }
+}
+
+void cps2split( char *buf, const string name, int start ) {
+    string fname = name + ".bin";
+    ofstream fout( fname, ios_base::binary );
+    char *aux = new char[2*1024];
+    char *p=aux;
+    for( int k=start; k<8*1024; k+=4 )
+        *p++ = buf[k];
+    fout.write( aux, 2*1024 );
+    delete []aux;
+}
+
+void dump_cps2obj( const string& game, const string& scene ) {
+    char *buf = new char[4096*2];
+    string fname = game + "/obj" + scene + ".bin";
+    ifstream fin( fname, ios_base::binary );
+    if( fin ) {
+        fin.read( buf, 8*1024 );
+        // split data in 4 files
+        cps2split( buf, "objxy_lo",   0 );
+        cps2split( buf, "objxy_hi",   1 );
+        cps2split( buf, "objattr_lo", 4 );
+        cps2split( buf, "objattr_hi", 5 );
+    } else {
+        printf("Error: cannot open file %s", fname.c_str());
+    }
+    delete []buf;
 }

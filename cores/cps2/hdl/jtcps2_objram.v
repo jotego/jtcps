@@ -16,11 +16,11 @@
     Version: 1.0
     Date: 5-12-2020 */
 
-// Original order  -- Reordered
-// 0  X                Y
-// 1  Y                X
-// 2  code             attr
-// 3  attr             code
+// Original order
+// 0  X
+// 1  Y
+// 2  code
+// 3  attr
 // Y is read with attr
 // X is read with code
 
@@ -57,7 +57,7 @@ assign wexy[1]   = ~dsn[1] & cs & ~main_addr[2];
 assign weattr[0] = ~dsn[0] & cs &  main_addr[2];
 assign weattr[1] = ~dsn[1] & cs &  main_addr[2];
 
-assign wr_addr  = {  obank^main_addr[13], main_addr[1], main_addr[AW-1:3] };
+assign wr_addr  = {  obank^main_addr[13], main_addr[AW-1:3], main_addr[1] };
 assign gfx_addr = { ~obank, obj_addr[AW-2:0] };
 
 always @(posedge clk_cpu) begin
@@ -66,7 +66,7 @@ end
 
 // Y and X
 
-jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_xy_lo(
+jtframe_dual_ram #(.dw(8),.aw(AW-1),.simfile("objxy_lo.bin")) u_xy_lo(
     .clk0       ( clk_cpu           ),
     .clk1       ( clk_gfx           ),
     // Port 0: CPU
@@ -81,7 +81,7 @@ jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_xy_lo(
     .q1         ( obj_xy[7:0]       )
 );
 
-jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_xy_hi(
+jtframe_dual_ram #(.dw(8),.aw(AW-1),.simfile("objxy_hi.bin")) u_xy_hi(
     .clk0       ( clk_cpu           ),
     .clk1       ( clk_gfx           ),
     // Port 0: CPU
@@ -98,7 +98,7 @@ jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_xy_hi(
 
 // attr and code
 
-jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_attr_lo(
+jtframe_dual_ram #(.dw(8),.aw(AW-1),.simfile("objattr_lo.bin")) u_attr_lo(
     .clk0       ( clk_cpu           ),
     .clk1       ( clk_gfx           ),
     // Port 0: CPU
@@ -113,7 +113,7 @@ jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_attr_lo(
     .q1         ( obj_attr[7:0]     )
 );
 
-jtframe_dual_ram #(.dw(8),.aw(AW-1)) u_attr_hi(
+jtframe_dual_ram #(.dw(8),.aw(AW-1),.simfile("objattr_hi.bin")) u_attr_hi(
     .clk0       ( clk_cpu           ),
     .clk1       ( clk_gfx           ),
     // Port 0: CPU

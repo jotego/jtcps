@@ -17,7 +17,7 @@
     Date: 24-1-2021 */
 
 
-module jtcps2_obj #(parameter TW=10) (
+module jtcps2_obj(
     input              rst,
     input              clk,
     input              pxl_cen,

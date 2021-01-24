@@ -26,9 +26,9 @@ module jtcps2_obj_table(
     input              start,
 
     // interface with frame table
-    output reg [11:0]  frame_addr,
-    input      [15:0]  frame_data,
-    input              frame_ok,
+    output reg [11:0]  table_addr,
+    input      [15:0]  table_xy,
+    input      [15:0]  table_attr,
 
     // interface with renderer
     output reg         dr_start,
@@ -42,8 +42,11 @@ module jtcps2_obj_table(
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-reg  [15:0] obj_code, obj_attr, obj_x, obj_y;
-reg  [15:0] last_x, last_y, last_code, last_attr;
+reg  [15:0] obj_attr, obj_x;
+reg  [15:0] obj_code, last_code, code_mn;
+reg  [12:0] obj_y, last_y;
+reg  [15:0] last_x, last_attr;
+reg  [15:0] pre_code;
 wire [15:0] eff_x;
 
 wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
@@ -56,8 +59,6 @@ wire        vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
-reg         sdram_wait;
-wire        rom_good;
 
 assign      tile_m     = obj_attr[15:12];
 assign      tile_n     = obj_attr[11: 8];
@@ -65,9 +66,7 @@ assign      vflip      = obj_attr[6];
 wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
 assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
-assign      rom_good   = !sdram_wait && frame_ok;
 
-reg  [15:0] code_mn;
 reg  [ 4:0] st;
 
 generate
@@ -128,29 +127,28 @@ end
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        frame_addr <= ~12'd0;
+        table_addr <= ~10'd0;
         st         <= 0;
         done       <= 1'b0;
         first      <= 1'b1;
         obj_attr   <= 16'd0;
         obj_x      <= 16'd0;
-        obj_y      <= 16'd0;
+        pre_code   <= 16'd0;
+        obj_y      <= 12'd0;
         dr_start   <= 0;
         dr_code    <= 16'h0;
         dr_attr    <= 16'h0;
         dr_hpos    <=  9'd0;
-        sdram_wait <= 0;
     end else begin
-        if( rom_good ) st <= st+5'd1;
-        sdram_wait <= 0;
+        st <= st+5'd1;
         case( st )
             0: begin
                 if( !start ) begin
                     st       <= 5'd0;
                     dr_start <= 0;
                 end else begin
-                    frame_addr <= ~12'd0;
-                    sdram_wait <= 0;
+                    table_addr <= 12'd0;
+                    wait_cycle <= 3'b011;
                     last_tile  <= 1'b0;
                     done       <= 0;
                     first      <= 1'b1;
@@ -158,44 +156,34 @@ always @(posedge clk, posedge rst) begin
                 end
             end
             1: begin
-                if( rom_good ) begin
-                    frame_addr <= frame_addr-10'd1;
-                    sdram_wait <= 1;
+                wait_cycle <= { 1'b0, wait_cycle[2:1] };
+                if(wait_cycle[0]) table_addr <= table_addr-12'd1;
+                if( !wait_cycle[0] ) begin
                     n          <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
-                    npos       <= frame_data[5] /* flip */ ? frame_data[11: 8] /* tile_n */ : 4'd0;
-                    last_attr  <= obj_attr;
+                    obj_y      <= frame_xy[12:0];
+                    obj_bank   <= frame_xy[14:13];
+                    last_y     <= obj_y;
+                    npos       <= frame_attr[5] /* flip */ ? frame_attr[11: 8] /* tile_n */ : 4'd0;
                     obj_attr   <= frame_data;
+                    last_attr  <= obj_attr;
+                    wait_cycle <= 3'b011; // leave it ready for next round
                     //if( frame_data[15:8] == 8'hff ) st<=10; // end of valid table entries
-                end
+                end else st<=1;
                 if(last_tile) begin
                     st   <= 0; // done
                 end
             end
-            2: if( rom_good) begin
+            2: begin
                 last_code  <= obj_code;
-                obj_code   <= frame_data;
-                mapper_in  <= frame_data[15:6];
-                frame_addr <= frame_addr-10'd1;
-                sdram_wait <= 1;
-            end
-            3: if( rom_good) begin
-                last_y     <= obj_y;
-                obj_y      <= frame_data;
-                frame_addr <= frame_addr-10'd1;
-                sdram_wait <= 1;
-            end
-            4: if( rom_good) begin
-                // Note that obj_code uses "offset", which was calculated with the
-                // frame_data value of st 2, but because the mapper takes an extra
-                // clock cycle to produce the output, the result is collected here
+                obj_code   <= frame_attr;
                 last_x     <= obj_x;
                 obj_x      <= { 7'd0, frame_data[8:0] };
-                //frame_addr <= frame_addr-10'd1;
-                if( frame_addr[11:2]==10'd0 ) last_tile <= 1'b1;
+                if( table_addr[11:1]==11'd0 ) last_tile <= 1'b1;
+                if( obj_y[15] ) st <= 1; // skip
             end
-            5: begin // check whether sprite is visible
+            3: begin // check whether sprite is visible
                 if( (repeated && !first ) || !inzone ) begin
                     st<= 1; // try next one
                 end
@@ -218,14 +206,13 @@ always @(posedge clk, posedge rst) begin
                 st <= 8;
             end
             9: begin
-                    if( n == tile_n ) begin
-                        st <= 1; // next element
-                    end else begin // prepare for next tile
-                        n <= n + 4'd1;
-                        npos <= hflip ? npos-4'd1 : npos+4'd1;
-                        st <= 6;
-                    end
-                //end
+                if( n == tile_n ) begin
+                    st <= 1; // next element
+                end else begin // prepare for next tile
+                    n <= n + 4'd1;
+                    npos <= hflip ? npos-4'd1 : npos+4'd1;
+                    st <= 6;
+                end
             end
         endcase
     end
