@@ -14,28 +14,26 @@
 
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
-    Date: 13-1-2020 */
+    Date: 24-1-2021 */
 
 
-module jtcps1_obj(
+module jtcps2_obj #(parameter TW=10) (
     input              rst,
     input              clk,
     input              pxl_cen,
     input              flip,
 
-    // cache interface
-    output     [ 9:0]  frame_addr,
-    input      [15:0]  frame_data,
+    // Interface with CPU
+    input              objram_cs,
+    input      [ 1:0]  main_dsn,
+    input      [15:0]  main_dout,
+    input              main_rnw,
+    input      [13:1]  main_addr,
 
     input              start,
     input      [ 8:0]  vrender,  // 1 line  ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
-
-    // ROM banks
-    input      [ 5:0]  game,
-    input      [15:0]  bank_offset,
-    input      [15:0]  bank_mask,
 
     output     [19:0]  rom_addr,    // up to 1 MB
     output             rom_half,    // selects which half to read
@@ -57,18 +55,38 @@ wire [ 8:0] line_addr;
 wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
 
-jtcps1_obj_line_table u_line_table(
+// shadow RAM interface
+wire [10:0] frame_addr;
+wire [15:0] frame_data, obj_xy, obj_attr;
+
+jtcps2_objram u_objram(
+    .rst        ( rst           ),
+    .clk_cpu    ( clk_cpu       ),
+    .clk_gfx    ( clk_gfx       ),
+
+    .obank      ( obank         ),
+
+    // Interface with CPU
+    .cs         ( objram_cs     ),
+    .ok         (               ),
+    .dsn        ( main_dsn      ),
+    .main_dout  ( main_dout     ),
+    .main_rnw   ( main_rnw      ),
+    .main_addr  ( main_addr     ),
+
+    // Interface with OBJ engine
+    .obj_addr   ( frame_addr    ),
+    .obj_xy     ( obj_xy        ),
+    .obj_attr   ( obj_attr      )
+);
+
+jtcps2_obj_table u_line_table(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .flip       ( flip          ),
 
     .start      ( start         ),
     .vrender    ( vrender       ),
-
-    // ROM banks
-    .game       ( game          ),
-    .bank_offset( bank_offset   ),
-    .bank_mask  ( bank_mask     ),
 
     // interface with frame table
     .frame_addr ( frame_addr    ),

@@ -68,7 +68,9 @@ module jtcps1_sdram #( parameter
     input           main_ram_cs,
     input           main_vram_cs,
     input           main_oram_cs,
+    `ifdef CPS2
     input           obank,
+    `endif
     input           vram_rfsh_en,
 
     input    [ 1:0] dsn,
@@ -96,11 +98,6 @@ module jtcps1_sdram #( parameter
 
     output reg [7:0] snd_data,
     output     [7:0] pcm_data,
-
-    // Object table
-    input    [11:0] objtable_addr,
-    output   [15:0] objtable_data,
-    output          objtable_ok,
 
     // Graphics
     input           rom0_cs,
@@ -197,8 +194,6 @@ end
 
 always @(posedge clk) begin
     refresh_en <= ~LVBL & vram_rfsh_en;
-    obank_last <= obank;
-    ocache_clr <= obank != obank_last;
 end
 
 jtcps1_prom_we #(
@@ -234,45 +229,35 @@ jtcps1_prom_we #(
     .kabuki_we      ( kabuki_we     )
 );
 
-jtframe_ram_3slots #(
+jtframe_ram_2slots #(
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
 
     .SLOT1_AW    ( 17            ), // VRAM - read only access
-    .SLOT1_DW    ( 16            ),
-
-    .SLOT2_AW    ( 13            ), // ORAM - read only access
-    .SLOT2_DW    ( 16            )
-
+    .SLOT1_DW    ( 16            )
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
 
     .offset0     ( main_offset   ),
     .offset1     ( VRAM_OFFSET   ),
-    .offset2     ( ORAM_OFFSET   ),
 
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
     .slot1_cs    ( vram_dma_cs   ),
     .slot1_clr   ( vram_clr      ),
-    .slot2_cs    ( 1'b1          ),
-    .slot2_clr   ( ocache_clr    ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),
-    .slot2_ok    ( objtable_ok   ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
 
     .slot0_addr  ( main_addr_x   ),
     .slot1_addr  ( vram_dma_addr ),
-    .slot2_addr  ( { ~obank, objtable_addr} ),
 
     .slot0_dout  ( main_ram_data ),
     .slot1_dout  ( vram_dma_data ),
-    .slot2_dout  ( objtable_data ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),

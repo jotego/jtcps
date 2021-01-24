@@ -182,6 +182,7 @@ jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
 );
 
 // OBJ table
+`ifndef CPS2
 jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
@@ -196,6 +197,7 @@ jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .we1    ( 1'b0          ),
     .q1     ( obj_table_data)
 );
+`endif
 
 assign wr_pal_addr = { pal_wr_page, pal_cnt };
 

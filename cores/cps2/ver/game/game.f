@@ -22,6 +22,8 @@
 # CPS2
 ../../hdl/jtcps2_game.v
 ../../hdl/jtcps2_main.v
+../../hdl/jtcps2_obj.v
+../../hdl/jtcps2_objram.v
 ../../hdl/jtcps2_obj_table.v
 # DSP16
 $MODULES/jtdsp16/hdl/jtdsp16_ctrl.v

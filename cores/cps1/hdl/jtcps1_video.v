@@ -36,7 +36,7 @@ module jtcps1_video(
     input              ppu_rstn,
     input              ppu1_cs,
     input              ppu2_cs,
-    input   [ 5:1]     addr,
+    input   [13:1]     addr,
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  [15:0]     mmr_dout,
@@ -66,13 +66,6 @@ module jtcps1_video(
     output             vram_dma_cs,
     output             vram_dma_clr,
     output             vram_rfsh_en,
-
-    // Object Table (CPS2 only)
-    `ifdef CPS2
-        input  [15:0]  objtable_data,
-        output [11:0]  objtable_addr,
-        input          objtable_ok,
-    `endif
 
     // Video signal
     output             HS,
@@ -112,7 +105,7 @@ module jtcps1_video(
     `endif
 );
 
-parameter REGSIZE=24, TW=10;
+parameter REGSIZE=24;
 
 // use for CPU only simulations:
 `ifdef NOVIDEO
@@ -151,15 +144,12 @@ wire       [15:0]  bank_mask;
 
 wire       [ 7:0]  tile_addr;
 wire       [15:0]  tile_data, row_scr;
-wire     [TW-1:0]  obj_cache_addr;
+wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
+wire       [15:0]  objtable_data;
 
 `ifdef CPS2
 assign obj_dma_ok = 0;
-assign objtable_addr = obj_cache_addr;
-`else
-wire       [15:0]  objtable_data;
-wire               objtable_ok = 1'b1;
 `endif
 
 jtcps1_dma u_dma(
@@ -206,8 +196,8 @@ jtcps1_dma u_dma(
         .obj_table_data (               ),
     `else
         .obj_table_addr (obj_cache_addr ),
-        .obj_table_data (objtable_data  ),
     `endif
+    .obj_table_data ( objtable_data     ),
     .obj_dma_ok     ( obj_dma_ok        ),
 
     .br             ( busreq            ),
@@ -249,7 +239,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
 
     .ppu1_cs        ( ppu1_cs           ),
     .ppu2_cs        ( ppu2_cs           ),
-    .addr           ( addr              ),
+    .addr           ( addr[5:1]         ),
     .dsn            ( dsn               ),      // data select, active low
     .cpu_dout       ( cpu_dout          ),
     .mmr_dout       ( mmr_dout          ),
@@ -393,36 +383,65 @@ assign scr3_pxl   = 11'h1ff;
 `endif
 
 // Objects
-jtcps1_obj #(.TW(TW)) u_obj(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
-    .pxl_cen    ( pxl_cen       ),
-    .flip       ( flip          ),
+`ifndef CPS2
+    jtcps1_obj u_obj(
+        .rst        ( rst           ),
+        .clk        ( clk           ),
+        .pxl_cen    ( pxl_cen       ),
+        .flip       ( flip          ),
 
-    // Cache access
-    .frame_addr ( obj_cache_addr),
-    .frame_data ( objtable_data ),
-    .frame_ok   ( objtable_ok   ),
+        // Cache access
+        .frame_addr ( obj_cache_addr),
+        .frame_data ( objtable_data ),
 
-    .start      ( line_start    ),
-    .vrender    ( vrender       ),
-    .vdump      ( vdump         ),
-    .hdump      ( hdump         ),
+        .start      ( line_start    ),
+        .vrender    ( vrender       ),
+        .vdump      ( vdump         ),
+        .hdump      ( hdump         ),
 
-    // ROM banks
-    .game       ( game          ),
-    .bank_offset( bank_offset   ),
-    .bank_mask  ( bank_mask     ),
+        // ROM banks
+        .game       ( game          ),
+        .bank_offset( bank_offset   ),
+        .bank_mask  ( bank_mask     ),
 
-    // ROM data
-    .rom_addr   ( rom0_addr     ),
-    .rom_data   ( rom0_data     ),
-    .rom_cs     ( rom0_cs       ),
-    .rom_ok     ( rom0_ok       ),
-    .rom_half   ( rom0_half     ),
+        // ROM data
+        .rom_addr   ( rom0_addr     ),
+        .rom_data   ( rom0_data     ),
+        .rom_cs     ( rom0_cs       ),
+        .rom_ok     ( rom0_ok       ),
+        .rom_half   ( rom0_half     ),
 
-    .pxl        ( obj_pxl       )
-);
+        .pxl        ( obj_pxl       )
+    );
+`else
+    jtcps2_obj u_obj(
+        .rst        ( rst           ),
+        .clk        ( clk           ),
+        .pxl_cen    ( pxl_cen       ),
+        .flip       ( flip          ),
+
+        // Interface with CPU
+        .objram_cs  ( objram_cs     ),
+        .main_dsn   ( main_dsn      ),
+        .main_dout  ( main_dout     ),
+        .main_rnw   ( main_rnw      ),
+        .main_addr  ( main_addr     ),
+
+        .start      ( line_start    ),
+        .vrender    ( vrender       ),
+        .vdump      ( vdump         ),
+        .hdump      ( hdump         ),
+
+        // ROM data
+        .rom_addr   ( rom0_addr     ),
+        .rom_data   ( rom0_data     ),
+        .rom_cs     ( rom0_cs       ),
+        .rom_ok     ( rom0_ok       ),
+        .rom_half   ( rom0_half     ),
+
+        .pxl        ( obj_pxl       )
+    );
+`endif
 
 `ifndef NOCOLMIX
 jtcps1_colmix u_colmix(
