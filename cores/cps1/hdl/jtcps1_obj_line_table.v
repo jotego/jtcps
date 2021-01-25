@@ -54,10 +54,11 @@ wire [15:0] eff_x;
 wire  repeated = (obj_x==last_x) && (obj_y==last_y) &&
                  (obj_code==last_code) && (obj_attr==last_attr);
 
-reg         first, done, inzone;
+reg         first, done;
 wire [ 3:0] tile_n, tile_m;
-reg  [ 3:0] n, npos, m, mflip, vsub;  // tile expansion n==horizontal, m==verital
-wire        vflip, inzone_lsb;
+reg  [ 3:0] n, npos, m, mflip;  // tile expansion n==horizontal, m==verital
+wire [ 3:0] vsub;
+wire        inzone, vflip, inzone_lsb;
 wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
@@ -71,7 +72,7 @@ wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
 assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
-reg  [15:0] code_mn;
+wire [15:0] code_mn;
 reg  [ 4:0] st;
 
 jtcps1_gfx_mappers u_mapper(
@@ -89,61 +90,22 @@ jtcps1_gfx_mappers u_mapper(
     .unmapped   ( unmapped        )
 );
 
-generate
-    genvar mgen;
-    for( mgen=0; mgen<16;mgen=mgen+1) begin : obj_matches
-        jtcps1_obj_match #(mgen) u_match(
-            .clk    ( clk           ),
-            .tile_m ( tile_m        ),
-            .vrender( vrenderf      ),
-            .obj_y  (   obj_y[8:0]  ),
-            .match  ( match[mgen]   )
-        );
-    end
-endgenerate
+jtcps1_obj_tile_match u_tile_match(
+    .clk        ( clk       ),
 
-always @(*) begin
-    inzone = match!=16'd0;
-    vsub = vrenderf-obj_y;
-    vsub = vsub ^ {4{vflip}};
-    // which m won?
-    case( match )
-        16'h1:     m = 0;
-        16'h2:     m = 1;
-        16'h4:     m = 2;
-        16'h8:     m = 3;
+    .obj_code   ( obj_code  ),
+    .tile_m     ( tile_m    ),
+    .tile_n     ( tile_n    ),
+    .n          ( n         ),
 
-        16'h10:    m = 4;
-        16'h20:    m = 5;
-        16'h40:    m = 6;
-        16'h80:    m = 7;
+    .vflip      ( vflip     ),
+    .vrenderf   ( vrenderf  ),
+    .obj_y      ( obj_y     ),
 
-        16'h100:   m = 8;
-        16'h200:   m = 9;
-        16'h400:   m = 10;
-        16'h800:   m = 11;
-
-        16'h10_00: m = 12;
-        16'h20_00: m = 13;
-        16'h40_00: m = 14;
-        16'h80_00: m = 15;
-        default: m=0;
-    endcase
-    mflip = tile_m-m;
-end
-
-always @(*) begin
-    case( {tile_m!=4'd0, tile_n!=4'd0 } )
-        2'b00: code_mn = obj_code;
-        2'b01: code_mn = { obj_code[15:4], obj_code[3:0]+n };
-        2'b10: code_mn = { obj_code[15:8],
-                           obj_code[7:4]+ (vflip ? mflip : m),
-                           obj_code[3:0] };
-        2'b11: code_mn = { obj_code[15:8],
-                           obj_code[7:4]+ (vflip ? mflip : m),
-                           obj_code[3:0]+n };
-    endcase
-end
+    .vsub       ( vsub      ),
+    .inzone     ( inzone    ),
+    .code_mn    ( code_mn   )
+);
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin

@@ -7,6 +7,7 @@
 ../../../cps1/hdl/jtcps1_obj.v
 ../../../cps1/hdl/jtcps1_mmr.v
 ../../../cps1/hdl/jtcps1_obj_line_table.v
+../../../cps1/hdl/jtcps1_obj_tile_match.v
 ../../../cps1/hdl/jtcps1_obj_match.v
 ../../../cps1/hdl/jtcps1_obj_draw.v
 ../../../cps1/hdl/jtcps1_obj_line.v
@@ -46,6 +47,7 @@ $JTFRAME/hdl/sound/jtframe_uprate2_fir.v
 $JTFRAME/hdl/sdram/jtframe_sdram_stats.v
 
 $JTFRAME/hdl/ram/jtframe_dual_ram.v
+$JTFRAME/hdl/ram/jtframe_dual_ram16.v
 $JTFRAME/hdl/ram/jtframe_ram.v
 # Z80
 $JTFRAME/hdl/cpu/jtframe_kabuki.v

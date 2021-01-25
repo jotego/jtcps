@@ -58,8 +58,8 @@ wire [ 8:0] buf_addr, buf_data;
 wire        buf_wr;
 
 // shadow RAM interface
-wire [10:0] table_attr;
-wire [15:0] obj_xy, obj_attr;
+wire [ 9:0] table_attr;
+wire [15:0] obj_x, obj_y, obj_code, obj_attr;
 
 jtcps2_objram u_objram(
     .rst        ( rst           ),
@@ -77,7 +77,9 @@ jtcps2_objram u_objram(
 
     // Interface with OBJ engine
     .obj_addr   ( table_attr    ),
-    .obj_xy     ( obj_xy        ),
+    .obj_x      ( obj_x         ),
+    .obj_y      ( obj_y         ),
+    .obj_code   ( obj_code      ),
     .obj_attr   ( obj_attr      )
 );
 
@@ -91,7 +93,9 @@ jtcps2_obj_scan u_scan(
 
     // interface with frame table
     .table_addr ( table_attr    ),
-    .table_xy   ( obj_xy        ),
+    .table_x    ( obj_x         ),
+    .table_y    ( obj_y         ),
+    .table_code ( obj_code      ),
     .table_attr ( obj_attr      ),
 
     // interface with renderer
