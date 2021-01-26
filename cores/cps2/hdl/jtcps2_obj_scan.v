@@ -134,8 +134,10 @@ always @(posedge clk, posedge rst) begin
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
                     npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
-                    if( table_y[15] || (init && !table_y[15]))
+                    if( table_y[15] || (init && !table_y[15])) begin
                         st<=1;  // skip this entry
+                        if( table_y[15] ) init<=0;
+                    end
                     else begin
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr + 10'd1; // undo
@@ -147,22 +149,22 @@ always @(posedge clk, posedge rst) begin
                     st   <= 0; // done
                 end
             end
-            2:; // extra cycle to wait for inzone data
-            3: begin // check whether sprite is visible
+            2: begin // check whether sprite is visible
                 if( !inzone ) begin
                     st<= 1; // try next one
-                end else begin
-                    if( !dr_idle ) begin
-                        st <= 3;
-                    end else begin
-                        dr_attr <= { 4'd0, vsub, table_attr[7:0] };
-                        dr_code <= code_mn;
-                        dr_hpos <= eff_x - 9'd1;
-                        dr_start <= 1;
-                    end
                 end
             end
             4: begin
+                if( !dr_idle ) begin
+                    st <= 4;
+                end else begin
+                    dr_attr <= { 4'd0, vsub, table_attr[7:0] };
+                    dr_code <= code_mn;
+                    dr_hpos <= eff_x - 9'd1;
+                    dr_start <= 1;
+                end
+            end
+            5: begin
                 dr_start <= 0;
                 if( n == tile_n ) begin
                     st <= 1; // next element
@@ -171,7 +173,7 @@ always @(posedge clk, posedge rst) begin
                     npos <= hflip ? npos-4'd1 : npos+4'd1;
                 end
             end
-            5: st<=2; // get extra cycles for inzone and dr_idle
+            6: st<=2; // get extra cycles for inzone and dr_idle
         endcase
         // This must be after the case statement
         if( start && !last_start ) begin
