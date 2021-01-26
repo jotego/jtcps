@@ -310,7 +310,7 @@ always @(posedge clk48, posedge rst) begin
 end
 
 // The uprate filter runs at 48MHz to ease synthesis
-
+`ifndef NOFIR
 jtframe_uprate2_fir uprate(
     .rst     ( dsp_rst       ),
     .clk     ( clk48         ),
@@ -321,6 +321,11 @@ jtframe_uprate2_fir uprate(
     .l_out   ( left          ),
     .r_out   ( right         )
 );
+`else
+assign sample = resample48;
+assign left   = fxd_l;
+assign right  = fxd_r;
+`endif
 
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
