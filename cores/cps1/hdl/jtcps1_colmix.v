@@ -16,9 +16,6 @@
     Version: 1.0
     Date: 13-1-2020 */
 
-
-// See file cc/brightness.cc for the LUT generation
-
 module jtcps1_colmix(
     input              rst,
     input              clk,
@@ -26,8 +23,8 @@ module jtcps1_colmix(
 
     input              VB,
     input              HB,
-    output  reg        LVBL_dly,
-    output  reg        LHBL_dly,
+    output             vb_dly,
+    output             hb_dly,
     input   [ 3:0]     gfx_en,
 
     input   [10:0]     scr1_pxl,
@@ -50,22 +47,8 @@ module jtcps1_colmix(
     input   [15:0]     prio3,
 
     // Palette RAM
-    output  [11:0]     pal_addr,
-    input   [15:0]     pal_raw,
-
-    (*keep*) output reg [7:0]  red,
-    (*keep*) output reg [7:0]  green,
-    (*keep*) output reg [7:0]  blue
+    output reg [11:0]  pxl
 );
-
-reg  [11:0] pxl;
-
-// Palette
-wire [ 3:0] raw_r, raw_g, raw_b, raw_br;
-reg  [ 7:0] lut_r, lut_g, lut_b;
-reg  [ 3:0] lut_addr;
-wire [ 7:0] lut_dout;
-reg  [ 2:0] lut_k; // counter
 
 // These are the top four bits written by CPS-B to each
 // pixel of the frame buffer. These are likely sent by CPS-A
@@ -78,18 +61,6 @@ reg  [ 2:0] lut_k; // counter
 
 localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 
-`ifdef GRAY
-assign raw_br   = 4'hf ;
-assign raw_r    = pal_addr[3:0];
-assign raw_g    = pal_addr[3:0];
-assign raw_b    = pal_addr[3:0];
-`else
-assign raw_br   = pal_raw[15:12]; // r
-assign raw_r    = pal_raw[11: 8]; // br
-assign raw_g    = pal_raw[ 7: 4]; // b
-assign raw_b    = pal_raw[ 3: 0]; // g
-`endif
-assign pal_addr = pxl;
 /////////////////////////// LAYER MUX ////////////////////////////////////////////
 function [13:0] layer_mux;
     input [ 8:0] obj;
@@ -127,48 +98,6 @@ reg [13:0] lyr5, lyr4, lyr3, lyr2, lyr1, lyr0;
 reg [QW-1:0] lyr_queue;
 reg [11:0] pre_pxl;
 reg [ 1:0] group;
-
-jtframe_ram #(.aw(8),.synfile("pal_lut.hex")) u_lut (
-    .clk    ( clk                  ),
-    .cen    ( 1'b1                 ),
-    .data   ( 8'd0                 ),
-    .addr   ( { raw_br, lut_addr } ),
-    .we     ( 1'b0                 ),
-    .q      ( lut_dout             )
-);
-
-always @(posedge clk, posedge rst) begin
-    if(rst) begin
-        lut_r    <= 8'h0;
-        lut_g    <= 8'h0;
-        lut_b    <= 8'h0;
-        lut_k    <= 3'd0;
-        lut_addr <= 4'd0;
-    end else begin // the clock frequency must be a multiple of 3*8=24MHz
-        if( pxl_cen ) begin
-            lut_k <= 3'd0;
-        end else if( lut_k != 3'd7 )
-            lut_k <= lut_k+3'd1;
-        case( lut_k )
-            3'd2: begin
-                lut_addr <= raw_r;
-            end
-            3'd3: begin
-                lut_addr <= raw_g ;
-            end
-            3'd4: begin
-                lut_r    <= lut_dout;
-                lut_addr <= raw_b;
-            end
-            3'd5: begin
-                lut_g    <= lut_dout;
-            end
-            3'd6: begin
-                lut_b    <= lut_dout;
-            end
-        endcase
-    end
-end
 
 always @(posedge clk) if(pxl_cen) begin
     lyr5 <= { 2'b00, STA, sta1_mask };
@@ -217,42 +146,6 @@ always @(posedge clk) begin
         else begin
             check_prio <= 1'b0;
             lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
-        end
-    end
-end
-
-
-wire vb1, hb1;
-
-jtframe_sh #(.width(2),.stages(3)) u_sh(
-    .clk    ( clk           ),
-    .clk_en ( pxl_cen       ),
-    .din    ( {VB, HB}      ),
-    .drop   ( {vb1, hb1}    )
-);
-
-// Blanking signals must be active during reset
-always @(posedge clk) if(pxl_cen) begin
-    LVBL_dly <= ~vb1;
-    LHBL_dly <= ~hb1;
-end
-
-always @(posedge clk, posedge rst) begin
-    if(rst) begin
-        red   <= 8'd0;
-        green <= 8'd0;
-        blue  <= 8'd0;
-    end else if(pxl_cen) begin
-        // signal * 17 - signal*15/2 - signal*15/4 = signal * (17-15/2-15/4)
-        // 66% max attenuation for brightness
-        if( vb1 || (hb1 && !LHBL_dly) ) begin
-            red   <= 8'd0;
-            green <= 8'd0;
-            blue  <= 8'd0;
-        end else begin
-            red   <= lut_r;
-            green <= lut_g;
-            blue  <= lut_b;
         end
     end
 end

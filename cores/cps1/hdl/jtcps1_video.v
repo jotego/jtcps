@@ -120,16 +120,16 @@ parameter REGSIZE=24;
 `define NOCOLMIX
 `endif
 
-wire [11:0]     pal_addr;
-wire [10:0]     scr1_pxl, scr2_pxl, scr3_pxl;
-wire [ 8:0]     star1_pxl, star0_pxl;
-wire [ 8:0]     obj_pxl;
-wire [ 8:0]     vrender1;
-wire [15:0]     ppu_ctrl, pal_raw;
-wire [17:1]     vram_pal_addr;
-wire            line_start, preVB;
-wire            flip = ppu_ctrl[15];
-wire            busack_obj, busack_pal;
+wire [11:0] pal_addr, merge_pxl;
+wire [10:0] scr1_pxl, scr2_pxl, scr3_pxl;
+wire [ 8:0] star1_pxl, star0_pxl;
+wire [ 8:0] obj_pxl;
+wire [ 8:0] vrender1;
+wire [15:0] ppu_ctrl, pal_raw;
+wire [17:1] vram_pal_addr;
+wire        line_start, preVB;
+wire        flip = ppu_ctrl[15];
+wire        busack_obj, busack_pal;
 
 // Register configuration
 // Scroll
@@ -455,15 +455,7 @@ jtcps1_colmix u_colmix(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
 
-    .HB         ( HB            ),
-    .VB         ( VB            ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
     .gfx_en     ( gfx_en        ),
-
-    // Palette RAM
-    .pal_addr   ( pal_addr      ),
-    .pal_raw    ( pal_raw       ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),
@@ -477,8 +469,6 @@ jtcps1_colmix u_colmix(
     .prio2      ( prio2         ),
     .prio3      ( prio3         ),
 
-
-
     // Pixel layers data
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
@@ -486,11 +476,31 @@ jtcps1_colmix u_colmix(
     .star0_pxl  ( star0_pxl     ),
     .star1_pxl  ( star1_pxl     ),
     .obj_pxl    ( obj_pxl       ),
+
+    .pxl        ( merge_pxl     )
+);
+
+jtcps1_pal u_pal(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    .vb         ( VB            ),
+    .hb         ( HB            ),
+    .LHBL_dly   ( LHBL_dly      ),
+    .LVBL_dly   ( LVBL_dly      ),
+
+    // Palette RAM
+    .pxl_in     ( merge_pxl     ),
+    .pal_addr   ( pal_addr      ),
+    .pal_raw    ( pal_raw       ),
+
     // Video
     .red        ( red           ),
     .green      ( green         ),
     .blue       ( blue          )
 );
+
 `else
 assign red_colmix  = 8'b0;
 assign green_colmix= 8'b0;
