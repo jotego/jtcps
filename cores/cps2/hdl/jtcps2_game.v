@@ -285,7 +285,7 @@ assign main_rnw = 1'b1;
 assign sclk     = 0;
 assign sdo      = 0;
 assign scs      = 0;
-assign obank    = 0;
+assign obank    = 1;
 `endif
 
 reg rst_video, rst_sdram;

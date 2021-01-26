@@ -108,12 +108,12 @@ always @(posedge clk, posedge rst) begin
         st <= st+5'd1;
         case( st )
             0: begin
+                table_addr <= 10'd0;
                 if( !newline ) begin
                     st       <= 5'd0;
                     dr_start <= 0;
                 end else begin
                     newline    <= 0;
-                    table_addr <= ~10'd0;
                     wait_cycle <= 3'b011;
                     last_tile  <= 1'b0;
                     done       <= 0;
@@ -124,23 +124,22 @@ always @(posedge clk, posedge rst) begin
             1: begin
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
 
-                if( table_addr==10'd0 )
+                if( &table_addr )
                     last_tile <= 1;
                 else
-                    table_addr <= table_addr-10'd1;
+                    table_addr <= table_addr+10'd1;
 
                 if( !wait_cycle[0] ) begin
                     n          <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
                     npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
-                    if( table_y[15] || (init && !table_y[15])) begin
-                        st<=1;  // skip this entry
-                        if( table_y[15] ) init<=0;
+                    if( table_y[15] ) begin
+                        st<=0;  // done
                     end
                     else begin
                         wait_cycle <= 3'b011; // leave it ready for next round
-                        table_addr <= table_addr + 10'd1; // undo
+                        table_addr <= table_addr - 10'd1; // undo
                         init <= 0;
                     end
                 end else st<=1;
@@ -152,6 +151,7 @@ always @(posedge clk, posedge rst) begin
             2: begin // check whether sprite is visible
                 if( !inzone ) begin
                     st<= 1; // try next one
+                    //table_addr <= table_addr+10'd1;
                 end
             end
             4: begin

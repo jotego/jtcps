@@ -40,7 +40,7 @@ module jtcps2_objram(
     // output   [15:0] dout2cpu,
 
     // Interface with OBJ engine
-    input    [10:0] obj_addr, // 11 bits because bank is automatic
+    input    [ 9:0] obj_addr, // 11 bits because bank is automatic
                               // and 32-bits are read together
     output   [15:0] obj_x,
     output   [15:0] obj_y,
@@ -51,8 +51,7 @@ module jtcps2_objram(
 parameter AW=13; // 13 for full table shadowing
 
 wire [   1:0] wex, wey, wecode, weattr;
-wire [AW-3:0] wr_addr;
-wire [AW-4:0] gfx_addr;
+wire [AW-3:0] wr_addr, gfx_addr;
 
 assign wex       = ~dsn & {2{cs & main_addr[2:1]==2'd0}};
 assign wey       = ~dsn & {2{cs & main_addr[2:1]==2'd1}};
