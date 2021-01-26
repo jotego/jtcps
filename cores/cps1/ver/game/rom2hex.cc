@@ -239,10 +239,8 @@ void cps2split( char *buf, const string name, int start ) {
     ofstream fout( fname, ios_base::binary );
     char *aux = new char[2*1024];
     char *p=aux;
-    for( int k=start; k<8*1024; k+=4 )
+    for( int k=start; k<8*1024; k+=8 )
         *p++ = buf[k];
-    fout.write( aux, 2*1024 );
-    // copy it twice, once per bank
     fout.write( aux, 2*1024 );
     delete []aux;
 }
@@ -260,10 +258,14 @@ void dump_cps2obj( const string& game, const string& scene ) {
             buf[k+1] = x;
         }
         // split data in 4 files
-        cps2split( buf, "objxy_lo",   0 );
-        cps2split( buf, "objxy_hi",   1 );
-        cps2split( buf, "objattr_lo", 4 );
-        cps2split( buf, "objattr_hi", 5 );
+        cps2split( buf, "objx_lo",    0 );
+        cps2split( buf, "objx_hi",    1 );
+        cps2split( buf, "objy_lo",    2 );
+        cps2split( buf, "objy_hi",    3 );
+        cps2split( buf, "objcode_lo", 4 );
+        cps2split( buf, "objcode_hi", 5 );
+        cps2split( buf, "objattr_lo", 6 );
+        cps2split( buf, "objattr_hi", 7 );
     } else {
         printf("Error: cannot open file %s", fname.c_str());
     }
