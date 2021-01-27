@@ -212,7 +212,6 @@ localparam REGSIZE=24;
 // Turbo speed disables DMA
 wire busreq_cpu = busreq & ~turbo;
 wire busack_cpu;
-assign busack = busack_cpu | turbo;
 
 `ifndef NOMAIN
 jtcps2_main u_main(
@@ -275,6 +274,9 @@ jtcps2_main u_main(
     .eeprom_sdo  ( sdo              ),
     .eeprom_scs  ( scs              )
 );
+
+assign busack = busack_cpu | turbo;
+
 `else
 assign ram_addr = 17'd0;
 assign main_ram_cs = 1'b0;
@@ -286,6 +288,7 @@ assign sclk     = 0;
 assign sdo      = 0;
 assign scs      = 0;
 assign obank    = 1;
+assign busack   = 1;
 `endif
 
 reg rst_video, rst_sdram;

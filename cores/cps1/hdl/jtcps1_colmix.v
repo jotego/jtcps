@@ -95,6 +95,11 @@ reg [QW-1:0] lyr_queue;
 reg [11:0] pre_pxl;
 reg [ 1:0] group;
 
+`ifdef SIMULATION
+wire [2:0] lyr0_code = lyr0[11:9];
+wire [2:0] lyr1_code = lyr1[11:9];
+wire [2:0] lyr2_code = lyr2[11:9];
+`endif
 always @(posedge clk) if(pxl_cen) begin
     lyr5 <= { 2'b00, STA, sta1_mask };
     lyr4 <= { 2'b00, STA, sta0_mask };

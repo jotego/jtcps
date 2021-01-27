@@ -40,7 +40,14 @@ function blank;
 endfunction
 
 always @(*) begin
-    obj1st  = obj_prio > scr_pxl[11:9];
+    obj1st  = ~obj_prio <= scr_pxl[11:9];
+    // case( scr_pxl[11:9] )
+    //     SCR1: obj1st = ~obj_prio[0];
+    //     SCR2: obj1st = ~obj_prio[1];
+    //     SCR3: obj1st = ~obj_prio[2];
+    //     default: obj1st = 1;
+    // endcase
+    //obj1st = 1;
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
