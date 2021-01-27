@@ -24,6 +24,7 @@ module jtcps2_colmix(
 
     input      [11:0]  scr_pxl,
     input      [11:0]  obj_pxl,
+    input              obj_en,
     output reg [11:0]  pxl
 );
 
@@ -39,12 +40,13 @@ function blank;
 endfunction
 
 always @(*) begin
-    obj1st  = obj_prio >= scr_pxl[11:9];
+    obj1st  = obj_prio > scr_pxl[11:9];
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
 always @(posedge clk) if(pxl_cen) begin
-    pxl <= mux_sel ? scr_pxl : {3'd0, obj_pxl[8:0]};
+    pxl <= !obj_en ? scr_pxl :
+        ( mux_sel ? scr_pxl : {3'd0, obj_pxl[8:0]} );
 end
 
 endmodule

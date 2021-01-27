@@ -62,7 +62,7 @@ jtframe_dual_ram #(.dw(DW), .aw(10)) u_line(
 always @(posedge clk) begin
     if( pxl_cen ) begin
         last_h <= hdf;
-        pxl    <= pre_pxl;
+        pxl    <= hdf >= 9'h40 ? pre_pxl : {DW{1'b1}};
         erase  <= 1'b1;
     end else erase <= 1'b0;
 end

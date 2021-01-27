@@ -498,6 +498,7 @@ jtcps2_colmix u_objmix(
 
     .scr_pxl    ( merge_pxl     ),
     .obj_pxl    ( obj_pxl       ),
+    .obj_en     ( gfx_en[3]     ),
     .pxl        ( final_pxl     )
 );
 `else
