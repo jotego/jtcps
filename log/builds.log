@@ -1146,3 +1146,6 @@ cps15         	mist	20210127	1	PASS	8e72df8	ff7d140
 cps2          	mist	20210127	1	PASS	8e72df8	ff7d140
 cps1          	mist	20210127	1	PASS	8e72df8	ff7d140
 cps2          	mist	20210127	1	PASS	8e72df8	ff7d140
+cps2          	mist	20210127	1	PASS	6df55ae	ff7d140
+cps2          	mister	20210127	1	FAIL	6df55ae	ff7d140
+cps2          	mister	20210127	4475	PASS	6df55ae	ff7d140
