@@ -4,6 +4,7 @@
 ../../../cps1/hdl/jtcps1_timing.v
 ../../../cps1/hdl/jtcps1_tilemap.v
 ../../../cps1/hdl/jtcps1_colmix.v
+../../../cps1/hdl/jtcps1_pal.v
 ../../../cps1/hdl/jtcps1_obj.v
 ../../../cps1/hdl/jtcps1_mmr.v
 ../../../cps1/hdl/jtcps1_obj_line_table.v
@@ -26,6 +27,7 @@
 ../../hdl/jtcps2_obj.v
 ../../hdl/jtcps2_objram.v
 ../../hdl/jtcps2_obj_scan.v
+../../hdl/jtcps2_colmix.v
 # DSP16
 $MODULES/jtdsp16/hdl/jtdsp16_ctrl.v
 $MODULES/jtdsp16/hdl/jtdsp16_dau.v

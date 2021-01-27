@@ -76,7 +76,7 @@ always @(posedge clk) if(cen8) begin
         if ( vdump==VS_END   ) VS <= 1'b0;
     end
     if( hdump== HS_END ) HS <= 1'b0;
-    start  <= hdump==9'h1ff;
+    start  <= hdump==9'h1ff && vdump<8'hF0 && vdump>8'h0c;
     if(&hdump) begin
         hdump   <= 9'd0;
         vrender1<= vrender1==9'd261 ? 9'd0 : vrender1+9'd1;

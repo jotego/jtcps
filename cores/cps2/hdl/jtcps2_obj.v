@@ -43,23 +43,29 @@ module jtcps2_obj(
     output             rom_cs,
     input              rom_ok,
 
-    output     [ 8:0]  pxl
+    output     [11:0]  pxl
 );
 
 wire [15:0] dr_code, dr_attr;
 wire [ 8:0] dr_hpos;
+wire [ 2:0] dr_prio;
 
 wire        dr_start, dr_idle;
 
 wire [15:0] line_data;
 wire [ 8:0] line_addr;
 
+wire [ 8:0] hdump_dly;
+
 wire [ 8:0] buf_addr, buf_data;
+wire [11:0] prio_data;
 wire        buf_wr;
 
 // shadow RAM interface
 wire [ 9:0] table_attr;
 wire [15:0] obj_x, obj_y, obj_code, obj_attr;
+
+assign prio_data = { dr_prio, buf_data };
 
 jtcps2_objram u_objram(
     .rst        ( rst           ),
@@ -104,7 +110,8 @@ jtcps2_obj_scan u_scan(
 
     .dr_code    ( dr_code       ),
     .dr_attr    ( dr_attr       ),
-    .dr_hpos    ( dr_hpos       )
+    .dr_hpos    ( dr_hpos       ),
+    .dr_prio    ( dr_prio       )
 );
 
 jtcps1_obj_draw u_draw(
@@ -129,16 +136,23 @@ jtcps1_obj_draw u_draw(
     .rom_ok     ( rom_ok        )
 );
 
-jtcps1_obj_line u_line(
+jtframe_sh #(.width(9),.stages(2)) u_sh(
+    .clk    ( clk       ),
+    .clk_en ( pxl_cen   ),
+    .din    ( hdump     ),
+    .drop   ( hdump_dly )
+);
+
+jtcps1_obj_line #(.DW(12)) u_line(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
     .flip       ( flip          ),
 
     .vdump      ( vdump[0]      ),
-    .hdump      ( hdump         ),
+    .hdump      ( hdump_dly     ),
 
     .buf_addr   ( buf_addr      ),
-    .buf_data   ( buf_data      ),
+    .buf_data   ( prio_data     ),
     .buf_wr     ( buf_wr        ),
 
     .pxl        ( pxl           )

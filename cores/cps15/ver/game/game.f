@@ -4,6 +4,7 @@
 ../../../cps1/hdl/jtcps1_timing.v
 ../../../cps1/hdl/jtcps1_tilemap.v
 ../../../cps1/hdl/jtcps1_colmix.v
+../../../cps1/hdl/jtcps1_pal.v
 ../../../cps1/hdl/jtcps1_obj.v
 ../../../cps1/hdl/jtcps1_mmr.v
 ../../../cps1/hdl/jtcps1_obj_line_table.v

@@ -38,7 +38,8 @@ module jtcps2_obj_scan(
 
     output reg [15:0]  dr_code,
     output reg [15:0]  dr_attr,
-    output reg [ 8:0]  dr_hpos
+    output reg [ 8:0]  dr_hpos,
+    output reg [ 2:0]  dr_prio
 );
 
 reg  [ 9:0] mapper_in;
@@ -161,6 +162,7 @@ always @(posedge clk, posedge rst) begin
                     dr_attr <= { 4'd0, vsub, table_attr[7:0] };
                     dr_code <= code_mn;
                     dr_hpos <= eff_x - 9'd1;
+                    dr_prio <= prio;
                     dr_start <= 1;
                 end
             end

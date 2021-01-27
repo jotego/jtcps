@@ -21,8 +21,11 @@
 // 1  Y
 // 2  code
 // 3  attr
-// Y is read with attr
-// X is read with code
+
+// it should be possible to use half the memory by
+// copying the data from the SDRAM when obank toggles
+// but if a game change it outside V blank
+// it may create a visible glitch
 
 module jtcps2_objram(
     input           rst,

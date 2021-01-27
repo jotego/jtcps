@@ -21,10 +21,6 @@ module jtcps1_colmix(
     input              clk,
     input              pxl_cen,
 
-    input              VB,
-    input              HB,
-    output             vb_dly,
-    output             hb_dly,
     input   [ 3:0]     gfx_en,
 
     input   [10:0]     scr1_pxl,

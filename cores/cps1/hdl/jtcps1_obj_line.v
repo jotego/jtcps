@@ -15,9 +15,10 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
 
-module jtcps1_obj_line(
+
+module jtcps1_obj_line #(parameter DW=9)
+(
     input              clk,
     input              pxl_cen,
     input              flip,
@@ -27,24 +28,23 @@ module jtcps1_obj_line(
 
     // Line buffer
     input      [ 8:0]  buf_addr,
-    input      [ 8:0]  buf_data,
+    input    [DW-1:0]  buf_data,
     input              buf_wr,
 
-    output reg [ 8:0]  pxl
+    output reg [DW-1:0] pxl
 );
 
-reg  [8:0] line_buffer[0:1023];
 reg  [8:0] last_h;
 reg        erase;
 
-wire [8:0] hdf = hdump ^ {9{flip}}; // H dump flipped
+wire [8:0]    hdf = hdump ^ {9{flip}}; // H dump flipped
 
-wire [9:0] addr0 = {  vdump, buf_addr }; // write
-wire [9:0] addr1 = erase ? {~vdump, last_h} : { ~vdump, hdf    }; // read
-wire [8:0] pre_pxl;
-wire       wr1 = buf_wr && buf_data[3:0]!=4'hf;
+wire [9:0]    addr0 = {  vdump, buf_addr }; // write
+wire [9:0]    addr1 = erase ? {~vdump, last_h} : { ~vdump, hdf    }; // read
+wire [DW-1:0] pre_pxl;
+wire          wr1 = buf_wr && buf_data[3:0]!=4'hf;
 
-jtframe_dual_ram #(.dw(9), .aw(10)) u_line(
+jtframe_dual_ram #(.dw(DW), .aw(10)) u_line(
     .clk0   ( clk       ),
     .clk1   ( clk       ),
     // Port 0: write
@@ -53,7 +53,7 @@ jtframe_dual_ram #(.dw(9), .aw(10)) u_line(
     .we0    ( wr1       ),
     .q0     (           ),
     // Port 1: read and erase
-    .data1  ( 9'h1ff    ),
+    .data1  ( {DW{1'b1}}),
     .addr1  ( addr1     ),
     .we1    ( erase     ),
     .q1     ( pre_pxl   )
