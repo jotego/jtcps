@@ -39,17 +39,12 @@ function blank;
 endfunction
 
 always @(*) begin
-    case( scr_pxl[11:9] )
-        SCR1: obj1st = obj_prio[0];
-        SCR2: obj1st = obj_prio[1];
-        SCR3: obj1st = obj_prio[2];
-        default: obj1st = 1;
-    endcase
+    obj1st  = obj_prio >= scr_pxl[11:9];
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
 always @(posedge clk) if(pxl_cen) begin
-    pxl <= mux_sel ? scr_pxl : obj_pxl;
+    pxl <= mux_sel ? scr_pxl : {3'd0, obj_pxl[8:0]};
 end
 
 endmodule
