@@ -33,7 +33,7 @@ module jtcps2_obj_scan(
     input      [15:0]  table_attr,
 
     // interface with renderer
-    output reg         dr_start,
+    output reg         dr_start,    // dr for "draw"
     input              dr_idle,
 
     output reg [15:0]  dr_code,

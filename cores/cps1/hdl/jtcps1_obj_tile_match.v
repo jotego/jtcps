@@ -80,16 +80,15 @@ always @(*) begin
     mflip = tile_m-m;
 end
 
+// the m,n sum carries on, at least for CPS2 games (SPF2T)
+// The carry didn't seem to be needed for CPS1/1.5 games, so
+// it might be a difference with the old CPS-A chip
 always @(*) begin
     case( {tile_m!=4'd0, tile_n!=4'd0 } )
         2'b00: code_mn = obj_code;
-        2'b01: code_mn = { obj_code[15:4], obj_code[3:0]+n };
-        2'b10: code_mn = { obj_code[15:8],
-                           obj_code[7:4]+ (vflip ? mflip : m),
-                           obj_code[3:0] };
-        2'b11: code_mn = { obj_code[15:8],
-                           obj_code[7:4]+ (vflip ? mflip : m),
-                           obj_code[3:0]+n };
+        2'b01: code_mn = obj_code + { 12'd0, n };
+        2'b10: code_mn = obj_code + { 8'd0, vflip ? mflip : m, 4'd0};
+        2'b11: code_mn = obj_code + { 8'd0, vflip ? mflip : m, n};
     endcase
 end
 
