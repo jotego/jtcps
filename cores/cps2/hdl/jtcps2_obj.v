@@ -98,7 +98,7 @@ jtcps2_objram u_objram(
     .ok         (               ),
     .dsn        ( 2'd0          ),
     .main_dout  ( oram_data     ),
-    .main_addr  ( oram_addr     ),
+    .main_addr  ( {1'b0, oram_addr[11:0] } ),
 
     // Interface with OBJ engine
     .obj_addr   ( table_attr    ),
