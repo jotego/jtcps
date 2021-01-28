@@ -161,7 +161,7 @@ module jtcps2_raster_pxlcnt(
 
     input              we,
     input       [ 8:0] din,
-    output reg  [ 8:0] dout,
+    output      [ 8:0] dout,
 
     output reg         zero       // raster event
 );
