@@ -91,16 +91,16 @@ jtcps2_raster_cnt u_cnt1(
     .zero   ( zero[1]   )
 );
 
-jtcps2_raster_cnt u_cnt2(
+// Pixel counter
+jtcps2_raster_pxlcnt u_cnt2(
     .rst    ( rst       ),
     .clk    ( clk       ),
+    .pxl_cen( pxl_cen   ),
     .cen4   ( cen4      ),
 
-    .restart( restart   ),
-    .step   ( step      ),
+    .restart( step      ), // Line start
 
     .we     ( we[2]     ),
-    .en_in  ( en_in     ),
     .din    ( din       ),
     .dout   ( dout2     ),
 
@@ -134,7 +134,7 @@ always @(posedge clk, posedge rst) begin
         dout      <= ~9'd0;
         enable    <= 0;
     end else begin
-        zero <= cnt == 9'd0;
+        zero <= ~|cnt;
         if(cen4) dout <= enable ? cnt : cnt_start;
         if( we ) begin
             cnt_start <= din;
@@ -146,6 +146,52 @@ always @(posedge clk, posedge rst) begin
             cnt <= cnt_start;
         else if( enable && step )
             cnt <= cnt-9'd1;
+    end
+end
+
+endmodule
+
+module jtcps2_raster_pxlcnt(
+    input              rst,
+    input              clk,
+    input              pxl_cen,
+    input              cen4,
+
+    input              restart,
+
+    input              we,
+    input       [ 8:0] din,
+    output reg  [ 8:0] dout,
+
+    output reg         zero       // raster event
+);
+
+reg  [8:0] cnt_start;
+reg  [7:0] cnt, preout;
+reg        pulse4;
+//wire       cen4b;
+
+//assign cen4b = pxl_cen & ~cen4;
+assign dout  = { preout, cnt_start[0] ^ pulse4 };
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        cnt       <= ~8'd0;
+        cnt_start <= ~9'd0;
+        preout    <= ~8'd0;
+        pulse4    <= 0;
+    end else begin
+        if( pxl_cen ) pulse4 <= ~pulse4;
+        if( cen4 ) preout <= cnt;
+        zero <= ~|cnt;
+
+        if( we ) begin
+            cnt_start <= din;
+        end
+        if( restart )
+            cnt <= cnt_start[8:1];
+        else if( cen4 )
+            cnt <= cnt-8'd1;
     end
 end
 
