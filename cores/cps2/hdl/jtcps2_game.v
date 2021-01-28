@@ -138,9 +138,9 @@ wire        rom0_half, rom1_half;
 wire        cfg_we;
 
 // CPS2 Objects
-wire [11:0] otable_addr;
-wire [15:0] otable_dout;
-wire        otable_ok;
+wire [12:0] gfx_oram_addr;
+wire [15:0] gfx_oram_data;
+wire        gfx_oram_ok;
 
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
@@ -330,7 +330,9 @@ jtcps1_video #(REGSIZE) u_video(
 
     // Object RAM
     .obank          ( obank         ),
-    .objram_cs      ( main_oram_cs  ),
+    .oram_addr      ( gfx_oram_addr ),
+    .oram_ok        ( gfx_oram_ok   ),
+    .oram_data      ( gfx_oram_data ),
 
     // Video signal
     .HS             ( HS            ),
@@ -481,6 +483,10 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
 
     .main_ram_data  ( main_ram_data ),
     .vram_dma_data  ( vram_dma_data ),
+
+    .gfx_oram_addr  ( gfx_oram_addr ),
+    .gfx_oram_data  ( gfx_oram_data ),
+    .gfx_oram_ok    ( gfx_oram_ok   ),
 
     // Sound CPU and PCM
     .snd_cs      ( snd_cs        ),

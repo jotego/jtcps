@@ -35,7 +35,9 @@ module jtcps1_video(
 
     `ifdef CPS2
     input              obank,
-    input              objram_cs,
+    output     [12:0]  oram_addr,
+    input              oram_ok,
+    input      [15:0]  oram_data,
     `endif
 
     // CPU interface
@@ -433,11 +435,10 @@ assign scr3_pxl   = 11'h1ff;
         .flip       ( flip          ),
 
         .obank      ( obank         ),
-        // Interface with CPU
-        .objram_cs  ( objram_cs     ),
-        .main_dsn   ( dsn           ),
-        .main_dout  ( cpu_dout      ),
-        .main_addr  ( addr          ),
+        // Interface with SDRAM for OBJRAM
+        .oram_addr  ( oram_addr     ),
+        .oram_ok    ( oram_ok       ),
+        .oram_data  ( oram_data     ),
 
         .start      ( line_start    ),
         .vrender    ( vrender       ),

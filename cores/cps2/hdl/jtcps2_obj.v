@@ -24,11 +24,10 @@ module jtcps2_obj(
     input              pxl_cen,
     input              flip,
 
-    // Interface with CPU
-    input              objram_cs,
-    input      [ 1:0]  main_dsn,
-    input      [15:0]  main_dout,
-    input      [13:1]  main_addr,
+    // Interface with SDRAM for ORAM data
+    output     [12:0]  oram_addr,
+    input              oram_ok,
+    input      [15:0]  oram_data,
 
     input              obank,
 
@@ -61,25 +60,45 @@ wire [ 8:0] buf_addr, buf_data;
 wire [11:0] prio_data;
 wire        buf_wr;
 
+wire        obank_frame, oframe_we;
+
 // shadow RAM interface
 wire [ 9:0] table_attr;
 wire [15:0] obj_x, obj_y, obj_code, obj_attr;
 
 assign prio_data = { dr_prio, buf_data };
 
-jtcps2_objram u_objram(
+jtcps2_obj_frame u_frame(
     .rst        ( rst           ),
-    .clk_cpu    ( clk_cpu       ),
-    .clk_gfx    ( clk           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
 
+    .vdump      ( vdump         ),
     .obank      ( obank         ),
 
+    // Interface with SDRAM for ORAM data
+    .oram_addr  ( oram_addr     ),
+    .oram_ok    ( oram_ok       ),
+
+
+    // Interface with ORAM frame buffer
+    .oframe_we  ( oframe_we     ),
+    .obank_frame( obank_frame   )
+);
+
+jtcps2_objram u_objram(
+    .rst        ( rst           ),
+    .clk_cpu    ( clk           ),  // use GFX as it is driven by u_frame
+    .clk_gfx    ( clk           ),
+
+    .obank      ( obank_frame   ),
+
     // Interface with CPU
-    .cs         ( objram_cs     ),
+    .cs         ( oframe_we     ),
     .ok         (               ),
-    .dsn        ( main_dsn      ),
-    .main_dout  ( main_dout     ),
-    .main_addr  ( main_addr     ),
+    .dsn        ( 2'd0          ),
+    .main_dout  ( oram_data     ),
+    .main_addr  ( oram_addr     ),
 
     // Interface with OBJ engine
     .obj_addr   ( table_attr    ),

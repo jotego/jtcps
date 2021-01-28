@@ -70,6 +70,9 @@ module jtcps1_sdram #( parameter
     input           main_oram_cs,
     `ifdef CPS2
     input           obank,
+    input    [12:0] gfx_oram_addr,
+    output   [15:0] gfx_oram_data,
+    output          gfx_oram_ok,
     `endif
     input           vram_rfsh_en,
 
@@ -153,8 +156,14 @@ localparam [21:0] PCM_OFFSET   = 22'h10_0000,
 
 `ifdef CPS2
     localparam [21:0] SCR_OFFSET = 22'h00_0000; // change this when moving to 8MB+ GFX
+    localparam        CPS2       = 1;
 `else
     localparam [21:0] SCR_OFFSET = ZERO_OFFSET;
+    localparam        CPS2       = 0;
+
+    wire [12:0] gfx_oram_addr = 13'd0;
+    wire [15:0] gfx_oram_data;
+    wire        gfx_oram_ok;
 `endif
 
 `ifdef CPS15
@@ -229,35 +238,44 @@ jtcps1_prom_we #(
     .kabuki_we      ( kabuki_we     )
 );
 
-jtframe_ram_2slots #(
+jtframe_ram_3slots #(
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
 
     .SLOT1_AW    ( 17            ), // VRAM - read only access
-    .SLOT1_DW    ( 16            )
+    .SLOT1_DW    ( 16            ),
+
+    .SLOT2_AW    ( 13            ), // VRAM - read only access
+    .SLOT2_DW    ( 16            )
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
 
     .offset0     ( main_offset   ),
     .offset1     ( VRAM_OFFSET   ),
+    .offset2     ( ORAM_OFFSET   ),
 
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
     .slot1_cs    ( vram_dma_cs   ),
     .slot1_clr   ( vram_clr      ),
+    .slot2_cs    ( CPS2[0]       ),
+    .slot2_clr   ( vram_clr      ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),
+    .slot2_ok    ( gfx_oram_ok   ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
 
     .slot0_addr  ( main_addr_x   ),
     .slot1_addr  ( vram_dma_addr ),
+    .slot2_addr  ( gfx_oram_addr ),
 
     .slot0_dout  ( main_ram_data ),
     .slot1_dout  ( vram_dma_data ),
+    .slot2_dout  ( gfx_oram_data ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),

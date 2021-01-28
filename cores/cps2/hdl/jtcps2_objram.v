@@ -69,7 +69,8 @@ always @(posedge clk_cpu) begin
 end
 
 jtframe_dual_ram16 #(
-    .aw(AW-2),.simfile_lo("objx_lo.bin"), .simfile_hi("objx_hi.bin")
+    .aw(AW-2)
+    // ,.simfile_lo("objx_lo.bin"), .simfile_hi("objx_hi.bin")
 ) u_x(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
@@ -86,7 +87,8 @@ jtframe_dual_ram16 #(
 );
 
 jtframe_dual_ram16 #(
-    .aw(AW-2),.simfile_lo("objy_lo.bin"), .simfile_hi("objy_hi.bin")
+    .aw(AW-2)
+    // ,.simfile_lo("objy_lo.bin"), .simfile_hi("objy_hi.bin")
 ) u_y(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
@@ -103,7 +105,8 @@ jtframe_dual_ram16 #(
 );
 
 jtframe_dual_ram16 #(
-    .aw(AW-2),.simfile_lo("objattr_lo.bin"), .simfile_hi("objattr_hi.bin")
+    .aw(AW-2)
+    // ,.simfile_lo("objattr_lo.bin"), .simfile_hi("objattr_hi.bin")
 ) u_attr(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
@@ -120,7 +123,8 @@ jtframe_dual_ram16 #(
 );
 
 jtframe_dual_ram16 #(
-    .aw(AW-2),.simfile_lo("objcode_lo.bin"), .simfile_hi("objcode_hi.bin")
+    .aw(AW-2)
+    // ,.simfile_lo("objcode_lo.bin"), .simfile_hi("objcode_hi.bin")
 ) u_code(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),

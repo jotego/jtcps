@@ -39,9 +39,9 @@ reg [1:0] shVB;
 `ifdef SIMULATION
 initial begin
     hdump     = 9'd0;
-    vrender1  = 8'd2;
-    vrender   = 8'd1;
-    vdump     = 9'd0;
+    vrender1  = 8'hf2;
+    vrender   = 8'hf1;
+    vdump     = 9'hf0;  // start with the full V blank period
     HS        = 1'b0;
     VS        = 1'b0;
     HB        = 1'b1;

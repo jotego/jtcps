@@ -25,6 +25,7 @@
 ../../hdl/jtcps2_game.v
 ../../hdl/jtcps2_main.v
 ../../hdl/jtcps2_obj.v
+../../hdl/jtcps2_obj_frame.v
 ../../hdl/jtcps2_objram.v
 ../../hdl/jtcps2_obj_scan.v
 ../../hdl/jtcps2_colmix.v
