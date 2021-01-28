@@ -134,7 +134,7 @@ wire [     8:0] star1_pxl, star0_pxl;
 wire [     8:0] vrender1;
 wire [    15:0] ppu_ctrl, pal_raw;
 wire [    17:1] vram_pal_addr;
-wire            line_start, preVB;
+wire            line_start, frame_start, preVB;
 wire            flip = ppu_ctrl[15];
 wire            busack_obj, busack_pal;
 wire [OBJW-1:0] obj_pxl;
@@ -231,7 +231,8 @@ jtcps1_timing u_timing(
     .hdump          ( hdump             ),
     .vrender1       ( vrender1          ),
     .vrender        ( vrender           ),
-    .start          ( line_start        ),
+    .line_start     ( line_start        ),
+    .frame_start    ( frame_start       ),
     // to video output
     .HS             ( HS                ),
     .VS             ( VS                ),

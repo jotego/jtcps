@@ -6,6 +6,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_obj_frame.v         ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_obj_scan.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_colmix.v            ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_raster.v            ]
 
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/ram/jtframe_dual_ram16.v          ]
 

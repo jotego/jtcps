@@ -392,4 +392,23 @@ always @(posedge clk, posedge reg_rst) begin
     end
 end
 
+`ifdef CPS2
+jtcps2_raster u_raster(
+    .rst        ( rst           ),
+    .clk        ( clk           ),
+    .pxl_cen    ( pxl_cen       ),
+
+    .frame_start( frame_start   ),
+    .line_start ( line_start    ),
+
+    // interface with CPU
+    .cnt_sel    ( cnt_sel       ),
+    .wrn        ( wrn           ),
+    .cpu_dout   ( cpu_dout      ),
+    .cnt_dout   ( raster_dout   ),
+
+    .raster     ( raster        )       // raster event
+);
+`endif
+
 endmodule

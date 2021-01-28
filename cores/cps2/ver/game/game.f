@@ -29,6 +29,7 @@
 ../../hdl/jtcps2_objram.v
 ../../hdl/jtcps2_obj_scan.v
 ../../hdl/jtcps2_colmix.v
+../../hdl/jtcps2_raster.v
 # DSP16
 $MODULES/jtdsp16/hdl/jtdsp16_ctrl.v
 $MODULES/jtdsp16/hdl/jtdsp16_dau.v
