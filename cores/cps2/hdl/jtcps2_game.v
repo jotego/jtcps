@@ -119,6 +119,7 @@ wire [21:1] main_rom_addr;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
 wire        ppu1_cs, ppu2_cs, ppu_rstn;
+wire        raster;
 wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
 // Video RAM interface
@@ -229,6 +230,7 @@ jtcps2_main u_main(
     .ppu2_cs    ( ppu2_cs           ),
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
+    .raster     ( raster            ),
     // Sound
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
@@ -315,6 +317,7 @@ jtcps1_video #(REGSIZE) u_video(
     .cpu_speed      ( cpu_speed     ),
     .charger        (               ),
     .kabuki_en      (               ),
+    .raster         ( raster        ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

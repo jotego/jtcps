@@ -24,6 +24,10 @@ module jtcps1_mmr(
     input              clk,
     input              pxl_cen,
 
+    input              frame_start,
+    input              line_start,
+    output             raster,
+
     input              ppu_rstn,
     input              ppu1_cs,
     input              ppu2_cs,
@@ -32,6 +36,7 @@ module jtcps1_mmr(
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  reg [15:0] mmr_dout,
+
     // registers
     output reg [15:0]  ppu_ctrl,
     output reg         obj_dma_ok,
@@ -143,6 +148,11 @@ reg  [15:0]  rslt1, rslt0;
 reg  [ 7:0]  in2, in3;
 reg          last_cfg_we;
 wire [ 2:0]  cpsb_inputs;
+
+`ifdef CPS2
+wire [ 8:0]  raster_dout;
+reg  [ 2:0]  cnt_sel;
+`endif
 
 always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
@@ -329,6 +339,9 @@ always @(posedge clk, posedge reg_rst) begin
         sdi           <= 1'b0;
         scs           <= 1'b0;
         `endif
+        `ifdef CPS2
+        cnt_sel       <= 3'd0;
+        `endif
 
         obj_dma_ok    <= 1'b0;
     end else begin
@@ -388,10 +401,22 @@ always @(posedge clk, posedge reg_rst) begin
                 if( addr == 5'h1d ) mmr_dout <= { 15'd0, sdo };
             end
             `endif
+            `ifdef CPS2
+            // raster effects
+            if( addr == 5'h0e>>1 || addr == 5'h10>>1 || addr == 5'h12>>1 ) begin
+                mmr_dout <= { ~7'd0, raster_dout };
+                cnt_sel[0] <=  addr[4] && !addr[1];
+                cnt_sel[1] <=  addr[4] &&  addr[1];
+                cnt_sel[2] <= !addr[4];
+            end else begin
+                cnt_sel <= 3'd0;
+            end
+            `endif
         end
     end
 end
 
+// Raster interrupts
 `ifdef CPS2
 jtcps2_raster u_raster(
     .rst        ( rst           ),
@@ -403,12 +428,14 @@ jtcps2_raster u_raster(
 
     // interface with CPU
     .cnt_sel    ( cnt_sel       ),
-    .wrn        ( wrn           ),
+    .wrn        ( !dsn          ),
     .cpu_dout   ( cpu_dout      ),
     .cnt_dout   ( raster_dout   ),
 
     .raster     ( raster        )       // raster event
 );
+`else
+assign raster = 0;
 `endif
 
 endmodule

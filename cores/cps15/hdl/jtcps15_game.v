@@ -315,6 +315,7 @@ jtcps1_video #(REGSIZE) u_video(
     .cpu_speed      ( cpu_speed     ),
     .charger        ( charger       ),
     .kabuki_en      ( kabuki_en     ),
+    .raster         (               ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),

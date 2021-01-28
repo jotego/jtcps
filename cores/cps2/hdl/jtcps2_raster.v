@@ -29,17 +29,21 @@ module jtcps2_raster(
     input       [ 2:0] cnt_sel,
     input              wrn,
     input       [15:0] cpu_dout,
-    output  reg [15:0] cnt_dout,
+    output reg  [ 8:0] cnt_dout,
 
-    output             raster       // raster event
+    output reg         raster       // raster event
 );
 
-wire [8:0] dout0, dout1, dout2;
-wire [2:0] we;
+wire [8:0] dout0, dout1, dout2, din;
+wire [2:0] we, zero;
 wire       en_in;
-wire       restart, line_start;
+wire       restart, step;
+reg        cnt4;
+wire       cen4;
 
+assign cen4  = pxl_cen & cnt4;
 assign en_in = cpu_dout[15];
+assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
 assign restart = pxl_cen && frame_start;
@@ -48,11 +52,17 @@ assign step    = pxl_cen && line_start;
 always @(posedge clk) begin
     cnt_dout <= cnt_sel[0] ? dout0 : (cnt_sel[1] ? dout1 : dout2);
     raster   <= zero[2] & (|zero[1:0]);
+    if( pxl_cen ) cnt4 <= ~cnt4;
+end
+
+initial begin
+    cnt4 <= 0;
 end
 
 jtcps2_raster_cnt u_cnt0(
     .rst    ( rst       ),
     .clk    ( clk       ),
+    .cen4   ( cen4      ),
 
     .restart( restart   ),
     .step   ( step      ),
@@ -68,6 +78,7 @@ jtcps2_raster_cnt u_cnt0(
 jtcps2_raster_cnt u_cnt1(
     .rst    ( rst       ),
     .clk    ( clk       ),
+    .cen4   ( cen4      ),
 
     .restart( restart   ),
     .step   ( step      ),
@@ -83,6 +94,7 @@ jtcps2_raster_cnt u_cnt1(
 jtcps2_raster_cnt u_cnt2(
     .rst    ( rst       ),
     .clk    ( clk       ),
+    .cen4   ( cen4      ),
 
     .restart( restart   ),
     .step   ( step      ),
@@ -99,6 +111,7 @@ endmodule
 module jtcps2_raster_cnt(
     input              rst,
     input              clk,
+    input              cen4,
 
     input              restart,
     input              step,
@@ -106,23 +119,23 @@ module jtcps2_raster_cnt(
     input              we,
     input              en_in,
     input       [ 8:0] din,
-    output      [ 8:0] dout,
+    output reg  [ 8:0] dout,
 
-    output             zero       // raster event
+    output reg         zero       // raster event
 );
 
 reg  [8:0] cnt_start, cnt;
 reg        enable;
 
-assign dout = enable ? cnt : cnt_start;
-assign zero = cnt == 9'd0;
-
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        cnt       <= 9'd0;
-        cnt_start <= 9'd0;
+        cnt       <= ~9'd0;
+        cnt_start <= ~9'd0;
+        dout      <= ~9'd0;
         enable    <= 0;
     end else begin
+        zero <= cnt == 9'd0;
+        if(cen4) dout <= enable ? cnt : cnt_start;
         if( we ) begin
             cnt_start <= din;
             enable    <= en_in;

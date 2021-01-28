@@ -31,6 +31,7 @@ module jtcps2_main(
     output reg         ppu2_cs,
     output             ppu_rstn,
     input   [15:0]     mmr_dout,
+    input              raster,
     // Sound
     output             UDSWn,
     output             LDSWn,
@@ -393,26 +394,27 @@ end
 
 // interrupt generation
 reg        int1, // VBLANK
-           int2; // ??
-(*keep*) wire [2:0] FC;
+           int2; // Raster
+wire [2:0] FC;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen
-    //reg last_V256;
+    reg last_raster;
     if( rst ) begin
-        int1 <= 1'b1;
-        int2 <= 1'b1;
+        int1        <= 1'b1;
+        int2        <= 1'b1;
+        last_raster <= 0;
     end else begin
-        last_LVBL <= LVBL;
-        //last_V256 <= V[8];
+        last_LVBL   <= LVBL;
+        last_raster <= raster;
 
         if( !inta_n ) begin
             int1 <= 1'b1;
             int2 <= 1'b1;
         end
         else begin
-            //if( V[8] && !last_V256 ) int2 <= 1'b0;
-            if( !LVBL && last_LVBL ) int1 <= 1'b0;
+            if( raster && !last_raster ) int2 <= 1'b0;
+            if( !LVBL && last_LVBL     ) int1 <= 1'b0;
         end
     end
 end
@@ -463,7 +465,7 @@ fx68k u_cpu(
     .DTACKn     ( DTACKn      ),
     .IPL0n      ( 1'b1        ),
     .IPL1n      ( int1        ), // VBLANK
-    .IPL2n      ( int2        ),
+    .IPL2n      ( int2        ), // Raster
 
     // Unused
     .oRESETn    (             ),

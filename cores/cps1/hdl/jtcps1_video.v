@@ -51,6 +51,8 @@ module jtcps1_video(
     output             cpu_speed,
     output             charger,
     output             kabuki_en,
+    output             raster,
+
     // BUS sharing
     output             busreq,
     input              busack,
@@ -250,6 +252,10 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .clk            ( clk               ),
     .pxl_cen        ( pxl_cen           ),
     .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
+
+    .frame_start    ( frame_start       ),
+    .line_start     ( line_start        ),
+    .raster         ( raster            ),
 
     .ppu1_cs        ( ppu1_cs           ),
     .ppu2_cs        ( ppu2_cs           ),
