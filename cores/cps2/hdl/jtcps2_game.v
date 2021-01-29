@@ -355,10 +355,10 @@ jtcps1_video #(REGSIZE) u_video(
     // Extra inputs read through the C-Board
     .start_button   ( start_button  ),
     .coin_input     ( coin_input    ),
-    .joystick1      ( joystick1     ),
-    .joystick2      ( joystick2     ),
-    .joystick3      ( joystick3     ),
-    .joystick4      ( joystick4     ),
+    .joystick1      ( 10'h3ff       ),
+    .joystick2      ( 10'h3ff       ),
+    .joystick3      ( 10'h3ff       ),
+    .joystick4      ( 10'h3ff       ),
 
     // Video RAM interface
     .vram_dma_addr  ( vram_dma_addr ),
