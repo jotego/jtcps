@@ -172,7 +172,7 @@ reg        pulse4;
 //wire       cen4b;
 
 //assign cen4b = pxl_cen & ~cen4;
-assign dout  = { preout, cnt_start[0] ^ pulse4 };
+assign dout  = { preout, cnt_start[0] ^ ~pulse4 };
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -181,7 +181,9 @@ always @(posedge clk, posedge rst) begin
         preout    <= ~8'd0;
         pulse4    <= 0;
     end else begin
-        if( pxl_cen ) pulse4 <= ~pulse4;
+        if( pxl_cen ) pulse4 <= cen4; // pulse4 must be deterministic
+                                      // and independent of reset for dout[0]
+                                      // to work as expected
         if( cen4 ) preout <= cnt;
         zero <= ~|cnt;
 
