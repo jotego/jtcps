@@ -135,7 +135,7 @@ always @(posedge clk, posedge rst) begin
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
                     npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
-                    if( table_y[15] || table_attr[15:8]==16'hff ) begin
+                    if( table_y[15] || table_attr[15:8]==8'hff ) begin
                         st<=0;  // done
                     end
                     else begin
