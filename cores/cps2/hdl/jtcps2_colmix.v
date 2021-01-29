@@ -30,7 +30,8 @@ module jtcps2_colmix(
 
 localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 
-wire [2:0] obj_prio = obj_pxl[11:9];
+wire [2:0] obj_prio = obj_pxl[11:9],
+           scr_lyr  = scr_pxl[11:9];
 
 reg obj1st, mux_sel;
 
@@ -40,14 +41,8 @@ function blank;
 endfunction
 
 always @(*) begin
-    obj1st  = ~obj_prio <= scr_pxl[11:9];
-    // case( scr_pxl[11:9] )
-    //     SCR1: obj1st = ~obj_prio[0];
-    //     SCR2: obj1st = ~obj_prio[1];
-    //     SCR3: obj1st = ~obj_prio[2];
-    //     default: obj1st = 1;
-    // endcase
-    //obj1st = 1;
+    obj1st  = ~obj_prio <= scr_lyr; // ok in SPF2T
+    //obj1st  = obj_prio > scr_lyr; // ok in Sports Club
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
