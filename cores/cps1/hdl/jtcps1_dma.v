@@ -103,15 +103,16 @@ localparam TASKW=1+1+3+6;
 localparam [7:0] LAST_SCR1 = 8'd99, LAST_SCR2 = 8'd225, LAST_SCR3 = 8'd255;
 localparam ROW=0, OBJ=1, SCR1=2, SCR2=3, SCR3=4,
            PAL0=5, PAL1=6,PAL2=7,PAL3=8,PAL4=9,PAL5=10;
+localparam MW = 3; // miss hit counter
 
 reg  [15:0] vrenderf, vscr1, vscr2, vscr3, row_scr_next;
 reg  [11:0] scan;
 wire [11:0] wr_pal_addr;
 reg  [10:0] vn, hn, hstep;
-reg  [ 9:0] obj_cnt;
-reg  [ 8:0] pal_cnt, vram_scr_base;
-reg  [ 7:0] scr_cnt, scr_over;
-reg  [ 4:0] misses;
+reg  [ 9:0] obj_cnt, obj_wr_cnt;
+reg  [ 8:0] pal_cnt, pal_wr_cnt, vram_scr_base;
+reg  [ 7:0] scr_cnt, scr_over, scr_wr_cnt;
+reg  [MW-1:0] misses;
 reg  [ 3:0] step;
 reg  [ 2:0] active, swap, pal_rd_page, pal_wr_page;
 
@@ -122,7 +123,8 @@ reg         last_HB, line_req, last_pal_dma_ok, pal_busy;
 reg         rd_bank, wr_bank, adv, check_adv;
 reg         rd_obj_bank, wr_obj_bank;
 reg         scr_wr, obj_wr, pal_wr;
-reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok;
+reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok,
+            fill_found, fill_en;
 
 wire        HB_edge  = !last_HB && HB;
 wire        tile_ok  = vrender1<9'd240 || vrender1>9'd257; // VB is 38 lines
@@ -155,13 +157,12 @@ always @(*) begin
                             active[2]); // SCR3
 end
 
-reg [15:0] tile_din, obj_din, pal_din;
-
-always @(posedge clk) begin
-    tile_din    <= vram_data;
-    obj_din     <= vram_data & {16{~obj_fill}};
-    pal_din     <= vram_data;
+always @(*) begin
+    fill_found = cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff;
+    fill_en    = fill_found | obj_fill;
 end
+
+reg [15:0] tile_din, obj_din, pal_din;
 
 assign vram_clr = 0;
 
@@ -171,7 +172,7 @@ jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
     .clk1   ( clk           ),
     // Port 0: write
     .data0  ( tile_din      ),
-    .addr0  ( { wr_bank, scr_cnt    } ),
+    .addr0  ( { wr_bank, scr_wr_cnt   } ),
     .we0    ( scr_wr        ),
     .q0     (               ),
     // Port 1: read
@@ -182,13 +183,12 @@ jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(
 );
 
 // OBJ table
-`ifndef CPS2
 jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .clk0   ( clk           ),
     .clk1   ( clk           ),
     // Port 0: write
     .data0  ( obj_din       ),
-    .addr0  ( { wr_obj_bank, obj_cnt } ),
+    .addr0  ( { wr_obj_bank, obj_wr_cnt } ),
     .we0    ( obj_wr        ),
     .q0     (               ),
     // Port 1: read
@@ -197,9 +197,8 @@ jtframe_dual_ram #(.dw(16), .aw(11)) u_obj_cache(
     .we1    ( 1'b0          ),
     .q1     ( obj_table_data)
 );
-`endif
 
-assign wr_pal_addr = { pal_wr_page, pal_cnt };
+assign wr_pal_addr = { pal_wr_page, pal_wr_cnt };
 
 // Palette RAM (this was phisically outside of CPS-A/B chips)
 jtframe_dual_ram #(.dw(16), .aw(12)) u_pal_ram(
@@ -271,7 +270,7 @@ always @(posedge clk) begin
         last_obj_dma_ok <= 0;
         pal_cnt     <= 9'd0;
         // SDRAM management
-        misses      <= 5'd0;
+        misses      <= {MW{1'b0}};
         rfsh_en     <= 1;
         // Palette
         pal_rd_page <= 3'd0;
@@ -293,6 +292,9 @@ always @(posedge clk) begin
         last_HB <= HB;
         last_obj_dma_ok <= obj_dma_ok;
         last_pal_dma_ok <= pal_dma_ok;
+        scr_wr <= 0;
+        obj_wr <= 0;
+        pal_wr <= 0;
 
 
         if( obj_dma_ok && !last_obj_dma_ok ) begin
@@ -354,7 +356,7 @@ always @(posedge clk) begin
                 cur_task  <= next_task;
                 if( ~|tasks ) begin
                     br      <= 0;
-                    misses  <= 5'd0; // no oportunity to recover in the next cycle
+                    misses  <= {MW{1'd0}}; // no oportunity to recover in the next cycle
                     rfsh_en <= 1;
                 end else
                     step      <= 4'b1;
@@ -386,11 +388,11 @@ always @(posedge clk) begin
                 end
             end
             else begin
-                if( step[2] && !vram_ok ) begin
-                    if( ~&misses ) misses <= misses + 5'd1;    // wait for SDRAM
+                if( step[3] && !vram_ok ) begin
+                    if( ~&misses ) misses <= misses + 1'd1;    // wait for SDRAM
                 end else begin
-                    if( step[1] && vram_ok && misses>5'd0 ) begin
-                        misses <= misses - 5'd1;
+                    if( step[1] && vram_ok && misses ) begin
+                        misses <= misses - 1'd1;
                         step <= 4'b1000; // skip one to recover a cycle
                     end else begin
                         step <= { step[2:0], step[3] }; // normal sequence
@@ -403,20 +405,18 @@ always @(posedge clk) begin
                                       cur_task[OBJ]       ? vobj_addr :
                                       vpal_addr ));
                     end
-                    default: if(vram_ok) begin // collect data
-                        scr_wr <= |cur_task[SCR3:SCR1];
-                        obj_wr <= cur_task[OBJ] | obj_fill;
-                        pal_wr <= |cur_task[PAL5:PAL0];
-                        if( cur_task[ROW] )
-                            row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
-                        if( cur_task[OBJ] && obj_cnt[1:0]==2'b11 && vram_data[15:8]==8'hff ) begin
-                            obj_fill <= 1;
-                        end
-                    end
-                    4'd8: begin
-                        scr_wr <= 0;
-                        obj_wr <= 0;
-                        pal_wr <= 0;
+                    default:;
+                    4'd8: if( vram_ok ) begin
+                        tile_din <= vram_data;
+                        obj_din  <= vram_data & {16{~fill_en}};
+                        pal_din  <= vram_data;
+                        scr_wr   <= |cur_task[SCR3:SCR1];
+                        obj_wr   <= cur_task[OBJ] | obj_fill;
+                        pal_wr   <= |cur_task[PAL5:PAL0];
+                        scr_wr_cnt <= scr_cnt;
+                        obj_wr_cnt <= obj_cnt;
+                        pal_wr_cnt <= pal_cnt;
+
                         if( |cur_task[SCR3:SCR1] ) begin
                             if( scr_cnt==scr_over ) begin
                                 adv     <= 1;
@@ -433,11 +433,13 @@ always @(posedge clk) begin
                         if( cur_task[ROW] ) begin
                             adv        <= 1;
                             tasks[ROW] <= 0;
+                            row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
                         end
                         if( cur_task[OBJ] || obj_fill ) begin
-                            obj_cnt <= obj_cnt + 10'd1;
+                            obj_cnt  <= obj_cnt + 10'd1;
+                            obj_fill <= fill_en;
                             if( cur_task[OBJ] ) begin
-                                adv <= (&obj_cnt[1:0]) | obj_fill;
+                                adv <= (&obj_cnt[1:0]);
                                 if( &obj_cnt[1:0] ) tasks[OBJ]<=0;
                             end
                             if( &obj_cnt ) begin
@@ -452,7 +454,7 @@ always @(posedge clk) begin
                                 adv <= 1;
                                 // Update palette page
                                 pal_wr_page <= pal_wr_page+3'd1;
-                                pal_rd_page <= pal_rd_page+3'd1;
+                                pal_rd_page<=pal_rd_page+3'd1;
                             end
                         end
                     end

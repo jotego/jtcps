@@ -211,7 +211,7 @@ jtframe_cen48 u_cen48(
 jtcps1_cpucen u_cpucen(
     .clk        ( clk48              ),
     .cen12      ( cen12              ),
-    .cpu_speed  ( cpu_speed | turbo  ),
+    .cpu_speed  ( cpu_speed /*| turbo*/  ),
     .cpu_cen    ( cpu_cen            ),
     .cpu_cenb   ( cpu_cenb           )
 );
