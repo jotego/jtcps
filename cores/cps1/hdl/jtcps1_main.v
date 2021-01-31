@@ -142,6 +142,10 @@ end
 
 (*keep*) reg [23:0] last_fail;
 
+always @(*) begin
+    one_wait = !ASn && BGACKn && (A[23] || A[23:22]==2'b0); // RAM or ROM // A[23] | ~A[22];
+end
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         rom_cs      <= 1'b0;
@@ -156,7 +160,6 @@ always @(posedge clk, posedge rst) begin
         snd0_cs     <= 1'b0;
         ppu1_cs     <= 1'b0;
         ppu2_cs     <= 1'b0;
-        one_wait    <= 1'b0;
         dial_cs     <= 1'b0;
         rom_addr    <= 21'd0;
         `ifdef CPS15
@@ -171,7 +174,6 @@ always @(posedge clk, posedge rst) begin
         if( !ASn && BGACKn ) begin // PAL PRG1 12H
             rom_addr    <= A[21:1];
             rom_cs      <= A[23:22] == 2'b00;
-            one_wait    <= A[23] | ~A[22];
             // dbus_cs     <= ~|A[23:18]; // all must be zero
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             io_cs       <= A[23:20] == 4'b1000;
@@ -221,7 +223,6 @@ always @(posedge clk, posedge rst) begin
             snd0_cs     <= 1'b0;
             ppu1_cs     <= 1'b0;
             ppu2_cs     <= 1'b0;
-            one_wait    <= 1'b0;
             dial_cs     <= 1'b0;
             `ifdef CPS15
             io15_cs     <= 0;
@@ -370,14 +371,11 @@ end
 
 // Data bus input
 reg  [15:0] cpu_din;
-reg         rom_ok2;
 
 always @(posedge clk) begin
     if(rst) begin
         cpu_din <= 16'hffff;
-        rom_ok2 <= 1'b0;
     end else begin
-        rom_ok2 <= rom_ok;
         cpu_din <= (dial_cs | joy_cs | sys_cs) ? sys_data : (
                    (ram_cs | vram_cs )         ? ram_data : (
                     rom_cs                     ? rom_data : (
@@ -397,7 +395,7 @@ end
 wire       inta_n;
 reg [2:0]  wait_cycles;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok2,
+wire       bus_busy = |{ rom_cs & ~rom_ok,
                     (pre_ram_cs|pre_vram_cs) & ~ram_ok
                     `ifdef CPS15
                     , main2qs_cs & ~main2qs_waitn
@@ -429,7 +427,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         fail_cnt    <= 4'd0;
         fail_cnt_ok <= 0;
         last_fail   <= 4'd0;
-    end else /*if(cen10b)*/ begin
+    end else begin
         if( rom_ok ) fail_cnt_ok <= 1;
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn
@@ -438,17 +436,17 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             `endif
         ) begin // for falling edge of ASn
             DTACKn <= 1'b1;
-            wait_cycles <= 3'b111;
+            wait_cycles <= {2'b0, ~one_wait};
         end else if( !ASn  ) begin
             // The original hardware always waits for 250ns
             // on each bus access, except if one_wait signal is
             // set low. Then it waits on a secondary input, which
             // seems to be tied high on the schematics.
-            if( cen10 ) begin
-                wait_cycles[2] <= 1'b0;
+            if( cen10b ) begin
+                wait_cycles[2] <= 1'b1;
                 wait_cycles[1] <= wait_cycles[2];
             end
-            if( !wait_cycles[1] ) wait_cycles[0] <= ~one_wait;
+            if( wait_cycles[1] ) wait_cycles[0] <= 1;
             if( bus_cs ) begin
                 // we avoid accumulating delay by counting it
                 // and skipping wait cycles when necessary
@@ -457,16 +455,16 @@ always @(posedge clk, posedge rst) begin : dtack_gen
                 // by one cycle
                 // Average delay can be displayed in simulation by defining the
                 // macro REPORT_DELAY
-                if( !wait_cycles[0] && bus_busy && fail_cnt_ok && cen10 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
-                if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=4'd0&&wait_cycles==3'b011) ) ) begin
+                if( wait_cycles[1] && bus_busy && fail_cnt_ok && cen10 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
+                if (!bus_busy && (wait_cycles[1] || (fail_cnt!=4'd0&&wait_cycles==3'b100) ) ) begin
                     DTACKn <= 1'b0;
-                    if( wait_cycles[0] && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
+                    if( wait_cycles[1:0]==2'd0 && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
                 end
             end
             else DTACKn <= 1'b0;
         end
         if( !LVBL && last_LVBL ) begin
-            fail_cnt <= 4'd0;
+            // fail_cnt <= 4'd0;
             last_fail <= fail_cnt;
         end
     end
