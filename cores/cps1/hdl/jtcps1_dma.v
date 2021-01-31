@@ -411,7 +411,7 @@ always @(posedge clk) begin
                         obj_din  <= vram_data & {16{~fill_en}};
                         pal_din  <= vram_data;
                         scr_wr   <= |cur_task[SCR3:SCR1];
-                        obj_wr   <= cur_task[OBJ] | obj_fill;
+                        obj_wr   <= cur_task[OBJ];
                         pal_wr   <= |cur_task[PAL5:PAL0];
                         scr_wr_cnt <= scr_cnt;
                         obj_wr_cnt <= obj_cnt;
@@ -435,7 +435,7 @@ always @(posedge clk) begin
                             tasks[ROW] <= 0;
                             row_scr_next <= {12'b0, hpos2[3:0] } + vram_data;
                         end
-                        if( cur_task[OBJ] || obj_fill ) begin
+                        if( cur_task[OBJ] ) begin
                             obj_cnt  <= obj_cnt + 10'd1;
                             obj_fill <= fill_en;
                             if( cur_task[OBJ] ) begin
