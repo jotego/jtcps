@@ -1251,3 +1251,6 @@ cps1          	mist	20210201	1	PASS	610e28d	604e3a4
 cps2          	mist	20210201	1	FAIL	610e28d	604e3a4
 cps2          	mist	20210201	1	PASS	610e28d	604e3a4
 cps2          	mist	20210201	1	PASS	610e28d	604e3a4
+cps2          	mister	20210201	1	PASS	a0c40bd	604e3a4
+cps2          	mist	20210201	1	PASS	f9396a5	604e3a4
+cps2          	mister	20210201	1	FAIL	f9396a5	604e3a4
