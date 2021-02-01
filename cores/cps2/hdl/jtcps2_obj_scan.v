@@ -47,7 +47,7 @@ reg  [ 8:0] vrenderf;
 
 wire [ 8:0] obj_y;
 wire [15:0] code_mn;
-wire [ 8:0] eff_x;
+wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
 wire [ 2:0] prio;
 
@@ -84,7 +84,7 @@ assign      tile_n     = table_attr[11: 8];
 assign      vflip      = table_attr[6];
 wire        hflip      = table_attr[5];
 //          pal        = table_attr[4:0];
-assign      eff_x      = table_x[8:0] + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      eff_x      = table_x[9:0] + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
 reg  [ 4:0] st;
 
@@ -159,11 +159,11 @@ always @(posedge clk, posedge rst) begin
                 if( !dr_idle ) begin
                     st <= 4;
                 end else begin
-                    dr_attr <= { 4'd0, vsub, table_attr[7:0] };
-                    dr_code <= code_mn;
-                    dr_hpos <= eff_x - 9'd1;
-                    dr_prio <= prio;
-                    dr_start <= 1;
+                    dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
+                    dr_code  <= code_mn;
+                    dr_hpos  <= eff_x - 9'd1;
+                    dr_prio  <= prio;
+                    dr_start <= ~eff_x[9];
                 end
             end
             5: begin
