@@ -128,9 +128,7 @@ reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok,
 
 wire        HB_edge  = !last_HB && HB;
 wire        tile_ok  = vrender1<9'd240 || vrender1>9'd257; // VB is 38 lines
-wire        tile_vs  = vrender1 == (flip ? 9'd17 : 9'd12); // Vertical start, use for SCR3
-    // 9'd17 was needed for 1941 logo screen on flip mode
-    // 9'd12 was the previous value used for non flip images
+wire        tile_vs  = vrender1 == 9'd0; // Vertical start, use for SCR3
 
 // various addresses: note that the base address is added, and not just
 // concatenated. This can be seen in Ghouls start where the palette base

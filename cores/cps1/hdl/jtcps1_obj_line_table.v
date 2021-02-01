@@ -100,7 +100,7 @@ jtcps1_obj_tile_match u_tile_match(
 
     .vflip      ( vflip     ),
     .vrenderf   ( vrenderf  ),
-    .obj_y      ( obj_y     ),
+    .obj_y      ( obj_y[8:0]),
 
     .vsub       ( vsub      ),
     .inzone     ( inzone    ),

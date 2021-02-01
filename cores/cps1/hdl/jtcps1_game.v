@@ -312,7 +312,7 @@ jtcps1_video #(REGSIZE) u_video(
     .ppu_rstn       ( ppu_rstn      ),
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( ppu2_cs       ),
-    .addr           ( ram_addr[5:1] ),
+    .addr           ( ram_addr[12:1]),
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
