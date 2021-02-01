@@ -100,7 +100,7 @@ always @(posedge clk, posedge rst) begin
                 buf_data <= { pal, colour(pxl_data, hflip) };
                 pxl_data <= hflip ? {1'b1,pxl_data[31:1]} : {pxl_data[30:0],1'b1};
                 draw_cnt <= draw_cnt>>1;
-                if( draw_cnt[0] || &pxl_data ) begin
+                if( draw_cnt[0] ) begin
                     draw <= 0;
                     read <= read>>1;
                     if(!read[1]) idle<=1;

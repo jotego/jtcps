@@ -90,8 +90,11 @@ module mist_dump(
 
                     //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
                     //$shm_probe(UUT.u_game, "A");
-                    $shm_probe(UUT.u_game.u_main, "A");
-                    //$shm_probe(UUT.u_game.u_video,"AS");
+                    `ifndef NOMAIN
+                        $shm_probe(UUT.u_game.u_main, "A");
+                        $shm_probe(UUT.u_game.u_main.u_dtack, "A");
+                    `endif
+                    $shm_probe(UUT.u_game.u_video,"AS");
                     //$shm_probe(UUT.u_game.u_video.u_dma,"A");
                     //$shm_probe(UUT.u_game.u_video.u_colmix,"A");
                     //$shm_probe(UUT.u_game.u_video.u_mmr, "A");

@@ -283,6 +283,7 @@ assign main_vram_cs = 1'b0;
 assign main_rom_cs = 1'b0;
 assign dsn = 2'b11;
 assign main_rnw = 1'b1;
+assign busack_cpu = 1;
 `endif
 
 reg rst_video;

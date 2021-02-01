@@ -56,6 +56,7 @@ fi
 
 ln -sf $ROM/$GAME.rom rom.bin
 ln -sf $JTFRAME/hdl/sound/uprate2.hex
+touch sdram_bank1.hex
 make SCENE="$SCENE" || exit $?
 
 CFG_FILE=../video/cfg/${GAME}_cfg.hex
