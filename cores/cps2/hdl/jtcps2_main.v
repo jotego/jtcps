@@ -98,7 +98,7 @@ reg         io_cs, eeprom_cs,
             sys_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
-reg         dsn_dly;
+reg         dsn_dly, one_wait;
 
 assign cpu_cen   = cen16;
 // As RAM and VRAM share contiguous spaces in the SDRAM
@@ -132,10 +132,9 @@ always @(posedge clk) begin
     end
 end
 
-// PAL BUF1 16H
-// buf0 = A[23:16]==1001_0000 = 8'h90
-// buf1 = A[23:16]==1001_0001 = 8'h91
-// buf2 = A[23:16]==1001_0010 = 8'h92
+always @(*) begin // below 5MB and above 8MB
+    one_wait = !ASn && BGACKn && (A[23:20]<4'h5 || A[23:20]>=4'h8);
+end
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -292,14 +291,11 @@ end
 
 // Data bus input
 reg  [15:0] cpu_din;
-reg         rom_ok2;
 
 always @(posedge clk) begin
     if(rst) begin
         cpu_din <= 16'hffff;
-        rom_ok2 <= 1'b0;
     end else begin
-        rom_ok2 <= rom_ok;
         cpu_din <= sys_cs ? sys_data : (
                    (ram_cs | vram_cs | oram_cs ) ? ram_data : (
                     rom_cs      ? rom_data : (
@@ -312,16 +308,14 @@ end
 
 // DTACKn generation
 wire       inta_n;
-reg [2:0]  wait_cycles;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs, pre_oram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok2,
+wire       bus_busy = |{ rom_cs & ~rom_ok,
                     (pre_ram_cs|pre_vram_cs|pre_oram_cs) & ~ram_ok,
                     main2qs_cs & ~main2qs_waitn
                      };
 //                          wait_cycles[0] };
-reg        DTACKn;
+wire       DTACKn;
 reg        last_LVBL;
-(*keep*) reg [3:0] fail_cnt;
 
 reg qs_busakn_s;
 
@@ -334,47 +328,23 @@ end
 
 reg fail_cnt_ok;
 
-always @(posedge clk, posedge rst) begin : dtack_gen
-    reg       last_ASn;
-    if( rst ) begin
-        DTACKn      <= 1'b1;
-        wait_cycles <= 3'b111;
-        fail_cnt    <= 4'd0;
-        fail_cnt_ok <= 0;
-    end else /*if(cen16b)*/ begin
-        if( rom_ok ) fail_cnt_ok <= 1;
-        last_ASn <= ASn;
-        if( (!ASn && last_ASn) || ASn
-            || (main2qs_cs && qs_busakn_s) // wait for Z80 bus grant
-        ) begin // for falling edge of ASn
-            DTACKn <= 1'b1;
-            wait_cycles <= 3'b111;
-        end else if( !ASn  ) begin
-            if( cen16 ) begin
-                wait_cycles[2] <= 1'b0;
-                wait_cycles[1:0] <= wait_cycles[2:1];
-            end
-            if( bus_cs ) begin
-                // we avoid accumulating delay by counting it
-                // and skipping wait cycles when necessary
-                // the resolution of this compensation is one CPU clock
-                // Recovery is done by shortening the normal bus wait
-                // by one cycle
-                // Average delay can be displayed in simulation by defining the
-                // macro REPORT_DELAY
-                if( !wait_cycles[0] && bus_busy && fail_cnt_ok && cen16 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
-                if (!bus_busy && (!wait_cycles[0] || (fail_cnt!=4'd0&&wait_cycles==3'b011) ) ) begin
-                    DTACKn <= 1'b0;
-                    if( wait_cycles[0] && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
-                end
-            end
-            else DTACKn <= 1'b0;
-        end
-        if( !LVBL && last_LVBL ) begin
-            fail_cnt <= 4'd0;
-        end
-    end
-end
+jtcps1_dtack u_dtack(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .cen10      ( cen16     ),
+    .cen10b     ( cen16b    ),
+
+    .ASn        ( ASn       ),
+    .one_wait   ( one_wait  ),
+    .bus_cs     ( bus_cs    ),
+    .bus_busy   ( bus_busy  ),
+    .rom_ok     ( rom_ok    ),
+
+    .main2qs_cs ( main2qs_cs  ),
+    .qs_busakn_s( qs_busakn_s ),
+
+    .DTACKn     ( DTACKn    )
+);
 
 `ifdef REPORT_DELAY
 // Note that the data for the first frame may be wrong because

@@ -140,8 +140,6 @@ end
 // buf1 = A[23:16]==1001_0001 = 8'h91
 // buf2 = A[23:16]==1001_0010 = 8'h92
 
-(*keep*) reg [23:0] last_fail;
-
 always @(*) begin
     one_wait = !ASn && BGACKn && (A[23] || A[23:22]==2'b0); // RAM or ROM // A[23] | ~A[22];
 end
@@ -209,8 +207,6 @@ always @(posedge clk, posedge rst) begin
             end
             `endif
         end else begin
-            rom_addr[4:1] <= last_fail[3:0]; // this is a trick so the compiler
-                // won't get rid of last_fail, as I need to see it in signal tap
             rom_cs      <= 1'b0;
             pre_ram_cs  <= 1'b0;
             pre_vram_cs <= 1'b0;
@@ -393,7 +389,6 @@ end
 
 // DTACKn generation
 wire       inta_n;
-reg [2:0]  wait_cycles;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
 wire       bus_busy = |{ rom_cs & ~rom_ok,
                     (pre_ram_cs|pre_vram_cs) & ~ram_ok
@@ -402,9 +397,8 @@ wire       bus_busy = |{ rom_cs & ~rom_ok,
                     `endif
                      };
 //                          wait_cycles[0] };
-reg        DTACKn;
+wire       DTACKn;
 reg        last_LVBL;
-(*keep*) reg [3:0] fail_cnt;
 
 `ifdef CPS15
 reg qs_busakn_s;
@@ -417,74 +411,28 @@ always @(posedge clk, posedge rst) begin
 end
 `endif
 
-reg fail_cnt_ok;
+jtcps1_dtack u_dtack(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .cen10      ( cen10     ),
+    .cen10b     ( cen10b    ),
 
-always @(posedge clk, posedge rst) begin : dtack_gen
-    reg       last_ASn;
-    if( rst ) begin
-        DTACKn      <= 1'b1;
-        wait_cycles <= 3'b111;
-        fail_cnt    <= 4'd0;
-        fail_cnt_ok <= 0;
-        last_fail   <= 4'd0;
-    end else begin
-        if( rom_ok ) fail_cnt_ok <= 1;
-        last_ASn <= ASn;
-        if( (!ASn && last_ASn) || ASn
-            `ifdef CPS15
-            || (main2qs_cs && qs_busakn_s) // wait for Z80 bus grant
-            `endif
-        ) begin // for falling edge of ASn
-            DTACKn <= 1'b1;
-            wait_cycles <= {2'b0, ~one_wait};
-        end else if( !ASn  ) begin
-            // The original hardware always waits for 250ns
-            // on each bus access, except if one_wait signal is
-            // set low. Then it waits on a secondary input, which
-            // seems to be tied high on the schematics.
-            if( cen10b ) begin
-                wait_cycles[2] <= 1'b1;
-                wait_cycles[1] <= wait_cycles[2];
-            end
-            if( wait_cycles[1] ) wait_cycles[0] <= 1;
-            if( bus_cs ) begin
-                // we avoid accumulating delay by counting it
-                // and skipping wait cycles when necessary
-                // the resolution of this compensation is one CPU clock
-                // Recovery is done by shortening the normal bus wait
-                // by one cycle
-                // Average delay can be displayed in simulation by defining the
-                // macro REPORT_DELAY
-                if( wait_cycles[1] && bus_busy && fail_cnt_ok && cen10 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
-                if (!bus_busy && (wait_cycles[1] || (fail_cnt!=4'd0&&wait_cycles==3'b100) ) ) begin
-                    DTACKn <= 1'b0;
-                    if( wait_cycles[1:0]==2'd0 && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
-                end
-            end
-            else DTACKn <= 1'b0;
-        end
-        if( !LVBL && last_LVBL ) begin
-            // fail_cnt <= 4'd0;
-            last_fail <= fail_cnt;
-        end
-    end
-end
+    .ASn        ( ASn       ),
+    .one_wait   ( one_wait  ),
+    .bus_cs     ( bus_cs    ),
+    .bus_busy   ( bus_busy  ),
+    .rom_ok     ( rom_ok    ),
 
-`ifdef REPORT_DELAY
-// Note that the data for the first frame may be wrong because
-// of SDRAM initialization
-real dly_cnt, ticks;
-always @(posedge clk) begin
-    if( !LVBL && last_LVBL ) begin
-        ticks <= 0;
-        dly_cnt <= 0;
-        if( ticks ) $display("INFO: average CPU delay = %.2f CPU clock ticks",dly_cnt/ticks);
-    end else begin
-        dly_cnt <= dly_cnt+fail_cnt;
-        ticks <= ticks+1;
-    end
-end
-`endif
+    `ifdef CPS15
+        .main2qs_cs ( main2qs_cs  ),
+        .qs_busakn_s( qs_busakn_s ),
+    `else
+        .main2qs_cs ( 1'b0        ),
+        .qs_busakn_s( 1'b0        ),
+    `endif
+
+    .DTACKn     ( DTACKn    )
+);
 
 // interrupt generation
 reg        int1, // VBLANK

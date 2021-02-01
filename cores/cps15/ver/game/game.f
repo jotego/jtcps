@@ -14,6 +14,7 @@
 ../../../cps1/hdl/jtcps1_obj_line.v
 ../../../cps1/hdl/jtcps1_prom_we.v
 ../../../cps1/hdl/jtcps1_main.v
+../../../cps1/hdl/jtcps1_dtack.v
 ../../../cps1/hdl/jtcps1_stars.v
 ../../../cps1/hdl/jtcps1_cpucen.v
 ../../../cps1/hdl/jtcps1_gfx_mappers.v

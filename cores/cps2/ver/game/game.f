@@ -19,6 +19,7 @@
 ../../../cps1/hdl/jtcps1_dma.v
 ../../../cps1/hdl/jtcps1_sdram.v
 ../../../cps1/hdl/jtcps1_ram.v
+../../../cps1/hdl/jtcps1_dtack.v
 # CPS15
 ../../../cps15/hdl/jtcps15_sound.v
 # CPS2

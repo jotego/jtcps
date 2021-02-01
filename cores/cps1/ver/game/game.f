@@ -14,6 +14,7 @@
 ../../hdl/jtcps1_sdram.v
 ../../hdl/jtcps1_prom_we.v
 ../../hdl/jtcps1_main.v
+../../hdl/jtcps1_dtack.v
 ../../hdl/jtcps1_game.v
 ../../hdl/jtcps1_sound.v
 ../../hdl/jtcps1_stars.v
