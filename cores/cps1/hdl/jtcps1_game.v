@@ -89,6 +89,7 @@ module jtcps1_game(
     input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
+    input           service,
     input           dip_pause,
     inout           dip_flip,
     input           dip_test,
@@ -251,7 +252,7 @@ jtcps1_main u_main(
     .coin_input  ( coin_input[1:0]  ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
-    .service     ( 1'b1             ),
+    .service     ( service          ),
     .tilt        ( 1'b1             ),
     // BUS sharing
     .busreq      ( busreq_cpu       ),
