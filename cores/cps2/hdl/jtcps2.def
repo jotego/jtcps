@@ -26,6 +26,7 @@ JTFRAME_4PLAYERS
 
 # Other
 STEREO_GAME
+CORE_NVRAM_SIZE="128"
 CPS1_NOOBJ
 
 [mist|sidi]
@@ -36,7 +37,6 @@ JTFRAME_OSD_NOSND
 # Not enough BRAM for the interpolator
 NOFIR
 VIDEO_WIDTH=512
-CORE_NVRAM_SIZE="128"
 
 [mister]
 # Credits

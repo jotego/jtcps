@@ -209,9 +209,9 @@ end
 always @(posedge clk) begin
     dump_we <= 0;
     if (ioctl_wr && ioctl_ram) begin
-        if(ioctl_addr[0]) begin
+        dump_we <= 1;
+        if(~ioctl_addr[0]) begin
             dump_din[15:8] <= ioctl_data;
-            dump_we <= 1;
         end else begin
             dump_din[7:0] <= ioctl_data;
         end
