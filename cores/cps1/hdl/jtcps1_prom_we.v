@@ -206,11 +206,18 @@ initial begin
     dump_din = 16'd0;
 end
 
+// I do not understand why this hack is needed:
+`ifdef MISTER
+localparam MISTER=1;
+`else
+localparam MISTER=0;
+`endif
+
 always @(posedge clk) begin
     dump_we <= 0;
     if (ioctl_wr && ioctl_ram) begin
         dump_we <= 1;
-        if(~ioctl_addr[0]) begin
+        if(ioctl_addr[0]^MISTER[0]) begin
             dump_din[15:8] <= ioctl_data;
         end else begin
             dump_din[7:0] <= ioctl_data;

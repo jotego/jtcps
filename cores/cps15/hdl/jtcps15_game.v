@@ -151,7 +151,7 @@ wire        sclk, sdi, sdo, scs;
 
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 assign dip_flip = 0;
-assign game_led = ioctl_ram;
+assign game_led = 0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
