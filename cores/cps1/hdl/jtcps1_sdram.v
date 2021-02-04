@@ -166,10 +166,10 @@ localparam [21:0] PCM_OFFSET   = 22'h10_0000,
     wire        gfx_oram_ok;
 `endif
 
-`ifdef CPS15
-localparam EEPROM_AW=7;
-`else
+`ifdef CPS1
 localparam EEPROM_AW=6;
+`else
+localparam EEPROM_AW=7;
 `endif
 
 wire [21:0] gfx0_addr, gfx1_addr;
