@@ -64,7 +64,7 @@ if [ $CPS15 = 1 ]; then
         -header-pointer 48 \
         -header-data 01 23 45 67 54 16 30 72 51 51 51 \
         -buttons Attack Jump None None None None \
-        -rmdipsw Freeze -nvram 512
+        -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
     mkdir -p mra/"$ALTFOLDER"
@@ -84,7 +84,7 @@ if [ $CPS15 = 1 ]; then
         -header-pointer 48 \
         -header-data 76 54 32 10 24 60 13 57 43 43 43 \
         -buttons Attack Jump None None None None\
-        -rmdipsw Freeze -nvram 512
+        -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_The Punisher"
     mkdir -p mra/"$ALTFOLDER"
@@ -104,7 +104,7 @@ if [ $CPS15 = 1 ]; then
         -header-pointer 48 \
         -header-data 67 45 21 03 75 31 60 24 22 22 22 \
         -buttons Attack Jump None None None None \
-        -rmdipsw Freeze -nvram 512
+        -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Saturday Night Slam Masters"
     mkdir -p mra/"$ALTFOLDER"
@@ -124,7 +124,7 @@ if [ $CPS15 = 1 ]; then
         -header-pointer 48 \
         -header-data 54 32 10 76 65 43 21 07 31 31 19 \
         -buttons Punch Jump Action None None None \
-        -rmdipsw Freeze -nvram 512
+        -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Muscle Bomber Duo"
     mkdir -p mra/"$ALTFOLDER"
@@ -144,7 +144,7 @@ if [ $CPS15 = 1 ]; then
         -header-pointer 48 \
         -header-data 54 32 10 76 65 43 21 07 31 31 19 \
         -buttons Punch Attack Jump None None None \
-        -rmdipsw Freeze -nvram 256
+        -rmdipsw Freeze -nvram 128
 fi
 
 if [ $CPS2 = 0 ]; then
@@ -170,7 +170,8 @@ function cps2_mra {
         -header-data 32 FF 00 \
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
-        -buttons Attack Jump None None None None
+        -buttons Attack Jump None None None None \
+        -nvram 128
 }
 
 cps2_mra ddtod      "DnD Tower of Doom"
