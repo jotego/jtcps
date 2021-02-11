@@ -78,7 +78,7 @@ end
 jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
     .rst    ( rst       ),
     .clk    ( clk       ),
-    .cen    ( sample    ),
+    .cen    ( 1'b1      ),
     // input signals
     .ch0    ( fm_left   ),
     .ch1    ( adpcm_snd ),
@@ -96,7 +96,7 @@ jtframe_mixer #(.W1(16),.WOUT(16)) u_left(
 jtframe_mixer #(.W1(16),.WOUT(16)) u_right(
     .rst    ( rst       ),
     .clk    ( clk       ),
-    .cen    ( sample    ),
+    .cen    ( 1'b1      ),
     // input signals
     .ch0    ( fm_right  ),
     .ch1    ( adpcm_snd ),
