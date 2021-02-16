@@ -41,12 +41,16 @@ int main( int argc, char *argv[] ) {
         //buffer_load( "t.key", buf_keys );
         dut.load_keys( buf_keys );
         init_cps2crypt( buf_keys, mame_keys );
-        //for( int i=0; i<2; i++ )
-        //for( int k=0; k<4; k++ )
-        //    printf("%02X ", (mame_keys.key[i]>>(k<<3))&0xff );
+        for( int i=0; i<2; i++ )
+        for( int k=3; k>=0; k-- )
+            printf("%02X", (mame_keys.key[i]>>(k<<3))&0xff );
         putchar('\n');
-        // printf("%016lX\n", dut.keys() );
-        // printf("Upper range: %X <> %X\n", mame_keys.upper, dut.upper_range() );
+        printf("%016lX\n", dut.keys() );
+        if( mame_keys.upper != dut.upper_range() ) {
+            printf("Error: upper ranges don't match\n");
+            printf("Upper range: %X <> %X\n", mame_keys.upper, dut.upper_range() );
+            throw 0;
+        }
     } catch( int e ) {
         return e;
     }

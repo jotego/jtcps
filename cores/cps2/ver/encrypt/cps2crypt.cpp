@@ -17,6 +17,7 @@ int init_cps2crypt(char *m_key, MAME_keys& keys)
 			decoded[b / 16] |= (0x8000 >> (b % 16));
 		}
 	}
+	/*
 	puts("MAME decoding:");
 	for( int k=9; k>=0; k-- ) {
 		for( int j=1; j>=0; j-- ) {
@@ -35,6 +36,7 @@ int init_cps2crypt(char *m_key, MAME_keys& keys)
 		}
 	}
 	//puts("");
+	*/
 
 	keys.key[0] = ((uint32_t)decoded[0] << 16) | decoded[1];
 	keys.key[1] = ((uint32_t)decoded[2] << 16) | decoded[3];

@@ -39,12 +39,14 @@ always @(posedge clk, posedge rst) begin
         if( din_we && !last_din_we ) begin
             raw <= { din, raw[159:8] };
         end
-        if( last_din_we && !din_we )
-            $display("%X -> %x", raw, cfg );
+        // if( last_din_we && !din_we )
+        //     $display("%X -> %x", raw, cfg );
     end
 end
 
 assign key= { cfg[15:0], cfg[31:16], cfg[47:32], cfg[63:48] };
+//assign addr_rng = { cfg[152:145], cfg[159:152] };
+assign addr_rng = { cfg[159:144] };
 
 assign cfg={
 raw[ 10], raw[ 11], raw[ 12], raw[ 13], raw[ 14], raw[ 15], raw[  0], raw[  1],
