@@ -11,8 +11,4 @@ else
     rm make.log
 fi
 
-echo "assign cfg={" > cfg.v
-cat x >> cfg.v
-echo "};" >> cfg.v
-
 obj_dir/V$TOP
