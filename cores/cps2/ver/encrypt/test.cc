@@ -19,6 +19,7 @@ public:
 };
 
 void buffer_load( const char*, char *);
+void rom_load( const char*, char *);
 
 void shift( char *b) {
     int c=0;
@@ -31,13 +32,18 @@ void shift( char *b) {
 
 int main( int argc, char *argv[] ) {
     char buf_keys[20];
+    uint16_t *rom, *dec;
     DUT dut;
     MAME_keys mame_keys;
+    int exit_code=0;
 
+    rom = new uint16_t[0x20'0000];
+    dec = new uint16_t[0x20'0000];
     memset( buf_keys, 0, 20 );
     buf_keys[0]=1;
     try {
         buffer_load( "spf2t/spf2t.key", buf_keys );
+        rom_load("spf2t/pzf.04", (char*)rom );
         //buffer_load( "t.key", buf_keys );
         dut.load_keys( buf_keys );
         init_cps2crypt( buf_keys, mame_keys );
@@ -49,13 +55,35 @@ int main( int argc, char *argv[] ) {
         if( mame_keys.upper != dut.upper_range() ) {
             printf("Error: upper ranges don't match\n");
             printf("Upper range: %X <> %X\n", mame_keys.upper, dut.upper_range() );
-            throw 0;
+            throw 3;
+        }
+        // Decode some of the file
+        cps2_decrypt( rom, dec,
+            0x8'0000, mame_keys.key, 0, mame_keys.upper );
+        for( int k=0; k<16; k++) {
+            printf("%04X -> %04X\n", rom[k], dec[k]);
         }
     } catch( int e ) {
-        return e;
+        exit_code = e;
     }
 
-    return 0;
+    delete []rom;
+    delete []dec;
+    return exit_code;
+}
+
+void rom_load( const char*fname, char *buf) {
+    FILE *f = fopen(fname,"rb");
+    if( f == NULL ) {
+        printf("ERROR: cannot open key file %s\n", fname );
+        throw 1;
+    }
+    int cnt = fread( buf, 1, 0x8'0000, f );
+    fclose(f);
+    if( cnt != 0x8'0000 ) {
+        printf("ERROR: the key file %s is too short\n", fname );
+        throw 2;
+    }
 }
 
 void buffer_load( const char*fname, char *buf) {
