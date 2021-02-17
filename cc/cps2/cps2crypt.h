@@ -33,6 +33,8 @@ void optimise_sboxes(struct optimised_sbox* out, const struct sbox* in);
 // from ./lib/util/coretmpl.h
 
 void expand_1st_key(uint32_t *dstkey, const uint32_t *srckey);
+void expand_2nd_key(uint32_t *dstkey, const uint32_t *srckey);
+void expand_subkey(uint32_t* subkey, uint16_t seed);
 
 uint16_t feistel(uint16_t val, const int *bitsA, const int *bitsB,
         const struct optimised_sbox* boxes1, const struct optimised_sbox* boxes2, const struct optimised_sbox* boxes3, const struct optimised_sbox* boxes4,

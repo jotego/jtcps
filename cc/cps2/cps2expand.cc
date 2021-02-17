@@ -3,8 +3,10 @@
 
 using namespace std;
 
+void dump_key( const int *bits, int max );
+
 int main() {
-    static const int bits[96] =
+    static const int bits_1st[96] =
     {
         33, 58, 49, 36,  0, 31,
         22, 30,  3, 16,  5, 53,
@@ -23,9 +25,50 @@ int main() {
         26, 42, 45, 40, 23, 14,
             2, 31, 52, 28, 44, 17,
     };
-    for( int i=95; i>=0; i-- ) {
+
+	static const int bits_2nd[96] =
+	{
+		34,  9, 32, 24, 44, 54,
+		38, 61, 47, 13, 28,  7,
+		29, 58, 18,  1, 20, 60,
+		15,  6, 11, 43, 39, 19,
+		63, 23, 16, 62, 54, 40,
+		31,  3, 56, 61, 17, 25,
+		47, 38, 55, 57,  5,  4,
+		15, 42, 22,  7,  2, 19,
+		46, 37, 29, 39, 12, 30,
+		49, 57, 31, 41, 26, 27,
+		24, 36, 11, 63, 33, 16,
+		56, 62, 48, 60, 59, 32,
+		12, 30, 53, 48, 10,  0,
+		50, 35,  3, 59, 14, 49,
+		51, 45, 44,  2, 21, 33,
+		55, 52, 23, 28,  8, 26,
+	};
+
+	static const int bits_addr[64] =
+	{
+			5, 10, 14,  9,  4,  0, 15,  6,  1,  8,  3,  2, 12,  7, 13, 11,
+			5, 12,  7,  2, 13, 11,  9, 14,  4,  1,  6, 10,  8,  0, 15,  3,
+			4, 10,  2,  0,  6,  9, 12,  1, 11,  7, 15,  8, 13,  5, 14,  3,
+		14, 11, 12,  7,  4,  5,  2, 10,  1, 15,  0,  9,  8,  6, 13,  3,
+	};
+
+	puts("First key");
+    dump_key( bits_1st, 95 );
+
+	puts("\n\nsecond key");
+    dump_key( bits_2nd, 95 );
+
+    puts("\n\naddress expansion");
+    dump_key( bits_addr, 63 );
+}
+
+
+void dump_key( const int *bits, int max ) {
+    for( int i=max; i>=0; i-- ) {
     	printf("key[%2d]", bits[i] );
     	if( i!=0 ) printf(", ");
-    	if( ((95-i)&7)==7 ) putchar('\n');
+    	if( ((max-i)&7)==7 ) putchar('\n');
     }
 }
