@@ -34,6 +34,10 @@ void optimise_sboxes(struct optimised_sbox* out, const struct sbox* in);
 
 void expand_1st_key(uint32_t *dstkey, const uint32_t *srckey);
 
+uint16_t feistel(uint16_t val, const int *bitsA, const int *bitsB,
+        const struct optimised_sbox* boxes1, const struct optimised_sbox* boxes2, const struct optimised_sbox* boxes3, const struct optimised_sbox* boxes4,
+        uint32_t key1, uint32_t key2, uint32_t key3, uint32_t key4);
+
 template <typename T, typename U> constexpr T make_bitmask(U n)
 {
         return T((n < (8 * sizeof(T)) ? (std::make_unsigned_t<T>(1) << n) : std::make_unsigned_t<T>(0))

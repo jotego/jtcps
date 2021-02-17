@@ -14,9 +14,15 @@ public:
 
 int main( int argc, char *argv[] ) {
     DUT dut;
-    //optimised_sbox ref[4];
-    //optimise_sboxes( ref, fn1_r1_boxes );
-    for( int cnt=0; cnt<100'000'000; cnt++ ) {
+    struct optimised_sbox sboxes1[4*4];
+    int good=0;
+
+    optimise_sboxes(&sboxes1[0*4], fn1_r1_boxes);
+    optimise_sboxes(&sboxes1[1*4], fn1_r2_boxes);
+    optimise_sboxes(&sboxes1[2*4], fn1_r3_boxes);
+    optimise_sboxes(&sboxes1[3*4], fn1_r4_boxes);
+
+    for( int cnt=0; cnt<1'000'000; cnt++ ) {
         uint64_t k=0;
         for( int j=0; j<4; j++ ) {
             k |= rand();
@@ -52,10 +58,21 @@ int main( int argc, char *argv[] ) {
             printf("Key4 %05X <> %05X\n", key1[3], dut.sbox.key4 );
             goto finish;
         }
-        if( k&0xffff'ffffL==0 ) putchar('.');
+        for( int a=0; a<0x1'0000; a++ ) {
+            int ref_out = feistel(a, fn1_groupA, fn1_groupB,
+                    &sboxes1[0*4], &sboxes1[1*4], &sboxes1[2*4], &sboxes1[3*4],
+                    key1[0], key1[1], key1[2], key1[3]);
+            int dut_out = dut.eval( a, k );
+            if( dut_out != ref_out ) {
+                printf("a=%04X -> %04X != %04X (ref)\n", a, dut_out, ref_out );
+                goto finish;
+            }
+            good++;
+        }
     }
     puts("PASS");
     finish:
+    printf("%d good\n", good);
     return 0;
 }
 

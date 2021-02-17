@@ -24,21 +24,30 @@ module jtcps2_fn1(
 reg  [95:0] full_keys;
 //reg  [23:0] key1, key2, key3, key4;
 
-wire [7:0] pre_r1, pre_r2, pre_r3, pre_r4;
-wire [7:0] r0, r1, r2, r3, r4,
-           l0, l1, l2, l3, l4;
+wire [ 7:0] pre_r1, pre_r2, pre_r3, pre_r4;
+wire [ 7:0] r0, r1, r2, r3, r4,
+            l0, l1, l2, l3, l4;
+wire [15:0] pre_out;
 
 assign r1 = pre_r1 ^ l0;
 assign r2 = pre_r2 ^ l1;
 assign r3 = pre_r3 ^ l2;
 assign r4 = pre_r4 ^ l3;
+assign pre_out = { l4, r4 };
 
-assign l0 = { din[0],  din[1], din[3], din[5], din[8], din[9],  din[11], din[12] };
-assign r0 = { din[10], din[4], din[6], din[7], din[2], din[13], din[15], din[14] };
+assign l0 = { din[12], din[11], din[ 9], din[8], din[5], din[3], din[1], din[ 0] };
+assign r0 = { din[14], din[15], din[13], din[2], din[7], din[6], din[4], din[10] };
 assign l1 = r0;
 assign l2 = r1;
 assign l3 = r2;
 assign l4 = r3;
+
+assign {
+    dout[14], dout[15], dout[13], dout[ 2],
+    dout[ 7], dout[ 6], dout[ 4], dout[10],
+    dout[12], dout[11], dout[ 9], dout[ 8],
+    dout[ 5], dout[ 3], dout[ 1], dout[ 0]
+} = pre_out;
 
 always @(*) begin
     full_keys = {
