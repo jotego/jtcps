@@ -18,11 +18,11 @@ module jtcps2_sbox(
 );
 
 parameter [127:0] LUT=128'd0;
-parameter [ 23:0] LOC=24'd0;
+parameter [ 17:0] LOC=24'd0;
 parameter [  5:0] OK=6'd0;
 
 wire [5:0] dex;
-
+wire [5:0] addr;
 
 generate
     genvar aux;
@@ -34,6 +34,7 @@ generate
     end
 endgenerate
 
-assign dout = { LUT[{dex,1'b1}], LUT[{dex,1'b0}] };
+assign addr = dex ^ key;
+assign dout = { LUT[{addr,1'b1}], LUT[{addr,1'b0}] };
 
 endmodule

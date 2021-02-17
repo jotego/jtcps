@@ -9,10 +9,27 @@ struct MAME_keys {
     std::uint32_t upper;
 };
 
+struct sbox
+{
+    const std::uint8_t table[64];
+    const int inputs[6];        // positions of the inputs bits, -1 means no input except from key
+    const int outputs[2];       // positions of the output bits
+};
+
+// the above struct better defines how the hardware works, however
+// to speed up the decryption at run time we convert it to the
+// following one
+struct optimised_sbox
+{
+    std::uint8_t input_lookup[256];
+    std::uint8_t output[64];
+};
+
 int init_cps2crypt(char *m_key, MAME_keys& keys);
 void cps2_decrypt( std::uint16_t *rom, std::uint16_t *dec, int length,
     const std::uint32_t *master_key, std::uint32_t lower_limit, std::uint32_t upper_limit);
 
+void optimise_sboxes(struct optimised_sbox* out, const struct sbox* in);
 // from ./lib/util/coretmpl.h
 
 template <typename T, typename U> constexpr T make_bitmask(U n)
@@ -47,27 +64,6 @@ const int fn2_groupA[8] = { 6, 0, 2, 13, 1,  4, 14,  7 };
 const int fn2_groupB[8] = { 3, 5, 9, 10, 8, 15, 12, 11 };
 
 /******************************************************************************/
-
-// The order of the input and output bits in the s-boxes is arbitrary.
-// Each s-box can be XORed with an arbitrary vale in range 0-3 (but the same value
-// must be used for the corresponding output bits in f1 and f3 or in f2 and f4)
-
-struct sbox
-{
-    const std::uint8_t table[64];
-    const int inputs[6];        // positions of the inputs bits, -1 means no input except from key
-    const int outputs[2];       // positions of the output bits
-};
-
-// the above struct better defines how the hardware works, however
-// to speed up the decryption at run time we convert it to the
-// following one
-struct optimised_sbox
-{
-    std::uint8_t input_lookup[256];
-    std::uint8_t output[64];
-};
-
 
 const struct sbox fn1_r1_boxes[4] =
 {
