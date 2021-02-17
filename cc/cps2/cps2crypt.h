@@ -32,6 +32,8 @@ void cps2_decrypt( std::uint16_t *rom, std::uint16_t *dec, int length,
 void optimise_sboxes(struct optimised_sbox* out, const struct sbox* in);
 // from ./lib/util/coretmpl.h
 
+void expand_1st_key(uint32_t *dstkey, const uint32_t *srckey);
+
 template <typename T, typename U> constexpr T make_bitmask(U n)
 {
         return T((n < (8 * sizeof(T)) ? (std::make_unsigned_t<T>(1) << n) : std::make_unsigned_t<T>(0))
