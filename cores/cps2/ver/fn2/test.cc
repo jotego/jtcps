@@ -25,7 +25,7 @@ int main( int argc, char *argv[] ) {
     for( int cnt=0; cnt<1'000'000; cnt++ ) {
         uint64_t master_key64=0;
         for( int j=0; j<4; j++ ) {
-            master_key64 |= rand();
+            master_key64 |= rand()&0xffff;
             master_key64 <<= 16;
         }
         int key = rand()&0xffff;
@@ -40,8 +40,10 @@ int main( int argc, char *argv[] ) {
         // expand master key to 1st FN 96-bit key
         uint32_t ref_subkey[2];
         expand_subkey( ref_subkey, key );
+        //printf("Ref subkey = %04X%04X\n", ref_subkey[1], ref_subkey[0] );
         ref_subkey[0] ^= master_key[0];
         ref_subkey[1] ^= master_key[1];
+        //printf("Ref subkey ^ master key = %04X%04X\n", ref_subkey[1], ref_subkey[0] );
         expand_2nd_key( ref_key2, ref_subkey);
 
         // add extra bits for s-boxes with less than 6 inputs
@@ -60,10 +62,10 @@ int main( int argc, char *argv[] ) {
             ref_key2[2] != dut.sbox.key3 ||
             ref_key2[3] != dut.sbox.key4
             ) {
-            printf("Key1 %05X <> %05X\n", ref_key2[0], dut.sbox.key1 );
-            printf("Key2 %05X <> %05X\n", ref_key2[1], dut.sbox.key2 );
-            printf("Key3 %05X <> %05X\n", ref_key2[2], dut.sbox.key3 );
-            printf("Key4 %05X <> %05X\n", ref_key2[3], dut.sbox.key4 );
+            printf("Key1 %05X <> %05X\n", dut.sbox.key1, ref_key2[0] );
+            printf("Key2 %05X <> %05X\n", dut.sbox.key2, ref_key2[1] );
+            printf("Key3 %05X <> %05X\n", dut.sbox.key3, ref_key2[2] );
+            printf("Key4 %05X <> %05X\n", dut.sbox.key4, ref_key2[3] );
             goto finish;
         }
         for( int a=0; a<0x1'0000; a++ ) {
@@ -88,7 +90,7 @@ int main( int argc, char *argv[] ) {
 int DUT::eval( int din, int key, uint64_t master_key ) {
     sbox.din = din;
     sbox.key = key;
-    sbox.master_key = key;
+    sbox.master_key = master_key;
     sbox.eval();
     return sbox.dout;
 }
