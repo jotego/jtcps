@@ -14,13 +14,13 @@ public:
 
 int main( int argc, char *argv[] ) {
     DUT dut;
-    struct optimised_sbox sboxes1[4*4];
+    struct optimised_sbox sboxes2[4*4];
     int good=0;
 
-    optimise_sboxes(&sboxes1[0*4], fn2_r1_boxes);
-    optimise_sboxes(&sboxes1[1*4], fn2_r2_boxes);
-    optimise_sboxes(&sboxes1[2*4], fn2_r3_boxes);
-    optimise_sboxes(&sboxes1[3*4], fn2_r4_boxes);
+    optimise_sboxes(&sboxes2[0*4], fn2_r1_boxes);
+    optimise_sboxes(&sboxes2[1*4], fn2_r2_boxes);
+    optimise_sboxes(&sboxes2[2*4], fn2_r3_boxes);
+    optimise_sboxes(&sboxes2[3*4], fn2_r4_boxes);
 
     for( int cnt=0; cnt<1'000'000; cnt++ ) {
         uint64_t master_key64=0;
@@ -70,7 +70,7 @@ int main( int argc, char *argv[] ) {
         }
         for( int a=0; a<0x1'0000; a++ ) {
             int ref_out = feistel(a, fn2_groupA, fn2_groupB,
-                    &sboxes1[0*4], &sboxes1[1*4], &sboxes1[2*4], &sboxes1[3*4],
+                    &sboxes2[0*4], &sboxes2[1*4], &sboxes2[2*4], &sboxes2[3*4],
                     ref_key2[0], ref_key2[1], ref_key2[2], ref_key2[3]);
             int dut_out = dut.eval( a, key, master_key64 );
             if( dut_out != ref_out ) {
