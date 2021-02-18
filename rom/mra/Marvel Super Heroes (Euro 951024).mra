@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="msh.key" crc="b494368e"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="mshe.03e" crc="bd951414" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="msh.10b" crc="8d931196" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="msh.01" crc="c976e6f9"/>
         <part name="msh.02" crc="ce67d0d9"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="msh.11m" crc="37ac6d30"/>
         <part name="msh.12m" crc="de092570"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="msh.13m" crc="09d14566" map="00000021"/>
             <part name="msh.17m" crc="604ece14" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="msh.16m" crc="438da4a0" map="00210000"/>
             <part name="msh.20m" crc="a2b0c6c0" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x2840000 -->
+        <!-- QSound firmware - starts at 0x2840014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x2842000 bytes - 41224 kBytes -->
+        <!-- Total 0x2842014 bytes - 41224 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

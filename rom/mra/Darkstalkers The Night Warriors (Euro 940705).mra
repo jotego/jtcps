@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="dstlk.key" crc="cfa46dec"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="vame.03a" crc="004c9cff" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="vame.10a" crc="701e2147" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="vam.01" crc="64b685d5"/>
         <part name="vam.02" crc="cf7c97c7"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="vam.11m" crc="4a39deb2"/>
         <part name="vam.12m" crc="1a3e5c03"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="vam.13m" crc="c51baf99" map="00000021"/>
             <part name="vam.17m" crc="4f2408e0" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="vam.16m" crc="afec855f" map="00210000"/>
             <part name="vam.20m" crc="2bff6a89" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x1C40000 -->
+        <!-- QSound firmware - starts at 0x1C40014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x1C42000 bytes - 28936 kBytes -->
+        <!-- Total 0x1C42014 bytes - 28936 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

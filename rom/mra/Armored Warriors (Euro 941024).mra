@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="armwar.key" crc="fe979382"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="pwge.03c" crc="31f74931" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="pwg.10" crc="07c4fb28" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="pwg.01" crc="18a5c0e4"/>
         <part name="pwg.02" crc="c9dfffa6"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="pwg.11m" crc="a78f7433"/>
         <part name="pwg.12m" crc="77438ed0"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="pwg.13m" crc="ae8fe08e" map="00000021"/>
             <part name="pwg.17m" crc="bc475b94" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="pwg.16m" crc="815b0e7b" map="00210000"/>
             <part name="pwg.20m" crc="eb75ffbe" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x1C40000 -->
+        <!-- QSound firmware - starts at 0x1C40014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x1C42000 bytes - 28936 kBytes -->
+        <!-- Total 0x1C42014 bytes - 28936 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

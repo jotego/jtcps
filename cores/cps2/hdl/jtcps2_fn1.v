@@ -12,17 +12,14 @@
     Date: 16-2-2021 */
 
 module jtcps2_fn1(
-    input   [15:0] din,
-    input   [63:0] key,
-    output  [15:0] dout,
-    output reg [23:0] key1,
-    output reg [23:0] key2,
-    output reg [23:0] key3,
-    output reg [23:0] key4
+    input             clk,
+    input      [15:0] din,
+    input      [63:0] key,
+    output reg [15:0] dout
 );
 
 reg  [95:0] full_keys;
-//reg  [23:0] key1, key2, key3, key4;
+reg  [23:0] key1, key2, key3, key4;
 
 wire [ 7:0] pre_r1, pre_r2, pre_r3, pre_r4;
 wire [ 7:0] r0, r1, r2, r3, r4,
@@ -42,12 +39,14 @@ assign l2 = r1;
 assign l3 = r2;
 assign l4 = r3;
 
-assign {
+always @(posedge clk) begin
+    {
     dout[14], dout[15], dout[13], dout[ 2],
     dout[ 7], dout[ 6], dout[ 4], dout[10],
     dout[12], dout[11], dout[ 9], dout[ 8],
     dout[ 5], dout[ 3], dout[ 1], dout[ 0]
-} = pre_out;
+    } <= pre_out;
+end
 
 always @(*) begin
     full_keys = {

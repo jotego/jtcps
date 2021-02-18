@@ -8,6 +8,15 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_colmix.v            ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_raster.v            ]
 
+# CPS2 Encryption
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_keyload.v           ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_decrypt.v           ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_fn1.v               ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_fn2.v               ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_fn_sbox.v           ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_sbox.v              ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_dec_ctrl.v          ]
+
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../../modules/jtframe/hdl/ram/jtframe_dual_ram16.v          ]
 
 set_global_assignment -name QIP_FILE     [file join $::quartus(qip_path) ../../cps1/hdl/common.qip  ]

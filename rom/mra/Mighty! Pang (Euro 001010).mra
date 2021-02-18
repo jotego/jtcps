@@ -31,23 +31,23 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="mpang.key" crc="95354b0f"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="mpne.03c" crc="fe16fc9f" map="12"/>
         </interleave>
         <interleave output="16">
             <part name="mpne.04c" crc="2cc5ec22" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x100000 -->
+        <!-- audiocpu - starts at 0x100014 -->
         <part name="mpn.01" crc="90c7adb6"/>
-        <!-- qsound - starts at 0x120000 -->
+        <!-- qsound - starts at 0x120014 -->
         <part name="mpn-simm.05a" crc="318a2e21"/>
         <part name="mpn-simm.05b" crc="5462f4e8"/>
-        <!-- gfx - starts at 0x520000 -->
+        <!-- gfx - starts at 0x520014 -->
         <interleave output="64">
             <part name="mpn-simm.01c" crc="388db66b" map="00000021"/>
             <part name="mpn-simm.01a" crc="a9c4857b" map="00002100"/>
@@ -60,9 +60,9 @@
             <part name="mpn-simm.03d" crc="f8774c18" map="00210000"/>
             <part name="mpn-simm.03b" crc="84d6dc33" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x1520000 -->
+        <!-- QSound firmware - starts at 0x1520014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x1522000 bytes - 21640 kBytes -->
+        <!-- Total 0x1522014 bytes - 21640 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

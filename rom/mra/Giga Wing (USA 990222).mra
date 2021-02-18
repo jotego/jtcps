@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="gigawing.key" crc="5076c26b"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="ggwu.03" crc="ac725eb2" map="12"/>
         </interleave>
@@ -45,21 +45,21 @@
         <interleave output="16">
             <part name="ggw.05" crc="3239d642" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x180000 -->
+        <!-- audiocpu - starts at 0x180014 -->
         <part name="ggw.01" crc="4c6351d5"/>
-        <!-- qsound - starts at 0x1A0000 -->
+        <!-- qsound - starts at 0x1A0014 -->
         <part name="ggw.11m" crc="e172acf5"/>
         <part name="ggw.12m" crc="4bee4e8f"/>
-        <!-- gfx - starts at 0x9A0000 -->
+        <!-- gfx - starts at 0x9A0014 -->
         <interleave output="64">
             <part name="ggw.13m" crc="105530a4" map="00000021"/>
             <part name="ggw.15m" crc="9e774ab9" map="00002100"/>
             <part name="ggw.17m" crc="466e0ba4" map="00210000"/>
             <part name="ggw.19m" crc="840c8dea" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x19A0000 -->
+        <!-- QSound firmware - starts at 0x19A0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x19A2000 bytes - 26248 kBytes -->
+        <!-- Total 0x19A2014 bytes - 26248 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

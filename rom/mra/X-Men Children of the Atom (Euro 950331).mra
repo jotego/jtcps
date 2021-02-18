@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="xmcota.key" crc="6665bbfb"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="xmne.03f" crc="5a726d13" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="xmne.10b" crc="cb36b0a4" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="xmn.01a" crc="40f479ea"/>
         <part name="xmn.02a" crc="39d9b5ad"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="xmn.11m" crc="c848a6bc"/>
         <part name="xmn.12m" crc="729c188f"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="xmn.13m" crc="bf4df073" map="00000021"/>
             <part name="xmn.17m" crc="513eea17" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="xmn.16m" crc="67b36948" map="00210000"/>
             <part name="xmn.20m" crc="9dde2758" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x2840000 -->
+        <!-- QSound firmware - starts at 0x2840014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x2842000 bytes - 41224 kBytes -->
+        <!-- Total 0x2842014 bytes - 41224 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

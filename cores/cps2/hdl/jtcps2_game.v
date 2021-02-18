@@ -137,7 +137,7 @@ wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
-wire        cfg_we;
+wire        cfg_we, key_we;
 
 // CPS2 Objects
 wire [12:0] gfx_oram_addr;
@@ -232,6 +232,9 @@ jtcps2_main u_main(
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     .raster     ( raster            ),
+    // Keys
+    .prog_din   ( prog_din          ),
+    .key_we     ( key_we            ),
     // Sound
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
@@ -453,6 +456,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .prog_rdy    ( prog_rdy      ),
     .prog_qsnd   ( prog_qsnd     ),
     .kabuki_we   (               ),
+    .cps2_key_we ( key_we        ),
 
     // EEPROM
     .sclk           ( sclk          ),

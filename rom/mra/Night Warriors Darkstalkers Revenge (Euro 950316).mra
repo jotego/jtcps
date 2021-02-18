@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="nwarr.key" crc="618a13ca"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="vphe.03f" crc="a922c44f" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="vphe.10b" crc="976fa62f" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="vph.01" crc="5045dcac"/>
         <part name="vph.02" crc="86b60e59"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="vph.11m" crc="e1837d33"/>
         <part name="vph.12m" crc="fbd3cd90"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="vph.13m" crc="c51baf99" map="00000021"/>
             <part name="vph.17m" crc="4f2408e0" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="vph.16m" crc="2f41ca75" map="00210000"/>
             <part name="vph.20m" crc="17f2433f" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x2840000 -->
+        <!-- QSound firmware - starts at 0x2840014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x2842000 bytes - 41224 kBytes -->
+        <!-- Total 0x2842014 bytes - 41224 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

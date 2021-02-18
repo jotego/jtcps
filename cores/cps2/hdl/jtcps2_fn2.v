@@ -15,16 +15,12 @@ module jtcps2_fn2(
     input   [15:0] din,
     input   [15:0] key,
     input   [63:0] master_key,
-    output  [15:0] dout,
-    output reg [23:0] key1,
-    output reg [23:0] key2,
-    output reg [23:0] key3,
-    output reg [23:0] key4
+    output  [15:0] dout
 );
 
 reg  [63:0] kext, kpre;
 reg  [95:0] full_keys;
-//reg  [23:0] key1, key2, key3, key4;
+reg  [23:0] key1, key2, key3, key4;
 
 wire [ 7:0] pre_r1, pre_r2, pre_r3, pre_r4;
 wire [ 7:0] r0, r1, r2, r3, r4,

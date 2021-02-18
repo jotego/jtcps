@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="ddsom.key" crc="541e425d"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="dd2e.03e" crc="449361af" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="dd2e.10" crc="e198805e" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="dd2.01" crc="99d657e5"/>
         <part name="dd2.02" crc="117a3824"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="dd2.11m" crc="98d0c325"/>
         <part name="dd2.12m" crc="5ea2e7fa"/>
-        <!-- gfx - starts at 0x840000 -->
+        <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="dd2.13m" crc="a46b4e6e" map="00000021"/>
             <part name="dd2.17m" crc="837c0867" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="dd2.16m" crc="79682ae5" map="00210000"/>
             <part name="dd2.20m" crc="117fb0c0" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x2040000 -->
+        <!-- QSound firmware - starts at 0x2040014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x2042000 bytes - 33032 kBytes -->
+        <!-- Total 0x2042014 bytes - 33032 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

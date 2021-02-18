@@ -31,6 +31,14 @@
 ../../hdl/jtcps2_obj_scan.v
 ../../hdl/jtcps2_colmix.v
 ../../hdl/jtcps2_raster.v
+# Keys
+../../hdl/jtcps2_keyload.v
+../../hdl/jtcps2_fn1.v
+../../hdl/jtcps2_fn2.v
+../../hdl/jtcps2_fn_sbox.v
+../../hdl/jtcps2_sbox.v
+../../hdl/jtcps2_dec_ctrl.v
+
 # DSP16
 $MODULES/jtdsp16/hdl/jtdsp16_ctrl.v
 $MODULES/jtdsp16/hdl/jtdsp16_dau.v

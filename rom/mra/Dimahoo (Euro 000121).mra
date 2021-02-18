@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="dimahoo.key" crc="7d6d2db9"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="gmde.03" crc="968fcecd" map="12"/>
         </interleave>
@@ -48,22 +48,22 @@
         <interleave output="16">
             <part name="gmd.06" crc="55b483c9" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x200000 -->
+        <!-- audiocpu - starts at 0x200014 -->
         <part name="gmd.01" crc="3f9bc985"/>
         <part name="gmd.02" crc="3fd39dde"/>
-        <!-- qsound - starts at 0x240000 -->
+        <!-- qsound - starts at 0x240014 -->
         <part name="gmd.11m" crc="06a65542"/>
         <part name="gmd.12m" crc="50bc7a31"/>
-        <!-- gfx - starts at 0xA40000 -->
+        <!-- gfx - starts at 0xA40014 -->
         <interleave output="64">
             <part name="gmd.13m" crc="80dd19f0" map="00000021"/>
             <part name="gmd.15m" crc="dfd93a78" map="00002100"/>
             <part name="gmd.17m" crc="16356520" map="00210000"/>
             <part name="gmd.19m" crc="dfc33031" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x1A40000 -->
+        <!-- QSound firmware - starts at 0x1A40014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x1A42000 bytes - 26888 kBytes -->
+        <!-- Total 0x1A42014 bytes - 26888 kBytes -->
     </rom>
     <!-- Vertical game -->
     <rom index="1">

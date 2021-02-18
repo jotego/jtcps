@@ -77,4 +77,20 @@ always @(posedge clk, posedge rst) begin : dtack_gen
     end
 end
 
+`ifdef REPORT_DELAY
+// Note that the data for the first frame may be wrong because
+// of SDRAM initialization
+real dly_cnt, ticks;
+always @(posedge clk) begin
+    if( !LVBL && last_LVBL ) begin
+        ticks <= 0;
+        dly_cnt <= 0;
+        if( ticks ) $display("INFO: average CPU delay = %.2f CPU clock ticks",dly_cnt/ticks);
+    end else begin
+        dly_cnt <= dly_cnt+fail_cnt;
+        ticks <= ticks+1;
+    end
+end
+`endif
+
 endmodule

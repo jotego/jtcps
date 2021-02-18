@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="csclub.key" crc="903907d7"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="csce.03a" crc="824082be" map="12"/>
         </interleave>
@@ -51,9 +51,9 @@
         <interleave output="16">
             <part name="csce.07a" crc="003968fd" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x280000 -->
+        <!-- audiocpu - starts at 0x280014 -->
         <part name="csc.01" crc="ee162111"/>
-        <!-- qsound - starts at 0x2A0000 -->
+        <!-- qsound - starts at 0x2A0014 -->
         <part name="csc.51" crc="5a52afd5"/>
         <part name="csc.52" crc="1408a811"/>
         <part name="csc.53" crc="4fb9f57c"/>
@@ -62,7 +62,7 @@
         <part name="csc.56" crc="9a345334"/>
         <part name="csc.57" crc="aedc27f2"/>
         <part name="csc.58" crc="2300b7b3"/>
-        <!-- gfx - starts at 0x6A0000 -->
+        <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="csc.73" crc="335f07c3" map="00000021"/>
             <part name="csc.63" crc="3711b8ca" map="00002100"/>
@@ -87,9 +87,9 @@
             <part name="csc.86" crc="41652583" map="00210000"/>
             <part name="csc.96" crc="6754b1ef" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0xEA0000 -->
+        <!-- QSound firmware - starts at 0xEA0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0xEA2000 bytes - 14984 kBytes -->
+        <!-- Total 0xEA2014 bytes - 14984 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

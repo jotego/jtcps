@@ -35,6 +35,9 @@ module jtcps2_main(
     // Sound
     output             UDSWn,
     output             LDSWn,
+    // Keys
+    input   [7:0]      prog_din,
+    input              key_we,
     // cabinet I/O
     input   [9:0]      joystick1,
     input   [9:0]      joystick2,
@@ -83,10 +86,13 @@ module jtcps2_main(
 );
 
 wire [23:1] A;
+wire [ 2:0] FC;
 wire        BERRn = 1'b1;
 
 reg  [15:0] in0, in1, in2;
 reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
+
+wire [15:0] rom_dec;
 
 `ifdef SIMULATION
 wire [24:0] A_full = {A,1'b0};
@@ -298,7 +304,7 @@ always @(posedge clk) begin
     end else begin
         cpu_din <= sys_cs ? sys_data : (
                    (ram_cs | vram_cs | oram_cs ) ? ram_data : (
-                    rom_cs      ? rom_data : (
+                    rom_cs      ? rom_dec  : (
                     ppu2_cs     ? mmr_dout : (
                     main2qs_cs  ? {8'hff, main2qs_din} :
                                 16'hFFFF ))));
@@ -346,26 +352,27 @@ jtcps1_dtack u_dtack(
     .DTACKn     ( DTACKn    )
 );
 
-`ifdef REPORT_DELAY
-// Note that the data for the first frame may be wrong because
-// of SDRAM initialization
-real dly_cnt, ticks;
-always @(posedge clk) begin
-    if( !LVBL && last_LVBL ) begin
-        ticks <= 0;
-        dly_cnt <= 0;
-        if( ticks ) $display("INFO: average CPU delay = %.2f CPU clock ticks",dly_cnt/ticks);
-    end else begin
-        dly_cnt <= dly_cnt+fail_cnt;
-        ticks <= ticks+1;
-    end
-end
-`endif
+jtcps2_decrypt u_decrypt(
+    .rst        ( 1'b0      ), // must be on during ROM download
+    .clk        ( clk       ),
+
+    // Key download
+    .prog_din   ( prog_din  ),
+    .prog_we    ( key_we    ),
+
+    // Control
+    .fc         ( FC        ),
+    .dec_en     ( 1'b1      ),
+
+    // Decoding
+    .addr       ( A[16:1]   ),
+    .din        ( rom_data  ),
+    .dout       ( rom_dec   )
+);
 
 // interrupt generation
 reg        int1, // VBLANK
            int2; // Raster
-wire [2:0] FC;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen

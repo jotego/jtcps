@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="sfa.key" crc="7c095631"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="sfze.03d" crc="ebf2054d" map="12"/>
         </interleave>
@@ -48,22 +48,22 @@
         <interleave output="16">
             <part name="sfz.06" crc="806e8f38" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x200000 -->
+        <!-- audiocpu - starts at 0x200014 -->
         <part name="sfz.01" crc="ffffec7d"/>
         <part name="sfz.02" crc="45f46a08"/>
-        <!-- qsound - starts at 0x240000 -->
+        <!-- qsound - starts at 0x240014 -->
         <part name="sfz.11m" crc="c4b093cd"/>
         <part name="sfz.12m" crc="8bdbc4b4"/>
-        <!-- gfx - starts at 0x640000 -->
+        <!-- gfx - starts at 0x640014 -->
         <interleave output="64">
             <part name="sfz.14m" crc="90fefdb3" map="00000021"/>
             <part name="sfz.16m" crc="5354c948" map="00002100"/>
             <part name="sfz.18m" crc="41a1e790" map="00210000"/>
             <part name="sfz.20m" crc="a549df98" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0xE40000 -->
+        <!-- QSound firmware - starts at 0xE40014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0xE42000 bytes - 14600 kBytes -->
+        <!-- Total 0xE42014 bytes - 14600 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

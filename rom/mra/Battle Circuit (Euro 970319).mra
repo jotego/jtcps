@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="batcir.key" crc="e316ae67"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="btce.03" crc="bc60484b" map="12"/>
         </interleave>
@@ -57,22 +57,22 @@
         <interleave output="16">
             <part name="btc.09" crc="1203db08" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x380000 -->
+        <!-- audiocpu - starts at 0x380014 -->
         <part name="btc.01" crc="1e194310"/>
         <part name="btc.02" crc="01aeb8e6"/>
-        <!-- qsound - starts at 0x3C0000 -->
+        <!-- qsound - starts at 0x3C0014 -->
         <part name="btc.11m" crc="c27f2229"/>
         <part name="btc.12m" crc="418a2e33"/>
-        <!-- gfx - starts at 0x7C0000 -->
+        <!-- gfx - starts at 0x7C0014 -->
         <interleave output="64">
             <part name="btc.13m" crc="dc705bad" map="00000021"/>
             <part name="btc.15m" crc="e5779a3c" map="00002100"/>
             <part name="btc.17m" crc="b33f4112" map="00210000"/>
             <part name="btc.19m" crc="a6fcdb7e" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x17C0000 -->
+        <!-- QSound firmware - starts at 0x17C0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x17C2000 bytes - 24328 kBytes -->
+        <!-- Total 0x17C2014 bytes - 24328 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

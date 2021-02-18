@@ -49,9 +49,10 @@ parameter        EEPROM_AW  = 7
     output     [EEPROM_AW-1:0]    dump_addr,
     output reg           dump_we,
     // Kabuki decoder (CPS 1.5)
-    output               kabuki_we
+    output               kabuki_we,
+    // CPS2 keys
+    output               cps2_key_we
 );
-
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved

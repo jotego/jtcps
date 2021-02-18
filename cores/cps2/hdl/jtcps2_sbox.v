@@ -26,7 +26,7 @@ wire [5:0] addr;
 
 generate
     genvar aux;
-    for( aux=0; aux<6; aux=aux+1 ) begin
+    for( aux=0; aux<6; aux=aux+1 ) begin : mux
         if( OK[aux] )
             assign dex[aux] = din[ LOC[ 3*(aux+1)-1:3*aux ] ];
         else

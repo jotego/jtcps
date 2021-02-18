@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="xmvsf.key" crc="d5c07311"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="xvse.03f" crc="db06413f" map="12"/>
         </interleave>
@@ -57,13 +57,13 @@
         <interleave output="16">
             <part name="xvs.09" crc="9641f36b" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x380000 -->
+        <!-- audiocpu - starts at 0x380014 -->
         <part name="xvs.01" crc="3999e93a"/>
         <part name="xvs.02" crc="101bdee9"/>
-        <!-- qsound - starts at 0x3C0000 -->
+        <!-- qsound - starts at 0x3C0014 -->
         <part name="xvs.11m" crc="9cadcdbc"/>
         <part name="xvs.12m" crc="7b11e460"/>
-        <!-- gfx - starts at 0x7C0000 -->
+        <!-- gfx - starts at 0x7C0014 -->
         <interleave output="64">
             <part name="xvs.13m" crc="f6684efd" map="00000021"/>
             <part name="xvs.17m" crc="92db3474" map="00002100"/>
@@ -76,9 +76,9 @@
             <part name="xvs.16m" crc="ea04a272" map="00210000"/>
             <part name="xvs.20m" crc="4b40ff9f" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x27C0000 -->
+        <!-- QSound firmware - starts at 0x27C0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x27C2000 bytes - 40712 kBytes -->
+        <!-- Total 0x27C2014 bytes - 40712 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

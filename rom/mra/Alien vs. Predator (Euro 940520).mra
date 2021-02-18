@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="avsp.key" crc="e69fa35b"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="avpe.03d" crc="774334a9" map="12"/>
         </interleave>
@@ -48,12 +48,12 @@
         <interleave output="16">
             <part name="avp.06" crc="190b817f" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x200000 -->
+        <!-- audiocpu - starts at 0x200014 -->
         <part name="avp.01" crc="2d3b4220"/>
-        <!-- qsound - starts at 0x220000 -->
+        <!-- qsound - starts at 0x220014 -->
         <part name="avp.11m" crc="83499817"/>
         <part name="avp.12m" crc="f4110d49"/>
-        <!-- gfx - starts at 0x620000 -->
+        <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="avp.13m" crc="8f8b5ae4" map="00000021"/>
             <part name="avp.17m" crc="94403195" map="00002100"/>
@@ -66,9 +66,9 @@
             <part name="avp.16m" crc="fb228297" map="00210000"/>
             <part name="avp.20m" crc="f90baa21" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x1620000 -->
+        <!-- QSound firmware - starts at 0x1620014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x1622000 bytes - 22664 kBytes -->
+        <!-- Total 0x1622014 bytes - 22664 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="ssf2.key" crc="e469ccbb"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="ssfe-03b" crc="af654792" map="12"/>
         </interleave>
@@ -51,9 +51,9 @@
         <interleave output="16">
             <part name="ssfe.07" crc="2409001d" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x280000 -->
+        <!-- audiocpu - starts at 0x280014 -->
         <part name="ssf-01a" crc="71fcdfc9"/>
-        <!-- qsound - starts at 0x2A0000 -->
+        <!-- qsound - starts at 0x2A0014 -->
         <part name="ssf.q01" crc="a6f9da5c"/>
         <part name="ssf.q02" crc="8c66ae26"/>
         <part name="ssf.q03" crc="695cc2ca"/>
@@ -62,7 +62,7 @@
         <part name="ssf.q06" crc="4e79c951"/>
         <part name="ssf.q07" crc="cdd14313"/>
         <part name="ssf.q08" crc="6f5a088c"/>
-        <!-- gfx - starts at 0x6A0000 -->
+        <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="ssf.13m" crc="cf94d275" map="00000021"/>
             <part name="ssf.17m" crc="ffa60e0f" map="00002100"/>
@@ -75,9 +75,9 @@
             <part name="ssf.16m" crc="8376ad18" map="00210000"/>
             <part name="ssf.20m" crc="459d5c6b" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x12A0000 -->
+        <!-- QSound firmware - starts at 0x12A0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x12A2000 bytes - 19080 kBytes -->
+        <!-- Total 0x12A2014 bytes - 19080 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

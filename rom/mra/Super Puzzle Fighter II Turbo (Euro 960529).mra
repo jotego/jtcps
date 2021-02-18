@@ -31,33 +31,33 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="spf2t.key" crc="4c4dc7e3"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="pzfe.03" crc="2af51954" map="12"/>
         </interleave>
         <interleave output="16">
             <part name="pzf.04" crc="b80649e2" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x100000 -->
+        <!-- audiocpu - starts at 0x100014 -->
         <part name="pzf.01" crc="600fb2a3"/>
         <part name="pzf.02" crc="496076e0"/>
-        <!-- qsound - starts at 0x140000 -->
+        <!-- qsound - starts at 0x140014 -->
         <part name="pzf.11m" crc="78442743"/>
         <part name="pzf.12m" crc="399d2c7b"/>
-        <!-- gfx - starts at 0x540000 -->
+        <!-- gfx - starts at 0x540014 -->
         <interleave output="64">
             <part name="pzf.14m" crc="2d4881cb" map="00000021"/>
             <part name="pzf.16m" crc="4b0fd1be" map="00002100"/>
             <part name="pzf.18m" crc="e43aac33" map="00210000"/>
             <part name="pzf.20m" crc="7f536ff1" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x940000 -->
+        <!-- QSound firmware - starts at 0x940014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x942000 bytes - 9480 kBytes -->
+        <!-- Total 0x942014 bytes - 9480 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="sfa3.key" crc="54fa39c6"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="sz3e.03c" crc="9762b206" map="12"/>
         </interleave>
@@ -60,13 +60,13 @@
         <interleave output="16">
             <part name="sz3.10b" crc="deb2ff52" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x400000 -->
+        <!-- audiocpu - starts at 0x400014 -->
         <part name="sz3.01" crc="de810084"/>
         <part name="sz3.02" crc="72445dc4"/>
-        <!-- qsound - starts at 0x440000 -->
+        <!-- qsound - starts at 0x440014 -->
         <part name="sz3.11m" crc="1c89eed1"/>
         <part name="sz3.12m" crc="f392b13a"/>
-        <!-- gfx - starts at 0xC40000 -->
+        <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="sz3.13m" crc="0f7a60d9" map="00000021"/>
             <part name="sz3.17m" crc="d6e98147" map="00002100"/>
@@ -79,9 +79,9 @@
             <part name="sz3.16m" crc="52b5bdee" map="00210000"/>
             <part name="sz3.20m" crc="763409b4" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x2C40000 -->
+        <!-- QSound firmware - starts at 0x2C40014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x2C42000 bytes - 45320 kBytes -->
+        <!-- Total 0x2C42014 bytes - 45320 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

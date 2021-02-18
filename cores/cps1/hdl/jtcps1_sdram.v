@@ -56,6 +56,9 @@ module jtcps1_sdram #( parameter
     // Kabuki decoder (CPS 1.5)
     output          kabuki_we,
 
+    // CPS2 Keys
+    output          cps2_key_we,
+
     // Main CPU
     input           main_rom_cs,
     output          main_rom_ok,
@@ -235,7 +238,9 @@ jtcps1_prom_we #(
     .dump_we        ( dump_we       ),
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
-    .kabuki_we      ( kabuki_we     )
+    .kabuki_we      ( kabuki_we     ),
+    // CPS2 keys
+    .cps2_key_we    ( cps2_key_we   )
 );
 
 jtframe_ram_3slots #(

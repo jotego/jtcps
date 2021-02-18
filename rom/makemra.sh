@@ -162,9 +162,9 @@ function cps2_mra {
     mame2dip $1.xml -rbf jtcps2 -outdir mra -altfolder "$ALT" \
         -frac 2 gfx 4 -qsound \
         -swapbytes maincpu \
-        -ignore aboardplds bboardplds cboardplds dboardplds key \
-        -order maincpu audiocpu qsound gfx \
-        -header 64 0xff \
+        -ignore aboardplds bboardplds cboardplds dboardplds \
+        -order key maincpu audiocpu qsound gfx \
+        -header 44 0xff \
         -header-offset 0 audiocpu qsound gfx -header-offset-bits 10 -header-offset-reverse \
         -header-pointer 16 \
         -header-data 32 FF 00 \

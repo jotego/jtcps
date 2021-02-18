@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="19xx.key" crc="6f5d6406"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="19xe.03b" crc="9bf9d9b1" map="12"/>
         </interleave>
@@ -51,12 +51,12 @@
         <interleave output="16">
             <part name="19x.07" crc="61c0296c" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x280000 -->
+        <!-- audiocpu - starts at 0x280014 -->
         <part name="19x.01" crc="ef55195e"/>
-        <!-- qsound - starts at 0x2A0000 -->
+        <!-- qsound - starts at 0x2A0014 -->
         <part name="19x.11m" crc="d38beef3"/>
         <part name="19x.12m" crc="d47c96e2"/>
-        <!-- gfx - starts at 0x6A0000 -->
+        <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="19x.13m" crc="427aeb18" map="00000021"/>
             <part name="19x.17m" crc="2dfe18b5" map="00002100"/>
@@ -69,9 +69,9 @@
             <part name="19x.16m" crc="6e75f3db" map="00210000"/>
             <part name="19x.20m" crc="ab9d5b96" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x10A0000 -->
+        <!-- QSound firmware - starts at 0x10A0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x10A2000 bytes - 17032 kBytes -->
+        <!-- Total 0x10A2014 bytes - 17032 kBytes -->
     </rom>
     <!-- Vertical game -->
     <rom index="1">

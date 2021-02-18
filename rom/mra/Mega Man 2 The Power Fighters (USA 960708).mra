@@ -31,11 +31,11 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
-        ff ff ff ff ff ff ff ff 
+        ff ff ff ff 
         </part>
-        <!-- maincpu - starts at 0x0 -->
+        <!-- key - starts at 0x0 -->
+        <part name="megaman2.key" crc="6828ed6d"/>
+        <!-- maincpu - starts at 0x14 -->
         <interleave output="16">
             <part name="rm2u.03" crc="8ffc2cd1" map="12"/>
         </interleave>
@@ -45,22 +45,22 @@
         <interleave output="16">
             <part name="rm2.05" crc="02ee9efc" map="12"/>
         </interleave>
-        <!-- audiocpu - starts at 0x180000 -->
+        <!-- audiocpu - starts at 0x180014 -->
         <part name="rm2.01a" crc="d18e7859"/>
         <part name="rm2.02" crc="c463ece0"/>
-        <!-- qsound - starts at 0x1C0000 -->
+        <!-- qsound - starts at 0x1C0014 -->
         <part name="rm2.11m" crc="2106174d"/>
         <part name="rm2.12m" crc="546c1636"/>
-        <!-- gfx - starts at 0x5C0000 -->
+        <!-- gfx - starts at 0x5C0014 -->
         <interleave output="64">
             <part name="rm2.14m" crc="9b1f00b4" map="00000021"/>
             <part name="rm2.16m" crc="c2bb0c24" map="00002100"/>
             <part name="rm2.18m" crc="12257251" map="00210000"/>
             <part name="rm2.20m" crc="f9b6e786" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0xDC0000 -->
+        <!-- QSound firmware - starts at 0xDC0014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0xDC2000 bytes - 14088 kBytes -->
+        <!-- Total 0xDC2014 bytes - 14088 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>
