@@ -36,9 +36,7 @@
         <!-- key - starts at 0x0 -->
         <part name="jyangoku.key" crc="95b0a560"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="majj.03" crc="4614a3b2" map="12"/>
-        </interleave>
+        <part name="majj.03" crc="4614a3b2"/>
         <!-- audiocpu - starts at 0x80014 -->
         <part name="maj.01" crc="1fe8c213"/>
         <!-- qsound - starts at 0xA0014 -->

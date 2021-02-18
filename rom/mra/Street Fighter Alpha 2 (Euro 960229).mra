@@ -36,24 +36,12 @@
         <!-- key - starts at 0x0 -->
         <part name="sfa2.key" crc="1578dcb0"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="sz2e.03" crc="1061e6bb" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz2e.04" crc="22d17b26" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz2.05" crc="4b442a7c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz2.06" crc="5b1d49c0" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz2.07" crc="8e184246" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz2.08" crc="0fe8585d" map="12"/>
-        </interleave>
+        <part name="sz2e.03" crc="1061e6bb"/>
+        <part name="sz2e.04" crc="22d17b26"/>
+        <part name="sz2.05" crc="4b442a7c"/>
+        <part name="sz2.06" crc="5b1d49c0"/>
+        <part name="sz2.07" crc="8e184246"/>
+        <part name="sz2.08" crc="0fe8585d"/>
         <!-- audiocpu - starts at 0x300014 -->
         <part name="sz2.01a" crc="1bc323cf"/>
         <part name="sz2.02a" crc="ba6a5013"/>

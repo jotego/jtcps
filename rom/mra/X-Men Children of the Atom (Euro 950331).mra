@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="xmcota.key" crc="6665bbfb"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="xmne.03f" crc="5a726d13" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmne.04f" crc="06a83f3a" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmne.05b" crc="87b0ed0f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmn.06a" crc="1b86a328" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmn.07a" crc="2c142a44" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmn.08a" crc="f712d44f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmn.09a" crc="9241cae8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xmne.10b" crc="cb36b0a4" map="12"/>
-        </interleave>
+        <part name="xmne.03f" crc="5a726d13"/>
+        <part name="xmne.04f" crc="06a83f3a"/>
+        <part name="xmne.05b" crc="87b0ed0f"/>
+        <part name="xmn.06a" crc="1b86a328"/>
+        <part name="xmn.07a" crc="2c142a44"/>
+        <part name="xmn.08a" crc="f712d44f"/>
+        <part name="xmn.09a" crc="9241cae8"/>
+        <part name="xmne.10b" crc="cb36b0a4"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="xmn.01a" crc="40f479ea"/>
         <part name="xmn.02a" crc="39d9b5ad"/>

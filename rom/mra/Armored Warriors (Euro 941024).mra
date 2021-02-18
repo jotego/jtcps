@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="armwar.key" crc="fe979382"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="pwge.03c" crc="31f74931" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwge.04c" crc="16f34f5f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwge.05b" crc="4403ed08" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwg.06" crc="87a60ce8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwg.07" crc="f7b148df" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwg.08" crc="cc62823e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwg.09a" crc="4c26baee" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pwg.10" crc="07c4fb28" map="12"/>
-        </interleave>
+        <part name="pwge.03c" crc="31f74931"/>
+        <part name="pwge.04c" crc="16f34f5f"/>
+        <part name="pwge.05b" crc="4403ed08"/>
+        <part name="pwg.06" crc="87a60ce8"/>
+        <part name="pwg.07" crc="f7b148df"/>
+        <part name="pwg.08" crc="cc62823e"/>
+        <part name="pwg.09a" crc="4c26baee"/>
+        <part name="pwg.10" crc="07c4fb28"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="pwg.01" crc="18a5c0e4"/>
         <part name="pwg.02" crc="c9dfffa6"/>

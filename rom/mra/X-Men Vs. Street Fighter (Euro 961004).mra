@@ -36,27 +36,13 @@
         <!-- key - starts at 0x0 -->
         <part name="xmvsf.key" crc="d5c07311"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="xvse.03f" crc="db06413f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvse.04f" crc="ef015aef" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvs.05a" crc="7db6025d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvs.06a" crc="e8e2c75c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvs.07" crc="08f0abed" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvs.08" crc="81929675" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="xvs.09" crc="9641f36b" map="12"/>
-        </interleave>
+        <part name="xvse.03f" crc="db06413f"/>
+        <part name="xvse.04f" crc="ef015aef"/>
+        <part name="xvs.05a" crc="7db6025d"/>
+        <part name="xvs.06a" crc="e8e2c75c"/>
+        <part name="xvs.07" crc="08f0abed"/>
+        <part name="xvs.08" crc="81929675"/>
+        <part name="xvs.09" crc="9641f36b"/>
         <!-- audiocpu - starts at 0x380014 -->
         <part name="xvs.01" crc="3999e93a"/>
         <part name="xvs.02" crc="101bdee9"/>

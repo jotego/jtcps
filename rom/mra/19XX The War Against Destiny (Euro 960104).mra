@@ -36,21 +36,11 @@
         <!-- key - starts at 0x0 -->
         <part name="19xx.key" crc="6f5d6406"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="19xe.03b" crc="9bf9d9b1" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="19xe.04b" crc="9aa46476" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="19xe.05b" crc="a04a2c5e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="19xe.06b" crc="f0a81c33" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="19x.07" crc="61c0296c" map="12"/>
-        </interleave>
+        <part name="19xe.03b" crc="9bf9d9b1"/>
+        <part name="19xe.04b" crc="9aa46476"/>
+        <part name="19xe.05b" crc="a04a2c5e"/>
+        <part name="19xe.06b" crc="f0a81c33"/>
+        <part name="19x.07" crc="61c0296c"/>
         <!-- audiocpu - starts at 0x280014 -->
         <part name="19x.01" crc="ef55195e"/>
         <!-- qsound - starts at 0x2A0014 -->

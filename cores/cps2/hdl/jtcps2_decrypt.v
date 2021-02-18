@@ -29,7 +29,7 @@ module jtcps2_decrypt(
     input             dec_en,
 
     // Decoding
-    input      [15:0] addr,
+    input      [23:1] addr,
     input      [15:0] din,
     output     [15:0] dout
 );
@@ -50,7 +50,7 @@ jtcps2_keyload u_keyload(
 
 jtcps2_fn1 u_fn1(
     .clk       ( clk           ),
-    .din       ( addr          ),
+    .din       ( addr[16:1]    ),
     .key       ( master_key    ),
     .dout      ( addr_key      )
 );
@@ -63,8 +63,11 @@ jtcps2_fn2 u_fn2(
 );
 
 jtcps2_dec_ctrl u_ctrl(
+    .clk       ( clk           ),
     .fc        ( fc            ),
     .en        ( dec_en        ),
+    .addr      ( addr          ),
+    .range     ( addr_rng      ),
     .din       ( din           ),
     .dec       ( dec_data      ),
     .dout      ( dout          )

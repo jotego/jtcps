@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="mshvsf.key" crc="64660867"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="mvse.03f" crc="b72dc199" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvse.04f" crc="6ef799f9" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.05a" crc="1a5de0cb" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.06a" crc="959f3030" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.07b" crc="7f915bdb" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.08a" crc="c2813884" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.09b" crc="3ba08818" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvs.10b" crc="cf0dba98" map="12"/>
-        </interleave>
+        <part name="mvse.03f" crc="b72dc199"/>
+        <part name="mvse.04f" crc="6ef799f9"/>
+        <part name="mvs.05a" crc="1a5de0cb"/>
+        <part name="mvs.06a" crc="959f3030"/>
+        <part name="mvs.07b" crc="7f915bdb"/>
+        <part name="mvs.08a" crc="c2813884"/>
+        <part name="mvs.09b" crc="3ba08818"/>
+        <part name="mvs.10b" crc="cf0dba98"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="mvs.01" crc="68252324"/>
         <part name="mvs.02" crc="b34e773d"/>

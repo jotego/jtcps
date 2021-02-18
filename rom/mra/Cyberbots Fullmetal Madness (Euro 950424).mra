@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="cybots.key" crc="9bbcbef3"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="cybe.03" crc="234381cd" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cybe.04" crc="80691061" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.05" crc="ec40408e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.06" crc="1ad0bed2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.07" crc="6245a39a" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.08" crc="4b48e223" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.09" crc="e15238f6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="cyb.10" crc="75f4003b" map="12"/>
-        </interleave>
+        <part name="cybe.03" crc="234381cd"/>
+        <part name="cybe.04" crc="80691061"/>
+        <part name="cyb.05" crc="ec40408e"/>
+        <part name="cyb.06" crc="1ad0bed2"/>
+        <part name="cyb.07" crc="6245a39a"/>
+        <part name="cyb.08" crc="4b48e223"/>
+        <part name="cyb.09" crc="e15238f6"/>
+        <part name="cyb.10" crc="75f4003b"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="cyb.01" crc="9c0fb079"/>
         <part name="cyb.02" crc="51cb0c4e"/>

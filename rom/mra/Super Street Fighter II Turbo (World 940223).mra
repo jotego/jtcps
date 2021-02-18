@@ -36,27 +36,13 @@
         <!-- key - starts at 0x0 -->
         <part name="ssf2t.key" crc="524d608e"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="sfxe.03c" crc="2fa1f396" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfxe.04a" crc="d0bc29c6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfxe.05" crc="65222964" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfxe.06a" crc="8fe9f531" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfxe.07" crc="8a7d0cb6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfxe.08" crc="74c24062" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfx.09" crc="642fae3f" map="12"/>
-        </interleave>
+        <part name="sfxe.03c" crc="2fa1f396"/>
+        <part name="sfxe.04a" crc="d0bc29c6"/>
+        <part name="sfxe.05" crc="65222964"/>
+        <part name="sfxe.06a" crc="8fe9f531"/>
+        <part name="sfxe.07" crc="8a7d0cb6"/>
+        <part name="sfxe.08" crc="74c24062"/>
+        <part name="sfx.09" crc="642fae3f"/>
         <!-- audiocpu - starts at 0x380014 -->
         <part name="sfx.01" crc="b47b8835"/>
         <part name="sfx.02" crc="0022633f"/>

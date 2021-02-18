@@ -36,15 +36,9 @@
         <!-- key - starts at 0x0 -->
         <part name="mmatrix.key" crc="8ed66bc4"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="mmxu.03" crc="ab65b599" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mmxu.04" crc="0135fc6c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mmxu.05" crc="f1fd2b84" map="12"/>
-        </interleave>
+        <part name="mmxu.03" crc="ab65b599"/>
+        <part name="mmxu.04" crc="0135fc6c"/>
+        <part name="mmxu.05" crc="f1fd2b84"/>
         <!-- audiocpu - starts at 0x180014 -->
         <part name="mmx.01" crc="c57e8171"/>
         <!-- qsound - starts at 0x1A0014 -->

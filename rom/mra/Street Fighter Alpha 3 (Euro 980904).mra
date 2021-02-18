@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="sfa3.key" crc="54fa39c6"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="sz3e.03c" crc="9762b206" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3e.04c" crc="5ad3f721" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.05c" crc="57fd0a40" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.06c" crc="f6305f8b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.07c" crc="6eab0f6f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.08c" crc="910c4a3b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.09c" crc="b29e5199" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sz3.10b" crc="deb2ff52" map="12"/>
-        </interleave>
+        <part name="sz3e.03c" crc="9762b206"/>
+        <part name="sz3e.04c" crc="5ad3f721"/>
+        <part name="sz3.05c" crc="57fd0a40"/>
+        <part name="sz3.06c" crc="f6305f8b"/>
+        <part name="sz3.07c" crc="6eab0f6f"/>
+        <part name="sz3.08c" crc="910c4a3b"/>
+        <part name="sz3.09c" crc="b29e5199"/>
+        <part name="sz3.10b" crc="deb2ff52"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="sz3.01" crc="de810084"/>
         <part name="sz3.02" crc="72445dc4"/>

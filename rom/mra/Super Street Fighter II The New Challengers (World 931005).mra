@@ -36,21 +36,11 @@
         <!-- key - starts at 0x0 -->
         <part name="ssf2.key" crc="e469ccbb"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="ssfe-03b" crc="af654792" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ssfe.04" crc="b082aa67" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ssfe.05" crc="02b9c137" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ssfe-06b" crc="1c8e44a8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ssfe.07" crc="2409001d" map="12"/>
-        </interleave>
+        <part name="ssfe-03b" crc="af654792"/>
+        <part name="ssfe.04" crc="b082aa67"/>
+        <part name="ssfe.05" crc="02b9c137"/>
+        <part name="ssfe-06b" crc="1c8e44a8"/>
+        <part name="ssfe.07" crc="2409001d"/>
         <!-- audiocpu - starts at 0x280014 -->
         <part name="ssf-01a" crc="71fcdfc9"/>
         <!-- qsound - starts at 0x2A0014 -->

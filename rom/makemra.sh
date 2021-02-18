@@ -161,7 +161,6 @@ function cps2_mra {
     mkdir -p mra/"$ALT"
     mame2dip $1.xml -rbf jtcps2 -outdir mra -altfolder "$ALT" \
         -frac 2 gfx 4 -qsound \
-        -swapbytes maincpu \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \
         -header 44 0xff \

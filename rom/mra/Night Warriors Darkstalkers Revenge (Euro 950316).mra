@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="nwarr.key" crc="618a13ca"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="vphe.03f" crc="a922c44f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.04c" crc="7312d890" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.05d" crc="cde8b506" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.06c" crc="be99e7d0" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.07b" crc="69e0e60c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.08b" crc="d95a3849" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.09b" crc="9882561c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vphe.10b" crc="976fa62f" map="12"/>
-        </interleave>
+        <part name="vphe.03f" crc="a922c44f"/>
+        <part name="vphe.04c" crc="7312d890"/>
+        <part name="vphe.05d" crc="cde8b506"/>
+        <part name="vphe.06c" crc="be99e7d0"/>
+        <part name="vphe.07b" crc="69e0e60c"/>
+        <part name="vphe.08b" crc="d95a3849"/>
+        <part name="vphe.09b" crc="9882561c"/>
+        <part name="vphe.10b" crc="976fa62f"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="vph.01" crc="5045dcac"/>
         <part name="vph.02" crc="86b60e59"/>

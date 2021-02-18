@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="sfa.key" crc="7c095631"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="sfze.03d" crc="ebf2054d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfz.04b" crc="8b73b0e5" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfz.05a" crc="0810544d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="sfz.06" crc="806e8f38" map="12"/>
-        </interleave>
+        <part name="sfze.03d" crc="ebf2054d"/>
+        <part name="sfz.04b" crc="8b73b0e5"/>
+        <part name="sfz.05a" crc="0810544d"/>
+        <part name="sfz.06" crc="806e8f38"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="sfz.01" crc="ffffec7d"/>
         <part name="sfz.02" crc="45f46a08"/>

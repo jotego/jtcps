@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="vsav.key" crc="a6e3b164"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="vm3e.03d" crc="f5962a8c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3e.04d" crc="21b40ea2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.05a" crc="4118e00f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.06a" crc="2f4fd3a9" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.07b" crc="cbda91b8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.08a" crc="6ca47259" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.09b" crc="f4a339e3" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vm3.10b" crc="fffbb5b8" map="12"/>
-        </interleave>
+        <part name="vm3e.03d" crc="f5962a8c"/>
+        <part name="vm3e.04d" crc="21b40ea2"/>
+        <part name="vm3.05a" crc="4118e00f"/>
+        <part name="vm3.06a" crc="2f4fd3a9"/>
+        <part name="vm3.07b" crc="cbda91b8"/>
+        <part name="vm3.08a" crc="6ca47259"/>
+        <part name="vm3.09b" crc="f4a339e3"/>
+        <part name="vm3.10b" crc="fffbb5b8"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="vm3.01" crc="f778769b"/>
         <part name="vm3.02" crc="cc09faa1"/>

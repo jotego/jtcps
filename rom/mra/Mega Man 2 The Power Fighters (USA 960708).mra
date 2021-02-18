@@ -36,15 +36,9 @@
         <!-- key - starts at 0x0 -->
         <part name="megaman2.key" crc="6828ed6d"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="rm2u.03" crc="8ffc2cd1" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="rm2u.04" crc="bb30083a" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="rm2.05" crc="02ee9efc" map="12"/>
-        </interleave>
+        <part name="rm2u.03" crc="8ffc2cd1"/>
+        <part name="rm2u.04" crc="bb30083a"/>
+        <part name="rm2.05" crc="02ee9efc"/>
         <!-- audiocpu - starts at 0x180014 -->
         <part name="rm2.01a" crc="d18e7859"/>
         <part name="rm2.02" crc="c463ece0"/>

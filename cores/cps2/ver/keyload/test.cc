@@ -16,6 +16,9 @@ public:
     int upper_range() {
         return (((~load.addr_rng & 0x3ff)<<14) | 0x3fff) + 1;
     }
+    int raw() {
+        return load.addr_rng;
+    }
 };
 
 void buffer_load( const char*, char *);
@@ -47,6 +50,9 @@ int main( int argc, char *argv[] ) {
         //buffer_load( "t.key", buf_keys );
         dut.load_keys( buf_keys );
         init_cps2crypt( buf_keys, mame_keys );
+
+        printf("Upper range: %X <> %X\n", mame_keys.upper, dut.upper_range() );
+        printf("range raw = %X\n", dut.raw());
         printf("%08X-%08X", mame_keys.key[1], mame_keys.key[0]);
         //for( int i=0; i<2; i++ )
         //for( int k=3; k>=0; k-- )
@@ -55,7 +61,6 @@ int main( int argc, char *argv[] ) {
         printf("%016lX\n", dut.keys() );
         if( mame_keys.upper != dut.upper_range() ) {
             printf("Error: upper ranges don't match\n");
-            printf("Upper range: %X <> %X\n", mame_keys.upper, dut.upper_range() );
             throw 3;
         }
         // Decode some of the file

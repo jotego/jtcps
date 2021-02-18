@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="ddsom.key" crc="541e425d"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="dd2e.03e" crc="449361af" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.04e" crc="5b7052b6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.05e" crc="788d5f60" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.06e" crc="e0807e1e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.07" crc="bb777a02" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.08" crc="30970890" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.09" crc="99e2194d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dd2e.10" crc="e198805e" map="12"/>
-        </interleave>
+        <part name="dd2e.03e" crc="449361af"/>
+        <part name="dd2e.04e" crc="5b7052b6"/>
+        <part name="dd2e.05e" crc="788d5f60"/>
+        <part name="dd2e.06e" crc="e0807e1e"/>
+        <part name="dd2e.07" crc="bb777a02"/>
+        <part name="dd2e.08" crc="30970890"/>
+        <part name="dd2e.09" crc="99e2194d"/>
+        <part name="dd2e.10" crc="e198805e"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="dd2.01" crc="99d657e5"/>
         <part name="dd2.02" crc="117a3824"/>

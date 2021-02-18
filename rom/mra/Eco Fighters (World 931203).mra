@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="ecofghtr.key" crc="2250fd9e"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="uece.03" crc="ec2c1137" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="uece.04" crc="b35f99db" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="uece.05" crc="d9d42d31" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="uece.06" crc="9d9771cf" map="12"/>
-        </interleave>
+        <part name="uece.03" crc="ec2c1137"/>
+        <part name="uece.04" crc="b35f99db"/>
+        <part name="uece.05" crc="d9d42d31"/>
+        <part name="uece.06" crc="9d9771cf"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="uec.01" crc="c235bd15"/>
         <!-- qsound - starts at 0x220014 -->

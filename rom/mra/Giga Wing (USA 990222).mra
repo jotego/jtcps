@@ -36,15 +36,9 @@
         <!-- key - starts at 0x0 -->
         <part name="gigawing.key" crc="5076c26b"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="ggwu.03" crc="ac725eb2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ggwu.04" crc="392f4118" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="ggw.05" crc="3239d642" map="12"/>
-        </interleave>
+        <part name="ggwu.03" crc="ac725eb2"/>
+        <part name="ggwu.04" crc="392f4118"/>
+        <part name="ggw.05" crc="3239d642"/>
         <!-- audiocpu - starts at 0x180014 -->
         <part name="ggw.01" crc="4c6351d5"/>
         <!-- qsound - starts at 0x1A0014 -->

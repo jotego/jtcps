@@ -36,12 +36,8 @@
         <!-- key - starts at 0x0 -->
         <part name="progear.key" crc="46736b17"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="pgau.03" crc="343a783e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pgau.04" crc="16208d79" map="12"/>
-        </interleave>
+        <part name="pgau.03" crc="343a783e"/>
+        <part name="pgau.04" crc="16208d79"/>
         <!-- audiocpu - starts at 0x100014 -->
         <part name="pga.01" crc="bdbfa992"/>
         <!-- qsound - starts at 0x120014 -->

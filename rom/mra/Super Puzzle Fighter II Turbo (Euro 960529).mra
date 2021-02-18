@@ -36,12 +36,8 @@
         <!-- key - starts at 0x0 -->
         <part name="spf2t.key" crc="4c4dc7e3"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="pzfe.03" crc="2af51954" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pzf.04" crc="b80649e2" map="12"/>
-        </interleave>
+        <part name="pzfe.03" crc="2af51954"/>
+        <part name="pzf.04" crc="b80649e2"/>
         <!-- audiocpu - starts at 0x100014 -->
         <part name="pzf.01" crc="600fb2a3"/>
         <part name="pzf.02" crc="496076e0"/>

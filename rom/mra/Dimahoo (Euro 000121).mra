@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="dimahoo.key" crc="7d6d2db9"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="gmde.03" crc="968fcecd" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="gmd.04" crc="37485567" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="gmd.05" crc="da269ffb" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="gmd.06" crc="55b483c9" map="12"/>
-        </interleave>
+        <part name="gmde.03" crc="968fcecd"/>
+        <part name="gmd.04" crc="37485567"/>
+        <part name="gmd.05" crc="da269ffb"/>
+        <part name="gmd.06" crc="55b483c9"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="gmd.01" crc="3f9bc985"/>
         <part name="gmd.02" crc="3fd39dde"/>

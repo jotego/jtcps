@@ -36,12 +36,8 @@
         <!-- key - starts at 0x0 -->
         <part name="mpang.key" crc="95354b0f"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="mpne.03c" crc="fe16fc9f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mpne.04c" crc="2cc5ec22" map="12"/>
-        </interleave>
+        <part name="mpne.03c" crc="fe16fc9f"/>
+        <part name="mpne.04c" crc="2cc5ec22"/>
         <!-- audiocpu - starts at 0x100014 -->
         <part name="mpn.01" crc="90c7adb6"/>
         <!-- qsound - starts at 0x120014 -->

@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="dstlk.key" crc="cfa46dec"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="vame.03a" crc="004c9cff" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.04a" crc="ae413ff2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.05a" crc="60678756" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.06a" crc="912870b3" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.07a" crc="dabae3e8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.08a" crc="2c6e3077" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.09a" crc="f16db74b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vame.10a" crc="701e2147" map="12"/>
-        </interleave>
+        <part name="vame.03a" crc="004c9cff"/>
+        <part name="vame.04a" crc="ae413ff2"/>
+        <part name="vame.05a" crc="60678756"/>
+        <part name="vame.06a" crc="912870b3"/>
+        <part name="vame.07a" crc="dabae3e8"/>
+        <part name="vame.08a" crc="2c6e3077"/>
+        <part name="vame.09a" crc="f16db74b"/>
+        <part name="vame.10a" crc="701e2147"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="vam.01" crc="64b685d5"/>
         <part name="vam.02" crc="cf7c97c7"/>

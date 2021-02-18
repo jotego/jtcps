@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="vhunt2.key" crc="61306b20"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="vh2j.03a" crc="9ae8f186" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.04a" crc="e2fabf53" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.05" crc="de34f624" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.06" crc="6a3b9897" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.07" crc="b021c029" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.08" crc="ac873dff" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.09" crc="eaefce9c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vh2j.10" crc="11730952" map="12"/>
-        </interleave>
+        <part name="vh2j.03a" crc="9ae8f186"/>
+        <part name="vh2j.04a" crc="e2fabf53"/>
+        <part name="vh2j.05" crc="de34f624"/>
+        <part name="vh2j.06" crc="6a3b9897"/>
+        <part name="vh2j.07" crc="b021c029"/>
+        <part name="vh2j.08" crc="ac873dff"/>
+        <part name="vh2j.09" crc="eaefce9c"/>
+        <part name="vh2j.10" crc="11730952"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="vh2.01" crc="67b9f779"/>
         <part name="vh2.02" crc="aaf15fcb"/>

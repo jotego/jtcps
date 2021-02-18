@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="msh.key" crc="b494368e"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="mshe.03e" crc="bd951414" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mshe.04e" crc="19dd42f2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.05" crc="6a091b9e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.06b" crc="803e3fa4" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.07a" crc="c45f8e27" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.08a" crc="9ca6f12c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.09a" crc="82ec27af" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="msh.10b" crc="8d931196" map="12"/>
-        </interleave>
+        <part name="mshe.03e" crc="bd951414"/>
+        <part name="mshe.04e" crc="19dd42f2"/>
+        <part name="msh.05" crc="6a091b9e"/>
+        <part name="msh.06b" crc="803e3fa4"/>
+        <part name="msh.07a" crc="c45f8e27"/>
+        <part name="msh.08a" crc="9ca6f12c"/>
+        <part name="msh.09a" crc="82ec27af"/>
+        <part name="msh.10b" crc="8d931196"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="msh.01" crc="c976e6f9"/>
         <part name="msh.02" crc="ce67d0d9"/>

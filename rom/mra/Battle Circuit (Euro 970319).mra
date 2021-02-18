@@ -36,27 +36,13 @@
         <!-- key - starts at 0x0 -->
         <part name="batcir.key" crc="e316ae67"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="btce.03" crc="bc60484b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btce.04" crc="457d55f6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btce.05" crc="e86560d7" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btce.06" crc="f778e61b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btc.07" crc="7322d5db" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btc.08" crc="6aac85ab" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="btc.09" crc="1203db08" map="12"/>
-        </interleave>
+        <part name="btce.03" crc="bc60484b"/>
+        <part name="btce.04" crc="457d55f6"/>
+        <part name="btce.05" crc="e86560d7"/>
+        <part name="btce.06" crc="f778e61b"/>
+        <part name="btc.07" crc="7322d5db"/>
+        <part name="btc.08" crc="6aac85ab"/>
+        <part name="btc.09" crc="1203db08"/>
         <!-- audiocpu - starts at 0x380014 -->
         <part name="btc.01" crc="1e194310"/>
         <part name="btc.02" crc="01aeb8e6"/>

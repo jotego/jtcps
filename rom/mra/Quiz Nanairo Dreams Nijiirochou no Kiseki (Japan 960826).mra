@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="qndream.key" crc="97eee4ff"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="tqzj.03a" crc="7acf3e30" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="tqzj.04" crc="f1044a87" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="tqzj.05" crc="4105ba0e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="tqzj.06" crc="c371e8a5" map="12"/>
-        </interleave>
+        <part name="tqzj.03a" crc="7acf3e30"/>
+        <part name="tqzj.04" crc="f1044a87"/>
+        <part name="tqzj.05" crc="4105ba0e"/>
+        <part name="tqzj.06" crc="c371e8a5"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="tqz.01" crc="e9ce9d0a"/>
         <!-- qsound - starts at 0x220014 -->

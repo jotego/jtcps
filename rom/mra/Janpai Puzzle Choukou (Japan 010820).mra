@@ -36,12 +36,8 @@
         <!-- key - starts at 0x0 -->
         <part name="choko.key" crc="08505e8b"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="tkoj.03" crc="11f5452f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="tkoj.04" crc="68655378" map="12"/>
-        </interleave>
+        <part name="tkoj.03" crc="11f5452f"/>
+        <part name="tkoj.04" crc="68655378"/>
         <!-- audiocpu - starts at 0x100014 -->
         <part name="tko.01" crc="6eda50c2"/>
         <!-- qsound - starts at 0x120014 -->

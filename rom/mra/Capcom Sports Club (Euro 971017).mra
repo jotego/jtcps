@@ -36,21 +36,11 @@
         <!-- key - starts at 0x0 -->
         <part name="csclub.key" crc="903907d7"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="csce.03a" crc="824082be" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="csce.04a" crc="74e6a4fe" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="csce.05a" crc="8ae0df19" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="csce.06a" crc="51f2f0d3" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="csce.07a" crc="003968fd" map="12"/>
-        </interleave>
+        <part name="csce.03a" crc="824082be"/>
+        <part name="csce.04a" crc="74e6a4fe"/>
+        <part name="csce.05a" crc="8ae0df19"/>
+        <part name="csce.06a" crc="51f2f0d3"/>
+        <part name="csce.07a" crc="003968fd"/>
         <!-- audiocpu - starts at 0x280014 -->
         <part name="csc.01" crc="ee162111"/>
         <!-- qsound - starts at 0x2A0014 -->

@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="pzloop2.key" crc="ae13be78"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="pl2e.03" crc="3b1285b2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pl2e.04" crc="40a2d647" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pl2e.05" crc="0f11d818" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pl2e.06" crc="86fbbdf4" map="12"/>
-        </interleave>
+        <part name="pl2e.03" crc="3b1285b2"/>
+        <part name="pl2e.04" crc="40a2d647"/>
+        <part name="pl2e.05" crc="0f11d818"/>
+        <part name="pl2e.06" crc="86fbbdf4"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="pl2.01" crc="35697569"/>
         <!-- qsound - starts at 0x220014 -->

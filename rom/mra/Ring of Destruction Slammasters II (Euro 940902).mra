@@ -36,24 +36,12 @@
         <!-- key - starts at 0x0 -->
         <part name="ringdest.key" crc="17f9269c"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="smbe.03b" crc="b8016278" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="smbe.04b" crc="18c4c447" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="smbe.05b" crc="18ebda7f" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="smbe.06b" crc="89c80007" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="smb.07" crc="b9a11577" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="smb.08" crc="f931b76b" map="12"/>
-        </interleave>
+        <part name="smbe.03b" crc="b8016278"/>
+        <part name="smbe.04b" crc="18c4c447"/>
+        <part name="smbe.05b" crc="18ebda7f"/>
+        <part name="smbe.06b" crc="89c80007"/>
+        <part name="smb.07" crc="b9a11577"/>
+        <part name="smb.08" crc="f931b76b"/>
         <!-- audiocpu - starts at 0x300014 -->
         <part name="smb.01" crc="0abc229a"/>
         <part name="smb.02" crc="d051679a"/>

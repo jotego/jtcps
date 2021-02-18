@@ -17,6 +17,9 @@
     Date: 18-1-2021 */
 
 module jtcps2_dec_ctrl(
+    input             clk,
+    input      [15:0] range,
+    input      [23:1] addr,
     input      [ 2:0] fc,
     input             en,
     input      [15:0] din,
@@ -24,10 +27,16 @@ module jtcps2_dec_ctrl(
     output reg [15:0] dout
 );
 
+reg en_latch;
+
 wire op_fetch = fc[1:0]==2'b10;
 
+always @(posedge clk) begin
+    en_latch = op_fetch && en && (addr[23:16] <= range[11:4]);
+end
+
 always @(*) begin
-    dout = (op_fetch && en) ? dec : din;
+    dout = en_latch ? dec : din;
 end
 
 endmodule

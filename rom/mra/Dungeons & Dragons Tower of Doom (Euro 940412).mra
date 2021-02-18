@@ -36,21 +36,11 @@
         <!-- key - starts at 0x0 -->
         <part name="ddtod.key" crc="41dfca41"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="dade.03c" crc="8e73533d" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dade.04c" crc="00c2e82e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dade.05c" crc="ea996008" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dad.06a" crc="6225495a" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="dad.07a" crc="b3480ec3" map="12"/>
-        </interleave>
+        <part name="dade.03c" crc="8e73533d"/>
+        <part name="dade.04c" crc="00c2e82e"/>
+        <part name="dade.05c" crc="ea996008"/>
+        <part name="dad.06a" crc="6225495a"/>
+        <part name="dad.07a" crc="b3480ec3"/>
         <!-- audiocpu - starts at 0x280014 -->
         <part name="dad.01" crc="3f5e2424"/>
         <!-- qsound - starts at 0x2A0014 -->

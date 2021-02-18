@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="vsav2.key" crc="289028ce"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="vs2j.03" crc="89fd86b4" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.04" crc="107c091b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.05" crc="61979638" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.06" crc="f37c5bc2" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.07" crc="8f885809" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.08" crc="2018c120" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.09" crc="fac3c217" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="vs2j.10" crc="eb490213" map="12"/>
-        </interleave>
+        <part name="vs2j.03" crc="89fd86b4"/>
+        <part name="vs2j.04" crc="107c091b"/>
+        <part name="vs2j.05" crc="61979638"/>
+        <part name="vs2j.06" crc="f37c5bc2"/>
+        <part name="vs2j.07" crc="8f885809"/>
+        <part name="vs2j.08" crc="2018c120"/>
+        <part name="vs2j.09" crc="fac3c217"/>
+        <part name="vs2j.10" crc="eb490213"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="vs2.01" crc="35190139"/>
         <part name="vs2.02" crc="c32dba09"/>

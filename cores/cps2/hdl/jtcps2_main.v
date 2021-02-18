@@ -366,7 +366,7 @@ jtcps2_decrypt u_decrypt(
     .dec_en     ( 1'b1      ),
 
     // Decoding
-    .addr       ( A[16:1]   ),
+    .addr       ( A         ),
     .din        ( rom_data  ),
     .dout       ( rom_dec   )
 );

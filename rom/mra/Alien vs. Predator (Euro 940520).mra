@@ -36,18 +36,10 @@
         <!-- key - starts at 0x0 -->
         <part name="avsp.key" crc="e69fa35b"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="avpe.03d" crc="774334a9" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="avpe.04d" crc="7fa83769" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="avp.05d" crc="fbfb5d7a" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="avp.06" crc="190b817f" map="12"/>
-        </interleave>
+        <part name="avpe.03d" crc="774334a9"/>
+        <part name="avpe.04d" crc="7fa83769"/>
+        <part name="avp.05d" crc="fbfb5d7a"/>
+        <part name="avp.06" crc="190b817f"/>
         <!-- audiocpu - starts at 0x200014 -->
         <part name="avp.01" crc="2d3b4220"/>
         <!-- qsound - starts at 0x220014 -->

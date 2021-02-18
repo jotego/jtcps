@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="mvsc.key" crc="7e101e09"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="mvce.03a" crc="824e4a90" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvce.04a" crc="436c5a4e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.05a" crc="2d8c8e86" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.06a" crc="8528e1f5" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.07" crc="c3baa32b" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.08" crc="bc002fcd" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.09" crc="c67b26df" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="mvc.10" crc="0fdd1e26" map="12"/>
-        </interleave>
+        <part name="mvce.03a" crc="824e4a90"/>
+        <part name="mvce.04a" crc="436c5a4e"/>
+        <part name="mvc.05a" crc="2d8c8e86"/>
+        <part name="mvc.06a" crc="8528e1f5"/>
+        <part name="mvc.07" crc="c3baa32b"/>
+        <part name="mvc.08" crc="bc002fcd"/>
+        <part name="mvc.09" crc="c67b26df"/>
+        <part name="mvc.10" crc="0fdd1e26"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="mvc.01" crc="41629e95"/>
         <part name="mvc.02" crc="963abf6b"/>

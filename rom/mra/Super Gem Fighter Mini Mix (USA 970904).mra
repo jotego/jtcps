@@ -36,21 +36,11 @@
         <!-- key - starts at 0x0 -->
         <part name="sgemf.key" crc="3d604021"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="pcfu.03" crc="ac2e8566" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pcf.04" crc="f4314c96" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pcf.05" crc="215655f6" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pcf.06" crc="ea6f13ea" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="pcf.07" crc="5ac6d5ea" map="12"/>
-        </interleave>
+        <part name="pcfu.03" crc="ac2e8566"/>
+        <part name="pcf.04" crc="f4314c96"/>
+        <part name="pcf.05" crc="215655f6"/>
+        <part name="pcf.06" crc="ea6f13ea"/>
+        <part name="pcf.07" crc="5ac6d5ea"/>
         <!-- audiocpu - starts at 0x280014 -->
         <part name="pcf.01" crc="254e5f33"/>
         <part name="pcf.02" crc="6902f4f9"/>

@@ -36,30 +36,14 @@
         <!-- key - starts at 0x0 -->
         <part name="hsf2.key" crc="fc9b18c9"/>
         <!-- maincpu - starts at 0x14 -->
-        <interleave output="16">
-            <part name="hs2u.03" crc="b308151e" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2u.04" crc="327aa49c" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.05" crc="dde34a35" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.06" crc="f4e56dda" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.07" crc="ee4420fc" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.08" crc="c9441533" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.09" crc="3fc638a8" map="12"/>
-        </interleave>
-        <interleave output="16">
-            <part name="hs2.10" crc="20d0f9e4" map="12"/>
-        </interleave>
+        <part name="hs2u.03" crc="b308151e"/>
+        <part name="hs2u.04" crc="327aa49c"/>
+        <part name="hs2.05" crc="dde34a35"/>
+        <part name="hs2.06" crc="f4e56dda"/>
+        <part name="hs2.07" crc="ee4420fc"/>
+        <part name="hs2.08" crc="c9441533"/>
+        <part name="hs2.09" crc="3fc638a8"/>
+        <part name="hs2.10" crc="20d0f9e4"/>
         <!-- audiocpu - starts at 0x400014 -->
         <part name="hs2.01" crc="c1a13786"/>
         <part name="hs2.02" crc="2d8794aa"/>
