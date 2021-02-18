@@ -79,7 +79,7 @@ export MEM_CHECK_TIME=310_000_000
 export CONVERT_OPTIONS="-resize 300%x300%"
 
 # Generic simulation script from JTFRAME
-$JTFRAME/bin/sim.sh -mist \
+jtsim -mist \
     -sysname cps2 \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \

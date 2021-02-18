@@ -75,7 +75,7 @@ export YM2151=1
 export MSM6295=1
 
 # Generic simulation script from JTFRAME
-$JTFRAME/bin/sim.sh -mist \
+jtsim -mist \
     -sysname cps1  \
     -def ../../hdl/jtcps1.def \
     -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d SKIP_RAMCLR\
