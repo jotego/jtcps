@@ -47,9 +47,10 @@ int main( int argc, char *argv[] ) {
         //buffer_load( "t.key", buf_keys );
         dut.load_keys( buf_keys );
         init_cps2crypt( buf_keys, mame_keys );
-        for( int i=0; i<2; i++ )
-        for( int k=3; k>=0; k-- )
-            printf("%02X", (mame_keys.key[i]>>(k<<3))&0xff );
+        printf("%08X-%08X", mame_keys.key[1], mame_keys.key[0]);
+        //for( int i=0; i<2; i++ )
+        //for( int k=3; k>=0; k-- )
+        //    printf("%02X", (mame_keys.key[i]>>(k<<3))&0xff );
         putchar('\n');
         printf("%016lX\n", dut.keys() );
         if( mame_keys.upper != dut.upper_range() ) {

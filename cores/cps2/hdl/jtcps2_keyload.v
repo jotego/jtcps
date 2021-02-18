@@ -62,15 +62,15 @@ raw[ 90], raw[ 91], raw[ 92], raw[ 93], raw[ 94], raw[ 95], raw[ 80], raw[ 81],
 raw[ 82], raw[ 83], raw[ 84], raw[ 85], raw[ 86], raw[ 87], raw[ 72], raw[ 73],
 
 // Keys:
-raw[154], raw[155], raw[156], raw[157], raw[158], raw[159], raw[144], raw[145],
-raw[146], raw[147], raw[148], raw[149], raw[150], raw[151], raw[136], raw[137],
-raw[138], raw[139], raw[140], raw[141], raw[142], raw[143], raw[128], raw[129],
-raw[130], raw[131], raw[132], raw[133], raw[134], raw[135], raw[120], raw[121],
-
 raw[122], raw[123], raw[124], raw[125], raw[126], raw[127], raw[112], raw[113],
 raw[114], raw[115], raw[116], raw[117], raw[118], raw[119], raw[104], raw[105],
 raw[106], raw[107], raw[108], raw[109], raw[110], raw[111], raw[ 96], raw[ 97],
-raw[ 98], raw[ 99], raw[100], raw[101], raw[102], raw[103], raw[ 88], raw[ 89]
+raw[ 98], raw[ 99], raw[100], raw[101], raw[102], raw[103], raw[ 88], raw[ 89],
+
+raw[154], raw[155], raw[156], raw[157], raw[158], raw[159], raw[144], raw[145],
+raw[146], raw[147], raw[148], raw[149], raw[150], raw[151], raw[136], raw[137],
+raw[138], raw[139], raw[140], raw[141], raw[142], raw[143], raw[128], raw[129],
+raw[130], raw[131], raw[132], raw[133], raw[134], raw[135], raw[120], raw[121]
 };
 
 
