@@ -408,7 +408,7 @@ always @(posedge clk, posedge rst ) begin
     end
 end
 
-jtframe_romrq #(.AW(21),.DW(16),.REPACK(0)) u_bank3(
+jtframe_romrq #(.AW(21),.DW(16),.LATCH(1),.REPACK(0)) u_bank3(
     .rst       ( rst                    ),
     .clk       ( clk                    ),
     .clr       ( 1'b0                   ),
