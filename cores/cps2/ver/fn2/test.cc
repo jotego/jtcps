@@ -57,15 +57,15 @@ int main( int argc, char *argv[] ) {
         ref_key2[3] ^= BIT(ref_key2[3], 1) <<  5;
 
 
-        if( ref_key2[0] != dut.sbox.key1 ||
-            ref_key2[1] != dut.sbox.key2 ||
-            ref_key2[2] != dut.sbox.key3 ||
-            ref_key2[3] != dut.sbox.key4
+        if( ref_key2[0] != (int)dut.sbox.jtcps2_fn2__DOT__key1 ||
+            ref_key2[1] != (int)dut.sbox.jtcps2_fn2__DOT__key2 ||
+            ref_key2[2] != (int)dut.sbox.jtcps2_fn2__DOT__key3 ||
+            ref_key2[3] != (int)dut.sbox.jtcps2_fn2__DOT__key4
             ) {
-            printf("Key1 %05X <> %05X\n", dut.sbox.key1, ref_key2[0] );
-            printf("Key2 %05X <> %05X\n", dut.sbox.key2, ref_key2[1] );
-            printf("Key3 %05X <> %05X\n", dut.sbox.key3, ref_key2[2] );
-            printf("Key4 %05X <> %05X\n", dut.sbox.key4, ref_key2[3] );
+            printf("Key1 %05X <> %05X\n", dut.sbox.jtcps2_fn2__DOT__key1, ref_key2[0] );
+            printf("Key2 %05X <> %05X\n", dut.sbox.jtcps2_fn2__DOT__key2, ref_key2[1] );
+            printf("Key3 %05X <> %05X\n", dut.sbox.jtcps2_fn2__DOT__key3, ref_key2[2] );
+            printf("Key4 %05X <> %05X\n", dut.sbox.jtcps2_fn2__DOT__key4, ref_key2[3] );
             goto finish;
         }
         for( int a=0; a<0x1'0000; a++ ) {

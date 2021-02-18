@@ -47,15 +47,15 @@ int main( int argc, char *argv[] ) {
         key1[2] ^= BIT(key1[2], 1) <<  5;
         key1[2] ^= BIT(key1[2], 8) << 11;
 
-        if( key1[0] != dut.sbox.key1 ||
-            key1[1] != dut.sbox.key2 ||
-            key1[2] != dut.sbox.key3 ||
-            key1[3] != dut.sbox.key4
+        if( key1[0] != dut.sbox.jtcps2_fn1__DOT__key1 ||
+            key1[1] != dut.sbox.jtcps2_fn1__DOT__key2 ||
+            key1[2] != dut.sbox.jtcps2_fn1__DOT__key3 ||
+            key1[3] != dut.sbox.jtcps2_fn1__DOT__key4
             ) {
-            printf("Key1 %05X <> %05X\n", key1[0], dut.sbox.key1 );
-            printf("Key2 %05X <> %05X\n", key1[1], dut.sbox.key2 );
-            printf("Key3 %05X <> %05X\n", key1[2], dut.sbox.key3 );
-            printf("Key4 %05X <> %05X\n", key1[3], dut.sbox.key4 );
+            printf("Key1 %05X <> %05X\n", key1[0], dut.sbox.jtcps2_fn1__DOT__key1 );
+            printf("Key2 %05X <> %05X\n", key1[1], dut.sbox.jtcps2_fn1__DOT__key2 );
+            printf("Key3 %05X <> %05X\n", key1[2], dut.sbox.jtcps2_fn1__DOT__key3 );
+            printf("Key4 %05X <> %05X\n", key1[3], dut.sbox.jtcps2_fn1__DOT__key4 );
             goto finish;
         }
         for( int a=0; a<0x1'0000; a++ ) {
@@ -80,6 +80,9 @@ int main( int argc, char *argv[] ) {
 int DUT::eval( int din, uint64_t key ) {
     sbox.din = din;
     sbox.key = key;
+    sbox.clk=0;
+    sbox.eval();
+    sbox.clk=1;
     sbox.eval();
     return sbox.dout;
 }
