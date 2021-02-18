@@ -19,6 +19,7 @@
 module jtcps2_main(
     input              rst,
     input              clk,
+    input              clk_rom,
     input              cen16,
     input              cen16b,
     output             cpu_cen,
@@ -354,7 +355,7 @@ jtcps1_dtack u_dtack(
 
 jtcps2_decrypt u_decrypt(
     .rst        ( 1'b0      ), // must be on during ROM download
-    .clk        ( clk       ),
+    .clk        ( clk_rom   ),
 
     // Key download
     .prog_din   ( prog_din  ),

@@ -32,6 +32,7 @@
 ../../hdl/jtcps2_colmix.v
 ../../hdl/jtcps2_raster.v
 # Keys
+../../hdl/jtcps2_decrypt.v
 ../../hdl/jtcps2_keyload.v
 ../../hdl/jtcps2_fn1.v
 ../../hdl/jtcps2_fn2.v

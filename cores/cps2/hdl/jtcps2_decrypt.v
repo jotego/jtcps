@@ -34,40 +34,40 @@ module jtcps2_decrypt(
     output     [15:0] dout
 );
 
-wire [63:0] master_key, addr_key;
-wire [15:0] addr_range, dec_data;
+wire [63:0] master_key;
+wire [15:0] addr_rng, dec_data, addr_key;
 
-jtcps2_keyload(
-    .rst        ( rst           ),
-    .clk        ( clk           ),
+jtcps2_keyload u_keyload(
+    .rst       ( rst           ),
+    .clk       ( clk           ),
 
-    .din        ( prog_din      ),
-    .din_we     ( prog_we       ),
+    .din       ( prog_din      ),
+    .din_we    ( prog_we       ),
 
-    .addr_rng   ( addr_rng      ),
-    .key        ( master_key    )
+    .addr_rng  ( addr_rng      ),
+    .key       ( master_key    )
 );
 
-jtcps2_fn1(
-    .clk        ( clk           ),
-    .din        ( addr          ),
-    .key        ( master_key    ),
-    .dout       ( addr_key      )
+jtcps2_fn1 u_fn1(
+    .clk       ( clk           ),
+    .din       ( addr          ),
+    .key       ( master_key    ),
+    .dout      ( addr_key      )
 );
 
-jtcps2_fn2(
+jtcps2_fn2 u_fn2(
     .din       ( din           ),
     .master_key( master_key    ),
     .key       ( addr_key      ),
     .dout      ( dec_data      )
 );
 
-jtcps2_dec_ctrl(
+jtcps2_dec_ctrl u_ctrl(
     .fc        ( fc            ),
     .en        ( dec_en        ),
     .din       ( din           ),
     .dec       ( dec_data      ),
-    .dout      ( dec_data      )
+    .dout      ( dout          )
 );
 
 endmodule

@@ -51,7 +51,7 @@ parameter        EEPROM_AW  = 7
     // Kabuki decoder (CPS 1.5)
     output               kabuki_we,
     // CPS2 keys
-    output               cps2_key_we
+    output reg           cps2_key_we
 );
 
 // The start position header has 16 bytes, from which 6 are actually used and
@@ -61,7 +61,9 @@ localparam START_BYTES   = 8,
            STARTW        = 8*START_BYTES,
            FULL_HEADER   = 25'd64,
            KABUKI_HEADER = 25'd48,
-           KABUKI_END    = KABUKI_HEADER + 25'd11;
+           KABUKI_END    = KABUKI_HEADER + 25'd11,
+           CPS2_KEYS     = 25'd44,
+           CPS2_END      = 25'd64;
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
@@ -73,7 +75,11 @@ assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
 assign prog_data  = {2{pre_data}};
+`ifdef CPS15
 assign kabuki_we  = kabuki_sr[0];
+`else
+assign kabuki_we  = 0;
+`endif
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
@@ -83,6 +89,7 @@ reg  [24:0] gfx_addr;
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
+wire is_cps2   = ioctl_addr >= CPS2_KEYS && ioctl_addr < CPS2_END;
 wire is_cpu    = bulk_addr[24:10] < snd_start;
 wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
@@ -142,6 +149,9 @@ always @(posedge clk) begin
         prog_ba   <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
         if( is_kabuki )
             kabuki_sr <= 2'b11;
+        if( is_cps2 ) begin
+            cps2_key_we <= 1;
+        end
         if( ioctl_addr < START_BYTES[24:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
@@ -161,6 +171,7 @@ always @(posedge clk) begin
         end
     end
     else begin
+        cps2_key_we <= 0;
         if( clr_ram ) begin
             if( prog_rdy ) begin
                 prog_we   <= 0;

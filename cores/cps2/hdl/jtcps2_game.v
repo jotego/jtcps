@@ -218,6 +218,7 @@ wire busack_cpu;
 `ifndef NOMAIN
 jtcps2_main u_main(
     .rst        ( rst               ),
+    .clk_rom    ( clk96             ),
     .clk        ( clk48             ),
     .cen16      ( cpu_cen           ),
     .cen16b     ( cpu_cenb          ),
@@ -233,7 +234,7 @@ jtcps2_main u_main(
     .mmr_dout   ( mmr_dout          ),
     .raster     ( raster            ),
     // Keys
-    .prog_din   ( prog_din          ),
+    .prog_din   ( prog_data[7:0]    ),
     .key_we     ( key_we            ),
     // Sound
     .main2qs_din ( main2qs_din      ),
@@ -455,7 +456,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .prog_rd     ( prog_rd       ),
     .prog_rdy    ( prog_rdy      ),
     .prog_qsnd   ( prog_qsnd     ),
-    .kabuki_we   (               ),
+    .kabuki_we   (               ), // disabled for CPS2
     .cps2_key_we ( key_we        ),
 
     // EEPROM
