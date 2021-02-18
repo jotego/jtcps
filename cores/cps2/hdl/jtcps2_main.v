@@ -89,6 +89,7 @@ module jtcps2_main(
 wire [23:1] A;
 wire [ 2:0] FC;
 wire        BERRn = 1'b1;
+wire        rom_ok2;
 
 reg  [15:0] in0, in1, in2;
 reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
@@ -316,7 +317,7 @@ end
 // DTACKn generation
 wire       inta_n;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs, pre_oram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok,
+wire       bus_busy = |{ rom_cs & ~(rom_ok|rom_ok2),
                     (pre_ram_cs|pre_vram_cs|pre_oram_cs) & ~ram_ok,
                     main2qs_cs & ~main2qs_waitn
                      };
@@ -345,7 +346,7 @@ jtcps1_dtack u_dtack(
     .one_wait   ( one_wait  ),
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),
-    .rom_ok     ( rom_ok    ),
+    .rom_ok     ( rom_ok2   ),
 
     .main2qs_cs ( main2qs_cs  ),
     .qs_busakn_s( qs_busakn_s ),
@@ -367,6 +368,8 @@ jtcps2_decrypt u_decrypt(
 
     // Decoding
     .addr       ( A         ),
+    .rom_ok     ( rom_ok    ),
+    .rom_ok_out ( rom_ok2   ),
     .din        ( rom_data  ),
     .dout       ( rom_dec   )
 );

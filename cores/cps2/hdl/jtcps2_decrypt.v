@@ -29,6 +29,8 @@ module jtcps2_decrypt(
     input             dec_en,
 
     // Decoding
+    input             rom_ok,
+    output            rom_ok_out,
     input      [23:1] addr,
     input      [15:0] din,
     output     [15:0] dout
@@ -64,6 +66,8 @@ jtcps2_fn2 u_fn2(
 
 jtcps2_dec_ctrl u_ctrl(
     .clk       ( clk           ),
+    .rom_ok    ( rom_ok        ),
+    .rom_ok_out( rom_ok_out    ),
     .fc        ( fc            ),
     .en        ( dec_en        ),
     .addr      ( addr          ),
