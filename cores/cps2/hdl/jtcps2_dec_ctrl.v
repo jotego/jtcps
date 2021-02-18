@@ -19,7 +19,7 @@
 module jtcps2_dec_ctrl(
     input             clk,
     input             rom_ok,
-    output reg        rom_ok_out,
+    output            rom_ok_out,
 
     input      [15:0] range,
     input      [23:1] addr,
@@ -32,13 +32,16 @@ module jtcps2_dec_ctrl(
 );
 
 reg en_latch;
+reg [1:0] ok_sh;
+
+assign rom_ok_out = ok_sh[1];
 
 wire op_fetch = fc[1:0]==2'b10;
 
 always @(posedge clk) begin
-    en_latch   <= op_fetch && en && (addr[23:16] <= range[11:4]);
-    rom_ok_out <= rom_ok;
-    dout       <= en_latch ? dec : din;
+    en_latch <= op_fetch && en && (addr[23:16] <= range[11:4]);
+    ok_sh    <= { ok_sh[0], rom_ok };
+    dout     <= en_latch ? dec : din;
 end
 
 endmodule

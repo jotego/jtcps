@@ -58,6 +58,7 @@ jtcps2_fn1 u_fn1(
 );
 
 jtcps2_fn2 u_fn2(
+    .clk       ( clk           ),
     .din       ( din           ),
     .master_key( master_key    ),
     .key       ( addr_key      ),
