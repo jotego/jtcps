@@ -41,12 +41,20 @@ function blank;
 endfunction
 
 always @(*) begin
-    obj1st  = ~obj_prio <= scr_lyr; // ok in SPF2T
+    //obj1st  = ~obj_prio <= scr_lyr; // ok in SPF2T
     //obj1st  = obj_prio > scr_lyr; // ok in Sports Club
+    casez( obj_prio[1:0] )
+        default: obj1st = 1;        // 7
+        2'b0?: obj1st = scr_lyr!=3'd1; // 4 or 5, verified
+        2'b11: obj1st = 1;
+    endcase
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
 always @(posedge clk) if(pxl_cen) begin
+    //pxl <= obj_prio!=4 &&  obj_prio!=7 ? obj_pxl[8:0] : 9'd0;
+    //pxl <= obj_prio==4 ? obj_pxl[8:0] : 9'd0;
+    //pxl <= scr_lyr==3 ? scr_pxl : 9'd0;
     pxl <= !obj_en ? scr_pxl :
         ( mux_sel ? scr_pxl : {3'd0, obj_pxl[8:0]} );
 end
