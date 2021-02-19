@@ -40,6 +40,7 @@ module jtcps2_main(
     input   [7:0]      prog_din,
     input              key_we,
     // cabinet I/O
+    input   [1:0]      joymode,
     input   [9:0]      joystick1,
     input   [9:0]      joystick2,
     input   [9:0]      joystick3,
@@ -85,6 +86,8 @@ module jtcps2_main(
     input              main2qs_busakn,
     input              main2qs_waitn
 );
+
+localparam [1:0] BUT6 = 2'b11;
 
 wire [23:1] A;
 wire [ 2:0] FC;
@@ -269,24 +272,24 @@ assign dial_dout = 8'd0;
 
 always @(posedge clk) begin
     // This still doesn't cover all cases
-//    case( joymode )
-//        default: begin
+    case( joymode )
+        default: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
             in1 <= { joystick4[7:0], joystick3[7:0] };
             in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
-//        end
-//        BUT6: begin
-//            in0 <= { joystick2[7:0], joystick1[7:0] };
-//            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
-//            in2 <= { 1'b1, joystick2[9],
-//                coin_input[1:0], start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
-//        end
+        end
+        BUT6: begin
+            in0 <= { joystick2[7:0], joystick1[7:0] };
+            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
+            in2 <= { 1'b1, joystick2[9],
+                coin_input[1:0], start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
+        end
 //        BUTX: begin // buttons only
 //            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };
 //            in1 <= { joystick4[7:0], joystick3[7:0] };
 //            in2 <= { coin_input, start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
 //        end
-//    endcase
+    endcase
 end
 
 reg [15:0] sys_data;

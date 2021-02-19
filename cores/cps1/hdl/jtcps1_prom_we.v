@@ -51,19 +51,23 @@ parameter        EEPROM_AW  = 7
     // Kabuki decoder (CPS 1.5)
     output               kabuki_we,
     // CPS2 keys
-    output reg           cps2_key_we
+    output reg           cps2_key_we,
+    output reg [ 1:0]    joymode
 );
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
 localparam START_BYTES   = 8,
            START_HEADER  = 16,
-           STARTW        = 8*START_BYTES,
-           FULL_HEADER   = 25'd64,
-           KABUKI_HEADER = 25'd48,
-           KABUKI_END    = KABUKI_HEADER + 25'd11,
-           CPS2_KEYS     = 25'd44,
-           CPS2_END      = 25'd64;
+           STARTW        = 8*START_BYTES;
+
+localparam [24:0] FULL_HEADER   = 25'd64,
+                  KABUKI_HEADER = 25'd48,
+                  KABUKI_END    = KABUKI_HEADER + 25'd11,
+                  CPS2_KEYS     = 25'd44,
+                  CPS2_END      = 25'd64;
+
+localparam [ 5:0] JOY_BYTE      = 6'h30;
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
@@ -162,7 +166,10 @@ always @(posedge clk) begin
                 cfg_we    <= 1'b1;
                 prog_we   <= 1'b0;
                 prom_we   <= 1'b0;
-                if( ioctl_addr[5:0] == CFG_BYTE ) {decrypt, pang3_bit} <= ioctl_data[7:6];
+                if( ioctl_addr[5:0] == CFG_BYTE )
+                    {decrypt, pang3_bit} <= ioctl_data[7:6];
+                if( ioctl_addr[5:0] == JOY_BYTE )
+                    joymode <= ioctl_data[5:4];
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;

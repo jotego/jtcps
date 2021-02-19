@@ -58,6 +58,7 @@ module jtcps1_sdram #( parameter
 
     // CPS2 Keys
     output          cps2_key_we,
+    output   [ 1:0] cps2_joymode,
 
     // Main CPU
     input           main_rom_cs,
@@ -239,8 +240,9 @@ jtcps1_prom_we #(
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
     .kabuki_we      ( kabuki_we     ),
-    // CPS2 keys
-    .cps2_key_we    ( cps2_key_we   )
+    // CPS2
+    .cps2_key_we    ( cps2_key_we   ),
+    .joymode        ( cps2_joymode  )
 );
 
 jtframe_ram_3slots #(

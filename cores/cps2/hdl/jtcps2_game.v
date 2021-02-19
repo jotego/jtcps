@@ -138,6 +138,7 @@ wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
 wire        cfg_we, key_we;
+wire [ 1:0] joymode;
 
 // CPS2 Objects
 wire [12:0] gfx_oram_addr;
@@ -248,6 +249,7 @@ jtcps2_main u_main(
     // Cabinet input
     .start_button( start_button     ),
     .coin_input  ( coin_input       ),
+    .joymode     ( joymode          ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
     .joystick3   ( joystick3        ),
@@ -458,6 +460,9 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .prog_qsnd   ( prog_qsnd     ),
     .kabuki_we   (               ), // disabled for CPS2
     .cps2_key_we ( key_we        ),
+    .cps2_joymode( joymode       ),
+    // joystick type
+
 
     // EEPROM
     .sclk           ( sclk          ),

@@ -13,6 +13,7 @@ popd > /dev/null
 MAKEROM=0
 CPS15=0
 CPS2=0
+OUTDIR=mra
 
 while [ $# -gt 0 ]; do
     case $1 in
@@ -22,6 +23,9 @@ while [ $# -gt 0 ]; do
             CPS15=1;;
         -cps2)
             CPS2=1;;
+        -outdir)
+            shift
+            OUTDIR=$1;;
         -h|-help)
             cat <<EOF
 makemra.sh creates MRA files for some cores. Optional arguments:
@@ -29,11 +33,12 @@ makemra.sh creates MRA files for some cores. Optional arguments:
                 * not implemented yet *
     -cps1.5     enable CPS1.5 MRA creation
     -cps2       enable CPS2   MRA creation
+    -outdir     output directory
     -h | -help  shows this message
 EOF
             exit 1;;
         *)
-            echo "ERROR: unknown argument " $MAKEROM
+            echo "ERROR: unknown argument " $1
             exit 1;;
     esac
     shift
@@ -44,11 +49,15 @@ if [[ $CPS15 = 0 && $CPS2 = 0 ]]; then
     exit 1
 fi
 
+if [ ! -d $OUTDIR ]; then
+    echo mkdir -p $OUTDIR
+fi
+
 if [ $CPS15 = 1 ]; then
 
     ALTFOLDER=_alt/"_Warriors of Fate"
-    mkdir -p mra/"$ALTFOLDER"
-    mame2dip wof.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mame2dip wof.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order maincpu audiocpu qsound gfx \
@@ -67,8 +76,8 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
-    mkdir -p mra/"$ALTFOLDER"
-    mame2dip dino.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mame2dip dino.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order maincpu audiocpu qsound gfx \
@@ -87,8 +96,8 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_The Punisher"
-    mkdir -p mra/"$ALTFOLDER"
-    mame2dip punisher.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mame2dip punisher.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order maincpu audiocpu qsound gfx \
@@ -107,8 +116,8 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Saturday Night Slam Masters"
-    mkdir -p mra/"$ALTFOLDER"
-    mame2dip slammast.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mame2dip slammast.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order maincpu audiocpu qsound gfx \
@@ -127,8 +136,8 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Muscle Bomber Duo"
-    mkdir -p mra/"$ALTFOLDER"
-    mame2dip mbombrd.xml -rbf jtcps15 -outdir mra -altfolder "$ALTFOLDER" \
+    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mame2dip mbombrd.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order maincpu audiocpu qsound gfx \
@@ -153,13 +162,25 @@ fi
 
 # CPS2 Titles
 function cps2_mra {
-    if [ ! -e $1.xml ]; then
-        mamefilter $1 > $1.xml
+    local GAME=$1
+    local BUT=$2
+    local ALT=$3
+    local BUTCFG=
+
+    if [ ! -e $GAME.xml ]; then
+        mamefilter $GAME > $GAME.xml
     fi
 
-    ALT=_alt/_"$2"
-    mkdir -p mra/"$ALT"
-    mame2dip $1.xml -rbf jtcps2 -outdir mra -altfolder "$ALT" \
+    case $BUT in
+        6) BUTCFG="-header-pointer 30 -header-data 0"
+           BUTSTR="Punch0 Punch1 Punch2 Kick0 Kick1 Kick2";;
+        *) BUTCFG=""
+           BUTSTR="Attack Jump None None None None";;
+    esac
+
+    ALT=_alt/_"$ALT"
+    mkdir -p $OUTDIR/"$ALT"
+    mame2dip $GAME.xml -rbf jtcps2 -outdir $OUTDIR -altfolder "$ALT" \
         -frac 2 gfx 4 -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \
@@ -169,45 +190,49 @@ function cps2_mra {
         -header-data 32 FF 00 \
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
-        -buttons Attack Jump None None None None \
+        $BUTCFG \
+        -buttons $BUTSTR \
         -nvram 128
 }
 
-cps2_mra ddtod      "DnD Tower of Doom"
-cps2_mra ssf2       "Super Street Fighter II: The New Challengers (World 931005)"
-cps2_mra ssf2t      "Super Street Fighter II Turbo (World 940223)"
-cps2_mra ecofghtr   "Eco Fighters (World 931203)"
-cps2_mra avsp       "Alien vs. Predator (Euro 940520)"
-cps2_mra dstlk      "Darkstalkers: The Night Warriors (Euro 940705)"
-cps2_mra ringdest   "Ring of Destruction: Slammasters II (Euro 940902)"
-cps2_mra armwar     "Armored Warriors (Euro 941024)"
-cps2_mra xmcota     "X-Men: Children of the Atom (Euro 950331)"
-cps2_mra nwarr      "Night Warriors: Darkstalkers' Revenge (Euro 950316)"
-cps2_mra cybots     "Cyberbots: Fullmetal Madness (Euro 950424)"
-cps2_mra sfa        "Street Fighter Alpha: Warriors' Dreams (Euro 950727)"
-cps2_mra mmancp2u   "Mega Man: The Power Battle (CPS2, USA 951006, SAMPLE Version)"
-cps2_mra mmancp2ur1 "Mega Man: The Power Battle (CPS2, USA 950926, SAMPLE Version)"
-cps2_mra rmancp2j   "Rockman: The Power Battle (CPS2, Japan 950922)"
-cps2_mra msh        "Marvel Super Heroes (Euro 951024)"
-cps2_mra 19xx       "19XX: The War Against Destiny (Euro 960104)"
-cps2_mra ddsom      "Dungeons & Dragons: Shadow over Mystara (Euro 960619)"
-cps2_mra sfa2       "Street Fighter Alpha 2 (Euro 960229)"
-cps2_mra sfz2al     "Street Fighter Zero 2 Alpha (Asia 960826)"
-cps2_mra spf2t      "Super Puzzle Fighter II Turbo (Euro 960529)"
-cps2_mra megaman2   "Mega Man 2: The Power Fighters (USA 960708)"
-cps2_mra qndream    "Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)"
-cps2_mra xmvsf      "X-Men Vs. Street Fighter (Euro 961004)"
-cps2_mra batcir     "Battle Circuit (Euro 970319)"
-cps2_mra vsav       "Vampire Savior: The Lord of Vampire (Euro 970519)"
-cps2_mra mshvsf     "Marvel Super Heroes Vs. Street Fighter (Euro 970625)"
-cps2_mra csclub     "Capcom Sports Club (Euro 971017)"
-cps2_mra sgemf      "Super Gem Fighter Mini Mix (USA 970904)"
-cps2_mra vhunt2     "Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)"
-cps2_mra vsav2      "Vampire Savior 2: The Lord of Vampire (Japan 970913)"
-cps2_mra mvsc       "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)"
-cps2_mra sfa3       "Street Fighter Alpha 3 (Euro 980904)"
-cps2_mra jyangoku   "Jyangokushi: Haoh no Saihai (Japan 990527)"
-cps2_mra hsf2       "Hyper Street Fighter II: The Anniversary Edition (USA 040202)"
+cps2_mra sfa        6 "Street Fighter Alpha: Warriors' Dreams (Euro 950727)"
+exit 0
+
+cps2_mra ddtod      2 "DnD Tower of Doom"
+cps2_mra ssf2       2 "Super Street Fighter II: The New Challengers (World 931005)"
+cps2_mra ssf2t      2 "Super Street Fighter II Turbo (World 940223)"
+cps2_mra ecofghtr   2 "Eco Fighters (World 931203)"
+cps2_mra avsp       2 "Alien vs. Predator (Euro 940520)"
+cps2_mra dstlk      2 "Darkstalkers: The Night Warriors (Euro 940705)"
+cps2_mra ringdest   2 "Ring of Destruction: Slammasters II (Euro 940902)"
+cps2_mra armwar     2 "Armored Warriors (Euro 941024)"
+cps2_mra xmcota     2 "X-Men: Children of the Atom (Euro 950331)"
+cps2_mra nwarr      2 "Night Warriors: Darkstalkers' Revenge (Euro 950316)"
+cps2_mra cybots     2 "Cyberbots: Fullmetal Madness (Euro 950424)"
+cps2_mra sfa        6 "Street Fighter Alpha: Warriors' Dreams (Euro 950727)"
+cps2_mra mmancp2u   2 "Mega Man: The Power Battle (CPS2, USA 951006, SAMPLE Version)"
+cps2_mra mmancp2ur1 2 "Mega Man: The Power Battle (CPS2, USA 950926, SAMPLE Version)"
+cps2_mra rmancp2j   2 "Rockman: The Power Battle (CPS2, Japan 950922)"
+cps2_mra msh        2 "Marvel Super Heroes (Euro 951024)"
+cps2_mra 19xx       2 "19XX: The War Against Destiny (Euro 960104)"
+cps2_mra ddsom      2 "Dungeons & Dragons: Shadow over Mystara (Euro 960619)"
+cps2_mra sfa2       2 "Street Fighter Alpha 2 (Euro 960229)"
+cps2_mra sfz2al     2 "Street Fighter Zero 2 Alpha (Asia 960826)"
+cps2_mra spf2t      2 "Super Puzzle Fighter II Turbo (Euro 960529)"
+cps2_mra megaman2   2 "Mega Man 2: The Power Fighters (USA 960708)"
+cps2_mra qndream    2 "Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)"
+cps2_mra xmvsf      2 "X-Men Vs. Street Fighter (Euro 961004)"
+cps2_mra batcir     2 "Battle Circuit (Euro 970319)"
+cps2_mra vsav       2 "Vampire Savior: The Lord of Vampire (Euro 970519)"
+cps2_mra mshvsf     2 "Marvel Super Heroes Vs. Street Fighter (Euro 970625)"
+cps2_mra csclub     2 "Capcom Sports Club (Euro 971017)"
+cps2_mra sgemf      2 "Super Gem Fighter Mini Mix (USA 970904)"
+cps2_mra vhunt2     2 "Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)"
+cps2_mra vsav2      2 "Vampire Savior 2: The Lord of Vampire (Japan 970913)"
+cps2_mra mvsc       2 "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)"
+cps2_mra sfa3       2 "Street Fighter Alpha 3 (Euro 980904)"
+cps2_mra jyangoku   2 "Jyangokushi: Haoh no Saihai (Japan 990527)"
+cps2_mra hsf2       2 "Hyper Street Fighter II: The Anniversary Edition (USA 040202)"
 
 # Games released on CPS-2 hardware by Takumi
 cps2_mra gigawing   "Giga Wing (USA 990222)"

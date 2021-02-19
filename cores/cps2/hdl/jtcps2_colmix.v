@@ -51,7 +51,7 @@ always @(*) begin
         2'b0?: obj1st = scr_lyr!=3'd1; // 4 or 5, verified
         2'b11: obj1st = 1;
     endcase
-    if( obj_top ) obj1st = 1;
+    //if( obj_top ) obj1st = 1;
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
