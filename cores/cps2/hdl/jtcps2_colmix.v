@@ -22,6 +22,8 @@ module jtcps2_colmix(
     input              clk,
     input              pxl_cen,
 
+    input      [15:0]  layer_ctrl,
+
     input      [11:0]  scr_pxl,
     input      [11:0]  obj_pxl,
     input              obj_en,
@@ -33,7 +35,7 @@ localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
 wire [2:0] obj_prio = obj_pxl[11:9],
            scr_lyr  = scr_pxl[11:9];
 
-reg obj1st, mux_sel;
+reg obj1st, mux_sel, obj_top;
 
 function blank;
     input [11:0] a;
@@ -41,6 +43,7 @@ function blank;
 endfunction
 
 always @(*) begin
+    obj_top = layer_ctrl[13:12]==2'b0;
     //obj1st  = ~obj_prio <= scr_lyr; // ok in SPF2T
     //obj1st  = obj_prio > scr_lyr; // ok in Sports Club
     casez( obj_prio[1:0] )
@@ -48,6 +51,7 @@ always @(*) begin
         2'b0?: obj1st = scr_lyr!=3'd1; // 4 or 5, verified
         2'b11: obj1st = 1;
     endcase
+    if( obj_top ) obj1st = 1;
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 

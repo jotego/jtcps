@@ -99,6 +99,7 @@ reg [ 1:0] group;
 wire [2:0] lyr0_code = lyr0[11:9];
 wire [2:0] lyr1_code = lyr1[11:9];
 wire [2:0] lyr2_code = lyr2[11:9];
+wire [2:0] lyr3_code = lyr3[11:9];
 `endif
 always @(posedge clk) if(pxl_cen) begin
     lyr5 <= { 2'b00, STA, sta1_mask };

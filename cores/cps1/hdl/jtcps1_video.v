@@ -504,6 +504,8 @@ jtcps2_colmix u_objmix(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
 
+    .layer_ctrl ( layer_ctrl    ),
+
     .scr_pxl    ( merge_pxl     ),
     .obj_pxl    ( obj_pxl       ),
     .obj_en     ( gfx_en[3]     ),
