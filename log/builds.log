@@ -1504,3 +1504,5 @@ cps1          	mist	20210220	1	PASS	41af2fa	9ebfa67
 cps2          	mister	20210220	25265	PASS	41af2fa	9ebfa67
 cps1          	mister	20210220	1	FAIL	41af2fa	9ebfa67
 cps15         	mister	20210220	1	FAIL	41af2fa	9ebfa67
+cps1          	mister	20210220	23137	PASS	121e1da	9ebfa67
+cps15         	mister	20210220	21720	PASS	121e1da	9ebfa67
