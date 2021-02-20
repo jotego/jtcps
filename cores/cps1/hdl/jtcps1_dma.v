@@ -342,7 +342,7 @@ always @(posedge clk) begin
         if( check_adv ) begin
             cur_task  <= {TASKW{1'b0}};
             step_task <= { {TASKW-1{1'b0}}, 1'b1 };
-            adv       <= |tasks[SCR3:0];
+            adv       <= |{ tasks[PAL5:PAL0], tasks[SCR3:0] };
             check_adv <= 0;
             br        <= |tasks;
             rfsh_en   <= ~&tasks[SCR3:SCR1]; // no SDRAM refresh allowed
