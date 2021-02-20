@@ -467,7 +467,9 @@ end
 
 endmodule
 
-// There is an extra cycle for memory OP access above 4000
+// There is an extra cycle for
+// -OP access above C000
+// -All data access
 // This could be to give extra time to Kabuki decode logic
 
 module jtcps15_z80wait(
@@ -487,8 +489,10 @@ always @(posedge clk, posedge rst) begin
     if( rst )
         idle <= 0;
     else if(cen8) begin
-        if( addr>=4'h4 && !m1_n && !idle )
+        if( (addr[15:14]==2'b11 || m1_n) && !idle )
             idle <= 1;
+        else
+            idle <= 0;
     end
 end
 
