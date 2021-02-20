@@ -481,6 +481,11 @@ module jtcps15_z80wait(
     output        cen_cpu
 );
 
+assign cen_cpu = cen8;
+
+// It slows down music, I think this isn't correct
+// I have to check the PAL output with Loic.
+/*
 reg idle;
 
 assign cen_cpu = cen8 & ~idle;
@@ -495,7 +500,7 @@ always @(posedge clk, posedge rst) begin
             idle <= 0;
     end
 end
-
+*/
 endmodule
 
 // M68000 requests and gets the bus in a synchronous way
