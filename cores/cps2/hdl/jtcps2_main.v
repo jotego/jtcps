@@ -285,7 +285,7 @@ always @(posedge clk) begin
         end
         BUT6: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
-            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
+            in1 <= { 10'h3FF, joystick2[8:7], joystick1[9:7] };
             in2 <= { 1'b1, joystick2[9],
                 coin_input[1:0], start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
         end

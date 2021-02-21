@@ -91,13 +91,11 @@ reg  [ 4:0] st;
 
 reg last_start;
 reg newline;
-reg init;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         table_addr <= 11'd0;
         st         <= 0;
-        done       <= 1'b0;
         dr_start   <= 0;
         dr_code    <= 16'h0;
         dr_attr    <= 16'h0;
@@ -117,9 +115,7 @@ always @(posedge clk, posedge rst) begin
                     newline    <= 0;
                     wait_cycle <= 3'b011;
                     last_tile  <= 1'b0;
-                    done       <= 0;
                     vrenderf   <= vrender ^ {1'b0,{8{flip}}};
-                    init       <= 1;
                 end
             end
             1: begin
@@ -141,7 +137,6 @@ always @(posedge clk, posedge rst) begin
                     else begin
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
-                        init <= 0;
                     end
                 end else st<=1;
 

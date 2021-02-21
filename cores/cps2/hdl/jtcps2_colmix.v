@@ -43,7 +43,7 @@ wire [2:0] obj_prio = obj_pxl[11:9],
 //wire [7:0] lyr_order = layer_ctrl[13:6];
 
 reg         obj1st, mux_sel;
-reg  [ 2:0] scr_prio;
+reg  [ 3:0] scr_prio;
 reg  [15:0] lyr_prio;
 
 function blank;
