@@ -55,14 +55,14 @@
         <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="ssf.13m" crc="cf94d275" map="00000021"/>
-            <part name="ssf.17m" crc="ffa60e0f" map="00002100"/>
-            <part name="ssf.14m" crc="b7cc32e7" map="00210000"/>
-            <part name="ssf.18m" crc="f5b1b336" map="21000000"/>
+            <part name="ssf.15m" crc="5eb703af" map="00002100"/>
+            <part name="ssf.17m" crc="ffa60e0f" map="00210000"/>
+            <part name="ssf.19m" crc="34e825c5" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="ssf.15m" crc="5eb703af" map="00000021"/>
-            <part name="ssf.19m" crc="34e825c5" map="00002100"/>
-            <part name="ssf.16m" crc="8376ad18" map="00210000"/>
+            <part name="ssf.14m" crc="b7cc32e7" map="00000021"/>
+            <part name="ssf.16m" crc="8376ad18" map="00002100"/>
+            <part name="ssf.18m" crc="f5b1b336" map="00210000"/>
             <part name="ssf.20m" crc="459d5c6b" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x12A0014 -->

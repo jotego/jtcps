@@ -195,8 +195,8 @@ function cps2_mra {
         -nvram 128
 }
 
-cps2_mra sfa        6 "Street Fighter Alpha: Warriors' Dreams (Euro 950727)"
-exit 0
+# cps2_mra dstlk      2 "Darkstalkers: The Night Warriors (Euro 940705)"
+# exit 0
 
 cps2_mra ddtod      2 "DnD Tower of Doom"
 cps2_mra ssf2       2 "Super Street Fighter II: The New Challengers (World 931005)"

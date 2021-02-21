@@ -52,14 +52,14 @@
         <!-- gfx - starts at 0x7C0014 -->
         <interleave output="64">
             <part name="xvs.13m" crc="f6684efd" map="00000021"/>
-            <part name="xvs.17m" crc="92db3474" map="00002100"/>
-            <part name="xvs.14m" crc="bcac2e41" map="00210000"/>
-            <part name="xvs.18m" crc="b0def86a" map="21000000"/>
+            <part name="xvs.15m" crc="29109221" map="00002100"/>
+            <part name="xvs.17m" crc="92db3474" map="00210000"/>
+            <part name="xvs.19m" crc="3733473c" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="xvs.15m" crc="29109221" map="00000021"/>
-            <part name="xvs.19m" crc="3733473c" map="00002100"/>
-            <part name="xvs.16m" crc="ea04a272" map="00210000"/>
+            <part name="xvs.14m" crc="bcac2e41" map="00000021"/>
+            <part name="xvs.16m" crc="ea04a272" map="00002100"/>
+            <part name="xvs.18m" crc="b0def86a" map="00210000"/>
             <part name="xvs.20m" crc="4b40ff9f" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x27C0014 -->

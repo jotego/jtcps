@@ -53,14 +53,14 @@
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="dd2.13m" crc="a46b4e6e" map="00000021"/>
-            <part name="dd2.17m" crc="837c0867" map="00002100"/>
-            <part name="dd2.14m" crc="6d824ce2" map="00210000"/>
-            <part name="dd2.18m" crc="acddd149" map="21000000"/>
+            <part name="dd2.15m" crc="d5fc50fc" map="00002100"/>
+            <part name="dd2.17m" crc="837c0867" map="00210000"/>
+            <part name="dd2.19m" crc="bb0ec21c" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="dd2.15m" crc="d5fc50fc" map="00000021"/>
-            <part name="dd2.19m" crc="bb0ec21c" map="00002100"/>
-            <part name="dd2.16m" crc="79682ae5" map="00210000"/>
+            <part name="dd2.14m" crc="6d824ce2" map="00000021"/>
+            <part name="dd2.16m" crc="79682ae5" map="00002100"/>
+            <part name="dd2.18m" crc="acddd149" map="00210000"/>
             <part name="dd2.20m" crc="117fb0c0" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2040014 -->

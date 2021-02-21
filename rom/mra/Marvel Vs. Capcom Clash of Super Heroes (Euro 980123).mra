@@ -53,14 +53,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="mvc.13m" crc="fa5f74bc" map="00000021"/>
-            <part name="mvc.17m" crc="92741d07" map="00002100"/>
-            <part name="mvc.14m" crc="7f1df4e4" map="00210000"/>
-            <part name="mvc.18m" crc="67aaf727" map="21000000"/>
+            <part name="mvc.15m" crc="71938a8f" map="00002100"/>
+            <part name="mvc.17m" crc="92741d07" map="00210000"/>
+            <part name="mvc.19m" crc="bcb72fc6" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mvc.15m" crc="71938a8f" map="00000021"/>
-            <part name="mvc.19m" crc="bcb72fc6" map="00002100"/>
-            <part name="mvc.16m" crc="90bd3203" map="00210000"/>
+            <part name="mvc.14m" crc="7f1df4e4" map="00000021"/>
+            <part name="mvc.16m" crc="90bd3203" map="00002100"/>
+            <part name="mvc.18m" crc="67aaf727" map="00210000"/>
             <part name="mvc.20m" crc="8b0bade8" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->

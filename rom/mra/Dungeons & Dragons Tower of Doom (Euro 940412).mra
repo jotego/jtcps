@@ -49,14 +49,14 @@
         <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="dad.13m" crc="da3cb7d6" map="00000021"/>
-            <part name="dad.17m" crc="b98757f5" map="00002100"/>
-            <part name="dad.14m" crc="837e6f3f" map="00210000"/>
-            <part name="dad.18m" crc="cef393ef" map="21000000"/>
+            <part name="dad.15m" crc="92b63172" map="00002100"/>
+            <part name="dad.17m" crc="b98757f5" map="00210000"/>
+            <part name="dad.19m" crc="8121ce46" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="dad.15m" crc="92b63172" map="00000021"/>
-            <part name="dad.19m" crc="8121ce46" map="00002100"/>
-            <part name="dad.16m" crc="f0916bdb" map="00210000"/>
+            <part name="dad.14m" crc="837e6f3f" map="00000021"/>
+            <part name="dad.16m" crc="f0916bdb" map="00002100"/>
+            <part name="dad.18m" crc="cef393ef" map="00210000"/>
             <part name="dad.20m" crc="8953fe9e" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x12A0014 -->

@@ -48,14 +48,14 @@
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="pl2-simm.01c" crc="137b13a7" map="00000021"/>
-            <part name="pl2-simm.01a" crc="7e80ff8e" map="00002100"/>
-            <part name="pl2-simm.03c" crc="0f52bbca" map="00210000"/>
-            <part name="pl2-simm.03a" crc="b60c9f8e" map="21000000"/>
+            <part name="pl2-simm.01d" crc="a2db1507" map="00002100"/>
+            <part name="pl2-simm.01a" crc="7e80ff8e" map="00210000"/>
+            <part name="pl2-simm.01b" crc="cd93e6ed" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="pl2-simm.01d" crc="a2db1507" map="00000021"/>
-            <part name="pl2-simm.01b" crc="cd93e6ed" map="00002100"/>
-            <part name="pl2-simm.03d" crc="a62712c3" map="00210000"/>
+            <part name="pl2-simm.03c" crc="0f52bbca" map="00000021"/>
+            <part name="pl2-simm.03d" crc="a62712c3" map="00002100"/>
+            <part name="pl2-simm.03a" crc="b60c9f8e" map="00210000"/>
             <part name="pl2-simm.03b" crc="83fef284" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1620014 -->

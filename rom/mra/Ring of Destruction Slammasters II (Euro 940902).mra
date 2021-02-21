@@ -51,20 +51,20 @@
         <!-- gfx - starts at 0x740014 -->
         <interleave output="64">
             <part name="smb.13m" crc="d9b2d1de" map="00000021"/>
-            <part name="smb.19m" crc="35757e96" map="00002100"/>
-            <part name="smb.18m" crc="4ded3910" map="00210000"/>
-            <part name="smb.23m" crc="0911b6c4" map="21000000"/>
+            <part name="smb.15m" crc="9a766d92" map="00002100"/>
+            <part name="smb.17m" crc="51800f0f" map="00210000"/>
+            <part name="smb.19m" crc="35757e96" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="smb.15m" crc="9a766d92" map="00000021"/>
-            <part name="smb.14m" crc="e5bfd0e7" map="00002100"/>
-            <part name="smb.20m" crc="26ea1ec5" map="00210000"/>
-            <part name="smb.25m" crc="82d6c4ec" map="21000000"/>
-        </interleave>
-        <interleave output="64">
-            <part name="smb.17m" crc="51800f0f" map="00000021"/>
+            <part name="smb.14m" crc="e5bfd0e7" map="00000021"/>
             <part name="smb.16m" crc="c56c0866" map="00002100"/>
-            <part name="smb.21m" crc="0a08c5fc" map="00210000"/>
+            <part name="smb.18m" crc="4ded3910" map="00210000"/>
+            <part name="smb.20m" crc="26ea1ec5" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="smb.21m" crc="0a08c5fc" map="00000021"/>
+            <part name="smb.23m" crc="0911b6c4" map="00002100"/>
+            <part name="smb.25m" crc="82d6c4ec" map="00210000"/>
             <part name="smb.27m" crc="9b48678b" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1940014 -->

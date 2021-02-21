@@ -46,14 +46,14 @@
         <!-- gfx - starts at 0x520014 -->
         <interleave output="64">
             <part name="tkoj1_d.simm1" crc="6933377d" map="00000021"/>
-            <part name="tkoj1_b.simm1" crc="cfb68ca9" map="00002100"/>
-            <part name="tkoj3_d.simm3" crc="a9e32b57" map="00210000"/>
-            <part name="tkoj3_b.simm3" crc="4d3f919a" map="21000000"/>
+            <part name="tkoj1_c.simm1" crc="7f668950" map="00002100"/>
+            <part name="tkoj1_b.simm1" crc="cfb68ca9" map="00210000"/>
+            <part name="tkoj1_a.simm1" crc="437e21c5" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="tkoj1_c.simm1" crc="7f668950" map="00000021"/>
-            <part name="tkoj1_a.simm1" crc="437e21c5" map="00002100"/>
-            <part name="tkoj3_c.simm3" crc="b7ab9338" map="00210000"/>
+            <part name="tkoj3_d.simm3" crc="a9e32b57" map="00000021"/>
+            <part name="tkoj3_c.simm3" crc="b7ab9338" map="00002100"/>
+            <part name="tkoj3_b.simm3" crc="4d3f919a" map="00210000"/>
             <part name="tkoj3_a.simm3" crc="cfef17ab" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1520014 -->

@@ -53,14 +53,14 @@
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="xmn.13m" crc="bf4df073" map="00000021"/>
-            <part name="xmn.17m" crc="513eea17" map="00002100"/>
-            <part name="xmn.14m" crc="778237b7" map="00210000"/>
-            <part name="xmn.18m" crc="015a7c4c" map="21000000"/>
+            <part name="xmn.15m" crc="4d7e4cef" map="00002100"/>
+            <part name="xmn.17m" crc="513eea17" map="00210000"/>
+            <part name="xmn.19m" crc="d23897fc" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="xmn.15m" crc="4d7e4cef" map="00000021"/>
-            <part name="xmn.19m" crc="d23897fc" map="00002100"/>
-            <part name="xmn.16m" crc="67b36948" map="00210000"/>
+            <part name="xmn.14m" crc="778237b7" map="00000021"/>
+            <part name="xmn.16m" crc="67b36948" map="00002100"/>
+            <part name="xmn.18m" crc="015a7c4c" map="00210000"/>
             <part name="xmn.20m" crc="9dde2758" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2840014 -->

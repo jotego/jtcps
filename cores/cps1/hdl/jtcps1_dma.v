@@ -123,7 +123,7 @@ reg         last_HB, line_req, last_pal_dma_ok, pal_busy;
 reg         rd_bank, wr_bank, adv, check_adv;
 reg         rd_obj_bank, wr_obj_bank;
 reg         scr_wr, obj_wr, pal_wr;
-reg         obj_fill, obj_end, last_obj_dma_ok,
+reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok,
             fill_found, fill_en;
 
 wire        HB_edge  = !last_HB && HB;
@@ -283,7 +283,7 @@ always @(posedge clk) begin
         obj_fill    <= 0;
         obj_end     <= 0;
         obj_cnt     <= 10'd0;
-        //obj_busy    <= 0;
+        obj_busy    <= 0;
         // SCR
         vrenderf    <= 16'd0;
     end else if(pxl2_cen) begin
@@ -295,13 +295,13 @@ always @(posedge clk) begin
         pal_wr <= 0;
 
 
-        // if( obj_dma_ok && !last_obj_dma_ok ) begin
-        //     obj_busy <= 1;
-        // end
+        if( obj_dma_ok && !last_obj_dma_ok ) begin
+            obj_busy <= 1;
+        end
 
-        // if( pal_dma_ok && !last_pal_dma_ok ) begin
-        //     pal_busy <= 1;
-        // end
+        if( pal_dma_ok && !last_pal_dma_ok ) begin
+            pal_busy <= 1;
+        end
 
         if( HB_edge ) begin
             line_req <= 1;
@@ -315,25 +315,23 @@ always @(posedge clk) begin
 
         if( line_req && step[0] ) begin
             line_req    <= 0;
-            //obj_busy    <= 0;
-            //pal_busy    <= 0;
-            //if( obj_busy ) begina
+            obj_busy    <= 0;
+            pal_busy    <= 0;
             `ifndef CPS2
-            if( tile_vs ) begin
-                wr_obj_bank <= ~wr_obj_bank;
-                rd_obj_bank <= wr_obj_bank;
-                obj_fill    <= 0;
-                obj_end     <= 0;
-                tasks[OBJ]  <= 1;
-                obj_cnt     <= 10'd0;
-            end else begin
-                tasks[OBJ]  <= !obj_end;
-            end
+                if( obj_busy ) begin
+                    wr_obj_bank <= ~wr_obj_bank;
+                    rd_obj_bank <= wr_obj_bank;
+                    obj_fill    <= 0;
+                    obj_end     <= 0;
+                    tasks[OBJ]  <= 1;
+                    obj_cnt     <= 10'd0;
+                end else begin
+                    tasks[OBJ]  <= !obj_end;
+                end
             `else
                 tasks[OBJ]  <= 1'b0;    // No OBJ DMA on CPS2
             `endif
-            //if( pal_busy ) begin
-            if( tile_vs ) begin
+            if( pal_busy ) begin
                 pal_rd_page      <= 3'd0;
                 pal_wr_page      <= pal_page_en[0] ? 3'd0 : 3'd1;
                 tasks[PAL5:PAL0] <= pal_page_en;
@@ -346,7 +344,6 @@ always @(posedge clk) begin
             scr_cnt     <= 8'd0;
             check_adv   <= 1;
             row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };
-            //if( obj_busy ) obj_cnt <= 10'd0;
         end else
         if( check_adv ) begin
             cur_task  <= {TASKW{1'b0}};

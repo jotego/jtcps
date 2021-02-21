@@ -53,14 +53,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="vm3.13m" crc="fd8a11eb" map="00000021"/>
-            <part name="vm3.17m" crc="6b89445e" map="00002100"/>
-            <part name="vm3.14m" crc="c1a28e6c" map="00210000"/>
-            <part name="vm3.18m" crc="df9a9f47" map="21000000"/>
+            <part name="vm3.15m" crc="dd1e7d4e" map="00002100"/>
+            <part name="vm3.17m" crc="6b89445e" map="00210000"/>
+            <part name="vm3.19m" crc="3830fdc7" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="vm3.15m" crc="dd1e7d4e" map="00000021"/>
-            <part name="vm3.19m" crc="3830fdc7" map="00002100"/>
-            <part name="vm3.16m" crc="194a7304" map="00210000"/>
+            <part name="vm3.14m" crc="c1a28e6c" map="00000021"/>
+            <part name="vm3.16m" crc="194a7304" map="00002100"/>
+            <part name="vm3.18m" crc="df9a9f47" map="00210000"/>
             <part name="vm3.20m" crc="c22fc3d9" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->

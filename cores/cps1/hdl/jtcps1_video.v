@@ -118,9 +118,9 @@ module jtcps1_video(
 parameter REGSIZE=24;
 
 `ifdef CPS2
-localparam OBJW=12, BLNK_DLY=6;
+localparam OBJW=12, BLNK_DLY=5;
 `else
-localparam OBJW=9, BLNK_DLY=4;
+localparam OBJW=9, BLNK_DLY=5;
 `endif
 
 // use for CPU only simulations:

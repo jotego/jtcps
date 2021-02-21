@@ -47,14 +47,14 @@
         <!-- gfx - starts at 0x9A0014 -->
         <interleave output="64">
             <part name="mmx.13m" crc="04748718" map="00000021"/>
-            <part name="mmx.17m" crc="e4635e35" map="00002100"/>
-            <part name="mmx.14m" crc="d52bf491" map="00210000"/>
-            <part name="mmx.18m" crc="2562c9d5" map="21000000"/>
+            <part name="mmx.15m" crc="38074f44" map="00002100"/>
+            <part name="mmx.17m" crc="e4635e35" map="00210000"/>
+            <part name="mmx.19m" crc="4400a3f2" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mmx.15m" crc="38074f44" map="00000021"/>
-            <part name="mmx.19m" crc="4400a3f2" map="00002100"/>
-            <part name="mmx.16m" crc="23f70780" map="00210000"/>
+            <part name="mmx.14m" crc="d52bf491" map="00000021"/>
+            <part name="mmx.16m" crc="23f70780" map="00002100"/>
+            <part name="mmx.18m" crc="2562c9d5" map="00210000"/>
             <part name="mmx.20m" crc="583a9687" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x29A0014 -->

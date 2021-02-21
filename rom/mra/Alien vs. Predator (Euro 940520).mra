@@ -48,14 +48,14 @@
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="avp.13m" crc="8f8b5ae4" map="00000021"/>
-            <part name="avp.17m" crc="94403195" map="00002100"/>
-            <part name="avp.14m" crc="ebba093e" map="00210000"/>
-            <part name="avp.18m" crc="34fb7232" map="21000000"/>
+            <part name="avp.15m" crc="b00280df" map="00002100"/>
+            <part name="avp.17m" crc="94403195" map="00210000"/>
+            <part name="avp.19m" crc="e1981245" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="avp.15m" crc="b00280df" map="00000021"/>
-            <part name="avp.19m" crc="e1981245" map="00002100"/>
-            <part name="avp.16m" crc="fb228297" map="00210000"/>
+            <part name="avp.14m" crc="ebba093e" map="00000021"/>
+            <part name="avp.16m" crc="fb228297" map="00002100"/>
+            <part name="avp.18m" crc="34fb7232" map="00210000"/>
             <part name="avp.20m" crc="f90baa21" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1620014 -->
