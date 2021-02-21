@@ -34,6 +34,7 @@ module jtcps1_video(
     input      [ 3:0]  gfx_en,
 
     `ifdef CPS2
+    input              objcfg_cs,
     input              obank,
     output     [12:0]  oram_addr,
     input              oram_ok,
@@ -441,6 +442,7 @@ assign scr3_pxl   = 11'h1ff;
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
 
+        //.objcfg_cs  ( objcfg_cs     ),
         .obank      ( obank         ),
         // Interface with SDRAM for OBJRAM
         .oram_addr  ( oram_addr     ),
@@ -504,6 +506,10 @@ jtcps2_colmix u_objmix(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
 
+    .objcfg_cs  ( objcfg_cs     ),
+    .addr       ( addr[3:1]     ),
+    .cpu_dout   ( cpu_dout      ),
+    .dsn        ( dsn           ),
     .layer_ctrl ( layer_ctrl    ),
 
     .scr_pxl    ( merge_pxl     ),

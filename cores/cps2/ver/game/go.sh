@@ -47,11 +47,13 @@ if [ -n "$SCENE" ]; then
         exit 1
     fi
     MMR_FILE="-d MMR_FILE=\"$GAME/regs${SCENE}.hex\""
+    PRIO_SIM="-d PRIO_SIM=$(printf "%d" 0x$(head -n 1 $GAME/prio${SCENE}.hex))"
     OTHER="$OTHER -d NOMAIN -d NOSOUND -video 3"
     SCENE="-game $GAME -scene $SCENE"
     rm sdram_bank?.hex
 else
     MMR_FILE=
+    PRIO_SIM=
 fi
 
 if [ $GOOD = 0 ]; then
@@ -84,6 +86,6 @@ jtsim -mist \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
-    -videow 384 -videoh 224 $MMR_FILE \
+    -videow 384 -videoh 224 $MMR_FILE $PRIO_SIM \
     -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO \
     $OTHER

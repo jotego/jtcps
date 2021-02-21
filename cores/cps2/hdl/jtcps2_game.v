@@ -119,7 +119,7 @@ wire [17:1] ram_addr;
 wire [21:1] main_rom_addr;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
-wire        ppu1_cs, ppu2_cs, ppu_rstn;
+wire        ppu1_cs, ppu2_cs, ppu_rstn, objcfg_cs;
 wire        raster;
 wire [19:0] rom1_addr, rom0_addr;
 wire [31:0] rom0_data, rom1_data;
@@ -231,6 +231,7 @@ jtcps2_main u_main(
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
     .ppu2_cs    ( ppu2_cs           ),
+    .objcfg_cs  ( objcfg_cs         ),
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     .raster     ( raster            ),
@@ -343,6 +344,7 @@ jtcps1_video #(REGSIZE) u_video(
     .oram_addr      ( gfx_oram_addr ),
     .oram_ok        ( gfx_oram_ok   ),
     .oram_data      ( gfx_oram_data ),
+    .objcfg_cs      ( objcfg_cs     ),
 
     // Video signal
     .HS             ( HS            ),

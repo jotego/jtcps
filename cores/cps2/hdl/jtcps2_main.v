@@ -30,6 +30,7 @@ module jtcps2_main(
     // PPU
     output reg         ppu1_cs,
     output reg         ppu2_cs,
+    output reg         objcfg_cs,
     output             ppu_rstn,
     input   [15:0]     mmr_dout,
     input              raster,
@@ -155,6 +156,7 @@ always @(posedge clk, posedge rst) begin
         pre_oram_cs <= 1'b0;
         io_cs        <= 1'b0;
         rom_addr     <= 21'd0;
+        objcfg_cs    <= 0;
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
     end else begin
@@ -165,6 +167,8 @@ always @(posedge clk, posedge rst) begin
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             pre_oram_cs <= A[23:16] == 8'h70;
             io_cs       <= A[23:19] == 5'b1000_0;
+            // OBJ engine
+            objcfg_cs   <= A[23:20] == 4'h4 && !RnW;    // 4?'????
             // QSound
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
@@ -175,6 +179,7 @@ always @(posedge clk, posedge rst) begin
             pre_oram_cs <= 0;
             io_cs       <= 0;
             main2qs_cs  <= 0;
+            objcfg_cs   <= 0;
         end
     end
 end
