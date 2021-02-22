@@ -442,7 +442,11 @@ assign scr3_pxl   = 11'h1ff;
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
 
-        //.objcfg_cs  ( objcfg_cs     ),
+        .objcfg_cs  ( objcfg_cs     ),
+        .addr       ( addr[3:1]     ),
+        .dsn        ( dsn           ),
+        .cpu_dout   ( cpu_dout      ),
+
         .obank      ( obank         ),
         // Interface with SDRAM for OBJRAM
         .oram_addr  ( oram_addr     ),

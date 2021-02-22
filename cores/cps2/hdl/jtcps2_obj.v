@@ -24,6 +24,12 @@ module jtcps2_obj(
     input              pxl_cen,
     input              flip,
 
+    // Configuration
+    input              objcfg_cs,
+    input      [15:0]  cpu_dout,
+    input      [ 1:0]  dsn,
+    input      [ 3:1]  addr,
+
     // Interface with SDRAM for ORAM data
     output     [12:0]  oram_addr,
     input              oram_ok,
@@ -115,6 +121,12 @@ jtcps2_obj_scan u_scan(
 
     .start      ( start         ),
     .vrender    ( vrender       ),
+
+    // OBJ config
+    .objcfg_cs  ( objcfg_cs     ),
+    .addr       ( addr          ),
+    .cpu_dout   ( cpu_dout      ),
+    .dsn        ( dsn           ),
 
     // interface with frame table
     .table_addr ( table_attr    ),

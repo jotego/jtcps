@@ -67,7 +67,7 @@ localparam [24:0] FULL_HEADER   = 25'd64,
                   CPS2_KEYS     = 25'd44,
                   CPS2_END      = 25'd64;
 
-localparam [ 5:0] JOY_BYTE      = 6'h30;
+localparam [ 5:0] JOY_BYTE      = 6'h28;
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
@@ -169,7 +169,7 @@ always @(posedge clk) begin
                 if( ioctl_addr[5:0] == CFG_BYTE )
                     {decrypt, pang3_bit} <= ioctl_data[7:6];
                 if( ioctl_addr[5:0] == JOY_BYTE )
-                    joymode <= ioctl_data[5:4];
+                    joymode <= ioctl_data[1:0];
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
