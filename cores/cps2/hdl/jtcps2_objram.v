@@ -34,11 +34,17 @@ module jtcps2_objram(
 
     input           obank,
 
+    // Configuration
+    input           objcfg_cs,
+    input    [ 1:0] cfg_dsn,
+    input    [15:0] cpu_dout,
+    input    [ 3:1] cfg_addr,
+
     // Interface with CPU
     input           cs,
     output reg      ok,
     input    [ 1:0] dsn,
-    input    [15:0] main_dout,
+    input    [15:0] oram_din,
     input    [13:1] main_addr,
     // output   [15:0] dout2cpu,
 
@@ -52,20 +58,50 @@ module jtcps2_objram(
 );
 
 parameter AW=13; // 13 for full table shadowing
+localparam [3:1] XOFF=4, YOFF=5;
+
 
 wire [   1:0] wex, wey, wecode, weattr;
 wire [AW-3:0] wr_addr, gfx_addr;
 
-assign wex       = ~dsn & {2{cs & main_addr[2:1]==2'd0}};
-assign wey       = ~dsn & {2{cs & main_addr[2:1]==2'd1}};
-assign wecode    = ~dsn & {2{cs & main_addr[2:1]==2'd2}};
-assign weattr    = ~dsn & {2{cs & main_addr[2:1]==2'd3}};
+wire [8:0] next_offy = { cfg_dsn[1] ? off_y[8]   : cpu_dout[8],
+                         cfg_dsn[0] ? off_y[7:0] : cpu_dout[7:0] } - 9'h10;
+
+wire [9:0] next_offx = { cfg_dsn[1] ? off_x[9:8] : cpu_dout[9:8],
+                         cfg_dsn[0] ? off_x[7:0] : cpu_dout[7:0] } - 9'h40;
+
+assign wex      = ~dsn & {2{cs & main_addr[2:1]==2'd0}};
+assign wey      = ~dsn & {2{cs & main_addr[2:1]==2'd1}};
+assign wecode   = ~dsn & {2{cs & main_addr[2:1]==2'd2}};
+assign weattr   = ~dsn & {2{cs & main_addr[2:1]==2'd3}};
 
 assign wr_addr  = {  obank^main_addr[13], main_addr[AW-1:3] };
 assign gfx_addr = { ~obank, obj_addr[AW-4:0] };
 
+reg  [ 8:0] off_y;
+reg  [ 9:0] off_x;
+reg  [15:0] din_x, din_y;
+
 always @(posedge clk_cpu) begin
-    ok <= cs;
+    ok    <= cs;
+    din_y <= { oram_din[15:10], oram_din[9:0] - { off_y[8], off_y } };
+    din_x <= { oram_din[15:10], oram_din[9:0] - off_x };
+end
+
+always @(posedge clk_cpu, posedge rst) begin
+    if( rst ) begin
+        off_x <= 10'h0;
+        off_y <=  9'h0;
+    end else if( objcfg_cs ) begin
+        if( cfg_addr == XOFF ) begin
+            if( !cfg_dsn[0]) off_x[7:0] <= next_offx[7:0];
+            if( !cfg_dsn[1]) off_x[9:8] <= next_offx[9:8];
+        end
+        if( cfg_addr == YOFF ) begin
+            if( !cfg_dsn[0]) off_y[7:0] <= next_offy[7:0];
+            if( !cfg_dsn[1]) off_y[  8] <= next_offy[  8];
+        end
+    end
 end
 
 jtframe_dual_ram16 #(
@@ -75,7 +111,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( main_dout    ),
+    .data0      ( din_x        ),
     .addr0      ( wr_addr      ),
     .we0        ( wex          ),
     .q0         (              ),
@@ -93,7 +129,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( main_dout    ),
+    .data0      ( din_y        ),
     .addr0      ( wr_addr      ),
     .we0        ( wey          ),
     .q0         (              ),
@@ -111,7 +147,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( main_dout    ),
+    .data0      ( oram_din    ),
     .addr0      ( wr_addr      ),
     .we0        ( weattr       ),
     .q0         (              ),
@@ -129,7 +165,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( main_dout    ),
+    .data0      ( oram_din    ),
     .addr0      ( wr_addr      ),
     .we0        ( wecode       ),
     .q0         (              ),

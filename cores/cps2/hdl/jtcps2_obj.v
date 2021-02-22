@@ -99,11 +99,17 @@ jtcps2_objram u_objram(
 
     .obank      ( obank_frame   ),
 
+    // OBJ config
+    .objcfg_cs  ( objcfg_cs     ),
+    .cfg_addr   ( addr          ),
+    .cpu_dout   ( cpu_dout      ),
+    .cfg_dsn    ( dsn           ),
+
     // Interface with CPU
     .cs         ( oframe_we     ),
     .ok         (               ),
     .dsn        ( 2'd0          ),
-    .main_dout  ( oram_data     ),
+    .oram_din   ( oram_data     ),
     .main_addr  ( {1'b0, oram_addr[11:0] } ),
 
     // Interface with OBJ engine
@@ -121,12 +127,6 @@ jtcps2_obj_scan u_scan(
 
     .start      ( start         ),
     .vrender    ( vrender       ),
-
-    // OBJ config
-    .objcfg_cs  ( objcfg_cs     ),
-    .addr       ( addr          ),
-    .cpu_dout   ( cpu_dout      ),
-    .dsn        ( dsn           ),
 
     // interface with frame table
     .table_addr ( table_attr    ),

@@ -25,12 +25,6 @@ module jtcps2_obj_scan(
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input              start,
 
-    // Configuration
-    input              objcfg_cs,
-    input      [15:0]  cpu_dout,
-    input      [ 1:0]  dsn,
-    input      [ 3:1]  addr,
-
     // interface with frame table
     output reg [ 9:0]  table_addr,
     input      [15:0]  table_x,
@@ -48,8 +42,6 @@ module jtcps2_obj_scan(
     output reg [ 2:0]  dr_prio
 );
 
-localparam [3:1] XOFF=4, YOFF=5;
-
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
@@ -66,9 +58,6 @@ wire [ 3:0] vsub;
 wire        inzone, vflip;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
-
-reg  [ 8:0] off_y;
-reg  [ 9:0] off_x;
 
 jtcps1_obj_tile_match u_tile_match(
     .clk        ( clk       ),
@@ -88,7 +77,7 @@ jtcps1_obj_tile_match u_tile_match(
 );
 
 assign      prio       = table_x[15:13];
-assign      obj_y      = table_y[8:0] - off_y;
+assign      obj_y      = table_y[8:0];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
 assign      tile_n     = table_attr[11: 8];
@@ -187,29 +176,6 @@ always @(posedge clk, posedge rst) begin
         if( start && !last_start ) begin
             newline <= 1;
             st <= 0;
-        end
-    end
-end
-
-wire [8:0] next_offy = { dsn[1] ? off_y[8]   : cpu_dout[8],
-                         dsn[0] ? off_y[7:0] : cpu_dout[7:0] } - 9'h10;
-
-wire [9:0] next_offx = { dsn[1] ? off_x[9:8] : cpu_dout[9:8],
-                         dsn[0] ? off_x[7:0] : cpu_dout[7:0] } - 9'h40;
-
-
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        off_x <= 10'h0;
-        off_y <=  9'h0;
-    end else if( objcfg_cs ) begin
-        if( addr == XOFF ) begin
-            if( !dsn[0]) off_x[7:0] <= next_offx[7:0];
-            if( !dsn[1]) off_x[9:8] <= next_offx[9:8];
-        end
-        if( addr == YOFF ) begin
-            if( !dsn[0]) off_y[7:0] <= next_offy[7:0];
-            if( !dsn[1]) off_y[  8] <= next_offy[  8];
         end
     end
 end
