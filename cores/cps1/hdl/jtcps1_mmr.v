@@ -405,9 +405,9 @@ always @(posedge clk, posedge reg_rst) begin
             // raster effects
             if( addr == 5'h0e>>1 || addr == 5'h10>>1 || addr == 5'h12>>1 ) begin
                 mmr_dout <= { ~7'd0, raster_dout };
-                cnt_sel[0] <=  addr[4] && !addr[1];
-                cnt_sel[1] <=  addr[4] &&  addr[1];
-                cnt_sel[2] <= !addr[4];
+                cnt_sel[0] <=  addr[4] && !addr[1]; // raster2 in schematics
+                cnt_sel[1] <=  addr[4] &&  addr[1]; // raster3
+                cnt_sel[2] <= !addr[4]; // raster1 (pixel count)
             end else begin
                 cnt_sel <= 3'd0;
             end

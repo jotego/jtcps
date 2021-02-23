@@ -154,7 +154,6 @@ wire        main2qs_cs, main_busakn, main_waitn;
 wire        sclk, sdi, sdo, scs;
 
 assign dip_flip = 0;
-assign game_led = 0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
@@ -387,7 +386,11 @@ jtcps1_video #(REGSIZE) u_video(
     .rom0_half      ( rom0_half     ),
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),
-    .rom0_ok        ( rom0_ok       )
+    .rom0_ok        ( rom0_ok       ),
+
+    // Watched signals
+    .watch_vram_cs  ( main_vram_cs  ),
+    .watch          ( game_led      )
 );
 
 // Sound CPU cannot be disabled as there is

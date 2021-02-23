@@ -96,7 +96,15 @@ module jtcps1_dma(
     output             vram_cs,
     output reg         rfsh_en,
     output reg         br,
-    input              bg
+    input              bg,
+
+    // Watched signals
+    output             watch_scr1,
+    output             watch_scr2,
+    output             watch_scr3,
+    output             watch_pal,
+    output             watch_row,
+    output             watch_obj
 );
 
 localparam TASKW=1+1+3+6;
@@ -143,6 +151,14 @@ wire [17:1] vrow_addr = { vram_row_base[9:3], row_offset[9:0] + vrenderf[9:0] },
             // vobj_addr = { vram_obj_base[9:0], 7'd0  } + { 7'd0, obj_cnt },
             //vpal_addr = { vram_pal_base[9:5], pal_rd_page , pal_cnt };
             vpal_addr = { vram_pal_base[9:0], 7'd0 } + { 5'd0, pal_rd_page , pal_cnt };
+
+// watched signals
+assign watch_obj  = tasks[OBJ];
+assign watch_scr1 = tasks[SCR1];
+assign watch_scr2 = tasks[SCR2];
+assign watch_scr3 = tasks[SCR3];
+assign watch_row  = tasks[ROW];
+assign watch_pal  = |tasks[PAL5:PAL0];
 
 always @(*) begin
     casez( scr_cnt[7:5] )

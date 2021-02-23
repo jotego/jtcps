@@ -100,12 +100,10 @@ module jtcps1_video(
     output             rom0_half,    // selects which half to read
     input      [31:0]  rom0_data,
     output             rom0_cs,
-    input              rom0_ok
-    // To frame buffer
-    // output     [11:0]  line_data,
-    // output     [ 8:0]  line_addr,
-    // output             line_wr,
-    // input              line_wr_ok
+    input              rom0_ok,
+
+    input              watch_vram_cs,
+    output             watch
 
     `ifdef CPS1
     // EEPROM
@@ -169,6 +167,38 @@ wire       [15:0]  objtable_data;
 assign obj_dma_ok = 0;
 `endif
 
+wire               watch_scr1, watch_scr2, watch_scr3,
+                   watch_pal, watch_row, watch_obj;
+
+`ifdef JTCPS_WATCH
+jtcps1_watch u_watch(
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .pxl_cen        ( pxl_cen       ),
+    .HB             ( HB            ),
+    .VB             ( VB            ),
+
+    .watch_scr1     ( watch_scr1    ),
+    .watch_scr2     ( watch_scr2    ),
+    .watch_scr3     ( watch_scr3    ),
+    .watch_pal      ( watch_pal     ),
+    .watch_row      ( watch_row     ),
+    .watch_obj      ( watch_obj     ),
+    .watch_vram_cs  ( watch_vram_cs ),
+    .pal_dma_ok     ( pal_dma_ok    ),
+
+    .raster         ( raster        ),
+
+    .ppu1_cs        ( ppu1_cs       ),
+    .ppu2_cs        ( ppu2_cs       ),
+    .objcfg_cs      ( objcfg_cs     ),
+
+    .watch          ( watch         )
+);
+`else
+assign watch=0;
+`endif
+
 jtcps1_dma u_dma(
     .rst            ( rst               ),
     .clk            ( clk               ),
@@ -223,7 +253,15 @@ jtcps1_dma u_dma(
     .vram_ok        ( vram_dma_ok       ),
     .vram_clr       ( vram_dma_clr      ),
     .vram_cs        ( vram_dma_cs       ),
-    .rfsh_en        ( vram_rfsh_en      )
+    .rfsh_en        ( vram_rfsh_en      ),
+
+    // watched signals
+    .watch_scr1     ( watch_scr1        ),
+    .watch_scr2     ( watch_scr2        ),
+    .watch_scr3     ( watch_scr3        ),
+    .watch_pal      ( watch_pal         ),
+    .watch_row      ( watch_row         ),
+    .watch_obj      ( watch_obj         )
 );
 
 jtcps1_timing u_timing(

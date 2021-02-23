@@ -16,6 +16,7 @@
     Version: 1.0
     Date: 28-1-2021 */
 
+// Two line counters plus one pixel counter
 
 module jtcps2_raster(
     input              rst,

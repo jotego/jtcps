@@ -56,7 +56,7 @@ fi
 if [ $CPS15 = 1 ]; then
 
     ALTFOLDER=_alt/"_Warriors of Fate"
-    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mkdir -p $OUTDIR/"$ALTFOLDER"
     mame2dip wof.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
@@ -76,7 +76,7 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
-    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mkdir -p $OUTDIR/"$ALTFOLDER"
     mame2dip dino.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
@@ -96,7 +96,7 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_The Punisher"
-    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mkdir -p $OUTDIR/"$ALTFOLDER"
     mame2dip punisher.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
@@ -116,7 +116,7 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Saturday Night Slam Masters"
-    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mkdir -p $OUTDIR/"$ALTFOLDER"
     mame2dip slammast.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
@@ -136,7 +136,7 @@ if [ $CPS15 = 1 ]; then
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Muscle Bomber Duo"
-    mkdir -p mra/$OUTDIR"$ALTFOLDER"
+    mkdir -p $OUTDIR/"$ALTFOLDER"
     mame2dip mbombrd.xml -rbf jtcps15 -outdir $OUTDIR -altfolder "$ALTFOLDER" \
         -setword gfx 64 -setword maincpu 16 reverse -qsound \
         -ignore aboardplds bboardplds cboardplds dboardplds \
