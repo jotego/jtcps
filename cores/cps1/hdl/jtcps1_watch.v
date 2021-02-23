@@ -63,13 +63,26 @@ assign sig_in = {
     objcfg_cs
 };
 
+reg [1:0] cnt;
+(*keep*) reg pxl4_cen;
+
+always @(posedge clk) begin
+    if( pxl_cen ) begin
+        cnt<=cnt+2'd1;
+        if( &cnt ) pxl4_cen<=1;
+    end else begin
+        pxl4_cen <= 0;
+    end
+end
+
+
 generate
     genvar i;
     for( i=0; i<W; i=i+1 ) begin : enlargers
-        jtframe_enlarger #(2) u_(
+        jtframe_enlarger #(1) u_(
             .rst        ( rst           ),
             .clk        ( clk           ),
-            .cen        ( pxl_cen       ),
+            .cen        ( pxl4_cen      ),
             .pulse_in   ( sig_in[i]     ),
             .pulse_out  ( sig_out[i]    )
         );
