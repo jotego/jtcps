@@ -25,7 +25,7 @@ module jtcps1_mmr(
     input              pxl_cen,
 
     input              frame_start,
-    input              line_start,
+    input              line_inc,
     output             raster,
 
     input              ppu_rstn,
@@ -385,6 +385,9 @@ always @(posedge clk, posedge reg_rst) begin
                 5'h11: ppu_ctrl   <= cpu_dout;
             endcase
         end
+        `ifdef CPS2
+            cnt_sel <= 3'd0;
+        `endif
         if( ppu2_cs ) begin
             mmr_dout <= sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
             if( addrb[ 1] && !dsn) mult1      <= cpu_dout;
@@ -403,13 +406,11 @@ always @(posedge clk, posedge reg_rst) begin
             `endif
             `ifdef CPS2
             // raster effects
-            if( addr == 5'h0e>>1 || addr == 5'h10>>1 || addr == 5'h12>>1 ) begin
-                mmr_dout <= { ~7'd0, raster_dout };
+            if( addr == (5'h0e>>1) || addr == (5'h10>>1) || addr == (5'h12>>1) ) begin
+                mmr_dout <= { 7'd0, raster_dout };
                 cnt_sel[0] <=  addr[4] && !addr[1]; // raster2 in schematics
                 cnt_sel[1] <=  addr[4] &&  addr[1]; // raster3
-                cnt_sel[2] <= !addr[4]; // raster1 (pixel count)
-            end else begin
-                cnt_sel <= 3'd0;
+                cnt_sel[2] <= !addr[4]; // raster3 (pixel count)
             end
             `endif
         end
@@ -424,7 +425,7 @@ jtcps2_raster u_raster(
     .pxl_cen    ( pxl_cen       ),
 
     .frame_start( frame_start   ),
-    .line_start ( line_start    ),
+    .line_inc   ( line_inc      ),
 
     // interface with CPU
     .cnt_sel    ( cnt_sel       ),

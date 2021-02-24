@@ -1548,3 +1548,7 @@ cps2          	mister	20210223	1	FAIL	29ae05e	9ebfa67
 cps2          	mister	20210223	1	FAIL	29ae05e	9ebfa67
 cps2          	mister	20210223	1	FAIL	29ae05e	9ebfa67
 cps2          	mister	20210223	1	PASS	29ae05e	9ebfa67
+cps2          	mist	20210223	12063	FAIL	c70bc20	9ebfa67
+cps2          	mister	20210223	17372	PASS	c70bc20	9ebfa67
+cps2          	mist	20210223	18310	PASS	c70bc20	9ebfa67
+cps2          	mist	20210224	1	PASS	c70bc20	9ebfa67

@@ -63,12 +63,14 @@ assign sig_in = {
     objcfg_cs
 };
 
-reg [1:0] cnt;
+localparam CNTW=2;
+
+reg [CNTW-1:0] cnt;
 (*keep*) reg pxl4_cen;
 
 always @(posedge clk) begin
     if( pxl_cen ) begin
-        cnt<=cnt+2'd1;
+        cnt<=cnt+1'd1;
         if( &cnt ) pxl4_cen<=1;
     end else begin
         pxl4_cen <= 0;

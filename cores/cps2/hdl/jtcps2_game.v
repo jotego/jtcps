@@ -233,8 +233,8 @@ jtcps2_main u_main(
     .objcfg_cs  ( objcfg_cs         ),
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
-    //.raster     ( raster            ),
-    .raster     ( 1'b0            ),
+    .raster     ( raster            ),
+    //.raster     ( 1'b0            ),
     // Keys
     .prog_din   ( prog_data[7:0]    ),
     .key_we     ( key_we            ),

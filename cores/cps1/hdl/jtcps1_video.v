@@ -272,6 +272,7 @@ jtcps1_timing u_timing(
     .hdump          ( hdump             ),
     .vrender1       ( vrender1          ),
     .vrender        ( vrender           ),
+    .line_inc       ( line_inc          ),
     .line_start     ( line_start        ),
     .frame_start    ( frame_start       ),
     // to video output
@@ -293,7 +294,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
 
     .frame_start    ( frame_start       ),
-    .line_start     ( line_start        ),
+    .line_inc       ( line_inc          ),
     .raster         ( raster            ),
 
     .ppu1_cs        ( ppu1_cs           ),
