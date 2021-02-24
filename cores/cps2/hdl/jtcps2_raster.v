@@ -51,13 +51,13 @@ assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
 assign step    = pxl_cen && line_inc;
+assign restart = pxl_cen && frame_start; // a line count of 0x106 won't
+                // cause an interrupt. I think that is the correct behaviour
 
 always @(posedge clk) begin
     cnt_dout <= cnt_sel[0] ? dout0 : (cnt_sel[1] ? dout1 : dout2);
     if( pxl_cen ) begin
         cnt4    <= ~cnt4;
-        restart <= frame_start; // one pxl_cen delay, so the counter produces
-                                // a pulse at the "zero" output
     end
     // interrupt pulse lasts at least one pixel, so the CPU clock can
     // catch it
