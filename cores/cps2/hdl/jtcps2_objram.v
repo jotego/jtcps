@@ -60,6 +60,9 @@ module jtcps2_objram(
 parameter AW=13; // 13 for full table shadowing
 localparam [3:1] XOFF=4, YOFF=5;
 
+reg  [ 8:0] off_y;
+reg  [ 9:0] off_x;
+reg  [15:0] din_x, din_y;
 
 wire [   1:0] wex, wey, wecode, weattr;
 wire [AW-3:0] wr_addr, gfx_addr;
@@ -77,10 +80,6 @@ assign weattr   = ~dsn & {2{cs & main_addr[2:1]==2'd3}};
 
 assign wr_addr  = {  obank^main_addr[13], main_addr[AW-1:3] };
 assign gfx_addr = { ~obank, obj_addr[AW-4:0] };
-
-reg  [ 8:0] off_y;
-reg  [ 9:0] off_x;
-reg  [15:0] din_x, din_y;
 
 always @(posedge clk_cpu) begin
     ok    <= cs;

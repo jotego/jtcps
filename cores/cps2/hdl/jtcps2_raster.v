@@ -38,22 +38,34 @@ module jtcps2_raster(
 wire [8:0] dout0, dout1, dout2, din;
 wire [2:0] we, zero;
 wire       lock;
-(*keep*) wire       restart, step;
-reg        cnt4;
+wire       step;
+reg        cnt4; // 4MHz
 wire       cen4;
+reg        restart;
+wire       set_irq = zero[2] & (|zero[1:0]);
+reg        irqsh;
 
 assign cen4  = pxl_cen & cnt4;
 assign lock  = cpu_dout[15];
 assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
-assign restart = pxl_cen && frame_start;
 assign step    = pxl_cen && line_inc;
 
 always @(posedge clk) begin
     cnt_dout <= cnt_sel[0] ? dout0 : (cnt_sel[1] ? dout1 : dout2);
-    raster   <= zero[2] & (|zero[1:0]);
-    if( pxl_cen ) cnt4 <= ~cnt4;
+    if( pxl_cen ) begin
+        cnt4    <= ~cnt4;
+        restart <= frame_start; // one pxl_cen delay, so the counter produces
+                                // a pulse at the "zero" output
+    end
+    // interrupt pulse lasts at least one pixel, so the CPU clock can
+    // catch it
+    if( set_irq )
+        { raster, irqsh } <= 2'b11;
+    else if( pxl_cen ) begin
+        { raster, irqsh } <= { irqsh, 1'b0 };
+    end
 end
 
 initial begin
