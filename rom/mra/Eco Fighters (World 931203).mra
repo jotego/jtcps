@@ -24,6 +24,11 @@
     <name>Eco Fighters (World 931203)</name>
     <setname>ecofghtr</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="ecofghtr.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 08 80 18 80 48 

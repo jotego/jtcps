@@ -24,6 +24,11 @@
     <name>Marvel Super Heroes Vs. Street Fighter (Euro 970625)</name>
     <setname>mshvsf</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mshvsf.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 

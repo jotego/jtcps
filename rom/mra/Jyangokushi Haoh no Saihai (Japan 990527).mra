@@ -24,6 +24,11 @@
     <name>Jyangokushi: Haoh no Saihai (Japan 990527)</name>
     <setname>jyangoku</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1999</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="jyangoku.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 02 80 02 80 12 80 52 

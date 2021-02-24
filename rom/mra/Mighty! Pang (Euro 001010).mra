@@ -24,6 +24,11 @@
     <name>Mighty! Pang (Euro 001010)</name>
     <setname>mpang</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2000</year>
+    <manufacturer>Mitchell (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mpang.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 80 04 80 14 80 54 

@@ -24,6 +24,11 @@
     <name>Mega Man 2: The Power Fighters (USA 960708)</name>
     <setname>megaman2</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1996</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="megaman2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 06 00 07 00 17 00 37 

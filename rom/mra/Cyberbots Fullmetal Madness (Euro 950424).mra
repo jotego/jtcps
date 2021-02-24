@@ -24,6 +24,11 @@
     <name>Cyberbots: Fullmetal Madness (Euro 950424)</name>
     <setname>cybots</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1995</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="cybots.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 21 00 a1 

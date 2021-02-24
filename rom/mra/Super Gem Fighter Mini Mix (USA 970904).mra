@@ -24,6 +24,11 @@
     <name>Super Gem Fighter Mini Mix (USA 970904)</name>
     <setname>sgemf</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="sgemf.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 00 0b 00 2b 00 7b 

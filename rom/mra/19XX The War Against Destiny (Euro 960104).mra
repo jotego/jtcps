@@ -24,6 +24,11 @@
     <name>19XX: The War Against Destiny (Euro 960104)</name>
     <setname>19xx</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1996</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>vertical</rotation>
     <rom index="0" zip="19xx.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 80 0a 80 1a 80 42 

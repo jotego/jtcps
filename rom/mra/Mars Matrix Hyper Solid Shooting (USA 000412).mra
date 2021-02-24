@@ -24,6 +24,11 @@
     <name>Mars Matrix: Hyper Solid Shooting (USA 000412)</name>
     <setname>mmatrix</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2000</year>
+    <manufacturer>Takumi (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mmatrix.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 06 80 06 80 26 80 a6 

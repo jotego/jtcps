@@ -24,6 +24,11 @@
     <name>Puzz Loop 2 (Euro 010302)</name>
     <setname>pzloop2</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2001</year>
+    <manufacturer>Mitchell (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="pzloop2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 08 80 18 80 58 

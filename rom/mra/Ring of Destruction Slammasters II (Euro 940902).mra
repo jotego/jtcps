@@ -24,6 +24,11 @@
     <name>Ring of Destruction: Slammasters II (Euro 940902)</name>
     <setname>ringdest</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1994</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="ringdest.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0c 00 0d 00 1d 00 65 

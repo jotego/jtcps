@@ -281,21 +281,21 @@ always @(posedge clk) begin
         default: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
             in1 <= { joystick4[7:0], joystick3[7:0] };
-            in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
+            in2[15:8] <= { coin_input, start_button };
         end
-        /*
         BUT6: begin
             in0 <= { joystick2[7:0], joystick1[7:0] };
             in1 <= { 10'h3FF, joystick2[8:7], joystick1[9:7] };
-            in2 <= { 1'b1, joystick2[9],
-                coin_input[1:0], start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
-        end*/
+            in2[15:8] <= { 1'b1, joystick2[9],
+                coin_input[1:0], start_button };
+        end
 //        BUTX: begin // buttons only
 //            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };
 //            in1 <= { joystick4[7:0], joystick3[7:0] };
 //            in2 <= { coin_input, start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
 //        end
     endcase
+    in2[7:0] <= { ~5'b0, service, dip_test, eeprom_sdo };
 end
 
 reg [15:0] sys_data;

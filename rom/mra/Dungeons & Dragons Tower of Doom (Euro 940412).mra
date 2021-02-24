@@ -24,6 +24,11 @@
     <name>Dungeons & Dragons: Tower of Doom (Euro 940412)</name>
     <setname>ddtod</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="ddtod.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 80 0a 80 1a 80 4a 

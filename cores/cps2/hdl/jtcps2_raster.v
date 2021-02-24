@@ -38,10 +38,9 @@ module jtcps2_raster(
 wire [8:0] dout0, dout1, dout2, din;
 wire [2:0] we, zero;
 wire       lock;
-wire       step;
+wire       step, restart;
 reg        cnt4; // 4MHz
 wire       cen4;
-reg        restart;
 wire       set_irq = zero[2] & (|zero[1:0]);
 reg        irqsh;
 

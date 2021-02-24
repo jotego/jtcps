@@ -24,6 +24,11 @@
     <name>Super Puzzle Fighter II Turbo (Euro 960529)</name>
     <setname>spf2t</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1996</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="spf2t.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 00 05 00 15 00 25 
