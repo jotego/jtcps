@@ -163,12 +163,18 @@ wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 wire       [15:0]  objtable_data;
 
+wire               row_en, dma2_en, dma3_en;
+
 `ifdef CPS2
 assign obj_dma_ok = 0;
 `endif
 
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
+
+assign dma2_en = ppu_ctrl[4];
+assign dma3_en = ppu_ctrl[1];
+assign row_en  = ppu_ctrl[0];
 
 `ifdef JTCPS_WATCH
 jtcps1_watch u_watch(
@@ -215,10 +221,12 @@ jtcps1_dma u_dma(
     .hpos1          ( hpos1             ),
     .vpos1          ( vpos1             ),
 
+    .dma2_en        ( dma2_en           ),
     .vram2_base     ( vram2_base        ),
     .hpos2          ( hpos2             ),
     .vpos2          ( vpos2             ),
 
+    .dma3_en        ( dma3_en           ),
     .vram3_base     ( vram3_base        ),
     .hpos3          ( hpos3             ),
     .vpos3          ( vpos3             ),
@@ -226,7 +234,7 @@ jtcps1_dma u_dma(
     // Row Scroll
     .vram_row_base  ( vram_row_base     ),
     .row_offset     ( row_offset        ),
-    .row_en         ( ppu_ctrl[0]       ),
+    .row_en         ( row_en            ),
     .row_scr        ( row_scr           ),
 
     // Palette

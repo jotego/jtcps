@@ -12,7 +12,7 @@ VB lasts for 38 lines.
 
 ### Palette DMA
 
-It spreads over many lines. Lasts for 780.4us, it can be shorter if not all pages are copied. It can start outside VB, particularly during system bootup sequence.
+It spreads over many lines. Lasts for 780.4us, it is of a fixed duration, regardless of which palettes are updated. It can start outside VB, particularly during system bootup sequence.
 
 Palette DMA stops for OBJ processing at the regular pace. It probably stops also for tile processing but that cannot be seen VB because tile proc. is stopped for most of the VB period.
 
@@ -45,3 +45,30 @@ SCR3  |  24       | 6                     | 384
 
 The layers are read in this order: SCR1, SCR2 and finally SCR3. Each layer is read only when it is needed based on the current screen position and the vertical scroll value.
 
+### Loop test
+
+A counter runs during the frame and gets reset at VB. By switching different control registers the following information can be extracted:
+
+-Palette is only copied if the base register is written to. The DMA duration is the same regardless of the palette mask setting
+-Scroll 2, 3 and row scroll. The video control register disables DMA for this layer
+-Video control register is $4C ($11 in jtcps1_mmr.v = ppu_ctrl)
+    -ROW  bit 0
+    -SCR2 bit 4
+    -SCR3 bit 2
+
+Row scroll
+19a9 7,6,3,2
+198D 4,5,1,0
+
+Scroll 3
+19a8 7,6,3,2
+198d 4,5,1,0
+
+Scroll 2
+1a31 7,6,3,2
+198e 4,5,1,0
+
+Fastest setting
+1a67
+Slowest setting
+1833
