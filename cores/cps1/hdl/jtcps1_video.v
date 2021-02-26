@@ -172,8 +172,8 @@ assign obj_dma_ok = 0;
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
 
-assign dma2_en = ppu_ctrl[4];
-assign dma3_en = ppu_ctrl[1];
+assign dma2_en = 1'b1; //ppu_ctrl[4];
+assign dma3_en = 1'b1; //ppu_ctrl[1];
 assign row_en  = ppu_ctrl[0];
 
 `ifdef JTCPS_WATCH
