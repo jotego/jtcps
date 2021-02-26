@@ -146,10 +146,10 @@ Bits   |  Use
 
 SDRAM bank | Usage
 -----------|-------
-0          | RAM/VRAM
+0          | RAM/VRAM/M68000 ROM
 1          | Sound CPU/PCM samples
 2          | GFX
-3          | M68000 ROM
+3          | GFX
 
 ## CPS 1.5 ROM Size
 

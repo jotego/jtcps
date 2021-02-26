@@ -154,9 +154,11 @@ module jtcps1_sdram #( parameter
 );
 
 localparam [21:0] PCM_OFFSET   = 22'h10_0000,
-                  VRAM_OFFSET  = 22'h10_0000,
-                  ORAM_OFFSET  = 22'h20_0000,
-                  ZERO_OFFSET  = 22'h0;
+                  VRAM_OFFSET  = 22'h20_0000,
+                  ORAM_OFFSET  = 22'h28_0000,
+                  WRAM_OFFSET  = 22'h30_0000,
+                  ZERO_OFFSET  = 22'h0,
+                  ROM_OFFSET   = ZERO_OFFSET;
 
 `ifdef CPS2
     localparam [21:0] SCR_OFFSET = 22'h00_0000; // change this when moving to 8MB+ GFX
@@ -192,7 +194,7 @@ assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
 assign ram_vram_cs = main_ram_cs | main_vram_cs | main_oram_cs;
 assign main_offset = main_oram_cs ? ORAM_OFFSET :
-                    (main_ram_cs  ? ZERO_OFFSET : VRAM_OFFSET );
+                    (main_ram_cs  ? WRAM_OFFSET : VRAM_OFFSET );
 assign prog_rd     = 0;
 
 always @(*) begin
@@ -214,7 +216,6 @@ jtcps1_prom_we #(
     .REGSIZE    ( REGSIZE       ),
     .CPU_OFFSET ( ZERO_OFFSET   ),
     .PCM_OFFSET ( PCM_OFFSET    ),
-    .VRAM_OFFSET( VRAM_OFFSET   ),
     .EEPROM_AW  ( EEPROM_AW     )
 ) u_prom_we(
     .clk            ( clk           ),
@@ -245,7 +246,7 @@ jtcps1_prom_we #(
     .joymode        ( cps2_joymode  )
 );
 
-jtframe_ram_3slots #(
+jtframe_ram_4slots #(
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
 
@@ -253,7 +254,11 @@ jtframe_ram_3slots #(
     .SLOT1_DW    ( 16            ),
 
     .SLOT2_AW    ( 13            ), // VRAM - read only access
-    .SLOT2_DW    ( 16            )
+    .SLOT2_DW    ( 16            ),
+
+    .SLOT3_AW    ( 21            ), // Main CPU ROM
+    .SLOT3_DW    ( 16            ),
+    .LATCH3      (  1            )
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -261,6 +266,7 @@ jtframe_ram_3slots #(
     .offset0     ( main_offset   ),
     .offset1     ( VRAM_OFFSET   ),
     .offset2     ( ORAM_OFFSET   ),
+    .offset3     (  ROM_OFFSET   ),
 
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
@@ -268,10 +274,13 @@ jtframe_ram_3slots #(
     .slot1_clr   ( vram_clr      ),
     .slot2_cs    ( CPS2[0]       ),
     .slot2_clr   ( vram_clr      ),
+    .slot3_cs    ( main_rom_cs   ),
+    .slot3_clr   ( 1'b0          ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),
     .slot2_ok    ( gfx_oram_ok   ),
+    .slot3_ok    ( main_rom_ok   ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
@@ -279,10 +288,12 @@ jtframe_ram_3slots #(
     .slot0_addr  ( main_addr_x   ),
     .slot1_addr  ( vram_dma_addr ),
     .slot2_addr  ( gfx_oram_addr ),
+    .slot3_addr  ( main_rom_addr ),
 
     .slot0_dout  ( main_ram_data ),
     .slot1_dout  ( vram_dma_data ),
     .slot2_dout  ( gfx_oram_data ),
+    .slot3_dout  ( main_rom_data ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),
@@ -394,36 +405,6 @@ jtframe_rom_2slots #(
     .sdram_ack   ( ba2_ack_gfx   ),
     .data_rdy    ( ba2_rdy_gfx   ),
     .data_read   ( data_read     )
-);
-
-// M68000 code in bank 3
-reg ba3_we;
-
-always @(posedge clk, posedge rst ) begin
-    if( rst )
-        ba3_we <= 0;
-    else begin
-        if( ba3_ack )
-            ba3_we <= 1;
-        else if( ba3_rdy )
-            ba3_we <= 0;
-    end
-end
-
-jtframe_romrq #(.AW(21),.DW(16),.LATCH(1),.REPACK(0)) u_bank3(
-    .rst       ( rst                    ),
-    .clk       ( clk                    ),
-    .clr       ( 1'b0                   ),
-    .offset    ( ZERO_OFFSET            ),
-    .addr      ( main_rom_addr          ),
-    .addr_ok   ( main_rom_cs            ),
-    .sdram_addr( ba3_addr               ),
-    .din       ( data_read              ),
-    .din_ok    ( ba3_rdy                ),
-    .dout      ( main_rom_data          ),
-    .req       ( ba3_rd                 ),
-    .data_ok   ( main_rom_ok            ),
-    .we        ( ba3_we                 )
 );
 
 // EEPROM used by Pang 3 and by CPS1.5/2

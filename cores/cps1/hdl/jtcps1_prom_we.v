@@ -23,7 +23,6 @@ parameter [21:0] CPU_OFFSET =22'h0,
                  SND_OFFSET =22'h0,
                  PCM_OFFSET =22'h0,
                  GFX_OFFSET =22'h0,
-                 VRAM_OFFSET=22'h0,
 parameter [ 5:0] CFG_BYTE   =6'd39, // location of the byte with encoder information
 parameter        EEPROM_AW  = 7
 )(
@@ -150,7 +149,7 @@ always @(posedge clk) begin
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_ba   <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
+        prog_ba   <= is_cpu ? 2'd0 : ( is_gfx ? 2'd2 : 2'd1 );
         if( is_kabuki )
             kabuki_sr <= 2'b11;
         if( is_cps2 ) begin
