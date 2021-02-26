@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
         // Main CPU
         clear_bank( data );
         read_bank( data, fin, 0, snd_start );
-        dump_bank( data, "sdram_bank3.hex" );
+        dump_bank( data, "sdram_bank0.hex" );
         // GFX
         clear_bank( data );
         read_bank( data, fin, gfx_start, 0 );
