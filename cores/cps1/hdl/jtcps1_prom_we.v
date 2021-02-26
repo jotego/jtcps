@@ -41,7 +41,7 @@ parameter        EEPROM_AW  = 7
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
-    output reg           dwnld_busy=0,
+    output               dwnld_busy,
     // EEPROM
     output reg [15:0]    dump_din,
     input      [15:0]    dump_dout,
@@ -84,6 +84,8 @@ assign kabuki_we  = kabuki_sr[0];
 assign kabuki_we  = 0;
 `endif
 
+assign dwnld_busy = downloading;
+
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
 wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
@@ -98,9 +100,6 @@ wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
-
-reg  last_dwnldng = 0;
-reg  clr_ram = 0; // I have to add a proper reset pin to this module
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -139,9 +138,6 @@ end
 
 always @(posedge clk) begin
     if ( ioctl_wr && !ioctl_ram ) begin
-        last_dwnldng <= 1;
-        clr_ram      <= 0;
-        dwnld_busy <= 1;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
@@ -178,40 +174,13 @@ always @(posedge clk) begin
     end
     else begin
         cps2_key_we <= 0;
-        if( clr_ram ) begin
-            if( prog_rdy ) begin
-                prog_we   <= 0;
-                prog_addr <= prog_addr + 1'd1;
-            end else begin
-                if( &prog_addr ) begin
-                    clr_ram    <= 0;
-                    dwnld_busy <= 0;
-                end else begin
-                    prog_we <= 1;
-                end
-            end
-        end else begin
-            if(!downloading || prog_rdy) prog_we  <= 1'b0;
-            if( !downloading ) begin
-                decrypt   <= 0;
-                prom_we   <= 0;
-                `ifndef SKIP_RAMCLR
-                    if( last_dwnldng ) begin
-                        prog_addr    <= 22'd0;
-                        prog_ba      <= 2'd0;
-                        prog_mask    <= 2'd0;
-                        pre_data     <= 8'h0;
-                        clr_ram      <= 1;
-                        prog_we      <= 1;
-                        last_dwnldng <= 0;
-                    end
-                `else
-                    dwnld_busy <= 0;
-                `endif
-            end
-            kabuki_sr <= kabuki_sr>>1;
-            cfg_we      <= 0;
+        if(!downloading || prog_rdy) prog_we  <= 1'b0;
+        if( !downloading ) begin
+            decrypt   <= 0;
+            prom_we   <= 0;
         end
+        kabuki_sr <= kabuki_sr>>1;
+        cfg_we    <= 0;
     end
 end
 
