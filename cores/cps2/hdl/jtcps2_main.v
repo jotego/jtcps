@@ -30,6 +30,7 @@ module jtcps2_main(
     // PPU
     output reg         ppu1_cs,
     output reg         ppu2_cs,
+    output reg         objcfg_cs,
     output             ppu_rstn,
     input   [15:0]     mmr_dout,
     input              raster,
@@ -87,7 +88,7 @@ module jtcps2_main(
     input              main2qs_waitn
 );
 
-localparam [1:0] BUT6 = 2'b11;
+localparam [1:0] BUT6 = 2'b00;
 
 wire [23:1] A;
 wire [ 2:0] FC;
@@ -155,6 +156,7 @@ always @(posedge clk, posedge rst) begin
         pre_oram_cs <= 1'b0;
         io_cs        <= 1'b0;
         rom_addr     <= 21'd0;
+        objcfg_cs    <= 0;
         main2qs_cs   <= 0;
         main2qs_addr <= 23'd0;
     end else begin
@@ -165,6 +167,8 @@ always @(posedge clk, posedge rst) begin
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
             pre_oram_cs <= A[23:16] == 8'h70;
             io_cs       <= A[23:19] == 5'b1000_0;
+            // OBJ engine
+            objcfg_cs   <= A[23:20] == 4'h4 && !RnW;    // 4?'????
             // QSound
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
@@ -175,6 +179,7 @@ always @(posedge clk, posedge rst) begin
             pre_oram_cs <= 0;
             io_cs       <= 0;
             main2qs_cs  <= 0;
+            objcfg_cs   <= 0;
         end
     end
 end
@@ -272,17 +277,19 @@ assign dial_dout = 8'd0;
 
 always @(posedge clk) begin
     // This still doesn't cover all cases
+    // Base system, 4 players, 4 buttons
+    in0 <= { joystick2[7:0], joystick1[7:0] };
+    in1 <= { joystick4[7:0], joystick3[7:0] };
+    in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
     case( joymode )
-        default: begin
-            in0 <= { joystick2[7:0], joystick1[7:0] };
-            in1 <= { joystick4[7:0], joystick3[7:0] };
-            in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
-        end
+        default:;
         BUT6: begin
-            in0 <= { joystick2[7:0], joystick1[7:0] };
-            in1 <= { 10'h3FF, joystick2[8:6], 1'b1, joystick1[9:6] };
-            in2 <= { 1'b1, joystick2[9],
-                coin_input[1:0], start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
+            in0[15] <= 1'b1;
+            in0[ 7] <= 1'b1;
+            in1 <= 16'hffff;
+            in1[2:0] <= joystick1[9:7];
+            in1[5:4] <= joystick2[8:7];
+            in2[ 14] <= joystick2[9];
         end
 //        BUTX: begin // buttons only
 //            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };

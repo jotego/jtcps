@@ -24,6 +24,11 @@
     <name>Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)</name>
     <setname>mvsc</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1998</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mvsc.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 
@@ -31,7 +36,7 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff 
+        fc ff ff ff 
         </part>
         <!-- key - starts at 0x0 -->
         <part name="mvsc.key" crc="7e101e09"/>
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="mvc.13m" crc="fa5f74bc" map="00000021"/>
-            <part name="mvc.17m" crc="92741d07" map="00002100"/>
-            <part name="mvc.14m" crc="7f1df4e4" map="00210000"/>
-            <part name="mvc.18m" crc="67aaf727" map="21000000"/>
+            <part name="mvc.15m" crc="71938a8f" map="00002100"/>
+            <part name="mvc.17m" crc="92741d07" map="00210000"/>
+            <part name="mvc.19m" crc="bcb72fc6" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mvc.15m" crc="71938a8f" map="00000021"/>
-            <part name="mvc.19m" crc="bcb72fc6" map="00002100"/>
-            <part name="mvc.16m" crc="90bd3203" map="00210000"/>
+            <part name="mvc.14m" crc="7f1df4e4" map="00000021"/>
+            <part name="mvc.16m" crc="90bd3203" map="00002100"/>
+            <part name="mvc.18m" crc="67aaf727" map="00210000"/>
             <part name="mvc.20m" crc="8b0bade8" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->
@@ -71,5 +76,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Punch0,Punch1,Punch2,Kick0,Kick1,Kick2,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>

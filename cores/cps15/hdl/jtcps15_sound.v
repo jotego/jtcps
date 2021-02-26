@@ -149,28 +149,29 @@ always @(negedge clk48) begin
     rstn <= ~rst;
 end
 
-always @(posedge clk48, posedge rst) begin
-    if ( rst ) begin
-        rom_cs    <= 0;
-        rom_addr  <= 16'd0;
-        ram_cs    <= 0;
-        bank_cs   <= 0;
-        qsnd_wr   <= 0;
-        qsnd_rd   <= 0;
-    end else begin
-        rom_cs   <= !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
+//always @(posedge clk48, posedge rst) begin
+always @(*) begin
+    //if ( rst ) begin
+    //    rom_cs    <= 0;
+    //    rom_addr  <= 16'd0;
+    //    ram_cs    <= 0;
+    //    bank_cs   <= 0;
+    //    qsnd_wr   <= 0;
+    //    qsnd_rd   <= 0;
+    //end else begin
+        rom_cs  = !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
         if(!bus_mreqn) begin
-            rom_addr <= main_busn ?
+            rom_addr = main_busn ?
                 // Z80
                 (bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] }) :
                 // M68000
                 main_addr[19:1];
         end
-        ram_cs   <= !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
-        qsnd_wr  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
-        bank_cs  <= !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
-        qsnd_rd  <= !bus_mreqn && !rd_n && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd7);
-    end
+        ram_cs   = !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
+        qsnd_wr  = !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
+        bank_cs  = !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd3);
+        qsnd_rd  = !bus_mreqn && !rd_n && (bus_A[15:12] == 4'hd && bus_A[2:0]==3'd7);
+   // end
 end
 
 // wire qs0l_w = qsnd_wr && A[2:0]==2'd0;
@@ -467,7 +468,9 @@ end
 
 endmodule
 
-// There is an extra cycle for memory OP access above 4000
+// There is an extra cycle for
+// -OP access above C000
+// -All data access
 // This could be to give extra time to Kabuki decode logic
 
 module jtcps15_z80wait(
@@ -479,6 +482,11 @@ module jtcps15_z80wait(
     output        cen_cpu
 );
 
+assign cen_cpu = cen8;
+
+// It slows down music, I think this isn't correct
+// I have to check the PAL output with Loic.
+/*
 reg idle;
 
 assign cen_cpu = cen8 & ~idle;
@@ -487,11 +495,13 @@ always @(posedge clk, posedge rst) begin
     if( rst )
         idle <= 0;
     else if(cen8) begin
-        if( addr>=4'h4 && !m1_n && !idle )
+        if( (addr[15:14]==2'b11 || m1_n) && !idle )
             idle <= 1;
+        else
+            idle <= 0;
     end
 end
-
+*/
 endmodule
 
 // M68000 requests and gets the bus in a synchronous way

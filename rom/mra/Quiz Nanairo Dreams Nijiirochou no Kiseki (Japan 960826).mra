@@ -24,6 +24,11 @@
     <name>Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)</name>
     <setname>qndream</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1996</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="qndream.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 08 80 18 80 38 

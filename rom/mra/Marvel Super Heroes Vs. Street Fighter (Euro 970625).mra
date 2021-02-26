@@ -24,6 +24,11 @@
     <name>Marvel Super Heroes Vs. Street Fighter (Euro 970625)</name>
     <setname>mshvsf</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mshvsf.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="mvs.13m" crc="29b05fd9" map="00000021"/>
-            <part name="mvs.17m" crc="97aaf4c7" map="00002100"/>
-            <part name="mvs.14m" crc="b3b1972d" map="00210000"/>
-            <part name="mvs.18m" crc="c1228b35" map="21000000"/>
+            <part name="mvs.15m" crc="faddccf1" map="00002100"/>
+            <part name="mvs.17m" crc="97aaf4c7" map="00210000"/>
+            <part name="mvs.19m" crc="cb70e915" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mvs.15m" crc="faddccf1" map="00000021"/>
-            <part name="mvs.19m" crc="cb70e915" map="00002100"/>
-            <part name="mvs.16m" crc="08aadb5d" map="00210000"/>
+            <part name="mvs.14m" crc="b3b1972d" map="00000021"/>
+            <part name="mvs.16m" crc="08aadb5d" map="00002100"/>
+            <part name="mvs.18m" crc="c1228b35" map="00210000"/>
             <part name="mvs.20m" crc="366cc6c2" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->

@@ -24,6 +24,11 @@
     <name>Janpai Puzzle Choukou (Japan 010820)</name>
     <setname>choko</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2001</year>
+    <manufacturer>Mitchell (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="choko.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 80 04 80 14 80 54 
@@ -46,14 +51,14 @@
         <!-- gfx - starts at 0x520014 -->
         <interleave output="64">
             <part name="tkoj1_d.simm1" crc="6933377d" map="00000021"/>
-            <part name="tkoj1_b.simm1" crc="cfb68ca9" map="00002100"/>
-            <part name="tkoj3_d.simm3" crc="a9e32b57" map="00210000"/>
-            <part name="tkoj3_b.simm3" crc="4d3f919a" map="21000000"/>
+            <part name="tkoj1_c.simm1" crc="7f668950" map="00002100"/>
+            <part name="tkoj1_b.simm1" crc="cfb68ca9" map="00210000"/>
+            <part name="tkoj1_a.simm1" crc="437e21c5" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="tkoj1_c.simm1" crc="7f668950" map="00000021"/>
-            <part name="tkoj1_a.simm1" crc="437e21c5" map="00002100"/>
-            <part name="tkoj3_c.simm3" crc="b7ab9338" map="00210000"/>
+            <part name="tkoj3_d.simm3" crc="a9e32b57" map="00000021"/>
+            <part name="tkoj3_c.simm3" crc="b7ab9338" map="00002100"/>
+            <part name="tkoj3_b.simm3" crc="4d3f919a" map="00210000"/>
             <part name="tkoj3_a.simm3" crc="cfef17ab" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1520014 -->

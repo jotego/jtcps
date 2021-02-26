@@ -369,6 +369,7 @@ jtcps1_video #(REGSIZE) u_video(
     .rom1_cs        ( rom1_cs       ),
     .rom1_ok        ( rom1_ok       ),
     .rom0_addr      ( rom0_addr     ),
+    .rom0_bank      (               ),
     .rom0_half      ( rom0_half     ),
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),

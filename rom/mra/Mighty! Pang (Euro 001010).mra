@@ -24,6 +24,11 @@
     <name>Mighty! Pang (Euro 001010)</name>
     <setname>mpang</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2000</year>
+    <manufacturer>Mitchell (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="mpang.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 80 04 80 14 80 54 
@@ -46,14 +51,14 @@
         <!-- gfx - starts at 0x520014 -->
         <interleave output="64">
             <part name="mpn-simm.01c" crc="388db66b" map="00000021"/>
-            <part name="mpn-simm.01a" crc="a9c4857b" map="00002100"/>
-            <part name="mpn-simm.03c" crc="dec6b720" map="00210000"/>
-            <part name="mpn-simm.03a" crc="c2aea4ec" map="21000000"/>
+            <part name="mpn-simm.01d" crc="aff1b494" map="00002100"/>
+            <part name="mpn-simm.01a" crc="a9c4857b" map="00210000"/>
+            <part name="mpn-simm.01b" crc="f759df22" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="mpn-simm.01d" crc="aff1b494" map="00000021"/>
-            <part name="mpn-simm.01b" crc="f759df22" map="00002100"/>
-            <part name="mpn-simm.03d" crc="f8774c18" map="00210000"/>
+            <part name="mpn-simm.03c" crc="dec6b720" map="00000021"/>
+            <part name="mpn-simm.03d" crc="f8774c18" map="00002100"/>
+            <part name="mpn-simm.03a" crc="c2aea4ec" map="00210000"/>
             <part name="mpn-simm.03b" crc="84d6dc33" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1520014 -->

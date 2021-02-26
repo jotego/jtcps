@@ -4,6 +4,8 @@ if [ $# != 2 ]; then
     exit 1
 fi
 
+mkdir -p $1
+
 cp -v vram.bin $1/vram$2.bin || exit 1
 cp -v obj.bin $1/obj$2.bin   || exit 1
 

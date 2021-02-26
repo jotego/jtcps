@@ -24,6 +24,11 @@
     <name>Capcom Sports Club (Euro 971017)</name>
     <setname>csclub</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="csclub.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 80 0a 80 1a 80 3a 

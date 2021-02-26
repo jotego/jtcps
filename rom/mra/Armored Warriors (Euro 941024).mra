@@ -24,6 +24,11 @@
     <name>Armored Warriors (Euro 941024)</name>
     <setname>armwar</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1994</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="armwar.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 21 00 71 
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="pwg.13m" crc="ae8fe08e" map="00000021"/>
-            <part name="pwg.17m" crc="bc475b94" map="00002100"/>
-            <part name="pwg.14m" crc="c3f9ba63" map="00210000"/>
-            <part name="pwg.18m" crc="0109c71b" map="21000000"/>
+            <part name="pwg.15m" crc="db560f58" map="00002100"/>
+            <part name="pwg.17m" crc="bc475b94" map="00210000"/>
+            <part name="pwg.19m" crc="07439ff7" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="pwg.15m" crc="db560f58" map="00000021"/>
-            <part name="pwg.19m" crc="07439ff7" map="00002100"/>
-            <part name="pwg.16m" crc="815b0e7b" map="00210000"/>
+            <part name="pwg.14m" crc="c3f9ba63" map="00000021"/>
+            <part name="pwg.16m" crc="815b0e7b" map="00002100"/>
+            <part name="pwg.18m" crc="0109c71b" map="00210000"/>
             <part name="pwg.20m" crc="eb75ffbe" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1C40014 -->

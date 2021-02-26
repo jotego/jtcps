@@ -24,6 +24,11 @@
     <name>Dimahoo (Euro 000121)</name>
     <setname>dimahoo</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2000</year>
+    <manufacturer>Eighting / Raizing (Capcom license)</manufacturer>
+    <rotation>vertical</rotation>
     <rom index="0" zip="dimahoo.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 00 09 00 29 00 69 

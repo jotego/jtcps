@@ -50,3 +50,6 @@ wp 80416e,2,w,1,{printf "20-prio3 = %X",wpdata;g}
 wp 804140,2,w,1,{printf "in2 = %X",wpdata;g}
 wp 804140,2,w,1,{printf "in3 = %X",wpdata;g}
 wp 804170,2,w,1,{printf "13-pal_page = %X",wpdata;g}
+wp 400004,2,w,1,{printf "CPS2-Layer prio = %X",wpdata;g}
+wp 400008,2,w,1,{printf "CPS2-Layer x-off = %X",wpdata;g}
+wp 40000a,2,w,1,{printf "CPS2-Layer y-off = %X",wpdata;g}

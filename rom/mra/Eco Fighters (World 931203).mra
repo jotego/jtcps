@@ -24,6 +24,11 @@
     <name>Eco Fighters (World 931203)</name>
     <setname>ecofghtr</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="ecofghtr.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 08 80 18 80 48 
@@ -48,14 +53,14 @@
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="uec.13m" crc="dcaf1436" map="00000021"/>
-            <part name="uec.17m" crc="8a708d02" map="00002100"/>
-            <part name="uec.14m" crc="1a003558" map="00210000"/>
-            <part name="uec.18m" crc="b167ae12" map="21000000"/>
+            <part name="uec.15m" crc="2807df41" map="00002100"/>
+            <part name="uec.17m" crc="8a708d02" map="00210000"/>
+            <part name="uec.19m" crc="de7be0ef" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="uec.15m" crc="2807df41" map="00000021"/>
-            <part name="uec.19m" crc="de7be0ef" map="00002100"/>
-            <part name="uec.16m" crc="4ff8a6f9" map="00210000"/>
+            <part name="uec.14m" crc="1a003558" map="00000021"/>
+            <part name="uec.16m" crc="4ff8a6f9" map="00002100"/>
+            <part name="uec.18m" crc="b167ae12" map="00210000"/>
             <part name="uec.20m" crc="1064bdc2" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1220014 -->

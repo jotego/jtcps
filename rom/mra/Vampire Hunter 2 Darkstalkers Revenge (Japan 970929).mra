@@ -24,6 +24,11 @@
     <name>Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)</name>
     <setname>vhunt2</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="vhunt2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="vh2.13m" crc="3b02ddaa" map="00000021"/>
-            <part name="vh2.17m" crc="b31d00c9" map="00002100"/>
-            <part name="vh2.14m" crc="cd09bd63" map="00210000"/>
-            <part name="vh2.18m" crc="778dc4f6" map="21000000"/>
+            <part name="vh2.15m" crc="4e40de66" map="00002100"/>
+            <part name="vh2.17m" crc="b31d00c9" map="00210000"/>
+            <part name="vh2.19m" crc="149be3ab" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="vh2.15m" crc="4e40de66" map="00000021"/>
-            <part name="vh2.19m" crc="149be3ab" map="00002100"/>
-            <part name="vh2.16m" crc="e0182c15" map="00210000"/>
+            <part name="vh2.14m" crc="cd09bd63" map="00000021"/>
+            <part name="vh2.16m" crc="e0182c15" map="00002100"/>
+            <part name="vh2.18m" crc="778dc4f6" map="00210000"/>
             <part name="vh2.20m" crc="605d9d1d" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->

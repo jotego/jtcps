@@ -24,6 +24,11 @@
     <name>Cyberbots: Fullmetal Madness (Euro 950424)</name>
     <setname>cybots</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1995</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="cybots.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 21 00 a1 
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="cyb.13m" crc="f0dce192" map="00000021"/>
-            <part name="cyb.17m" crc="8a0e4b12" map="00002100"/>
-            <part name="cyb.14m" crc="c1537957" map="00210000"/>
-            <part name="cyb.18m" crc="d83e977d" map="21000000"/>
+            <part name="cyb.15m" crc="187aa39c" map="00002100"/>
+            <part name="cyb.17m" crc="8a0e4b12" map="00210000"/>
+            <part name="cyb.19m" crc="34b62612" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="cyb.15m" crc="187aa39c" map="00000021"/>
-            <part name="cyb.19m" crc="34b62612" map="00002100"/>
-            <part name="cyb.16m" crc="15349e86" map="00210000"/>
+            <part name="cyb.14m" crc="c1537957" map="00000021"/>
+            <part name="cyb.16m" crc="15349e86" map="00002100"/>
+            <part name="cyb.18m" crc="d83e977d" map="00210000"/>
             <part name="cyb.20m" crc="77cdad5c" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2840014 -->

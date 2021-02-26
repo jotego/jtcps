@@ -24,6 +24,12 @@ module jtcps2_obj(
     input              pxl_cen,
     input              flip,
 
+    // Configuration
+    input              objcfg_cs,
+    input      [15:0]  cpu_dout,
+    input      [ 1:0]  dsn,
+    input      [ 3:1]  addr,
+
     // Interface with SDRAM for ORAM data
     output     [12:0]  oram_addr,
     input              oram_ok,
@@ -37,6 +43,7 @@ module jtcps2_obj(
     input      [ 8:0]  hdump,
 
     output     [19:0]  rom_addr,    // up to 1 MB
+    output     [ 1:0]  rom_bank,
     output             rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output             rom_cs,
@@ -48,6 +55,7 @@ module jtcps2_obj(
 wire [15:0] dr_code, dr_attr;
 wire [ 8:0] dr_hpos;
 wire [ 2:0] dr_prio;
+wire [ 1:0] dr_bank;
 
 wire        dr_start, dr_idle;
 
@@ -93,11 +101,17 @@ jtcps2_objram u_objram(
 
     .obank      ( obank_frame   ),
 
+    // OBJ config
+    .objcfg_cs  ( objcfg_cs     ),
+    .cfg_addr   ( addr          ),
+    .cpu_dout   ( cpu_dout      ),
+    .cfg_dsn    ( dsn           ),
+
     // Interface with CPU
     .cs         ( oframe_we     ),
     .ok         (               ),
     .dsn        ( 2'd0          ),
-    .main_dout  ( oram_data     ),
+    .oram_din   ( oram_data     ),
     .main_addr  ( {1'b0, oram_addr[11:0] } ),
 
     // Interface with OBJ engine
@@ -130,7 +144,8 @@ jtcps2_obj_scan u_scan(
     .dr_code    ( dr_code       ),
     .dr_attr    ( dr_attr       ),
     .dr_hpos    ( dr_hpos       ),
-    .dr_prio    ( dr_prio       )
+    .dr_prio    ( dr_prio       ),
+    .dr_bank    ( dr_bank       )
 );
 
 jtcps1_obj_draw u_draw(
@@ -143,6 +158,7 @@ jtcps1_obj_draw u_draw(
     .obj_code   ( dr_code       ),
     .obj_attr   ( dr_attr       ),
     .obj_hpos   ( dr_hpos       ),
+    .obj_bank   ( dr_bank       ),
 
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),
@@ -150,6 +166,7 @@ jtcps1_obj_draw u_draw(
 
     .rom_addr   ( rom_addr[19:0]),
     .rom_half   ( rom_half      ),
+    .rom_bank   ( rom_bank      ),
     .rom_data   ( rom_data      ),
     .rom_cs     ( rom_cs        ),
     .rom_ok     ( rom_ok        )

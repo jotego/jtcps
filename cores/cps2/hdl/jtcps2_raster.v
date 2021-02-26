@@ -16,6 +16,7 @@
     Version: 1.0
     Date: 28-1-2021 */
 
+// Two line counters plus one pixel counter
 
 module jtcps2_raster(
     input              rst,
@@ -23,7 +24,7 @@ module jtcps2_raster(
     input              pxl_cen,
 
     input              frame_start,
-    input              line_start,
+    input              line_inc,
 
     // interface with CPU
     input       [ 2:0] cnt_sel,
@@ -36,23 +37,34 @@ module jtcps2_raster(
 
 wire [8:0] dout0, dout1, dout2, din;
 wire [2:0] we, zero;
-wire       en_in;
-wire       restart, step;
-reg        cnt4;
+wire       lock;
+wire       step, restart;
+reg        cnt4; // 4MHz
 wire       cen4;
+wire       set_irq = zero[2] & (|zero[1:0]);
+reg        irqsh;
 
 assign cen4  = pxl_cen & cnt4;
-assign en_in = cpu_dout[15];
+assign lock  = cpu_dout[15];
 assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
-assign restart = pxl_cen && frame_start;
-assign step    = pxl_cen && line_start;
+assign step    = pxl_cen && line_inc;
+assign restart = pxl_cen && frame_start; // a line count of 0x106 won't
+                // cause an interrupt. I think that is the correct behaviour
 
 always @(posedge clk) begin
     cnt_dout <= cnt_sel[0] ? dout0 : (cnt_sel[1] ? dout1 : dout2);
-    raster   <= zero[2] & (|zero[1:0]);
-    if( pxl_cen ) cnt4 <= ~cnt4;
+    if( pxl_cen ) begin
+        cnt4    <= ~cnt4;
+    end
+    // interrupt pulse lasts at least one pixel, so the CPU clock can
+    // catch it
+    if( set_irq )
+        { raster, irqsh } <= 2'b11;
+    else if( pxl_cen ) begin
+        { raster, irqsh } <= { irqsh, 1'b0 };
+    end
 end
 
 initial begin
@@ -68,7 +80,7 @@ jtcps2_raster_cnt u_cnt0(
     .step   ( step      ),
 
     .we     ( we[0]     ),
-    .en_in  ( en_in     ),
+    .lock   ( lock      ),
     .din    ( din       ),
     .dout   ( dout0     ),
 
@@ -84,7 +96,7 @@ jtcps2_raster_cnt u_cnt1(
     .step   ( step      ),
 
     .we     ( we[1]     ),
-    .en_in  ( en_in     ),
+    .lock   ( lock      ),
     .din    ( din       ),
     .dout   ( dout1     ),
 
@@ -117,7 +129,7 @@ module jtcps2_raster_cnt(
     input              step,
 
     input              we,
-    input              en_in,
+    input              lock,
     input       [ 8:0] din,
     output reg  [ 8:0] dout,
 
@@ -125,26 +137,28 @@ module jtcps2_raster_cnt(
 );
 
 reg  [8:0] cnt_start, cnt;
-reg        enable;
+reg        locked;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         cnt       <= ~9'd0;
         cnt_start <= ~9'd0;
         dout      <= ~9'd0;
-        enable    <= 0;
+        locked    <= 0;
+        zero      <= 0;
     end else begin
         zero <= ~|cnt;
-        if(cen4) dout <= enable ? cnt : cnt_start;
+        if(cen4) dout <= locked ? cnt : cnt_start;
         if( we ) begin
             cnt_start <= din;
-            enable    <= en_in;
+            locked    <= lock;
         end
+        // counter
         if( we )
             cnt <= din;
-        else if( restart || !enable )
+        else if( restart || locked )
             cnt <= cnt_start;
-        else if( enable && step )
+        else if( step )
             cnt <= cnt-9'd1;
     end
 end

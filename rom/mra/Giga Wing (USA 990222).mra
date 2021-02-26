@@ -24,6 +24,11 @@
     <name>Giga Wing (USA 990222)</name>
     <setname>gigawing</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1999</year>
+    <manufacturer>Takumi (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="gigawing.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 06 80 06 80 26 80 66 

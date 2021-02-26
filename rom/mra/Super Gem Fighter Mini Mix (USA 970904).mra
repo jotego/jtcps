@@ -24,6 +24,11 @@
     <name>Super Gem Fighter Mini Mix (USA 970904)</name>
     <setname>sgemf</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="sgemf.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 00 0b 00 2b 00 7b 
@@ -50,14 +55,14 @@
         <!-- gfx - starts at 0xAC0014 -->
         <interleave output="64">
             <part name="pcf.13m" crc="22d72ab9" map="00000021"/>
-            <part name="pcf.17m" crc="1097e035" map="00002100"/>
-            <part name="pcf.14m" crc="0383897c" map="00210000"/>
-            <part name="pcf.18m" crc="756c3754" map="21000000"/>
+            <part name="pcf.15m" crc="16a4813c" map="00002100"/>
+            <part name="pcf.17m" crc="1097e035" map="00210000"/>
+            <part name="pcf.19m" crc="d362d874" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="pcf.15m" crc="16a4813c" map="00000021"/>
-            <part name="pcf.19m" crc="d362d874" map="00002100"/>
-            <part name="pcf.16m" crc="76f91084" map="00210000"/>
+            <part name="pcf.14m" crc="0383897c" map="00000021"/>
+            <part name="pcf.16m" crc="76f91084" map="00002100"/>
+            <part name="pcf.18m" crc="756c3754" map="00210000"/>
             <part name="pcf.20m" crc="9ec9277d" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1EC0014 -->

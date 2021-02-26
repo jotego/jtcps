@@ -119,9 +119,10 @@ wire [17:1] ram_addr;
 wire [21:1] main_rom_addr;
 wire [15:0] main_ram_data, main_rom_data, main_dout, mmr_dout;
 wire        main_rom_ok, main_ram_ok;
-wire        ppu1_cs, ppu2_cs, ppu_rstn;
+wire        ppu1_cs, ppu2_cs, ppu_rstn, objcfg_cs;
 wire        raster;
 wire [19:0] rom1_addr, rom0_addr;
+wire [ 1:0] rom0_bank;
 wire [31:0] rom0_data, rom1_data;
 // Video RAM interface
 wire [17:1] vram_dma_addr;
@@ -154,7 +155,6 @@ wire        main2qs_cs, main_busakn, main_waitn;
 wire        sclk, sdi, sdo, scs;
 
 assign dip_flip = 0;
-assign game_led = 0;
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
@@ -231,9 +231,11 @@ jtcps2_main u_main(
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
     .ppu2_cs    ( ppu2_cs           ),
+    .objcfg_cs  ( objcfg_cs         ),
     .ppu_rstn   ( ppu_rstn          ),
     .mmr_dout   ( mmr_dout          ),
     .raster     ( raster            ),
+    //.raster     ( 1'b0            ),
     // Keys
     .prog_din   ( prog_data[7:0]    ),
     .key_we     ( key_we            ),
@@ -343,6 +345,7 @@ jtcps1_video #(REGSIZE) u_video(
     .oram_addr      ( gfx_oram_addr ),
     .oram_ok        ( gfx_oram_ok   ),
     .oram_data      ( gfx_oram_data ),
+    .objcfg_cs      ( objcfg_cs     ),
 
     // Video signal
     .HS             ( HS            ),
@@ -382,10 +385,15 @@ jtcps1_video #(REGSIZE) u_video(
     .rom1_cs        ( rom1_cs       ),
     .rom1_ok        ( rom1_ok       ),
     .rom0_addr      ( rom0_addr     ),
+    .rom0_bank      ( rom0_bank     ),
     .rom0_half      ( rom0_half     ),
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),
-    .rom0_ok        ( rom0_ok       )
+    .rom0_ok        ( rom0_ok       ),
+
+    // Watched signals
+    .watch_vram_cs  ( main_vram_cs  ),
+    .watch          ( game_led      )
 );
 
 // Sound CPU cannot be disabled as there is
@@ -523,6 +531,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rom1_ok     ( rom1_ok       ),
 
     .rom0_addr   ( rom0_addr     ),
+    .rom0_bank   ( rom0_bank     ),
     .rom1_addr   ( rom1_addr     ),
 
     .rom0_half   ( rom0_half     ),

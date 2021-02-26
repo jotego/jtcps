@@ -24,6 +24,11 @@
     <name>Vampire Savior 2: The Lord of Vampire (Japan 970913)</name>
     <setname>vsav2</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1997</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="vsav2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 
@@ -31,7 +36,7 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff 
+        fc ff ff ff 
         </part>
         <!-- key - starts at 0x0 -->
         <part name="vsav2.key" crc="289028ce"/>
@@ -53,14 +58,14 @@
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="vs2.13m" crc="5c852f52" map="00000021"/>
-            <part name="vs2.17m" crc="39db59ad" map="00002100"/>
-            <part name="vs2.14m" crc="cd09bd63" map="00210000"/>
-            <part name="vs2.18m" crc="778dc4f6" map="21000000"/>
+            <part name="vs2.15m" crc="a20f58af" map="00002100"/>
+            <part name="vs2.17m" crc="39db59ad" map="00210000"/>
+            <part name="vs2.19m" crc="00c763a7" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="vs2.15m" crc="a20f58af" map="00000021"/>
-            <part name="vs2.19m" crc="00c763a7" map="00002100"/>
-            <part name="vs2.16m" crc="e0182c15" map="00210000"/>
+            <part name="vs2.14m" crc="cd09bd63" map="00000021"/>
+            <part name="vs2.16m" crc="e0182c15" map="00002100"/>
+            <part name="vs2.18m" crc="778dc4f6" map="00210000"/>
             <part name="vs2.20m" crc="605d9d1d" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x2C40014 -->
@@ -71,5 +76,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Punch0,Punch1,Punch2,Kick0,Kick1,Kick2,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>

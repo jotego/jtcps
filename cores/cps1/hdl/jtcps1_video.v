@@ -34,6 +34,7 @@ module jtcps1_video(
     input      [ 3:0]  gfx_en,
 
     `ifdef CPS2
+    input              objcfg_cs,
     input              obank,
     output     [12:0]  oram_addr,
     input              oram_ok,
@@ -96,15 +97,14 @@ module jtcps1_video(
     input              rom1_ok,
 
     output     [19:0]  rom0_addr,
+    output     [ 1:0]  rom0_bank,
     output             rom0_half,    // selects which half to read
     input      [31:0]  rom0_data,
     output             rom0_cs,
-    input              rom0_ok
-    // To frame buffer
-    // output     [11:0]  line_data,
-    // output     [ 8:0]  line_addr,
-    // output             line_wr,
-    // input              line_wr_ok
+    input              rom0_ok,
+
+    input              watch_vram_cs,
+    output             watch
 
     `ifdef CPS1
     // EEPROM
@@ -118,9 +118,9 @@ module jtcps1_video(
 parameter REGSIZE=24;
 
 `ifdef CPS2
-localparam OBJW=12, BLNK_DLY=6;
+localparam OBJW=12, BLNK_DLY=5;
 `else
-localparam OBJW=9, BLNK_DLY=4;
+localparam OBJW=9, BLNK_DLY=5;
 `endif
 
 // use for CPU only simulations:
@@ -164,8 +164,46 @@ wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 wire       [15:0]  objtable_data;
 
+wire               row_en, dma2_en, dma3_en;
+
 `ifdef CPS2
 assign obj_dma_ok = 0;
+`endif
+
+wire               watch_scr1, watch_scr2, watch_scr3,
+                   watch_pal, watch_row, watch_obj;
+
+assign dma2_en = 1'b1; //ppu_ctrl[4];
+assign dma3_en = 1'b1; //ppu_ctrl[1];
+assign row_en  = ppu_ctrl[0];
+
+`ifdef JTCPS_WATCH
+jtcps1_watch u_watch(
+    .rst            ( rst           ),
+    .clk            ( clk           ),
+    .pxl_cen        ( pxl_cen       ),
+    .HB             ( HB            ),
+    .VB             ( VB            ),
+
+    .watch_scr1     ( watch_scr1    ),
+    .watch_scr2     ( watch_scr2    ),
+    .watch_scr3     ( watch_scr3    ),
+    .watch_pal      ( watch_pal     ),
+    .watch_row      ( watch_row     ),
+    .watch_obj      ( watch_obj     ),
+    .watch_vram_cs  ( watch_vram_cs ),
+    .pal_dma_ok     ( pal_dma_ok    ),
+
+    .raster         ( raster        ),
+
+    .ppu1_cs        ( ppu1_cs       ),
+    .ppu2_cs        ( ppu2_cs       ),
+    .objcfg_cs      ( objcfg_cs     ),
+
+    .watch          ( watch         )
+);
+`else
+assign watch=0;
 `endif
 
 jtcps1_dma u_dma(
@@ -184,10 +222,12 @@ jtcps1_dma u_dma(
     .hpos1          ( hpos1             ),
     .vpos1          ( vpos1             ),
 
+    .dma2_en        ( dma2_en           ),
     .vram2_base     ( vram2_base        ),
     .hpos2          ( hpos2             ),
     .vpos2          ( vpos2             ),
 
+    .dma3_en        ( dma3_en           ),
     .vram3_base     ( vram3_base        ),
     .hpos3          ( hpos3             ),
     .vpos3          ( vpos3             ),
@@ -195,7 +235,7 @@ jtcps1_dma u_dma(
     // Row Scroll
     .vram_row_base  ( vram_row_base     ),
     .row_offset     ( row_offset        ),
-    .row_en         ( ppu_ctrl[0]       ),
+    .row_en         ( row_en            ),
     .row_scr        ( row_scr           ),
 
     // Palette
@@ -222,7 +262,15 @@ jtcps1_dma u_dma(
     .vram_ok        ( vram_dma_ok       ),
     .vram_clr       ( vram_dma_clr      ),
     .vram_cs        ( vram_dma_cs       ),
-    .rfsh_en        ( vram_rfsh_en      )
+    .rfsh_en        ( vram_rfsh_en      ),
+
+    // watched signals
+    .watch_scr1     ( watch_scr1        ),
+    .watch_scr2     ( watch_scr2        ),
+    .watch_scr3     ( watch_scr3        ),
+    .watch_pal      ( watch_pal         ),
+    .watch_row      ( watch_row         ),
+    .watch_obj      ( watch_obj         )
 );
 
 jtcps1_timing u_timing(
@@ -233,6 +281,7 @@ jtcps1_timing u_timing(
     .hdump          ( hdump             ),
     .vrender1       ( vrender1          ),
     .vrender        ( vrender           ),
+    .line_inc       ( line_inc          ),
     .line_start     ( line_start        ),
     .frame_start    ( frame_start       ),
     // to video output
@@ -254,7 +303,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .ppu_rstn       ( ppu_rstn          ),  // controlled by CPU
 
     .frame_start    ( frame_start       ),
-    .line_start     ( line_start        ),
+    .line_inc       ( line_inc          ),
     .raster         ( raster            ),
 
     .ppu1_cs        ( ppu1_cs           ),
@@ -433,6 +482,8 @@ assign scr3_pxl   = 11'h1ff;
 
         .pxl        ( obj_pxl       )
     );
+
+    assign rom0_bank = 2'b10;
 `else
     jtcps2_obj u_obj(
         .rst        ( rst           ),
@@ -440,6 +491,11 @@ assign scr3_pxl   = 11'h1ff;
         .clk_cpu    ( clk_cpu       ),
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
+
+        .objcfg_cs  ( objcfg_cs     ),
+        .addr       ( addr[3:1]     ),
+        .dsn        ( dsn           ),
+        .cpu_dout   ( cpu_dout      ),
 
         .obank      ( obank         ),
         // Interface with SDRAM for OBJRAM
@@ -454,6 +510,7 @@ assign scr3_pxl   = 11'h1ff;
 
         // ROM data
         .rom_addr   ( rom0_addr     ),
+        .rom_bank   ( rom0_bank     ),
         .rom_data   ( rom0_data     ),
         .rom_cs     ( rom0_cs       ),
         .rom_ok     ( rom0_ok       ),
@@ -504,6 +561,10 @@ jtcps2_colmix u_objmix(
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
 
+    .objcfg_cs  ( objcfg_cs     ),
+    .addr       ( addr[3:1]     ),
+    .cpu_dout   ( cpu_dout      ),
+    .dsn        ( dsn           ),
     .layer_ctrl ( layer_ctrl    ),
 
     .scr_pxl    ( merge_pxl     ),

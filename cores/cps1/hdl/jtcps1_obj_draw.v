@@ -23,6 +23,7 @@ module jtcps1_obj_draw(
     input      [15:0]  obj_code,
     input      [15:0]  obj_attr,
     input      [ 8:0]  obj_hpos,
+    input      [ 1:0]  obj_bank,
 
     input              start,
     output reg         idle,
@@ -33,6 +34,7 @@ module jtcps1_obj_draw(
 
     // ROM interface
     output reg [19:0]  rom_addr,    // up to 1 MB
+    output reg [ 1:0]  rom_bank,
     output reg         rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output reg         rom_cs,
@@ -83,6 +85,7 @@ always @(posedge clk, posedge rst) begin
                 idle       <= 0;
                 rom_cs     <= 1;
                 rom_addr   <= { obj_code, vsub };
+                rom_bank   <= obj_bank;
                 buf_addr   <= obj_hpos;
                 rom_half   <= hflip;
                 wait_cycle <= 2'b11;

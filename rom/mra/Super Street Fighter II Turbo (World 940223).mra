@@ -24,6 +24,11 @@
     <name>Super Street Fighter II Turbo (World 940223)</name>
     <setname>ssf2t</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1994</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="ssf2t.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0e 00 0f 00 1f 00 5f 
@@ -31,7 +36,7 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff 
+        fc ff ff ff 
         </part>
         <!-- key - starts at 0x0 -->
         <part name="ssf2t.key" crc="524d608e"/>
@@ -52,20 +57,20 @@
         <!-- gfx - starts at 0x7C0014 -->
         <interleave output="64">
             <part name="sfx.13m" crc="cf94d275" map="00000021"/>
-            <part name="sfx.19m" crc="34e825c5" map="00002100"/>
-            <part name="sfx.18m" crc="f5b1b336" map="00210000"/>
-            <part name="sfx.23m" crc="760f2927" map="21000000"/>
+            <part name="sfx.15m" crc="5eb703af" map="00002100"/>
+            <part name="sfx.17m" crc="ffa60e0f" map="00210000"/>
+            <part name="sfx.19m" crc="34e825c5" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="sfx.15m" crc="5eb703af" map="00000021"/>
-            <part name="sfx.14m" crc="b7cc32e7" map="00002100"/>
-            <part name="sfx.20m" crc="459d5c6b" map="00210000"/>
-            <part name="sfx.25m" crc="1ee90208" map="21000000"/>
-        </interleave>
-        <interleave output="64">
-            <part name="sfx.17m" crc="ffa60e0f" map="00000021"/>
+            <part name="sfx.14m" crc="b7cc32e7" map="00000021"/>
             <part name="sfx.16m" crc="8376ad18" map="00002100"/>
-            <part name="sfx.21m" crc="e32854af" map="00210000"/>
+            <part name="sfx.18m" crc="f5b1b336" map="00210000"/>
+            <part name="sfx.20m" crc="459d5c6b" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="sfx.21m" crc="e32854af" map="00000021"/>
+            <part name="sfx.23m" crc="760f2927" map="00002100"/>
+            <part name="sfx.25m" crc="1ee90208" map="00210000"/>
             <part name="sfx.27m" crc="f814400f" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x17C0014 -->
@@ -76,5 +81,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Punch0,Punch1,Punch2,Kick0,Kick1,Kick2,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>

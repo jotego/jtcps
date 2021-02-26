@@ -24,6 +24,11 @@
     <name>Street Fighter Alpha 2 (Euro 960229)</name>
     <setname>sfa2</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1996</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="sfa2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0c 00 0d 00 1d 00 6d 
@@ -31,7 +36,7 @@
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
         08 30 ff ff ff ff ff ff 
-        ff ff ff ff 
+        fc ff ff ff 
         </part>
         <!-- key - starts at 0x0 -->
         <part name="sfa2.key" crc="1578dcb0"/>
@@ -51,14 +56,14 @@
         <!-- gfx - starts at 0x740014 -->
         <interleave output="64">
             <part name="sz2.13m" crc="4d1f1f22" map="00000021"/>
-            <part name="sz2.17m" crc="e01b4588" map="00002100"/>
-            <part name="sz2.14m" crc="0560c6aa" map="00210000"/>
-            <part name="sz2.18m" crc="4bc3c8bc" map="21000000"/>
+            <part name="sz2.15m" crc="19cea680" map="00002100"/>
+            <part name="sz2.17m" crc="e01b4588" map="00210000"/>
+            <part name="sz2.19m" crc="0feeda64" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="sz2.15m" crc="19cea680" map="00000021"/>
-            <part name="sz2.19m" crc="0feeda64" map="00002100"/>
-            <part name="sz2.16m" crc="ae940f87" map="00210000"/>
+            <part name="sz2.14m" crc="0560c6aa" map="00000021"/>
+            <part name="sz2.16m" crc="ae940f87" map="00002100"/>
+            <part name="sz2.18m" crc="4bc3c8bc" map="00210000"/>
             <part name="sz2.20m" crc="39e674c0" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1B40014 -->
@@ -69,5 +74,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Punch0,Punch1,Punch2,Kick0,Kick1,Kick2,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
 </misterromdescription>

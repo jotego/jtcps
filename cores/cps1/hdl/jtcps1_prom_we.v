@@ -23,7 +23,6 @@ parameter [21:0] CPU_OFFSET =22'h0,
                  SND_OFFSET =22'h0,
                  PCM_OFFSET =22'h0,
                  GFX_OFFSET =22'h0,
-                 VRAM_OFFSET=22'h0,
 parameter [ 5:0] CFG_BYTE   =6'd39, // location of the byte with encoder information
 parameter        EEPROM_AW  = 7
 )(
@@ -42,7 +41,7 @@ parameter        EEPROM_AW  = 7
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
-    output reg           dwnld_busy=0,
+    output               dwnld_busy,
     // EEPROM
     output reg [15:0]    dump_din,
     input      [15:0]    dump_dout,
@@ -67,7 +66,7 @@ localparam [24:0] FULL_HEADER   = 25'd64,
                   CPS2_KEYS     = 25'd44,
                   CPS2_END      = 25'd64;
 
-localparam [ 5:0] JOY_BYTE      = 6'h30;
+localparam [ 5:0] JOY_BYTE      = 6'h28;
 
 reg  [STARTW-1:0] starts;
 wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
@@ -85,11 +84,14 @@ assign kabuki_we  = kabuki_sr[0];
 assign kabuki_we  = 0;
 `endif
 
+assign dwnld_busy = downloading;
+
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
 wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
 wire [24:0] pcm_addr  = bulk_addr - { pcm_start[14:0], 10'd0 };
 reg  [24:0] gfx_addr;
+reg  [ 1:0] gfx_bank;
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
@@ -99,9 +101,6 @@ wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
-
-reg  last_dwnldng = 0;
-reg  clr_ram = 0; // I have to add a proper reset pin to this module
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -115,8 +114,12 @@ always @(*) begin
 `ifdef CPS2
     // CPS2 address lines are scrambled
     gfx_addr = { gfx_addr[24:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
+    gfx_bank = {1'b1, gfx_addr[23]}
+`else
+    gfx_bank  = 2'b11;
 `endif
 end
+
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
@@ -140,9 +143,6 @@ end
 
 always @(posedge clk) begin
     if ( ioctl_wr && !ioctl_ram ) begin
-        last_dwnldng <= 1;
-        clr_ram      <= 0;
-        dwnld_busy <= 1;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
@@ -150,7 +150,7 @@ always @(posedge clk) begin
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_ba   <= is_cpu ? 2'd3 : ( is_gfx ? 2'd2 : 2'd1 );
+        prog_ba   <= is_cpu ? 2'd0 : ( is_gfx ? gfx_bank : 2'd1 );
         if( is_kabuki )
             kabuki_sr <= 2'b11;
         if( is_cps2 ) begin
@@ -169,7 +169,7 @@ always @(posedge clk) begin
                 if( ioctl_addr[5:0] == CFG_BYTE )
                     {decrypt, pang3_bit} <= ioctl_data[7:6];
                 if( ioctl_addr[5:0] == JOY_BYTE )
-                    joymode <= ioctl_data[5:4];
+                    joymode <= ioctl_data[1:0];
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
@@ -179,40 +179,13 @@ always @(posedge clk) begin
     end
     else begin
         cps2_key_we <= 0;
-        if( clr_ram ) begin
-            if( prog_rdy ) begin
-                prog_we   <= 0;
-                prog_addr <= prog_addr + 1'd1;
-            end else begin
-                if( &prog_addr ) begin
-                    clr_ram    <= 0;
-                    dwnld_busy <= 0;
-                end else begin
-                    prog_we <= 1;
-                end
-            end
-        end else begin
-            if(!downloading || prog_rdy) prog_we  <= 1'b0;
-            if( !downloading ) begin
-                decrypt   <= 0;
-                prom_we   <= 0;
-                `ifndef SKIP_RAMCLR
-                    if( last_dwnldng ) begin
-                        prog_addr    <= 22'd0;
-                        prog_ba      <= 2'd0;
-                        prog_mask    <= 2'd0;
-                        pre_data     <= 8'h0;
-                        clr_ram      <= 1;
-                        prog_we      <= 1;
-                        last_dwnldng <= 0;
-                    end
-                `else
-                    dwnld_busy <= 0;
-                `endif
-            end
-            kabuki_sr <= kabuki_sr>>1;
-            cfg_we      <= 0;
+        if(!downloading || prog_rdy) prog_we  <= 1'b0;
+        if( !downloading ) begin
+            decrypt   <= 0;
+            prom_we   <= 0;
         end
+        kabuki_sr <= kabuki_sr>>1;
+        cfg_we    <= 0;
     end
 end
 

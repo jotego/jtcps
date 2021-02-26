@@ -24,6 +24,11 @@
     <name>Jyangokushi: Haoh no Saihai (Japan 990527)</name>
     <setname>jyangoku</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1999</year>
+    <manufacturer>Capcom</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="jyangoku.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 02 80 02 80 12 80 52 
@@ -45,14 +50,14 @@
         <!-- gfx - starts at 0x4A0014 -->
         <interleave output="64">
             <part name="maj1_d.simm1" crc="ba0fe27b" map="00000021"/>
-            <part name="maj1_b.simm1" crc="e29e4c26" map="00002100"/>
-            <part name="maj3_d.simm3" crc="3aaeb90b" map="00210000"/>
-            <part name="maj3_b.simm3" crc="ec737d9d" map="21000000"/>
+            <part name="maj1_c.simm1" crc="2cd141bf" map="00002100"/>
+            <part name="maj1_b.simm1" crc="e29e4c26" map="00210000"/>
+            <part name="maj1_a.simm1" crc="7f68b88a" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="maj1_c.simm1" crc="2cd141bf" map="00000021"/>
-            <part name="maj1_a.simm1" crc="7f68b88a" map="00002100"/>
-            <part name="maj3_c.simm3" crc="97894cea" map="00210000"/>
+            <part name="maj3_d.simm3" crc="3aaeb90b" map="00000021"/>
+            <part name="maj3_c.simm3" crc="97894cea" map="00002100"/>
+            <part name="maj3_b.simm3" crc="ec737d9d" map="00210000"/>
             <part name="maj3_a.simm3" crc="c23b6f22" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x14A0014 -->

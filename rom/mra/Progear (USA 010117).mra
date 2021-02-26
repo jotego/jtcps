@@ -24,6 +24,11 @@
     <name>Progear (USA 010117)</name>
     <setname>progear</setname>
     <rbf>jtcps2</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>2001</year>
+    <manufacturer>Cave (Capcom license)</manufacturer>
+    <rotation>horizontal</rotation>
     <rom index="0" zip="progear.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 80 04 80 24 80 64 
@@ -48,14 +53,14 @@
         <!-- gfx - starts at 0x920014 -->
         <interleave output="64">
             <part name="pga-simm.01c" crc="452f98b0" map="00000021"/>
-            <part name="pga-simm.01a" crc="ae9ddafe" map="00002100"/>
-            <part name="pga-simm.03c" crc="48a1886d" map="00210000"/>
-            <part name="pga-simm.03a" crc="9ee33d98" map="21000000"/>
+            <part name="pga-simm.01d" crc="9e672092" map="00002100"/>
+            <part name="pga-simm.01a" crc="ae9ddafe" map="00210000"/>
+            <part name="pga-simm.01b" crc="94d72d94" map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="pga-simm.01d" crc="9e672092" map="00000021"/>
-            <part name="pga-simm.01b" crc="94d72d94" map="00002100"/>
-            <part name="pga-simm.03d" crc="172d7e37" map="00210000"/>
+            <part name="pga-simm.03c" crc="48a1886d" map="00000021"/>
+            <part name="pga-simm.03d" crc="172d7e37" map="00002100"/>
+            <part name="pga-simm.03a" crc="9ee33d98" map="00210000"/>
             <part name="pga-simm.03b" crc="848dee32" map="21000000"/>
         </interleave>
         <!-- QSound firmware - starts at 0x1920014 -->
