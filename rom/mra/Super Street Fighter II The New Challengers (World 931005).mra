@@ -86,5 +86,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names=",JAB PUNCH,STRONG PUNCH,FIERCE PUNCH,SHORT KICK,FORWARD KICK,ROUNDHOUSE KICK,Start,Coin,Pause" default=",X,B,A,L,R,Select,Select,Start,-" count="6"/>
+    <buttons names="JAB PUNCH,STRONG PUNCH,FIERCE PUNCH,SHORT KICK,FORWARD KICK,ROUNDHOUSE KICK,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>
 </misterromdescription>
