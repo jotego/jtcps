@@ -28,6 +28,9 @@
     <mameversion>0228</mameversion>
     <year>1996</year>
     <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <button>2</button>
+    <joystick>8-way</joystick>
     <rotation>vertical</rotation>
     <rom index="0" zip="19xx.zip|qsound.zip" type="merged" md5="None">
         <part>

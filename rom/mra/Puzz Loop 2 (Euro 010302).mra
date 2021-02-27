@@ -28,6 +28,9 @@
     <mameversion>0228</mameversion>
     <year>2001</year>
     <manufacturer>Mitchell (Capcom license)</manufacturer>
+    <players>2</players>
+    <button>0</button>
+    <joystick>4-way</joystick>
     <rotation>horizontal</rotation>
     <rom index="0" zip="pzloop2.zip|qsound.zip" type="merged" md5="None">
         <part>

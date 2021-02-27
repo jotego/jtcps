@@ -28,6 +28,9 @@
     <mameversion>0228</mameversion>
     <year>1995</year>
     <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <button>4</button>
+    <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <rom index="0" zip="cybots.zip|qsound.zip" type="merged" md5="None">
         <part>

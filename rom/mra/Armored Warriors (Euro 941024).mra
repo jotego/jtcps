@@ -28,6 +28,9 @@
     <mameversion>0228</mameversion>
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
+    <players>3</players>
+    <button>3</button>
+    <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <rom index="0" zip="armwar.zip|qsound.zip" type="merged" md5="None">
         <part>

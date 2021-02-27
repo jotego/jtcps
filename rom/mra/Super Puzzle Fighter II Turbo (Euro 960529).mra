@@ -28,10 +28,13 @@
     <mameversion>0228</mameversion>
     <year>1996</year>
     <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <button>2</button>
+    <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <rom index="0" zip="spf2t.zip|qsound.zip" type="merged" md5="None">
         <part>
-        00 04 00 05 00 15 00 25 
+        00 04 00 05 00 15 00 45 
         ff ff ff ff ff ff ff ff 
         32 ff 00 02 04 06 26 28 
         2a 2c 2e 00 00 30 02 04 
@@ -50,15 +53,16 @@
         <part name="pzf.11m" crc="78442743"/>
         <part name="pzf.12m" crc="399d2c7b"/>
         <!-- gfx - starts at 0x540014 -->
+        <part repeat="0x800000"> FF </part>
         <interleave output="64">
             <part name="pzf.14m" crc="2d4881cb" map="00000021"/>
             <part name="pzf.16m" crc="4b0fd1be" map="00002100"/>
             <part name="pzf.18m" crc="e43aac33" map="00210000"/>
             <part name="pzf.20m" crc="7f536ff1" map="21000000"/>
         </interleave>
-        <!-- QSound firmware - starts at 0x940014 -->
+        <!-- QSound firmware - starts at 0x1140014 -->
         <part name="dl-1425.bin" crc="d6cf5ef5" length="0x2000"/>
-        <!-- Total 0x942014 bytes - 9480 kBytes -->
+        <!-- Total 0x1142014 bytes - 17672 kBytes -->
     </rom>
     <rom index="1">
         <part>00</part>

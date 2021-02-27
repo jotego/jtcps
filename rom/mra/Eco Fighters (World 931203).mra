@@ -28,6 +28,9 @@
     <mameversion>0228</mameversion>
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <button>0</button>
+    <joystick>4-way</joystick>
     <rotation>horizontal</rotation>
     <rom index="0" zip="ecofghtr.zip|qsound.zip" type="merged" md5="None">
         <part>
