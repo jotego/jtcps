@@ -29,9 +29,14 @@
     <year>1997</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
-    <button>3</button>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
+    <region>Euro</region>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <mametimestamp>20210223</mametimestamp>
+    <platform>CPS</platform>
     <rom index="0" zip="csclub.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 0a 80 0a 80 1a 80 5a 
@@ -94,5 +99,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="SHOOT/WEAK,SHOT,PASS/STRONG,SHOT,DASH/LOB/JUMP,-,-,-,START,COIN,CORE,CREDITS,Start,Coin,Pause" default="Y,X,B,A,R,L,Start"/>
 </misterromdescription>

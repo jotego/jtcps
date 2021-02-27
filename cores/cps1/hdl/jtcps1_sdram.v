@@ -366,7 +366,8 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         // Slot 0: Obj
         .SLOT0_AW    ( 22            ),
         .SLOT0_DW    ( 32            ),
-        .SLOT0_OFFSET( ZERO_OFFSET   )
+        .SLOT0_OFFSET( ZERO_OFFSET   ),
+        .LATCH0      ( 1             )
         //.SLOT0_REPACK( 1             ),
     ) u_bank2 (
         .rst         ( rst           ),
@@ -397,6 +398,7 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 22            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
+    .LATCH0      ( 1             ),
     //.SLOT0_REPACK( 1             ),
 
     // Slot 1: Scroll

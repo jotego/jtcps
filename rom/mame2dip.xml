@@ -1,0 +1,31 @@
+<mame2dip>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <mametimestamp>20210223</mametimestamp>
+    <platform>CPS2</platform>
+
+    <machine parent="sfa">
+        <buttons names="JAB PUNCH,STRONG PUNCH,FIERCE PUNCH,SHORT KICK,FORWARD KICK,ROUNDHOUSE KICK,START,COIN,CORE CREDITS" default="A,B,X,Y,R,L,Select,Select,Start"/>
+    </machine>
+
+    <machine parent="spf2t">
+        <buttons names="ROTATE LEFT,ROTATE RIGHT,-,-,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start,-"/>
+    </machine>
+
+    <machine parent="csclub">
+        <buttons names="SHOOT/WEAK SHOT,PASS/STRONG SHOT,DASH/LOB/JUMP,-,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start,-"/>
+    </machine>
+
+    <machine parent="qndream">
+        <buttons names="BUTTON 1,BUTTON 2,BUTTON 3,BUTTON 4,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start,-"/>
+    </machine>
+
+    <machine parent="megaman2">
+        <buttons names="ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start,-"/>
+    </machine>
+
+    <machine parent="megaman">
+        <buttons names="ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start,-"/>
+    </machine>
+</mame2dip>

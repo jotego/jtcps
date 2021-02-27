@@ -72,7 +72,7 @@ if [ $CPS15 = 1 ]; then
         -header-data 20 \
         -header-pointer 48 \
         -header-data 01 23 45 67 54 16 30 72 51 51 51 \
-        -buttons Attack Jump None None None None \
+        -buttons Attack,Jump,None,None,None,None \
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Cadillacs and Dinosaurs"
@@ -92,7 +92,7 @@ if [ $CPS15 = 1 ]; then
         -header-data 20 \
         -header-pointer 48 \
         -header-data 76 54 32 10 24 60 13 57 43 43 43 \
-        -buttons Attack Jump None None None None\
+        -buttons Attack,Jump,None,None,None,None\
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_The Punisher"
@@ -112,7 +112,7 @@ if [ $CPS15 = 1 ]; then
         -header-data 20 \
         -header-pointer 48 \
         -header-data 67 45 21 03 75 31 60 24 22 22 22 \
-        -buttons Attack Jump None None None None \
+        -buttons Attack,Jump,None,None,None,None \
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Saturday Night Slam Masters"
@@ -132,7 +132,7 @@ if [ $CPS15 = 1 ]; then
         -header-data 20 \
         -header-pointer 48 \
         -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-        -buttons Punch Jump Action None None None \
+        -buttons Punch,Jump,Action,None,None,None \
         -rmdipsw Freeze -nvram 128
 
     ALTFOLDER=_alt/"_Muscle Bomber Duo"
@@ -152,7 +152,7 @@ if [ $CPS15 = 1 ]; then
         -header-data 20 \
         -header-pointer 48 \
         -header-data 54 32 10 76 65 43 21 07 31 31 19 \
-        -buttons Punch Attack Jump None None None \
+        -buttons Punch,Attack,Jump,None,None,None \
         -rmdipsw Freeze -nvram 128
 fi
 
@@ -164,7 +164,8 @@ fi
 function cps2_mra {
     local GAME=$1
     local BUT=$2
-    local ALT=${3//[:]/}
+    local BUTSTR="$3"
+    local ALT=${4//[:]/}
     local BUTCFG=
 
     if [ ! -e $GAME.xml ]; then
@@ -172,10 +173,8 @@ function cps2_mra {
     fi
 
     case $BUT in
-        6) BUTCFG="-header-pointer 050 -header-data FC"
-           BUTSTR="Punch0 Punch1 Punch2 Kick0 Kick1 Kick2";;
-        *) BUTCFG=""
-           BUTSTR="Attack Jump None None None None";;
+        6) BUTCFG="-header-pointer 050 -header-data FC";;
+        *) BUTCFG="";;
     esac
 
     ALT=_alt/_"$ALT"
@@ -190,6 +189,11 @@ function cps2_mra {
         -header-data 32 FF 00 \
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
+        -info mraauthor jotego,atrac17 \
+        -info mraversion 1.0 \
+        -info mameversion 0228 \
+        -info mratimestamp $(date +"%Y%m%d") \
+        -info platform CPS \
         $BUTCFG \
         -buttons $BUTSTR \
         -nvram 128
@@ -198,54 +202,56 @@ function cps2_mra {
 # cps2_mra sfa        6 "Street Fighter Alpha: Warriors' Dreams"
 # exit 0
 
-cps2_mra ddtod      2 "DnD Tower of Doom"
-cps2_mra ssf2       6 "Super Street Fighter II: The New Challengers"
-cps2_mra ssf2t      6 "Super Street Fighter II Turbo"
-cps2_mra ecofghtr   2 "Eco Fighters"
-cps2_mra avsp       2 "Alien vs. Predator"
-cps2_mra dstlk      2 "Darkstalkers: The Night Warriors"
-cps2_mra ringdest   2 "Ring of Destruction: Slammasters II"
-cps2_mra armwar     2 "Armored Warriors"
-cps2_mra xmcota     2 "X-Men: Children of the Atom"
-cps2_mra nwarr      2 "Night Warriors: Darkstalkers' Revenge"
-cps2_mra cybots     2 "Cyberbots: Fullmetal Madness"
-cps2_mra sfa        6 "Street Fighter Alpha: Warriors' Dreams"
-cps2_mra mmancp2u   2 "Mega Man: The Power Battle"
-cps2_mra mmancp2ur1 2 "Mega Man: The Power Battle"
-cps2_mra rmancp2j   2 "Rockman: The Power Battle"
-cps2_mra msh        2 "Marvel Super Heroes"
-cps2_mra 19xx       2 "19XX: The War Against Destiny"
-cps2_mra ddsom      2 "Dungeons & Dragons: Shadow over Mystara"
-cps2_mra sfa2       6 "Street Fighter Alpha 2"
-cps2_mra sfz2al     6 "Street Fighter Zero 2 Alpha"
-cps2_mra spf2t      2 "Super Puzzle Fighter II Turbo"
-cps2_mra megaman2   2 "Mega Man 2: The Power Fighters"
-cps2_mra qndream    2 "Quiz Nanairo Dreams: Nijiirochou no Kiseki"
-cps2_mra xmvsf      2 "X-Men Vs. Street Fighter"
-cps2_mra batcir     2 "Battle Circuit"
-cps2_mra vsav       6 "Vampire Savior: The Lord of Vampire"
-cps2_mra mshvsf     2 "Marvel Super Heroes Vs. Street Fighter"
-cps2_mra csclub     2 "Capcom Sports Club"
-cps2_mra sgemf      2 "Super Gem Fighter Mini Mix"
-cps2_mra vhunt2     2 "Vampire Hunter 2: Darkstalkers Revenge"
-cps2_mra vsav2      6 "Vampire Savior 2: The Lord of Vampire"
-cps2_mra mvsc       6 "Marvel Vs. Capcom: Clash of Super Heroes"
-cps2_mra sfa3       6 "Street Fighter Alpha 3"
-cps2_mra jyangoku   2 "Jyangokushi: Haoh no Saihai"
-cps2_mra hsf2       2 "Hyper Street Fighter II: The Anniversary Edition"
+FIGHTBTN="JAB PUNCH,STRONG PUNCH,FIERCE PUNCH,SHORT KICK,FORWARD KICK,ROUNDHOUSE KICK"
+
+cps2_mra ddtod      2 "Attack,Jump,None,None,None,None" "DnD Tower of Doom"
+cps2_mra ssf2       6 "$FIGHTBTN" "Super Street Fighter II: The New Challengers"
+cps2_mra ssf2t      6 "$FIGHTBTN" "Super Street Fighter II Turbo"
+cps2_mra ecofghtr   2 "Attack,Jump,None,None,None,None" "Eco Fighters"
+cps2_mra avsp       2 "Attack,Jump,None,None,None,None" "Alien vs. Predator"
+cps2_mra dstlk      2 "Attack,Jump,None,None,None,None" "Darkstalkers: The Night Warriors"
+cps2_mra ringdest   2 "Attack,Jump,None,None,None,None" "Ring of Destruction: Slammasters II"
+cps2_mra armwar     2 "Attack,Jump,None,None,None,None" "Armored Warriors"
+cps2_mra xmcota     2 "Attack,Jump,None,None,None,None" "X-Men: Children of the Atom"
+cps2_mra nwarr      2 "Attack,Jump,None,None,None,None" "Night Warriors: Darkstalkers' Revenge"
+cps2_mra cybots     2 "Attack,Jump,None,None,None,None" "Cyberbots: Fullmetal Madness"
+cps2_mra sfa        6 "$FIGHTBTN" "Street Fighter Alpha: Warriors' Dreams"
+cps2_mra mmancp2u   2 "ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" "Mega Man: The Power Battle"
+cps2_mra mmancp2ur1 2 "ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" "Mega Man: The Power Battle"
+cps2_mra rmancp2j   2 "ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" "Rockman: The Power Battle"
+cps2_mra msh        2 "Attack,Jump,None,None,None,None" "Marvel Super Heroes"
+cps2_mra 19xx       2 "Attack,Jump,None,None,None,None" "19XX: The War Against Destiny"
+cps2_mra ddsom      2 "Attack,Jump,None,None,None,None" "Dungeons & Dragons: Shadow over Mystara"
+cps2_mra sfa2       6 "$FIGHTBTN" "Street Fighter Alpha 2"
+cps2_mra sfz2al     6 "$FIGHTBTN" "Street Fighter Zero 2 Alpha"
+cps2_mra spf2t      2 "ROTATE LEFT,ROTATE RIGHT,-,-,-,-,START,COIN,CORE CREDITS" "Super Puzzle Fighter II Turbo"
+cps2_mra megaman2   2 "ATTACK,JUMP,WEAPON CHANGE,-,-,-,START,COIN,CORE CREDITS" "Mega Man 2: The Power Fighters"
+cps2_mra qndream    2 "BUTTON 1,BUTTON 2,BUTTON 3,BUTTON 4,-,-,START,COIN,CORE CREDITS" "Quiz Nanairo Dreams: Nijiirochou no Kiseki"
+cps2_mra xmvsf      2 "Attack,Jump,None,None,None,None" "X-Men Vs. Street Fighter"
+cps2_mra batcir     2 "Attack,Jump,None,None,None,None" "Battle Circuit"
+cps2_mra vsav       6 "$FIGHTBTN" "Vampire Savior: The Lord of Vampire"
+cps2_mra mshvsf     2 "Attack,Jump,None,None,None,None" "Marvel Super Heroes Vs. Street Fighter"
+cps2_mra csclub     2 "SHOOT/WEAK SHOT,PASS/STRONG SHOT,DASH/LOB/JUMP,-,-,-,START,COIN,CORE CREDITS" "Capcom Sports Club"
+cps2_mra sgemf      2 "Attack,Jump,None,None,None,None" "Super Gem Fighter Mini Mix"
+cps2_mra vhunt2     2 "Attack,Jump,None,None,None,None" "Vampire Hunter 2: Darkstalkers Revenge"
+cps2_mra vsav2      6 "$FIGHTBTN" "Vampire Savior 2: The Lord of Vampire"
+cps2_mra mvsc       6 "$FIGHTBTN" "Marvel Vs. Capcom: Clash of Super Heroes"
+cps2_mra sfa3       6 "$FIGHTBTN" "Street Fighter Alpha 3"
+cps2_mra jyangoku   2 "Attack,Jump,None,None,None,None" "Jyangokushi: Haoh no Saihai"
+cps2_mra hsf2       2 "Attack,Jump,None,None,None,None" "Hyper Street Fighter II: The Anniversary Edition"
 
 # Games released on CPS-2 hardware by Takumi
-cps2_mra gigawing   2 "Giga Wing"
-cps2_mra mmatrix    2 "Mars Matrix: Hyper Solid Shooting"
+cps2_mra gigawing   2 "Attack,Jump,None,None,None,None" "Giga Wing"
+cps2_mra mmatrix    2 "Attack,Jump,None,None,None,None" "Mars Matrix: Hyper Solid Shooting"
 
 # Games released on CPS-2 hardware by Mitchell
-cps2_mra mpang      2 "Mighty! Pang"
-cps2_mra pzloop2    2 "Puzz Loop 2"
-cps2_mra choko      2 "Janpai Puzzle Choukou"
+cps2_mra mpang      2 "Attack,Jump,None,None,None,None" "Mighty! Pang"
+cps2_mra pzloop2    2 "Attack,Jump,None,None,None,None" "Puzz Loop 2"
+cps2_mra choko      2 "Attack,Jump,None,None,None,None" "Janpai Puzzle Choukou"
 
 # Games released on CPS-2 hardware by Eighting/Raizing
-cps2_mra dimahoo    2 "Dimahoo"
-cps2_mra 1944       2 "1944: The Loop Master"
+cps2_mra dimahoo    2 "Attack,Jump,None,None,None,None" "Dimahoo"
+cps2_mra 1944       2 "Attack,Jump,None,None,None,None" "1944: The Loop Master"
 
 # Games released on CPS-2 hardware by Cave
-cps2_mra progear    2 "Progear"
+cps2_mra progear    2 "Attack,Jump,None,None,None,None" "Progear"

@@ -29,9 +29,14 @@
     <year>2001</year>
     <manufacturer>Cave (Capcom license)</manufacturer>
     <players>2</players>
-    <button>3</button>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
+    <region>USA</region>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <mratimestamp>20210227</mratimestamp>
+    <platform>CPS</platform>
     <rom index="0" zip="progear.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 04 80 04 80 24 80 64 
@@ -74,5 +79,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names=",Attack,Jump,None,None,None,None,Start,Coin,Pause" default=",X,B,A,L,R,Select,Select,Start,-" count="6"/>
 </misterromdescription>

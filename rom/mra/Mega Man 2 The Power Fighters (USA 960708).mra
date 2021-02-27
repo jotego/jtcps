@@ -29,9 +29,14 @@
     <year>1996</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
-    <button>3</button>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
+    <region>USA</region>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <mametimestamp>20210223</mametimestamp>
+    <platform>CPS</platform>
     <rom index="0" zip="megaman2.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 06 00 07 00 17 00 57 
@@ -69,5 +74,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="ATTACK,JUMP,WEAPON,CHANGE,-,-,-,START,COIN,CORE CREDITS" default="Y,X,B,A,L,R,Select,Start"/>
 </misterromdescription>

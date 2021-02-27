@@ -29,9 +29,14 @@
     <year>1997</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
-    <button>6</button>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
+    <region>Euro</region>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <mratimestamp>20210227</mratimestamp>
+    <platform>CPS</platform>
     <rom index="0" zip="vsav.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 10 00 11 00 31 00 b1 
@@ -79,5 +84,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Punch0,Punch1,Punch2,Kick0,Kick1,Kick2,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names=",JAB PUNCH,STRONG PUNCH,FIERCE PUNCH,SHORT KICK,FORWARD KICK,ROUNDHOUSE KICK,Start,Coin,Pause" default=",X,B,A,L,R,Select,Select,Start,-" count="6"/>
 </misterromdescription>
