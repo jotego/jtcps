@@ -91,7 +91,6 @@ wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
 wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
 wire [24:0] pcm_addr  = bulk_addr - { pcm_start[14:0], 10'd0 };
 reg  [24:0] gfx_addr;
-reg  [ 1:0] gfx_bank;
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
@@ -114,12 +113,8 @@ always @(*) begin
 `ifdef CPS2
     // CPS2 address lines are scrambled
     gfx_addr = { gfx_addr[24:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
-    gfx_bank = {1'b1, gfx_addr[23]}
-`else
-    gfx_bank  = 2'b11;
 `endif
 end
-
 
 // The decryption is literally copied from MAME, it is up to
 // the synthesizer to optimize the code. And it will.
@@ -150,7 +145,7 @@ always @(posedge clk) begin
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_ba   <= is_cpu ? 2'd0 : ( is_gfx ? gfx_bank : 2'd1 );
+        prog_ba   <= is_cpu ? 2'd0 : ( is_gfx ? 2'd2 : 2'd1 );
         if( is_kabuki )
             kabuki_sr <= 2'b11;
         if( is_cps2 ) begin
