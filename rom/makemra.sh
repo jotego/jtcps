@@ -179,8 +179,11 @@ function cps2_mra {
 
     ALT=_alt/_"$ALT"
     mkdir -p $OUTDIR/"$ALT"
+    echo -----------------------------------------------
+    echo $GAME
     mame2dip $GAME.xml -rbf jtcps2 -outdir $OUTDIR -altfolder "$ALT" \
         -frac 2 gfx 4 -qsound \
+        -corebuttons 6 \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \
         -header 44 0xff \
