@@ -34,10 +34,10 @@
     <region>World</region>
     <mraauthor>jotego,atrac17</mraauthor>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
-    <mratimestamp>20210227</mratimestamp>
-    <platform>CPS</platform>
-    <rom index="0" zip="ssf2.zip|qsound.zip" type="merged" md5="None">
+    <mameversion>0229</mameversion>
+    <mratimestamp>20210301</mratimestamp>
+    <platform>CPS2</platform>
+    <rom index="0" zip="ssf2.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
         00 0a 80 0a 80 1a 80 4a 
         ff ff ff ff ff ff ff ff 

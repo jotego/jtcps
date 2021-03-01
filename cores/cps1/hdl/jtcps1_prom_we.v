@@ -28,10 +28,10 @@ parameter        EEPROM_AW  = 7
 )(
     input                clk,
     input                downloading,
-    input      [24:0]    ioctl_addr,    // max 32 MB
-    input      [ 7:0]    ioctl_data,
+(*keep*)    input      [24:0]    ioctl_addr,    // max 32 MB
+(*keep*)    input      [ 7:0]    ioctl_data,
     output     [ 7:0]    ioctl_data2sd,
-    input                ioctl_wr,
+(*keep*)    input                ioctl_wr,
     input                ioctl_ram,
     output reg [21:0]    prog_addr,
     output     [15:0]    prog_data,
@@ -41,7 +41,7 @@ parameter        EEPROM_AW  = 7
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
-    output               dwnld_busy,
+    output reg           dwnld_busy,
     // EEPROM
     output reg [15:0]    dump_din,
     input      [15:0]    dump_dout,
@@ -69,7 +69,7 @@ localparam [24:0] FULL_HEADER   = 25'd64,
 localparam [ 5:0] JOY_BYTE      = 6'h28;
 
 reg  [STARTW-1:0] starts;
-wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
+wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start, qsnd_end;
 reg        [ 7:0] pre_data;
 reg        [ 1:0] kabuki_sr; // For 96MHz the write pulse must last two cycles
 
@@ -77,14 +77,13 @@ assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
+assign qsnd_end   = starts[63:48]+16'h7;
 assign prog_data  = {2{pre_data}};
 `ifdef CPS15
 assign kabuki_we  = kabuki_sr[0];
 `else
 assign kabuki_we  = 0;
 `endif
-
-assign dwnld_busy = downloading;
 
 wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
 wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
@@ -101,6 +100,14 @@ wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
+`ifdef CPS1
+// in CPS1 games the download is over 8MB after the GFX ROM start
+(*keep*) wire is_over   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >= (gfx_start+16'h2000);
+`else
+// in CPS1/1.5 games the download is over 8kB after the QSound firmware
+(*keep*) wire is_over   = ioctl_addr >= FULL_HEADER &&
+    (bulk_addr[24:10] == qsnd_end && &bulk_addr[9:0]);
+`endif
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -141,8 +148,16 @@ always @(*) begin
     end
 end
 
+initial begin
+    dwnld_busy = 0;
+end
+
 always @(posedge clk) begin
     if ( ioctl_wr && !ioctl_ram ) begin
+        if( ~|ioctl_addr )
+            dwnld_busy <= 1;
+        else if( is_over )
+            dwnld_busy <= 0;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
@@ -181,8 +196,9 @@ always @(posedge clk) begin
         cps2_key_we <= 0;
         if(!downloading || prog_rdy) prog_we  <= 1'b0;
         if( !downloading ) begin
-            decrypt   <= 0;
-            prom_we   <= 0;
+            decrypt    <= 0;
+            prom_we    <= 0;
+            dwnld_busy <= 0;
         end
         kabuki_sr <= kabuki_sr>>1;
         cfg_we    <= 0;
