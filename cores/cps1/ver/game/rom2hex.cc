@@ -90,28 +90,32 @@ int main(int argc, char *argv[]) {
     char *data = new char[8*1024*1024];
     try{
         // VRAM
+        const int VRAM_OFFSET=0x20'0000;
+        const int ORAM_OFFSET=0x28'0000;
         if( game.size() && scene.size() ) {
             clear_bank(data);
-            read_vram( data, game, scene, "vram", 0x10'0000, 192 );
+            read_vram( data, game, scene, "vram", VRAM_OFFSET, 192 );
             if( cps2 ) {
-                read_vram( data, game, scene, "obj", 0x20'0000, 8 );
+                read_vram( data, game, scene, "obj", ORAM_OFFSET, 8 );
                 dump_cps2obj( game, scene );
             }
+            read_bank( data, fin, 0, snd_start );   // Main CPU
             dump_bank( data, "sdram_bank0.hex" );
         }
-        // Main CPU
-        clear_bank( data );
-        read_bank( data, fin, 0, snd_start );
-        dump_bank( data, "sdram_bank0.hex" );
         // GFX
-        clear_bank( data );
-        read_bank( data, fin, gfx_start, 0 );
-        if( cps2 ) {
-            const int banksize=0x20'0000;
-            for (int i = 0; i < 0x80'0000; i += banksize)
-                rewrite( (uint64_t *)(data+i) );
+        int rd_ptr = gfx_start;
+        for( int bank=2; bank<4 && rd_ptr < qsnd_start; bank++, rd_ptr+=0x80'0000 ) {
+            clear_bank( data );
+            read_bank( data, fin, rd_ptr, rd_ptr+0x80'0000 );
+            if( cps2 ) {
+                const int banksize=0x20'0000;
+                for (int i = 0; i < 0x80'0000; i += banksize)
+                    rewrite( (uint64_t *)(data+i) ); // address wires are shuffled
+            }
+            char szaux[32];
+            sprintf(szaux,"sdram_bank%d.hex",bank);
+            dump_bank( data, szaux );
         }
-        dump_bank( data, "sdram_bank2.hex" );
         // Sound
         clear_bank( data );
         read_bank( data, fin, snd_start, pcm_start );

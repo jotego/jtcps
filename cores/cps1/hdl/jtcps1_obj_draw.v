@@ -78,6 +78,7 @@ always @(posedge clk, posedge rst) begin
         idle       <= 1;
         wait_cycle <= 0;
         draw_cnt   <= 8'h0;
+        rom_bank   <= 2'd0;
     end else begin
         wait_cycle <= wait_cycle >> 1;
         if( idle ) begin
@@ -92,9 +93,10 @@ always @(posedge clk, posedge rst) begin
                 read       <= 2'b11;
                 draw       <= 0;
             end else begin
-                rom_cs <= 0;
-                draw   <= 0;
-                buf_wr <= 0;
+                rom_cs   <= 0;
+                draw     <= 0;
+                buf_wr   <= 0;
+                rom_bank <= 2'd0;
             end
         end else begin
             if( draw ) begin
