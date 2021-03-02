@@ -187,7 +187,7 @@ function cps2_mra {
     echo -----------------------------------------------
     echo Dumping $GAME
     mame2dip $GAME.xml -rbf jtcps2 -outdir $OUTDIR -altfolder "$ALT" \
-        -frac 2 gfx 4 -qsound \
+        -setword gfx 64 -qsound \
         -corebuttons 6 \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \
@@ -198,66 +198,66 @@ function cps2_mra {
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
         -info mraauthor jotego,atrac17 \
-        -info mraversion 1.0 \
         -info mameversion 0229 \
-        -info mratimestamp $(date +"%Y%m%d") \
-        -info platform CPS2 \
+        -info mratimestamp $(date +"%Y%m%d%H%M%S") \
+        -info platform CPS-2 \
         $BUTCFG \
         -buttons $BUTSTR \
         -nvram 128 -ddr
 }
 
-FIGHTBTN="Light Punch,Medium Punch,Heavy Punch,Light Kick,Medium Kick,Heavy Kick"
-FIGHTBTNSF="Jab Punch,Strong Punch,Fierce Punch,Short Kick,Forward Kick,Roundhouse Kick"
 
-cps2_mra ddtod      4 "Attack,Jump,Item,Select" "Dungeons & Dragons: Tower of Doom"
-cps2_mra ssf2       6 "$FIGHTBTNSF" "Super Street Fighter II: The New Challengers"
-cps2_mra ssf2t      6 "$FIGHTBTNSF" "Super Street Fighter II Turbo"
-cps2_mra ecofghtr   3 "Rotate CCW,Shoot,Rotate CW" "Eco Fighters"
-cps2_mra avsp       3 "Shoot,Attack,Jump/Dash" "Alien vs. Predator"
-cps2_mra dstlk      6 "$FIGHTBTN" "Darkstalkers: The Night Warriors"
-cps2_mra ringdest   5 "Grab,Light Punch,Heavy Punch,Light Kick,Heavy Kick,Unused" "Ring of Destruction Slammasters II"
-cps2_mra armwar     3 "Attack,Jump,Sub Weapons" "Armored Warriors"
-cps2_mra xmcota     6 "$FIGHTBTN" "X-Men: Children of the Atom"
-cps2_mra nwarr      6 "$FIGHTBTN" "Night Warriors: Darkstalkers' Revenge"
-cps2_mra cybots     4 "Attack 1,Attack 2,Boost,Weapon" "Cyberbots: Fullmetal Madness"
-cps2_mra sfa        6 "$FIGHTBTNSF" "Street Fighter Alpha: Warriors' Dreams"
-cps2_mra mmancp2u   3 "Attack,Jump,Weapon Change" "Mega Man: The Power Battle"
-cps2_mra mmancp2ur1 3 "Attack,Jump,Weapon Change" "Mega Man: The Power Battle"
-cps2_mra rmancp2j   3 "Attack,Jump,Weapon Change" "Rockman: The Power Battle"
-cps2_mra msh        6 "$FIGHTBTN" "Marvel Super Heroes"
-cps2_mra 19xx       2 "Shot,Bomb" "19XX: The War Against Destiny"
-cps2_mra ddsom      4 "Attack,Jump,Select,Magic" "Dungeons & Dragons: Shadow over Mystara"
-cps2_mra sfa2       6 "$FIGHTBTNSF" "Street Fighter Alpha 2"
-cps2_mra sfz2al     6 "$FIGHTBTNSF" "Street Fighter Zero 2 Alpha"
-cps2_mra spf2t      2 "Rotate Left,Rotate Right" "Super Puzzle Fighter II Turbo"
-cps2_mra megaman2   3 "Attack,Jump,Weapon Change" "Mega Man 2: The Power Fighters"
-cps2_mra qndream    4 "Button 1,Button 2,Button 3,Button 4" "Quiz Nanairo Dreams: Nijiirochou no Kiseki"
-cps2_mra xmvsf      6 "$FIGHTBTN" "X-Men Vs. Street Fighter"
-cps2_mra batcir     2 "Attack,Jump" "Battle Circuit"
-cps2_mra vsav       6 "$FIGHTBTN" "Vampire Savior: The Lord of Vampire"
-cps2_mra mshvsf     6 "$FIGHTBTN" "Marvel Super Heroes Vs. Street Fighter"
-cps2_mra csclub     3 "Shoot/Weak Shot,Pass/Strong Shot,Dash/Lob/Jump" "Capcom Sports Club"
-cps2_mra sgemf      3 "Punch,Kick,Special" "Super Gem Fighter Mini Mix"
-cps2_mra vhunt2     6 "$FIGHTBTN" "Vampire Hunter 2 Darkstalkers Revenge"
-cps2_mra vsav2      6 "$FIGHTBTN" "Vampire Savior 2: The Lord of Vampire"
-cps2_mra mvsc       6 "$FIGHTBTN" "Marvel Vs. Capcom Clash of Super Heroes"
-cps2_mra sfa3       6 "$FIGHTBTNSF" "Street Fighter Alpha 3"
-cps2_mra jyangoku   2 "B0,B1" "Jyangokushi: Haoh no Saihai"
-cps2_mra hsf2       6 "$FIGHTBTNSF" "Hyper Street Fighter II: The Anniversary Edition"
+#$BUTSTR W/ Kick Harness except ringdest
+FIGHTBTN="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick"
 
-# Games released on CPS-2 hardware by Takumi
-cps2_mra gigawing   2 "Shot,Force Bomb" "Giga Wing"
-cps2_mra mmatrix    1 "Shot" "Mars Matrix: Hyper Solid Shooting"
+#Games released on CPS-2 hardware in chronological order by Capcom Co., Ltd.
+cps2_mra ssf2           6 "$FIGHTBTN" "Super Street Fighter II: The New Challengers"
+cps2_mra ecofghtr       3 "Rotate CCW,Shoot,Rotate CW" "Eco Fighters"
+cps2_mra ddtod          4 "Attack,Jump,Item,Select" "Dungeons & Dragons: Tower of Doom"
+cps2_mra ssf2t          6 "$FIGHTBTN" "Super Street Fighter II Turbo"
+cps2_mra avsp           3 "Shoot,Attack,Jump/Dash" "Alien vs. Predator"
+cps2_mra dstlk          6 "$FIGHTBTN" "Darkstalkers: The Night Warriors"
+cps2_mra ringdest       5 "Grab,Light Punch,Heavy Punch,Light Kick,Heavy Kick,Unused" "Ring of Destruction Slammasters II"
+cps2_mra armwar         3 "Attack,Jump,Sub Weapons" "Armored Warriors"
+cps2_mra xmcota         6 "$FIGHTBTN" "X-Men: Children of the Atom"
+cps2_mra nwarr          6 "$FIGHTBTN" "Night Warriors: Darkstalkers' Revenge"
+cps2_mra cybots         4 "Attack 1,Attack 2,Boost,Weapon" "Cyberbots: Fullmetal Madness"
+cps2_mra sfa            6 "$FIGHTBTN" "Street Fighter Alpha: Warriors' Dreams"
+cps2_mra mmancp2u       3 "Attack,Jump,Weapon Change" "Mega Man: The Power Battle"
+cps2_mra rmancp2j       3 "Attack,Jump,Weapon Change" "Rockman: The Power Battle"
+cps2_mra msh            6 "$FIGHTBTN" "Marvel Super Heroes"
+cps2_mra 19xx           2 "Shot,Bomb" "19XX: The War Against Destiny"
+cps2_mra ddsom          4 "Attack,Jump,Select,Magic" "Dungeons & Dragons: Shadow over Mystara"
+cps2_mra sfa2           6 "$FIGHTBTN" "Street Fighter Alpha 2"
+cps2_mra spf2t          2 "Rotate Left,Rotate Right" "Super Puzzle Fighter II Turbo"
+cps2_mra megaman2       3 "Attack,Jump,Weapon Change" "Mega Man 2: The Power Fighters"
+cps2_mra sfz2al         6 "$FIGHTBTN" "Street Fighter Zero 2 Alpha"
+cps2_mra qndream        4 "Button 1,Button 2,Button 3,Button 4" "Quiz Nanairo Dreams: Nijiirochou no Kiseki"
+cps2_mra xmvsf          6 "$FIGHTBTN" "X-Men Vs. Street Fighter"
+cps2_mra batcir         2 "Attack,Jump" "Battle Circuit"
+cps2_mra vsav           6 "$FIGHTBTN" "Vampire Savior: The Lord of Vampire"
+cps2_mra mshvsf         6 "$FIGHTBTN" "Marvel Super Heroes Vs. Street Fighter"
+cps2_mra csclub         3 "Shoot/Weak Shot,Pass/Strong Shot,Dash/Lob/Jump" "Capcom Sports Club"
+cps2_mra sgemf          3 "Punch,Kick,Special" "Super Gem Fighter Mini Mix"
+cps2_mra vhunt2         6 "$FIGHTBTN" "Vampire Hunter 2 Darkstalkers Revenge"
+cps2_mra vsav2          6 "$FIGHTBTN" "Vampire Savior 2: The Lord of Vampire"
+cps2_mra mvsc           6 "$FIGHTBTN" "Marvel Vs. Capcom: Clash of Super Heroes"
+cps2_mra sfa3           6 "$FIGHTBTN" "Street Fighter Alpha 3"
+cps2_mra jyangoku       2 "Tsumo,Open Menu" "Jyangokushi: Haoh no Saihai"
+cps2_mra hsf2           6 "$FIGHTBTN" "Hyper Street Fighter II: The Anniversary Edition"
 
-# Games released on CPS-2 hardware by Mitchell
-cps2_mra mpang      1 "Shot" "Mighty! Pang"
-cps2_mra pzloop2    1 "B0" "Puzz Loop 2"
-cps2_mra choko      3 "B0,B1,B2" "Janpai Puzzle Choukou"
+#Games released on CPS-2 hardware by Cave Co., Ltd.
+cps2_mra progear        3 "Shot,Bomb,Unknown" "Progear"
 
-# Games released on CPS-2 hardware by Eighting/Raizing
-cps2_mra dimahoo    3 "Shot,Bomber,Unknown" "Dimahoo"
-cps2_mra 1944       2 "Shot,Bomb" "1944: The Loop Master"
+#Games released on CPS-2 hardware by Eighting/Raizing
+cps2_mra dimahoo        3 "Main Shot,Bomb,Main Shot (Optional),Unknown" "Dimahoo"
+cps2_mra 1944           2 "Shot,Bomb" "1944: The Loop Master"
 
-# Games released on CPS-2 hardware by Cave
-cps2_mra progear    3 "Shot,Bomb,Unknown" "Progear"
+#Games released on CPS-2 hardware by Mitchell Corp.
+cps2_mra mpang          1 "Shot" "Mighty! Pang"
+cps2_mra pzloop2        1 "Shot" "Puzz Loop 2"
+cps2_mra choko          3 "Select,Cancel,Help" "Janpai Puzzle Choukou"
+
+#Games released on CPS-2 hardware by Takumi Corporation
+cps2_mra gigawing       2 "Shot,Force Bomb" "Giga Wing"
+cps2_mra mmatrix        1 "Shot" "Mars Matrix: Hyper Solid Shooting"

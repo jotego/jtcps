@@ -33,9 +33,8 @@
     <rotation>horizontal</rotation>
     <region>World</region>
     <mraauthor>jotego,atrac17</mraauthor>
-    <mraversion>1.0</mraversion>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210301</mratimestamp>
+    <mratimestamp>20210302</mratimestamp>
     <platform>CPS2</platform>
     <rom index="0" zip="ssf2t.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>

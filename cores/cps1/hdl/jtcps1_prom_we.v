@@ -41,7 +41,7 @@ parameter        EEPROM_AW  = 7
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
     output reg           cfg_we,
-    output reg           dwnld_busy,
+    output               dwnld_busy,
     // EEPROM
     output reg [15:0]    dump_din,
     input      [15:0]    dump_dout,
@@ -53,6 +53,8 @@ parameter        EEPROM_AW  = 7
     output reg           cps2_key_we,
     output reg [ 1:0]    joymode
 );
+
+assign dwnld_busy = downloading;
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
@@ -100,14 +102,6 @@ wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
 wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
 wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
 wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
-`ifdef CPS1
-// in CPS1 games the download is over 8MB after the GFX ROM start
-(*keep*) wire is_over   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >= (gfx_start+16'h2000);
-`else
-// in CPS1/1.5 games the download is over 8kB after the QSound firmware
-(*keep*) wire is_over   = ioctl_addr >= FULL_HEADER &&
-    (bulk_addr[24:10] == qsnd_end && &bulk_addr[9:0]);
-`endif
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
@@ -148,16 +142,8 @@ always @(*) begin
     end
 end
 
-initial begin
-    dwnld_busy = 0;
-end
-
 always @(posedge clk) begin
     if ( ioctl_wr && !ioctl_ram ) begin
-        if( ~|ioctl_addr )
-            dwnld_busy <= 1;
-        else if( is_over )
-            dwnld_busy <= 0;
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
@@ -198,7 +184,7 @@ always @(posedge clk) begin
         if( !downloading ) begin
             decrypt    <= 0;
             prom_we    <= 0;
-            dwnld_busy <= 0;
+            // dwnld_busy <= 0;
         end
         kabuki_sr <= kabuki_sr>>1;
         cfg_we    <= 0;
