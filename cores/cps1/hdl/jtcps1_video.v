@@ -174,7 +174,7 @@ assign obj_dma_ok = 0;
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
 
-assign objdma_en = 1; //ppu_ctrl[4]; // not sure about this bit, it could be 5
+assign objdma_en = 1; // does this signal exist?
 assign scrdma_en = ppu_ctrl[3:1];
 assign row_en    = ppu_ctrl[0];
 
