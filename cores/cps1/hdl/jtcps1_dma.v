@@ -55,16 +55,16 @@ module jtcps1_dma(
     input              flip,
 
     // control registers
+    input      [ 3:1]  scrdma_en,
+
     input      [15:0]  vram1_base,
     input      [15:0]  hpos1,
     input      [15:0]  vpos1,
 
-    input              dma2_en,
     input      [15:0]  vram2_base,
     input      [15:0]  hpos2,
     input      [15:0]  vpos2,
 
-    input              dma3_en,
     input      [15:0]  vram3_base,
     input      [15:0]  hpos3,
     input      [15:0]  vpos3,
@@ -349,9 +349,9 @@ always @(posedge clk) begin
                 pal_cnt          <= 9'd0;
             end
             tasks[ROW ] <= row_en & tile_ok;
-            tasks[SCR1] <= vscr1[2:0]==3'd0 && tile_ok;
-            tasks[SCR2] <= dma2_en && ( vscr2[3:0]=={ flip, 3'd0 } && tile_ok);
-            tasks[SCR3] <= dma3_en && ((vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs);
+            tasks[SCR1] <= scrdma_en[1] && vscr1[2:0]==3'd0 && tile_ok;
+            tasks[SCR2] <= scrdma_en[2] && ( vscr2[3:0]=={ flip, 3'd0 } && tile_ok);
+            tasks[SCR3] <= scrdma_en[3] && ((vscr3[3:0]=={ flip, 3'd0 } && tile_ok) || tile_vs);
             scr_cnt     <= 8'd0;
             check_adv   <= 1;
             row_scr     <= row_en ? row_scr_next : {12'b0, hpos2[3:0] };

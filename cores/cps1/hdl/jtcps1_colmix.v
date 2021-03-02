@@ -32,6 +32,7 @@ module jtcps1_colmix(
 
     // Layer priority
     input   [15:0]     layer_ctrl,
+    input   [ 3:1]     scrdma_en,
     input   [ 7:0]     layer_mask0, // mask for enable bits
     input   [ 7:0]     layer_mask1,
     input   [ 7:0]     layer_mask2,
@@ -83,9 +84,9 @@ endfunction
 
 // OBJ layer cannot be disabled by hardware
 wire [ 8:0] obj_mask  = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
-wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& gfx_en[0])}} };
-wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& gfx_en[1])}} };
-wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& gfx_en[2])}} };
+wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& scrdma_en[1] & gfx_en[0])}} };
+wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& scrdma_en[2] & gfx_en[1])}} };
+wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& scrdma_en[3] & gfx_en[2])}} };
 wire [ 8:0] sta0_mask = { star0_pxl[8:4], star0_pxl[3:0] | {4{~lyren[3]}} };
 wire [ 8:0] sta1_mask = { star1_pxl[8:4], star1_pxl[3:0] | {4{~lyren[4]}} };
 

@@ -164,7 +164,8 @@ wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 wire       [15:0]  objtable_data;
 
-wire               row_en, dma2_en, dma3_en;
+wire               row_en;
+wire       [ 3:1]  scrdma_en;
 
 `ifdef CPS2
 assign obj_dma_ok = 0;
@@ -173,9 +174,8 @@ assign obj_dma_ok = 0;
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
 
-assign dma2_en = 1'b1; //ppu_ctrl[4];
-assign dma3_en = 1'b1; //ppu_ctrl[1];
-assign row_en  = ppu_ctrl[0];
+assign scrdma_en = ppu_ctrl[3:1];
+assign row_en    = ppu_ctrl[0];
 
 `ifdef JTCPS_WATCH
 jtcps1_watch u_watch(
@@ -218,16 +218,15 @@ jtcps1_dma u_dma(
     .tile_addr      ( tile_addr         ),
     .tile_data      ( tile_data         ),
 
+    .scrdma_en      ( scrdma_en         ),
     .vram1_base     ( vram1_base        ),
     .hpos1          ( hpos1             ),
     .vpos1          ( vpos1             ),
 
-    .dma2_en        ( dma2_en           ),
     .vram2_base     ( vram2_base        ),
     .hpos2          ( hpos2             ),
     .vpos2          ( vpos2             ),
 
-    .dma3_en        ( dma3_en           ),
     .vram3_base     ( vram3_base        ),
     .hpos3          ( hpos3             ),
     .vpos3          ( vpos3             ),
@@ -527,6 +526,7 @@ jtcps1_colmix u_colmix(
     .pxl_cen    ( pxl_cen       ),
 
     .gfx_en     ( gfx_en        ),
+    .scrdma_en  ( scrdma_en     ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),
