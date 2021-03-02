@@ -79,6 +79,7 @@ module jtcps1_dma(
     output     [15:0]  tile_data,
 
     // OBJ
+    input              objdma_en,
     input      [15:0]  vram_obj_base,
     input      [ 9:0]  obj_table_addr,
     input              obj_dma_ok,
@@ -329,7 +330,7 @@ always @(posedge clk) begin
             line_req    <= 0;
             pal_busy    <= 0;
             `ifndef CPS2
-                if( tile_vs ) begin
+                if( tile_vs && objdma_en) begin
                     wr_obj_bank <= ~wr_obj_bank;
                     rd_obj_bank <= wr_obj_bank;
                     obj_fill    <= 0;

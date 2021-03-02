@@ -164,7 +164,7 @@ wire       [ 9:0]  obj_cache_addr;
 wire               obj_dma_ok;
 wire       [15:0]  objtable_data;
 
-wire               row_en;
+wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
 
 `ifdef CPS2
@@ -174,6 +174,7 @@ assign obj_dma_ok = 0;
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
 
+assign objdma_en = ppu_ctrl[4]; // not sure about this bit, it could be 5
 assign scrdma_en = ppu_ctrl[3:1];
 assign row_en    = ppu_ctrl[0];
 
@@ -245,6 +246,7 @@ jtcps1_dma u_dma(
     .colmix_addr    ( pal_addr          ),
 
     // Objects
+    .objdma_en      ( objdma_en         ),
     .vram_obj_base  ( vram_obj_base     ),
     `ifdef CPS2
         .obj_table_addr ( 10'd0         ),
