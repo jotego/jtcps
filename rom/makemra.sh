@@ -197,7 +197,7 @@ function cps2_mra {
         -header-data 32 FF 00 \
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
-        -info mraauthor jotego,atrac17 \
+        -info mraauthor jotego,atrac17,chocobobobo \
         -info mameversion 0229 \
         -info mratimestamp $(date +"%Y%m%d") \
         -info platform CPS-2 \

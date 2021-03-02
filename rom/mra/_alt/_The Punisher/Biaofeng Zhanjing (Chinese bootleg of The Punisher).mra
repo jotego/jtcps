@@ -24,6 +24,14 @@
     <name>Biaofeng Zhanjing (Chinese bootleg of The Punisher)</name>
     <setname>punisherbz</setname>
     <rbf>jtcps15</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>bootleg</manufacturer>
+    <players>2</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Chinese</region>
     <rom index="0" zip="punisherbz.zip|punisher.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 06 40 08 40 19 
@@ -80,5 +88,5 @@
         <dip name="Demo Sounds" bits="14" ids="On,Off"/>
         <dip name="Unknown" bits="15" ids="On,Off"/>
     </switches>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="3"/>
 </misterromdescription>

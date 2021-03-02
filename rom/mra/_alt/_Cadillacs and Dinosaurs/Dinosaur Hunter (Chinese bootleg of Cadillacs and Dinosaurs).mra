@@ -24,6 +24,14 @@
     <name>Dinosaur Hunter (Chinese bootleg of Cadillacs and Dinosaurs)</name>
     <setname>dinohunt</setname>
     <rbf>jtcps15</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>bootleg</manufacturer>
+    <players>3</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Chinese</region>
     <rom index="0" zip="dinohunt.zip|dino.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 06 40 08 40 19 
@@ -87,5 +95,5 @@
         <dip name="Allow Continue" bits="22" ids="Yes,No"/>
         <dip name="Game Mode" bits="23" ids="Test,Game"/>
     </switches>
-    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="2"/>
 </misterromdescription>

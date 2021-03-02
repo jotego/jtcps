@@ -24,6 +24,14 @@
     <name>Muscle Bomber: The Body Explosion (Japan 930713)</name>
     <setname>mbomberj</setname>
     <rbf>jtcps15</rbf>
+    <mraversion>1.0</mraversion>
+    <mameversion>0228</mameversion>
+    <year>1993</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>4</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Japan</region>
     <rom index="0" zip="mbomberj.zip|slammast.zip|qsound.zip" type="merged" md5="None">
         <part>
         00 08 80 08 80 18 80 30 
@@ -78,5 +86,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Punch,Jump,Action,-,-,-,Start,Coin,Pause" default="Y,X,B,A,L,R,Select,Start,-"/>
+    <buttons names="Punch,Jump,Action,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>
 </misterromdescription>
