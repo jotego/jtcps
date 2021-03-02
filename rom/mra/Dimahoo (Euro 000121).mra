@@ -35,7 +35,7 @@
     <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
     <mratimestamp>20210302</mratimestamp>
-    <platform>CPS2</platform>
+    <platform>CPS-2</platform>
     <rom index="0" zip="dimahoo.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
         00 08 00 09 00 29 00 69 
@@ -74,5 +74,5 @@
         <part>01</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Shot,Bomber,Unknown,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>
+    <buttons names="Main Shot,Bomb,Main Shot (Optional),-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>
 </misterromdescription>

@@ -169,6 +169,7 @@ Muscle Bomber Duo     | 2.0 MB  |  128 kB     | 6 MB    | 4 MB    |
 Game                  | CPU     |   Z80       | GFX     | Q-Sound | Popularity
 ----------------------|---------|-------------|---------|---------|------------
 19XX                  | 2.5 MB  |  128 kB     | 10 MB   | 4 MB    | 191
+1944                  | 1.5 MB  |  128 kB     | 20 MB   | 8 MB    | 161
 Alien vs Predator     | 2.0 MB  |  128 kB     | 16 MB   | 4 MB    | 637
 Armored Warriors      | 4.0 MB  |  256 kB     | 20 MB   | 4 MB    | 278
 Battle Circuit        | 3.5 MB  |  256 kB     | 16 MB   | 4 MB    |  87

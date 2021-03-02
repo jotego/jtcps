@@ -199,7 +199,7 @@ function cps2_mra {
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
         -info mraauthor jotego,atrac17 \
         -info mameversion 0229 \
-        -info mratimestamp $(date +"%Y%m%d%H%M%S") \
+        -info mratimestamp $(date +"%Y%m%d") \
         -info platform CPS-2 \
         $BUTCFG \
         -buttons $BUTSTR \
@@ -250,7 +250,7 @@ cps2_mra hsf2           6 "$FIGHTBTN" "Hyper Street Fighter II: The Anniversary 
 cps2_mra progear        3 "Shot,Bomb,Unknown" "Progear"
 
 #Games released on CPS-2 hardware by Eighting/Raizing
-cps2_mra dimahoo        3 "Main Shot,Bomb,Main Shot (Optional),Unknown" "Dimahoo"
+cps2_mra dimahoo        3 "Main Shot,Bomb,Main Shot (Optional)" "Dimahoo"
 cps2_mra 1944           2 "Shot,Bomb" "1944: The Loop Master"
 
 #Games released on CPS-2 hardware by Mitchell Corp.

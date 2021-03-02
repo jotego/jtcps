@@ -35,7 +35,7 @@
     <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
     <mratimestamp>20210302</mratimestamp>
-    <platform>CPS2</platform>
+    <platform>CPS-2</platform>
     <rom index="0" zip="ddsom.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
         00 10 00 11 00 21 00 81 

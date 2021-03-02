@@ -35,7 +35,7 @@
     <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
     <mratimestamp>20210302</mratimestamp>
-    <platform>CPS2</platform>
+    <platform>CPS-2</platform>
     <rom index="0" zip="batcir.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
         00 0e 00 0f 00 1f 00 5f 

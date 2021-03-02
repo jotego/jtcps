@@ -35,7 +35,7 @@
     <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
     <mratimestamp>20210302</mratimestamp>
-    <platform>CPS2</platform>
+    <platform>CPS-2</platform>
     <rom index="0" zip="nwarr.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
         00 10 00 11 00 21 00 a1 
@@ -83,5 +83,5 @@
         <part>00</part>
     </rom>
     <nvram index="2" size="128"/>
-    <buttons names="Light Punch,Medium Punch,Heavy Punch,Light Kick,Medium Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>
+    <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>
 </misterromdescription>
