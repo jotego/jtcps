@@ -184,10 +184,15 @@ function cps2_mra {
 
     ALT=_alt/_"$ALT"
     mkdir -p $OUTDIR/"$ALT"
+    AUTHOR="jotego,atrac17,chocobobobo"
+    if [[ $GAME = choko || $GAME = jyangoku ]]; then
+        AUTHOR="$AUTHOR,MJY71"
+    fi
     echo -----------------------------------------------
     echo Dumping $GAME
     mame2dip $GAME.xml -rbf jtcps2 -outdir $OUTDIR -altfolder "$ALT" \
         -setword gfx 64 -qsound \
+        -setword qsound 16 \
         -corebuttons 6 \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \
@@ -197,7 +202,7 @@ function cps2_mra {
         -header-data 32 FF 00 \
         -header-data 02 04 06 \
         -header-data 26 28 2A 2C 2E 00 00 30 02 04 08 30 \
-        -info mraauthor jotego,atrac17,chocobobobo \
+        -info mraauthor $AUTHOR \
         -info mameversion 0229 \
         -info mratimestamp $(date +"%Y%m%d") \
         -info platform CPS-2 \

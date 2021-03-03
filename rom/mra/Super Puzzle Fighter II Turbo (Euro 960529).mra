@@ -34,7 +34,7 @@
     <region>Euro</region>
     <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210302</mratimestamp>
+    <mratimestamp>20210303</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="spf2t.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
