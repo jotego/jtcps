@@ -99,12 +99,12 @@ int main(int argc, char *argv[]) {
                 read_vram( data, game, scene, "obj", ORAM_OFFSET, 8 );
                 dump_cps2obj( game, scene );
             }
-            read_bank( data, fin, 0, snd_start );   // Main CPU
-            dump_bank( data, "sdram_bank0.hex" );
         }
+        read_bank( data, fin, 0, snd_start );   // Main CPU
+        dump_bank( data, "sdram_bank0.hex" );
         // GFX
         int rd_ptr = gfx_start;
-        for( int bank=2; bank<4 && rd_ptr < qsnd_start; bank++, rd_ptr+=0x80'0000 ) {
+        for( int bank=cps2?2:3; bank<4 && rd_ptr < qsnd_start; bank++, rd_ptr+=0x80'0000 ) {
             clear_bank( data );
             read_bank( data, fin, rd_ptr, rd_ptr+0x80'0000 );
             if( cps2 ) {
