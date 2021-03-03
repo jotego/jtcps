@@ -169,12 +169,12 @@ always @(posedge clk) begin
                 prom_we   <= 1'b0;
                 if( ioctl_addr[5:0] == CFG_BYTE )
                     {decrypt, pang3_bit} <= ioctl_data[7:6];
-                if( ioctl_addr[5:0] == JOY_BYTE )
-                    joymode <= ioctl_data[1:0];
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
                 prom_we   <=  is_qsnd;
+            end else if( ioctl_addr[5:0] == JOY_BYTE ) begin
+                joymode <= ioctl_data[1:0]; // only CPS2
             end
         end
     end
