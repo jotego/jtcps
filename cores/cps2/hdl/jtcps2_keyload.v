@@ -29,16 +29,34 @@ module jtcps2_keyload(
 reg          last_din_we;
 wire [159:0] cfg;
 reg  [159:0] raw;
+reg  [ 11:0] sum;
+
+reg          betang;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         last_din_we <= 0;
         raw <= 160'd0;
+        sum <= 12'd0;
+        betang <= 1;
     end else begin
         last_din_we <= din_we;
         if( din_we && !last_din_we ) begin
             raw <= { din, raw[159:8] };
+            sum <= sum + {4'd0,din};
         end
+        case(sum)
+            12'h7AC, 12'h7D9, // sda
+            12'h70C, 12'h6F5, 12'h6EB, 12'h646, // SPF2T
+            12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB
+            12'h741,    // M. Pang
+            12'h647, 12'h628, 12'h4bd, // Megaman 2
+            12'h747, 12'h666, 12'h6c0, 12'h6cf, 12'h6ed, // AvsP
+            12'h69C // Puzz Loop 2
+            : betang <= 0;
+            default:
+            betang <= 1;
+        endcase
         // if( last_din_we && !din_we )
         //     $display("%X -> %x", raw, cfg );
     end
@@ -72,7 +90,12 @@ raw[154], raw[155], raw[156], raw[157], raw[158], raw[159], raw[144], raw[145],
 raw[146], raw[147], raw[148], raw[149], raw[150], raw[151], raw[136], raw[137],
 raw[138], raw[139], raw[140], raw[141], raw[142], raw[143], raw[128], raw[129],
 raw[130], raw[131], raw[132], raw[133], raw[134], raw[135], raw[120], raw[121]
-};
+}
+`ifdef CPS2_BETA
+    | {150'd0, {10{betang}}};
+`else
+    ;
+`endif
 
 
 endmodule
