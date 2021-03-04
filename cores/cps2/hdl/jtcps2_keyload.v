@@ -48,11 +48,11 @@ always @(posedge clk, posedge rst) begin
         case(sum)
             12'h7AC, 12'h7D9, // sfa
             12'h725, 12'h59f, 12'h6f8, 12'h743, // sf zero
-            12'h70C, 12'h6F5, 12'h6EB, 12'h646, // SPF2T
+            12'h70C, 12'h6F5, 12'h6EB, 12'h646, 12'h683, // SPF2T
             12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB
             12'h741,    // M. Pang
             12'h6bb,    // Megaman 1
-            12'h647, 12'h628, 12'h4bd, // Megaman 2
+            12'h647, 12'h628, 12'h4bd, 12'h4b5, // Megaman 2
             12'h747, 12'h666, 12'h6c0, 12'h6cf, 12'h6ed, // AvsP
             12'h69C // Puzz Loop 2
             : betang <= 0;
