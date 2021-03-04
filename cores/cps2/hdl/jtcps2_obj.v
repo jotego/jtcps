@@ -88,7 +88,6 @@ jtcps2_obj_frame u_frame(
     .oram_addr  ( oram_addr     ),
     .oram_ok    ( oram_ok       ),
 
-
     // Interface with ORAM frame buffer
     .oframe_we  ( oframe_we     ),
     .obank_frame( obank_frame   )

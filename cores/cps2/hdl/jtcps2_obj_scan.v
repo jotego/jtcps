@@ -54,7 +54,7 @@ wire [ 2:0] prio;
 
 reg         done;
 wire [ 3:0] tile_n, tile_m;
-reg  [ 3:0] n, npos, m;  // tile expansion n==horizontal, m==verital
+reg  [ 3:0] n, npos, m;  // tile expansion n==horizontal, m==vertical
 wire [ 3:0] vsub;
 wire        inzone, vflip;
 reg  [ 2:0] wait_cycle;

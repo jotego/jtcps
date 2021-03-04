@@ -32,7 +32,7 @@ done
 for i in ddtod ssf2 ssf2t ecofghtr avsp dstlk ringdest \
     armwar xmcota nwarr cybots sfa mmancp2u mmancp2ur1 rmancp2j msh \
     19xx ddsom sfa2 sfz2al spf2t megaman2 qndream  xmvsf batcir vsav \
-    mshvsf csclub sgemf vhunt2 vsav2 mvsc sfa3 jyangoku hsf2; do
+    mshvsf csclub sgemf vhunt2 vsav2 mvsc sfa3 jyangoku hsf2 mpang; do
     if [ $GAME = $i ]; then
         GOOD=1
         break
@@ -48,12 +48,14 @@ if [ -n "$SCENE" ]; then
     fi
     MMR_FILE="-d MMR_FILE=\"$GAME/regs${SCENE}.hex\""
     PRIO_SIM="-d PRIO_SIM=$(printf "%d" 0x$(head -n 1 $GAME/prio${SCENE}.hex))"
+    OFF_RST=$(printf " -d XOFF_RST=10\'h%s -d YOFF_RST=10\'h%s\n" $(cat $GAME/off${SCENE}.hex))
     OTHER="$OTHER -d NOMAIN -d NOSOUND -video 3"
     SCENE="-game $GAME -scene $SCENE"
     rm sdram_bank?.hex
 else
     MMR_FILE=
     PRIO_SIM=
+    OFF_RST=
 fi
 
 if [ $GOOD = 0 ]; then
@@ -86,6 +88,6 @@ jtsim -mist \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
-    -videow 384 -videoh 224 $MMR_FILE $PRIO_SIM \
+    -videow 384 -videoh 224 $MMR_FILE $PRIO_SIM $OFF_RST \
     -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO \
     $OTHER

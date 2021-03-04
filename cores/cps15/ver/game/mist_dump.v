@@ -75,7 +75,7 @@ module mist_dump(
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             $shm_probe(UUT.u_game.u_main, "A");
-            $shm_probe(UUT.u_game.u_sound, "A");
+            //$shm_probe(UUT.u_game.u_sound, "A");
             `ifndef NOMAIN
                 //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
                 $shm_probe(UUT.u_game.u_sound.cpu2dsp_s);
@@ -90,7 +90,7 @@ module mist_dump(
                 //$shm_probe(UUT.u_game.u_eeprom,"A");
                 //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `endif
-            $shm_probe(UUT.u_game.u_video, "A");
+            //$shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
 
             /*

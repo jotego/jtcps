@@ -83,14 +83,26 @@ assign gfx_addr = { ~obank, obj_addr[AW-4:0] };
 
 always @(posedge clk_cpu) begin
     ok    <= cs;
-    din_y <= { oram_din[15:10], oram_din[9:0] - { off_y[8], off_y } };
+    din_y <= { oram_din[15:9], oram_din[8:0] - off_y };
     din_x <= { oram_din[15:10], oram_din[9:0] - off_x };
 end
 
+`ifdef XOFF_RST
+    // Scene simulation only
+    localparam [9:0] XOFF_RST=`XOFF_RST;
+    localparam [9:0] YOFF_RST=`YOFF_RST;
+
+    initial $display("SIMULATION: Object offset fixed to %X/%X", XOFF_RST, YOFF_RST );
+`else
+    // Regular operation
+    localparam [9:0] XOFF_RST=10'd0;
+    localparam [9:0] YOFF_RST=10'd0;
+`endif
+
 always @(posedge clk_cpu, posedge rst) begin
     if( rst ) begin
-        off_x <= 10'h0;
-        off_y <=  9'h0;
+        off_x <= XOFF_RST;
+        off_y <= YOFF_RST;
     end else if( objcfg_cs ) begin
         if( cfg_addr == XOFF ) begin
             if( !cfg_dsn[0]) off_x[7:0] <= next_offx[7:0];
