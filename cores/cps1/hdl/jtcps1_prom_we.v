@@ -151,7 +151,7 @@ always @(posedge clk) begin
                      is_snd ?  snd_addr[22:1] + SND_OFFSET : (
                      is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
-        prog_ba   <= is_cpu ? 2'd0 : ( is_gfx ? gfx_bank : 2'd1 );
+        prog_ba   <= (is_cpu||is_snd) ? 2'd0 : ( is_gfx ? gfx_bank : 2'd1 );
         if( is_kabuki )
             kabuki_sr <= 2'b11;
         if( is_cps2 ) begin

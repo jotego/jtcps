@@ -154,11 +154,12 @@ module jtcps1_sdram #( parameter
     output    reg   refresh_en
 );
 
-localparam [21:0] PCM_OFFSET   = 22'h10_0000,
+localparam [21:0] ZERO_OFFSET  = 22'h0,
+                  PCM_OFFSET   = ZERO_OFFSET,
                   VRAM_OFFSET  = 22'h20_0000,
                   ORAM_OFFSET  = 22'h28_0000,
                   WRAM_OFFSET  = 22'h30_0000,
-                  ZERO_OFFSET  = 22'h0,
+                  SND_OFFSET   = 22'h38_0000,
                   ROM_OFFSET   = ZERO_OFFSET;
 
 `ifdef CPS2
@@ -217,6 +218,7 @@ jtcps1_prom_we #(
     .REGSIZE    ( REGSIZE       ),
     .CPU_OFFSET ( ZERO_OFFSET   ),
     .PCM_OFFSET ( PCM_OFFSET    ),
+    .SND_OFFSET ( SND_OFFSET    ),
     .EEPROM_AW  ( EEPROM_AW     )
 ) u_prom_we(
     .clk            ( clk           ),
@@ -247,7 +249,7 @@ jtcps1_prom_we #(
     .joymode        ( cps2_joymode  )
 );
 
-jtframe_ram_4slots #(
+jtframe_ram_5slots #(
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
 
@@ -259,7 +261,12 @@ jtframe_ram_4slots #(
 
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
-    .LATCH3      (  1            )
+    .LATCH3      (  1            ),
+
+    .SLOT4_AW    ( Z80_AW        ), // Sound CPU
+    .SLOT4_DW    (  8            )
+    //.SLOT4_REPACK(  1            )
+
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -268,6 +275,7 @@ jtframe_ram_4slots #(
     .offset1     ( VRAM_OFFSET   ),
     .offset2     ( ORAM_OFFSET   ),
     .offset3     (  ROM_OFFSET   ),
+    .offset4     (  SND_OFFSET   ),
 
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
@@ -277,11 +285,14 @@ jtframe_ram_4slots #(
     .slot2_clr   ( vram_clr      ),
     .slot3_cs    ( main_rom_cs   ),
     .slot3_clr   ( 1'b0          ),
+    .slot4_cs    ( snd_cs        ),
+    .slot4_clr   ( 1'b0          ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),
     .slot2_ok    ( gfx_oram_ok   ),
     .slot3_ok    ( main_rom_ok   ),
+    .slot4_ok    ( pre_snd_ok    ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
@@ -290,11 +301,13 @@ jtframe_ram_4slots #(
     .slot1_addr  ( vram_dma_addr ),
     .slot2_addr  ( gfx_oram_addr ),
     .slot3_addr  ( main_rom_addr ),
+    .slot4_addr  ( snd_addr      ),
 
     .slot0_dout  ( main_ram_data ),
     .slot1_dout  ( vram_dma_data ),
     .slot2_dout  ( gfx_oram_data ),
     .slot3_dout  ( main_rom_data ),
+    .slot4_dout  ( pre_snd_data  ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),
@@ -321,31 +334,22 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-jtframe_rom_2slots #(
-    .SLOT0_AW    ( Z80_AW        ), // Sound CPU
+jtframe_rom_1slot #(
+    .SLOT0_AW    ( PCM_AW        ), // PCM
     .SLOT0_DW    (  8            ),
-    .SLOT0_OFFSET( ZERO_OFFSET   ),
-    .SLOT0_REPACK( 1             ),
-
-    .SLOT1_AW    ( PCM_AW        ), // PCM
-    .SLOT1_DW    (  8            ),
-    .SLOT1_OFFSET( PCM_OFFSET    ),
-    .SLOT1_REPACK( 1             )
+    .SLOT0_OFFSET( PCM_OFFSET    ),
+    .SLOT0_REPACK( 1             )
 ) u_bank1 (
     .rst         ( rst           ),
     .clk         ( clk           ),
 
-    .slot0_cs    ( snd_cs        ),
-    .slot1_cs    ( pcm_cs        ),
+    .slot0_cs    ( pcm_cs        ),
 
-    .slot0_ok    ( pre_snd_ok    ),
-    .slot1_ok    ( pcm_ok        ),
+    .slot0_ok    ( pcm_ok        ),
 
-    .slot0_addr  ( snd_addr      ),
-    .slot1_addr  ( pcm_addr      ),
+    .slot0_addr  ( pcm_addr      ),
 
-    .slot0_dout  ( pre_snd_data  ),
-    .slot1_dout  ( pcm_data      ),
+    .slot0_dout  ( pcm_data      ),
 
     .sdram_addr  ( ba1_addr      ),
     .sdram_req   ( ba1_rd        ),
