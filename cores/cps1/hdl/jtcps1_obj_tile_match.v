@@ -27,7 +27,7 @@ module jtcps1_obj_tile_match(
 
     input             vflip,
     input      [ 8:0] vrenderf,
-    input      [ 8:0] obj_y,
+    input      [ 9:0] obj_y,
 
     output reg [ 3:0] vsub,
     output reg        inzone,
@@ -52,7 +52,7 @@ endgenerate
 
 always @(*) begin
     inzone = match!=16'd0;
-    vsub   = vrenderf-obj_y;
+    vsub   = vrenderf-obj_y[8:0];
     vsub   = vsub ^ {4{vflip}};
     // which m won?
     case( match )

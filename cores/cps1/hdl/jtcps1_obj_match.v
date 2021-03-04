@@ -15,22 +15,22 @@
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
     Date: 13-1-2020 */
-    
+
 
 module jtcps1_obj_match #(parameter [3:0] OFFSET=0)(
     input            clk,
     input      [3:0] tile_m,
     input      [8:0] vrender,
-    input      [8:0] obj_y,
+    input      [9:0] obj_y,
     output reg       match
 );
 
-reg  [8:0]  vfinal, vfinal2;
+reg  [9:0]  vfinal, vfinal2;
 reg         below, inzone;
 
 always @(*) begin
-    vfinal = obj_y  + {1'b0,OFFSET,4'd0};
-    vfinal2= vfinal + 9'h10;
+    vfinal = obj_y  + {2'b0,OFFSET,4'd0};
+    vfinal2= vfinal + 10'h10;
     below  = vrender >= vfinal;
     inzone = vrender < vfinal2;
 end

@@ -100,8 +100,8 @@ jtcps1_obj_tile_match u_tile_match(
 
     .vflip      ( vflip     ),
     .vrenderf   ( vrenderf  ),
-    .obj_y      ( obj_y[8:0]),
-
+    .obj_y      ( obj_y[9:0]), // it was 8:0, changed to 9:0 to match CPS2. Watch out for
+                               // possible new issues
     .vsub       ( vsub      ),
     .inzone     ( inzone    ),
     .code_mn    ( code_mn   )

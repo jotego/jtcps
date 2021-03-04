@@ -46,7 +46,7 @@ module jtcps2_obj_scan(
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-wire [ 8:0] obj_y;
+wire [ 9:0] obj_y;
 wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
@@ -78,7 +78,7 @@ jtcps1_obj_tile_match u_tile_match(
 );
 
 assign      prio       = table_x[15:13];
-assign      obj_y      = table_y[8:0];
+assign      obj_y      = table_y[9:0];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
 assign      tile_n     = table_attr[11: 8];
