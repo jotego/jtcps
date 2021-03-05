@@ -97,13 +97,13 @@ module jtcps1_sdram #( parameter
     input           snd_cs,
     input           pcm_cs,
 
-    output reg      snd_ok,
+    output          snd_ok,
     output          pcm_ok,
 
     input [Z80_AW-1:0] snd_addr,
     input [PCM_AW-1:0] pcm_addr,
 
-    output reg [7:0] snd_data,
+    output     [7:0] snd_data,
     output     [7:0] pcm_data,
 
     // Graphics
@@ -180,7 +180,8 @@ localparam EEPROM_AW=7;
 localparam EEPROM_AW=6;
 `endif
 
-wire [22:0] gfx0_addr, gfx1_addr, cps2_gfx0;
+wire [22:0] gfx0_addr, cps2_gfx0;
+wire [21:0] gfx1_addr;
 wire [22:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
@@ -293,7 +294,7 @@ jtframe_ram_5slots #(
     .slot1_ok    ( vram_dma_ok   ),
     .slot2_ok    ( gfx_oram_ok   ),
     .slot3_ok    ( main_rom_ok   ),
-    .slot4_ok    ( pre_snd_ok    ),
+    .slot4_ok    ( snd_ok        ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
@@ -308,7 +309,7 @@ jtframe_ram_5slots #(
     .slot1_dout  ( vram_dma_data ),
     .slot2_dout  ( gfx_oram_data ),
     .slot3_dout  ( main_rom_data ),
-    .slot4_dout  ( pre_snd_data  ),
+    .slot4_dout  ( snd_data      ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),
@@ -320,20 +321,6 @@ jtframe_ram_5slots #(
     .sdram_wrmask( ba0_din_m     ),
     .data_read   ( data_read     )
 );
-
-// Z80 code and samples in bank 1
-wire [7:0] pre_snd_data;
-wire       pre_snd_ok;
-
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        snd_ok   <= 0;
-        snd_data <= 8'd0;
-    end else begin
-        snd_data <= pre_snd_data;
-        snd_ok   <= pre_snd_ok;
-    end
-end
 
 jtframe_rom_1slot #(
     .SDRAMW      ( 23            ),
