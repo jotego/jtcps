@@ -42,7 +42,7 @@ module jtcps2_game(
     output          dwnld_busy,
 
     // Bank 0: allows R/W
-    output   [21:0] ba0_addr,
+    output   [22:0] ba0_addr,
     output          ba0_rd,
     output          ba0_wr,
     output   [15:0] ba0_din,
@@ -51,19 +51,19 @@ module jtcps2_game(
     input           ba0_ack,
 
     // Bank 1: Read only
-    output   [21:0] ba1_addr,
+    output   [22:0] ba1_addr,
     output          ba1_rd,
     input           ba1_rdy,
     input           ba1_ack,
 
     // Bank 2: Read only
-    output   [21:0] ba2_addr,
+    output   [22:0] ba2_addr,
     output          ba2_rd,
     input           ba2_rdy,
     input           ba2_ack,
 
     // Bank 3: Read only
-    output   [21:0] ba3_addr,
+    output   [22:0] ba3_addr,
     output          ba3_rd,
     input           ba3_rdy,
     input           ba3_ack,
@@ -72,12 +72,12 @@ module jtcps2_game(
     output          refresh_en,
 
     // RAM/ROM LOAD
-    input   [24:0]  ioctl_addr,
+    input   [25:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
     output  [ 7:0]  ioctl_data2sd,
     input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
-    output  [21:0]  prog_addr,
+    output  [22:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output  [ 1:0]  prog_ba,
@@ -441,7 +441,7 @@ jtcps15_sound u_sound(
     .sample     ( sample            )
 );
 
-jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
+jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),

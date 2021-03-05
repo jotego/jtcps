@@ -19,7 +19,7 @@
 module jtcps1_prom_we #(
 parameter        CPS=1, // 1, 15, or 2
                  REGSIZE=24, // This is defined at _game level
-parameter [21:0] CPU_OFFSET =22'h0,
+parameter [22:0] CPU_OFFSET =22'h0,
                  SND_OFFSET =22'h0,
                  PCM_OFFSET =22'h0,
                  GFX_OFFSET =22'h0,
@@ -28,12 +28,12 @@ parameter        EEPROM_AW  = 7
 )(
     input                clk,
     input                downloading,
-(*keep*)    input      [24:0]    ioctl_addr,    // max 32 MB
+(*keep*)    input      [25:0]    ioctl_addr,    // max 64 MB
 (*keep*)    input      [ 7:0]    ioctl_data,
     output     [ 7:0]    ioctl_data2sd,
 (*keep*)    input                ioctl_wr,
     input                ioctl_ram,
-    output reg [21:0]    prog_addr,
+    output reg [22:0]    prog_addr,
     output     [15:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
     output reg [ 1:0]    prog_ba,
@@ -62,11 +62,11 @@ localparam START_BYTES   = 8,
            START_HEADER  = 16,
            STARTW        = 8*START_BYTES;
 
-localparam [24:0] FULL_HEADER   = 25'd64,
-                  KABUKI_HEADER = 25'd48,
-                  KABUKI_END    = KABUKI_HEADER + 25'd11,
-                  CPS2_KEYS     = 25'd44,
-                  CPS2_END      = 25'd64;
+localparam [25:0] FULL_HEADER   = 26'd64,
+                  KABUKI_HEADER = 26'd48,
+                  KABUKI_END    = KABUKI_HEADER + 26'd11,
+                  CPS2_KEYS     = 26'd44,
+                  CPS2_END      = 26'd64;
 
 localparam [ 5:0] JOY_BYTE      = 6'h28;
 
@@ -87,11 +87,11 @@ assign kabuki_we  = kabuki_sr[0];
 assign kabuki_we  = 0;
 `endif
 
-wire [24:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
-wire [24:0] cpu_addr  = bulk_addr ; // the header is excluded
-wire [24:0] snd_addr  = bulk_addr - { snd_start[14:0], 10'd0 };
-wire [24:0] pcm_addr  = bulk_addr - { pcm_start[14:0], 10'd0 };
-reg  [24:0] gfx_addr;
+wire [25:0] bulk_addr = ioctl_addr - FULL_HEADER; // the header is excluded
+wire [25:0] cpu_addr  = bulk_addr ; // the header is excluded
+wire [25:0] snd_addr  = bulk_addr - { snd_start[15:0], 10'd0 };
+wire [25:0] pcm_addr  = bulk_addr - { pcm_start[15:0], 10'd0 };
+reg  [25:0] gfx_addr;
 reg  [ 1:0] gfx_bank;
 
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
@@ -106,16 +106,12 @@ wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
 
-//localparam SWM=19, SWL=3;
-//localparam SWM=24, SWL=2;
-localparam SWM=24, SWL=4;
-
 always @(*) begin
-    gfx_addr  = bulk_addr - { gfx_start[14:0], 10'd0 };
+    gfx_addr  = bulk_addr - { gfx_start[15:0], 10'd0 };
 `ifdef CPS2
     // CPS2 address lines are scrambled
-    gfx_addr = { gfx_addr[24:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
-    gfx_bank = {1'b1, gfx_addr[23]};
+    gfx_addr = { gfx_addr[25:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };
+    gfx_bank = { 1'b1, gfx_addr[23]};
 `else
     gfx_bank  = 2'b11;
 `endif
@@ -147,9 +143,9 @@ always @(posedge clk) begin
         pre_data  <= pang3 ?
             pang3_decrypt : ioctl_data;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
-        prog_addr <= is_cpu ? bulk_addr[22:1] + CPU_OFFSET : (
-                     is_snd ?  snd_addr[22:1] + SND_OFFSET : (
-                     is_oki ?  pcm_addr[22:1] + PCM_OFFSET :
+        prog_addr <= is_cpu ? bulk_addr[23:1] + CPU_OFFSET : (
+                     is_snd ?  snd_addr[23:1] + SND_OFFSET : (
+                     is_oki ?  pcm_addr[23:1] + PCM_OFFSET :
                      is_gfx ?  gfx_addr[22:1] + GFX_OFFSET : {9'd0, bulk_addr[12:0]}));
         prog_ba   <= (is_cpu||is_snd) ? 2'd0 : ( is_gfx ? gfx_bank : 2'd1 );
         if( is_kabuki )
@@ -157,7 +153,7 @@ always @(posedge clk) begin
         if( is_cps2 ) begin
             cps2_key_we <= 1;
         end
-        if( ioctl_addr < START_BYTES[24:0] ) begin
+        if( ioctl_addr < START_BYTES[25:0] ) begin
             starts  <= { ioctl_data, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
@@ -184,7 +180,6 @@ always @(posedge clk) begin
         if( !downloading ) begin
             decrypt    <= 0;
             prom_we    <= 0;
-            // dwnld_busy <= 0;
         end
         kabuki_sr <= kabuki_sr>>1;
         cfg_we    <= 0;
