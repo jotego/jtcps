@@ -330,7 +330,10 @@ always @(posedge clk) begin
             line_req    <= 0;
             pal_busy    <= 0;
             `ifndef CPS2
-                if( tile_vs && objdma_en) begin
+                // I'm using 9'h08 because I got the impression in Ghouls
+                // that the turtles sprites flikered (level 2) when
+                // the comparison was with 9'h0 (i.e. tile_vs )
+                if( vrender1==9'h08 && objdma_en) begin
                     wr_obj_bank <= ~wr_obj_bank;
                     rd_obj_bank <= wr_obj_bank;
                     obj_fill    <= 0;
