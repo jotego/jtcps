@@ -97,11 +97,11 @@ reg  [ 1:0] gfx_bank;
 wire is_cps    = ioctl_addr > 7 && ioctl_addr < (REGSIZE+START_HEADER);
 wire is_kabuki = ioctl_addr >= KABUKI_HEADER && ioctl_addr < KABUKI_END;
 wire is_cps2   = ioctl_addr >= CPS2_KEYS && ioctl_addr < CPS2_END;
-wire is_cpu    = bulk_addr[24:10] < snd_start;
-wire is_snd    = bulk_addr[24:10] < pcm_start  && bulk_addr[24:10] >=snd_start;
-wire is_oki    = bulk_addr[24:10] < gfx_start  && bulk_addr[24:10] >=pcm_start;
-wire is_gfx    = bulk_addr[24:10] < qsnd_start && bulk_addr[24:10] >=gfx_start;
-wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[24:10] >=qsnd_start; // Q-Sound ROM
+wire is_cpu    = bulk_addr[25:10] < snd_start;
+wire is_snd    = bulk_addr[25:10] < pcm_start  && bulk_addr[25:10] >=snd_start;
+wire is_oki    = bulk_addr[25:10] < gfx_start  && bulk_addr[25:10] >=pcm_start;
+wire is_gfx    = bulk_addr[25:10] < qsnd_start && bulk_addr[25:10] >=gfx_start;
+wire is_qsnd   = ioctl_addr >= FULL_HEADER && bulk_addr[25:10] >=qsnd_start; // Q-Sound ROM
 
 reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
