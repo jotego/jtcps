@@ -180,8 +180,8 @@ localparam EEPROM_AW=7;
 localparam EEPROM_AW=6;
 `endif
 
-wire [22:0] gfx0_addr, cps2_gfx0;
-wire [21:0] gfx1_addr;
+(*keep*) wire [22:0] cps2_gfx0;
+wire [21:0] gfx1_addr, gfx0_addr;
 wire [22:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;

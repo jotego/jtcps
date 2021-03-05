@@ -33,10 +33,10 @@ parameter        EEPROM_AW  = 7
     output     [ 7:0]    ioctl_data2sd,
 (*keep*)    input                ioctl_wr,
     input                ioctl_ram,
-    output reg [22:0]    prog_addr,
+(*keep*)    output reg [22:0]    prog_addr,
     output     [15:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
-    output reg [ 1:0]    prog_ba,
+(*keep*)    output reg [ 1:0]    prog_ba,
     output reg           prog_we,
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,
