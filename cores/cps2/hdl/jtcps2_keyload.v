@@ -93,7 +93,7 @@ raw[146], raw[147], raw[148], raw[149], raw[150], raw[151], raw[136], raw[137],
 raw[138], raw[139], raw[140], raw[141], raw[142], raw[143], raw[128], raw[129],
 raw[130], raw[131], raw[132], raw[133], raw[134], raw[135], raw[120], raw[121]
 }
-`ifdef CPS2_BETA
+`ifdef BETA
     | {150'd0, {10{betang}}};
 `else
     ;
