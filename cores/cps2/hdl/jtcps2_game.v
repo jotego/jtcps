@@ -402,7 +402,7 @@ jtcps1_video #(REGSIZE) u_video(
 // interaction between both CPUs at power up
 reg qsnd_rst;
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk48, posedge rst) begin
     if( rst )
         qsnd_rst  <= 1;
     else
