@@ -71,7 +71,7 @@ localparam [25:0] FULL_HEADER   = 26'd64,
 localparam [ 5:0] JOY_BYTE      = 6'h28;
 
 reg  [STARTW-1:0] starts;
-wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start, qsnd_end;
+wire       [15:0] snd_start, pcm_start, gfx_start, qsnd_start;
 reg        [ 7:0] pre_data;
 reg        [ 1:0] kabuki_sr; // For 96MHz the write pulse must last two cycles
 
@@ -79,7 +79,6 @@ assign snd_start  = starts[15: 0];
 assign pcm_start  = starts[31:16];
 assign gfx_start  = starts[47:32];
 assign qsnd_start = starts[63:48];
-assign qsnd_end   = starts[63:48]+16'h7;
 assign prog_data  = {2{pre_data}};
 `ifdef CPS15
 assign kabuki_we  = kabuki_sr[0];
@@ -107,7 +106,7 @@ reg       decrypt, pang3, pang3_bit;
 reg [7:0] pang3_decrypt;
 
 always @(*) begin
-    gfx_addr  = bulk_addr - { gfx_start[15:0], 10'd0 };
+    gfx_addr  = bulk_addr - { gfx_start, 10'd0 };
 `ifdef CPS2
     // CPS2 address lines are scrambled
     gfx_addr = { gfx_addr[25:21], gfx_addr[3], gfx_addr[20:4], gfx_addr[2:0] };

@@ -193,6 +193,7 @@ Darkstalker's revenge | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |  54
 Progear               | 1.0 MB  |  128 kB     | 16 MB   | 8 MB    |  72
 Puzz Loop 2           | 2.0 MB  |  128 kB     | 16 MB   | 4 MB    |  16
 Quiz Nanairo Dreams   | 2.0 MB  |  128 kB     |  8 MB   | 4 MB    |   8
+Ring of Destruction   | 3.0 MB  |  256 kB     | 18 MB   | 4 MB    | 293
 Slam Masters 2        | 3.0 MB  |  256 kB     | 18 MB   | 4 MB    | 291
 SF alpha 1            | 2.0 MB  |  256 kB     |  8 MB   | 4 MB    | 190
 SF alpha 2            | 3.0 MB  |  256 kB     | 20 MB   | 4 MB    | 218
