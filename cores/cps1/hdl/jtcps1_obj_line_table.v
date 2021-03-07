@@ -75,7 +75,7 @@ assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for m
 `ifdef CPS2
     assign  ext_y      = obj_y[9:0];
 `else
-    assign  ext_y      = { obj_y[8], obj_y[8:0]}
+    assign  ext_y      = { obj_y[8], obj_y[8:0]};
 `endif
 
 wire [15:0] code_mn;
@@ -106,7 +106,7 @@ jtcps1_obj_tile_match u_tile_match(
 
     .vflip      ( vflip     ),
     .vrenderf   ( vrenderf  ),
-    .obj_y      ( ext_y     )
+    .obj_y      ( ext_y     ),
     .vsub       ( vsub      ),
     .inzone     ( inzone    ),
     .code_mn    ( code_mn   )
