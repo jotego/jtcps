@@ -130,6 +130,7 @@ wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, qsnd_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
+wire        z80_rstn;
 
 wire        main_rnw, busreq, busack;
 
@@ -240,6 +241,7 @@ jtcps2_main u_main(
     .prog_din   ( prog_data[7:0]    ),
     .key_we     ( key_we            ),
     // Sound
+    .z80_rstn    ( z80_rstn         ),
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
     .main2qs_cs  ( main2qs_cs       ),
@@ -398,8 +400,17 @@ jtcps1_video #(REGSIZE) u_video(
 
 // Sound CPU cannot be disabled as there is
 // interaction between both CPUs at power up
+reg qsnd_rst;
+
+always @(posedge clk, posedge rst) begin
+    if( rst )
+        qsnd_rst  <= 1;
+    else
+        qsnd_rst  <= ~z80_rstn;
+end
+
 jtcps15_sound u_sound(
-    .rst        ( rst               ),
+    .rst        ( qsnd_rst          ),
     .clk48      ( clk48             ),
     .clk96      ( clk96             ),
     .cen8       ( cen8              ),
