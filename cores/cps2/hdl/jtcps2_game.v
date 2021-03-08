@@ -250,6 +250,7 @@ jtcps2_main u_main(
     .main2qs_waitn( main_waitn      ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
+    .volume     ( volume            ),
     // cabinet I/O
     // Cabinet input
     .start_button( start_button     ),
