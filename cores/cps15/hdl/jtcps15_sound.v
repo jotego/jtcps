@@ -348,7 +348,7 @@ end
 always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
         volume     <= 13'b0;   // I think the volume is never actually read by the DSP
-        vol_st     <= 6'd0;
+        vol_st     <= 6'd39;   // Max
     end else begin
         last_vol_up   <= vol_up;
         last_vol_down <= vol_down;
