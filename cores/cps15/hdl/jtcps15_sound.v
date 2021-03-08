@@ -561,7 +561,7 @@ assign z80_buswn = m68_buswen | m68_busakn;
 reg last_busen, last_busakn;
 reg preqrqn;
 
-assign busrq_n = busak_n | preqrqn;
+assign busrq_n = ~busak_n | preqrqn;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
