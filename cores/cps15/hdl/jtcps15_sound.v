@@ -540,38 +540,41 @@ module jtcps15_z80buslock(
     input         clk,
     input         rst,
     input         cen8,
-    output        busrq_n,
-    input         busak_n,
+    output  reg   busrq_n,  // to Z80
+    input         busak_n,  // from Z80
     // Signals from M68000
     input         buse_n,   // request from M68000
     input [23:12] m68_addr,
     input         m68_buswen,
     output        z80_buswn,
-    output        m68_busakn
+    output  reg   m68_busakn    // to M68
 );
 
 parameter CPS2=0;
-
-reg  [1:0] latch;
 
 wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
                    (m68_addr[23:12]>=12'hf18 && m68_addr[23:12]<12'hf1a ) ||
                    (m68_addr[23:12]>=12'hf1e && m68_addr[23:12]<12'hf20 ) );
 
 assign z80_buswn = m68_buswen | m68_busakn;
-assign busrq_n   = buse_n; // | ~shared_addr;
-assign m68_busakn= latch[1] | busrq_n; // OR so that we catch when the m68K
-                                       // releases the bus
+
+reg last_busen, last_busakn;
 
 always @(posedge clk, posedge rst) begin
-    if( rst )
-        latch <= 2'b11;
-    else begin
-        if( buse_n )
-            latch<=2'b11;
-        else if(cen8) begin
-            latch <= { latch[0], busrq_n | busak_n };
-        end
+    if( rst ) begin
+        m68_busakn <= 1'b1;
+        busrq_n    <= 1'b1;
+    end else if(cen8) begin
+        // to Z80
+        last_busen <= buse_n;
+        if( !buse_n && last_busen)
+            busrq_n <= 1'b0;
+        else if( buse_n )
+            busrq_n <= 1'b1;
+
+        // to M68
+        last_busakn <= busak_n;
+        m68_busakn  <= busak_n | last_busakn;
     end
 end
 
