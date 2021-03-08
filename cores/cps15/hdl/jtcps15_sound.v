@@ -344,32 +344,37 @@ initial begin
     vol_lut[36]=13'h0028; vol_lut[37]=13'h0024; vol_lut[38]=13'h0022; vol_lut[39]=13'h0021;
 end
 
-always @(posedge clk96, posedge rst) begin
+// volume control
+always @(posedge clk48, posedge rst) begin
     if ( rst ) begin
-        audio_ws   <= 0;
-        qsnd_addr  <= 23'd0;
-        base_sample     <= 0;
-        dsp_dsel96 <= 0;
-        pre_l      <= 16'd0;
-        pre_r      <= 16'd0;
-        cpu2dsp_s  <= 24'd0;
-        // volume control
         volume     <= 13'b0;   // I think the volume is never actually read by the DSP
         vol_st     <= 6'd0;
     end else begin
-        last_pods_n <= dsp_pods_n;
-        last_psel   <= dsp_psel;
-        dsp_dsel96  <= dsp_datasel[1];
-
-        // volume control
         last_vol_up   <= vol_up;
         last_vol_down <= vol_down;
         if( vol_up && !last_vol_up ) begin
             if( vol_st < 6'd39 ) vol_st <= vol_st+6'd1;
         end else if( vol_down && !last_vol_down ) begin
-            if( !vol_st[6] ) vol_st <= vol_st-6'd1;
+            if( vol_st != 6'd0 ) vol_st <= vol_st-6'd1;
         end
         volume <= vol_lut[vol_st];
+    end
+end
+
+always @(posedge clk96, posedge rst) begin
+    if ( rst ) begin
+        audio_ws   <= 0;
+        qsnd_addr  <= 23'd0;
+        base_sample<= 0;
+        dsp_dsel96 <= 0;
+        pre_l      <= 16'd0;
+        pre_r      <= 16'd0;
+        cpu2dsp_s  <= 24'd0;
+    end else begin
+        last_pods_n <= dsp_pods_n;
+        last_psel   <= dsp_psel;
+        dsp_dsel96  <= dsp_datasel[1];
+
         // latch sound data
         last_sadd <= dsp_sadd;
         if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
