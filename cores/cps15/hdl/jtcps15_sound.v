@@ -540,7 +540,7 @@ module jtcps15_z80buslock(
     input         clk,
     input         rst,
     input         cen8,
-    output  reg   busrq_n,  // to Z80
+    output        busrq_n,  // to Z80
     input         busak_n,  // from Z80
     // Signals from M68000
     input         buse_n,   // request from M68000
@@ -559,22 +559,25 @@ wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
 assign z80_buswn = m68_buswen | m68_busakn;
 
 reg last_busen, last_busakn;
+reg preqrqn;
+
+assign busrq_n = busak_n | preqrqn;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         m68_busakn <= 1'b1;
-        busrq_n    <= 1'b1;
+        preqrqn    <= 1'b1;
     end else if(cen8) begin
         // to Z80
         last_busen <= buse_n;
         if( !buse_n && last_busen)
-            busrq_n <= 1'b0;
+            preqrqn <= 1'b0;
         else if( buse_n )
-            busrq_n <= 1'b1;
+            preqrqn <= 1'b1;
 
         // to M68
         last_busakn <= busak_n;
-        m68_busakn  <= busak_n | last_busakn;
+        m68_busakn  <= busak_n | last_busakn | buse_n;
     end
 end
 
