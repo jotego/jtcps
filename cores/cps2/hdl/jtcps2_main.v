@@ -34,7 +34,7 @@ module jtcps2_main(
     output             ppu_rstn,
     input   [15:0]     mmr_dout,
     input              raster,
-    // Sound
+
     output             UDSWn,
     output             LDSWn,
     // Keys
@@ -85,7 +85,8 @@ module jtcps2_main(
     output reg  [23:1] main2qs_addr,
     output reg         main2qs_cs,
     input              main2qs_busakn,
-    input              main2qs_waitn
+    input              main2qs_waitn,
+    input       [12:0] volume
 );
 
 localparam [1:0] BUT6 = 2'b00;
@@ -191,7 +192,7 @@ always @(*) begin
     in0_cs    = io_cs && A[8:3] == 6'h0;
     in1_cs    = io_cs && A[8:3] == 6'b00_0010;
     in2_cs    = io_cs && A[8:3] == 6'b00_0100;
-    vol_cs    = io_cs && A[8:3] == 6'b000_110 && !RnW; // QSound volume
+    vol_cs    = io_cs && A[8:3] == 6'b000_110; // QSound volume
     out_cs    = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !LDSWn;
     eeprom_cs = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !UDSWn;
     obank_cs  = io_cs && A[8:3] == 6'b0_1110_0 && !RnW && !LDSWn;
@@ -318,8 +319,9 @@ always @(posedge clk) begin
                    (ram_cs | vram_cs | oram_cs ) ? ram_data : (
                     rom_cs      ? rom_dec  : (
                     ppu2_cs     ? mmr_dout : (
+                    vol_cs      ? {3'b111, volume }    : (
                     main2qs_cs  ? {8'hff, main2qs_din} :
-                                16'hFFFF ))));
+                                16'hFFFF )))));
 
     end
 end

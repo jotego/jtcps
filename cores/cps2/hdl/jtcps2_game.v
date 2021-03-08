@@ -151,6 +151,7 @@ wire        gfx_oram_ok;
 wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
 wire        main2qs_cs, main_busakn, main_waitn;
+wire [12:0] volume;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
@@ -409,13 +410,17 @@ always @(posedge clk48, posedge rst) begin
         qsnd_rst  <= ~z80_rstn;
 end
 
+wire vol_up   = ~(coin_input[0] | joystick1[3]);
+wire vol_down = ~(coin_input[0] | joystick1[2]);
+
 jtcps15_sound u_sound(
     .rst        ( qsnd_rst          ),
     .clk48      ( clk48             ),
     .clk96      ( clk96             ),
     .cen8       ( cen8              ),
-    .vol_up     ( 1'b0              ),
-    .vol_down   ( 1'b0              ),
+    .vol_up     ( vol_up            ),
+    .vol_down   ( vol_down          ),
+    .volume     ( volume            ),
     // Decode keys
     .kabuki_we  ( 1'b0              ),
     .kabuki_en  ( 1'b0              ),
