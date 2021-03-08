@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
         // VRAM
         const int VRAM_OFFSET=0x20'0000;
         const int ORAM_OFFSET=0x28'0000;
+        const int SND_OFFSET =0x38'0000;
         if( game.size() && scene.size() ) {
             clear_bank(data);
             read_vram( data, game, scene, "vram", VRAM_OFFSET, 192 );
@@ -101,6 +102,7 @@ int main(int argc, char *argv[]) {
             }
         }
         read_bank( data, fin, 0, snd_start );   // Main CPU
+        read_bank( data, fin, snd_start, pcm_start, SND_OFFSET<<1 );
         dump_bank( data, "sdram_bank0.hex" );
         // GFX
         int rd_ptr = gfx_start;
@@ -118,7 +120,6 @@ int main(int argc, char *argv[]) {
         }
         // Sound
         clear_bank( data );
-        read_bank( data, fin, snd_start, pcm_start );
         read_bank( data, fin, pcm_start, gfx_start, 0x10'0000<<1 );
         dump_bank( data, "sdram_bank1.hex" );
         // QSound firmware
