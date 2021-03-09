@@ -51,6 +51,7 @@ always @(posedge clk, posedge rst) begin
             12'h70C, 12'h6F5, 12'h6EB, 12'h646, 12'h683, // SPF2T
             12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB
             12'h741,           // M. Pang
+            12'h76d,           // Jyangokushi
             12'h48b, 12'h6cb, 12'h63e, 12'h697, 12'h5a1, 12'h5bf, // 19XX
             12'h34d, 12'h3ce, 12'h496, 12'h388, 12'h4b9, // Dark Stalkers
             12'h6bb, 12'h5bb, // Megaman 1
