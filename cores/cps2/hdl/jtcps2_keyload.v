@@ -51,6 +51,9 @@ always @(posedge clk, posedge rst) begin
             12'h70C, 12'h6F5, 12'h6EB, 12'h646, 12'h683, // SPF2T
             12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB
             12'h741,           // M. Pang
+            12'h76d,           // Jyangokushi
+            12'h48b, 12'h6cb, 12'h63e, 12'h697, 12'h5a1, 12'h5bf, // 19XX
+            12'h34d, 12'h3ce, 12'h496, 12'h388, 12'h4b9, // Dark Stalkers
             12'h6bb, 12'h5bb, // Megaman 1
             12'h647, 12'h628, 12'h4bd, 12'h4b5, // Megaman 2
             12'h747, 12'h666, 12'h6c0, 12'h6cf, 12'h6ed, // AvsP
@@ -93,7 +96,7 @@ raw[146], raw[147], raw[148], raw[149], raw[150], raw[151], raw[136], raw[137],
 raw[138], raw[139], raw[140], raw[141], raw[142], raw[143], raw[128], raw[129],
 raw[130], raw[131], raw[132], raw[133], raw[134], raw[135], raw[120], raw[121]
 }
-`ifdef CPS2_BETA
+`ifdef BETA
     | {150'd0, {10{betang}}};
 `else
     ;

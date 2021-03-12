@@ -63,6 +63,7 @@ wire [15:0] match;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
 wire [ 3:0] offset, mask;
+wire [ 9:0] ext_y;
 wire        unmapped;
 
 assign      tile_m     = obj_attr[15:12];
@@ -71,6 +72,11 @@ assign      vflip      = obj_attr[6];
 wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
 assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+`ifdef CPS2
+    assign  ext_y      = obj_y[9:0];
+`else
+    assign  ext_y      = { obj_y[8], obj_y[8:0]};
+`endif
 
 wire [15:0] code_mn;
 reg  [ 4:0] st;
@@ -100,8 +106,7 @@ jtcps1_obj_tile_match u_tile_match(
 
     .vflip      ( vflip     ),
     .vrenderf   ( vrenderf  ),
-    .obj_y      ( obj_y[9:0]), // it was 8:0, changed to 9:0 to match CPS2. Watch out for
-                               // possible new issues
+    .obj_y      ( ext_y     ),
     .vsub       ( vsub      ),
     .inzone     ( inzone    ),
     .code_mn    ( code_mn   )

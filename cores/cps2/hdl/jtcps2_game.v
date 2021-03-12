@@ -42,7 +42,7 @@ module jtcps2_game(
     output          dwnld_busy,
 
     // Bank 0: allows R/W
-    output   [21:0] ba0_addr,
+    output   [22:0] ba0_addr,
     output          ba0_rd,
     output          ba0_wr,
     output   [15:0] ba0_din,
@@ -51,19 +51,19 @@ module jtcps2_game(
     input           ba0_ack,
 
     // Bank 1: Read only
-    output   [21:0] ba1_addr,
+    output   [22:0] ba1_addr,
     output          ba1_rd,
     input           ba1_rdy,
     input           ba1_ack,
 
     // Bank 2: Read only
-    output   [21:0] ba2_addr,
+    output   [22:0] ba2_addr,
     output          ba2_rd,
     input           ba2_rdy,
     input           ba2_ack,
 
     // Bank 3: Read only
-    output   [21:0] ba3_addr,
+    output   [22:0] ba3_addr,
     output          ba3_rd,
     input           ba3_rdy,
     input           ba3_ack,
@@ -72,12 +72,12 @@ module jtcps2_game(
     output          refresh_en,
 
     // RAM/ROM LOAD
-    input   [24:0]  ioctl_addr,
+    input   [25:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
     output  [ 7:0]  ioctl_data2sd,
     input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
-    output  [21:0]  prog_addr,
+    output  [22:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output  [ 1:0]  prog_ba,
@@ -130,6 +130,7 @@ wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, qsnd_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
+wire        z80_rstn;
 
 wire        main_rnw, busreq, busack;
 
@@ -150,6 +151,7 @@ wire        gfx_oram_ok;
 wire [ 7:0] main2qs_din;
 wire [23:1] main2qs_addr;
 wire        main2qs_cs, main_busakn, main_waitn;
+wire [12:0] volume;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
@@ -240,6 +242,7 @@ jtcps2_main u_main(
     .prog_din   ( prog_data[7:0]    ),
     .key_we     ( key_we            ),
     // Sound
+    .z80_rstn    ( z80_rstn         ),
     .main2qs_din ( main2qs_din      ),
     .main2qs_addr( main2qs_addr     ),
     .main2qs_cs  ( main2qs_cs       ),
@@ -247,6 +250,7 @@ jtcps2_main u_main(
     .main2qs_waitn( main_waitn      ),
     .UDSWn      ( dsn[1]            ),
     .LDSWn      ( dsn[0]            ),
+    .volume     ( volume            ),
     // cabinet I/O
     // Cabinet input
     .start_button( start_button     ),
@@ -398,13 +402,26 @@ jtcps1_video #(REGSIZE) u_video(
 
 // Sound CPU cannot be disabled as there is
 // interaction between both CPUs at power up
+reg qsnd_rst;
+
+always @(posedge clk48, posedge rst) begin
+    if( rst )
+        qsnd_rst  <= 1;
+    else
+        qsnd_rst  <= ~z80_rstn;
+end
+
+wire vol_up   = ~(coin_input[0] | joystick1[3]);
+wire vol_down = ~(coin_input[0] | joystick1[2]);
+
 jtcps15_sound u_sound(
-    .rst        ( rst               ),
+    .rst        ( qsnd_rst          ),
     .clk48      ( clk48             ),
     .clk96      ( clk96             ),
     .cen8       ( cen8              ),
-    .vol_up     ( 1'b0              ),
-    .vol_down   ( 1'b0              ),
+    .vol_up     ( vol_up            ),
+    .vol_down   ( vol_down          ),
+    .volume     ( volume            ),
     // Decode keys
     .kabuki_we  ( 1'b0              ),
     .kabuki_en  ( 1'b0              ),
@@ -441,7 +458,7 @@ jtcps15_sound u_sound(
     .sample     ( sample            )
 );
 
-jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
+jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),

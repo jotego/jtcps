@@ -72,7 +72,7 @@ module mist_dump(
                 $shm_probe(UUT.u_game.u_video.u_dma, "A");
                 $shm_probe(UUT.u_game.u_main.u_dtack, "A");
             `endif
-            $shm_probe(UUT.u_game.u_video.u_obj, "AS");
+            //$shm_probe(UUT.u_game.u_video.u_obj, "AS");
             //$shm_probe(UUT.u_game.u_main.obank);
             //$shm_probe(UUT.u_game.LVBL);
             //$shm_probe(UUT.u_game.LHBL);

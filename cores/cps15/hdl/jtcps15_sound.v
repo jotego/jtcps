@@ -23,6 +23,7 @@ module jtcps15_sound(
     input             cen8,
     input             vol_up,
     input             vol_down,
+    output reg [12:0] volume, // volume moves in 2dB steps
     // Decode keys
     input             kabuki_we,
     input             kabuki_en,
@@ -74,7 +75,6 @@ reg         main_busn_dly;
 // QSound registers
 reg         [23:0] cpu2dsp;
 reg                dsp_irq; // UR6B in schematics
-reg         [12:0] vol; // volume moves in 2dB steps
 reg         [ 1:0] dsp_datasel;
 reg  signed [15:0] reg_left, reg_right, pre_l, pre_r;
 wire signed [15:0] fxd_l, fxd_r;
@@ -328,12 +328,44 @@ assign left   = fxd_l;
 assign right  = fxd_r;
 `endif
 
+reg [12:0] vol_lut[0:39];
+reg [ 5:0] vol_st;
+
+initial begin
+    vol_lut[ 0]=13'h1010; vol_lut[ 1]=13'h1008; vol_lut[ 2]=13'h1004; vol_lut[ 3]=13'h1002;
+    vol_lut[ 4]=13'h1001; vol_lut[ 5]=13'h0810; vol_lut[ 6]=13'h0808; vol_lut[ 7]=13'h0804;
+    vol_lut[ 8]=13'h0802; vol_lut[ 9]=13'h0801; vol_lut[10]=13'h0410; vol_lut[11]=13'h0408;
+    vol_lut[12]=13'h0404; vol_lut[13]=13'h0402; vol_lut[14]=13'h0401; vol_lut[15]=13'h0210;
+    vol_lut[16]=13'h0208; vol_lut[17]=13'h0204; vol_lut[18]=13'h0202; vol_lut[19]=13'h0201;
+    vol_lut[20]=13'h0110; vol_lut[21]=13'h0108; vol_lut[22]=13'h0104; vol_lut[23]=13'h0102;
+    vol_lut[24]=13'h0101; vol_lut[25]=13'h0090; vol_lut[26]=13'h0088; vol_lut[27]=13'h0084;
+    vol_lut[28]=13'h0082; vol_lut[29]=13'h0081; vol_lut[30]=13'h0050; vol_lut[31]=13'h0048;
+    vol_lut[32]=13'h0044; vol_lut[33]=13'h0042; vol_lut[34]=13'h0041; vol_lut[35]=13'h0030;
+    vol_lut[36]=13'h0028; vol_lut[37]=13'h0024; vol_lut[38]=13'h0022; vol_lut[39]=13'h0021;
+end
+
+// volume control
+always @(posedge clk48, posedge rst) begin
+    if ( rst ) begin
+        volume     <= 13'b0;   // I think the volume is never actually read by the DSP
+        vol_st     <= 6'd39;   // Max
+    end else begin
+        last_vol_up   <= vol_up;
+        last_vol_down <= vol_down;
+        if( vol_up && !last_vol_up ) begin
+            if( vol_st < 6'd39 ) vol_st <= vol_st+6'd1;
+        end else if( vol_down && !last_vol_down ) begin
+            if( vol_st != 6'd0 ) vol_st <= vol_st-6'd1;
+        end
+        volume <= vol_lut[vol_st];
+    end
+end
+
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
-        vol        <= 13'b0;   // I think the volume is never actually read by the DSP
         audio_ws   <= 0;
         qsnd_addr  <= 23'd0;
-        base_sample     <= 0;
+        base_sample<= 0;
         dsp_dsel96 <= 0;
         pre_l      <= 16'd0;
         pre_r      <= 16'd0;
@@ -342,9 +374,7 @@ always @(posedge clk96, posedge rst) begin
         last_pods_n <= dsp_pods_n;
         last_psel   <= dsp_psel;
         dsp_dsel96  <= dsp_datasel[1];
-        // volume control
-        last_vol_up   <= vol_up;
-        last_vol_down <= vol_down;
+
         // latch sound data
         last_sadd <= dsp_sadd;
         if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
@@ -510,38 +540,44 @@ module jtcps15_z80buslock(
     input         clk,
     input         rst,
     input         cen8,
-    output        busrq_n,
-    input         busak_n,
+    output        busrq_n,  // to Z80
+    input         busak_n,  // from Z80
     // Signals from M68000
     input         buse_n,   // request from M68000
     input [23:12] m68_addr,
     input         m68_buswen,
     output        z80_buswn,
-    output        m68_busakn
+    output  reg   m68_busakn    // to M68
 );
 
 parameter CPS2=0;
-
-reg  [1:0] latch;
 
 wire shared_addr = CPS2 ? m68_addr[23:16]==8'h61 : (
                    (m68_addr[23:12]>=12'hf18 && m68_addr[23:12]<12'hf1a ) ||
                    (m68_addr[23:12]>=12'hf1e && m68_addr[23:12]<12'hf20 ) );
 
 assign z80_buswn = m68_buswen | m68_busakn;
-assign busrq_n   = buse_n; // | ~shared_addr;
-assign m68_busakn= latch[1] | busrq_n; // OR so that we catch when the m68K
-                                       // releases the bus
+
+reg last_busen, last_busakn;
+reg preqrqn;
+
+assign busrq_n = ~busak_n | preqrqn;
 
 always @(posedge clk, posedge rst) begin
-    if( rst )
-        latch <= 2'b11;
-    else begin
-        if( buse_n )
-            latch<=2'b11;
-        else if(cen8) begin
-            latch <= { latch[0], busrq_n | busak_n };
-        end
+    if( rst ) begin
+        m68_busakn <= 1'b1;
+        preqrqn    <= 1'b1;
+    end else if(cen8) begin
+        // to Z80
+        last_busen <= buse_n;
+        if( !buse_n && last_busen)
+            preqrqn <= 1'b0;
+        else if( buse_n )
+            preqrqn <= 1'b1;
+
+        // to M68
+        last_busakn <= busak_n;
+        m68_busakn  <= busak_n | last_busakn | buse_n;
     end
 end
 

@@ -33,12 +33,12 @@ module jtcps1_sdram #( parameter
     output          cfg_we,
 
     // ROM LOAD
-    input   [24:0]  ioctl_addr,
+    input   [25:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     output  [ 7:0]  ioctl_data2sd,
     input           ioctl_wr,
     input           ioctl_ram,
-    output  [21:0]  prog_addr,
+    output  [22:0]  prog_addr,
     output  [15:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output  [ 1:0]  prog_ba,
@@ -97,13 +97,13 @@ module jtcps1_sdram #( parameter
     input           snd_cs,
     input           pcm_cs,
 
-    output reg      snd_ok,
+    output          snd_ok,
     output          pcm_ok,
 
     input [Z80_AW-1:0] snd_addr,
     input [PCM_AW-1:0] pcm_addr,
 
-    output reg [7:0] snd_data,
+    output     [7:0] snd_data,
     output     [7:0] pcm_data,
 
     // Graphics
@@ -124,7 +124,7 @@ module jtcps1_sdram #( parameter
     output   [31:0] rom1_data,
 
     // Bank 0: allows R/W
-    output   [21:0] ba0_addr,
+    output   [22:0] ba0_addr,
     output          ba0_rd,
     output          ba0_wr,
     output   [15:0] ba0_din,
@@ -133,39 +133,40 @@ module jtcps1_sdram #( parameter
     input           ba0_ack,
 
     // Bank 1: Read only
-    output   [21:0] ba1_addr,
+    output   [22:0] ba1_addr,
     output          ba1_rd,
     input           ba1_rdy,
     input           ba1_ack,
 
     // Bank 2: Read only
-    output   [21:0] ba2_addr,
+    output   [22:0] ba2_addr,
     output          ba2_rd,
     input           ba2_rdy,
     input           ba2_ack,
 
     // Bank 3: Read only
-    output   [21:0] ba3_addr,
+    output   [22:0] ba3_addr,
     output          ba3_rd,
     input           ba3_rdy,
     input           ba3_ack,
 
-    input   [31:0]  data_read,
+    input    [31:0] data_read,
     output    reg   refresh_en
 );
 
-localparam [21:0] PCM_OFFSET   = 22'h10_0000,
-                  VRAM_OFFSET  = 22'h20_0000,
-                  ORAM_OFFSET  = 22'h28_0000,
-                  WRAM_OFFSET  = 22'h30_0000,
-                  ZERO_OFFSET  = 22'h0,
+localparam [22:0] ZERO_OFFSET  = 23'h0,
+                  PCM_OFFSET   = ZERO_OFFSET,
+                  VRAM_OFFSET  = 23'h20_0000,
+                  ORAM_OFFSET  = 23'h28_0000,
+                  WRAM_OFFSET  = 23'h30_0000,
+                  SND_OFFSET   = 23'h38_0000,
                   ROM_OFFSET   = ZERO_OFFSET;
 
 `ifdef CPS2
-    localparam [21:0] SCR_OFFSET = 22'h00_0000; // change this when moving to 8MB+ GFX
+    localparam [22:0] SCR_OFFSET = 23'h00_0000; // change this when moving to 8MB+ GFX
     localparam        CPS2       = 1;
 `else
-    localparam [21:0] SCR_OFFSET = ZERO_OFFSET;
+    localparam [22:0] SCR_OFFSET = ZERO_OFFSET;
     localparam        CPS2       = 0;
 
     wire [12:0] gfx_oram_addr = 13'd0;
@@ -179,8 +180,9 @@ localparam EEPROM_AW=7;
 localparam EEPROM_AW=6;
 `endif
 
-wire [21:0] gfx0_addr, gfx1_addr;
-wire [21:0] main_offset;
+(*keep*) wire [22:0] cps2_gfx0;
+wire [21:0] gfx1_addr, gfx0_addr;
+wire [22:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
 reg  [16:0] main_addr_x; // main addr modified for object bank access
@@ -217,11 +219,18 @@ jtcps1_prom_we #(
     .REGSIZE    ( REGSIZE       ),
     .CPU_OFFSET ( ZERO_OFFSET   ),
     .PCM_OFFSET ( PCM_OFFSET    ),
+    .SND_OFFSET ( SND_OFFSET    ),
     .EEPROM_AW  ( EEPROM_AW     )
 ) u_prom_we(
     .clk            ( clk           ),
     .downloading    ( downloading   ),
+`ifdef MIST
+    // This prevents a 1'bz for MSB in simulation
+    // Not important for implementation
+    .ioctl_addr     ( {1'b0, ioctl_addr[24:0] } ),
+`else
     .ioctl_addr     ( ioctl_addr    ),
+`endif
     .ioctl_data     ( ioctl_data    ),
     .ioctl_data2sd  ( ioctl_data2sd ),
     .ioctl_wr       ( ioctl_wr      ),
@@ -247,7 +256,8 @@ jtcps1_prom_we #(
     .joymode        ( cps2_joymode  )
 );
 
-jtframe_ram_4slots #(
+jtframe_ram_5slots #(
+    .SDRAMW      ( 23            ),
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
 
@@ -259,7 +269,12 @@ jtframe_ram_4slots #(
 
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
-    .LATCH3      (  1            )
+    .LATCH3      (  1            ),
+
+    .SLOT4_AW    ( Z80_AW        ), // Sound CPU
+    .SLOT4_DW    (  8            )
+    //.SLOT4_REPACK(  1            )
+
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -268,6 +283,7 @@ jtframe_ram_4slots #(
     .offset1     ( VRAM_OFFSET   ),
     .offset2     ( ORAM_OFFSET   ),
     .offset3     (  ROM_OFFSET   ),
+    .offset4     (  SND_OFFSET   ),
 
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
@@ -277,11 +293,14 @@ jtframe_ram_4slots #(
     .slot2_clr   ( vram_clr      ),
     .slot3_cs    ( main_rom_cs   ),
     .slot3_clr   ( 1'b0          ),
+    .slot4_cs    ( snd_cs        ),
+    .slot4_clr   ( 1'b0          ),
 
     .slot0_ok    ( main_ram_ok   ),
     .slot1_ok    ( vram_dma_ok   ),
     .slot2_ok    ( gfx_oram_ok   ),
     .slot3_ok    ( main_rom_ok   ),
+    .slot4_ok    ( snd_ok        ),
 
     .slot0_din   ( main_dout     ),
     .slot0_wrmask( dsn           ),
@@ -290,11 +309,13 @@ jtframe_ram_4slots #(
     .slot1_addr  ( vram_dma_addr ),
     .slot2_addr  ( gfx_oram_addr ),
     .slot3_addr  ( main_rom_addr ),
+    .slot4_addr  ( snd_addr      ),
 
     .slot0_dout  ( main_ram_data ),
     .slot1_dout  ( vram_dma_data ),
     .slot2_dout  ( gfx_oram_data ),
     .slot3_dout  ( main_rom_data ),
+    .slot4_dout  ( snd_data      ),
 
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),
@@ -307,45 +328,19 @@ jtframe_ram_4slots #(
     .data_read   ( data_read     )
 );
 
-// Z80 code and samples in bank 1
-wire [7:0] pre_snd_data;
-wire       pre_snd_ok;
-
-always @(posedge clk, posedge rst) begin
-    if( rst ) begin
-        snd_ok   <= 0;
-        snd_data <= 8'd0;
-    end else begin
-        snd_data <= pre_snd_data;
-        snd_ok   <= pre_snd_ok;
-    end
-end
-
-jtframe_rom_2slots #(
-    .SLOT0_AW    ( Z80_AW        ), // Sound CPU
+jtframe_rom_1slot #(
+    .SDRAMW      ( 23            ),
+    .SLOT0_AW    ( PCM_AW        ), // PCM
     .SLOT0_DW    (  8            ),
-    .SLOT0_OFFSET( ZERO_OFFSET   ),
-    .SLOT0_REPACK( 1             ),
-
-    .SLOT1_AW    ( PCM_AW        ), // PCM
-    .SLOT1_DW    (  8            ),
-    .SLOT1_OFFSET( PCM_OFFSET    ),
-    .SLOT1_REPACK( 1             )
+    .SLOT0_REPACK( 1             )
 ) u_bank1 (
     .rst         ( rst           ),
     .clk         ( clk           ),
 
-    .slot0_cs    ( snd_cs        ),
-    .slot1_cs    ( pcm_cs        ),
-
-    .slot0_ok    ( pre_snd_ok    ),
-    .slot1_ok    ( pcm_ok        ),
-
-    .slot0_addr  ( snd_addr      ),
-    .slot1_addr  ( pcm_addr      ),
-
-    .slot0_dout  ( pre_snd_data  ),
-    .slot1_dout  ( pcm_data      ),
+    .slot0_cs    ( pcm_cs        ),
+    .slot0_ok    ( pcm_ok        ),
+    .slot0_addr  ( pcm_addr      ),
+    .slot0_dout  ( pcm_data      ),
 
     .sdram_addr  ( ba1_addr      ),
     .sdram_req   ( ba1_rd        ),
@@ -361,12 +356,13 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign objgfx_cs = {2{rom0_cs}} & { rom0_bank[0], ~rom0_bank[0] };
     assign rom0_ok   = rom0_bank[0] ? objgfx_ok[1] : objgfx_ok[0];
     assign rom0_data = rom0_bank[0] ? objgfx_dout1 : objgfx_dout0;
+    assign cps2_gfx0 = { rom0_bank[1], gfx0_addr };
 
     jtframe_rom_1slot #(
+        .SDRAMW      ( 23            ),
         // Slot 0: Obj
-        .SLOT0_AW    ( 22            ),
+        .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
-        .SLOT0_OFFSET( ZERO_OFFSET   ),
         .LATCH0      ( 1             )
         //.SLOT0_REPACK( 1             ),
     ) u_bank2 (
@@ -374,11 +370,8 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         .clk         ( clk_gfx       ), // do not use clk
 
         .slot0_cs    ( objgfx_cs[0]  ),
-
         .slot0_ok    ( objgfx_ok[0]  ),
-
-        .slot0_addr  ( gfx0_addr     ),
-
+        .slot0_addr  ( cps2_gfx0     ),
         .slot0_dout  ( objgfx_dout0  ),
 
         .sdram_addr  ( ba2_addr      ),
@@ -391,11 +384,13 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign objgfx_cs = 2'b10;
     assign rom0_ok   = objgfx_ok[1];
     assign rom0_data = objgfx_dout1;
+    assign cps2_gfx0 = { 1'b0, gfx0_addr };
 `endif
 
 jtframe_rom_2slots #(
+    .SDRAMW      ( 23            ),
     // Slot 0: Obj
-    .SLOT0_AW    ( 22            ),
+    .SLOT0_AW    ( 23            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
     .LATCH0      ( 1             ),
@@ -416,7 +411,7 @@ jtframe_rom_2slots #(
     .slot0_ok    ( objgfx_ok[1]  ),
     .slot1_ok    ( rom1_ok       ),
 
-    .slot0_addr  ( gfx0_addr     ),
+    .slot0_addr  ( cps2_gfx0     ),
     .slot1_addr  ( gfx1_addr     ),
 
     .slot0_dout  ( objgfx_dout1  ),

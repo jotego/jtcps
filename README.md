@@ -43,9 +43,7 @@ Pang! 3 and all CPS 1.5/2 games did not use DIP switches to configure the game, 
 
 Known issues:
 
--Fuel hoses in Carrier Airwing appear on top of the airplane
--12MHz games may run slightly slower than the original
--QSound hiss
+-Fuel hoses in Carrier Airwing appear on top of the airplane. This may be a problem with MRA file, and not with the core itself.
 
 Please report issues (here)[https://github.com/jotego/jtbin/issues].
 
@@ -75,6 +73,8 @@ T  = 1/4Fs
 # QSound
 
 QSound requires its own firmware rom to work. In MAME this is called qsound.zip. QSound sampling frequency is 3746 ticks of the input clock, when the clock enable applied is 2/3. For a 90MHz input clock, this will result in the correct internal 30MHz and in a sampling frequency of 90MHz/3747=24,019.2Hz
+
+The original board had a digitally controlled amplifier. The volume set on this amplifier could be read back by the CPU and DSP. In order to control the value read by these devices, press and hold the coin button for 1P while pressing up or down (for more or less volume). Note that this does not have an actual effect on the sound output.
 
 # PAL Dumps
 PAL dumps cam be obtained from MAME rom sets directly. Use the tool jedutil in order to extract the equations from them. The device is usually a gal16v8. For instance:
@@ -193,6 +193,7 @@ Darkstalker's revenge | 4.0 MB  |  256 kB     | 32 MB   | 4 MB    |  54
 Progear               | 1.0 MB  |  128 kB     | 16 MB   | 8 MB    |  72
 Puzz Loop 2           | 2.0 MB  |  128 kB     | 16 MB   | 4 MB    |  16
 Quiz Nanairo Dreams   | 2.0 MB  |  128 kB     |  8 MB   | 4 MB    |   8
+Ring of Destruction   | 3.0 MB  |  256 kB     | 18 MB   | 4 MB    | 293
 Slam Masters 2        | 3.0 MB  |  256 kB     | 18 MB   | 4 MB    | 291
 SF alpha 1            | 2.0 MB  |  256 kB     |  8 MB   | 4 MB    | 190
 SF alpha 2            | 3.0 MB  |  256 kB     | 20 MB   | 4 MB    | 218

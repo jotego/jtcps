@@ -134,7 +134,7 @@ reg         last_HB, line_req, last_pal_dma_ok, pal_busy;
 reg         rd_bank, wr_bank, adv, check_adv;
 reg         rd_obj_bank, wr_obj_bank;
 reg         scr_wr, obj_wr, pal_wr;
-reg         obj_fill, obj_end, last_obj_dma_ok,
+reg         obj_busy, obj_fill, obj_end, last_obj_dma_ok, first_obj_ok,
             fill_found, fill_en;
 
 wire        HB_edge  = !last_HB && HB;
@@ -302,15 +302,23 @@ always @(posedge clk) begin
         obj_fill    <= 0;
         obj_end     <= 0;
         obj_cnt     <= 10'd0;
+        obj_busy    <= 0;
+        first_obj_ok<= 0;
         // SCR
         vrenderf    <= 16'd0;
     end else if(pxl2_cen) begin
         last_HB <= HB;
+        if( obj_dma_ok ) first_obj_ok <= 1;
         last_obj_dma_ok <= obj_dma_ok;
         last_pal_dma_ok <= pal_dma_ok;
         scr_wr <= 0;
         obj_wr <= 0;
         pal_wr <= 0;
+
+
+        if( obj_dma_ok && !last_obj_dma_ok ) begin
+            obj_busy <= 1;
+        end
 
         if( pal_dma_ok && !last_pal_dma_ok ) begin
             pal_busy <= 1;
@@ -328,9 +336,17 @@ always @(posedge clk) begin
 
         if( line_req && step[0] ) begin
             line_req    <= 0;
+            obj_busy    <= 0;
             pal_busy    <= 0;
             `ifndef CPS2
-                if( tile_vs && objdma_en) begin
+                // This is a mixed approach: starting the DMA at vrender1==9'h0
+                // fixes the OBJ left over when changing cores
+                // But just doing that prevents some objects from displaying
+                // correctly, like the public in SF2 intro scene
+                // So I reset the OBJ counter
+
+                if( ((vrender1==9'h0 && !first_obj_ok) || obj_busy )
+                    && objdma_en) begin
                     wr_obj_bank <= ~wr_obj_bank;
                     rd_obj_bank <= wr_obj_bank;
                     obj_fill    <= 0;
