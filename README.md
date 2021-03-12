@@ -43,9 +43,7 @@ Pang! 3 and all CPS 1.5/2 games did not use DIP switches to configure the game, 
 
 Known issues:
 
--Fuel hoses in Carrier Airwing appear on top of the airplane
--12MHz games may run slightly slower than the original
--QSound hiss
+-Fuel hoses in Carrier Airwing appear on top of the airplane. This may be a problem with MRA file, and not with the core itself.
 
 Please report issues (here)[https://github.com/jotego/jtbin/issues].
 
