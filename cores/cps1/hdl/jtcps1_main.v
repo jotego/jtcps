@@ -93,7 +93,7 @@ wire [23:1] A;
 wire        BERRn = 1'b1;
 
 `ifdef SIMULATION
-wire [24:0] A_full = {A,1'b0};
+wire [23:0] A_full = {A,1'b0};
 `endif
 
 (*keep*) wire        BRn, BGACKn, BGn;

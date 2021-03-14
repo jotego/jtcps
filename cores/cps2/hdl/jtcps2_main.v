@@ -102,7 +102,7 @@ reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 wire [15:0] rom_dec;
 
 `ifdef SIMULATION
-wire [24:0] A_full = {A,1'b0};
+wire [23:0] A_full = {A,1'b0};
 `endif
 
 (*keep*) wire        BRn, BGACKn, BGn;
