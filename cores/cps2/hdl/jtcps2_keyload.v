@@ -47,6 +47,8 @@ always @(posedge clk, posedge rst) begin
         end
         case(sum)
             12'h7AC, 12'h7D9, // sfa
+            12'h6f3, 12'h6c2, // sfa2
+            12'h60e, // qndream
             12'h725, 12'h59f, 12'h6f8, 12'h743, // sf zero
             12'h70C, 12'h6F5, 12'h6EB, 12'h646, 12'h683, // SPF2T
             12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB

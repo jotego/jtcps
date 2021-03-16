@@ -306,3 +306,6 @@ Chris W Miller      Jesse Clark         nonamebear          Victor Fontanez
 Christian           Jim Knowler         nullobject          Víctor Gomariz Ladrón de Guevara
 Christian Bailey    Jo Tomiyori         Oliver Jaksch       Xzarian
 Christopher Gelatt                                          yoaarond
+
+The following patrons supported the development of CPS2
+
