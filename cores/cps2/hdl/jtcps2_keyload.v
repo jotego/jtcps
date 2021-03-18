@@ -47,7 +47,8 @@ always @(posedge clk, posedge rst) begin
         end
         case(sum)
             12'h7AC, 12'h7D9, // sfa
-            12'h6f3, 12'h6c2, // sfa2
+            12'h6f3, 12'h6c2, // sfa2 and Battle Circuit
+            12'h618, 12'h4c3, // Battle Circuit (alt)
             12'h4BA, 12'h5EB, 12'h617, 12'h632, 12'h646, 12'h647, 12'h6C5, 12'h6C2, // sfz2a
             12'h60e, // qndream
             12'h725, 12'h59f, 12'h6f8, 12'h743, // sf zero
