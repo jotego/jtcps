@@ -376,7 +376,11 @@ jtcps2_decrypt u_decrypt(
 
     // Control
     .fc         ( FC        ),
+    `ifdef NOENCRYPT
+    .dec_en     ( 1'b0      ),
+    `else
     .dec_en     ( 1'b1      ),
+    `endif
 
     // Decoding
     .addr       ( A         ),
