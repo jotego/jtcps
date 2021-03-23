@@ -338,27 +338,23 @@ always @(posedge clk) begin
             line_req    <= 0;
             obj_busy    <= 0;
             pal_busy    <= 0;
-            `ifndef CPS2
-                // This is a mixed approach: starting the DMA at vrender1==9'h0
-                // fixes the OBJ left over when changing cores
-                // But just doing that prevents some objects from displaying
-                // correctly, like the public in SF2 intro scene
-                // So I reset the OBJ counter
+            // This is a mixed approach: starting the DMA at vrender1==9'h0
+            // fixes the OBJ left over when changing cores
+            // But just doing that prevents some objects from displaying
+            // correctly, like the public in SF2 intro scene
+            // So I reset the OBJ counter
 
-                if( ((vrender1==9'h0 && !first_obj_ok) || obj_busy )
-                    && objdma_en) begin
-                    wr_obj_bank <= ~wr_obj_bank;
-                    rd_obj_bank <= wr_obj_bank;
-                    obj_fill    <= 0;
-                    obj_end     <= 0;
-                    tasks[OBJ]  <= 1;
-                    obj_cnt     <= 10'd0;
-                end else begin
-                    tasks[OBJ]  <= !obj_end;
-                end
-            `else
-                tasks[OBJ]  <= 1'b0;    // No OBJ DMA on CPS2
-            `endif
+            if( ((vrender1==9'h0 && !first_obj_ok) || obj_busy )
+                && objdma_en) begin
+                wr_obj_bank <= ~wr_obj_bank;
+                rd_obj_bank <= wr_obj_bank;
+                obj_fill    <= 0;
+                obj_end     <= 0;
+                tasks[OBJ]  <= 1;
+                obj_cnt     <= 10'd0;
+            end else begin
+                tasks[OBJ]  <= !obj_end;
+            end
             if( pal_busy ) begin
                 pal_rd_page      <= 3'd0;
                 pal_wr_page      <= pal_page_en[0] ? 3'd0 : 3'd1;
