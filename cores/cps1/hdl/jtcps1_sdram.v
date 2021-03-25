@@ -87,8 +87,8 @@ module jtcps1_sdram #( parameter
     output          main_ram_ok,
     output          vram_dma_ok,
 
-    input    [16:0] main_ram_addr,
-    input    [16:0] vram_dma_addr,
+    input    [17:1] main_ram_addr,
+    input    [17:1] vram_dma_addr,
 
     output   [15:0] main_ram_data,
     output   [15:0] vram_dma_data,
@@ -185,7 +185,7 @@ wire [21:0] gfx1_addr, gfx0_addr;
 wire [22:0] main_offset;
 wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
-reg  [16:0] main_addr_x; // main addr modified for object bank access
+reg  [17:1] main_addr_x; // main addr modified for object bank access
 reg         ocache_clr, obank_last;
 
 // EEPROM
@@ -204,8 +204,8 @@ always @(*) begin
     main_addr_x = main_ram_addr;
     `ifdef CPS2
     if( main_oram_cs ) begin
-        main_addr_x[16:13]  = 4'd0;
-        main_addr_x[12] = main_ram_addr[12] ^ obank;
+        main_addr_x[17:14]  = 4'd0;
+        main_addr_x[13] = main_ram_addr[15] ^ obank;
     end
     `endif
 end
