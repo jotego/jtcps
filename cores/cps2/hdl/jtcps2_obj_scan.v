@@ -152,18 +152,17 @@ always @(posedge clk, posedge rst) begin
                 if( !inzone ) begin
                     st<= 1; // try next one
                     //table_addr <= table_addr+10'd1;
-                end
-            end
-            5: begin
-                if( !dr_idle ) begin
-                    st <= 5;
                 end else begin
-                    dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
-                    dr_code  <= code_mn;
-                    dr_hpos  <= eff_x - 9'd1;
-                    dr_prio  <= prio;
-                    dr_bank  <= obj_bank;
-                    dr_start <= ~eff_x[9];
+                    if( !dr_idle ) begin
+                        st <= 4;
+                    end else begin
+                        dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
+                        dr_code  <= code_mn;
+                        dr_hpos  <= eff_x - 9'd1;
+                        dr_prio  <= prio;
+                        dr_bank  <= obj_bank;
+                        dr_start <= ~eff_x[9];
+                    end
                 end
             end
             6: begin
