@@ -123,7 +123,7 @@ always @(posedge clk, posedge rst) begin
             end
             1: begin
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
-
+                dr_start   <= 0;
                 if( &table_addr )
                     last_tile <= 1;
                 else
@@ -170,11 +170,11 @@ always @(posedge clk, posedge rst) begin
                 if( n == tile_n ) begin
                     st <= 1; // next element
                 end else begin // prepare for next tile
-                    n <= n + 4'd1;
+                    n    <= n + 4'd1;
                     npos <= hflip ? npos-4'd1 : npos+4'd1;
+                    st   <= 3; // get extra cycles for inzone and dr_idle
                 end
             end
-            7: st<=3; // get extra cycles for inzone and dr_idle
         endcase
         // This must be after the case statement
         if( start && !last_start ) begin
