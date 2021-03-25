@@ -25,6 +25,9 @@ module jtcps2_obj_scan(
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input              start,
 
+    input      [ 9:0]  off_x,
+    input      [ 9:0]  off_y,
+
     // interface with frame table
     output reg [ 9:0]  table_addr,
     input      [15:0]  table_x,

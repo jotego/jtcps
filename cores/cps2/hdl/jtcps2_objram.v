@@ -40,6 +40,9 @@ module jtcps2_objram(
     input    [15:0] cpu_dout,
     input    [ 3:1] cfg_addr,
 
+    output reg [9:0] off_x,
+    output reg [9:0] off_y,
+
     // Interface with CPU
     input           cs,
     output reg      ok,
@@ -60,17 +63,16 @@ module jtcps2_objram(
 parameter AW=13; // 13 for full table shadowing
 localparam [3:1] XOFF=4, YOFF=5;
 
-reg  [ 9:0] off_x, off_y;
 reg  [15:0] din_x, din_y;
 
 wire [   1:0] wex, wey, wecode, weattr;
 wire [AW-3:0] wr_addr, gfx_addr;
 
 wire [9:0] next_offy = { cfg_dsn[1] ? off_y[9:8] : cpu_dout[9:8],
-                         cfg_dsn[0] ? off_y[7:0] : cpu_dout[7:0] } - 10'h10;
+                         cfg_dsn[0] ? off_y[7:0] : cpu_dout[7:0] };
 
 wire [9:0] next_offx = { cfg_dsn[1] ? off_x[9:8] : cpu_dout[9:8],
-                         cfg_dsn[0] ? off_x[7:0] : cpu_dout[7:0] } - 10'h40;
+                         cfg_dsn[0] ? off_x[7:0] : cpu_dout[7:0] };
 
 assign wex      = ~dsn & {2{cs & main_addr[2:1]==2'd0}};
 assign wey      = ~dsn & {2{cs & main_addr[2:1]==2'd1}};
@@ -82,8 +84,6 @@ assign gfx_addr = { ~obank, obj_addr[AW-4:0] };
 
 always @(posedge clk_cpu) begin
     ok    <= cs;
-    din_y <= { oram_din[15:10], oram_din[9:0] - off_y };
-    din_x <= { oram_din[15:10], oram_din[9:0] - off_x };
 end
 
 `ifdef XOFF_RST
@@ -119,7 +119,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( din_x        ),
+    .data0      ( oram_din     ),
     .addr0      ( wr_addr      ),
     .we0        ( wex          ),
     .q0         (              ),
@@ -137,7 +137,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( din_y        ),
+    .data0      ( oram_din     ),
     .addr0      ( wr_addr      ),
     .we0        ( wey          ),
     .q0         (              ),
@@ -155,7 +155,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( oram_din    ),
+    .data0      ( oram_din     ),
     .addr0      ( wr_addr      ),
     .we0        ( weattr       ),
     .q0         (              ),
@@ -173,7 +173,7 @@ jtframe_dual_ram16 #(
     .clk0       ( clk_cpu      ),
     .clk1       ( clk_gfx      ),
     // Port 0: CPU
-    .data0      ( oram_din    ),
+    .data0      ( oram_din     ),
     .addr0      ( wr_addr      ),
     .we0        ( wecode       ),
     .q0         (              ),

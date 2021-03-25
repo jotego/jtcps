@@ -68,6 +68,8 @@ wire [ 8:0] buf_addr, buf_data;
 wire [11:0] prio_data;
 wire        buf_wr;
 
+wire [ 9:0] off_x, off_y;
+
 wire        obank_frame, oframe_we;
 
 // shadow RAM interface
@@ -106,6 +108,9 @@ jtcps2_objram u_objram(
     .cpu_dout   ( cpu_dout      ),
     .cfg_dsn    ( dsn           ),
 
+    .off_x      ( off_x         ),
+    .off_y      ( off_y         ),
+
     // Interface with CPU
     .cs         ( oframe_we     ),
     .ok         (               ),
@@ -128,6 +133,9 @@ jtcps2_obj_scan u_scan(
 
     .start      ( start         ),
     .vrender    ( vrender       ),
+
+    .off_x      ( off_x         ),
+    .off_y      ( off_y         ),
 
     // interface with frame table
     .table_addr ( table_attr    ),
