@@ -138,8 +138,8 @@ always @(posedge clk, posedge rst) begin
                         st<=0;  // done
                     end
                     else begin
-                        obj_y      <= table_y[9:0] - (table_attr[7] ? 10'd0 : off_y);
-                        obj_x      <= table_x[9:0] - (table_attr[7] ? 10'd0 : off_x);
+                        obj_y      <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                        obj_x      <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
