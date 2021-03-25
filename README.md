@@ -331,53 +331,55 @@ Arjan de Lang                           Atom
 Banane                                  Bear S
 Ben Toman                               Bender
 Bitmap Bureau                           Bliz 452
-Bob Gallardo                            Brandon Smith
-Brandon Thomas                          Brent Fraser Weatherall
-Brian Peek                              Brian Plummer
-Brian Sallee                            Cameron Tinker
-Carrboroman                             Charles
-Chi Wai Tran                            Chris Jardine
-Chris Mzhickteno                        Chris W Miller
-Chris smith                             Christian
-Christian Bailey                        Christopher Brown
-Christopher Gelatt                      Christopher Harvey
-Christopher Tuckwell                    Clinton Cronin
-Coldheat007                             Colt83
+Bob Gallardo                            Boogermann
+Brandon Smith                           Brandon Thomas
+Brent Fraser Weatherall                 Brian Peek
+Brian Plummer                           Brian Sallee
+Cameron Tinker                          Carrboroman
+Charles                                 Chi Wai Tran
+Chris Jardine                           Chris Mzhickteno
+Chris W Miller                          Chris smith
+Christian                               Christian Bailey
+Christopher Brown                       Christopher Gelatt
+Christopher Harvey                      Christopher Tuckwell
+Clinton Cronin                          Coldheat007
+Colt83                                  Connor Glynn
 Cornelle Janse Van Rensburg             D.J. Estreito
 Dakken                                  Dan
 Daniel                                  Daniel Bauza
 Daniel Casadevall                       Daniel Zetterman
 Daniel_papa                             Darren Chell
 Darren Wootton                          Dasutin
-David Ashby                             David Fleetwood
-David Jones                             David Mills
-David Moylan                            Diana Carolina
-Don Gafford                             DrMnike
-Ed Balan                                Edward Rana
-Eric J Faulkes                          Eric Schlappi
-Eric Walklet                            Filip Kindt
-Five Year Guy                           Focux
-Francis B                               Frank Glaser
-Frédéric Mahé                           Gladius
-Gluthecat                               Gonzalo López
-Goolio                                  Greg
-Gregory Val                             Gus Douboulidis
-HFSPlay                                 Handheld Obsession
-Hard Rich                               Henrik Nordström
-Henry                                   Ian Court
-Ibrahim                                 ItsBobDudes
-JPS (RetroFPGA)                         Jacob Hoffman
-Jacob Lawter                            James B Ross
-James Dingo                             James Kilgore
-James Williams                          Jason Nagy
-Javier Rodas                            Jeff Despres
-Jeff Roberts                            Jeremy Hasse
-Jeremy Kelaher                          Jesse Clark
-Jim Knowler                             Jo Tomiyori
-Jockel                                  Joeri van Dooren
-Johan Smolinski                         John Casey
-John Fletcher                           John Lange
-John Schaeffer                          Jonah Phillips
+David Ashby                             David Drury
+David Fleetwood                         David Jones
+David Mills Jr.                         David Moylan
+Diana Carolina                          Don Gafford
+DrMnike                                 Ed Balan
+Edward Rana                             Eric J Faulkes
+Eric Schlappi                           Eric Walklet
+Filip Kindt                             Five Year Guy
+Focux                                   Francis B
+Frank Glaser                            Frédéric Mahé
+Gladius                                 Gluthecat
+Gonzalo López                           Goolio
+Greg                                    Gregory Val
+Gus Douboulidis                         HFSPlay
+Handheld Obsession                      Hard Rich
+Henrik Nordström                        Henry
+Ian Court                               Ibrahim
+ItsBobDudes                             JPS (RetroFPGA)
+Jacob Hoffman                           Jacob Lawter
+James B Ross                            James Dingo
+James Kilgore                           James Williams
+Jason Nagy                              Javier Rodas
+Jeff Despres                            Jeff Roberts
+Jeremy Hasse                            Jeremy Kelaher
+Jesse Clark                             Jim Knowler
+Jo Tomiyori                             Jockel
+Joeri van Dooren                        Johan Smolinski
+John Casey                              John Fletcher
+John Lange                              John Schaeffer
+John Wilson                             Jonah Phillips
 Jonathan Brochu                         Jonathan Loor
 Jonathan Tuttle                         Jootec from Mars
 Jorge Slowfret                          Jork Sonkinfield
@@ -395,21 +397,24 @@ Marcus Hogue                            Mark Baffa
 Mark Davidson                           Mark Haborak
 MarthSR                                 Martin Ansin
 Martin Birkeldh                         Matheus
-Matt Evans                              Matt McCarthy
-Matt ODonnell                           Matt Postema
-Matthew Humphrey                        Matthew Young
+Matt Evans                              Matt Lichtenberg
+Matt McCarthy                           Matt ODonnell
+Matt Postema                            Matthew Humphrey
+Matthew Woodford                        Matthew Young
 MechaGG                                 Megan Alnico
 MiSTerFPGA.co.uk                        Michael Deshaies
-Michael Yount                           Mick Stone
-Mike Jegenjan                           Mike Olson
-Mike Parks                              MoonZ
-Mottzilla                               Nailbomb
-Narugawa                                Neil St Clair
-Nelson Jr                               Nick Delia
-Nico Stamp                              NonstopXiaowei
+Michael Rea                             Michael Yount
+Mick Stone                              Mike Jegenjan
+Mike Olson                              Mike Parks
+MoonZ                                   Mottzilla
+Nailbomb                                Narugawa
+Neil St Clair                           Nelson Jr
+Nick Delia                              Nico Stamp
+Nicolas Hurtado                         NonstopXiaowei
 Oliver Jaksch                           Oliver Wndmth
 Oriez                                   Oscar Laguna Garcia
-Oskar Sigvardsson                       Patrick Roman Fabri
+Oskar Sigvardsson                       Parker Blackman
+Patrick Roman Fabri                     Paul M
 Paweł Mandes                            PeFClic
 Per Ole Klemetsrud                      Per Sweden
 Peter Bray                              Philip Lawson
