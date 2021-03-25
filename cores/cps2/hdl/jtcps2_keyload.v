@@ -58,10 +58,16 @@ always @(posedge clk, posedge rst) begin
             12'h76d,           // Jyangokushi
             12'h48b, 12'h6cb, 12'h63e, 12'h697, 12'h5a1, 12'h5bf, // 19XX
             12'h34d, 12'h3ce, 12'h496, 12'h388, 12'h4b9, // Dark Stalkers
+            12'h397, 12'h5B6, 12'h4A8, 12'h3E6, 12'h606,
             12'h6bb, 12'h5bb, // Megaman 1
             12'h647, 12'h628, 12'h4bd, 12'h4b5, // Megaman 2
             12'h747, 12'h666, 12'h6c0, 12'h6cf, 12'h6ed, // AvsP
-            12'h69C // Puzz Loop 2
+            12'h69C, // Puzz Loop 2
+            // beta 6:
+            12'h858, 12'h897, 12'h77d, // Dimahoo
+            12'h683, 12'h51b, 12'h549, 12'h5f1, 12'h63d, // DD Tower of Doom
+            12'h57d, 12'h429, // Darkstalker's Revenge
+            12'h756, 12'h720, 12'h61F, 12'h502, 12'h5EE, 12'h531 // X-Men vs SF
             : betang <= 0;
             default:
             betang <= 1;

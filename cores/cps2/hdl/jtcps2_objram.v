@@ -104,12 +104,10 @@ always @(posedge clk_cpu, posedge rst) begin
         off_y <= YOFF_RST;
     end else if( objcfg_cs ) begin
         if( cfg_addr == XOFF ) begin
-            if( !cfg_dsn[0]) off_x[7:0] <= next_offx[7:0];
-            if( !cfg_dsn[1]) off_x[9:8] <= next_offx[9:8];
+            if( cfg_dsn!=2'b11 ) off_x <= next_offx;
         end
         if( cfg_addr == YOFF ) begin
-            if( !cfg_dsn[0]) off_y[7:0] <= next_offy[7:0];
-            if( !cfg_dsn[1]) off_y[  8] <= next_offy[  8];
+            if( cfg_dsn!=2'b11 ) off_y <= next_offy;
         end
     end
 end
