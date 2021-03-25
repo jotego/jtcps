@@ -304,6 +304,11 @@ assign sdo      = 0;
 assign scs      = 0;
 assign obank    = 1;
 assign busack   = 1;
+assign ppu1_cs  = 0;
+assign ppu2_cs  = 0;
+assign objcfg_cs = 0;
+assign ppu_rstn = 1;
+assign cpu_dout = 0;
 `endif
 
 reg rst_video, rst_sdram;
