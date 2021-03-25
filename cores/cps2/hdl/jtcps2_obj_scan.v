@@ -49,7 +49,7 @@ module jtcps2_obj_scan(
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-wire [ 9:0] obj_y;
+reg  [ 9:0] obj_y;
 wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
@@ -81,7 +81,6 @@ jtcps1_obj_tile_match u_tile_match(
 );
 
 assign      prio       = table_x[15:13];
-assign      obj_y      = table_y[9:0];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
 assign      tile_n     = table_attr[11: 8];
@@ -139,6 +138,7 @@ always @(posedge clk, posedge rst) begin
                         st<=0;  // done
                     end
                     else begin
+                        obj_y      <= table_y[9:0] - (table_attr[7] ? 10'd0 : off_y);
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
@@ -148,15 +148,15 @@ always @(posedge clk, posedge rst) begin
                     st   <= 0; // done
                 end
             end
-            2: begin // check whether sprite is visible
+            4: begin // check whether sprite is visible
                 if( !inzone ) begin
                     st<= 1; // try next one
                     //table_addr <= table_addr+10'd1;
                 end
             end
-            4: begin
+            5: begin
                 if( !dr_idle ) begin
-                    st <= 4;
+                    st <= 5;
                 end else begin
                     dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
                     dr_code  <= code_mn;
@@ -166,7 +166,7 @@ always @(posedge clk, posedge rst) begin
                     dr_start <= ~eff_x[9];
                 end
             end
-            5: begin
+            6: begin
                 dr_start <= 0;
                 if( n == tile_n ) begin
                     st <= 1; // next element
@@ -175,7 +175,7 @@ always @(posedge clk, posedge rst) begin
                     npos <= hflip ? npos-4'd1 : npos+4'd1;
                 end
             end
-            6: st<=2; // get extra cycles for inzone and dr_idle
+            7: st<=3; // get extra cycles for inzone and dr_idle
         endcase
         // This must be after the case statement
         if( start && !last_start ) begin
