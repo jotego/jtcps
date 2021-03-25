@@ -67,7 +67,8 @@ always @(posedge clk, posedge rst) begin
             12'h858, 12'h897, 12'h77d, // Dimahoo
             12'h683, 12'h51b, 12'h549, 12'h5f1, 12'h63d, // DD Tower of Doom
             12'h57d, 12'h429, // Darkstalker's Revenge
-            12'h756, 12'h720, 12'h61F, 12'h502, 12'h5EE, 12'h531 // X-Men vs SF
+            //12'h756, 12'h720, 12'h61F, 12'h502, 12'h5EE, 12'h531 // X-Men vs SF
+            12'h57D, 12'h65E, 12'h604, 12'h604, 12'h5F5, 12'h5D7 // X-Men COTA
             : betang <= 0;
             default:
             betang <= 1;
