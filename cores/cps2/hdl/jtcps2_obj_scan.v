@@ -49,7 +49,7 @@ module jtcps2_obj_scan(
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-reg  [ 9:0] obj_y;
+reg  [ 9:0] obj_y, obj_x;
 wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
@@ -87,7 +87,7 @@ assign      tile_n     = table_attr[11: 8];
 assign      vflip      = table_attr[6];
 wire        hflip      = table_attr[5];
 //          pal        = table_attr[4:0];
-assign      eff_x      = table_x[9:0] + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
 reg  [ 4:0] st;
 
@@ -139,6 +139,7 @@ always @(posedge clk, posedge rst) begin
                     end
                     else begin
                         obj_y      <= table_y[9:0] - (table_attr[7] ? 10'd0 : off_y);
+                        obj_x      <= table_x[9:0] - (table_attr[7] ? 10'd0 : off_x);
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
@@ -165,7 +166,7 @@ always @(posedge clk, posedge rst) begin
                     end
                 end
             end
-            6: begin
+            5: begin
                 dr_start <= 0;
                 if( n == tile_n ) begin
                     st <= 1; // next element
