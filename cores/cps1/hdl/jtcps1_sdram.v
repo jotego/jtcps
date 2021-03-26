@@ -74,6 +74,7 @@ module jtcps1_sdram #( parameter
     input           main_oram_cs,
     `ifdef CPS2
     input           obank,
+    input    [15:0] oram_base,
     input    [12:0] gfx_oram_addr,
     output   [15:0] gfx_oram_data,
     output          gfx_oram_ok,
@@ -205,8 +206,7 @@ always @(*) begin
     `ifdef CPS2
     if( main_oram_cs ) begin
         main_addr_x[17:14]  = 4'd0;
-        main_addr_x[13] = (/*main_ram_addr[15] ^*/ // enabling bit 15 breaks Progear intro
-             main_ram_addr[13]) ^ obank;
+        main_addr_x[13] = (main_ram_addr[15] ^ oram_base[7] ) ^ obank;
     end
     `endif
 end

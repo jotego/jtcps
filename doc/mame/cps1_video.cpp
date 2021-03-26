@@ -1694,7 +1694,7 @@ static const struct CPS1config cps1_config_table[]=
 CPS1 VIDEO RENDERER
 
 */
-#define CPS2_OBJ_BASE   0x00    /* Unknown (not base address of objects). Could be bass address of bank used when object swap bit set? */
+#define CPS2_OBJ_BASE   0x00    /* Unknown (not base address of objects). Could be base address of bank used when object swap bit set? */
 #define CPS2_OBJ_UK1    0x02    /* Unknown (nearly always 0x807d, or 0x808e when screen flipped) */
 #define CPS2_OBJ_PRI    0x04    /* Layers priorities */
 #define CPS2_OBJ_UK2    0x06    /* Unknown (usually 0x0000, 0x1101 in ssf2, 0x0001 in 19XX) */
