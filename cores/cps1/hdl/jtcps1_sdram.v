@@ -206,7 +206,7 @@ always @(*) begin
     `ifdef CPS2
     if( main_oram_cs ) begin
         main_addr_x[17:14]  = 4'd0;
-        main_addr_x[13] = (main_ram_addr[15] ^ oram_base[7] ) ^ obank;
+        main_addr_x[13] = ~main_ram_addr[15] ^ obank;
     end
     `endif
 end
