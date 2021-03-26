@@ -25,6 +25,9 @@ module jtcps2_obj_scan(
     input      [ 8:0]  vrender, // 1 line ahead of vdump
     input              start,
 
+    input      [ 9:0]  off_x,
+    input      [ 9:0]  off_y,
+
     // interface with frame table
     output reg [ 9:0]  table_addr,
     input      [15:0]  table_x,
@@ -46,7 +49,7 @@ module jtcps2_obj_scan(
 reg  [ 9:0] mapper_in;
 reg  [ 8:0] vrenderf;
 
-wire [ 9:0] obj_y;
+reg  [ 9:0] obj_y, obj_x;
 wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
@@ -78,14 +81,13 @@ jtcps1_obj_tile_match u_tile_match(
 );
 
 assign      prio       = table_x[15:13];
-assign      obj_y      = table_y[9:0];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
 assign      tile_n     = table_attr[11: 8];
 assign      vflip      = table_attr[6];
 wire        hflip      = table_attr[5];
 //          pal        = table_attr[4:0];
-assign      eff_x      = table_x[9:0] + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
 reg  [ 4:0] st;
 
@@ -121,7 +123,7 @@ always @(posedge clk, posedge rst) begin
             end
             1: begin
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
-
+                dr_start   <= 0;
                 if( &table_addr )
                     last_tile <= 1;
                 else
@@ -136,6 +138,8 @@ always @(posedge clk, posedge rst) begin
                         st<=0;  // done
                     end
                     else begin
+                        obj_y      <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                        obj_x      <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
@@ -145,22 +149,21 @@ always @(posedge clk, posedge rst) begin
                     st   <= 0; // done
                 end
             end
-            2: begin // check whether sprite is visible
+            4: begin // check whether sprite is visible
                 if( !inzone ) begin
                     st<= 1; // try next one
                     //table_addr <= table_addr+10'd1;
-                end
-            end
-            4: begin
-                if( !dr_idle ) begin
-                    st <= 4;
                 end else begin
-                    dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
-                    dr_code  <= code_mn;
-                    dr_hpos  <= eff_x - 9'd1;
-                    dr_prio  <= prio;
-                    dr_bank  <= obj_bank;
-                    dr_start <= ~eff_x[9];
+                    if( !dr_idle ) begin
+                        st <= 4;
+                    end else begin
+                        dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
+                        dr_code  <= code_mn;
+                        dr_hpos  <= eff_x - 9'd1;
+                        dr_prio  <= prio;
+                        dr_bank  <= obj_bank;
+                        dr_start <= ~eff_x[9];
+                    end
                 end
             end
             5: begin
@@ -168,11 +171,11 @@ always @(posedge clk, posedge rst) begin
                 if( n == tile_n ) begin
                     st <= 1; // next element
                 end else begin // prepare for next tile
-                    n <= n + 4'd1;
+                    n    <= n + 4'd1;
                     npos <= hflip ? npos-4'd1 : npos+4'd1;
+                    st   <= 3; // get extra cycles for inzone and dr_idle
                 end
             end
-            6: st<=2; // get extra cycles for inzone and dr_idle
         endcase
         // This must be after the case statement
         if( start && !last_start ) begin

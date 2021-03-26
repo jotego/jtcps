@@ -62,6 +62,7 @@ module jtcps2_main(
     output             vram_cs,
     output             oram_cs,
     output reg         obank,
+    output reg  [15:0] oram_base,
     input       [15:0] ram_data,
     input              ram_ok,
     // ROM access
@@ -166,7 +167,7 @@ always @(posedge clk, posedge rst) begin
             rom_cs      <= A[23:22] == 2'b00;
             pre_ram_cs  <= &A[23:16];
             pre_vram_cs <= A[23:18] == 6'b1001_00 && A[17:16]!=2'b11;
-            pre_oram_cs <= A[23:16] == 8'h70;
+            pre_oram_cs <= A[23:20] == 4'h7 && A[19:16]==oram_base[11:8];
             io_cs       <= A[23:19] == 5'b1000_0;
             // OBJ engine
             objcfg_cs   <= A[23:20] == 4'h4 && !RnW;    // 4?'????
@@ -207,6 +208,7 @@ always @(posedge clk, posedge rst) begin
         eeprom_sdi  <= 0;
         z80_rstn    <= 0;
         obank       <= 0;
+        oram_base   <= 16'h0;
     end
     else if(cpu_cen) begin
         if( eeprom_cs ) begin
@@ -218,6 +220,10 @@ always @(posedge clk, posedge rst) begin
             z80_rstn <= cpu_dout[3];
         end
         if( obank_cs ) obank <= cpu_dout[0];
+        if( objcfg_cs && A[3:1]==0 ) begin
+            if( !UDSWn ) oram_base[15:8] <= cpu_dout[15:8];
+            if( !LDSWn ) oram_base[ 7:0] <= cpu_dout[ 7:0];
+        end
     end
 end
 
