@@ -58,7 +58,7 @@ always @(*) begin
         2'd3: scr_prio = lyr_prio[15:12];
         default: scr_prio = 4'd7;
     endcase
-    obj1st = ({1'b0,obj_prio} > scr_prio[3:0]) && (scr_prio!=4'd0);
+    obj1st = obj_prio > scr_prio[2:0];
     mux_sel = obj1st ? blank(obj_pxl) : ~blank(scr_pxl);
 end
 
