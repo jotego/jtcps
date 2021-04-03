@@ -25,16 +25,16 @@
     <setname>gigawing</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1999</year>
     <manufacturer>Takumi (Capcom license)</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>USA</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="gigawing.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -54,8 +54,12 @@
         <!-- audiocpu - starts at 0x180014 -->
         <part name="ggw.01" crc="4c6351d5"/>
         <!-- qsound - starts at 0x1A0014 -->
-        <part name="ggw.11m" crc="e172acf5"/>
-        <part name="ggw.12m" crc="4bee4e8f"/>
+        <interleave output="16">
+            <part name="ggw.11m" crc="e172acf5" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="ggw.12m" crc="4bee4e8f" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x9A0014 -->
         <interleave output="64">
             <part name="ggw.13m" crc="105530a4" map="00000021"/>

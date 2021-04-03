@@ -184,7 +184,7 @@ function cps2_mra {
 
     ALT=_alt/_"$ALT"
     mkdir -p $OUTDIR/"$ALT"
-    AUTHOR="jotego,atrac17,chocobobobo"
+    AUTHOR="jotego,atrac17"
     if [[ $GAME = choko || $GAME = jyangoku ]]; then
         AUTHOR="$AUTHOR,MJY71"
     fi
@@ -193,6 +193,7 @@ function cps2_mra {
     mame2dip $GAME.xml -rbf jtcps2 -outdir $OUTDIR -altfolder "$ALT" \
         -setword gfx 64 -qsound \
         -setword qsound 16 \
+        -swapbytes maincpu \
         -corebuttons 6 \
         -ignore aboardplds bboardplds cboardplds dboardplds \
         -order key maincpu audiocpu qsound gfx \

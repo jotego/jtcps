@@ -25,16 +25,16 @@
     <setname>hsf2</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>2004</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>USA</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="hsf2.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -60,7 +60,9 @@
         <part name="hs2.01" crc="c1a13786"/>
         <part name="hs2.02" crc="2d8794aa"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="hs2.11m" crc="0e15c359"/>
+        <interleave output="16">
+            <part name="hs2.11m" crc="0e15c359" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="hs2.13m" crc="a6ecab17" map="00000021"/>

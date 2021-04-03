@@ -25,16 +25,16 @@
     <setname>sfz2al</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1996</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>Asia</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="sfz2al.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -58,8 +58,12 @@
         <part name="sza.01" crc="1bc323cf"/>
         <part name="sza.02" crc="ba6a5013"/>
         <!-- qsound - starts at 0x340014 -->
-        <part name="sza.11m" crc="aa47a601"/>
-        <part name="sza.12m" crc="2237bc53"/>
+        <interleave output="16">
+            <part name="sza.11m" crc="aa47a601" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="sza.12m" crc="2237bc53" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x740014 -->
         <interleave output="64">
             <part name="sza.13m" crc="4d1f1f22" map="00000021"/>

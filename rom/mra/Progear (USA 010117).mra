@@ -25,16 +25,16 @@
     <setname>progear</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>2001</year>
     <manufacturer>Cave (Capcom license)</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>USA</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="progear.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -53,10 +53,18 @@
         <!-- audiocpu - starts at 0x100014 -->
         <part name="pga.01" crc="bdbfa992"/>
         <!-- qsound - starts at 0x120014 -->
-        <part name="pga-simm.05a" crc="c0aac80c"/>
-        <part name="pga-simm.05b" crc="37a65d86"/>
-        <part name="pga-simm.06a" crc="d3f1e934"/>
-        <part name="pga-simm.06b" crc="8b39489a"/>
+        <interleave output="16">
+            <part name="pga-simm.05a" crc="c0aac80c" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.05b" crc="37a65d86" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.06a" crc="d3f1e934" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.06b" crc="8b39489a" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x920014 -->
         <interleave output="64">
             <part name="pga-simm.01c" crc="452f98b0" map="00000001"/>

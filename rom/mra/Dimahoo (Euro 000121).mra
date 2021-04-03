@@ -25,16 +25,16 @@
     <setname>dimahoo</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>2000</year>
     <manufacturer>Eighting / Raizing (Capcom license)</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>vertical</rotation>
-    <region>Euro</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <region>Europe</region>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="dimahoo.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -56,8 +56,12 @@
         <part name="gmd.01" crc="3f9bc985"/>
         <part name="gmd.02" crc="3fd39dde"/>
         <!-- qsound - starts at 0x240014 -->
-        <part name="gmd.11m" crc="06a65542"/>
-        <part name="gmd.12m" crc="50bc7a31"/>
+        <interleave output="16">
+            <part name="gmd.11m" crc="06a65542" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="gmd.12m" crc="50bc7a31" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xA40014 -->
         <interleave output="64">
             <part name="gmd.13m" crc="80dd19f0" map="00000021"/>

@@ -25,16 +25,16 @@
     <setname>ecofghtr</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>World</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="ecofghtr.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -55,8 +55,12 @@
         <!-- audiocpu - starts at 0x200014 -->
         <part name="uec.01" crc="c235bd15"/>
         <!-- qsound - starts at 0x220014 -->
-        <part name="uec.11m" crc="81b25d39"/>
-        <part name="uec.12m" crc="27729e52"/>
+        <interleave output="16">
+            <part name="uec.11m" crc="81b25d39" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="uec.12m" crc="27729e52" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="uec.13m" crc="dcaf1436" map="00000021"/>

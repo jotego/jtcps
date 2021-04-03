@@ -25,16 +25,16 @@
     <setname>sgemf</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1997</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>USA</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="sgemf.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -57,8 +57,12 @@
         <part name="pcf.01" crc="254e5f33"/>
         <part name="pcf.02" crc="6902f4f9"/>
         <!-- qsound - starts at 0x2C0014 -->
-        <part name="pcf.11m" crc="a5dea005"/>
-        <part name="pcf.12m" crc="4ce235fe"/>
+        <interleave output="16">
+            <part name="pcf.11m" crc="a5dea005" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pcf.12m" crc="4ce235fe" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xAC0014 -->
         <interleave output="64">
             <part name="pcf.13m" crc="22d72ab9" map="00000021"/>

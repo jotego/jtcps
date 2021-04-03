@@ -25,16 +25,16 @@
     <setname>ddtod</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1993</year>
     <manufacturer>Capcom</manufacturer>
     <players>4</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
-    <region>Euro</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <region>Europe</region>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="ddtod.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -56,8 +56,12 @@
         <!-- audiocpu - starts at 0x280014 -->
         <part name="dad.01" crc="3f5e2424"/>
         <!-- qsound - starts at 0x2A0014 -->
-        <part name="dad.11m" crc="0c499b67"/>
-        <part name="dad.12m" crc="2f0b5a4e"/>
+        <interleave output="16">
+            <part name="dad.11m" crc="0c499b67" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="dad.12m" crc="2f0b5a4e" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="dad.13m" crc="da3cb7d6" map="00000021"/>

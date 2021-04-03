@@ -25,16 +25,16 @@
     <setname>ringdest</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1994</year>
     <manufacturer>Capcom</manufacturer>
     <players>2</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
-    <region>Euro</region>
-    <mraauthor>jotego,atrac17,chocobobobo</mraauthor>
+    <region>Europe</region>
+    <mraauthor>jotego,atrac17</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="ringdest.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
@@ -58,8 +58,12 @@
         <part name="smb.01" crc="0abc229a"/>
         <part name="smb.02" crc="d051679a"/>
         <!-- qsound - starts at 0x340014 -->
-        <part name="smb.11m" crc="c56935f9"/>
-        <part name="smb.12m" crc="955b0782"/>
+        <interleave output="16">
+            <part name="smb.11m" crc="c56935f9" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="smb.12m" crc="955b0782" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x740014 -->
         <interleave output="64">
             <part name="smb.13m" crc="d9b2d1de" map="00000021"/>

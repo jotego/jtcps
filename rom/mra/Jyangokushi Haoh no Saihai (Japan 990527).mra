@@ -25,16 +25,16 @@
     <setname>jyangoku</setname>
     <rbf>jtcps2</rbf>
     <mraversion>1.0</mraversion>
-    <mameversion>0228</mameversion>
+    <mameversion>0229</mameversion>
     <year>1999</year>
     <manufacturer>Capcom</manufacturer>
     <players>1</players>
     <joystick>8-way</joystick>
     <rotation>horizontal</rotation>
     <region>Japan</region>
-    <mraauthor>jotego,atrac17,chocobobobo,MJY71</mraauthor>
+    <mraauthor>jotego,atrac17,MJY71</mraauthor>
     <mameversion>0229</mameversion>
-    <mratimestamp>20210303</mratimestamp>
+    <mratimestamp>20210403</mratimestamp>
     <platform>CPS-2</platform>
     <rom index="0" zip="jyangoku.zip|qsound.zip" type="merged" md5="None" address="0x30000000">
         <part>
