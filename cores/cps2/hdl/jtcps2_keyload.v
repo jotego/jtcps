@@ -29,7 +29,7 @@ module jtcps2_keyload(
 reg          last_din_we;
 wire [159:0] cfg;
 reg  [159:0] raw;
-reg  [ 11:0] sum;
+reg  [ 11:0] sum = 12'd0;
 
 reg          betang;
 
@@ -43,7 +43,7 @@ always @(posedge clk, posedge rst) begin
         last_din_we <= din_we;
         if( din_we && !last_din_we ) begin
             raw <= { din, raw[159:8] };
-            sum <= (sum ^ ( ((din&8'hcf)!=0) ? 12'h65 : 12'h0 )) + {4'd0,din};
+            sum <= ( ((din&8'hcf)!=8'd0) ? (sum^12'h65) : sum ) + {{4{din[7]}},din};
         end
         case(sum)
             12'h4C7, // dstlk
@@ -121,7 +121,7 @@ always @(posedge clk, posedge rst) begin
             12'h023, // avsph
             12'h277, // batcirj
             12'h1C6, // batcira
-            12'h068, // xmcota
+            12'h068 // xmcota
             : betang <= 0;
             default:
             betang <= 1;
