@@ -43,32 +43,85 @@ always @(posedge clk, posedge rst) begin
         last_din_we <= din_we;
         if( din_we && !last_din_we ) begin
             raw <= { din, raw[159:8] };
-            sum <= sum + {4'd0,din};
+            sum <= (sum ^ ( ((din&8'hcf)!=0) ? 12'h65 : 12'h0 )) + {4'd0,din};
         end
         case(sum)
-            12'h7AC, 12'h7D9, // sfa
-            12'h6f3, 12'h6c2, // sfa2 and Battle Circuit
-            12'h618, 12'h4c3, // Battle Circuit (alt)
-            12'h4BA, 12'h5EB, 12'h617, 12'h632, 12'h646, 12'h647, 12'h6C5, 12'h6C2, // sfz2a
-            12'h60e, // qndream
-            12'h725, 12'h59f, 12'h6f8, 12'h743, // sf zero
-            12'h70C, 12'h6F5, 12'h6EB, 12'h646, 12'h683, // SPF2T
-            12'h51C, 12'h5F9, 12'h604, 12'h4C1, // CSCLUB
-            12'h741,           // M. Pang
-            12'h76d,           // Jyangokushi
-            12'h48b, 12'h6cb, 12'h63e, 12'h697, 12'h5a1, 12'h5bf, // 19XX
-            12'h34d, 12'h3ce, 12'h496, 12'h388, 12'h4b9, // Dark Stalkers
-            12'h397, 12'h5B6, 12'h4A8, 12'h3E6, 12'h606,
-            12'h6bb, 12'h5bb, // Megaman 1
-            12'h647, 12'h628, 12'h4bd, 12'h4b5, // Megaman 2
-            12'h747, 12'h666, 12'h6c0, 12'h6cf, 12'h6ed, // AvsP
-            12'h69C, // Puzz Loop 2
-            // beta 6:
-            12'h858, 12'h897, 12'h77d, // Dimahoo
-            12'h683, 12'h51b, 12'h549, 12'h5f1, 12'h63d, // DD Tower of Doom
-            12'h57d, 12'h429, // Darkstalker's Revenge
-            //12'h756, 12'h720, 12'h61F, 12'h502, 12'h5EE, 12'h531 // X-Men vs SF
-            12'h57D, 12'h65E, 12'h604, 12'h604, 12'h5F5, 12'h5D7 // X-Men COTA
+            12'h4C7, // dstlk
+            12'hE81, // megaman2
+            12'hFC6, // batcir
+            12'h0CA, // qndream
+            12'h204, // nwarr
+            12'hF12, // sfz2alj
+            12'h03D, // csclub
+            12'hEE2, // rmancp2j
+            12'h247, // sfa2
+            12'h147, // jyangoku
+            12'h16A, // spf2t
+            12'h08A, // dimahoo
+            12'h03B, // pzloop2
+            12'hDC6, // sfa
+            12'hF79, // mpang
+            12'h1C1, // ddtod
+            12'hF6A, // avsp
+            12'h028, // 19xx
+            12'hE47, // mmancp2u
+            12'h049, // sfz2j
+            12'hFD1, // sfz2n
+            12'h123, // sfz2h
+            12'hF5E, // sfa2u
+            12'hFE5, // sfz2b
+            12'hFDF, // sfz2a
+            12'hE74, // sfzh
+            12'hE87, // sfzj
+            12'hF10, // sfzb
+            12'hEF3, // sfza
+            12'hC2C, // sfau
+            12'h06E, // ddtoda
+            12'h1E9, // ddtodj
+            12'h3C3, // ddtodh
+            12'h22D, // ddtodu
+            12'h321, // nwarru
+            12'h212, // vhuntj
+            12'h26C, // nwarrb
+            12'h23E, // nwarra
+            12'h31B, // nwarrh
+            12'h206, // 19xxj
+            12'hF19, // 19xxa
+            12'h21C, // 19xxu
+            12'h315, // 19xxh
+            12'h1F8, // 19xxb
+            12'h2A9, // spf2xj
+            12'h1F3, // spf2th
+            12'h285, // spf2ta
+            12'h0DA, // spf2tu
+            12'h379, // dstlkh
+            12'h3B5, // dstlka
+            12'h482, // dstlku
+            12'h316, // vampj
+            12'hF5F, // gmahou
+            12'hDC3, // dimahoou
+            12'hFD6, // rockman2j
+            12'hFFF, // megaman2h
+            12'h03A, // megaman2a
+            12'hF82, // sfz2alb
+            12'hF12, // sfz2alj
+            12'hE4E, // sfz2al
+            12'h076, // sfz2alh
+            12'h03E, // xmcotab
+            12'h14D, // xmcotau
+            12'hE8B, // xmcotaa
+            12'h14A, // xmcotah
+            12'h043, // xmcotaj
+            12'h12D, // cscluba
+            12'h0B0, // csclubh
+            12'h04C, // csclubj
+            12'h106, // avspu
+            12'h002, // avspj
+            12'h159, // avspa
+            12'h023, // avsph
+            12'h277, // batcirj
+            12'h1C6, // batcira
+            12'h068, // xmcota
             : betang <= 0;
             default:
             betang <= 1;

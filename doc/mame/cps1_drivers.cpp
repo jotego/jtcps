@@ -1,4 +1,4 @@
-// license:BSD-3-Clause
+f license:BSD-3-Clause
 // copyright-holders:Paul Leaman
 /***************************************************************************
 
@@ -3589,7 +3589,7 @@ ROM_START( forgottn )
 	ROM_LOAD64_WORD( "lw-06.9d",  0x200004, 0x80000, CRC(5b9edffc) SHA1(6fd8f4a3ab070733b52365ab1945bf86acb2bf62) ) // == lw-06.12e
 	ROM_LOAD64_BYTE( "lw_26.10e", 0x200006, 0x20000, CRC(57bcd032) SHA1(6db0f96fb909ed02fe4b7ee25fe662ea23f884d2) ) // == lw-13.12g
 	ROM_LOAD64_BYTE( "lw_25.10c", 0x200007, 0x20000, CRC(bac91554) SHA1(52f5de144193e0f78b9824cc8fd6f934dc19bab0) ) // == lw-13.12g
-  
+
 	ROM_LOAD64_BYTE( "lw_16.11b", 0x300002, 0x20000, CRC(40b26554) SHA1(b4b27573d6c329bc2bc4c64fd857475bf2a10877) ) // == lw-09.12f
 	ROM_LOAD64_BYTE( "lw_15.11a", 0x300003, 0x20000, CRC(1b7d2e07) SHA1(0edf4d4b314fd9c29e7915d5d1adef6f9617f921) ) // == lw-09.12f
 	ROM_LOAD64_BYTE( "lw_28.11e", 0x300006, 0x20000, CRC(a805ad30) SHA1(baded4ab5fe4e87d53233b5df88edc693c292fc4) ) // == lw-13.12g
