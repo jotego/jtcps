@@ -121,7 +121,23 @@ always @(posedge clk, posedge rst) begin
             12'h023, // avsph
             12'h277, // batcirj
             12'h1C6, // batcira
-            12'h068 // xmcota
+            12'h068, // xmcota
+            // 9 Apr
+            12'h1BD, // ddsom
+            12'h091, // ddsoma
+            12'h0B1, // ddsomb
+            12'h034, // ddsomh
+            12'h181, // ddsomj
+            12'h0DB, // ddsomu
+            12'hFF3, // 1944
+            12'h070, // 1944j
+            12'h005, // choko
+            12'h0B9, // sfa3
+            12'h2A5, // sfa3b
+            12'h026, // sfa3h
+            12'h0D3, // sfa3u
+            12'h1CB, // sfz3a
+            12'h1D3  // sfz3j
             : betang <= 0;
             default:
             betang <= 1;
