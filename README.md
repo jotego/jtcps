@@ -17,6 +17,8 @@ MiSTer allows for gamepad redifinition. However, the keyboard can be used with m
 
 For MiST, the first 6 gamepad buttons are used for game buttons, the next 2 buttons are used for credit and start buttons. If there is still one button left in the gamepad, it will be used for pause.
 
+There is an option to slow down the game (available only for CPS2). If you enable the 1P_hold_for_slow setting on the OSD, then while the 1P button is held the game will run at half the speed. Release the 1P button to go back to normal speed or disable the option in the OSD. Note that if the option is enabled the 2P, 3P and 4P buttons will also activate the slow down effect.
+
 # Setup
 
 ## MiSTer

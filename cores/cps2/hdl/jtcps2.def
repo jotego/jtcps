@@ -12,7 +12,7 @@ JTFRAME_SDRAM96
 
 # OSD options
 JTFRAME_OSD_TEST
-CORE_OSD="O6,Turbo,Off,On;",
+CORE_OSD="O6,Turbo,Off,On;O7,1P_hold_for_slow,Off,On;",
 
 # Video
 COLORW=8

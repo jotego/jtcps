@@ -165,13 +165,15 @@ assign LHBL         = ~HB;
 wire [ 1:0] dsn;
 wire        cen16, cen16b, cen12, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
-wire        turbo;
+wire        turbo, skip_en;
 
 `ifdef JTCPS_TURBO
 assign turbo = 1;
 `else
 assign turbo = status[6];
 `endif
+
+assign skip_en = status[7];
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -231,6 +233,7 @@ jtcps2_main u_main(
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),
     .LHBL       ( LHBL              ),
+    .skip_en    ( skip_en           ),
     // PPU
     .ppu1_cs    ( ppu1_cs           ),
     .ppu2_cs    ( ppu2_cs           ),

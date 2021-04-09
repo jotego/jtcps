@@ -27,6 +27,7 @@ module jtcps2_main(
     input   [8:0]      V,
     input              LVBL,
     input              LHBL,
+    input              skip_en,
     // PPU
     output reg         ppu1_cs,
     output reg         ppu2_cs,
@@ -398,7 +399,8 @@ jtcps2_decrypt u_decrypt(
 
 // interrupt generation
 reg        int1, // VBLANK
-           int2; // Raster
+           int2, // Raster
+           skip;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
 always @(posedge clk, posedge rst) begin : int_gen
@@ -407,17 +409,29 @@ always @(posedge clk, posedge rst) begin : int_gen
         int1        <= 1'b1;
         int2        <= 1'b1;
         last_raster <= 0;
+        skip        <= 0;
     end else begin
         last_LVBL   <= LVBL;
         last_raster <= raster;
+
+        if( !skip_en) begin
+            skip <= 0;
+        end else begin
+            if( LVBL && !last_LVBL ) begin
+                if( ~&start_button )
+                    skip <= ~skip;
+                else
+                    skip <= 0;
+            end
+        end
 
         if( !inta_n ) begin
             int1 <= 1'b1;
             int2 <= 1'b1;
         end
         else begin
-            if( raster && !last_raster ) int2 <= 1'b0;
-            if( !LVBL && last_LVBL     ) int1 <= 1'b0;
+            if( raster && !last_raster ) int2 <= 1'b0 | skip;
+            if( !LVBL && last_LVBL     ) int1 <= 1'b0 | skip;
         end
     end
 end
