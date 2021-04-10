@@ -304,6 +304,10 @@ assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
 assign reg_rst = rst | ~ppu_rstn;
 `endif
 
+`ifdef SIMULATION
+reg dump_aux=0;
+`endif
+
 always @(posedge clk, posedge reg_rst) begin
     if( reg_rst ) begin
         hpos1         <= 16'd0;
@@ -385,9 +389,6 @@ always @(posedge clk, posedge reg_rst) begin
                 5'h11: ppu_ctrl   <= cpu_dout;
             endcase
         end
-        `ifdef CPS2
-            cnt_sel <= 3'd0;
-        `endif
         if( ppu2_cs ) begin
             mmr_dout <= sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
             if( addrb[ 1] && !dsn) mult1      <= cpu_dout;
@@ -411,9 +412,27 @@ always @(posedge clk, posedge reg_rst) begin
                 cnt_sel[0] <=  addr[4] && !addr[1]; // raster2 in schematics
                 cnt_sel[1] <=  addr[4] &&  addr[1]; // raster3
                 cnt_sel[2] <= !addr[4]; // raster3 (pixel count)
-            end
+                `ifdef SIMULATION
+                    if( 0 && ppu2_cs===1 && cpu_dout[8:0]!=0
+                          && cpu_dout[8:0]!=9'h106
+                          && !dump_aux) begin
+                        dump_aux <= 1;
+                        $shm_open("test.shm");
+                        $shm_probe(UUT.u_game.u_main,"A");
+                        $shm_probe(UUT.u_game.u_video,"A");
+                        $shm_probe(UUT.u_game.u_video.u_mmr,"A");
+                        $shm_probe(UUT.u_game.u_video.u_mmr.u_raster,"AS");
+                        $display("Raster dump started");
+                        #(16600000*50) $finish;
+                    end
+                `endif
+            end else cnt_sel <= 0;
             `endif
         end
+        `ifdef CPS2
+        else cnt_sel <= 0;
+        `endif
+
     end
 end
 
@@ -429,7 +448,7 @@ jtcps2_raster u_raster(
 
     // interface with CPU
     .cnt_sel    ( cnt_sel       ),
-    .wrn        ( !dsn          ),
+    .wrn        ( |dsn          ),
     .cpu_dout   ( cpu_dout      ),
     .cnt_dout   ( raster_dout   ),
 

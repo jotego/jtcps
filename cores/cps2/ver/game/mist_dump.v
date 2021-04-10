@@ -62,11 +62,16 @@ module mist_dump(
             $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
-            $shm_probe(UUT.u_game, "A");
+            //$shm_probe(UUT.u_game, "A");
             `ifdef NOMAIN
                 $shm_probe(UUT.u_game.u_video, "AS");
             `else
-                $shm_probe(UUT.u_game.u_main, "A");
+                //$shm_probe(UUT.u_game.u_main, "A");
+                $shm_probe(UUT.u_game.u_main.raster);
+                $shm_probe(UUT.u_game.u_main.int1);
+                $shm_probe(UUT.u_game.u_main.int2);
+                $shm_probe(UUT.u_game.u_main.inta_n);
+                $shm_probe(UUT.u_game.u_main.RnW);
                 //$shm_probe(UUT.u_game.u_video.u_dma, "A");
                 //$shm_probe(UUT.u_game.u_main.u_dtack, "A");
             `endif
@@ -77,13 +82,14 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_video.u_obj, "AS");
             //$shm_probe(UUT.u_game.u_main.obank);
             //$shm_probe(UUT.u_game.LVBL);
-            //$shm_probe(UUT.u_game.LHBL);
+            ////$shm_probe(UUT.u_game.LHBL);
             //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
-            //$shm_probe(UUT.u_game.u_video.u_mmr.u_raster,"AS");
-            //$shm_probe(UUT.u_game.u_video.u_mmr.addr);
-            //$shm_probe(UUT.u_game.u_video.u_mmr.dsn);
-            //$shm_probe(UUT.u_game.u_video.u_mmr.cpu_dout);
-            //$shm_probe(UUT.u_game.u_video.u_mmr.ppu2_cs);
+            $shm_probe(UUT.u_game.u_video.u_timing,"A");
+            $shm_probe(UUT.u_game.u_video.u_mmr.u_raster,"AS");
+            $shm_probe(UUT.u_game.u_video.u_mmr.addr);
+            $shm_probe(UUT.u_game.u_video.u_mmr.dsn);
+            $shm_probe(UUT.u_game.u_video.u_mmr.cpu_dout);
+            $shm_probe(UUT.u_game.u_video.u_mmr.ppu2_cs);
 
             // CPS2 colour mixer
             //$shm_probe(UUT.u_game.u_video.u_objmix,"A");
