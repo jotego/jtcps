@@ -45,7 +45,7 @@ wire       set_irq = zero[2] & (|zero[1:0]);
 reg        irqsh;
 
 assign cen4  = pxl_cen & cnt4;
-assign lock  = cpu_dout[15];
+assign lock  = 0; // cpu_dout[15];
 assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
@@ -148,14 +148,14 @@ always @(posedge clk, posedge rst) begin
         zero      <= 0;
     end else begin
         zero <= ~|cnt;
-        if(cen4) dout <= locked ? cnt : cnt_start;
+        if(cen4) dout <= cnt;
         if( we ) begin
             cnt_start <= din;
             locked    <= lock;
         end
         // counter
         if( we )
-            cnt <= din;
+            cnt_start <= din;
         else if( restart || locked )
             cnt <= cnt_start;
         else if( step )
