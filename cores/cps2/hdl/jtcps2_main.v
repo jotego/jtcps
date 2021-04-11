@@ -398,11 +398,11 @@ jtcps2_decrypt u_decrypt(
 );
 
 // interrupt generation
-reg        int1, // VBLANK
+wire       int1, // VBLANK
            int2, // Raster
-           skip;
+           skip_but = ~&start_button;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
-
+/*
 always @(posedge clk, posedge rst) begin : int_gen
     reg last_raster;
     if( rst ) begin
@@ -435,6 +435,20 @@ always @(posedge clk, posedge rst) begin : int_gen
         end
     end
 end
+*/
+jtframe_virq u_virq(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .LVBL       ( LVBL      ),
+    .dip_pause  ( dip_pause ),
+    .skip_en    ( skip_en   ),
+    .skip_but   ( skip_but  ),
+    .clr        ( ~inta_n   ),
+    .custom_in  ( raster    ),
+    .blin_n     ( int1      ),
+    .blout_n    (           ),
+    .custom_n   ( int2      )
+);
 
 assign busack = ~BGACKn;
 
