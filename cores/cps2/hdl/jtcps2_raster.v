@@ -197,7 +197,12 @@ always @(posedge clk, posedge rst) begin
                                       // and independent of reset for dout[0]
                                       // to work as expected
         if( cen4 ) preout <= cnt;
-        zero <= ~|cnt;
+        if( pxl_cen ) begin
+            if( cen4^~cnt_start[0]) // This is an odd way of counting 9 bits
+                zero <= ~|cnt;      // but it follows the original design
+            else
+                zero <= 0;
+        end
 
         if( we ) begin
             cnt_start <= din;
