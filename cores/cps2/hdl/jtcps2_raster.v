@@ -37,7 +37,7 @@ module jtcps2_raster(
 
 wire [8:0] dout0, dout1, dout2, din;
 wire [2:0] we, zero;
-wire       lock;
+wire       mode;
 wire       step, restart;
 reg        cnt4; // 4MHz
 wire       cen4;
@@ -45,7 +45,8 @@ wire       set_irq = zero[2] & (|zero[1:0]);
 reg        irqsh;
 
 assign cen4  = pxl_cen & cnt4;
-assign lock  = cpu_dout[15];
+assign mode  = cpu_dout[15];    // 1 will update the count immediately,
+                                // 0 updates it on the next frame
 assign din   = cpu_dout[8:0];
 assign we    = {3{~wrn}} & cnt_sel;
 
@@ -58,7 +59,7 @@ always @(posedge clk) begin
     if( pxl_cen ) begin
         cnt4    <= ~cnt4;
     end
-    // interrupt pulse lasts at least one pixel, so the CPU clock can
+    // interrupt pulse lasts at least one pixel, so the CPU cupnowcan
     // catch it
     if( set_irq )
         { raster, irqsh } <= 2'b11;
@@ -80,7 +81,7 @@ jtcps2_raster_cnt u_cnt0(
     .step   ( step      ),
 
     .we     ( we[0]     ),
-    .lock   ( lock      ),
+    .mode   ( mode      ),
     .din    ( din       ),
     .dout   ( dout0     ),
 
@@ -96,7 +97,7 @@ jtcps2_raster_cnt u_cnt1(
     .step   ( step      ),
 
     .we     ( we[1]     ),
-    .lock   ( lock      ),
+    .mode   ( mode      ),
     .din    ( din       ),
     .dout   ( dout1     ),
 
@@ -129,7 +130,7 @@ module jtcps2_raster_cnt(
     input              step,
 
     input              we,
-    input              lock,
+    input              mode,
     input       [ 8:0] din,
     output reg  [ 8:0] dout,
 
@@ -137,29 +138,26 @@ module jtcps2_raster_cnt(
 );
 
 reg  [8:0] cnt_start, cnt;
-reg        locked;
+reg        upnow;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         cnt       <= ~9'd0;
         cnt_start <= ~9'd0;
         dout      <= ~9'd0;
-        locked    <= 0;
+        upnow     <= 0;
         zero      <= 0;
     end else begin
         zero <= ~|cnt;
-        if(cen4) dout <= locked ? cnt : cnt_start;
+        if(cen4) dout <= cnt;
         if( we ) begin
             cnt_start <= din;
-            locked    <= lock;
+            upnow     <= mode ;
         end
-        // counter
-        if( we )
+        if( upnow&&we )
             cnt <= din;
-        else if( restart || locked )
-            cnt <= cnt_start;
         else if( step )
-            cnt <= cnt-9'd1;
+            cnt <= restart ? cnt_start : cnt-9'd1;
     end
 end
 
@@ -199,7 +197,12 @@ always @(posedge clk, posedge rst) begin
                                       // and independent of reset for dout[0]
                                       // to work as expected
         if( cen4 ) preout <= cnt;
-        zero <= ~|cnt;
+        if( pxl_cen ) begin
+            if( cen4^~cnt_start[0]) // This is an odd way of counting 9 bits
+                zero <= ~|cnt;      // but it follows the original design
+            else
+                zero <= 0;
+        end
 
         if( we ) begin
             cnt_start <= din;

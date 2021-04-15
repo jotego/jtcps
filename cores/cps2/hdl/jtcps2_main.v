@@ -398,43 +398,24 @@ jtcps2_decrypt u_decrypt(
 );
 
 // interrupt generation
-reg        int1, // VBLANK
+wire       int1, // VBLANK
            int2, // Raster
-           skip;
+           skip_but = ~&start_button;
 assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
 
-always @(posedge clk, posedge rst) begin : int_gen
-    reg last_raster;
-    if( rst ) begin
-        int1        <= 1'b1;
-        int2        <= 1'b1;
-        last_raster <= 0;
-        skip        <= 0;
-    end else begin
-        last_LVBL   <= LVBL;
-        last_raster <= raster;
-
-        if( !skip_en) begin
-            skip <= 0;
-        end else begin
-            if( LVBL && !last_LVBL ) begin
-                if( ~&start_button )
-                    skip <= ~skip;
-                else
-                    skip <= 0;
-            end
-        end
-
-        if( !inta_n ) begin
-            int1 <= 1'b1;
-            int2 <= 1'b1;
-        end
-        else begin
-            if( raster && !last_raster ) int2 <= 1'b0 | skip;
-            if( !LVBL && last_LVBL     ) int1 <= 1'b0 | skip;
-        end
-    end
-end
+jtframe_virq u_virq(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .LVBL       ( LVBL      ),
+    .dip_pause  ( dip_pause ),
+    .skip_en    ( skip_en   ),
+    .skip_but   ( skip_but  ),
+    .clr        ( ~inta_n   ),
+    .custom_in  ( raster    ),
+    .blin_n     ( int1      ),
+    .blout_n    (           ),
+    .custom_n   ( int2      )
+);
 
 assign busack = ~BGACKn;
 

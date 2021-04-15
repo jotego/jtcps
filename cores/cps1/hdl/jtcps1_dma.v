@@ -146,6 +146,8 @@ wire        tile_vs  = vrender1 == 9'd0; // Vertical start, use for SCR3
 // address is 9105, the LSB cannot be discarded
 // Although I have only seen evidence for the palette. If vscr_addr is treated
 // in the same way, Slam Masters background breaks down completely
+// SSF2: Cammy's level is broken because of the row scroll, but moving from concatenation
+//       to sum didn't make a change
 wire [17:1] vrow_addr = { vram_row_base[9:3], row_offset[9:0] + vrenderf[9:0] },
             // vrow_addr = { vram_row_base[9:0], 7'd0 } + { 7'd0, row_offset[9:0] + vrenderf[9:0] },
             vscr_addr = { vram_scr_base[8:5], scan, scr_cnt[0] },
@@ -169,9 +171,9 @@ always @(*) begin
         3'b111:  wr_bank = ~active[2]; // SCR3
         default: wr_bank = ~active[1]; // SCR2
     endcase
-    rd_bank = !tile_addr[7] ? active[0] : ( // SCR1
-        tile_addr <= LAST_SCR2 ? active[1] : // SCR2
-                            active[2]); // SCR3
+    rd_bank = !tile_addr[7]          ? active[0] : ( // SCR1
+              tile_addr <= LAST_SCR2 ? active[1] : // SCR2
+                                       active[2]); // SCR3
 end
 
 always @(*) begin

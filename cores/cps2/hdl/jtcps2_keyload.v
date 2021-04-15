@@ -137,7 +137,15 @@ always @(posedge clk, posedge rst) begin
             12'h026, // sfa3h
             12'h0D3, // sfa3u
             12'h1CB, // sfz3a
-            12'h1D3  // sfz3j
+            12'h1D3, // sfz3j
+            12'h1B0, // ecofghtr
+            12'h150, // ecofghtra
+            12'h1CD, // ecofghtrh
+            12'h126, // ecofghtru
+            12'h2A7, // uecology
+            12'h309, // progear
+            12'h2EE, // progeara
+            12'h1AF  // progearj
             : betang <= 0;
             default:
             betang <= 1;
