@@ -129,8 +129,9 @@ always @(posedge clk, posedge rst) begin
             12'h034, // ddsomh
             12'h181, // ddsomj
             12'h0DB, // ddsomu
-            12'hFF3, // 1944
             12'h070, // 1944j
+            12'h174, // 1944
+            12'hFF3, // 1944u
             12'h005, // choko
             12'h0B9, // sfa3
             12'h2A5, // sfa3b
