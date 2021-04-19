@@ -43,7 +43,7 @@ reg  [W-1:0] line_cnt;
 
 assign frame      =   vdump==9'd0;
 assign frame_edge =   frame && !last_frame;
-assign oram_addr  = { ~obank, oram_cnt };
+assign oram_addr  = { obank, oram_cnt };
 
 always @(posedge clk, posedge rst ) begin
     if( rst ) begin

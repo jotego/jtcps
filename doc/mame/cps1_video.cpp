@@ -2639,7 +2639,7 @@ WRITE16_MEMBER(cps2_state::cps2_objram_bank_w)
 }
 
 READ16_MEMBER(cps2_state::cps2_objram1_r)
-{
+{// A15=0
 	if (m_objram_bank & 1)
 		return m_objram2[offset];
 	else
@@ -2647,7 +2647,7 @@ READ16_MEMBER(cps2_state::cps2_objram1_r)
 }
 
 READ16_MEMBER(cps2_state::cps2_objram2_r)
-{
+{// A15=1
 	if (m_objram_bank & 1)
 		return m_objram1[offset];
 	else
@@ -2655,7 +2655,7 @@ READ16_MEMBER(cps2_state::cps2_objram2_r)
 }
 
 WRITE16_MEMBER(cps2_state::cps2_objram1_w)
-{
+{// A15=0
 	if (m_objram_bank & 1)
 		COMBINE_DATA(&m_objram2[offset]);
 	else
@@ -2663,7 +2663,7 @@ WRITE16_MEMBER(cps2_state::cps2_objram1_w)
 }
 
 WRITE16_MEMBER(cps2_state::cps2_objram2_w)
-{
+{// A15=1
 	if (m_objram_bank & 1)
 		COMBINE_DATA(&m_objram1[offset]);
 	else
