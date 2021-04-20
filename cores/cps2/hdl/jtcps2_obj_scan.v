@@ -143,15 +143,13 @@ always @(posedge clk, posedge rst) begin
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
-                end else st<=1;
-
-                if(last_tile) begin
-                    st   <= 0; // done
+                end else begin
+                    st<= last_tile ? 0 : 1;
                 end
             end
             4: begin // check whether sprite is visible
                 if( !inzone ) begin
-                    st<= 1; // try next one
+                    st <= last_tile ? 0 : 1; // next element
                     //table_addr <= table_addr+10'd1;
                 end else begin
                     if( !dr_idle ) begin
@@ -169,7 +167,7 @@ always @(posedge clk, posedge rst) begin
             5: begin
                 dr_start <= 0;
                 if( n == tile_n ) begin
-                    st <= 1; // next element
+                    st <= last_tile ? 0 : 1; // next element
                 end else begin // prepare for next tile
                     n    <= n + 4'd1;
                     npos <= hflip ? npos-4'd1 : npos+4'd1;
