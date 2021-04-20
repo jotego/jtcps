@@ -116,7 +116,7 @@ always @(posedge clk, posedge rst) begin
                     dr_start <= 0;
                 end else begin
                     newline    <= 0;
-                    wait_cycle <= 3'b011;
+                    wait_cycle <= 3'b001;
                     last_tile  <= 1'b0;
                     vrenderf   <= vrender ^ {1'b0,{8{flip}}};
                 end
