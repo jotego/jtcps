@@ -23,6 +23,7 @@ module jtcps2_obj(
     input              clk_cpu,
     input              pxl_cen,
     input              flip,
+    input              LVBL,
 
     // Configuration
     input              objcfg_cs,
@@ -82,6 +83,7 @@ jtcps2_obj_frame u_frame(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
+    .LVBL       ( LVBL          ),
 
     .vdump      ( vdump         ),
     .obank      ( obank         ),

@@ -496,6 +496,7 @@ assign scr3_pxl   = 11'h1ff;
         .clk_cpu    ( clk_cpu       ),
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
+        .LVBL       ( ~VB           ),
 
         .objcfg_cs  ( objcfg_cs     ),
         .addr       ( addr[3:1]     ),

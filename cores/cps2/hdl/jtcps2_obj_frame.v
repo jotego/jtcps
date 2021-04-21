@@ -23,6 +23,7 @@ module jtcps2_obj_frame(
     input              pxl_cen,
 
     input      [ 8:0]  vdump,
+    input              LVBL,
     input              obank,
 
     // Interface with SDRAM for ORAM data
@@ -37,35 +38,44 @@ module jtcps2_obj_frame(
 localparam W=5;
 
 wire         frame, frame_edge;
-reg          wtok, last_frame;
+reg          wtok, last_LVBL, last_frame;
 reg  [ 11:0] oram_cnt;
 reg  [W-1:0] line_cnt;
+reg          wrbank;
 
-assign frame      =   vdump==9'd0;
-assign frame_edge =   frame && !last_frame;
+assign frame      = vdump=='he;
+assign frame_edge = frame && !last_frame;
 assign oram_addr  = { obank, oram_cnt };
 
 always @(posedge clk, posedge rst ) begin
     if( rst ) begin
         obank_frame <= 0;
     end else begin
-        if( frame_edge ) obank_frame <= ~obank_frame;
+        last_LVBL  <= LVBL;
+        last_frame <= frame;
+        if( frame_edge )
+            obank_frame <= ~obank_frame;
     end
 end
 
 always @( posedge clk ) begin
-    last_frame  <= frame;
-    if( frame_edge ) begin
+    if( !LVBL ) begin
         oram_cnt    <= 12'd0;
         line_cnt    <= {W{1'd0}};
         oframe_we   <= 0;
         wtok        <= 1;
     end else begin
-        wtok      <= 0;
-        oframe_we <= oram_ok && !wtok && !vdump[8];
-        if( !vdump[8] && pxl_cen ) begin
-            wtok <= 1;
-            { oram_cnt, line_cnt } <= { oram_cnt, line_cnt }+1'd1;
+        if( oram_ok ) wtok <= 0;
+        oframe_we <= oram_ok && !wtok && LVBL;
+        if( pxl_cen & ~&line_cnt ) begin
+            if( line_cnt == 'h1b ) begin
+                line_cnt <= 0;
+                wtok     <= 0;
+                oram_cnt <= oram_cnt+1'b1;
+            end else begin
+                wtok <= 1;
+                line_cnt <= line_cnt+1'b1;
+            end
         end
     end
 end

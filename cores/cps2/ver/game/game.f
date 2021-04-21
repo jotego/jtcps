@@ -80,6 +80,7 @@ $JTFRAME/hdl/clocking/jtframe_cen96.v
 $JTFRAME/hdl/clocking/jtframe_cen48.v
 $JTFRAME/hdl/clocking/jtframe_frac_cen.v
 # Other
+$JTFRAME/hdl/cpu/jtframe_virq.v
 $JTFRAME/hdl/jtframe_sh.v
 $JTFRAME/hdl/keyboard/jt4701.v
 $JTFRAME/hdl/sound/jtframe_mixer.v
