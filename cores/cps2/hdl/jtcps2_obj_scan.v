@@ -107,13 +107,13 @@ always @(posedge clk, posedge rst) begin
         last_start <= 0;
     end else begin
         last_start <= start;
-        st <= st+5'd1;
+        st         <= st+5'd1;
+        dr_start   <= 0;
         case( st )
             0: begin
                 table_addr <= 10'd0;
                 if( !newline ) begin
                     st       <= 5'd0;
-                    dr_start <= 0;
                 end else begin
                     newline    <= 0;
                     wait_cycle <= 3'b001;
@@ -123,17 +123,16 @@ always @(posedge clk, posedge rst) begin
             end
             1: begin
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
-                dr_start   <= 0;
                 if( &table_addr )
                     last_tile <= 1;
                 else
                     table_addr <= table_addr+10'd1;
 
                 if( !wait_cycle[0] ) begin
-                    n          <= 4'd0;
+                    n    <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
-                    npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
+                    npos <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
                     if( table_y[15] || table_attr[15:8]==8'hff ) begin
                         st<=0;  // done
                     end
@@ -161,17 +160,14 @@ always @(posedge clk, posedge rst) begin
                         dr_prio  <= prio;
                         dr_bank  <= obj_bank;
                         dr_start <= ~eff_x[9];
+                        if( n == tile_n ) begin
+                            st <= last_tile ? 0 : 1; // next element
+                        end else begin // prepare for next tile
+                            n    <= n + 4'd1;
+                            npos <= hflip ? npos-4'd1 : npos+4'd1;
+                            st   <= 3; // get extra cycles for inzone and dr_idle
+                        end
                     end
-                end
-            end
-            5: begin
-                dr_start <= 0;
-                if( n == tile_n ) begin
-                    st <= last_tile ? 0 : 1; // next element
-                end else begin // prepare for next tile
-                    n    <= n + 4'd1;
-                    npos <= hflip ? npos-4'd1 : npos+4'd1;
-                    st   <= 3; // get extra cycles for inzone and dr_idle
                 end
             end
         endcase
