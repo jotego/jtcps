@@ -133,8 +133,9 @@ jtcps2_obj_scan u_scan(
     .clk        ( clk           ),
     .flip       ( flip          ),
 
-    .start      ( start         ),
+    .hdump      ( hdump         ),
     .vrender    ( vrender       ),
+    .line       ( line          ),
 
     .off_x      ( off_x         ),
     .off_y      ( off_y         ),
@@ -193,7 +194,7 @@ jtcps1_obj_line #(.DW(12)) u_line(
     .pxl_cen    ( pxl_cen       ),
     .flip       ( flip          ),
 
-    .vdump      ( vdump[0]      ),
+    .vdump      ( line          ),
     .hdump      ( hdump_dly     ),
 
     .buf_addr   ( buf_addr      ),

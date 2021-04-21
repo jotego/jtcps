@@ -23,7 +23,8 @@ module jtcps2_obj_scan(
     input              flip,
 
     input      [ 8:0]  vrender, // 1 line ahead of vdump
-    input              start,
+    input      [ 8:0]  hdump,
+    output reg         line,
 
     input      [ 9:0]  off_x,
     input      [ 9:0]  off_y,
@@ -54,6 +55,7 @@ wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
 wire [ 2:0] prio;
+wire        start;
 
 reg         done;
 wire [ 3:0] tile_n, tile_m;
@@ -80,6 +82,7 @@ jtcps1_obj_tile_match u_tile_match(
     .code_mn    ( code_mn   )
 );
 
+assign      start      = hdump == 'h1d0;
 assign      prio       = table_x[15:13];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
@@ -105,6 +108,7 @@ always @(posedge clk, posedge rst) begin
         dr_hpos    <=  9'd0;
         newline    <= 0;
         last_start <= 0;
+        line       <= 0;
     end else begin
         last_start <= start;
         st         <= st+5'd1;
@@ -174,6 +178,7 @@ always @(posedge clk, posedge rst) begin
         // This must be after the case statement
         if( start && !last_start ) begin
             newline <= 1;
+            line    <= ~line;
             st <= 0;
         end
     end
