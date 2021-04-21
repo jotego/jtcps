@@ -62,6 +62,7 @@ wire [ 3:0] tile_n, tile_m;
 reg  [ 3:0] n, npos, m;  // tile expansion n==horizontal, m==vertical
 wire [ 3:0] vsub;
 wire        inzone, vflip;
+wire        nullobj;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
 
@@ -82,6 +83,7 @@ jtcps1_obj_tile_match u_tile_match(
     .code_mn    ( code_mn   )
 );
 
+assign      nullobj    = table_x==0 && table_y==0 && table_attr==0 && table_code==0;
 assign      start      = hdump == 'h1d0;
 assign      prio       = table_x[15:13];
 assign      obj_bank   = table_y[14:13];
@@ -132,7 +134,7 @@ always @(posedge clk, posedge rst) begin
                 else
                     table_addr <= table_addr+10'd1;
 
-                if( !wait_cycle[0] ) begin
+                if( !wait_cycle[0] && !nullobj ) begin
                     n    <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
