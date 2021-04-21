@@ -46,6 +46,7 @@ wire [ 4:0] pal;
 wire        hflip;
 reg  [ 1:0] wait_cycle, read;
 reg  [ 7:0] draw_cnt;
+reg  [ 8:0] next_buf;
 reg         draw;
 reg  [31:0] pxl_data;
 wire        rom_good;
@@ -87,7 +88,7 @@ always @(posedge clk, posedge rst) begin
                 rom_cs     <= 1;
                 rom_addr   <= { obj_code, vsub };
                 rom_bank   <= obj_bank;
-                buf_addr   <= obj_hpos;
+                next_buf   <= obj_hpos;
                 rom_half   <= hflip;
                 wait_cycle <= 2'b11;
                 read       <= 2'b11;
@@ -98,41 +99,41 @@ always @(posedge clk, posedge rst) begin
                 buf_wr   <= 0;
                 rom_bank <= 2'd0;
             end
-        end else begin
-            if( draw ) begin
-                buf_wr   <= 1;
-                buf_addr <= buf_addr+9'd1;
-                buf_data <= { pal, colour(pxl_data, hflip) };
-                pxl_data <= hflip ? {1'b1,pxl_data[31:1]} : {pxl_data[30:0],1'b1};
-                draw_cnt <= draw_cnt>>1;
-                if( draw_cnt[0] ) begin
-                    draw <= 0;
-                    read <= read>>1;
-                    if(!read[1]) idle<=1;
+        end
+        if( draw ) begin
+            buf_wr   <= 1;
+            buf_addr <= buf_addr+9'd1;
+            buf_data <= { pal, colour(pxl_data, hflip) };
+            pxl_data <= hflip ? {1'b1,pxl_data[31:1]} : {pxl_data[30:0],1'b1};
+            draw_cnt <= draw_cnt>>1;
+            if( draw_cnt[0] ) begin
+                draw <= 0;
+                read <= read>>1;
+                if(!read[1]) idle<=1;
+            end
+        end
+        if( read && !draw && !idle) begin
+            buf_wr <= 0;
+            if( rom_good ) begin
+                pxl_data <= rom_data;
+                if( read[1] ) begin
+                    buf_addr <= next_buf;
+                    rom_half <= ~rom_half;
+                end else begin
+                    rom_cs <= 0;
                 end
-            end else begin
-                if( read ) begin
-                    buf_wr <= 0;
-                    if( rom_good ) begin
-                        pxl_data <= rom_data;
-                        if( read[1] )
-                            rom_half <= ~rom_half;
-                        else
-                            rom_cs <= 0;
 
-                        if( &rom_data ) begin
-                            // skip blank pixels but waste two clock cycles for rom_ok
-                            wait_cycle <= 2'b11;
-                            buf_addr   <= buf_addr + 9'd8;
-                            if( !read[1] )
-                                idle <= 1;
-                            else
-                                read <= read>>1;
-                        end else begin
-                            draw <= 1;
-                            draw_cnt <= 8'h80;
-                        end
-                    end
+                if( &rom_data ) begin
+                    // skip blank pixels but waste two clock cycles for rom_ok
+                    wait_cycle <= 2'b11;
+                    buf_addr   <= (read[1] ? next_buf : buf_addr) + 9'd8;
+                    if( !read[1] )
+                        idle <= 1;
+                    else
+                        read <= read>>1;
+                end else begin
+                    draw <= 1;
+                    draw_cnt <= 8'h80;
                 end
             end
         end
