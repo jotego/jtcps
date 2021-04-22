@@ -42,19 +42,21 @@ module jtcps1_obj_draw(
 );
 
 wire [ 3:0] vsub;
-wire [ 4:0] pal;
-wire        hflip;
-reg  [ 1:0] wait_cycle, read;
+wire [ 4:0] next_pal;
+reg  [ 4:0] pal;
+wire        next_hflip;
+reg         hflip;
+reg  [ 1:0] wait_cycle;
 reg  [ 7:0] draw_cnt;
 reg  [ 8:0] next_buf;
-reg         draw;
+reg         draw, half;
 reg  [31:0] pxl_data;
 wire        rom_good;
 
 assign vsub     = obj_attr[11:8];
 //     vflip    = obj_attr[6];
-assign hflip    = obj_attr[5];
-assign pal      = obj_attr[4:0];
+assign next_hflip = obj_attr[5];
+assign next_pal = obj_attr[4:0];
 assign rom_good = rom_ok && wait_cycle==2'b0;
 
 function [3:0] colour;
@@ -77,6 +79,7 @@ always @(posedge clk, posedge rst) begin
         buf_addr   <= 9'd0;
         rom_cs     <= 1'b0;
         idle       <= 1;
+        draw       <= 0;
         wait_cycle <= 0;
         draw_cnt   <= 8'h0;
         rom_bank   <= 2'd0;
@@ -89,14 +92,11 @@ always @(posedge clk, posedge rst) begin
                 rom_addr   <= { obj_code, vsub };
                 rom_bank   <= obj_bank;
                 next_buf   <= obj_hpos;
-                rom_half   <= hflip;
+                rom_half   <= next_hflip;
                 wait_cycle <= 2'b11;
-                read       <= 2'b11;
-                draw       <= 0;
+                half       <= 1;    // which half are we drawing?
             end else begin
                 rom_cs   <= 0;
-                draw     <= 0;
-                buf_wr   <= 0;
                 rom_bank <= 2'd0;
             end
         end
@@ -108,29 +108,32 @@ always @(posedge clk, posedge rst) begin
             draw_cnt <= draw_cnt>>1;
             if( draw_cnt[0] ) begin
                 draw <= 0;
-                read <= read>>1;
-                if(!read[1]) idle<=1;
             end
         end
-        if( read && !draw && !idle) begin
+        if( !draw && !idle) begin
             buf_wr <= 0;
             if( rom_good ) begin
                 pxl_data <= rom_data;
-                if( read[1] ) begin
-                    buf_addr <= next_buf;
+                half     <= 0;
+                if( half ) begin
                     rom_half <= ~rom_half;
+                    // copy new object data
+                    buf_addr <= next_buf;
+                    pal      <= next_pal;
+                    hflip    <= next_hflip;
                 end else begin
                     rom_cs <= 0;
+                    idle   <= 1; // accept new requests
                 end
 
                 if( &rom_data ) begin
                     // skip blank pixels but waste two clock cycles for rom_ok
                     wait_cycle <= 2'b11;
-                    buf_addr   <= (read[1] ? next_buf : buf_addr) + 9'd8;
-                    if( !read[1] )
-                        idle <= 1;
-                    else
-                        read <= read>>1;
+                    buf_addr   <= (half ? next_buf : buf_addr) + 9'd8;
+                    if( !half ) begin
+                        rom_cs <= 0;
+                        idle   <= 1;
+                    end
                 end else begin
                     draw <= 1;
                     draw_cnt <= 8'h80;
