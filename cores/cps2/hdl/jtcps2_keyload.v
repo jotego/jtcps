@@ -159,6 +159,7 @@ always @(posedge clk, posedge rst) begin
             12'h1E7, // vsavj
             12'h343, // vsav
             12'hF04, // vsavu
+            12'h0EE, // vsavb
             12'hF0E, // ringdesta
             12'hF88, // ringdesth
             12'hF3C, // ringdest
