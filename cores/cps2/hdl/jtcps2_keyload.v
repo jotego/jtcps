@@ -146,7 +146,26 @@ always @(posedge clk, posedge rst) begin
             12'h2A7, // uecology
             12'h309, // progear
             12'h2EE, // progeara
-            12'h1AF  // progearj
+            12'h1AF, // progearj
+            // 23rd April
+            12'h2B5, // xmvsfa
+            12'h187, // xmvsfb
+            12'h1D0, // xmvsfh
+            12'h1A6, // xmvsfj
+            12'h198, // xmvsf
+            12'h2AF, // xmvsfu
+            12'h037, // vsava
+            12'h1DC, // vsavh
+            12'h1E7, // vsavj
+            12'h343, // vsav
+            12'hF04, // vsavu
+            12'hF0E, // ringdesta
+            12'hF88, // ringdesth
+            12'hF3C, // ringdest
+            12'h1C4, // smbomb
+            12'hEC5, // sgemfa
+            12'hE42, // sgemfh
+            12'hE70  // sgemf
             : betang <= 0;
             default:
             betang <= 1;

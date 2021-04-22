@@ -229,7 +229,7 @@ end
 jtcps1_prom_we #(
     .CPS        ( CPS           ),
     .REGSIZE    ( REGSIZE       ),
-    .CPU_OFFSET ( ZERO_OFFSET   ),
+    .CPU_OFFSET ( ROM_OFFSET    ),
     .PCM_OFFSET ( PCM_OFFSET    ),
     .SND_OFFSET ( SND_OFFSET    ),
     .EEPROM_AW  ( EEPROM_AW     )
