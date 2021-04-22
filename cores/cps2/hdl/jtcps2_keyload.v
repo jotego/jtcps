@@ -165,7 +165,8 @@ always @(posedge clk, posedge rst) begin
             12'h1C4, // smbomb
             12'hEC5, // sgemfa
             12'hE42, // sgemfh
-            12'hE70  // sgemf
+            12'hE70, // sgemf
+            12'hE43  // pfghtj
             : betang <= 0;
             default:
             betang <= 1;
