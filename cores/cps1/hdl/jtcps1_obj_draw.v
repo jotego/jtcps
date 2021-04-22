@@ -109,6 +109,8 @@ always @(posedge clk, posedge rst) begin
             if( draw_cnt[0] ) begin
                 draw <= 0;
             end
+        end else begin
+            buf_wr <= 0;
         end
         if( !draw && !idle) begin
             buf_wr <= 0;
