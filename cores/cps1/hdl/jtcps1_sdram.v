@@ -163,6 +163,17 @@ localparam [22:0] ZERO_OFFSET  = 23'h0,
                   SND_OFFSET   = 23'h38_0000,
                   ROM_OFFSET   = ZERO_OFFSET;
 
+// Disabling the SDRAM cache latch increases
+// object trhoughput
+`ifdef MISTER
+localparam OBJ_LATCH=0;
+`else
+// MiST/SiDi struggle with timing with the low latency setting
+// they enjoy a different benefit as the SDRAM has dedicated
+// lines for DQMH/L
+localparam OBJ_LATCH=1;
+`endif
+
 `ifdef CPS2
     localparam [22:0] SCR_OFFSET = 23'h00_0000; // change this when moving to 8MB+ GFX
     localparam        CPS2       = 1;
@@ -364,7 +375,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         // Slot 0: Obj
         .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
-        .LATCH0      ( 0             ),
+        .LATCH0      ( OBJ_LATCH     ),
         .SLOT0_REPACK( 0             )
     ) u_bank2 (
         .rst         ( rst           ),
@@ -394,7 +405,7 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 23            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
-    .LATCH0      ( 0             ),
+    .LATCH0      ( OBJ_LATCH     ),
     .SLOT0_REPACK( 0             ),
 
     // Slot 1: Scroll
