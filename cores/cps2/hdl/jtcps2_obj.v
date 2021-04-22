@@ -23,6 +23,7 @@ module jtcps2_obj(
     input              clk_cpu,
     input              pxl_cen,
     input              flip,
+    input              LVBL,
 
     // Configuration
     input              objcfg_cs,
@@ -82,6 +83,7 @@ jtcps2_obj_frame u_frame(
     .rst        ( rst           ),
     .clk        ( clk           ),
     .pxl_cen    ( pxl_cen       ),
+    .LVBL       ( LVBL          ),
 
     .vdump      ( vdump         ),
     .obank      ( obank         ),
@@ -131,8 +133,9 @@ jtcps2_obj_scan u_scan(
     .clk        ( clk           ),
     .flip       ( flip          ),
 
-    .start      ( start         ),
+    .hdump      ( hdump         ),
     .vrender    ( vrender       ),
+    .line       ( line          ),
 
     .off_x      ( off_x         ),
     .off_y      ( off_y         ),
@@ -191,7 +194,7 @@ jtcps1_obj_line #(.DW(12)) u_line(
     .pxl_cen    ( pxl_cen       ),
     .flip       ( flip          ),
 
-    .vdump      ( vdump[0]      ),
+    .vdump      ( line          ),
     .hdump      ( hdump_dly     ),
 
     .buf_addr   ( buf_addr      ),

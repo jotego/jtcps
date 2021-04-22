@@ -174,7 +174,11 @@ assign obj_dma_ok = 0;
 wire               watch_scr1, watch_scr2, watch_scr3,
                    watch_pal, watch_row, watch_obj;
 
+`ifdef CPS2
+assign objdma_en = 0; // People said that Progear was too slow
+`else
 assign objdma_en = 1; // does this signal exist?
+`endif
 assign scrdma_en = ppu_ctrl[3:1];
 assign row_en    = ppu_ctrl[0];
 
@@ -492,6 +496,7 @@ assign scr3_pxl   = 11'h1ff;
         .clk_cpu    ( clk_cpu       ),
         .pxl_cen    ( pxl_cen       ),
         .flip       ( flip          ),
+        .LVBL       ( ~VB           ),
 
         .objcfg_cs  ( objcfg_cs     ),
         .addr       ( addr[3:1]     ),

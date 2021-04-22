@@ -23,7 +23,8 @@ module jtcps2_obj_scan(
     input              flip,
 
     input      [ 8:0]  vrender, // 1 line ahead of vdump
-    input              start,
+    input      [ 8:0]  hdump,
+    output reg         line,
 
     input      [ 9:0]  off_x,
     input      [ 9:0]  off_y,
@@ -54,12 +55,14 @@ wire [15:0] code_mn;
 wire [ 9:0] eff_x;
 wire [ 1:0] obj_bank;
 wire [ 2:0] prio;
+wire        start;
 
 reg         done;
 wire [ 3:0] tile_n, tile_m;
 reg  [ 3:0] n, npos, m;  // tile expansion n==horizontal, m==vertical
 wire [ 3:0] vsub;
 wire        inzone, vflip;
+wire        nullobj;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
 
@@ -80,6 +83,8 @@ jtcps1_obj_tile_match u_tile_match(
     .code_mn    ( code_mn   )
 );
 
+assign      nullobj    = table_x==0 && table_y==0 && table_attr==0 && table_code==0;
+assign      start      = hdump == 'h1d0;
 assign      prio       = table_x[15:13];
 assign      obj_bank   = table_y[14:13];
 assign      tile_m     = table_attr[15:12];
@@ -105,35 +110,35 @@ always @(posedge clk, posedge rst) begin
         dr_hpos    <=  9'd0;
         newline    <= 0;
         last_start <= 0;
+        line       <= 0;
     end else begin
         last_start <= start;
-        st <= st+5'd1;
+        st         <= st+5'd1;
+        dr_start   <= 0;
         case( st )
             0: begin
                 table_addr <= 10'd0;
                 if( !newline ) begin
                     st       <= 5'd0;
-                    dr_start <= 0;
                 end else begin
                     newline    <= 0;
-                    wait_cycle <= 3'b011;
+                    wait_cycle <= 3'b001;
                     last_tile  <= 1'b0;
                     vrenderf   <= vrender ^ {1'b0,{8{flip}}};
                 end
             end
             1: begin
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
-                dr_start   <= 0;
                 if( &table_addr )
                     last_tile <= 1;
                 else
                     table_addr <= table_addr+10'd1;
 
-                if( !wait_cycle[0] ) begin
-                    n          <= 4'd0;
+                if( !wait_cycle[0] && !nullobj ) begin
+                    n    <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
-                    npos       <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
+                    npos <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
                     if( table_y[15] || table_attr[15:8]==8'hff ) begin
                         st<=0;  // done
                     end
@@ -143,15 +148,13 @@ always @(posedge clk, posedge rst) begin
                         wait_cycle <= 3'b011; // leave it ready for next round
                         table_addr <= table_addr - 10'd1; // undo
                     end
-                end else st<=1;
-
-                if(last_tile) begin
-                    st   <= 0; // done
+                end else begin
+                    st<= last_tile ? 0 : 1;
                 end
             end
             4: begin // check whether sprite is visible
                 if( !inzone ) begin
-                    st<= 1; // try next one
+                    st <= last_tile ? 0 : 1; // next element
                     //table_addr <= table_addr+10'd1;
                 end else begin
                     if( !dr_idle ) begin
@@ -163,23 +166,21 @@ always @(posedge clk, posedge rst) begin
                         dr_prio  <= prio;
                         dr_bank  <= obj_bank;
                         dr_start <= ~eff_x[9];
+                        if( n == tile_n ) begin
+                            st <= last_tile ? 0 : 1; // next element
+                        end else begin // prepare for next tile
+                            n    <= n + 4'd1;
+                            npos <= hflip ? npos-4'd1 : npos+4'd1;
+                            st   <= 3; // get extra cycles for inzone and dr_idle
+                        end
                     end
-                end
-            end
-            5: begin
-                dr_start <= 0;
-                if( n == tile_n ) begin
-                    st <= 1; // next element
-                end else begin // prepare for next tile
-                    n    <= n + 4'd1;
-                    npos <= hflip ? npos-4'd1 : npos+4'd1;
-                    st   <= 3; // get extra cycles for inzone and dr_idle
                 end
             end
         endcase
         // This must be after the case statement
         if( start && !last_start ) begin
             newline <= 1;
+            line    <= ~line;
             st <= 0;
         end
     end

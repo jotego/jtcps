@@ -412,6 +412,7 @@ always @(posedge clk, posedge reg_rst) begin
                 cnt_sel[0] <=  addr[4] && !addr[1]; // raster2 in schematics
                 cnt_sel[1] <=  addr[4] &&  addr[1]; // raster3
                 cnt_sel[2] <= !addr[4]; // raster3 (pixel count)
+                /*
                 `ifdef SIMULATION
                     if( 0 && ppu2_cs===1 && cpu_dout[8:0]!=0
                           && cpu_dout[8:0]!=9'h106
@@ -426,6 +427,7 @@ always @(posedge clk, posedge reg_rst) begin
                         #(16600000*50) $finish;
                     end
                 `endif
+                */
             end else cnt_sel <= 0;
             `endif
         end
