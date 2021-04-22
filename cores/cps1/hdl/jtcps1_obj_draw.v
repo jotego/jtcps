@@ -46,7 +46,7 @@ wire [ 4:0] next_pal;
 reg  [ 4:0] pal;
 wire        next_hflip;
 reg         hflip;
-reg  [ 1:0] wait_cycle;
+reg         wait_cycle;
 reg  [ 7:0] draw_cnt;
 reg  [ 8:0] next_buf;
 reg         draw, half;
@@ -57,7 +57,7 @@ assign vsub     = obj_attr[11:8];
 //     vflip    = obj_attr[6];
 assign next_hflip = obj_attr[5];
 assign next_pal = obj_attr[4:0];
-assign rom_good = rom_ok && wait_cycle==2'b0;
+assign rom_good = rom_ok && !wait_cycle;
 
 function [3:0] colour;
     input [31:0] c;
@@ -84,7 +84,7 @@ always @(posedge clk, posedge rst) begin
         draw_cnt   <= 8'h0;
         rom_bank   <= 2'd0;
     end else begin
-        wait_cycle <= wait_cycle >> 1;
+        wait_cycle <= 0;
         if( idle ) begin
             if( start && obj_hpos>9'h30 && obj_hpos<9'h1c0 ) begin
                 idle       <= 0;
@@ -93,7 +93,7 @@ always @(posedge clk, posedge rst) begin
                 rom_bank   <= obj_bank;
                 next_buf   <= obj_hpos;
                 rom_half   <= next_hflip;
-                wait_cycle <= 2'b11;
+                wait_cycle <= 1;
                 half       <= 1;    // which half are we drawing?
             end else begin
                 rom_cs   <= 0;
@@ -113,7 +113,6 @@ always @(posedge clk, posedge rst) begin
             buf_wr <= 0;
         end
         if( !draw && !idle) begin
-            buf_wr <= 0;
             if( rom_good ) begin
                 pxl_data <= rom_data;
                 half     <= 0;
@@ -129,8 +128,8 @@ always @(posedge clk, posedge rst) begin
                 end
 
                 if( &rom_data ) begin
-                    // skip blank pixels but waste two clock cycles for rom_ok
-                    wait_cycle <= 2'b11;
+                    // skip blank pixels
+                    wait_cycle <= 1;
                     buf_addr   <= (half ? next_buf : buf_addr) + 9'd8;
                     if( !half ) begin
                         rom_cs <= 0;
