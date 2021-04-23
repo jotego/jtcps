@@ -169,6 +169,7 @@ localparam [22:0] ZERO_OFFSET  = 23'h0,
 localparam OBJ_LATCH=0;
 `else
 // MiST/SiDi struggle with timing with the low latency setting
+// So it is disabled. Nonetheless,
 // they enjoy a different benefit as the SDRAM has dedicated
 // lines for DQMH/L
 localparam OBJ_LATCH=1;
@@ -275,18 +276,19 @@ jtframe_ram_5slots #(
 
     .SLOT1_AW    ( 17            ), // VRAM - read only access
     .SLOT1_DW    ( 16            ),
+    .SLOT1_LATCH ( OBJ_LATCH     ),
+    .SLOT1_REPACK(  0            ),
 
     .SLOT2_AW    ( 13            ), // VRAM - read only access
     .SLOT2_DW    ( 16            ),
+    .SLOT2_LATCH ( OBJ_LATCH     ),
+    .SLOT2_REPACK(  0            ),
 
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
-    .LATCH3      (  1            ),
 
     .SLOT4_AW    ( Z80_AW        ), // Sound CPU
     .SLOT4_DW    (  8            )
-    //.SLOT4_REPACK(  1            )
-
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -343,8 +345,7 @@ jtframe_ram_5slots #(
 jtframe_rom_1slot #(
     .SDRAMW      ( 23            ),
     .SLOT0_AW    ( PCM_AW        ), // PCM
-    .SLOT0_DW    (  8            ),
-    .SLOT0_REPACK( 1             )
+    .SLOT0_DW    (  8            )
 ) u_bank1 (
     .rst         ( rst           ),
     .clk         ( clk           ),
@@ -375,7 +376,8 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         // Slot 0: Obj
         .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
-        .LATCH0      ( OBJ_LATCH     ),
+
+        .SLOT0_LATCH ( OBJ_LATCH     ),
         .SLOT0_REPACK( 0             )
     ) u_bank2 (
         .rst         ( rst           ),
@@ -405,14 +407,13 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 23            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
-    .LATCH0      ( OBJ_LATCH     ),
+    .SLOT0_LATCH ( OBJ_LATCH     ),
     .SLOT0_REPACK( 0             ),
 
     // Slot 1: Scroll
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
     .SLOT1_OFFSET( SCR_OFFSET    )
-    //.SLOT1_REPACK( 1             )
 ) u_bank3 (
     .rst         ( rst           ),
     .clk         ( clk_gfx       ), // do not use clk
