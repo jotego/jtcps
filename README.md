@@ -318,116 +318,126 @@ Christopher Gelatt                                          yoaarond
 
 The following patrons supported the development of CPS2
 
-80's spaceman                           Adam Zorzin
-Adrian Labastida Cañizares              Adrian Nabarro
-Alan Shurvinton                         Alberta Dave
-Alexander Lash                          Alexander Upton
-Alfonso Clemente                        Alfredo Henriquez
-Alonso J. Núñez                         Alvaro Paniagua
-Andrea Chiavazza                        Andreas Micklei
-Andrew Ajello                           Andrew Boudreau
-Andy Palmer                             Angelo Kanaris
-Anthony Monaco                          Anton Gale
-Antwon                                  Aquijacks (Flashjacks MSX)
-Aqy                                     Banane
-Bear S                                  Ben Toman
-Bitmap Bureau                           Bliz 452
-Boogermann                              Brandon Smith
-Brandon Thomas                          Brent Fraser Weatherall
-Brian Peek                              Brian Plummer
-C                                       Cameron Tinker
-Carrboroman                             Cesar Sandoval
-Charles                                 Choquer0
-Chris Mzhickteno                        Chris W Miller
-Chris smith                             Christian Bailey
-Christopher Brown                       Christopher Tuckwell
-Clinton Cronin                          Cobra Clips Gaming
-Coldheat007                             Colt83
-Dakken                                  Dan
-Daniel                                  Daniel Casadevall
-Daniel Fowler                           Daniel Zetterman
-Daniel_papa                             Darren Chell
-Darren Wootton                          Dasutin
-David Drury                             David Filskov
-David Fleetwood                         David Jones
-Diana Carolina                          DrMnike
-Dre137                                  Drew Roberts
-Eric J Faulkes                          Eric Schlappi
-Eric Walklet                            Filip Kindt
-Five Year Guy                           Focux
-Francis B                               Gluthecat
-GohanX                                  Gonzalo López
-Goolio                                  Greg
-Gregory Val                             HFSPlay
-Handheld Obsession                      Henry
-Ibrahim                                 ItsBobDudes
-JR                                      Jacob Hoffman
-Jacob Lawter                            James B Ross
-James Dingo                             James Kilgore
-Jason Nagy                              Javier Rodas
-Jeff Despres                            Jeff Roberts
-Jeremy Hasse                            Jeremy Kelaher
-Jesse Clark                             Jim Knowler
-Jockel                                  Johan Smolinski
-John Fletcher                           John Schaeffer
-John Wilson                             Jonah Phillips
-Jonathan Brochu                         Jonathan Loor
-Jonathan Tuttle                         Jootec from Mars
-Jork Sonkinfield                        Josh Emery
-Josiah Wilson                           José López Navarrete
-Justin D'Arcangelo                      Keith Gordon
-Kem Yos                                 Kevin Gudgeirsson
-KnC                                     L.Rapter
-LFT                                     Laurent Cooper
-Lee Grocott                             Lee Osborne
-Lionel LENOBLE                          Luc JOLY
-Mack H                                  Magnus Kvevlander
-Manuel Astudillo                        Mark Baffa
-Mark Davidson                           MarthSR
-Martin Ansin                            Matheus
-Matt Elder                              Matt Evans
-Matt Lichtenberg                        Matt McCarthy
-Matt ODonnell                           Matthew Humphrey
-Matthew Woodford                        MechaGG
-Megan Alnico                            MiSTerFPGA.co.uk
-Michael Deshaies                        Michael Rea
-Mick Stone                              Mike Jegenjan
-Mike Olson                              Mike Parks
-Mottzilla                               Nailbomb
-Narugawa                                Neil St Clair
-Nelson Jr                               Nick Delia
-Nico Stamp                              Nicolas Hurtado
-NonstopXiaowei                          Oriez
-Oskar Sigvardsson                       Parker Blackman
-Patrick Roman Fabri                     Paul Cunningham
-Paul M                                  PeFClic
-Per Ole Klemetsrud                      Philip Lai
-Philip Lawson                           Pierre-Emmanuel Martin
-Rachael Netz                            RandomRetro
-Raph Furendo                            RayGun
-ReTr0~g!GGles                           Richard Eng
-Richard Murillo                         Richard Simpson
-Rick Ochoa                              Ronald Dean
-Ryan                                    Ryan Fig
-Ryan O'Malley                           Sam Hall
-Samuel Warner                           Schnookums
-Sofia Rose                              Spank Minister
-SteelRush                               Stefan Krueger
-Steven Hansen                           Steven Yedwab
-Stuart Morton                           SuperBabyHix
-Taehyun Kim                             Tales Dilli
-The Collector                           Thomas Capetanakis
-Thomas Irwin                            Tobias Dossin
-Travis Brown                            Trifle
-Tym Whitney                             Victor Bly
-Victor Fontanez                         William Clemens
-Zach Marquette                          Zoltan Kovacs
-alejandro carlos                        angel_killah
-blackwine                               brian burney
-bruno_tapez                             cbab
-chauviere benjamin                      dannahan
-deathwombat                             derFunkenstein
-gunmakuma                               kccheng
-kernelchagi                             natalie
-nonamebear                              rsn8887
-scapeghost                              yoaarond
+049                 80's spaceman
+Adam Small          Adam Zorzin
+Adrian Labastida    Adrian Nabarro
+Alan Shurvinton     Alberta Dave
+Alexander Lash      Alexander Upton
+Alfonso Clemente    Alfredo Henriquez
+Alonso J.           Alvaro Paniagua
+Andrea Chiavazza    Andreas Micklei
+Andrew Boudreau     Andy Palmer
+Angelo Kanaris      Anthony Monaco
+Anton Gale          Antwon
+Aquijacks
+Arthur Fung         AzathothCultist
+Banane              Bear S
+Ben Toman           Bitmap Bureau
+Bliz 452            Boogermann
+Brandon Smith       Brandon Thomas
+Brent Fraser        Brian Peek
+Brian Plummer       C
+Cameron Tinker      Carrboroman
+Cesar Sandoval      Charles
+Choquer0            Chris Mzhickteno
+Chris W             Chris smith
+Christian Bailey    Christopher Chung
+Christopher TuckwellClinton Cronin
+Cobra Clips         Coldheat007
+Colt83              Dakken
+Dan                 Daniel
+Daniel Casadevall   Daniel Fowler
+Daniel Zetterman    Daniel_papa
+Darren Wootton      Dasutin
+David Drury         David Filskov
+David Fleetwood     David Jones
+Denis Brækhus       Diana Carolina
+DrMnike             Dre137
+Drew Roberts        Eric J
+Eric Schlappi       Eric Walklet
+Five Year           Focux
+Francis B           Gluthecat
+GohanX              Gonzalo López
+Goolio              Greg
+Gregory Val         HFSPlay
+Handheld Obsession  Henry
+Ibrahim             ItsBobDudes
+JR                  Jacob Hoffman
+Jacob Lawter        James B
+James Dingo         James Kilgore
+Jason Nagy          Javier Rodas
+Jeff Roberts        Jeremy Hasse
+Jeremy Kelaher      Jesse Clark
+Jim Knowler         Jockel
+Johan Smolinski     John Fletcher
+John Wilson         Jonah Phillips
+Jonathan Brochu     Jonathan Loor
+Jonathan Tuttle     Jootec from
+Jork Sonkinfield    Joseph Milazzo
+Josh Emery          Josiah Wilson
+José López          Justin D'Arcangelo
+Keith Gordon        Kem Yos
+Kenneth Lee         Kevin Gudgeirsson
+Kevin finisterre    KnC
+KrzysFR             L.Rapter
+LFT                 Laurent Cooper
+Lee Grocott         Lee Osborne
+Lionel LENOBLE      Luc JOLY
+Mack H              Magnus Kvevlander
+Manuel Astudillo    Mark Baffa
+Mark Davidson       Mark R
+MarthSR             Martin Ansin
+Matheus             Matsu
+Matt Elder          Matt Evans
+Matt Lichtenberg    Matt McCarthy
+Matt ODonnell       Matthew Humphrey
+Matthew Woodford    MechaGG
+Megan Alnico        MiSTerFPGA.co.uk
+Michael Deshaies    Michael Rea
+Mick Stone          Mike Jegenjan
+Mike Olson          Mike Parks
+Mottzilla           NINE
+Nailbomb            Narugawa
+Neil St             Nelson Jr
+NerdyNester         Nick Delia
+Nico Stamp          Nicolas Hurtado
+NonstopXiaowei      OopsAllBerrys
+Oriez               Oskar Sigvardsson
+Parker Blackman     Patrick Roman
+Paul Cunningham     Paul M
+Paweł Mandes        PeFClic
+Per Ole             Philip Lai
+Philip Lawson       Pierre-Emmanuel Martin
+Rachael Netz        Rachel Schaeffer
+RandomRetro         Raph Furendo
+RayGun              Richard Eng
+Richard Murillo     Richard Simpson
+Rick Ochoa          Ronald Dean
+Ryan                Ryan Fig
+Ryan O'Malley       Sam Hall
+Samuel Warner       Schnookums
+Sofia Rose          Spank Minister
+SteelRush           Stefan Krueger
+Steven Hansen       Steven Yedwab
+Stuart Morton       SuperBabyHix
+Taehyun Kim         Tales Dilli
+The Collector       The Video
+Thomas Attanasio    Thomas Capetanakis
+Thomas Irwin        Tobias Dossin
+Travis Brown        Trifle
+Troy                Tym Whitney
+Victor Bly          Victor Fontanez
+William Clemens     Zach Marquette
+Zoltan Kovacs       alejandro carlos
+angel_killah        blackwine
+brian burney        bruno_tapez
+cbab                chauviere benjamin
+dannahan            deathwombat
+derFunkenstein      gunmakuma
+kccheng             kernelchagi
+natalie             nonamebear
+olivier bernhard    rsn8887
+scapeghost          taal.M
+tonitellezb         yoaarond
+종규 박
+
