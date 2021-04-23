@@ -276,16 +276,18 @@ jtframe_ram_5slots #(
 
     .SLOT1_AW    ( 17            ), // VRAM - read only access
     .SLOT1_DW    ( 16            ),
-    .SLOT1_LATCH ( OBJ_LATCH     ),
-    .SLOT1_REPACK(  0            ),
+    .SLOT1_LATCH (  OBJ_LATCH    ),
+    .SLOT1_REPACK(  1            ),
 
     .SLOT2_AW    ( 13            ), // VRAM - read only access
     .SLOT2_DW    ( 16            ),
-    .SLOT2_LATCH ( OBJ_LATCH     ),
-    .SLOT2_REPACK(  0            ),
+    .SLOT2_LATCH (  OBJ_LATCH    ),
+    .SLOT2_REPACK(  1            ),
 
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
+    .SLOT3_LATCH (  1            ),
+    .SLOT3_REPACK(  0            ),
 
     .SLOT4_AW    ( Z80_AW        ), // Sound CPU
     .SLOT4_DW    (  8            )
