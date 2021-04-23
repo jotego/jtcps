@@ -21,6 +21,7 @@ VIDEO_HEIGHT=224
 # SDRAM
 JTFRAME_SDRAM_BANKS
 JTFRAME_SDRAM_MUXLATCH
+JTFRAME_SDRAM_REPACK
 
 # Inputs
 BUTTONS=6
@@ -54,7 +55,6 @@ VIDEO_WIDTH=384
 JTFRAME_NOHQ2X
 # OSD options
 # JTFRAME_AVATARS
-# JTFRAME_SDRAM_REPACK
 # For some reason adding a space between 1P and Start is a problem
 # for Quartus TCL, so I write it together
 CORE_KEYMAP="J1,B0,B1,B2,B3,1PStart,Coin,Pause;","jn,A,B,X,Y,L,R,Start;",
