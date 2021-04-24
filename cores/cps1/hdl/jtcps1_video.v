@@ -510,7 +510,7 @@ assign scr3_pxl   = 11'h1ff;
         .oram_data  ( oram_data     ),
 
         .start      ( line_start    ),
-        .vrender    ( vrender       ),
+        .vrender    ( vrender1      ),
         .vdump      ( vdump         ),
         .hdump      ( hdump         ),
 
