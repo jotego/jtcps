@@ -38,7 +38,7 @@ module jtcps2_obj_frame(
 localparam W=5;
 
 wire         frame, frame_edge;
-reg          wtok, last_LVBL, last_frame;
+reg          wtok, last_LVBL, last_frame, last_wtok;
 reg  [ 11:0] oram_cnt;
 reg  [W-1:0] line_cnt;
 reg          wrbank;
@@ -64,16 +64,17 @@ always @( posedge clk ) begin
         line_cnt    <= {W{1'd0}};
         oframe_we   <= 0;
         wtok        <= 1;
+        last_wtok   <= 1;
     end else begin
-        if( oram_ok ) wtok <= 0;
-        oframe_we <= oram_ok && !wtok && LVBL;
+        last_wtok <= wtok;
+        if( oram_ok && line_cnt[0] ) wtok <= 0;
+        oframe_we <= oram_ok && last_wtok && !wtok && LVBL;
         if( pxl_cen & ~&line_cnt ) begin
             if( line_cnt == 'h1b ) begin
                 line_cnt <= 0;
-                wtok     <= 0;
+                wtok     <= 1;
                 oram_cnt <= oram_cnt+1'b1;
             end else begin
-                wtok <= 1;
                 line_cnt <= line_cnt+1'b1;
             end
         end
