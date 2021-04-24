@@ -1,0 +1,3 @@
+#!/bin/bash
+echo You have to manually source prio.mame too
+mame $1 -debug -debugscript regs.mame
