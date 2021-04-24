@@ -55,7 +55,7 @@ module jtcps2_obj(
 
 wire [15:0] dr_code, dr_attr;
 wire [ 8:0] dr_hpos;
-wire [ 2:0] dr_prio;
+wire [ 2:0] dr_prio, buf_prio;
 wire [ 1:0] dr_bank;
 
 wire        dr_start, dr_idle;
@@ -77,7 +77,7 @@ wire        obank_frame, oframe_we;
 wire [ 9:0] table_attr;
 wire [15:0] obj_x, obj_y, obj_code, obj_attr;
 
-assign prio_data = { dr_prio, buf_data };
+assign prio_data = { buf_prio, buf_data };
 
 jtcps2_obj_frame u_frame(
     .rst        ( rst           ),
@@ -169,6 +169,9 @@ jtcps1_obj_draw u_draw(
     .obj_attr   ( dr_attr       ),
     .obj_hpos   ( dr_hpos       ),
     .obj_bank   ( dr_bank       ),
+
+    .obj_prio   ( dr_prio       ),
+    .buf_prio   ( buf_prio      ),
 
     .buf_addr   ( buf_addr      ),
     .buf_data   ( buf_data      ),

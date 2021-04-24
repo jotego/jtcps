@@ -16,7 +16,7 @@
     Version: 2.0
     Date: 23-1-2021 */
 
-module jtcps1_obj_draw(
+module jtcps1_obj_draw (
     input              rst,
     input              clk,
 
@@ -24,6 +24,10 @@ module jtcps1_obj_draw(
     input      [15:0]  obj_attr,
     input      [ 8:0]  obj_hpos,
     input      [ 1:0]  obj_bank,
+    `ifdef CPS2
+    input      [ 2:0]  obj_prio,
+    output reg [ 2:0]  buf_prio,
+    `endif
 
     input              start,
     output reg         idle,
@@ -120,6 +124,9 @@ always @(posedge clk, posedge rst) begin
                     rom_half <= ~rom_half;
                     // copy new object data
                     buf_addr <= next_buf;
+                    `ifdef CPS2
+                    buf_prio <= obj_prio;
+                    `endif
                     pal      <= next_pal;
                     hflip    <= next_hflip;
                 end else begin
