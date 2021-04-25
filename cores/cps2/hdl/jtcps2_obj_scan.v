@@ -22,7 +22,7 @@ module jtcps2_obj_scan(
     input              clk,
     input              flip,
 
-    input      [ 8:0]  vrender, // 1 line ahead of vdump
+    input      [ 8:0]  vrender1, // 2 lines ahead of vdump
     input      [ 8:0]  hdump,
     output reg         line,
 
@@ -48,7 +48,7 @@ module jtcps2_obj_scan(
 );
 
 reg  [ 9:0] mapper_in;
-reg  [ 8:0] vrenderf;
+reg  [ 8:0] vrenderf, vlatch;
 
 reg  [ 9:0] obj_y, obj_x;
 wire [15:0] code_mn;
@@ -124,7 +124,7 @@ always @(posedge clk, posedge rst) begin
                     newline    <= 0;
                     wait_cycle <= 3'b001;
                     last_tile  <= 1'b0;
-                    vrenderf   <= vrender ^ {1'b0,{8{flip}}};
+                    vrenderf   <= vlatch ^ {1'b0,{8{flip}}};
                 end
             end
             1: begin
@@ -181,6 +181,7 @@ always @(posedge clk, posedge rst) begin
         if( start && !last_start ) begin
             newline <= 1;
             line    <= ~line;
+            vlatch  <= vrender1;
             st <= 0;
         end
     end

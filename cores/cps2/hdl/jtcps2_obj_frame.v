@@ -38,12 +38,13 @@ module jtcps2_obj_frame(
 localparam W=5;
 
 wire         frame, frame_edge;
-reg          wtok, last_LVBL, last_frame, last_wtok;
+reg          wtok, last_LVBL, last_frame;
+reg          done;
 reg  [ 11:0] oram_cnt;
 reg  [W-1:0] line_cnt;
 reg          wrbank;
 
-assign frame      = vdump=='he;
+assign frame      = vdump==0;
 assign frame_edge = frame && !last_frame;
 assign oram_addr  = { obank, oram_cnt };
 
@@ -63,17 +64,21 @@ always @( posedge clk ) begin
         oram_cnt    <= 12'd0;
         line_cnt    <= {W{1'd0}};
         oframe_we   <= 0;
+        done        <= 0;
         wtok        <= 1;
-        last_wtok   <= 1;
     end else begin
-        last_wtok <= wtok;
-        if( oram_ok && line_cnt[0] ) wtok <= 0;
-        oframe_we <= oram_ok && last_wtok && !wtok && LVBL;
-        if( pxl_cen & ~&line_cnt ) begin
-            if( line_cnt == 'h1b ) begin
+        if( oram_ok && line_cnt[0] ) begin
+            wtok <= 0;
+            oframe_we <= oram_ok & wtok;
+        end else begin
+            oframe_we <= 0;
+        end
+
+        if( pxl_cen & ~&line_cnt & ~done) begin
+            if( line_cnt == 'h1a ) begin
                 line_cnt <= 0;
                 wtok     <= 1;
-                oram_cnt <= oram_cnt+1'b1;
+                { done, oram_cnt } <= { 1'b0, oram_cnt }+1'b1;
             end else begin
                 line_cnt <= line_cnt+1'b1;
             end

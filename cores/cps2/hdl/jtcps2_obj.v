@@ -39,7 +39,7 @@ module jtcps2_obj(
     input              obank,
 
     input              start,
-    input      [ 8:0]  vrender,  // 1 line  ahead of vdump
+    input      [ 8:0]  vrender1,  // 1 line  ahead of vdump
     input      [ 8:0]  vdump,
     input      [ 8:0]  hdump,
 
@@ -134,7 +134,7 @@ jtcps2_obj_scan u_scan(
     .flip       ( flip          ),
 
     .hdump      ( hdump         ),
-    .vrender    ( vrender       ),
+    .vrender1   ( vrender1      ),
     .line       ( line          ),
 
     .off_x      ( off_x         ),
