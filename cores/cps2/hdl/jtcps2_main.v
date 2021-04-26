@@ -401,7 +401,7 @@ jtcps2_decrypt u_decrypt(
 wire       int1, // VBLANK
            int2, // Raster
            skip_but = ~&start_button;
-assign inta_n = ~&{ FC[2], FC[1], FC[0], ~ASn }; // interrupt ack.
+assign inta_n = ~&{ FC, ~BGACKn }; // interrupt ack. according to Loic's DL-1827 schematic
 
 jtframe_virq u_virq(
     .rst        ( rst       ),
