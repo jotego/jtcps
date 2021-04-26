@@ -401,7 +401,9 @@ jtcps2_decrypt u_decrypt(
 wire       int1, // VBLANK
            int2, // Raster
            skip_but = ~&start_button;
-assign inta_n = ~&{ FC, ~BGACKn }; // interrupt ack. according to Loic's DL-1827 schematic
+//assign inta_n = ~&{ FC, ~BGACKn }; // interrupt ack. according to Loic's DL-1827 schematic
+assign inta_n = ~&{ FC, A[19:16] }; // ctrl like M68000's manual
+wire   vpa_n = ~&{ FC, ~ASn };
 
 jtframe_virq u_virq(
     .rst        ( rst       ),
@@ -428,7 +430,7 @@ jtframe_68kdma #(.BW(1)) u_arbitration(
     .cpu_BGn    (  BGn          ),
     .cpu_ASn    (  ASn          ),
     .cpu_DTACKn (  DTACKn       ),
-    .dev_br     (  busreq       )
+    .dev_br     (  busreq & main2qs_busakn      ) // following DL-1827 logic
 );
 
 fx68k u_cpu(
@@ -448,7 +450,7 @@ fx68k u_cpu(
     .LDSn       ( LDSn        ),
     .UDSn       ( UDSn        ),
     .ASn        ( ASn         ),
-    .VPAn       ( inta_n      ),
+    .VPAn       ( vpa_n       ),
     .FC0        ( FC[0]       ),
     .FC1        ( FC[1]       ),
     .FC2        ( FC[2]       ),
