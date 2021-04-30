@@ -168,6 +168,22 @@ always @(posedge clk, posedge rst) begin
             12'hE42, // sgemfh
             12'hE70, // sgemf
             12'hE43  // pfghtj
+            // 30th April
+            12'h177, // msha
+            12'h04A, // mshb
+            12'h271, // mshh
+            12'h25C, // mshj
+            12'h077, // msh
+            12'h16C, // mshu
+            12'h490, // mshvsfa
+            12'h10A, // mshvsfb
+            12'h054, // mshvsfh
+            12'h1A3, // mshvsfj
+            12'hFC2, // mshvsf
+            12'h40F, // mshvsfu
+            12'h1EC, // cybotsj
+            12'h12F, // cybots
+            12'h10F, // cybotsu
             : betang <= 0;
             default:
             betang <= 1;
