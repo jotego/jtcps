@@ -167,7 +167,7 @@ always @(posedge clk, posedge rst) begin
             12'hEC5, // sgemfa
             12'hE42, // sgemfh
             12'hE70, // sgemf
-            12'hE43  // pfghtj
+            12'hE43, // pfghtj
             // 30th April
             12'h177, // msha
             12'h04A, // mshb
