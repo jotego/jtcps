@@ -43,33 +43,19 @@ module jtcps2_game(
 
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
-    output          ba0_rd,
-    output          ba0_wr,
+    output   [22:0] ba1_addr,
+    output   [22:0] ba2_addr,
+    output   [22:0] ba3_addr,
+    output   [ 3:0] ba_rd,
+    output          ba_wr,
     output   [15:0] ba0_din,
     output   [ 1:0] ba0_din_m,  // write mask
-    input           ba0_rdy,
-    input           ba0_ack,
+    input    [ 3:0] ba_ack,
+    input    [ 3:0] ba_dst,
+    input    [ 3:0] ba_dok,
+    input    [ 3:0] ba_rdy,
 
-    // Bank 1: Read only
-    output   [22:0] ba1_addr,
-    output          ba1_rd,
-    input           ba1_rdy,
-    input           ba1_ack,
-
-    // Bank 2: Read only
-    output   [22:0] ba2_addr,
-    output          ba2_rd,
-    input           ba2_rdy,
-    input           ba2_ack,
-
-    // Bank 3: Read only
-    output   [22:0] ba3_addr,
-    output          ba3_rd,
-    input           ba3_rdy,
-    input           ba3_ack,
-
-    input   [31:0]  data_read,
-    output          refresh_en,
+    input   [15:0]  data_read,
 
     // RAM/ROM LOAD
     input   [25:0]  ioctl_addr,
@@ -84,6 +70,8 @@ module jtcps2_game(
     output          prog_we,
     output          prog_rd,
     input           prog_ack,
+    input           prog_dok,
+    input           prog_dst,
     input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
@@ -570,33 +558,19 @@ jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
 
     // Bank 0: allows R/W
     .ba0_addr    ( ba0_addr      ),
-    .ba0_rd      ( ba0_rd        ),
-    .ba0_wr      ( ba0_wr        ),
-    .ba0_ack     ( ba0_ack       ),
-    .ba0_rdy     ( ba0_rdy       ),
+    .ba1_addr    ( ba1_addr      ),
+    .ba2_addr    ( ba2_addr      ),
+    .ba3_addr    ( ba3_addr      ),
+    .ba_rd       ( ba_rd         ),
+    .ba_wr       ( ba_wr         ),
+    .ba_ack      ( ba_ack        ),
+    .ba_dst      ( ba_dst        ),
+    .ba_dok      ( ba_dok        ),
+    .ba_rdy      ( ba_rdy        ),
     .ba0_din     ( ba0_din       ),
     .ba0_din_m   ( ba0_din_m     ),
 
-    // Bank 1: Read only
-    .ba1_addr    ( ba1_addr      ),
-    .ba1_rd      ( ba1_rd        ),
-    .ba1_ack     ( ba1_ack       ),
-    .ba1_rdy     ( ba1_rdy       ),
-
-    // Bank 2: Read only
-    .ba2_addr    ( ba2_addr      ),
-    .ba2_rd      ( ba2_rd        ),
-    .ba2_ack     ( ba2_ack       ),
-    .ba2_rdy     ( ba2_rdy       ),
-
-    // Bank 3: Read only
-    .ba3_addr    ( ba3_addr      ),
-    .ba3_rd      ( ba3_rd        ),
-    .ba3_ack     ( ba3_ack       ),
-    .ba3_rdy     ( ba3_rdy       ),
-
-    .data_read   ( data_read     ),
-    .refresh_en  ( refresh_en    )
+    .data_read   ( data_read     )
 );
 
 endmodule

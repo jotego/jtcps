@@ -59,7 +59,7 @@ wire        start;
 
 reg         done;
 wire [ 3:0] tile_n, tile_m;
-reg  [ 3:0] n, npos, m;  // tile expansion n==horizontal, m==vertical
+reg  [ 3:0] n, npos;  // tile expansion n==horizontal, m==vertical
 wire [ 3:0] vsub;
 wire        inzone, vflip;
 wire        nullobj;

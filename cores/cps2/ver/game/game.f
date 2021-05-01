@@ -57,8 +57,7 @@ $MODULES/jtdsp16/hdl/jtdsp16.v
 $JTFRAME/hdl/sound/jtframe_fir.v
 $JTFRAME/hdl/sound/jtframe_uprate2_fir.v
 # SDRAM
--F $JTFRAME/hdl/sdram/jtframe_sdram_bank.f
-$JTFRAME/hdl/sdram/jtframe_sdram_stats.v
+-F $JTFRAME/hdl/sdram/jtframe_sdram64.f
 
 $JTFRAME/hdl/ram/jtframe_dual_ram.v
 $JTFRAME/hdl/ram/jtframe_dual_ram16.v

@@ -67,27 +67,35 @@ module mist_dump(
                 $shm_probe(UUT.u_game.u_video, "AS");
             `else
                 //$shm_probe(UUT.u_game.u_main, "A");
+                $shm_probe(UUT.u_game.u_main.FC);
                 $shm_probe(UUT.u_game.u_main.raster);
                 $shm_probe(UUT.u_game.u_main.int1);
                 $shm_probe(UUT.u_game.u_main.int2);
                 $shm_probe(UUT.u_game.u_main.inta_n);
-                $shm_probe(UUT.u_game.u_main.RnW);
+                //$shm_probe(UUT.u_game.u_main.RnW);
                 //$shm_probe(UUT.u_game.u_video.u_dma, "A");
                 //$shm_probe(UUT.u_game.u_main.u_dtack, "A");
             `endif
 
             //$shm_probe(UUT.u_game.u_sound, "A");
             //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
-            $shm_probe(UUT.u_game.u_sdram, "A");
-            $shm_probe(UUT.u_game.u_video, "AS");
-            $shm_probe(UUT.u_game.u_video.u_obj, "AS");
+            `ifdef DUMP_MAIN
+            $shm_probe(UUT.u_game.u_main, "A");
+            `endif
+            //$shm_probe(UUT.u_game.u_main.u_cpu.excUnit.regs68L);
+            //$shm_probe(UUT.u_game.u_main.u_cpu.excUnit.regs68H);
+            //$shm_probe(UUT.u_game.u_sdram, "A");
+            $shm_probe(UUT.u_game.u_video, "A");
+            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
+            //$shm_probe(UUT.u_game.u_video.u_obj, "AS");
             //$shm_probe(UUT.u_game.u_main.obank);
             //$shm_probe(UUT.u_game.LVBL);
             ////$shm_probe(UUT.u_game.LHBL);
-            //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
+            $shm_probe(UUT.u_game.u_video.u_mmr, "A");
             $shm_probe(UUT.u_game.u_video.u_timing,"A");
             $shm_probe(UUT.u_game.u_video.u_mmr.u_raster,"AS");
             $shm_probe(UUT.u_game.u_video.u_mmr.addr);
+            $shm_probe(UUT.u_game.u_video.u_dma,"A");
             $shm_probe(UUT.u_game.u_video.u_mmr.dsn);
             $shm_probe(UUT.u_game.u_video.u_mmr.cpu_dout);
             $shm_probe(UUT.u_game.u_video.u_mmr.ppu2_cs);
