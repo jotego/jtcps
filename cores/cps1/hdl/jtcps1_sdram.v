@@ -111,7 +111,7 @@ module jtcps1_sdram #( parameter
     input           rom0_cs,
     input           rom1_cs,
 
-    output          rom0_ok,
+    output reg      rom0_ok, // obj
     output          rom1_ok,
 
     input    [19:0] rom0_addr,
@@ -121,8 +121,8 @@ module jtcps1_sdram #( parameter
     input           rom0_half,
     input           rom1_half,
 
-    output   [31:0] rom0_data,
-    output   [31:0] rom1_data,
+    output reg [31:0] rom0_data,  // obj
+    output     [31:0] rom1_data,
 
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
@@ -350,9 +350,12 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
 
 `ifdef CPS2
     assign objgfx_cs = {2{rom0_cs}} & { rom0_bank[0], ~rom0_bank[0] };
-    assign rom0_ok   = rom0_bank[0] ? objgfx_ok[1] : objgfx_ok[0];
-    assign rom0_data = rom0_bank[0] ? objgfx_dout1 : objgfx_dout0;
     assign cps2_gfx0 = { rom0_bank[1], gfx0_addr };
+
+    always @(posedge clk) begin
+        rom0_ok   <= rom0_bank[0] ? objgfx_ok[1] : objgfx_ok[0];
+        rom0_data <= rom0_bank[0] ? objgfx_dout1 : objgfx_dout0;
+    end
 
     jtframe_rom_1slot #(
         .SDRAMW      ( 23            ),
@@ -360,6 +363,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
 
+        .SLOT0_CACHE ( 0             ),
         .SLOT0_LATCH ( OBJ_LATCH     )
     ) u_bank2 (
         .rst         ( rst           ),
@@ -390,6 +394,7 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 23            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
+    .SLOT0_CACHE ( 0             ),
     .SLOT0_LATCH ( OBJ_LATCH     ),
 
     // Slot 1: Scroll
