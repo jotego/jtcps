@@ -363,7 +363,6 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
 
-        .SLOT0_CACHE ( 0             ),
         .SLOT0_LATCH ( OBJ_LATCH     )
     ) u_bank2 (
         .rst         ( rst           ),
@@ -386,6 +385,8 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign rom0_ok   = objgfx_ok[1];
     assign rom0_data = objgfx_dout1;
     assign cps2_gfx0 = { 1'b0, gfx0_addr };
+    assign ba_rd[2] = 0;
+    assign ba2_addr = 0;
 `endif
 
 jtframe_rom_2slots #(
@@ -394,7 +395,6 @@ jtframe_rom_2slots #(
     .SLOT0_AW    ( 23            ),
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
-    .SLOT0_CACHE ( 0             ),
     .SLOT0_LATCH ( OBJ_LATCH     ),
 
     // Slot 1: Scroll

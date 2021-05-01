@@ -102,7 +102,10 @@ jtcps1_obj_draw u_draw(
     .rom_half   ( rom_half      ),
     .rom_data   ( rom_data      ),
     .rom_cs     ( rom_cs        ),
-    .rom_ok     ( rom_ok        )
+    .rom_ok     ( rom_ok        ),
+    // Unused CPS2 ports
+    .rom_bank   (               ),
+    .obj_bank   (               )
 );
 
 jtcps1_obj_line u_line(

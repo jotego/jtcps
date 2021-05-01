@@ -288,6 +288,7 @@ always @(posedge clk) begin
         swap        <= 3'b0;
         last_obj_dma_ok <= 0;
         pal_cnt     <= 9'd0;
+        vram_addr   <= 0;
         // SDRAM management
         misses      <= {MW{1'b0}};
         rfsh_en     <= 1;

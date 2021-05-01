@@ -24,7 +24,7 @@
 ../../hdl/jtcps1_sdram.v
 ../../hdl/jtcps1_ram.v
 # SDRAM
--F $JTFRAME/hdl/sdram/jtframe_sdram_bank.f
+-F $JTFRAME/hdl/sdram/jtframe_sdram64.f
 
 $JTFRAME/hdl/ram/jtframe_dual_ram.v
 $JTFRAME/hdl/ram/jtframe_ram.v
