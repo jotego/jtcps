@@ -382,8 +382,10 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     );
 `else
     assign objgfx_cs = 2'b10;
-    assign rom0_ok   = objgfx_ok[1];
-    assign rom0_data = objgfx_dout1;
+    always @(*) begin
+        rom0_ok   = objgfx_ok[1];
+        rom0_data = objgfx_dout1;
+    end
     assign cps2_gfx0 = { 1'b0, gfx0_addr };
     assign ba_rd[2] = 0;
     assign ba2_addr = 0;
