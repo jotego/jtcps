@@ -95,14 +95,14 @@ wire        hflip      = table_attr[5];
 assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
 reg  [ 4:0] st;
-
+reg  [ 9:0] last_addr;
 
 reg last_start;
 reg newline;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
-        table_addr <= 11'd0;
+        table_addr <= 0;
         st         <= 0;
         dr_start   <= 0;
         dr_code    <= 16'h0;
@@ -117,7 +117,7 @@ always @(posedge clk, posedge rst) begin
         dr_start   <= 0;
         case( st )
             0: begin
-                table_addr <= 10'd0;
+                table_addr <= 0;
                 if( !newline ) begin
                     st       <= 5'd0;
                 end else begin
@@ -128,6 +128,7 @@ always @(posedge clk, posedge rst) begin
                 end
             end
             1: begin
+                last_addr <= table_addr;
                 wait_cycle <= { 1'b0, wait_cycle[2:1] };
                 if( &table_addr )
                     last_tile <= 1;
@@ -146,7 +147,8 @@ always @(posedge clk, posedge rst) begin
                         obj_y      <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
                         obj_x      <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
                         wait_cycle <= 3'b011; // leave it ready for next round
-                        table_addr <= table_addr - 10'd1; // undo
+                        //table_addr <= table_addr - 10'd1; // undo
+                        table_addr <= last_addr;
                     end
                 end else begin
                     st<= last_tile ? 0 : 1;

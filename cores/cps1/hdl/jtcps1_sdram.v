@@ -352,9 +352,9 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign objgfx_cs = {2{rom0_cs}} & { rom0_bank[0], ~rom0_bank[0] };
     assign cps2_gfx0 = { rom0_bank[1], gfx0_addr };
 
-    always @(posedge clk) begin
-        rom0_ok   <= rom0_bank[0] ? objgfx_ok[1] : objgfx_ok[0];
-        rom0_data <= rom0_bank[0] ? objgfx_dout1 : objgfx_dout0;
+    always @(*) begin
+        rom0_ok   = rom0_bank[0] ? objgfx_ok[1] : objgfx_ok[0];
+        rom0_data = rom0_bank[0] ? objgfx_dout1 : objgfx_dout0;
     end
 
     jtframe_rom_1slot #(
