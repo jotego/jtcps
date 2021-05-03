@@ -66,10 +66,10 @@ always @(posedge clk, posedge rst) begin : dtack_gen
                 // by one cycle
                 // Average delay can be displayed in simulation by defining the
                 // macro REPORT_DELAY
-                if( wait_cycles[1] && bus_busy && fail_cnt_ok && cen10 && (~|fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
+                if( wait_cycles[1] && bus_busy && fail_cnt_ok && cen10 && (~&fail_cnt) ) fail_cnt<=fail_cnt+1'd1;
                 if (!bus_busy && (wait_cycles[1] || (fail_cnt!=4'd0&&wait_cycles==3'b100) ) ) begin
                     DTACKn <= 1'b0;
-                    if( wait_cycles[1:0]==2'd0 && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
+                    if( DTACKn && wait_cycles[1:0]==2'd0 && fail_cnt_ok) fail_cnt<=fail_cnt-1'd1; // one bus cycle recovered
                 end
             end
             else DTACKn <= 1'b0;
