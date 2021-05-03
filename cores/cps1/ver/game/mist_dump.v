@@ -69,7 +69,7 @@ module mist_dump(
                 $shm_probe(UUT.u_game.u_main, "A");
             `else
                 `ifdef JTFRAME_SDRAM_STATS
-                $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
+                $shm_probe(UUT.u_frame.u_board.u_stats, "A");
                 `endif
             // No load ROM sim:
                 `ifdef FAKE_LATCH
@@ -99,7 +99,10 @@ module mist_dump(
                         $shm_probe(UUT.u_game.u_sdram.u_prom_we, "A");
                         $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
                     `else
+                        $shm_probe(UUT.u_game.u_sdram, "AS");
+                        $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
                         $shm_probe(UUT.u_game.u_video,"A");
+                        $shm_probe(UUT.u_game.u_sound, "A");
                     `endif
                     //$shm_probe(UUT.u_game.u_video.u_dma,"A");
                     //$shm_probe(UUT.u_game.u_video.u_colmix,"A");
