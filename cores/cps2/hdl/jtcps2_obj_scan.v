@@ -135,7 +135,7 @@ always @(posedge clk, posedge rst) begin
                 else
                     table_addr <= table_addr+10'd1;
 
-                if( !wait_cycle[0] && !nullobj ) begin
+                if( !wait_cycle[0] /*&& !nullobj*/ ) begin
                     n    <= 4'd0;
                     // npos is the X offset of the tile. When the sprite is flipped
                     // npos order is reversed
