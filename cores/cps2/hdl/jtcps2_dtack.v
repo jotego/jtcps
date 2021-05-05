@@ -93,7 +93,7 @@ end
 // of SDRAM initialization
 reg reported=0;
 always @(posedge clk) begin
-    if( ~reported & &fail_cnt ) begin
+    if( ~reported & (&fail_cnt) ) begin
         $display("Warning: bus timing fail counter max'ed out at &t (%m)",$time);
         reported <= 1;
     end

@@ -362,7 +362,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         // Slot 0: Obj
         .SLOT0_AW    ( 23            ),
         .SLOT0_DW    ( 32            ),
-
+        .SLOT0_DOUBLE( 1             ),
         .SLOT0_LATCH ( OBJ_LATCH     )
     ) u_bank2 (
         .rst         ( rst           ),
@@ -398,11 +398,13 @@ jtframe_rom_2slots #(
     .SLOT0_DW    ( 32            ),
     .SLOT0_OFFSET( ZERO_OFFSET   ),
     .SLOT0_LATCH ( OBJ_LATCH     ),
+    .SLOT0_DOUBLE( 1             ),
 
     // Slot 1: Scroll
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
-    .SLOT1_OFFSET( SCR_OFFSET    )
+    .SLOT1_OFFSET( SCR_OFFSET    ),
+    .SLOT1_DOUBLE( 1             )
 ) u_bank3 (
     .rst         ( rst           ),
     .clk         ( clk_gfx       ), // do not use clk
