@@ -20,8 +20,6 @@ module jtcps2_main(
     input              rst,
     input              clk,
     input              clk_rom,
-    input              cen16,
-    input              cen16b,
     output             cpu_cen,
     // Timing
     input   [8:0]      V,
@@ -97,6 +95,7 @@ wire [23:1] A;
 wire [ 2:0] FC;
 wire        BERRn = 1'b1;
 wire        rom_ok2;
+wire        cen16, cen16b;
 
 reg  [15:0] in0, in1, in2;
 reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
@@ -355,17 +354,17 @@ end
 
 reg fail_cnt_ok;
 
-jtcps1_dtack u_dtack(
+jtcps2_dtack u_dtack(
     .rst        ( rst       ),
     .clk        ( clk       ),
-    .cen10      ( cen16     ),
-    .cen10b     ( cen16b    ),
+    .cen16      ( cen16     ),
+    .cen16b     ( cen16b    ),
 
     .ASn        ( ASn       ),
     .one_wait   ( one_wait  ),
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),
-    .rom_ok     ( rom_ok2   ),
+    .busack     ( busack    ),
 
     .main2qs_cs ( main2qs_cs  ),
     .qs_busakn_s( qs_busakn_s ),

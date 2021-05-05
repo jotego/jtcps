@@ -104,12 +104,14 @@ module mist_dump(
                         $shm_probe(UUT.u_game.u_video,"A");
                         $shm_probe(UUT.u_game.u_sound, "A");
                     `endif
-                    //$shm_probe(UUT.u_game.u_video.u_dma,"A");
-                    //$shm_probe(UUT.u_game.u_video.u_colmix,"A");
-                    //$shm_probe(UUT.u_game.u_video.u_mmr, "A");
-                    //$shm_probe(UUT.u_game.u_sdram,"AS");
-                    //$shm_probe(UUT.u_game.u_sdram.u_prom_we, "A");
-
+                    `ifdef DUMP_SDRAM
+                        $shm_probe(UUT.u_game.u_sdram, "AS");
+                        $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
+                        $shm_probe(UUT.u_game.u_video,"A");
+                        $shm_probe(UUT.u_game.u_sound, "A");
+                        $shm_probe(UUT.u_game.u_main, "A");
+                        $shm_probe(u_harness.u_sdram, "A");
+                    `endif
                     /*
                     $shm_probe(UUT.u_game.u_video.u_dma.step );
                     $shm_probe(UUT.u_game.u_video.u_dma.misses );

@@ -7,6 +7,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_obj_scan.v          ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_colmix.v            ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_raster.v            ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_dtack.v             ]
 
 # CPS2 Encryption
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtcps2_keyload.v           ]

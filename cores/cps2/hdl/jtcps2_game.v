@@ -166,8 +166,8 @@ assign skip_en = status[7];
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
     .clk        ( clk48         ),
-    .cen16      ( cen16         ),
-    .cen16b     ( cen16b        ),
+    .cen16      (               ),
+    .cen16b     (               ),
     .cen12      ( cen12         ),
     .cen8       ( cen8          ),
     .cen6       (               ),
@@ -195,8 +195,6 @@ jtframe_cen96 u_pxl_cen(
 );
 
 assign clk_gfx = clk96;
-assign cpu_cen = cen16;
-assign cpu_cenb= cen16b;
 // reg [1:0] aux;
 // assign cpu_cen = cen12;
 // always @(posedge clk48 ) aux<={ aux[0], cen12};
@@ -214,9 +212,7 @@ jtcps2_main u_main(
     .rst        ( rst               ),
     .clk_rom    ( clk96             ),
     .clk        ( clk48             ),
-    .cen16      ( cpu_cen           ),
-    .cen16b     ( cpu_cenb          ),
-    .cpu_cen    (                   ),
+    .cpu_cen    ( cpu_cen           ),
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),

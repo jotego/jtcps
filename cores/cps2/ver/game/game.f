@@ -31,6 +31,7 @@
 ../../hdl/jtcps2_obj_scan.v
 ../../hdl/jtcps2_colmix.v
 ../../hdl/jtcps2_raster.v
+../../hdl/jtcps2_dtack.v
 # Keys
 ../../hdl/jtcps2_decrypt.v
 ../../hdl/jtcps2_keyload.v
