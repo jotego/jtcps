@@ -183,7 +183,9 @@ end
 
 reg [15:0] tile_din, obj_din, pal_din;
 
-assign vram_clr = 0;
+reg last_br;
+always @(posedge clk) last_br <= br;
+assign vram_clr = last_br & ~br;
 
 // Tile cache
 jtframe_dual_ram #(.dw(16), .aw(9)) u_tile_cache(

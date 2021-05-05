@@ -285,7 +285,7 @@ jtframe_ram_5slots #(
     .slot1_cs    ( vram_dma_cs   ),
     .slot1_clr   ( vram_clr      ),
     .slot2_cs    ( CPS2[0]       ),
-    .slot2_clr   ( vram_clr      ),
+    .slot2_clr   ( 1'b0          ),
     .slot3_cs    ( main_rom_cs   ),
     .slot3_clr   ( 1'b0          ),
     .slot4_cs    ( snd_cs        ),
