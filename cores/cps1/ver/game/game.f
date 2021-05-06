@@ -8,7 +8,6 @@
 ../../hdl/jtcps1_mmr.v
 ../../hdl/jtcps1_obj_line_table.v
 ../../hdl/jtcps1_obj_tile_match.v
-../../hdl/jtcps1_obj_match.v
 ../../hdl/jtcps1_obj_draw.v
 ../../hdl/jtcps1_obj_line.v
 ../../hdl/jtcps1_sdram.v

@@ -9,7 +9,6 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../c
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_mmr.v            ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_obj_line_table.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_obj_tile_match.v ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_obj_match.v      ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_obj_draw.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_obj_line.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../../cps1/hdl/jtcps1_prom_we.v        ]

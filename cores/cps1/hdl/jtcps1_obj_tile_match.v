@@ -37,58 +37,29 @@ module jtcps1_obj_tile_match(
 wire [15:0] match;
 reg  [ 3:0] m, mflip;
 
-generate
-    genvar mgen;
-    for( mgen=0; mgen<16;mgen=mgen+1) begin : obj_matches
-        jtcps1_obj_match #(mgen) u_match(
-            .clk    ( clk           ),
-            .tile_m ( tile_m        ),
-            .vrender( vrenderf      ),
-            .obj_y  (   obj_y       ),
-            .match  ( match[mgen]   )
-        );
-    end
-endgenerate
+reg  [ 9:0] bottom;
+reg  [ 9:0] ycross;
+wire [ 9:0] vs = { vrenderf[8], vrenderf };
 
 always @(*) begin
-    inzone = match!=16'd0;
+    bottom = {1'b0, obj_y } + { 2'd0, tile_m, 4'd0 }+10'h10;
+    ycross = vs-obj_y;
+    m      = ycross[7:4];
     vsub   = vrenderf-obj_y[8:0];
     vsub   = vsub ^ {4{vflip}};
-    // which m won?
-    case( match )
-        16'h1:     m = 0;
-        16'h2:     m = 1;
-        16'h4:     m = 2;
-        16'h8:     m = 3;
-
-        16'h10:    m = 4;
-        16'h20:    m = 5;
-        16'h40:    m = 6;
-        16'h80:    m = 7;
-
-        16'h100:   m = 8;
-        16'h200:   m = 9;
-        16'h400:   m = 10;
-        16'h800:   m = 11;
-
-        16'h10_00: m = 12;
-        16'h20_00: m = 13;
-        16'h40_00: m = 14;
-        16'h80_00: m = 15;
-        default: m=0;
-    endcase
-    mflip = tile_m-m;
+    mflip  = tile_m-m;
 end
 
 // the m,n sum carries on, at least for CPS2 games (SPF2T)
 // The carry didn't seem to be needed for CPS1/1.5 games, so
 // it might be a difference with the old CPS-A chip
-always @(*) begin
+always @(posedge clk) begin
+    inzone <= (bottom>vs) && (vs >= obj_y);
     case( {tile_m!=4'd0, tile_n!=4'd0 } )
-        2'b00: code_mn = obj_code;
-        2'b01: code_mn = obj_code + { 12'd0, n };
-        2'b10: code_mn = obj_code + { 8'd0, vflip ? mflip : m, 4'd0};
-        2'b11: code_mn = obj_code + { 8'd0, vflip ? mflip : m, n};
+        2'b00: code_mn <= obj_code;
+        2'b01: code_mn <= obj_code + { 12'd0, n };
+        2'b10: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, 4'd0};
+        2'b11: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, n};
     endcase
 end
 

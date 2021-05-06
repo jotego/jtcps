@@ -14,6 +14,7 @@ rom/*.rom
 *.raw
 *.wav
 *.xml
+*.jpg
 sim
 cores/cps*/mist/*
 cores/cps*/sidi/*
