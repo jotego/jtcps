@@ -61,6 +61,7 @@ reg         done, last_drstart;
 wire [ 3:0] st3_tile_n, st4_tile_n, st3_tile_m;
 reg  [ 3:0] npos;  // tile expansion n==horizontal, m==vertical
 reg  [ 4:0] n;
+wire [ 3:0] subn;
 wire [ 3:0] st4_vsub;
 wire        inzone, inzonex, st3_vflip;
 reg  [ 2:0] wait_cycle;
@@ -79,7 +80,7 @@ jtcps1_obj_tile_match u_tile_match(
     .obj_code   ( st3_code   ),
     .tile_m     ( st3_tile_m ),
     .tile_n     ( st3_tile_n ),
-    .n          ( n          ),
+    .n          ( 4'd0       ),
 
     .vflip      ( st3_vflip  ),
     .vrenderf   ( vrenderf   ),
@@ -99,7 +100,8 @@ assign      st3_vflip  = st3_attr[6];
 assign      st4_bank   = st4_y[14:13];
 assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
-assign      st4_effx   = st4_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
+assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0}; // effective x value for multi tile objects
 assign      inzonex    = inzone & ~st4_effx[9];
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
 assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start || last_drstart;
@@ -159,7 +161,8 @@ always @(posedge clk, posedge rst) begin
         if( inzone ) begin
             if( dr_idle && !dr_start && !last_drstart) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
-                dr_code  <= code_mn;
+                //dr_code  <= code_mn + subn;
+                dr_code  <= code_mn +  n[3:0]; //(st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
                 dr_hpos  <= st4_effx - 9'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
