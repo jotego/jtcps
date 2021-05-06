@@ -68,6 +68,7 @@ reg  [ 2:0] wait_cycle;
 reg         last_tile;
 reg         last_start;
 wire        stall, nstall;
+reg         cen=0;
 
 reg  [15:0] st3_x, st4_x, st3_y, st4_y,
             st3_code, st3_attr, st4_attr;
@@ -76,7 +77,7 @@ reg  [ 3:0] st5_tile_n;
 jtcps1_obj_tile_match u_tile_match(
     .rst        ( rst        ),
     .clk        ( clk        ),
-    .cen        ( ~stall     ),
+    .cen        ( ~stall & cen    ),
 
     .obj_code   ( st3_code   ),
     .tile_m     ( st3_tile_m ),
@@ -109,6 +110,8 @@ assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start || last_d
 
 reg last_inzone;
 
+always @(posedge clk) cen <= ~cen;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         table_addr <= 0;
@@ -133,7 +136,7 @@ always @(posedge clk, posedge rst) begin
         st5_tile_n <= 0;
 
         last_drstart <= 0;
-    end else begin
+    end else if(cen) begin
         last_start <= start;
         last_drstart <= dr_start;
         last_inzone <= inzone;
