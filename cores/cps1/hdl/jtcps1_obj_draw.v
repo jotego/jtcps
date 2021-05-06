@@ -38,7 +38,7 @@ module jtcps1_obj_draw (
 
     // ROM interface
     output reg [19:0]  rom_addr,    // up to 1 MB
-(*keep*)    output reg [ 1:0]  rom_bank,
+    output reg [ 1:0]  rom_bank,
     output reg         rom_half,    // selects which half to read
     input      [31:0]  rom_data,
     output reg         rom_cs,

@@ -48,143 +48,150 @@ module jtcps2_obj_scan(
 );
 
 reg  [ 9:0] mapper_in;
-reg  [ 8:0] vrenderf, vlatch;
+reg  [ 8:0] vrenderf;
 
 reg  [ 9:0] obj_y, obj_x;
 wire [15:0] code_mn;
-wire [ 9:0] eff_x;
-wire [ 1:0] obj_bank;
-wire [ 2:0] prio;
+wire [ 9:0] st4_effx;
+wire [ 1:0] st4_bank;
+reg  [ 2:0] st3_prio, st4_prio;
 wire        start;
 
-reg         done;
-wire [ 3:0] tile_n, tile_m;
+reg         done, last_drstart;
+wire [ 3:0] st3_tile_n, st4_tile_n, st3_tile_m;
 reg  [ 3:0] n, npos;  // tile expansion n==horizontal, m==vertical
 wire [ 3:0] vsub;
-wire        inzone, vflip;
-wire        nullobj;
+wire        inzone, inzonex, st3_vflip, ndone;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
+reg         last_start, stall;
+
+reg  [15:0] st3_x, st4_x, st3_y, st4_y,
+            st3_code, st3_attr, st4_attr;
+reg  [ 3:0] st5_tile_n;
 
 jtcps1_obj_tile_match u_tile_match(
-    .clk        ( clk       ),
+    .rst        ( rst        ),
+    .clk        ( clk        ),
+    .cen        ( ~stall     ),
 
-    .obj_code   ( table_code),
-    .tile_m     ( tile_m    ),
-    .tile_n     ( tile_n    ),
-    .n          ( n         ),
+    .obj_code   ( st3_code   ),
+    .tile_m     ( st3_tile_m ),
+    .tile_n     ( st3_tile_n ),
+    .n          ( n          ),
 
-    .vflip      ( vflip     ),
-    .vrenderf   ( vrenderf  ),
-    .obj_y      ( obj_y     ),
+    .vflip      ( st3_vflip  ),
+    .vrenderf   ( vrenderf   ),
+    .obj_y      ( st3_y[9:0] ),
 
-    .vsub       ( vsub      ),
-    .inzone     ( inzone    ),
-    .code_mn    ( code_mn   )
+    .vsub       ( vsub       ),
+    .inzone     ( inzone     ),
+    .code_mn    ( code_mn    )
 );
 
-assign      nullobj    = table_x==0 && table_y==0 && table_attr==0 && table_code==0;
 assign      start      = hdump == 'h1d0;
-assign      prio       = table_x[15:13];
-assign      obj_bank   = table_y[14:13];
-assign      tile_m     = table_attr[15:12];
-assign      tile_n     = table_attr[11: 8];
-assign      vflip      = table_attr[6];
-wire        hflip      = table_attr[5];
-//          pal        = table_attr[4:0];
-assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 
-reg  [ 4:0] st;
-reg  [ 9:0] last_addr;
+assign      st3_tile_m = st3_attr[15:12];
+assign      st3_tile_n = st3_attr[11: 8];
+assign      st3_vflip  = st3_attr[6];
 
-reg last_start;
-reg newline;
+assign      st4_bank   = st4_y[14:13];
+assign      st4_tile_n = st4_attr[11: 8];
+wire        st4_hflip  = st4_attr[5];
+assign      st4_effx   = st4_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      inzonex    = inzone & ~st4_effx[9];
+assign      ndone      = n==st5_tile_n;
+assign      stall      = (inzonex && (!dr_idle /*|| !ndone*/)) || dr_start || last_drstart;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         table_addr <= 0;
-        st         <= 0;
+        n          <= 0;
+        npos       <= 0;
         dr_start   <= 0;
-        dr_code    <= 16'h0;
-        dr_attr    <= 16'h0;
-        dr_hpos    <=  9'd0;
-        newline    <= 0;
+        dr_code    <= 0;
+        dr_attr    <= 0;
+        dr_hpos    <= 0;
+        dr_prio    <= 0;
         last_start <= 0;
         line       <= 0;
+        done       <= 1;
+
+        st3_x      <= 0;
+        st4_x      <= 0;
+        st3_y      <= 0;
+        st4_y      <= 0;
+        st3_code   <= 0;
+        st3_attr   <= 0;
+        st4_attr   <= 0;
+        st5_tile_n <= 0;
+
+        last_drstart <= 0;
     end else begin
         last_start <= start;
-        st         <= st+5'd1;
-        dr_start   <= 0;
-        case( st )
-            0: begin
-                table_addr <= 0;
-                if( !newline ) begin
-                    st       <= 5'd0;
-                end else begin
-                    newline    <= 0;
-                    wait_cycle <= 3'b001;
-                    last_tile  <= 1'b0;
-                    vrenderf   <= vlatch ^ {1'b0,{8{flip}}};
-                end
-            end
-            1: begin
-                last_addr <= table_addr;
-                wait_cycle <= { 1'b0, wait_cycle[2:1] };
-                if( &table_addr )
-                    last_tile <= 1;
-                else
-                    table_addr <= table_addr+10'd1;
+        last_drstart <= dr_start;
 
-                if( !wait_cycle[0] /*&& !nullobj*/ ) begin
-                    n    <= 4'd0;
-                    // npos is the X offset of the tile. When the sprite is flipped
-                    // npos order is reversed
-                    npos <= table_attr[5] /* flip */ ? table_attr[11: 8] /* tile_n */ : 4'd0;
-                    if( table_y[15] || table_attr[15:8]==8'hff ) begin
-                        st<=0;  // done
-                    end
-                    else begin
-                        obj_y      <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
-                        obj_x      <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
-                        wait_cycle <= 3'b011; // leave it ready for next round
-                        //table_addr <= table_addr - 10'd1; // undo
-                        table_addr <= last_addr;
-                    end
-                end else begin
-                    st<= last_tile ? 0 : 1;
-                end
+        // I
+        table_addr <= done ? 0 : (stall ? table_addr : (table_addr+1'd1));
+        // II
+        if( !stall ) begin
+            if( table_y[15] || table_attr[15:8]==8'hff || &table_addr ) begin
+                done <= 1;
+                st3_y<= '1;
+            end else begin
+                st3_code <= table_code;
+                st3_x    <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
+                st3_y    <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                st3_prio <= table_x[15:13];
+                st3_attr <= table_attr;
             end
-            4: begin // check whether sprite is visible
-                if( !inzone ) begin
-                    st <= last_tile ? 0 : 1; // next element
-                    //table_addr <= table_addr+10'd1;
+        end
+        // III
+        // m/n match
+        if( !stall ) begin
+            st4_attr <= st3_attr;
+            st4_x    <= st3_x;
+            st4_y    <= st3_y;
+            st4_prio <= st3_prio;
+        end
+        // IV
+        if( inzone ) begin
+            if( dr_idle && !dr_start && !last_drstart) begin
+                dr_attr  <= { 4'd0, vsub, st4_attr[7:0] };
+                dr_code  <= code_mn;
+                dr_hpos  <= st4_effx - 9'd1;
+                dr_prio  <= st4_prio;
+                dr_bank  <= st4_bank;
+                dr_start <= 1;
+                /*
+                if( ndone ) begin
+                    n    <= 0;
+                    npos <= 0;
                 end else begin
-                    if( !dr_idle ) begin
-                        st <= 4;
-                    end else begin
-                        dr_attr  <= { 4'd0, vsub, table_attr[7:0] };
-                        dr_code  <= code_mn;
-                        dr_hpos  <= eff_x - 9'd1;
-                        dr_prio  <= prio;
-                        dr_bank  <= obj_bank;
-                        dr_start <= ~eff_x[9];
-                        if( n == tile_n ) begin
-                            st <= last_tile ? 0 : 1; // next element
-                        end else begin // prepare for next tile
-                            n    <= n + 4'd1;
-                            npos <= hflip ? npos-4'd1 : npos+4'd1;
-                            st   <= 3; // get extra cycles for inzone and dr_idle
-                        end
-                    end
+                    n    <= n+1'd1;
+                    npos <= st4_hflip ? npos-4'd1 : npos+4'd1;
                 end
+                */
+            end else begin
+                dr_start <= 0;
             end
-        endcase
-        // This must be after the case statement
+        end else begin
+            dr_start <= 0;
+        end
+        // V
+        if( !stall ) begin
+            st5_tile_n <= st4_tile_n;
+        end
+
+
+        // This must be at the end
         if( start && !last_start ) begin
-            newline <= 1;
-            line    <= ~line;
-            vlatch  <= vrender1;
-            st <= 0;
+            line       <= ~line;
+            vrenderf   <= vrender1 ^ {1'b0,{8{flip}}};
+            n          <= 0;
+            npos       <= 0;
+            done       <= 0;
+            table_addr <= 0;
         end
     end
 end

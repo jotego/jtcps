@@ -97,7 +97,9 @@ jtcps1_gfx_mappers u_mapper(
 );
 
 jtcps1_obj_tile_match u_tile_match(
+    .rst        ( rst       ),
     .clk        ( clk       ),
+    .cen        ( 1'b1      ),
 
     .obj_code   ( obj_code  ),
     .tile_m     ( tile_m    ),

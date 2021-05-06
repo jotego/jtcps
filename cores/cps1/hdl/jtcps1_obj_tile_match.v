@@ -18,7 +18,9 @@
 
 
 module jtcps1_obj_tile_match(
+    input             rst,
     input             clk,
+    input             cen,
 
     input      [15:0] obj_code,
     input      [ 3:0] tile_n,
@@ -40,27 +42,34 @@ reg  [ 3:0] m, mflip;
 reg  [ 9:0] bottom;
 reg  [ 9:0] ycross;
 wire [ 9:0] vs = { vrenderf[8], vrenderf };
+reg  [ 8:0] vd;
 
 always @(*) begin
     bottom = {1'b0, obj_y } + { 2'd0, tile_m, 4'd0 }+10'h10;
     ycross = vs-obj_y;
     m      = ycross[7:4];
-    vsub   = vrenderf-obj_y[8:0];
-    vsub   = vsub ^ {4{vflip}};
+    vd     = vrenderf-obj_y[8:0];
     mflip  = tile_m-m;
 end
 
 // the m,n sum carries on, at least for CPS2 games (SPF2T)
 // The carry didn't seem to be needed for CPS1/1.5 games, so
 // it might be a difference with the old CPS-A chip
-always @(posedge clk) begin
-    inzone <= (bottom>vs) && (vs >= obj_y);
-    case( {tile_m!=4'd0, tile_n!=4'd0 } )
-        2'b00: code_mn <= obj_code;
-        2'b01: code_mn <= obj_code + { 12'd0, n };
-        2'b10: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, 4'd0};
-        2'b11: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, n};
-    endcase
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        inzone  <= 0;
+        code_mn <= 0;
+        vsub    <= 0;
+    end else if(cen) begin
+        inzone <= (bottom>vs) && (vs >= obj_y);
+        vsub   <= vd[3:0] ^ {4{vflip}};
+        case( {tile_m!=4'd0, tile_n!=4'd0 } )
+            2'b00: code_mn <= obj_code;
+            2'b01: code_mn <= obj_code + { 12'd0, n };
+            2'b10: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, 4'd0};
+            2'b11: code_mn <= obj_code + { 8'd0, vflip ? mflip : m, n};
+        endcase
+    end
 end
 
 endmodule
