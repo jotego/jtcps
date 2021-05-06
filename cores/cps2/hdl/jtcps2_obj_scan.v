@@ -66,7 +66,8 @@ wire [ 3:0] st4_vsub;
 wire        inzone, inzonex, st3_vflip;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
-reg         last_start, stall, nstall;
+reg         last_start;
+wire        stall, nstall;
 
 reg  [15:0] st3_x, st4_x, st3_y, st4_y,
             st3_code, st3_attr, st4_attr;
@@ -143,7 +144,7 @@ always @(posedge clk, posedge rst) begin
         if( !stall ) begin
             if( table_y[15] || table_attr[15:8]==8'hff || &table_addr ) begin
                 done <= 1;
-                st3_y<= '1;
+                st3_y<= ~0;
             end else begin
                 st3_code <= table_code;
                 st3_x    <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
