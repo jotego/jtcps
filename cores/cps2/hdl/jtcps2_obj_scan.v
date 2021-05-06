@@ -106,6 +106,8 @@ assign      inzonex    = inzone & ~st4_effx[9];
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
 assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start || last_drstart;
 
+reg last_inzone;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         table_addr <= 0;
@@ -133,9 +135,10 @@ always @(posedge clk, posedge rst) begin
     end else begin
         last_start <= start;
         last_drstart <= dr_start;
+        last_inzone <= inzone;
 
         // I
-        table_addr <= done ? 0 : (stall ? table_addr : (table_addr+1'd1));
+        table_addr <= done ? 0 : ((stall|(inzone&~last_inzone)) ? table_addr : (table_addr+1'd1));
         // II
         if( !stall ) begin
             if( table_y[15] || table_attr[15:8]==8'hff || &table_addr ) begin
@@ -166,7 +169,7 @@ always @(posedge clk, posedge rst) begin
                 dr_hpos  <= st4_effx - 9'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
-                dr_start <= 1;
+                dr_start <= n <= st4_tile_n;
                 if( !nstall ) begin
                     n    <= 0;
                     npos <= 0;
