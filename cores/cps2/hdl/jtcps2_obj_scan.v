@@ -59,12 +59,13 @@ wire        start;
 
 reg         done, last_drstart;
 wire [ 3:0] st3_tile_n, st4_tile_n, st3_tile_m;
-reg  [ 3:0] n, npos;  // tile expansion n==horizontal, m==vertical
-wire [ 3:0] vsub;
-wire        inzone, inzonex, st3_vflip, ndone;
+reg  [ 3:0] npos;  // tile expansion n==horizontal, m==vertical
+reg  [ 4:0] n;
+wire [ 3:0] st4_vsub;
+wire        inzone, inzonex, st3_vflip;
 reg  [ 2:0] wait_cycle;
 reg         last_tile;
-reg         last_start, stall;
+reg         last_start, stall, nstall;
 
 reg  [15:0] st3_x, st4_x, st3_y, st4_y,
             st3_code, st3_attr, st4_attr;
@@ -84,7 +85,7 @@ jtcps1_obj_tile_match u_tile_match(
     .vrenderf   ( vrenderf   ),
     .obj_y      ( st3_y[9:0] ),
 
-    .vsub       ( vsub       ),
+    .vsub       ( st4_vsub   ),
     .inzone     ( inzone     ),
     .code_mn    ( code_mn    )
 );
@@ -100,8 +101,8 @@ assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      st4_effx   = st4_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
 assign      inzonex    = inzone & ~st4_effx[9];
-assign      ndone      = n==st5_tile_n;
-assign      stall      = (inzonex && (!dr_idle /*|| !ndone*/)) || dr_start || last_drstart;
+assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
+assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start || last_drstart;
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -157,21 +158,19 @@ always @(posedge clk, posedge rst) begin
         // IV
         if( inzone ) begin
             if( dr_idle && !dr_start && !last_drstart) begin
-                dr_attr  <= { 4'd0, vsub, st4_attr[7:0] };
+                dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
                 dr_code  <= code_mn;
                 dr_hpos  <= st4_effx - 9'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
                 dr_start <= 1;
-                /*
-                if( ndone ) begin
+                if( !nstall ) begin
                     n    <= 0;
                     npos <= 0;
                 end else begin
                     n    <= n+1'd1;
                     npos <= st4_hflip ? npos-4'd1 : npos+4'd1;
                 end
-                */
             end else begin
                 dr_start <= 0;
             end
