@@ -318,44 +318,44 @@ Christopher Gelatt                                          yoaarond
 
 The following patrons supported the development of CPS2
 
-049                 80's spaceman
-Adam Small          Adam Zorzin
-Adrian Labastida    Adrian Nabarro
-Alan Shurvinton     Alberta Dave
+                    049
+80's spaceman       Adam Small
+Adam Zorzin         Adrian Labastida
+Adrian Nabarro      Alan Shurvinton
 Alexander Lash      Alexander Upton
-Alfonso Clemente    Alfredo Henriquez
-Alonso J.           Alvaro Paniagua
-Andrea Chiavazza    Andreas Micklei
-Andrew Boudreau     Andy Palmer
-Angelo Kanaris      Anthony Monaco
-Anton Gale          Antwon
-Aquijacks
-Arthur Fung         AzathothCultist
-Banane              Bear S
-Ben Toman           Bitmap Bureau
-Bliz 452            Boogermann
-Brandon Smith       Brandon Thomas
-Brent Fraser        Brian Peek
-Brian Plummer       C
-Cameron Tinker      Carrboroman
-Cesar Sandoval      Charles
-Choquer0            Chris Mzhickteno
-Chris W             Chris smith
-Christian Bailey    Christopher Chung
-Christopher TuckwellClinton Cronin
-Cobra Clips         Coldheat007
-Colt83              Dakken
+Alfonso Clemente    Alonso J.
+Alvaro Paniagua     Andrea Chiavazza
+Andreas Micklei     Andrew Boudreau
+Andy Palmer         Angelo Kanaris
+Anthony Monaco      Anton Gale
+Antwon              Aquijacks (Flashjacks
+Aqy                 Arthur Fung
+BRCDEvg             Banane
+Bear S              Ben Toman
+Bitmap Bureau       Bliz 452
+Boogermann          Brandon Smith
+Brandon Thomas      Brent Fraser
+Brian Peek          Brian Plummer
+C                   Cameron Tinker
+Carrboroman         Cesar Sandoval
+Charles             Choquer0
+Chris Mzhickteno    Chris W
+Chris smith         Christian Bailey
+Christopher Chung   Christopher Tuckwell
+Clinton Cronin      Cobra Clips
+Coldheat007         Colt83
 Dan                 Daniel
 Daniel Casadevall   Daniel Fowler
-Daniel Zetterman    Daniel_papa
+Daniel Page         Daniel Zetterman
 Darren Wootton      Dasutin
 David Drury         David Filskov
 David Fleetwood     David Jones
 Denis Brækhus       Diana Carolina
-DrMnike             Dre137
-Drew Roberts        Eric J
-Eric Schlappi       Eric Walklet
-Five Year           Focux
+Dimitris Zongas     DrMnike
+Dre137              Drew Roberts
+Eric J              Eric Schlappi
+Eric Walklet        Five Year
+Flavio Real         Focux
 Francis B           Gluthecat
 GohanX              Gonzalo López
 Goolio              Greg
@@ -364,48 +364,51 @@ Handheld Obsession  Henry
 Ibrahim             ItsBobDudes
 JR                  Jacob Hoffman
 Jacob Lawter        James B
-James Dingo         James Kilgore
-Jason Nagy          Javier Rodas
-Jeff Roberts        Jeremy Hasse
-Jeremy Kelaher      Jesse Clark
-Jim Knowler         Jockel
-Johan Smolinski     John Fletcher
+James Charnock      James Dingo
+James Kilgore       Jason Nagy
+Javier Rodas        Jeff Roberts
+Jeremy Hasse        Jeremy Kelaher
+Jesse Clark         Jim Knowler
+Jockel              Johan Smolinski
+John Fletcher       John Silva
 John Wilson         Jonah Phillips
 Jonathan Brochu     Jonathan Loor
 Jonathan Tuttle     Jootec from
-Jork Sonkinfield    Joseph Milazzo
-Josh Emery          Josiah Wilson
-José López          Justin D'Arcangelo
+Jorge               Jork Sonkinfield
+Joseph Milazzo      Josh Emery
+Josiah Wilson       Justin D'Arcangelo
 Keith Gordon        Kem Yos
 Kenneth Lee         Kevin Gudgeirsson
 Kevin finisterre    KnC
-KrzysFR             L.Rapter
-LFT                 Laurent Cooper
-Lee Grocott         Lee Osborne
-Lionel LENOBLE      Luc JOLY
-Mack H              Magnus Kvevlander
-Manuel Astudillo    Mark Baffa
-Mark Davidson       Mark R
-MarthSR             Martin Ansin
-Matheus             Matsu
-Matt Elder          Matt Evans
-Matt Lichtenberg    Matt McCarthy
-Matt ODonnell       Matthew Humphrey
-Matthew Woodford    MechaGG
-Megan Alnico        MiSTerFPGA.co.uk
-Michael Deshaies    Michael Rea
-Mick Stone          Mike Jegenjan
-Mike Olson          Mike Parks
-Mottzilla           NINE
-Nailbomb            Narugawa
-Neil St             Nelson Jr
-NerdyNester         Nick Delia
-Nico Stamp          Nicolas Hurtado
-NonstopXiaowei      OopsAllBerrys
-Oriez               Oskar Sigvardsson
-Parker Blackman     Patrick Roman
-Paul Cunningham     Paul M
-Paweł Mandes        PeFClic
+Koala Software      KrzysFR
+L.Rapter            LFT
+Laurent Cooper      Lee Grocott
+Lee Osborne         Lionel LENOBLE
+Luc JOLY            Mack H
+Magnus Kvevlander   Manuel Astudillo
+Mark Baffa          Mark Davidson
+Mark R              MarthSR
+Martin Ansin        Matheus
+Matsu               Matt Elder
+Matt Evans          Matt Lichtenberg
+Matt McCarthy       Matt ODonnell
+Matthew Humphrey    Matthew Woodford
+MechaGG             Megan Alnico
+MiSTerFPGA.co.uk    Michael Berger
+Michael C           Michael Deshaies
+Michael Rea         Mick Stone
+Mike Jegenjan       Mike Olson
+Mike Parks          Mottzilla
+NINE                Nailbomb
+Narugawa            Neil St
+Nelson Jr           NerdyNester
+Nick Delia          Nico Stamp
+Nicolas Hurtado     NonstopXiaowei
+OopsAllBerrys       Oriez
+Oskar Sigvardsson   Parker Blackman
+Patrick Roman       Paul Cunningham
+Paul M              Paulo M.
+Paweł Mandes       PeFClic
 Per Ole             Philip Lai
 Philip Lawson       Pierre-Emmanuel Martin
 Rachael Netz        Rachel Schaeffer
@@ -418,14 +421,16 @@ Ryan O'Malley       Sam Hall
 Samuel Warner       Schnookums
 Sofia Rose          Spank Minister
 SteelRush           Stefan Krueger
-Steven Hansen       Steven Yedwab
-Stuart Morton       SuperBabyHix
-Taehyun Kim         Tales Dilli
+Stephen R           Steven Hansen
+Steven Yedwab       Stuart Morton
+SuperBabyHix        Taehyun Kim
+Tales Dilli         Terse
 The Collector       The Video
 Thomas Attanasio    Thomas Capetanakis
 Thomas Irwin        Tobias Dossin
 Travis Brown        Trifle
-Troy                Tym Whitney
+Troy                Ty B
+Tym Whitney         VickiViperZabel
 Victor Bly          Victor Fontanez
 William Clemens     Zach Marquette
 Zoltan Kovacs       alejandro carlos
@@ -435,9 +440,11 @@ cbab                chauviere benjamin
 dannahan            deathwombat
 derFunkenstein      gunmakuma
 kccheng             kernelchagi
-natalie             nonamebear
-olivier bernhard    rsn8887
+lame-o              natalie
+nonamebear          olivier bernhard
+retrod00d           rsn8887
 scapeghost          taal.M
 tonitellezb         yoaarond
 종규 박
+
 
