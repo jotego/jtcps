@@ -101,7 +101,7 @@ assign      st3_vflip  = st3_attr[6];
 assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
-assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0}; // effective x value for multi tile objects
+assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0 }; // effective x value for multi tile objects
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
 assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start; // || last_drstart;
 
@@ -151,11 +151,11 @@ always @(posedge clk, posedge rst) begin
                 st3_attr <= 0;
             end else begin
                 st3_code <= table_code;
-                st3_x    <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
-                st3_y    <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                st3_x    <= done ? 0 : table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
+                st3_y    <= done ? 0 : table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                st3_attr <= done ? 0 : table_attr;
                 st3_prio <= table_x[15:13];
                 st3_bank <= table_y[14:13];
-                st3_attr <= table_attr;
             end
         // III
             st4_attr <= st3_attr;
@@ -169,10 +169,10 @@ always @(posedge clk, posedge rst) begin
             if( dr_idle /*&& !dr_start /*&& !last_drstart*/) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
                 dr_code  <= code_mn + n[3:0];
-                dr_hpos  <= st4_effx - 9'd1;
+                dr_hpos  <= st4_effx - 10'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
-                dr_start <= n <= st4_tile_n;
+                dr_start <= n <= st4_tile_n && !st4_effx[9];
                 if( !nstall ) begin
                     n    <= 0;
                     npos <= 0;
