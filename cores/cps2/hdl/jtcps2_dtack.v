@@ -34,8 +34,12 @@ module jtcps2_dtack(
     output reg  DTACKn
 );
 
-reg       last_ASn;
-reg [5:0] fail_cnt;
+localparam FW=7;
+localparam [FW:0] FS=3;
+
+reg        last_ASn;
+reg  [FW-1:0] fail_cnt;
+wire [FW:0] next_cnt = {1'd0,fail_cnt} + FS;
 
 reg        skipped, s3_over;
 reg  [2:0] cen_cnt=0;
@@ -73,8 +77,8 @@ always @(posedge clk, posedge rst) begin : dtack_gen
             if( bus_cs ) begin
                 // Average delay can be displayed in simulation by defining the
                 // macro REPORT_DELAY
-                if( bus_busy && s3_over && cen16 && (~&fail_cnt) ) begin
-                    fail_cnt<=fail_cnt+6'd3;
+                if( bus_busy && s3_over && cen16 ) begin
+                    fail_cnt<= next_cnt[FW] ? ~0 : next_cnt[FW-1:0];
                 end
                 if (!bus_busy) begin
                     DTACKn <= 1'b0;
@@ -93,7 +97,7 @@ end
 // of SDRAM initialization
 reg reported=0;
 always @(posedge clk) begin
-    if( ~reported & (&fail_cnt) ) begin
+    if( ~reported & (next_cnt[FW]) ) begin
         $display("Warning: bus timing fail counter max'ed out at &t (%m)",$time);
         reported <= 1;
     end
