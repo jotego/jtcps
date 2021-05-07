@@ -102,9 +102,8 @@ assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
 assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0}; // effective x value for multi tile objects
-assign      inzonex    = inzone & ~st4_effx[9];
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
-assign      stall      = (inzonex && (!dr_idle || nstall));// || dr_start; // || last_drstart;
+assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start; // || last_drstart;
 
 reg last_inzone;
 
