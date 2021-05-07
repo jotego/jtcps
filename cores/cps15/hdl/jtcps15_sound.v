@@ -137,7 +137,7 @@ assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn & mreq_n;
-assign main_busakn = main_busn_dly | (rom_cs & ~rom_ok);
+assign main_busakn = main_busn_dly | main_busn | (rom_cs & ~rom_ok);
 assign main_waitn  = main_busn | ~rom_cs | rom_ok;
 
 always @(posedge clk48) begin
@@ -208,6 +208,7 @@ always @(*) begin
               ));
 end
 
+/*
 jtcps15_z80buslock u_buslock(
     .clk        ( clk48            ),
     .rst        ( rst              ),
@@ -221,6 +222,9 @@ jtcps15_z80buslock u_buslock(
     .z80_buswn  ( z80_buswn        ),
     .m68_busakn ( main_busn        )
 );
+*/
+assign busrq_n = main_buse_n;
+assign main_busn = busak_n;
 
 jtcps15_z80int u_z80int(
     .clk    ( clk48     ),
