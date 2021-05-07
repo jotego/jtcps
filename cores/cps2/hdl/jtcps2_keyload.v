@@ -191,7 +191,8 @@ always @(posedge clk, posedge rst) begin
             12'h2B7, // mvscj
             12'h34E, // mvsc
             12'h0F2, // mvscu
-            12'hD62  // vsav2
+            12'hD62, // vsav2
+            12'hFC7  // vhunt2
             : betang <= 0;
             default:
             betang <= 1;
