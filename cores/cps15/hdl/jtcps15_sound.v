@@ -161,11 +161,12 @@ always @(*) begin
     //end else begin
         rom_cs  = !bus_mreqn && (!bus_A[15] || bus_A[15:14]==2'b10);
         //if(!bus_mreqn) begin
-            rom_addr = (~mreq_n & main_busakn) ?
-                // Z80
-                (bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] }) :
-                // M68000
-                main_addr[19:1];
+        rom_addr = (bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] });
+//            rom_addr = (~mreq_n & main_busakn) ?
+//                // Z80
+//                (bus_A[15] ? ({ 1'b0, bank, bus_A[13:0] } + 19'h8000) : { 4'b0, bus_A[14:0] }) :
+//                // M68000
+//                main_addr[19:1];
         //end
         ram_cs   = !bus_mreqn && (bus_A[15:12] == 4'hc || bus_A[15:12]==4'hf);
         qsnd_wr  = !bus_mreqn && !bus_wrn && (bus_A[15:12] == 4'hd && bus_A[2:0]<=3'd2);
