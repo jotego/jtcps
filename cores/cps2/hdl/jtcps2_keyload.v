@@ -183,7 +183,15 @@ always @(posedge clk, posedge rst) begin
             12'h40F, // mshvsfu
             12'h1EC, // cybotsj
             12'h12F, // cybots
-            12'h10F  // cybotsu
+            12'h10F, // cybotsu
+            // Beta 11
+            12'h22C, // mvsca
+            12'h203, // mvscb
+            12'h270, // mvsch
+            12'h2B7, // mvscj
+            12'h34E, // mvsc
+            12'h0F2, // mvscu
+            12'hD62  // vsav2
             : betang <= 0;
             default:
             betang <= 1;
