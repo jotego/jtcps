@@ -104,7 +104,7 @@ assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
 assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0}; // effective x value for multi tile objects
 assign      inzonex    = inzone & ~st4_effx[9];
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
-assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start; // || last_drstart;
+assign      stall      = (inzonex && (!dr_idle || nstall));// || dr_start; // || last_drstart;
 
 reg last_inzone;
 
@@ -141,10 +141,10 @@ always @(posedge clk, posedge rst) begin
         last_drstart <= dr_start;
         last_inzone <= inzone;
 
-        // I
-        table_addr <= done ? 0 : (stall ? table_addr : (table_addr+1'd1));
-        // II
         if( !stall ) begin
+        // I
+            table_addr <= done ? 0 : (table_addr+1'd1);
+        // II
             if( table_y[15] || table_attr[15:8]==8'hff || &table_addr ) begin
                 done     <= 1;
                 st3_x    <= 0;
@@ -158,10 +158,7 @@ always @(posedge clk, posedge rst) begin
                 st3_bank <= table_y[14:13];
                 st3_attr <= table_attr;
             end
-        end
         // III
-        // m/n match
-        if( !stall ) begin
             st4_attr <= st3_attr;
             st4_x    <= st3_x;
             st4_y    <= st3_y;
@@ -170,7 +167,7 @@ always @(posedge clk, posedge rst) begin
         end
         // IV
         if( inzone ) begin
-            if( dr_idle && !dr_start && !last_drstart) begin
+            if( dr_idle /*&& !dr_start /*&& !last_drstart*/) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
                 dr_code  <= code_mn + n[3:0];
                 dr_hpos  <= st4_effx - 9'd1;
