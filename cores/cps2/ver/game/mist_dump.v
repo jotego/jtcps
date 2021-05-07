@@ -79,7 +79,11 @@ module mist_dump(
             `ifdef DUMP_MAIN
                 $shm_probe(UUT.u_game.u_main, "A");
             `endif
-
+            `ifdef DUMP_SND
+                $shm_probe(UUT.u_game.u_main, "A");
+                $shm_probe(UUT.u_game.u_sound, "A");
+                $shm_probe(UUT.u_game.u_sound.u_buslock, "A");
+            `endif
             `ifdef DUMP_SDRAM
                 $shm_probe(UUT.u_game.u_sdram, "AS");
                 $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
