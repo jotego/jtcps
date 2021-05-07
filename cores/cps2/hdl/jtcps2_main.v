@@ -429,7 +429,7 @@ jtframe_68kdma #(.BW(1)) u_arbitration(
     .cpu_BGn    (  BGn          ),
     .cpu_ASn    (  ASn          ),
     .cpu_DTACKn (  DTACKn       ),
-    .dev_br     (  busreq & main2qs_busakn      ) // following DL-1827 logic
+    .dev_br     (  busreq       ) // following DL-1827 logic
 );
 
 fx68k u_cpu(

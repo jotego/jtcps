@@ -82,7 +82,7 @@ module mist_dump(
             `ifdef DUMP_SND
                 $shm_probe(UUT.u_game.u_main, "A");
                 $shm_probe(UUT.u_game.u_sound, "A");
-                $shm_probe(UUT.u_game.u_sound.u_buslock, "A");
+                //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `endif
             `ifdef DUMP_SDRAM
                 $shm_probe(UUT.u_game.u_sdram, "AS");
@@ -93,7 +93,7 @@ module mist_dump(
                 $shm_probe(UUT.u_game.u_main, "A");
                 $shm_probe(u_harness.u_sdram, "A");
             `endif
-            $shm_probe(UUT.u_game.u_video.u_obj.u_scan,"A");
+            //$shm_probe(UUT.u_game.u_video.u_obj.u_scan,"A");
             //$shm_probe(UUT.u_game.u_main.u_cpu.excUnit.regs68L);
             //$shm_probe(UUT.u_game.u_main.u_cpu.excUnit.regs68H);
             //$shm_probe(UUT.u_game.u_sdram, "A");

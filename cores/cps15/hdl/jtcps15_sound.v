@@ -93,6 +93,7 @@ wire        cen_dsp;
 reg         base_sample;
 
 reg         last_pids_n;
+reg         rom_okl, last_romcs;
 
 `ifndef NOSOUND
 assign      dsp_rdy_n = ~(dsp_irq | dsp_iack);
@@ -136,13 +137,17 @@ assign ram_we      = ram_cs && !bus_wrn;
 assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
-assign bus_mreqn   = main_busn & mreq_n;
-assign main_busakn = main_busn_dly | main_busn | (rom_cs & ~rom_ok);
+assign bus_mreqn   = main_busn ?   mreq_n : main_buse_n;
+assign main_busakn = main_busn_dly | main_busn | busrq_n |
+    (rom_cs & ~(rom_ok & rom_okl)) |
+    (rom_cs & ~last_romcs);
 assign main_waitn  = main_busn | ~rom_cs | rom_ok;
 
 always @(posedge clk48) begin
-    main_din <= cpu_din; // bus output
+    main_din      <= cpu_din; // bus output
     main_busn_dly <= main_busn;
+    rom_okl    <= rom_ok;
+    last_romcs <= rom_cs;
 end
 
 always @(negedge clk48) begin
@@ -247,7 +252,7 @@ jtcps15_z80wait u_extrawait(
 jtframe_ram #(.aw(13)) u_z80ram( // 8 kB!
     .clk    ( clk48         ),
     .cen    ( 1'b1          ),
-    .data   ( bus_din      ),
+    .data   ( bus_din       ),
     .addr   ( bus_A[12:0]   ),
     .we     ( ram_we        ),
     .q      ( ram_dout      )
