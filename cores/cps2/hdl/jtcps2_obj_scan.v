@@ -53,7 +53,7 @@ reg  [ 8:0] vrenderf;
 reg  [ 9:0] obj_y, obj_x;
 wire [15:0] code_mn;
 wire [ 9:0] st4_effx;
-wire [ 1:0] st4_bank;
+reg  [ 1:0] st3_bank, st4_bank;
 reg  [ 2:0] st3_prio, st4_prio;
 wire        start;
 
@@ -99,7 +99,6 @@ assign      st3_tile_m = st3_attr[15:12];
 assign      st3_tile_n = st3_attr[11: 8];
 assign      st3_vflip  = st3_attr[6];
 
-assign      st4_bank   = st4_y[14:13];
 assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
@@ -110,6 +109,9 @@ assign      stall      = (inzonex && (!dr_idle || nstall)) || dr_start || last_d
 
 reg last_inzone;
 
+// the div-2 clock enable is needed because of the table_* signal latency
+// If the OBJ RAM didn't have an output latch, or if the latch had a clock enable
+// to control with the stall signal, the cen could be removed
 always @(posedge clk) cen <= ~cen;
 
 always @(posedge clk, posedge rst) begin
@@ -153,6 +155,7 @@ always @(posedge clk, posedge rst) begin
                 st3_x    <= table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
                 st3_y    <= table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
                 st3_prio <= table_x[15:13];
+                st3_bank <= table_y[14:13];
                 st3_attr <= table_attr;
             end
         end
@@ -162,6 +165,7 @@ always @(posedge clk, posedge rst) begin
             st4_attr <= st3_attr;
             st4_x    <= st3_x;
             st4_y    <= st3_y;
+            st4_bank <= st3_bank;
             st4_prio <= st3_prio;
         end
         // IV
