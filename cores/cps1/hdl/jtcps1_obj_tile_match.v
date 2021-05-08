@@ -36,7 +36,7 @@ module jtcps1_obj_tile_match(
     output reg [15:0] code_mn
 );
 
-localparam YW=9;
+localparam YW=10;
 
 wire [15:0] match;
 reg  [ 3:0] m, mflip;
@@ -65,7 +65,7 @@ always @(posedge clk, posedge rst) begin
         code_mn <= 0;
         vsub    <= 0;
     end else if(cen) begin
-        inzone <= (bottom>vs) && (vs >= objy_ext || objy_ext>10'hf0);
+        inzone <= (bottom>vs) && (vs >= objy_ext || (obj_y>10'hf0 && bottom <10'hf0));
         vsub   <= vd[3:0] ^ {4{vflip}};
         case( {tile_m!=4'd0, tile_n!=4'd0 } )
             2'b00: code_mn <= obj_code;
