@@ -32,6 +32,7 @@ module jtcps1_video(
     output     [ 8:0]  vrender,
     output     [ 8:0]  hdump,
     input      [ 3:0]  gfx_en,
+    input      [ 7:0]  debug_bus,
 
     `ifdef CPS2
     input              objcfg_cs,
@@ -294,7 +295,8 @@ jtcps1_timing u_timing(
     .VS             ( VS                ),
     .VB             ( VB                ),
     .preVB          ( preVB             ),
-    .HB             ( HB                )
+    .HB             ( HB                ),
+    .debug_bus      ( debug_bus         )
 );
 
 // initial begin
@@ -310,6 +312,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .frame_start    ( frame_start       ),
     .line_inc       ( line_inc          ),
     .raster         ( raster            ),
+    //.debug_bus      ( debug_bus         ),
 
     .ppu1_cs        ( ppu1_cs           ),
     .ppu2_cs        ( ppu2_cs           ),

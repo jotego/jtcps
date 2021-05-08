@@ -33,7 +33,8 @@ module jtcps1_timing(
     output reg         VS,
     output reg         VB,
     output             preVB,
-    output reg         HB
+    output reg         HB,
+    input      [ 7:0]  debug_bus
 );
 
 reg [1:0] shVB;
@@ -88,7 +89,10 @@ always @(posedge clk) if(cen8) begin
         vrender <= vrender1;
         vdump   <= vrender;
         { VB, shVB[1] } <= shVB;
-        frame_start <= vrender1==9'd261;
+        // What's the right value for the frame start (FI) signal
+        // 261 fails miserably in Cammy's stage
+        // 255 works for Cammy, but is it right?
+        frame_start <= vrender1==(9'd255 + { debug_bus[7], debug_bus });
     end else begin
         frame_start <= 0;
     end

@@ -36,6 +36,7 @@ module jtcps1_mmr(
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  reg [15:0] mmr_dout,
+    //input   [ 7:0]     debug_bus,
 
     // registers
     output reg [15:0]  ppu_ctrl,
@@ -451,6 +452,9 @@ jtcps2_raster u_raster(
     // interface with CPU
     .cnt_sel    ( cnt_sel       ),
     .wrn        ( |dsn          ),
+    //.cpu_dout   ( cpu_dout^16'h1ff    ),
+    //.cpu_dout   ( cpu_dout-16'd20    ),
+    //.cpu_dout   ( cpu_dout+16'h20    ), // The demo doesn't go into Cammyys
     .cpu_dout   ( cpu_dout      ),
     .cnt_dout   ( raster_dout   ),
 
