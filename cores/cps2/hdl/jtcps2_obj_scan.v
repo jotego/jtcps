@@ -166,7 +166,7 @@ always @(posedge clk, posedge rst) begin
         end
         // IV
         if( inzone ) begin
-            if( dr_idle /*&& !dr_start /*&& !last_drstart*/) begin
+            if( dr_idle /*&& !dr_start && !last_drstart*/) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
                 dr_code  <= code_mn + n[3:0];
                 dr_hpos  <= st4_effx - 10'd1;
