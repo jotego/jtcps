@@ -78,6 +78,8 @@ module jtcps1_sdram #( parameter
     input    [12:0] gfx_oram_addr,
     output   [15:0] gfx_oram_data,
     output          gfx_oram_ok,
+    input           gfx_oram_clr,
+    input           gfx_oram_cs,
     `endif
     input           vram_rfsh_en,
 
@@ -171,6 +173,8 @@ localparam OBJ_LATCH=1;
     wire [12:0] gfx_oram_addr = 13'd0;
     wire [15:0] gfx_oram_data;
     wire        gfx_oram_ok;
+    wire        gfx_oram_clr = 0;
+    wire        gfx_oram_cs  = 0;
 `endif
 
 `ifdef CPS15
@@ -260,7 +264,7 @@ jtframe_ram_5slots #(
     .SLOT1_AW    ( 17            ), // VRAM - read only access
     .SLOT1_DW    ( 16            ),
     .SLOT1_LATCH (  OBJ_LATCH    ),
-    .SLOT1_DOUBLE(  0            ), // Row scrolling fails when enabled
+    .SLOT1_DOUBLE(  0            ),
 
     .SLOT2_AW    ( 13            ), // Object RAM - read only access
     .SLOT2_DW    ( 16            ),
@@ -288,8 +292,8 @@ jtframe_ram_5slots #(
     .slot0_wen   ( !main_rnw     ),
     .slot1_cs    ( vram_dma_cs   ),
     .slot1_clr   ( vram_clr      ),
-    .slot2_cs    ( CPS2[0]       ),
-    .slot2_clr   ( 1'b0          ),
+    .slot2_cs    ( gfx_oram_cs   ),
+    .slot2_clr   ( gfx_oram_clr  ),
     .slot3_cs    ( main_rom_cs   ),
     .slot3_clr   ( 1'b0          ),
     .slot4_cs    ( snd_cs        ),

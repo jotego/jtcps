@@ -34,6 +34,8 @@ module jtcps2_obj(
     // Interface with SDRAM for ORAM data
     output     [12:0]  oram_addr,
     input              oram_ok,
+    output             oram_clr,
+    output             oram_cs,
     input      [15:0]  oram_data,
 
     input              obank,
@@ -91,6 +93,8 @@ jtcps2_obj_frame u_frame(
     // Interface with SDRAM for ORAM data
     .oram_addr  ( oram_addr     ),
     .oram_ok    ( oram_ok       ),
+    .oram_clr   ( oram_clr      ),
+    .oram_cs    ( oram_cs       ),
 
     // Interface with ORAM frame buffer
     .oframe_we  ( oframe_we     ),

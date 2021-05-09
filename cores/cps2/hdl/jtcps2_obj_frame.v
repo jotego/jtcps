@@ -28,6 +28,8 @@ module jtcps2_obj_frame(
 
     // Interface with SDRAM for ORAM data
     output     [12:0]  oram_addr,
+    output             oram_clr,
+    output             oram_cs,
     input              oram_ok,
 
     // Interface with ORAM frame buffer
@@ -47,6 +49,8 @@ reg          wrbank;
 assign frame      = vdump==0;
 assign frame_edge = frame && !last_frame;
 assign oram_addr  = { obank, oram_cnt };
+assign oram_clr   = done;
+assign oram_cs    = ~done;
 
 always @(posedge clk, posedge rst ) begin
     if( rst ) begin

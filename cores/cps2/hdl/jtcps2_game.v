@@ -141,7 +141,7 @@ wire [ 1:0] joymode;
 // CPS2 Objects
 wire [12:0] gfx_oram_addr;
 wire [15:0] gfx_oram_data;
-wire        gfx_oram_ok;
+wire        gfx_oram_ok, gfx_oram_clr, gfx_oram_cs;
 
 // M68k - Sound subsystem communication
 wire [ 7:0] main2qs_din;
@@ -351,6 +351,8 @@ jtcps1_video #(REGSIZE) u_video(
     .oram_addr      ( gfx_oram_addr ),
     .oram_ok        ( gfx_oram_ok   ),
     .oram_data      ( gfx_oram_data ),
+    .oram_clr       ( gfx_oram_clr  ),
+    .oram_cs        ( gfx_oram_cs   ),
     .objcfg_cs      ( objcfg_cs     ),
 
     // Video signal
@@ -529,6 +531,8 @@ jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .gfx_oram_addr  ( gfx_oram_addr ),
     .gfx_oram_data  ( gfx_oram_data ),
     .gfx_oram_ok    ( gfx_oram_ok   ),
+    .gfx_oram_clr   ( gfx_oram_clr  ),
+    .gfx_oram_cs    ( gfx_oram_cs   ),
 
     // Sound CPU and PCM
     .snd_cs      ( snd_cs        ),

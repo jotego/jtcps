@@ -39,6 +39,8 @@ module jtcps1_video(
     input              obank,
     output     [12:0]  oram_addr,
     input              oram_ok,
+    output             oram_clr,
+    output             oram_cs,
     input      [15:0]  oram_data,
     `endif
 
@@ -511,6 +513,8 @@ assign scr3_pxl   = 11'h1ff;
         .oram_addr  ( oram_addr     ),
         .oram_ok    ( oram_ok       ),
         .oram_data  ( oram_data     ),
+        .oram_clr   ( oram_clr      ),
+        .oram_cs    ( oram_cs       ),
 
         .start      ( line_start    ),
         .vrender1   ( vrender1      ),
