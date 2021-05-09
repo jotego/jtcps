@@ -88,9 +88,15 @@ module jtcps2_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [3:0]   gfx_en,
-    input   [7:0]   debug_bus
+    input   [3:0]   gfx_en
+    `ifdef JTFRAME_DEBUG
+    ,input   [7:0]   debug_bus
+    `endif
 );
+
+`ifndef JTFRAME_DEBUG
+wire [7:0] debug_bus=0;
+`endif
 
 wire        clk_gfx;
 wire        LHBL, LVBL; // internal blanking signals
