@@ -63,29 +63,37 @@ always @(posedge clk, posedge rst ) begin
     end
 end
 
-always @( posedge clk ) begin
-    if( vdump==9'h40 ) done <= 0;
-
-    if( done ) begin
-        oram_cnt    <= 12'd0;
-        line_cnt    <= {W{1'd0}};
+always @(posedge clk, posedge rst ) begin
+    if( rst ) begin
+        done        <= 0;
+        oram_cnt    <= 0;
+        line_cnt    <= 0;
         oframe_we   <= 0;
         wtok        <= 1;
     end else begin
-        if( oram_ok && line_cnt[0] ) begin
-            wtok <= 0;
-            oframe_we <= oram_ok & wtok;
-        end else begin
-            oframe_we <= 0;
-        end
+        if( vdump==9'h40 ) done <= 0;
 
-        if( pxl_cen & ~&line_cnt & ~done) begin
-            if( line_cnt == 'h10 ) begin
-                line_cnt <= 0;
-                wtok     <= 1;
-                { done, oram_cnt } <= { 1'b0, oram_cnt }+1'b1;
+        if( done ) begin
+            oram_cnt    <= 0;
+            line_cnt    <= 0;
+            oframe_we   <= 0;
+            wtok        <= 1;
+        end else begin
+            if( oram_ok && line_cnt[0] ) begin
+                wtok <= 0;
+                oframe_we <= oram_ok & wtok;
             end else begin
-                line_cnt <= line_cnt+1'b1;
+                oframe_we <= 0;
+            end
+
+            if( pxl_cen & ~&line_cnt & ~done) begin
+                if( line_cnt == 'h10 ) begin
+                    line_cnt <= 0;
+                    wtok     <= 1;
+                    { done, oram_cnt } <= { 1'b0, oram_cnt }+1'b1;
+                end else begin
+                    line_cnt <= line_cnt+1'b1;
+                end
             end
         end
     end
