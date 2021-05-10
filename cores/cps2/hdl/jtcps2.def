@@ -1,7 +1,7 @@
 [all]
 CPS2
 GAMETOP=jtcps2_game
-CORENAME="JTCPS2"
+CORENAME=JTCPS2
 JTFRAME_VERTICAL
 JTFRAME_SDRAM_LARGE
 
@@ -12,7 +12,7 @@ JTFRAME_SDRAM96
 
 # OSD options
 JTFRAME_OSD_TEST
-CORE_OSD="O6,Turbo,Off,On;O7,1P_hold_for_slow,Off,On;",
+CORE_OSD=O6,Turbo,Off,On;O7,1P_hold_for_slow,Off,On;,
 
 # Video
 COLORW=8
@@ -33,7 +33,7 @@ JTFRAME_4PLAYERS
 
 # Other
 STEREO_GAME
-CORE_NVRAM_SIZE="128"
+CORE_NVRAM_SIZE=128
 CPS1_NOOBJ
 JTFRAME_CREDITS_HSTART=64
 
@@ -62,4 +62,4 @@ JTFRAME_NOHQ2X
 # JTFRAME_AVATARS
 # For some reason adding a space between 1P and Start is a problem
 # for Quartus TCL, so I write it together
-CORE_KEYMAP="J1,B0,B1,B2,B3,1PStart,Coin,Pause;","jn,A,B,X,Y,L,R,Start;",
+CORE_KEYMAP=J1,B0,B1,B2,B3,1PStart,Coin,Pause;jn,A,B,X,Y,L,R,Start;
