@@ -264,7 +264,7 @@ jtframe_ram_5slots #(
     .SLOT1_AW    ( 17            ), // VRAM - read only access
     .SLOT1_DW    ( 16            ),
     .SLOT1_LATCH (  OBJ_LATCH    ),
-    .SLOT1_DOUBLE(  0            ),
+    .SLOT1_DOUBLE(  1            ),
 
     .SLOT2_AW    ( 13            ), // Object RAM - read only access
     .SLOT2_DW    ( 16            ),
