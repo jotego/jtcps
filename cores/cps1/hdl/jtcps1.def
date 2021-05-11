@@ -57,6 +57,4 @@ JTFRAME_180SHIFT
 # OSD options
 JTFRAME_ADPCM
 JTFRAME_AVATARS
-# For some reason adding a space between 1P and Start is a problem
-# for Quartus TCL, so I write it together
-CORE_KEYMAP=J1,B0,B1,B2,B3,Start,Coin,Pause;jn,A,B,X,Y,L,R,Start;
+# CORE_KEYMAP=J1,B0,B1,B2,B3,Start,Coin,Pause;jn,A,B,X,Y,L,R,Start;
