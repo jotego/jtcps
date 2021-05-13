@@ -1,12 +1,12 @@
  \BCPS 2\W  FPGA core by \RJotego\W
   http://patreon.com/topapate
 
-  Beta 11 version 7-May-21
+  Beta 12 version 14-May-21
 supervised by the \RJTAlpha team\W
 
   Games for 64MB+ SDRAM
   Darkstalkers 1&2, VSav 1&2
-  SFA2/3, D&D SoM, 1944
+  SFA2/3, D&D SoM, 1944, SSF2
   X-Men, Marvel, Cyberbots
   Slammasters,Super Gem F.
 
@@ -30,51 +30,53 @@ Arcade Express Brian Sallee
 Cohge          Daniel Bauza
 Jo Tomiyori    Phillip McMahon
 
-ARCADEAGES     Adam Davis
-A. Rensberg    Andrew Francomb
-Andyways       Arjan de
-Bob Gallardo   Chi Wai
-Chris Jardine  Christian
-Chris  Brown   Chris Doyle
-Chris  Harvey  Connor Glynn
-D.J. Estreito  DMG001
-Darren Chell   David Ashby
-David Mills    David Moylan
-Don Gafford    Ed Balan
-Edward Rana    Epixjava
-Gladius        Gus Douboulidis
-Gwaland        H. Osterholz
-H. Nordstrom   Ian Court
-Ivo            James Baker
-James Williams Joeri van
-John Casey     Jorge Slowfret
-Joseph Hsieh   Juan Francisco
-Krycek7o2      Leslie Law
-MakeshiftMoney Marcelo C.
-Marcus Hogue   Marcus Sid
-Martin DiPalma Matt Postema
-Matthew Young  MoonZ
-Oliver Jaksch  Oliver Wndmth
-Oscar Laguna   Per Sweden
-Peter Bray     PsyFX
-ReTr0~g!GGles  RetroPrez
-Retroludo      Richard MS
-Robert MacLean Robert Mullings
-Roman Buser    Simon Johnstone
-Steven Wilson  Tarnjeet Bhachu
-Technoir1986   The Collector
-Theodore Huber Toby Boreham
-T. Richardson  Torren Beitler
-Ulf Skutnabba  Ultrarobotninja
-Vitor Duarte   Victor Gomariz
-Xzarian        Zachary Muske
-asdfgasfhsn    elrobertocarlos
-hyp36rmax      James Trautner
-nullobject     Jong-Gyu Bag
+ARCADEAGES      Adam Davis
+Anders Rensberg Andrew Francomb
+Andyways        Arjan de
+Bob Gallardo    Chi Wai
+Chris Brown     Chris Doyle
+Chris Harvey    Chris Jardine
+Christian       Connor Glynn
+D.J. Estreito   DMG
+Darren Chell    David Ashby
+David Mills     David Moylan
+Don Gafford     Ed Balan
+Edward Rana     Epixjava
+Gladius         Gus Douboulidis
+Gwaland         H. Osterholz
+H. Nordstrom    Ian Court
+Ivo             James Baker
+James Trautner  James Williams
+Joeri van       John Casey
+Jorge Slowfret  Joseph Hsieh
+Juan Francisco  Krycek7o2
+Leslie Law      MakeshiftMoney
+Marcelo C.      Marcus Hogue
+Marcus Sid      Martin DiPalma
+Matt Postema    Matthew Young
+MoonZ           Oliver Jaksch
+Oliver Wndmth   Oscar Laguna
+Per Sweden      Peter Bray
+PsyFX           ReTr0~g!GGles
+RetroPrez       Retroludo
+Richard MS      Robert MacLean
+Robert Mullings Roman Buser
+Simon Johnstone Steven Wilson
+Tarnjeet Bhachu Technoir1986
+The Collector   Theodore Huber
+Toby Boreham    Tony Richardson
+Torren Beitler  Tym Whitney
+Ulf Skutnabba   Ultrarobotninja
+Victor Gomariz  Vitor Duarte
+Xzarian         Younghoon Gong
+Zachary Muske   asdfgasfhsn
+elrobertocarlos hyp36rmax
+nullobject
 
         \RGreetings to\W
 
-         Goemon & Atom
+    All Labyrinth Runner fans
+     We know you're there!
 
          Beta version
      \RDo not distribute\W

@@ -318,133 +318,138 @@ Christopher Gelatt                                          yoaarond
 
 The following patrons supported the development of CPS2
 
-                    049
-80's spaceman       Adam Small
-Adam Zorzin         Adrian Labastida
-Adrian Nabarro      Alan Shurvinton
-Alexander Lash      Alexander Upton
-Alfonso Clemente    Alonso J.
-Alvaro Paniagua     Andrea Chiavazza
-Andreas Micklei     Andrew Boudreau
-Andy Palmer         Angelo Kanaris
-Anthony Monaco      Anton Gale
-Antwon              Aquijacks (Flashjacks
-Aqy                 Arthur Fung
-BRCDEvg             Banane
-Bear S              Ben Toman
-Bitmap Bureau       Bliz 452
-Boogermann          Brandon Smith
-Brandon Thomas      Brent Fraser
-Brian Peek          Brian Plummer
-C                   Cameron Tinker
-Carrboroman         Cesar Sandoval
-Charles             Choquer0
-Chris Mzhickteno    Chris W
-Chris smith         Christian Bailey
-Christopher Chung   Christopher Tuckwell
-Clinton Cronin      Cobra Clips
-Coldheat007         Colt83
-Dan                 Daniel
-Daniel Casadevall   Daniel Fowler
-Daniel Page         Daniel Zetterman
-Darren Wootton      Dasutin
-David Drury         David Filskov
-David Fleetwood     David Jones
-Denis Brækhus       Diana Carolina
-Dimitris Zongas     DrMnike
-Dre137              Drew Roberts
-Eric J              Eric Schlappi
-Eric Walklet        Five Year
-Flavio Real         Focux
-Francis B           Gluthecat
-GohanX              Gonzalo López
-Goolio              Greg
-Gregory Val         HFSPlay
-Handheld Obsession  Henry
-Ibrahim             ItsBobDudes
-JR                  Jacob Hoffman
-Jacob Lawter        James B
-James Charnock      James Dingo
-James Kilgore       Jason Nagy
-Javier Rodas        Jeff Roberts
-Jeremy Hasse        Jeremy Kelaher
-Jesse Clark         Jim Knowler
-Jockel              Johan Smolinski
-John Fletcher       John Silva
-John Wilson         Jonah Phillips
-Jonathan Brochu     Jonathan Loor
-Jonathan Tuttle     Jootec from
-Jorge               Jork Sonkinfield
-Joseph Milazzo      Josh Emery
-Josiah Wilson       Justin D'Arcangelo
-Keith Gordon        Kem Yos
-Kenneth Lee         Kevin Gudgeirsson
-Kevin finisterre    KnC
-Koala Software      KrzysFR
-L.Rapter            LFT
-Laurent Cooper      Lee Grocott
-Lee Osborne         Lionel LENOBLE
-Luc JOLY            Mack H
-Magnus Kvevlander   Manuel Astudillo
-Mark Baffa          Mark Davidson
-Mark R              MarthSR
-Martin Ansin        Matheus
-Matsu               Matt Elder
-Matt Evans          Matt Lichtenberg
-Matt McCarthy       Matt ODonnell
-Matthew Humphrey    Matthew Woodford
-MechaGG             Megan Alnico
-MiSTerFPGA.co.uk    Michael Berger
-Michael C           Michael Deshaies
-Michael Rea         Mick Stone
-Mike Jegenjan       Mike Olson
-Mike Parks          Mottzilla
-NINE                Nailbomb
-Narugawa            Neil St
-Nelson Jr           NerdyNester
-Nick Delia          Nico Stamp
-Nicolas Hurtado     NonstopXiaowei
-OopsAllBerrys       Oriez
-Oskar Sigvardsson   Parker Blackman
-Patrick Roman       Paul Cunningham
-Paul M              Paulo M.
-Paweł Mandes       PeFClic
-Per Ole             Philip Lai
-Philip Lawson       Pierre-Emmanuel Martin
-Rachael Netz        Rachel Schaeffer
-RandomRetro         Raph Furendo
-RayGun              Richard Eng
-Richard Murillo     Richard Simpson
-Rick Ochoa          Ronald Dean
-Ryan                Ryan Fig
-Ryan O'Malley       Sam Hall
-Samuel Warner       Schnookums
-Sofia Rose          Spank Minister
-SteelRush           Stefan Krueger
-Stephen R           Steven Hansen
-Steven Yedwab       Stuart Morton
-SuperBabyHix        Taehyun Kim
-Tales Dilli         Terse
-The Collector       The Video
-Thomas Attanasio    Thomas Capetanakis
-Thomas Irwin        Tobias Dossin
-Travis Brown        Trifle
-Troy                Ty B
-Tym Whitney         VickiViperZabel
-Victor Bly          Victor Fontanez
-William Clemens     Zach Marquette
-Zoltan Kovacs       alejandro carlos
-angel_killah        blackwine
-brian burney        bruno_tapez
-cbab                chauviere benjamin
-dannahan            deathwombat
-derFunkenstein      gunmakuma
-kccheng             kernelchagi
-lame-o              natalie
-nonamebear          olivier bernhard
-retrod00d           rsn8887
-scapeghost          taal.M
-tonitellezb         yoaarond
-종규 박
-
+             049
+80's spaceman   Adam Small
+Adam Zorzin     Adrian Labastida
+Adrian Nabarro  Alan Shurvinton
+Alexander Lash  Alexander Upton
+Alfonso Clemente Alonso J.
+Alvaro Paniagua Andrea Chiavazza
+Andreas Micklei Andrew Boudreau
+Andrew Schmidt  Andy Palmer
+Angelo Kanaris  Anthony Monaco
+Anton Gale      Antwon
+Aquijacks (Flashjacks Aqy
+Arthur Blough   Arthur Fung
+BRCDEvg         Banane
+Bear S          Ben Toman
+Bitmap Bureau   Bliz 452
+Boogermann      Brandon Smith
+Brandon Thomas  Brent Fraser
+Brian Peek      Brian Plummer
+Bruno Freitas   C
+Cameron Tinker  Carrboroman
+Cesar Sandoval  Charles
+Choquer0        Chris Chung
+Chris Mzhickteno Chris Tuckwell
+Chris W         Chris smith
+Christian Bailey Clinton Cronin
+Cobra Clips     Coldheat007
+Colin Colehour  Colt83
+Dan             Daniel
+Daniel Casadevall Daniel Fowler
+Daniel Page     Daniel Zetterman
+Darren Wootton  Dasutin
+David Drury     David Filskov
+David Fleetwood David Jones
+Denis Brækhus   Diana Carolina
+Dimitris Zongas DrMnike
+Dre137          Drew Roberts
+Eric J          Eric Schlappi
+Eric Walklet    Five Year
+Flavio Real     Focux
+Francis B       Gluthecat
+GohanX          Gonzalo Lopez
+Goolio          Greg
+Gregory Val     HFSPlay
+Handheld Obsession Henry
+Ibrahim         ItsBobDudes
+JR              Jack Sammons
+Jacob Hoffman   Jacob Lawter
+James B         James Charnock
+James Dingo     James Kilgore
+Jason Nagy      Javier Rodas
+Jeff Roberts    Jeremy Hasse
+Jeremy Kelaher  Jesse Clark
+Jim Knowler     Jockel
+Johan Smolinski John Fletcher
+John Hood       John Silva
+John Wilson     Jonah Phillips
+Jonathan Brochu Jonathan Loor
+Jonathan Tuttle Jootec from
+Jorge           Jork Sonkinfield
+Joseph Milazzo  Josh Emery
+Josh Mayer      Josiah Wilson
+Justin D'Arcangelo Keith Gordon
+Kem Yos         Ken Scott
+Kevin Gudgeirsson Kevin finisterre
+KnC             Koala Software
+KrzysFR         L.Rapter
+LFT             Laurent Cooper
+Lee Grocott     Lee Osborne
+Lionel LENOBLE  Luc JOLY
+Mack H          Magnus Kvevlander
+Manuel Astudillo Mark Baffa
+Mark Davidson   Mark R
+MarthSR         Martin Ansin
+Matheus         Matsu
+Matt Elder      Matt Evans
+Matt Lichtenberg Matt McCarthy
+Matt ODonnell   Matthew Humphrey
+Matthew Woodford MechaGG
+Megan Alnico    MiSTerFPGA.co.uk
+Michael Berger  Michael C
+Michael Deshaies Michael Rea
+Mick Stone      Mike Jegenjan
+Mike Olson      Mike Parks
+Mottzilla       NINE
+Nailbomb        Narugawa
+Neil St         Nelson Jr
+NerdyNester     Nick Delia
+Nick G          Nico Stamp
+Nicolas Hurtado NonstopXiaowei
+OopsAllBerrys   Oriez
+Oskar Sigvardsson Parker Blackman
+Patrick Roman   Paul Cunningham
+Paul M          Paulo M.
+Paweł Mandes    PeFClic
+Per Ole         Philip Lai
+Philip Lawson   Pierre-Emmanuel Martin
+Rachael Netz    Rachel Schaeffer
+RandomRetro     Raph Furendo
+Raphael Melgar  RayGun
+Richard Eng     Richard Murillo
+Richard Simpson Rick Ochoa
+Ronald Dean     Ryan
+Ryan Fig        Ryan O'Malley
+Sam Hall        Samuel Warner
+Schnookums      Sofia Rose
+Spank Minister  SteelRush
+Stefan Krueger  Stephen R
+Steven Hansen   Steven Yedwab
+Stuart Morton   SuperBabyHix
+Taehyun Kim     Tales Dilli
+Tatton Partington Terse
+The Collector   The Video
+Thomas Attanasio Thomas Capetanakis
+Thomas Irwin    Tobias Dossin
+Travis Brown    Trifle
+Troy            Turboman UK
+Ty B            VickiViperZabel
+Victor Bly      Victor Fontanez
+William Clemens Yunus Soğukkanlı
+Zach Marquette  Zoltan Kovacs
+albertprime     alejandro carlos
+angel_killah    arcadebros
+blackwine       brian burney
+bruno_tapez     cbab
+chauviere benjamin dannahan
+deathwombat     derFunkenstein
+gunmakuma       kccheng
+kernelchagi     natalie
+nonamebear      olivier bernhard
+retrod00d       rsn8887
+scapeghost      taal.M
+tonitellezb     troy coberly
+yoaarond        종규 박
 

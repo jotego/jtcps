@@ -191,7 +191,24 @@ always @(posedge clk, posedge rst) begin
             12'h2B7, // mvscj
             12'h34E, // mvsc
             12'h0F2, // mvscu
-            12'hD62  // vsav2
+            12'hD62, // vsav2
+            // Beta 12: SSF2
+            12'h1F7, // ssf2a
+            12'h252, // ssf2h
+            12'h101, // ssf2j
+            12'h179, // ssf2
+            12'h192, // ssf2ta
+            12'h23C, // ssf2tba
+            12'h21F, // ssf2tbh
+            12'h01C, // ssf2tbj
+            12'h114, // ssf2tb
+            12'h259, // ssf2tbu
+            12'h100, // ssf2th
+            12'hF26, // ssf2t
+            12'hFBE, // ssf2tu
+            12'h2B4, // ssf2u
+            12'hFFA, // ssf2xj
+            12'h14F  // ssf2xjr1r
             : betang <= 0;
             default:
             betang <= 1;
