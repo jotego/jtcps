@@ -192,6 +192,7 @@ always @(posedge clk, posedge rst) begin
             12'h34E, // mvsc
             12'h0F2, // mvscu
             12'hD62, // vsav2
+            12'hFC7, // vhunt2
             // Beta 12: SSF2
             12'h1F7, // ssf2a
             12'h252, // ssf2h
