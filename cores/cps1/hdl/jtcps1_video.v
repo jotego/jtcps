@@ -91,6 +91,7 @@ module jtcps1_video(
     output     [ 7:0]  red,
     output     [ 7:0]  green,
     output     [ 7:0]  blue,
+    output             flip,
 
     // GFX ROM interface
     output     [19:0]  rom1_addr,
@@ -140,7 +141,6 @@ wire [     8:0] vrender1;
 wire [    15:0] ppu_ctrl, pal_raw;
 wire [    17:1] vram_pal_addr;
 wire            line_start, frame_start, preVB;
-wire            flip = ppu_ctrl[15];
 wire            busack_obj, busack_pal;
 wire [OBJW-1:0] obj_pxl;
 
@@ -184,6 +184,7 @@ assign objdma_en = 1; // does this signal exist?
 `endif
 assign scrdma_en = ppu_ctrl[3:1];
 assign row_en    = ppu_ctrl[0];
+assign flip      = ppu_ctrl[15];
 
 `ifdef JTCPS_WATCH
 jtcps1_watch u_watch(

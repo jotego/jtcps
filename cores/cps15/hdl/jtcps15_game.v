@@ -138,7 +138,6 @@ wire        main2qs_cs, main_busakn, main_waitn;
 wire        sclk, sdi, sdo, scs;
 
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
-assign dip_flip = 0;
 assign game_led = 0;
 
 assign LVBL         = ~VB;
@@ -291,6 +290,8 @@ always @(negedge clk) begin
     rst_sdram <= rst;
 end
 
+assign dip_flip = ~video_flip;
+
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
     .clk            ( clk_gfx       ),
@@ -329,6 +330,7 @@ jtcps1_video #(REGSIZE) u_video(
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
+    .flip           ( video_flip    ),
 
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),

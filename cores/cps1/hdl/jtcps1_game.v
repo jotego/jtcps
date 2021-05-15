@@ -136,8 +136,6 @@ wire        sclk, sdi, sdo, scs;
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 `endif
-assign dip_flip = dipsw_c[4];  // this is correct for all games except Mega Man
-    // but it does not matter for horizontal games
 
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
@@ -282,6 +280,8 @@ always @(negedge clk_gfx) begin
     rst_video <= rst;
 end
 
+assign dip_flip = ~video_flip;
+
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
     .clk            ( clk_gfx       ),
@@ -322,6 +322,7 @@ jtcps1_video #(REGSIZE) u_video(
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
+    .flip           ( video_flip    ),
 
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),

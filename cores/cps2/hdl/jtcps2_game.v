@@ -152,8 +152,6 @@ wire [12:0] volume;
 // EEPROM
 wire        sclk, sdi, sdo, scs;
 
-assign dip_flip = 0;
-
 assign LVBL         = ~VB;
 assign LHBL         = ~HB;
 
@@ -317,6 +315,8 @@ always @(negedge clk) begin
     rst_sdram <= rst;
 end
 
+assign dip_flip = ~video_flip;
+
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
     .clk            ( clk_gfx       ),
@@ -365,6 +365,7 @@ jtcps1_video #(REGSIZE) u_video(
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
+    .flip           ( video_flip    ),
 
     // CPS-B Registers
     .cfg_we         ( cfg_we        ),
