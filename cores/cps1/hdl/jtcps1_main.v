@@ -384,6 +384,7 @@ always @(posedge clk) begin
                     `ifdef CPS15
                     eeprom_cs                  ? {~15'd0, eeprom_sdo}  : (
                     main2qs_cs                 ? {8'hff, main2qs_din} :
+                   (joy3_cs | joy4_cs)         ? sys_data :
                     `else
                     (
                     `endif
