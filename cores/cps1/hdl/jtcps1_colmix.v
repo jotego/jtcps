@@ -127,7 +127,12 @@ always @(*) begin
     endcase
 end
 
-localparam [13:0] BLANK_PXL = { 2'b11, 12'hBFF }; // according to DL-0921 RE
+`ifdef CPS2
+localparam [13:0] BLANK_PXL = { 2'b11, 12'hBFF }; // according to DL-0921 RE but it doesn't look
+// good on CPS1/CPS1.5 games. CPS2 is fine with that
+`else
+localparam [13:0] BLANK_PXL = ~14'd0;
+`endif
 
 // This take 6 clock cycles to process the 6 layers
 always @(posedge clk) begin
