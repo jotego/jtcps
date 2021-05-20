@@ -103,8 +103,12 @@ reg         io_cs, joy_cs, eeprom_cs,
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
 reg         one_wait;
+
+reg         sys_sel;
 `ifdef CPS15
 reg         io15_cs, joy3_cs, joy4_cs;
+`else
+wire        joy3_cs=0, joy4_cs=0;
 `endif
 
 assign cpu_cen   = cen10;
@@ -372,17 +376,18 @@ always @(posedge clk) begin
     if(rst) begin
         cpu_din <= 16'hffff;
     end else begin
-        cpu_din <= (dial_cs | joy_cs | sys_cs) ? sys_data : (
-                   (ram_cs | vram_cs )         ? ram_data : (
-                    rom_cs                     ? rom_data : (
-                    ppu2_cs                    ? mmr_dout : (
+        sys_sel <= dial_cs | joy_cs | joy3_cs | joy4_cs | sys_cs;
+        cpu_din <= sys_sel              ? sys_data : (
+                   (ram_cs | vram_cs )  ? ram_data : (
+                    rom_cs              ? rom_data : (
+                    ppu2_cs             ? mmr_dout : (
                     `ifdef CPS15
-                    eeprom_cs                  ? {~15'd0, eeprom_sdo}  : (
-                    main2qs_cs                 ? {8'hff, main2qs_din} :
+                    eeprom_cs           ? {~15'd0, eeprom_sdo}  : (
+                    main2qs_cs          ? {8'hff, main2qs_din} :
                     `else
                     (
                     `endif
-                                                 16'hFFFF )))));
+                                        16'hFFFF )))));
 
     end
 end
