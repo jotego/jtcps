@@ -124,7 +124,7 @@ wire [ 8:0] vdump, vrender;
 
 wire        rom0_half, rom1_half;
 wire        cfg_we;
-wire        charger;
+wire        charger, video_flip;
 
 // QSound - Decode keys
 wire        kabuki_we, kabuki_en;
@@ -366,6 +366,7 @@ jtcps1_video #(REGSIZE) u_video(
     .rom0_ok        ( rom0_ok       )
 );
 
+`ifndef NOZ80
 // Sound CPU cannot be disabled as there is
 // interaction between both CPUs at power up
 jtcps15_sound u_sound(
@@ -410,6 +411,12 @@ jtcps15_sound u_sound(
     .right      ( snd_right         ),
     .sample     ( sample            )
 );
+`else
+assign snd_cs = 0;
+assign snd_addr = 0;
+assign qsnd_cs = 0;
+assign qsnd_addr = 0;
+`endif
 
 jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst           ),
