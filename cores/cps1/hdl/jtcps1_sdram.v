@@ -274,7 +274,7 @@ jtframe_ram_5slots #(
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
     .SLOT3_LATCH (  1            ),
-    .SLOT3_DOUBLE(  0            ),
+    .SLOT3_DOUBLE(  1            ),
 
     .SLOT4_AW    ( Z80_AW        ), // Sound CPU
     .SLOT4_DW    (  8            )
