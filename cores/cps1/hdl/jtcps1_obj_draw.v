@@ -90,7 +90,7 @@ always @(posedge clk, posedge rst) begin
     end else begin
         wait_cycle <= 0;
         if( idle ) begin
-            if( start && obj_hpos>9'h20 && obj_hpos<9'h1c0 ) begin
+            if( start && obj_hpos>9'h20 && obj_hpos<9'h1d0 ) begin
                 idle       <= 0;
                 rom_cs     <= 1;
                 rom_addr   <= { obj_code, vsub };
