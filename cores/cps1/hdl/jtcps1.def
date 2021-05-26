@@ -1,14 +1,16 @@
+include common.def
+
 CPS1
 CORENAME=JTCPS1
 GAMETOP=jtcps1_game
 JTFRAME_MRA_DIP
+JTFRAME_CREDITS
 
 [mist|sidi]
 CORE_OSD=$CORE_OSD;O1,Original-Filter,Off,On;
 
 [mister]
 # OSD options
-CORE_OSD=OD,Turbo,Off,On;
 JTFRAME_ADPCM
 
 JTFRAME_AVATARS

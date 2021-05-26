@@ -6,4 +6,8 @@ GAMETOP=jtcps15_game
 
 # OSD options
 JTFRAME_OSD_TEST
+
+JTFRAME_CREDITS
+
+[mister]
 JTFRAME_AVATARS
