@@ -1,7 +1,7 @@
  \BCPS 2\W  FPGA core by \RJotego\W
   http://patreon.com/topapate
 
-  Beta 12 version 14-May-21
+  Final beta version 28-May-21
 supervised by the \RJTAlpha team\W
 
   Games for 64MB+ SDRAM
@@ -9,6 +9,15 @@ supervised by the \RJTAlpha team\W
   SFA2/3, D&D SoM, 1944, SSF2
   X-Men, Marvel, Cyberbots
   Slammasters,Super Gem F.
+
+  Known issues:
+
+  -Mars Matrix runs too fast
+  -Gigawing:
+    -Music stops in stage 3
+    -final boss gets stuck
+  -Armored warriors:
+    -some sprite tiles are wrong
 
         \RDirectors\W
 
@@ -31,22 +40,23 @@ Cohge          Daniel Bauza
 Jo Tomiyori    Phillip McMahon
 
 ARCADEAGES      Adam Davis
-Anders Rensberg Andrew Francomb
-Andyways        Arjan de
-Bob Gallardo    Chi Wai
-Chris Brown     Chris Doyle
-Chris Harvey    Chris Jardine
-Christian       Connor Glynn
-D.J. Estreito   DMG
-Darren Chell    David Ashby
-David Mills     David Moylan
-Don Gafford     Ed Balan
-Edward Rana     Epixjava
-Gladius         Gus Douboulidis
-Gwaland         H. Osterholz
-H. Nordstrom    Ian Court
-Ivo             James Baker
-James Trautner  James Williams
+Anders Rensberg Andreas Wester
+Andrew Francomb Andyways
+Arjan de        Bob Gallardo
+Chi Wai         Chris Brown
+Chris Doyle     Chris Harvey
+Chris Jardine   Christian
+Connor Glynn    D.J. Estreito
+DMG             Darren Chell
+David Ashby     David Mills
+David Moylan    Don Gafford
+Ed Balan        Edward Rana
+Epixjava        Gladius
+Gus Douboulidis Gwaland
+H. Osterholz    H. Nordstrom
+Ian Court       Ivo
+James Baker     James Trautner
+James Williams  Jason Nagy
 Joeri van       John Casey
 Jorge Slowfret  Joseph Hsieh
 Juan Francisco  Krycek7o2
@@ -64,19 +74,14 @@ Robert Mullings Roman Buser
 Simon Johnstone Steven Wilson
 Tarnjeet Bhachu Technoir1986
 The Collector   Theodore Huber
-Toby Boreham    Tony Richardson
+Toby Boreham    T. Richardson
 Torren Beitler  Tym Whitney
-Ulf Skutnabba   Ultrarobotninja
+Ulf Skutnabba  Ultrarobotninja
 Victor Gomariz  Vitor Duarte
 Xzarian         Younghoon Gong
 Zachary Muske   asdfgasfhsn
 elrobertocarlos hyp36rmax
 nullobject
-
-        \RGreetings to\W
-
-    All Labyrinth Runner fans
-     We know you're there!
 
          Beta version
      \RDo not distribute\W
