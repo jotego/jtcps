@@ -144,7 +144,7 @@ wire [ 1:0] dsn;
 wire        cen16, cen12, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
 wire        charger;
-wire        turbo, pcmfilter_en;
+wire        turbo, pcmfilter_en, video_flip;
 
 `ifdef JTCPS_TURBO
 assign turbo = 1;

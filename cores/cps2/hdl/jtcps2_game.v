@@ -158,7 +158,7 @@ assign LHBL         = ~HB;
 wire [ 1:0] dsn;
 wire        cen16, cen16b, cen12, cen8, cen10b;
 wire        cpu_cen, cpu_cenb;
-wire        turbo, skip_en;
+wire        turbo, skip_en, video_flip;
 
 `ifdef JTCPS_TURBO
 assign turbo = 1;
