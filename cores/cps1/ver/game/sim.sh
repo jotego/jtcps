@@ -78,7 +78,7 @@ export MSM6295=1
 jtsim -mist \
     -sysname cps1  \
     -def ../../hdl/jtcps1.def \
-    -d SCAN2X_TYPE=5 -d JT51_NODEBUG -d SKIP_RAMCLR\
+    -d SCAN2X_TYPE=5 -d SKIP_RAMCLR\
     -videow 384 -videoh 224 $MMR_FILE -d JTFRAME_SIM_ROMRQ_NOCHECK \
     -d VIDEO_START=2 $OTHER
     #-d JTCPS_TURBO \

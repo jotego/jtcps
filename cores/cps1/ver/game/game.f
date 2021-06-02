@@ -14,14 +14,14 @@
 ../../hdl/jtcps1_prom_we.v
 ../../hdl/jtcps1_main.v
 ../../hdl/jtcps1_dtack.v
-# ../../hdl/jtcps1_game.v
+../../hdl/jtcps1_game.v
 ../../hdl/jtcps1_sound.v
 ../../hdl/jtcps1_stars.v
 ../../hdl/jtcps1_cpucen.v
 ../../hdl/jtcps1_gfx_mappers.v
 ../../hdl/jtcps1_dma.v
 ../../hdl/jtcps1_sdram.v
-../../hdl/jtcps1_ram.v
+# ../../hdl/jtcps1_ram.v
 # SDRAM
 -F $JTFRAME/hdl/sdram/jtframe_sdram64.f
 
