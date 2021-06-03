@@ -432,12 +432,11 @@ jtframe_68kdma #(.BW(1)) u_arbitration(
     .dev_br     (  busreq       ) // following DL-1827 logic
 );
 
-fx68k u_cpu(
+jtframe_m68k u_cpu(
     .clk        ( clk         ),
-    .extReset   ( rst         ),
-    .pwrUp      ( rst         ),
-    .enPhi1     ( cen16       ),
-    .enPhi2     ( cen16b      ),
+    .rst        ( rst         ),
+    .cpu_cen    ( cen16       ),
+    .cpu_cenb   ( cen16b      ),
 
     // Buses
     .eab        ( A           ),
@@ -450,9 +449,7 @@ fx68k u_cpu(
     .UDSn       ( UDSn        ),
     .ASn        ( ASn         ),
     .VPAn       ( vpa_n       ),
-    .FC0        ( FC[0]       ),
-    .FC1        ( FC[1]       ),
-    .FC2        ( FC[2]       ),
+    .FC         ( FC          ),
 
     .BERRn      ( BERRn       ),
     // Bus arbitrion
@@ -462,15 +459,7 @@ fx68k u_cpu(
     .BGn        ( BGn         ),
 
     .DTACKn     ( DTACKn      ),
-    .IPL0n      ( 1'b1        ),
-    .IPL1n      ( int1        ), // VBLANK
-    .IPL2n      ( int2        ), // Raster
-
-    // Unused
-    .oRESETn    (             ),
-    .oHALTEDn   (             ),
-    .VMAn       (             ),
-    .E          (             )
+    .IPLn       ( { int2, int1, 1'b1 } ) // Raster, VBLANK
 );
 
 endmodule

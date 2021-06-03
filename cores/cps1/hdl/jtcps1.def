@@ -7,7 +7,8 @@ JTFRAME_MRA_DIP
 JTFRAME_CREDITS
 
 [mist|sidi]
-CORE_OSD=$CORE_OSD;O1,Original-Filter,Off,On;
+#CORE_OSD+=;O1,Original-Filter,Off,On;
+CORE_OSD+=;O1,Cheat,Off,On;
 
 [mister]
 # OSD options
