@@ -1,7 +1,7 @@
 include ../../cps1/hdl/common.def
 
 # delete when done:
-JTFRAME_DEBUG
+# JTFRAME_DEBUG
 
 CPS2
 GAMETOP=jtcps2_game

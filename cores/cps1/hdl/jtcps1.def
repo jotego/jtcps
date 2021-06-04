@@ -6,9 +6,7 @@ GAMETOP=jtcps1_game
 JTFRAME_MRA_DIP
 JTFRAME_CREDITS
 
-[mist|sidi]
-#CORE_OSD+=;O1,Original-Filter,Off,On;
-CORE_OSD+=;O1,Cheat,Off,On;
+CORE_OSD+=;O1,Original filter,Off,On;
 
 [mister]
 # OSD options
