@@ -90,19 +90,24 @@ module mist_dump(
 
                     //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
                     //$shm_probe(UUT.u_game, "A");
-                    `ifndef NOMAIN
-                        $shm_probe(UUT.u_game.u_main, "A");
-                        $shm_probe(UUT.u_game.u_main.u_dtack, "A");
+                    `ifdef JTFRAME_CHEAT
+                        $shm_probe(UUT.u_frame.u_board.u_cheat, "A");
+                        $shm_probe(UUT.u_frame.u_board.u_cheat.u_rom, "A");
+                        $shm_probe(UUT.u_frame.u_board.u_sdram,"A");
                     `endif
                     `ifdef LOADROM
                         $shm_probe(UUT.u_game.u_sdram, "A");
                         $shm_probe(UUT.u_game.u_sdram.u_prom_we, "A");
                         $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
                     `else
-                        $shm_probe(UUT.u_game.u_sdram, "AS");
-                        $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
-                        $shm_probe(UUT.u_game.u_video,"A");
-                        $shm_probe(UUT.u_game.u_sound, "A");
+                        `ifndef NOMAIN
+                            $shm_probe(UUT.u_game.u_main, "A");
+                            $shm_probe(UUT.u_game.u_main.u_dtack, "A");
+                            $shm_probe(UUT.u_game.u_sdram, "AS");
+                            $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
+                            $shm_probe(UUT.u_game.u_video,"A");
+                            $shm_probe(UUT.u_game.u_sound, "A");
+                        `endif
                     `endif
                     `ifdef DUMP_SDRAM
                         $shm_probe(UUT.u_game.u_sdram, "AS");
