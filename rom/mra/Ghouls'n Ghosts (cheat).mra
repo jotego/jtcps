@@ -84,6 +84,7 @@
             <part name="16.4h" crc="f187ba1c"  map="01000000"/>
             <part name="25.7h" crc="29f79c78"  map="10000000"/>
         </interleave>
+        <patch offset="0x44"> 00 00 00 04</patch>
     </rom>
 
     <!-- Set bit 1 for vertical games.
