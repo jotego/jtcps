@@ -63,7 +63,7 @@ module mist_dump(
             `ifdef NOMAIN
                 $shm_probe(UUT.u_game.u_video, "AS");
             `else
-                //$shm_probe(UUT.u_game.u_main, "A");
+                $shm_probe(UUT.u_game.u_main, "A");
                 $shm_probe(UUT.u_game.u_main.FC);
                 $shm_probe(UUT.u_game.u_main.raster);
                 $shm_probe(UUT.u_game.u_main.int1);

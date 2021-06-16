@@ -120,9 +120,16 @@ assign cpu_cen   = cen16;
 assign addr      = ram_cs ? {2'b0, A[15:1] } : A[17:1];
 
 // high during DMA transfer
-wire UDSn, LDSn;
+wire BUSn, UDSn, LDSn;
+
+assign BUSn  = ASn | (UDSn & LDSn);
 assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
+
+reg last_busn;
+wire bad_as = ~ASn & BUSn & ~last_busn;
+
+always @(posedge clk) last_busn <= BUSn;
 
 // ram_cs and vram_cs signals go down before DSWn signals
 // that causes a false read request to the SDRAM. In order
@@ -361,6 +368,8 @@ jtcps2_dtack u_dtack(
     .cen16b     ( cen16b    ),
 
     .ASn        ( ASn       ),
+    .UDSn       ( UDSn      ),
+    .LDSn       ( LDSn      ),
     .one_wait   ( one_wait  ),
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),

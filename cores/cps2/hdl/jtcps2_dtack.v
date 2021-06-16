@@ -23,6 +23,8 @@ module jtcps2_dtack(
     output reg  cen16b,
 
     input       ASn,
+    input       LDSn,
+    input       UDSn,
     input       one_wait,
     input       bus_cs,
     input       bus_busy,
@@ -67,6 +69,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
         last_ASn <= ASn;
         if( (!ASn && last_ASn) || ASn
             || (main2qs_cs && qs_busakn_s) // wait for Z80 bus grant
+            || (!ASn && (UDSn&&LDSn)) // read-modify-write
         ) begin // for falling edge of ASn
             DTACKn  <= 1;
             s3_over <= 0;

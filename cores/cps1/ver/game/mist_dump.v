@@ -91,7 +91,7 @@ module mist_dump(
                     //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
                     //$shm_probe(UUT.u_game, "A");
                     `ifdef JTFRAME_CHEAT
-                        $shm_probe(UUT.u_frame.u_board.u_cheat, "A");
+                        $shm_probe(UUT.u_frame.u_board.u_cheat, "AS");
                         $shm_probe(UUT.u_frame.u_board.u_cheat.u_rom, "A");
                         $shm_probe(UUT.u_frame.u_board.u_sdram,"A");
                     `endif

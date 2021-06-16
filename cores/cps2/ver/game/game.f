@@ -69,6 +69,7 @@ $JTFRAME/hdl/jtframe_z80wait.v
 $JTFRAME/hdl/jtframe_z80wait.v
 # 68000
 $JTFRAME/hdl/cpu/jtframe_68kdma.v
+$JTFRAME/hdl/cpu/jtframe_m68k.v
 $MODULES/fx68k/fx68kAlu.sv
 $MODULES/fx68k/fx68k.sv
 $MODULES/fx68k/uaddrPla.sv

@@ -37,30 +37,31 @@
 ../../modules/jtdsp16/hdl/jtdsp16.v
 
 # Filter
-../../modules/jtframe/hdl/sound/jtframe_fir.v
-../../modules/jtframe/hdl/sound/jtframe_uprate2_fir.v
+$JTFRAME/hdl/sound/jtframe_fir.v
+$JTFRAME/hdl/sound/jtframe_uprate2_fir.v
 # SDRAM
 -F $JTFRAME/hdl/sdram/jtframe_sdram64.f
 
-../../modules/jtframe/hdl/ram/jtframe_dual_ram.v
-../../modules/jtframe/hdl/ram/jtframe_ram.v
+$JTFRAME/hdl/ram/jtframe_dual_ram.v
+$JTFRAME/hdl/ram/jtframe_ram.v
 # Z80
-../../modules/jtframe/hdl/cpu/jtframe_kabuki.v
-../../modules/jtframe/hdl/cpu/jtframe_z80.v
-../../modules/jtframe/hdl/jtframe_z80wait.v
-../../modules/jtframe/hdl/jtframe_z80wait.v
+$JTFRAME/hdl/cpu/jtframe_kabuki.v
+$JTFRAME/hdl/cpu/jtframe_z80.v
+$JTFRAME/hdl/jtframe_z80wait.v
+$JTFRAME/hdl/jtframe_z80wait.v
 # 68000
-../../modules/jtframe/hdl/cpu/jtframe_68kdma.v
+$JTFRAME/hdl/cpu/jtframe_68kdma.v
+$JTFRAME/hdl/cpu/jtframe_m68k.v
 ../../modules/fx68k/fx68kAlu.sv
 ../../modules/fx68k/fx68k.sv
 ../../modules/fx68k/uaddrPla.sv
 # Serial EEPROM
 ../../modules/jteeprom/hdl/jt9346.v
 # Clocking
-../../modules/jtframe/hdl/clocking/jtframe_cen96.v
-../../modules/jtframe/hdl/clocking/jtframe_cen48.v
-../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v
+$JTFRAME/hdl/clocking/jtframe_cen96.v
+$JTFRAME/hdl/clocking/jtframe_cen48.v
+$JTFRAME/hdl/clocking/jtframe_frac_cen.v
 # Other
-../../modules/jtframe/hdl/jtframe_sh.v
-../../modules/jtframe/hdl/keyboard/jt4701.v
-../../modules/jtframe/hdl/sound/jtframe_mixer.v
+$JTFRAME/hdl/jtframe_sh.v
+$JTFRAME/hdl/keyboard/jt4701.v
+$JTFRAME/hdl/sound/jtframe_mixer.v
