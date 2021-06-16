@@ -134,9 +134,9 @@ always @(posedge clk) last_busn <= BUSn;
 // ram_cs and vram_cs signals go down before DSWn signals
 // that causes a false read request to the SDRAM. In order
 // to avoid that a little bit of logic is needed:
-assign ram_cs   = dsn_dly ? reg_ram_cs  : pre_ram_cs;
-assign vram_cs  = dsn_dly ? reg_vram_cs : pre_vram_cs;
-assign oram_cs  = dsn_dly ? reg_oram_cs : pre_oram_cs;
+assign ram_cs   = ~BUSn & (dsn_dly ? reg_ram_cs  : pre_ram_cs);
+assign vram_cs  = ~BUSn & (dsn_dly ? reg_vram_cs : pre_vram_cs);
+assign oram_cs  = ~BUSn & (dsn_dly ? reg_oram_cs : pre_oram_cs);
 assign ppu_rstn = 1'b1;
 
 always @(posedge clk) begin
