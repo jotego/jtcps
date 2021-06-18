@@ -186,14 +186,6 @@ jtframe_cen96 u_pxl_cen(
 
 assign clk_gfx = clk96;
 
-jtcps1_cpucen u_cpucen(
-    .clk        ( clk48              ),
-    .cen12      ( cen12              ),
-    .cpu_speed  ( 1'b1               ), // always at 12MHz for CPS 1.5
-    .cpu_cen    ( cpu_cen            ),
-    .cpu_cenb   ( cpu_cenb           )
-);
-
 localparam REGSIZE=24;
 
 // Turbo speed disables DMA
@@ -208,6 +200,7 @@ jtcps1_main u_main(
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
+    .turbo      ( 1'b1              ),  // 12MHz CPU
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),

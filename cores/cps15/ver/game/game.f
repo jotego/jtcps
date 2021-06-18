@@ -19,7 +19,6 @@
 ../../../cps1/hdl/jtcps1_gfx_mappers.v
 ../../../cps1/hdl/jtcps1_dma.v
 ../../../cps1/hdl/jtcps1_sdram.v
-../../../cps1/hdl/jtcps1_ram.v
 # CPS15
 ../../hdl/jtcps15_game.v
 ../../hdl/jtcps15_sound.v
@@ -49,12 +48,15 @@ $JTFRAME/hdl/cpu/jtframe_kabuki.v
 $JTFRAME/hdl/cpu/jtframe_z80.v
 $JTFRAME/hdl/jtframe_z80wait.v
 $JTFRAME/hdl/jtframe_z80wait.v
+
 # 68000
 $JTFRAME/hdl/cpu/jtframe_68kdma.v
 $JTFRAME/hdl/cpu/jtframe_m68k.v
+$JTFRAME/hdl/cpu/jtframe_68kdtack.v
 ../../modules/fx68k/fx68kAlu.sv
 ../../modules/fx68k/fx68k.sv
 ../../modules/fx68k/uaddrPla.sv
+
 # Serial EEPROM
 ../../modules/jteeprom/hdl/jt9346.v
 # Clocking

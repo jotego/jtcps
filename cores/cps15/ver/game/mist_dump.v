@@ -71,7 +71,7 @@ module mist_dump(
                 `endif
             `endif
             `ifdef JTFRAME_SDRAM_STATS
-            $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
+                $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
             $shm_probe(UUT.u_game.u_main, "A");
@@ -89,6 +89,9 @@ module mist_dump(
                 //$shm_probe(UUT.u_game.u_sound.cpu2dsp);
                 //$shm_probe(UUT.u_game.u_eeprom,"A");
                 //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
+            `else
+                $shm_probe(UUT.u_game.u_main, "A" );
+                $shm_probe(UUT.u_game.u_main.u_dtack, "A" );
             `endif
             //$shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "A");
@@ -112,7 +115,6 @@ module mist_dump(
             //$shm_probe(UUT.u_game.u_video.VB );
             //$shm_probe(UUT.u_game.u_video.HB );
             //$shm_probe(UUT.u_game.u_main.vram_cs );
-            //$shm_probe(UUT.u_game.u_main, "A" );
             //$shm_probe(UUT.u_game.u_video, "A");
             //$shm_probe(UUT.u_game.u_video.u_obj, "AS");
             //$shm_probe(UUT.u_game.u_video.u_colmix, "AS");
