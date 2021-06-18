@@ -419,7 +419,7 @@ reg        last_LVBL;
         else if(cpu_cen)
             qs_busakn_s <= main2qs_busakn;
     end
-    assign bus_legit = main2qs_cs & (~main2qs_waitn | qs_busakn_s)
+    assign bus_legit = main2qs_cs & (~main2qs_waitn | qs_busakn_s);
 `else
     assign bus_legit = 0;
 `endif
@@ -444,30 +444,7 @@ jtframe_68kdtack u_dtack(
     .den        ( cen_den   ),
     .DTACKn     ( DTACKn    )
 );
-/*
-jtcps1_dtack u_dtack(
-    .rst        ( rst       ),
-    .clk        ( clk       ),
-    .cen10      ( cen10     ),
-    .cen10b     ( cen10b    ),
 
-    .ASn        ( ASn       ),
-    .one_wait   ( one_wait  ),
-    .bus_cs     ( bus_cs    ),
-    .bus_busy   ( bus_busy  ),
-    .rom_ok     ( rom_ok    ),
-
-    `ifdef CPS15
-        .main2qs_cs ( main2qs_cs  ),
-        .qs_busakn_s( qs_busakn_s ),
-    `else
-        .main2qs_cs ( 1'b0        ),
-        .qs_busakn_s( 1'b0        ),
-    `endif
-
-    .DTACKn     ( DTACKn    )
-);
-*/
 // interrupt generation
 reg        int1, // VBLANK
            int2; // ??
