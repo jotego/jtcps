@@ -196,13 +196,13 @@ jtframe_cen48 u_cen48(
     assign clk_gfx = clk;
 `endif
 
-jtcps1_cpucen u_cpucen(
-    .clk        ( clk48              ),
-    .cen12      ( cen12              ),
-    .cpu_speed  ( cpu_speed /*| turbo*/  ),
-    .cpu_cen    ( cpu_cen            ),
-    .cpu_cenb   ( cpu_cenb           )
-);
+// jtcps1_cpucen u_cpucen(
+//     .clk        ( clk48              ),
+//     .cen12      ( cen12              ),
+//     .cpu_speed  ( cpu_speed /*| turbo*/  ),
+//     .cpu_cen    ( cpu_cen            ),
+//     .cpu_cenb   ( cpu_cenb           )
+// );
 
 localparam REGSIZE=24;
 
@@ -218,6 +218,7 @@ jtcps1_main u_main(
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
     .cpu_cen    (                   ),
+    .turbo      ( turbo             ),
     // Timing
     .V          ( vdump             ),
     .LVBL       ( LVBL              ),

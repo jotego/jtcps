@@ -104,9 +104,9 @@ module mist_dump(
                             $shm_probe(UUT.u_game.u_main, "A");
                             $shm_probe(UUT.u_game.u_main.u_dtack, "A");
                             $shm_probe(UUT.u_game.u_sdram, "AS");
-                            $shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
-                            $shm_probe(UUT.u_game.u_video,"A");
-                            $shm_probe(UUT.u_game.u_sound, "A");
+                            //$shm_probe(UUT.u_frame.u_board.u_sdram, "AS");
+                            //$shm_probe(UUT.u_game.u_video,"A");
+                            //$shm_probe(UUT.u_game.u_sound, "A");
                         `endif
                     `endif
                     `ifdef DUMP_SDRAM
