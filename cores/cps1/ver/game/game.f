@@ -30,12 +30,15 @@ $JTFRAME/hdl/ram/jtframe_ram.v
 # Z80
 $JTFRAME/hdl/cpu/jtframe_z80.v
 $JTFRAME/hdl/jtframe_z80wait.v
+
 # 68000
 $JTFRAME/hdl/cpu/jtframe_68kdma.v
 $JTFRAME/hdl/cpu/jtframe_m68k.v
+$JTFRAME/hdl/cpu/jtframe_68kdtack.v
 $MODULES/fx68k/fx68kAlu.sv
 $MODULES/fx68k/fx68k.sv
 $MODULES/fx68k/uaddrPla.sv
+
 # Serial EEPROM
 $MODULES/jteeprom/hdl/jt9346.v
 # Clocking

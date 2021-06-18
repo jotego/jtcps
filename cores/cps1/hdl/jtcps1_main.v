@@ -19,8 +19,9 @@
 module jtcps1_main(
     input              rst,
     input              clk,
-    input              cen10,
-    input              cen10b,
+    output             cen10,
+    output             cen10b,
+    input              turbo,
     output             cpu_cen,
     // Timing
     input   [8:0]      V,
@@ -399,28 +400,51 @@ end
 
 // DTACKn generation
 wire       inta_n;
+wire       bus_legit;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
 wire       bus_busy = |{ rom_cs & ~rom_ok,
-                    (pre_ram_cs|pre_vram_cs) & ~ram_ok
-                    `ifdef CPS15
-                    , main2qs_cs & ~main2qs_waitn
-                    `endif
+                    (pre_ram_cs|pre_vram_cs) & ~ram_ok,
+                    bus_legit
                      };
 //                          wait_cycles[0] };
 wire       DTACKn;
 reg        last_LVBL;
 
 `ifdef CPS15
-reg qs_busakn_s;
+    reg qs_busakn_s;
 
-always @(posedge clk, posedge rst) begin
-    if( rst )
-        qs_busakn_s <= 1;
-    else if(cpu_cen)
-        qs_busakn_s <= main2qs_busakn;
-end
+    always @(posedge clk, posedge rst) begin
+        if( rst )
+            qs_busakn_s <= 1;
+        else if(cpu_cen)
+            qs_busakn_s <= main2qs_busakn;
+    end
+    assign bus_legit = main2qs_cs & (~main2qs_waitn | qs_busakn_s)
+`else
+    assign bus_legit = 0;
 `endif
 
+wire BUSn = ASn | (LDSn & UDSn);
+
+wire [4:0] cen_num, cen_den;
+
+assign cen_num = turbo ? 1 : 5;
+assign cen_den = turbo ? 4 : 24;
+
+jtframe_68kdtack u_dtack(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .cpu_cen    ( cen10     ),
+    .cpu_cenb   ( cen10b    ),
+    .bus_cs     ( bus_cs    ),
+    .bus_busy   ( bus_busy  ),
+    .bus_legit  ( bus_legit ),
+    .BUSn       ( BUSn      ),   // BUSn = ASn | (LDSn & UDSn)
+    .num        ( cen_num   ),
+    .den        ( cen_den   ),
+    .DTACKn     ( DTACKn    )
+);
+/*
 jtcps1_dtack u_dtack(
     .rst        ( rst       ),
     .clk        ( clk       ),
@@ -443,7 +467,7 @@ jtcps1_dtack u_dtack(
 
     .DTACKn     ( DTACKn    )
 );
-
+*/
 // interrupt generation
 reg        int1, // VBLANK
            int2; // ??
