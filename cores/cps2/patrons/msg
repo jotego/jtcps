@@ -1,7 +1,7 @@
  \BCPS 2\W  FPGA core by \RJotego\W
   http://patreon.com/topapate
 
-  Final beta version 28-May-21
+  Release Candidate 18-Jun-21
 supervised by the \RJTAlpha team\W
 
   Games for 64MB+ SDRAM
@@ -12,26 +12,23 @@ supervised by the \RJTAlpha team\W
 
   Known issues:
 
-  -Mars Matrix runs too fast
-  -Gigawing:
-    -Music stops in stage 3
-    -final boss gets stuck
   -Armored warriors:
     -some tiles are wrong
 
         \RDirectors\W
 
+atrac17         Suv
 AnotherJoe      Antonio Villena
-Bender          Chris Gelatt
-Cornelle Janse  DJ Hard
+Bender          Boogermann
+Chris Gelatt    DJ Hard
 Filip Kindt     Frederic Mahe
-JPS (RetroFPGA) John Biscevic
-Louis Martinez  Martin Birkeldh
-Michael Yount   Purple Tinker
-Shawn Henderson Silvercloud
+JPS (RetroFPGA) James D
+Jeffrey Pierce  John Biscevic
+amoore2600      Louis Martinez
+Martin Birkeldh Michael Yount
+Purple Tinker   Shawn Henderson
 Spencer Bradley TT_Hipster1941
-amoore2600      Atrac17
-Suv
+Kevin finisterre
 
         \RThanks to\W
 
@@ -41,26 +38,30 @@ Jo Tomiyori    Phillip McMahon
 
 ARCADEAGES      Adam Davis
 Anders Rensberg Andreas Wester
-Andrew Francomb Andyways
-Arjan de        Bob Gallardo
-Chi Wai         Chris Brown
-Chris Doyle     Chris Harvey
-Chris Jardine   Christian
-Connor Glynn    D.J. Estreito
-DMG             Darren Chell
+Andrew Francomb Andy Palmer
+Andyways        Arjan de
+Bob Gallardo    Chi Wai
+Chris Brown     Chris Doyle
+Chris Harvey    Chris Jardine
+Christian       Connor Glynn
+D.J. Estreito   DMG
+Darren Chell    David Agudo
 David Ashby     David Mills
-David Moylan    Don Gafford
-Ed Balan        Edward Rana
+David Moylan    Dean Winger
+Don Gafford     Ed Balan
+Eduardo Javier  Edward Rana
 Epixjava        Gladius
 Gus Douboulidis Gwaland
-H. Osterholz    H. Nordstrom
+H. Osterholz    Henrik Nords.
 Ian Court       Ivo
 James Baker     James Trautner
 James Williams  Jason Nagy
+Jeffrey Haas    Jim Weinhart
 Joeri van       John Casey
-Jorge Slowfret  Joseph Hsieh
-Juan Francisco  Krycek7o2
-Leslie Law      MakeshiftMoney
+Jorge Slowfret  Jose Pulgar
+Joseph Hsieh    Juan Francisco
+Krycek7o2       Leslie Law
+Lionel LENOBLE  MakeshiftMoney
 Marcelo C.      Marcus Hogue
 Marcus Sid      Martin DiPalma
 Matt Postema    Matthew Young
@@ -74,9 +75,9 @@ Robert Mullings Roman Buser
 Simon Johnstone Steven Wilson
 Tarnjeet Bhachu Technoir1986
 The Collector   Theodore Huber
-Toby Boreham    T. Richardson
+Toby Boreham    Tony Richardson
 Torren Beitler  Tym Whitney
-Ulf Skutnabba  Ultrarobotninja
+Ulf Skutnabba   Ultrarobotninja
 Victor Gomariz  Vitor Duarte
 Xzarian         Younghoon Gong
 Zachary Muske   asdfgasfhsn
