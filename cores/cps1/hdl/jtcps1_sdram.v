@@ -34,8 +34,8 @@ module jtcps1_sdram #( parameter
 
     // ROM LOAD
     input   [25:0]  ioctl_addr,
-    input   [ 7:0]  ioctl_data,
-    output  [ 7:0]  ioctl_data2sd,
+    input   [ 7:0]  ioctl_dout,
+    output  [ 7:0]  ioctl_din,
     input           ioctl_wr,
     input           ioctl_ram,
     output  [22:0]  prog_addr,
@@ -230,8 +230,8 @@ jtcps1_prom_we #(
 `else
     .ioctl_addr     ( ioctl_addr    ),
 `endif
-    .ioctl_data     ( ioctl_data    ),
-    .ioctl_data2sd  ( ioctl_data2sd ),
+    .ioctl_dout     ( ioctl_dout    ),
+    .ioctl_din      ( ioctl_din     ),
     .ioctl_wr       ( ioctl_wr      ),
     .ioctl_ram      ( ioctl_ram     ),
     .prog_addr      ( prog_addr     ),

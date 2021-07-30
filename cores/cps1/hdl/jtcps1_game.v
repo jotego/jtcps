@@ -61,9 +61,9 @@ module jtcps1_game(
 
     // ROM LOAD
     input   [24:0]  ioctl_addr,
-    input   [ 7:0]  ioctl_data,
+    input   [ 7:0]  ioctl_dout,
     input           ioctl_wr,
-    output  [ 7:0]  ioctl_data2sd,
+    output  [ 7:0]  ioctl_din,
     input           ioctl_ram, // 0 - ROM, 1 - RAM(EEPROM)
     output  [21:0]  prog_addr,
     output  [15:0]  prog_data,
@@ -481,8 +481,8 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
 
     // ROM LOAD
     .ioctl_addr  ( ioctl_addr    ),
-    .ioctl_data  ( ioctl_data    ),
-    .ioctl_data2sd(ioctl_data2sd ),
+    .ioctl_dout  ( ioctl_dout    ),
+    .ioctl_din   ( ioctl_din     ),
     .ioctl_wr    ( ioctl_wr      ),
     .ioctl_ram   ( ioctl_ram     ),
     .prog_addr   ( prog_addr     ),

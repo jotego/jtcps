@@ -29,8 +29,8 @@ parameter        EEPROM_AW  = 7
     input                clk,
     input                downloading,
 (*keep*)    input      [25:0]    ioctl_addr,    // max 64 MB
-(*keep*)    input      [ 7:0]    ioctl_data,
-    output     [ 7:0]    ioctl_data2sd,
+(*keep*)    input      [ 7:0]    ioctl_dout,
+    output     [ 7:0]    ioctl_din,
 (*keep*)    input                ioctl_wr,
     input                ioctl_ram,
 (*keep*)    output reg [22:0]    prog_addr,
@@ -123,14 +123,14 @@ always @(*) begin
     if( CPS==1 ) begin
         pang3 = is_cpu && cpu_addr[19] && decrypt  && (cpu_addr[0]^pang3_bit);
         pang3_decrypt =
-            (((((((ioctl_data[0] ? 8'h04 : 8'h00)  ^
-                  (ioctl_data[1] ? 8'h21 : 8'h00)) ^
-                  (ioctl_data[2] ? 8'h01 : 8'h00)) ^
-                  (ioctl_data[3] ? 8'h00 : 8'h50)) ^
-                  (ioctl_data[4] ? 8'h40 : 8'h00)) ^
-                  (ioctl_data[5] ? 8'h06 : 8'h00)) ^
-                  (ioctl_data[6] ? 8'h08 : 8'h00)) ^
-                  (ioctl_data[7] ? 8'h00 : 8'h88);
+            (((((((ioctl_dout[0] ? 8'h04 : 8'h00)  ^
+                  (ioctl_dout[1] ? 8'h21 : 8'h00)) ^
+                  (ioctl_dout[2] ? 8'h01 : 8'h00)) ^
+                  (ioctl_dout[3] ? 8'h00 : 8'h50)) ^
+                  (ioctl_dout[4] ? 8'h40 : 8'h00)) ^
+                  (ioctl_dout[5] ? 8'h06 : 8'h00)) ^
+                  (ioctl_dout[6] ? 8'h08 : 8'h00)) ^
+                  (ioctl_dout[7] ? 8'h00 : 8'h88);
     end else begin
         pang3 = 0;
         pang3_decrypt = 8'd0;
@@ -140,7 +140,7 @@ end
 always @(posedge clk) begin
     if ( ioctl_wr && !ioctl_ram ) begin
         pre_data  <= pang3 ?
-            pang3_decrypt : ioctl_data;
+            pang3_decrypt : ioctl_dout;
         prog_mask <= !ioctl_addr[0] ? 2'b10 : 2'b01;
         prog_addr <= is_cpu ? bulk_addr[23:1] + CPU_OFFSET : (
                      is_snd ?  snd_addr[23:1] + SND_OFFSET : (
@@ -153,7 +153,7 @@ always @(posedge clk) begin
             cps2_key_we <= 1;
         end
         if( ioctl_addr < START_BYTES[25:0] ) begin
-            starts  <= { ioctl_data, starts[STARTW-1:8] };
+            starts  <= { ioctl_dout, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;
             prom_we <= 1'b0;
@@ -163,13 +163,13 @@ always @(posedge clk) begin
                 prog_we   <= 1'b0;
                 prom_we   <= 1'b0;
                 if( ioctl_addr[5:0] == CFG_BYTE )
-                    {decrypt, pang3_bit} <= ioctl_data[7:6];
+                    {decrypt, pang3_bit} <= ioctl_dout[7:6];
             end else if(ioctl_addr>=FULL_HEADER) begin
                 cfg_we    <= 1'b0;
                 prog_we   <= ~is_qsnd;
                 prom_we   <=  is_qsnd;
             end else if( ioctl_addr[5:0] == JOY_BYTE ) begin
-                joymode <= ioctl_data[1:0]; // only CPS2
+                joymode <= ioctl_dout[1:0]; // only CPS2
             end
         end
     end
@@ -187,7 +187,7 @@ end
 
 // EEPROM 16 bit parallel interface <-> 8 bit dump interface
 assign dump_addr = ioctl_addr[EEPROM_AW:1];
-assign ioctl_data2sd = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
+assign ioctl_din = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
 
 initial begin
     dump_we  = 0;
@@ -199,9 +199,9 @@ always @(posedge clk) begin
     if (ioctl_wr && ioctl_ram) begin
         dump_we <= 1;
         if(ioctl_addr[0]) begin
-            dump_din[15:8] <= ioctl_data;
+            dump_din[15:8] <= ioctl_dout;
         end else begin
-            dump_din[7:0] <= ioctl_data;
+            dump_din[7:0] <= ioctl_dout;
         end
     end
 end
