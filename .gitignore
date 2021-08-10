@@ -5,7 +5,6 @@ rom/*.rom
 *.tar.gz
 *.rom
 *.arc
-*.mra
 *.log
 *.hex
 *.png
