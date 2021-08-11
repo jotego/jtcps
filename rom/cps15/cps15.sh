@@ -10,7 +10,7 @@ OUTDIR=mra
 mkdir -p "$OUTDIR"
 mkdir -p "${OUTDIR}/$ALTD"
 
-AUXTMP=/tmp/$RANDOM$RANDOM
+AUXTMP=/tmp/$RANDOM
 jtcfgstr -target=mist -output=bash -def $DEF|grep _START > $AUXTMP
 source $AUXTMP
 
