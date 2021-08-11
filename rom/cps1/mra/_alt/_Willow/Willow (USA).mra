@@ -1,0 +1,115 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Willow (USA)</name>
+    <setname>willowu</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>1989</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>USA</region>
+    <platform>CPS-1</platform>
+    <category>Platformer</category>
+    <catver>Platform / Shooter Scrolling</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="willowu.zip|willow.zip" md5="None">
+        <part>
+        00 04 40 04 40 05 40 11 
+        ff ff ff ff ff ff ff ff 
+        24 03 ff ff ff ff 30 2e 
+        2c 2a 28 00 00 26 20 10 
+        08 00 29 40 66 33 ff 00 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="35.11h" crc="7a791e77" map="01"/>
+            <part name="wlu_30.11f" crc="d604dbb1" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="wlu_36.12h" crc="36100209" map="01"/>
+            <part name="wlu_31.12f" crc="0eb48a83" map="10"/>
+        </interleave>
+        <part name="wlm-32.8h" crc="dfd9f643"/>
+        <!-- audiocpu - starts at 0x100000 -->
+        <part name="wl_09.12b" crc="f6b3d060"/>
+        <!-- oki - starts at 0x110000 -->
+        <part name="wl_18.11c" crc="bde23d4d"/>
+        <part name="wl_19.12c" crc="683898f5"/>
+        <!-- gfx - starts at 0x150000 -->
+        <interleave output="64">
+            <part name="wlm-7.7a" crc="afa74b73" map="00000021"/>
+            <part name="wlm-5.9a" crc="12a0dc0b" map="00002100"/>
+            <part name="wlm-3.3a" crc="c6f2abce" map="00210000"/>
+            <part name="wlm-1.5a" crc="4aa4c6d3" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="wl_24.7d" crc="6f0adee5" map="00000001"/>
+            <part name="wl_14.7c" crc="9cf3027d" map="00000010"/>
+            <part name="wl_26.9d" crc="f09c8ecf" map="00000100"/>
+            <part name="wl_16.9c" crc="e35407aa" map="00001000"/>
+            <part name="wl_20.3d" crc="84992350" map="00010000"/>
+            <part name="wl_10.3c" crc="b87b5a36" map="00100000"/>
+            <part name="wl_22.5d" crc="fd3f89f0" map="01000000"/>
+            <part name="wl_12.5c" crc="7da49d69" map="10000000"/>
+        </interleave>
+        <!-- Total 0x450000 bytes - 4416 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="3f,1f,de">
+        <!-- DSWA -->
+        <dip name="Free Play" bits="0,5" ids="On,Off"/>
+        <dip name="Coin A" bits="0,2" ids="2/1,4/1,3/1,2/1,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="3,5" ids="2/1,4/1,3/1,2/1,1/4,1/3,1/2,1/1"/>
+        <dip name="Cabinet" bits="6" ids="Upright 2 Players,Upright 1 Player"/>
+        <dip name="Maximum magic/sword power" bits="7" ids="On,Off"/>
+        <dip name="Cabinet" bits="6,7" ids="Cocktail,Upright 2 Players,Upright 1 Player"/>
+        <!-- DSWB -->
+        <dip name="Slow Motion Delay" bits="9,12" ids="17 Frames,16 Frames,15 Frames,14 Frames,13 Frames,12 Frames,11 Frames,10 Frames,9 Frames,8 Frames,7 Frames,6 Frames,5 Frames,4 Frames,3 Frames,2 Frames"/>
+        <dip name="Difficulty" bits="8,10" ids="8,7,6,5,1,2,3,4"/>
+        <dip name="Nando Speed" bits="11,12" ids="Very Fast,Fast,Slow,Normal"/>
+        <dip name="Starting Level" bits="13,15" ids="Level 6,Level 5,Level 4,Level 3,Level 2,Level 1"/>
+        <dip name="Stage Magic Continue" bits="15" ids="On,Off"/>
+        <!-- DSWC -->
+        <dip name="Turbo Mode" bits="16" ids="On,Off"/>
+        <dip name="Freeze" bits="17" ids="On,Off"/>
+        <dip name="Lives" bits="16,17" ids="4,3,1,2"/>
+        <dip name="Slow Motion" bits="18" ids="On,Off"/>
+        <dip name="Invulnerability" bits="19" ids="On,Off"/>
+        <dip name="Vitality" bits="18,19" ids="2,5,4,3"/>
+        <dip name="Flip Screen" bits="20" ids="On,Off"/>
+        <dip name="Demo Sounds" bits="21" ids="Off,On"/>
+        <dip name="Display Debug Infos" bits="21" ids="Yes,No"/>
+        <dip name="Allow Continue" bits="22" ids="No,Yes"/>
+        <dip name="Game Mode" bits="23" ids="Test,Game"/>
+    </switches>
+    <buttons names="Magic/Sword,Jump,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="3"/>
+</misterromdescription>

@@ -1,0 +1,92 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Ganbare! Marine Kun (Japan 2K0411)</name>
+    <setname>ganbare</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>2000</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>1</players>
+    <joystick>4-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Japan</region>
+    <platform>CPS-1</platform>
+    <category>Redemption</category>
+    <catver>Shooter / 3rd Person</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="ganbare.zip" md5="None">
+        <part>
+        00 02 40 02 40 03 60 13 
+        ff ff ff ff ff ff ff ff 
+        32 ff 00 02 04 06 26 28 
+        2a 2c 2e 36 30 30 02 04 
+        08 30 20 40 44 f3 ff 00 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <part name="mrnj_23d.8f" crc="f929be72"/>
+        <!-- audiocpu - starts at 0x80000 -->
+        <part name="mrnj_09.12a" crc="62470d72"/>
+        <!-- oki - starts at 0x90000 -->
+        <part name="mrnj_18.11c" crc="08e13940"/>
+        <part name="mrnj_19.12c" crc="5fa59927"/>
+        <!-- gfx - starts at 0xD0000 -->
+        <interleave output="64">
+            <part name="mrnj_01.3a" crc="3f878020" map="00000021"/>
+            <part name="mrnj_02.4a" crc="3e5624d8" map="00002100"/>
+            <part name="mrnj_03.5a" crc="d1e61f96" map="00210000"/>
+            <part name="mrnj_04.6a" crc="d241971b" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="mrnj_05.7a" crc="c0a14562" map="00000021"/>
+            <part name="mrnj_06.8a" crc="e6a71dfc" map="00002100"/>
+            <part name="mrnj_07.9a" crc="99afb6c7" map="00210000"/>
+            <part name="mrnj_08.10a" crc="52882c20" map="21000000"/>
+        </interleave>
+        <!-- timekeeper - starts at 0x4D0000 -->
+        <part name="m48t35y-70pc1.9n" crc="96107b4a"/>
+        <!-- Total 0x4D8000 bytes - 4960 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="8b,4c,7f">
+        <!-- DSWA -->
+        <dip name="Medal Setup" bits="0" ids="Don't use,1 Medal 1"/>
+        <dip name="Coin Setup" bits="1" ids="10 Yen,100 Yen"/>
+        <dip name="Change Setup" bits="2,4" ids="11,12,No change,5,6,7,8,10"/>
+        <dip name="10 Yen Setup" bits="5,6" ids="Don't use,3/1,2/1,1/1"/>
+        <dip name="Payout Setup" bits="7" ids="Payout Mode,Credit Mode"/>
+        <!-- DSWB -->
+        <dip name="Payout Rate Setup" bits="8,10" ids="85%,90%,55%,60%,65%,70%,75%,80%"/>
+        <!-- DSWC -->
+        <dip name="Demo Sounds" bits="16,17" ids="Off,Every third sound,Every second sound,On"/>
+        <dip name="Clear RAM" bits="22" ids="Yes,No"/>
+        <dip name="Tes Mode Display" bits="23" ids="On,Off"/>
+    </switches>
+    <buttons names="Insert Medal,-,-,-,-,-,Start,Coin,Core credits" default="YXBALR,Select,Start,-" count="2"/>
+</misterromdescription>

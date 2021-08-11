@@ -1,0 +1,94 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Carrier Air Wing (World 901009)</name>
+    <setname>cawingr1</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>1990</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>World</region>
+    <platform>CPS-1</platform>
+    <category>Shoot &apos;em Up</category>
+    <catver>Shooter / Flying Horizontal</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="cawingr1.zip|cawing.zip" md5="None">
+        <part>
+        00 04 40 04 40 05 40 0d 
+        ff ff ff ff ff ff ff ff 
+        00 46 ff ff ff ff 0c 0a 
+        08 06 04 36 00 02 10 0a 
+        0a 00 03 40 44 f3 ff 00 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="cae_35.11h" crc="69419113" map="01"/>
+            <part name="cae_30.11f" crc="23305cd5" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="cae_36.12h" crc="4dbf6f8e" map="01"/>
+            <part name="cae_31.12f" crc="9008dfb3" map="10"/>
+        </interleave>
+        <part name="ca-32m.8h" crc="0c4837d4"/>
+        <!-- audiocpu - starts at 0x100000 -->
+        <part name="cae_09.12b" crc="96fe7485"/>
+        <!-- oki - starts at 0x110000 -->
+        <part name="cae_18.11c" crc="4a613a2c"/>
+        <part name="cae_19.12c" crc="74584493"/>
+        <!-- gfx - starts at 0x150000 -->
+        <interleave output="64">
+            <part name="ca-5m.7a" crc="66d4cc37" map="00000021"/>
+            <part name="ca-7m.9a" crc="b6f896f2" map="00002100"/>
+            <part name="ca-1m.3a" crc="4d0620fd" map="00210000"/>
+            <part name="ca-3m.5a" crc="0b0341c3" map="21000000"/>
+        </interleave>
+        <!-- Total 0x350000 bytes - 3392 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="ff,fc,9f">
+        <!-- DSWA -->
+        <dip name="Coin A" bits="0,2" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="3,5" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="2 Coins to Start, 1 to Continue" bits="6" ids="On,Off"/>
+        <!-- DSWB -->
+        <dip name="Difficulty Level (Enemy's Strength)" bits="8,10" ids="8,7,6,5,4,3,2,1"/>
+        <dip name="Difficulty Level (Player's Strength)" bits="11,12" ids="Hardest,Hard,Easy,Normal"/>
+        <!-- DSWC -->
+        <dip name="Free Play" bits="18" ids="On,Off"/>
+        <dip name="Freeze" bits="19" ids="On,Off"/>
+        <dip name="Flip Screen" bits="20" ids="On,Off"/>
+        <dip name="Demo Sounds" bits="21" ids="On,Off"/>
+        <dip name="Allow Continue" bits="22" ids="Yes,No"/>
+        <dip name="Game Mode" bits="23" ids="Test,Game"/>
+    </switches>
+    <buttons names="Fire,Special Weapon,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="3"/>
+</misterromdescription>

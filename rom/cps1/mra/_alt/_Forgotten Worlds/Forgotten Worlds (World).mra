@@ -1,0 +1,117 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Forgotten Worlds (World)</name>
+    <setname>forgottna</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>1988</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <joystick>8-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>World</region>
+    <platform>CPS-1</platform>
+    <category>Run &amp; Gun</category>
+    <catver>Shooter / Flying Horizontal</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="forgottna.zip|forgottn.zip" md5="None">
+        <part>
+        00 04 40 04 40 05 40 15 
+        ff ff ff ff ff ff ff ff 
+        ff 00 ff ff ff ff 26 28 
+        2a 2c 2e 00 30 30 02 04 
+        08 30 0e 40 88 73 ff 00 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="lw15.12h" crc="50d7012d" map="01"/>
+            <part name="lw11.12f" crc="73e920b7" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="lw14.13h" crc="539b2339" map="01"/>
+            <part name="lw10.13f" crc="bea45994" map="10"/>
+        </interleave>
+        <part name="lw-07.10g" crc="fd252a26"/>
+        <!-- audiocpu - starts at 0x100000 -->
+        <part name="lw_00.13c" crc="59df2a63"/>
+        <!-- oki - starts at 0x110000 -->
+        <part name="lw-03u.12e" crc="807d051f"/>
+        <part name="lw-04u.13e" crc="e6cd098e"/>
+        <!-- gfx - starts at 0x150000 -->
+        <interleave output="64">
+            <part name="lw_2.2b" crc="4bd75fee" map="00000001"/>
+            <part name="lw_1.2a" crc="65f41485" map="00000010"/>
+            <part name="lw-08.9b" crc="25a8e43c" map="00002100" length="0x40000" offset="0"/>
+            <part name="lw_18.5e" crc="b4b6241b" map="00010000"/>
+            <part name="lw_17.5c" crc="c5eea115" map="00100000"/>
+            <part name="lw_30.8h" crc="b385954e" map="01000000"/>
+            <part name="lw_29.8f" crc="7bda1ac6" map="10000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="lw_4.3b" crc="50cf757f" map="00000001"/>
+            <part name="lw_3.3a" crc="c03ef278" map="00000010"/>
+            <part name="lw-08.9b" crc="25a8e43c" map="00002100" length="0x40000" offset="0x40000"/>
+            <part name="lw_20.7e" crc="df1a3665" map="00010000"/>
+            <part name="lw_19.7c" crc="15af8440" map="00100000"/>
+            <part name="lw_32.9h" crc="30967a15" map="01000000"/>
+            <part name="lw_31.9f" crc="c49d37fb" map="10000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="lw-02.6b" crc="43e6c5c8" map="00000021" length="0x40000" offset="0"/>
+            <part name="lw_14.10b" crc="82862cce" map="00000100"/>
+            <part name="lw_13.10a" crc="b81c0e96" map="00001000"/>
+            <part name="lw-06.9d" crc="5b9edffc" map="00210000" length="0x40000" offset="0"/>
+            <part name="lw_26.10e" crc="57bcd032" map="01000000"/>
+            <part name="lw_25.10c" crc="bac91554" map="10000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="lw-02.6b" crc="43e6c5c8" map="00000021" length="0x40000" offset="0x40000"/>
+            <part name="lw_16.11b" crc="40b26554" map="00000100"/>
+            <part name="lw_15.11a" crc="1b7d2e07" map="00001000"/>
+            <part name="lw-06.9d" crc="5b9edffc" map="00210000" length="0x40000" offset="0x40000"/>
+            <part name="lw_28.11e" crc="a805ad30" map="01000000"/>
+            <part name="lw_27.11c" crc="103c1bd2" map="10000000"/>
+        </interleave>
+        <!-- Total 0x550000 bytes - 5440 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="ff,fc,ff">
+        <!-- DSWA -->
+        <dip name="Coin A" bits="0,2" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="3,5" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="Demo Sounds" bits="6" ids="Off,On"/>
+        <dip name="Flip Screen" bits="7" ids="On,Off"/>
+        <!-- DSWB -->
+        <dip name="Difficulty" bits="8,10" ids="7,6,5,4,3,2,1,0"/>
+        <dip name="Service Mode" bits="14" ids="On,Off"/>
+        <dip name="Freeze" bits="15" ids="On,Off"/>
+    </switches>
+    <buttons names="Fire,Turn CCW,Turn CW,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="1"/>
+</misterromdescription>

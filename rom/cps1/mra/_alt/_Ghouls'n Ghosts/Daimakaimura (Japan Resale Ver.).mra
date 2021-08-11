@@ -1,0 +1,94 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Daimakaimura (Japan Resale Ver.)</name>
+    <setname>daimakair</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>1988</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <joystick>4-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Japan</region>
+    <platform>CPS-1</platform>
+    <category>Platformer</category>
+    <catver>Platform / Fighter Scrolling</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="daimakair.zip|ghouls.zip" md5="None">
+        <part>
+        00 04 80 04 80 05 80 15 
+        ff ff ff ff ff ff ff ff 
+        32 ff 00 02 04 06 26 28 
+        2a 2c 2e 36 30 30 02 04 
+        08 30 0a 40 65 13 f1 00 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <part name="damj_23.8f" crc="c3b248ec"/>
+        <part name="damj_22.7f" crc="595ff2f3"/>
+        <!-- audiocpu - starts at 0x100000 -->
+        <part name="dam_09.12a" crc="0656ff53"/>
+        <!-- oki - starts at 0x120000 -->
+        <part repeat="0x40000"> FF</part>
+        <!-- gfx - starts at 0x160000 -->
+        <interleave output="64">
+            <part name="dam_01.3a" crc="0ba9c0b0" map="00000021"/>
+            <part name="dam_02.4a" crc="5d760ab9" map="00002100"/>
+            <part name="dam_03.5a" crc="4ba90b59" map="00210000"/>
+            <part name="dam_04.6a" crc="4bdee9de" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="dam_05.7a" crc="7dc61b94" map="00000021"/>
+            <part name="dam_06.8a" crc="fde89758" map="00002100"/>
+            <part name="dam_07.9a" crc="ec351d78" map="00210000"/>
+            <part name="dam_08.10a" crc="ee2acc1e" map="21000000"/>
+        </interleave>
+        <!-- Total 0x560000 bytes - 5504 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="7f,ff,ff">
+        <!-- DSWA -->
+        <dip name="Coin A" bits="0,2" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="Coin B" bits="3,5" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="Cabinet" bits="6,7" ids="Cocktail,Upright 2 Players,Upright 1 Player"/>
+        <!-- DSWB -->
+        <dip name="Difficulty" bits="8,10" ids="8,7,6,5,1,2,3,4"/>
+        <dip name="Bonus Life" bits="12,13" ids="40K, 70K and every 80K,20K, 50K and every 70K,10K, 30K and every 30K,30K, 60K and every 70K"/>
+        <dip name="Freeze" bits="15" ids="On,Off"/>
+        <!-- DSWC -->
+        <dip name="Lives" bits="16,17" ids="6,5,4,3"/>
+        <dip name="Flip Screen" bits="20" ids="On,Off"/>
+        <dip name="Demo Sounds" bits="21" ids="Off,On"/>
+        <dip name="Allow Continue" bits="22" ids="No,Yes"/>
+        <dip name="Game Mode" bits="23" ids="Test,Game"/>
+        <!-- IN0 -->
+        <dip name="Service Mode" bits="30" ids="On,Off"/>
+    </switches>
+    <buttons names="Fire,Jump,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="2"/>
+</misterromdescription>

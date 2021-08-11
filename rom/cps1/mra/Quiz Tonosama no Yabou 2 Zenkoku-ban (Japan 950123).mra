@@ -1,0 +1,107 @@
+<!--          FPGA compatible core for Capcom arcade hardware by Jotego
+
+              This core is available for hardware compatible with MiST and MiSTer
+              Other FPGA systems may be supported by the time you read this.
+              This work is not mantained by the MiSTer project. Please contact the
+              core author for issues and updates.
+
+              (c) Jose Tejada, 2021. Please support the author
+              Patreon: https://patreon.com/topapate
+              Paypal:  https://paypal.me/topapate
+
+              The author does not endorse or participate in illegal distribution
+              of copyrighted material. This work can be used with legally
+              obtained ROM dumps or with compatible homebrew software.
+
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
+
+-->
+
+<misterromdescription>
+    <about author="jotego" webpage="https://patreon.com/topapate" source="https://github.com/jotego" twitter="@topapate"/>
+    <name>Quiz Tonosama no Yabou 2: Zenkoku-ban (Japan 950123)</name>
+    <setname>qtono2j</setname>
+    <rbf>jtcps1</rbf>
+    <mameversion>0229</mameversion>
+    <year>1995</year>
+    <manufacturer>Capcom</manufacturer>
+    <players>2</players>
+    <joystick>4-way</joystick>
+    <rotation>horizontal</rotation>
+    <region>Japan</region>
+    <platform>CPS-1</platform>
+    <category>Quiz</category>
+    <catver>Quiz / Questions in Japanese</catver>
+    <mraauthor>jotego,atrac17</mraauthor>
+    <rom index="0" zip="qtono2j.zip" md5="None">
+        <part>
+        00 04 40 04 40 05 40 15 
+        ff ff ff ff ff ff ff ff 
+        32 ff 00 02 04 06 26 28 
+        2a 2c 2e 36 30 30 02 04 
+        08 30 26 40 c8 73 f7 01 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff 
+        ff ff ff ff ff ff ff ff
+        </part>
+        <!-- maincpu - starts at 0x0 -->
+        <interleave output="16">
+            <part name="tn2j_37.11f" crc="d1d30da1" map="01"/>
+            <part name="tn2j_30.11e" crc="9226eb5e" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="tn2j_38.12f" crc="1f139bcc" map="01"/>
+            <part name="tn2j_31.12e" crc="015e6a8a" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="tn2j_35.9f" crc="7a1ab87d" map="01"/>
+            <part name="tn2j_28.9e" crc="86d27f71" map="10"/>
+        </interleave>
+        <interleave output="16">
+            <part name="tn2j_36.10f" crc="4c4b2a0a" map="01"/>
+            <part name="tn2j_29.10e" crc="9c384e99" map="10"/>
+        </interleave>
+        <!-- audiocpu - starts at 0x100000 -->
+        <part name="tn2j_09.12a" crc="e464b969"/>
+        <!-- oki - starts at 0x110000 -->
+        <part name="tn2j_18.11c" crc="a40bf9a7"/>
+        <part name="tn2j_19.12c" crc="5b3b931e"/>
+        <!-- gfx - starts at 0x150000 -->
+        <interleave output="64">
+            <part name="tn2-02m.4a" crc="f2016a34" map="00000021"/>
+            <part name="tn2-04m.6a" crc="094e0fb1" map="00002100"/>
+            <part name="tn2-01m.3a" crc="cb950cf9" map="00210000"/>
+            <part name="tn2-03m.5a" crc="18a5bf59" map="21000000"/>
+        </interleave>
+        <interleave output="64">
+            <part name="tn2-11m.4c" crc="d0edd30b" map="00000021"/>
+            <part name="tn2-13m.6c" crc="426621c3" map="00002100"/>
+            <part name="tn2-10m.3c" crc="a34ece70" map="00210000"/>
+            <part name="tn2-12m.5c" crc="e04ff2f4" map="21000000"/>
+        </interleave>
+        <!-- Total 0x550000 bytes - 5440 kBytes -->
+    </rom>
+    <rom index="1">
+        <part>00</part>
+    </rom>
+    <nvram index="2" size="128"/>
+    <switches page_id="1" page_name="Switches" base="8" default="ff,9c,df">
+        <!-- DSWA -->
+        <dip name="Coinage" bits="0,2" ids="4/1,3/1,2/1,1/6,1/4,1/3,1/2,1/1"/>
+        <dip name="2 Coins to Start, 1 to Continue" bits="6" ids="On,Off"/>
+        <!-- DSWB -->
+        <dip name="Difficulty" bits="8,10" ids="7,6,5,4,3,2,1,0"/>
+        <dip name="Lives" bits="13,15" ids="1,2,4,5,3"/>
+        <!-- DSWC -->
+        <dip name="Infinite Lives (Cheat)" bits="17" ids="On,Off"/>
+        <dip name="Free Play" bits="18" ids="On,Off"/>
+        <dip name="Freeze" bits="19" ids="On,Off"/>
+        <dip name="Flip Screen" bits="20" ids="On,Off"/>
+        <dip name="Demo Sounds" bits="21" ids="On,Off"/>
+        <dip name="Allow Continue" bits="22" ids="No,Yes"/>
+        <dip name="Game Mode" bits="23" ids="Test,Game"/>
+    </switches>
+    <buttons names="Button 1,Button 2,Button 3,Button 4,-,-,Start,Coin,Core credits" default="Y,X,B,ALR,Select,Start,-" count="4"/>
+</misterromdescription>
