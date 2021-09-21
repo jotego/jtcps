@@ -187,7 +187,7 @@ jtframe_cen96 u_pxl_cen(
 );
 
 assign clk_gfx = clk96;
-assign clk_rst = rst96;
+assign rst_gfx = rst96;
 
 localparam REGSIZE=24;
 
