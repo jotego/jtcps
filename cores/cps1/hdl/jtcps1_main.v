@@ -443,7 +443,11 @@ jtframe_68kdtack u_dtack(
     .DSn        ( {UDSn, LDSn} ),
     .num        ( cen_num   ),
     .den        ( cen_den   ),
-    .DTACKn     ( DTACKn    )
+    .DTACKn     ( DTACKn    ),
+    // unused
+    .fave       (           ),
+    .fworst     (           ),
+    .frst       (           )
 );
 
 // interrupt generation

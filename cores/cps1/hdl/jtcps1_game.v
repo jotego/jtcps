@@ -424,7 +424,7 @@ end
 
 (*keep*) reg [3:0] rst_snd;
 always @(negedge clk) begin
-    rst_snd <= { rst_snd[2:0], rst };
+    rst_snd <= { rst_snd[2:0], rst48 };
 end
 
 jtcps1_sound u_sound(
