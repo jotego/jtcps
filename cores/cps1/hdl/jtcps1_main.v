@@ -439,7 +439,8 @@ jtframe_68kdtack u_dtack(
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),
     .bus_legit  ( bus_legit ),
-    .BUSn       ( BUSn      ),   // BUSn = ASn | (LDSn & UDSn)
+    .ASn        ( ASn       ),
+    .DSn        ( {UDSn, LDSn} ),
     .num        ( cen_num   ),
     .den        ( cen_den   ),
     .DTACKn     ( DTACKn    )

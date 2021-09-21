@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - build
+      - neptuno
 
 jobs:
 
@@ -21,6 +22,7 @@ jobs:
       credentials:
         username: jotego
         password: ${{ secrets.DOCKER_LOGIN }}
+      options: --net=host
 
     steps:
       - name: Cancel Previous Runs
@@ -33,4 +35,4 @@ jobs:
           submodules: true
           repository: ${{ github.repository }}
       - name: compile for neptuno
-        run: /docked_build.sh cps2 -neptuno 
+        run: /docked_build.sh cps2 -neptuno  
