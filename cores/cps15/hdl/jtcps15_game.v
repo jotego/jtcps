@@ -19,7 +19,9 @@
 module jtcps15_game(
     input           rst,
     input           clk,      // SDRAM 96/48
+    input           rst96,    // 96   MHz -required for QSound
     input           clk96,    // 96   MHz -required for QSound
+    input           rst48,    // 48
     input           clk48,    // 48
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
@@ -91,7 +93,7 @@ module jtcps15_game(
     input   [3:0]   gfx_en
 );
 
-wire        clk_gfx;
+wire        clk_gfx, rst_gfx;
 wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, qsnd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
@@ -185,6 +187,7 @@ jtframe_cen96 u_pxl_cen(
 );
 
 assign clk_gfx = clk96;
+assign clk_rst = rst96;
 
 localparam REGSIZE=24;
 
@@ -195,7 +198,7 @@ assign busack = busack_cpu | turbo;
 
 `ifndef NOMAIN
 jtcps1_main u_main(
-    .rst        ( rst               ),
+    .rst        ( rst48             ),
     .clk        ( clk48             ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
@@ -276,7 +279,7 @@ assign busack_cpu = 1;
 reg rst_video, rst_sdram;
 
 always @(negedge clk_gfx) begin
-    rst_video <= rst;
+    rst_video <= rst_gfx;
 end
 
 always @(negedge clk) begin

@@ -19,8 +19,10 @@
 module jtcps1_game(
     input           rst,
     input           clk,      // SDRAM
+    input           rst48,    // 48   MHz
     input           clk48,    // 48   MHz
     `ifdef JTFRAME_CLK96
+    input           rst96,    // 96   MHz
     input           clk96,    // 96   MHz
     `endif
     output          pxl2_cen,   // 12   MHz
@@ -94,7 +96,7 @@ module jtcps1_game(
     input   [3:0]   gfx_en
 );
 
-wire        clk_gfx;
+wire        clk_gfx, rst_gfx;
 wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
@@ -190,10 +192,12 @@ jtframe_cen48 u_cen48(
         .cen6b  (           )
     );
     assign clk_gfx = clk96;
+    assign rst_gfx = rst96;
 `else
     assign pxl2_cen = cen16;
     assign pxl_cen  = cen8;
     assign clk_gfx = clk;
+    assign rst_gfx = rst;
 `endif
 
 localparam REGSIZE=24;
@@ -205,7 +209,7 @@ assign busack = busack_cpu | turbo;
 
 `ifndef NOMAIN
 jtcps1_main u_main(
-    .rst        ( rst               ),
+    .rst        ( rst48             ),
     .clk        ( clk48             ),
     .cen10      ( cpu_cen           ),
     .cen10b     ( cpu_cenb          ),
@@ -270,7 +274,7 @@ assign busack_cpu = 1;
 reg rst_video;
 
 always @(negedge clk_gfx) begin
-    rst_video <= rst;
+    rst_video <= rst_gfx;
 end
 
 assign dip_flip = ~video_flip;
