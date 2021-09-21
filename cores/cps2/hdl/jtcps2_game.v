@@ -19,7 +19,9 @@
 module jtcps2_game(
     input           rst,
     input           clk,      // SDRAM 96/48
+    input           rst96,    // 96   MHz -required for QSound
     input           clk96,    // 96   MHz -required for QSound
+    input           rst48,    // 48
     input           clk48,    // 48
     output          pxl2_cen,   // 12   MHz
     output          pxl_cen,    //  6   MHz
@@ -98,7 +100,7 @@ module jtcps2_game(
 wire [7:0] debug_bus=0;
 `endif
 
-wire        clk_gfx;
+wire        clk_gfx, rst_gfx;
 wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, qsnd_cs,
             main_ram_cs, main_vram_cs, main_oram_cs, main_rom_cs,
@@ -200,6 +202,7 @@ jtframe_cen96 u_pxl_cen(
 );
 
 assign clk_gfx = clk96;
+assign rst_gfx = rst96;
 // reg [1:0] aux;
 // assign cpu_cen = cen12;
 // always @(posedge clk48 ) aux<={ aux[0], cen12};
@@ -214,7 +217,7 @@ wire busack_cpu;
 
 `ifndef NOMAIN
 jtcps2_main u_main(
-    .rst        ( rst               ),
+    .rst        ( rst48             ),
     .clk_rom    ( clk96             ),
     .clk        ( clk48             ),
     .cpu_cen    ( cpu_cen           ),
@@ -308,7 +311,7 @@ assign cpu_dout = 0;
 reg rst_video, rst_sdram;
 
 always @(negedge clk_gfx) begin
-    rst_video <= rst;
+    rst_video <= rst_gfx;
 end
 
 always @(negedge clk) begin
