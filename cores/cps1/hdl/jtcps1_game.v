@@ -370,7 +370,7 @@ jtcps1_video #(REGSIZE) u_video(
 
     .star1_addr     ( star1_addr    ),
     .star1_data     ( star1_data    ),
-    .star1_ok       ( star1_ok      ),
+    .star1_ok       ( star1_ok      )
 );
 
 `ifndef NOSOUND
