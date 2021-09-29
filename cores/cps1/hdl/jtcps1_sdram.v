@@ -126,6 +126,14 @@ module jtcps1_sdram #( parameter
     output reg [31:0] rom0_data,  // obj
     output     [31:0] rom1_data,
 
+    input      [12:0]  star0_addr,
+    output     [31:0]  star0_data,
+    output             star0_ok,
+
+    input      [12:0]  star1_addr,
+    output     [31:0]  star1_data,
+    output             star1_ok,
+
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
     output   [22:0] ba1_addr,
@@ -399,7 +407,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign ba2_addr = 0;
 `endif
 
-jtframe_rom_2slots #(
+jtframe_rom_4slots #(
     .SDRAMW      ( 23            ),
     // Slot 0: Obj
     .SLOT0_AW    ( 23            ),
@@ -412,7 +420,17 @@ jtframe_rom_2slots #(
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
     .SLOT1_OFFSET( SCR_OFFSET    ),
-    .SLOT1_DOUBLE( 1             )
+    .SLOT1_DOUBLE( 1             ),
+
+    // Slot 2: Stars
+    .SLOT2_AW    ( 13            ),
+    .SLOT2_DW    ( 32            ),
+    .SLOT2_OFFSET( SCR_OFFSET    ),
+
+    // Slot 3: Stars
+    .SLOT3_AW    ( 13            ),
+    .SLOT3_DW    ( 32            ),
+    .SLOT3_OFFSET( SCR_OFFSET    )
 ) u_bank3 (
     .rst         ( rst           ),
     .clk         ( clk_gfx       ), // do not use clk
@@ -428,6 +446,16 @@ jtframe_rom_2slots #(
 
     .slot0_dout  ( objgfx_dout1  ),
     .slot1_dout  ( rom1_data     ),
+
+    // stars
+    .slot2_cs    ( LVBL          ),
+    .slot3_cs    ( LVBL          ),
+    .slot2_ok    ( star0_ok      ),
+    .slot3_ok    ( star1_ok      ),
+    .slot2_addr  ( star0_addr    ),
+    .slot3_addr  ( star1_addr    ),
+    .slot2_dout  ( star0_data    ),
+    .slot3_dout  ( star1_data    ),
 
     .sdram_addr  ( ba3_addr      ),
     .sdram_req   ( ba_rd[3]      ),

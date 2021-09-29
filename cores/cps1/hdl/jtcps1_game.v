@@ -123,6 +123,10 @@ wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
 wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
+wire [12:0] star0_addr, star1_addr;
+wire [31:0] star0_data, star1_data;
+wire        star0_ok,   star1_ok;
+
 wire        vram_clr, vram_rfsh_en;
 wire [ 8:0] hdump;
 wire [ 8:0] vdump, vrender;
@@ -358,7 +362,15 @@ jtcps1_video #(REGSIZE) u_video(
     .rom0_half      ( rom0_half     ),
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),
-    .rom0_ok        ( rom0_ok       )
+    .rom0_ok        ( rom0_ok       ),
+
+    .star0_addr     ( star0_addr    ),
+    .star0_data     ( star0_data    ),
+    .star0_ok       ( star0_ok      ),
+
+    .star1_addr     ( star1_addr    ),
+    .star1_data     ( star1_data    ),
+    .star1_ok       ( star1_ok      ),
 );
 
 `ifndef NOSOUND
@@ -567,6 +579,14 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
 
     .rom0_data   ( rom0_data     ),
     .rom1_data   ( rom1_data     ),
+
+    .star0_addr  ( star0_addr    ),
+    .star0_data  ( star0_data    ),
+    .star0_ok    ( star0_ok      ),
+
+    .star1_addr  ( star1_addr    ),
+    .star1_data  ( star1_data    ),
+    .star1_ok    ( star1_ok      ),
 
     // Bank 0: allows R/W
     .ba0_addr    ( ba0_addr      ),

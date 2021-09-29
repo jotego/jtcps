@@ -107,6 +107,14 @@ module jtcps1_video(
     output             rom0_cs,
     input              rom0_ok,
 
+    output     [12:0]  star0_addr,
+    input      [31:0]  star0_data,
+    input              star0_ok,
+
+    output     [12:0]  star1_addr,
+    input      [31:0]  star1_data,
+    input              star1_ok,
+
     input              watch_vram_cs,
     output             watch
 
@@ -136,7 +144,7 @@ localparam OBJW=9, BLNK_DLY=4;
 
 wire [    11:0] pal_addr, merge_pxl, final_pxl;
 wire [    10:0] scr1_pxl, scr2_pxl, scr3_pxl;
-wire [     8:0] star1_pxl, star0_pxl;
+wire [     6:0] star1_pxl, star0_pxl;
 wire [     8:0] vrender1;
 wire [    15:0] ppu_ctrl, pal_raw;
 wire [    17:1] vram_pal_addr;
@@ -446,6 +454,14 @@ jtcps1_scroll u_scroll(
     .rom_cs     ( rom1_cs       ),
     .rom_ok     ( rom1_ok       ),
     .rom_half   ( rom1_half     ),
+
+    .star0_addr ( star0_addr    ),
+    .star0_data ( star0_data    ),
+    .star0_ok   ( star0_ok      ),
+
+    .star1_addr ( star1_addr    ),
+    .star1_data ( star1_data    ),
+    .star1_ok   ( star1_ok      ),
 
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
