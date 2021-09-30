@@ -65,12 +65,12 @@ module jtcps1_scroll(
     output     [12:0]  star0_addr,
     input      [31:0]  star0_data,
     input              star0_ok,
-    input              star0_cs,
+    output             star0_cs,
 
     output     [12:0]  star1_addr,
     input      [31:0]  star1_data,
     input              star1_ok,
-    input              star1_cs,
+    output             star1_cs,
 
     input      [ 3:0]  gfx_en,
 
@@ -313,7 +313,7 @@ jtcps1_stars u_star1(
     .hdump          ( hdump       ),
     .hpos           ( hstar1      ),
     .vpos           ( vstar1      ),
-    .rom_cs         ( star0_cs    ),
+    .rom_cs         ( star1_cs    ),
     .rom_addr       ( star1_addr  ),
     .rom_ok         ( star1_ok    ),
     .rom_data       ( star1_data  ),

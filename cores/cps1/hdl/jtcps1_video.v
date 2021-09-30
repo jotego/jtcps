@@ -109,14 +109,14 @@ module jtcps1_video(
     input              rom0_ok,
 
     output     [12:0]  star0_addr,
-    output             star0_cs,
     input      [31:0]  star0_data,
+    output             star0_cs,
     input              star0_ok,
 
     output     [12:0]  star1_addr,
     input      [31:0]  star1_data,
-    input              star1_ok,
     output             star1_cs,
+    input              star1_ok,
 
     input              watch_vram_cs,
     output             watch
@@ -188,8 +188,8 @@ wire               star1_precs, star0_precs;
     assign star1_cs   = 0;
     assign star0_cs   = 0;
 `else
-    assign star1_cs   = ~VB & star1_precs & star_en[1];
-    assign star0_cs   = ~VB & star0_precs & star_en[0];
+    assign star1_cs   = ~VB & star1_precs;// & star_en[1];
+    assign star0_cs   = ~VB & star0_precs;// & star_en[0];
 `endif
 
 wire               watch_scr1, watch_scr2, watch_scr3,

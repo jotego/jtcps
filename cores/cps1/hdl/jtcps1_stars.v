@@ -59,7 +59,7 @@ assign rom_cs = cache_fill;
 
 always @(posedge clk) if(pxl_cen) begin
     HSl <= HS;
-    if( HS && !HSl ) begin
+    if( !HS && HSl ) begin // start the filling after HS (vdump toggles before)
         cache_fill <= 1;
         cache_cnt  <= 0;
     end
@@ -75,12 +75,15 @@ always @(posedge clk) if(pxl_cen) begin
     end
 end
 
+always @(posedge clk) begin
+    star_data <= cache[ heff[8:5] ];
+end
+
 always @* begin
     heff = (hpos+hdump)^{9{flip}}; // the flip operation may not be right
     hcache = hpos+{cache_cnt,5'd0};
     rom_addr = { hcache[8:5], veff };
 
-    star_data = cache[ heff[8:5] ];
     pal_id = star_data[7:5];
     pos    = star_data[4:0]^{5{flip}};
     hnext  = heff + star_data[4:0]^{5{flip}};
