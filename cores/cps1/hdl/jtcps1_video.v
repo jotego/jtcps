@@ -181,14 +181,15 @@ wire       [15:0]  objtable_data;
 
 wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
+wire               star1_precs, star0_precs;
 
 `ifdef CPS2
     assign obj_dma_ok = 0;
     assign star1_cs   = 0;
     assign star0_cs   = 0;
 `else
-    assign star1_cs   = ~VB & star_en[1];
-    assign star0_cs   = ~VB & star_en[0];
+    assign star1_cs   = ~VB & star1_precs & star_en[1];
+    assign star0_cs   = ~VB & star0_precs & star_en[0];
 `endif
 
 wire               watch_scr1, watch_scr2, watch_scr3,
@@ -434,6 +435,7 @@ jtcps1_scroll u_scroll(
     .preVB      ( preVB         ),
     .VB         ( VB            ),
     .HB         ( HB            ),
+    .HS         ( HS            ),
 
     .hpos1      ( hpos1         ),
     .vpos1      ( vpos1         ),
@@ -468,10 +470,12 @@ jtcps1_scroll u_scroll(
     .star0_addr ( star0_addr    ),
     .star0_data ( star0_data    ),
     .star0_ok   ( star0_ok      ),
+    .star0_cs   ( star0_precs   ),
 
     .star1_addr ( star1_addr    ),
     .star1_data ( star1_data    ),
     .star1_ok   ( star1_ok      ),
+    .star1_cs   ( star1_precs   ),
 
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),

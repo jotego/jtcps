@@ -26,6 +26,7 @@ module jtcps1_stars(
     input              clk,
     input              pxl_cen,
 
+    input              HS,
     input              VB,
     input              flip,
     input      [ 8:0]  hdump,
@@ -37,6 +38,7 @@ module jtcps1_stars(
     output reg [12:0]  rom_addr,
     input      [31:0]  rom_data,
     input              rom_ok,
+    output             rom_cs,
 
     output reg [ 6:0]  pxl,
     input      [ 7:0]  debug_bus
@@ -44,32 +46,44 @@ module jtcps1_stars(
 
 parameter FIELD=0;
 
-reg  [3:0] cnt16, cnt15, fcnt;
+reg  [3:0] cnt16, cnt15, fcnt, cache_cnt;
 reg  [2:0] pal_id;
 reg  [4:0] pos;
-reg  [8:0] heff, veff, hnext;
-reg  [7:0] rom_mux;
-reg        VBl, okl;
+reg  [7:0] star_data;
+reg  [8:0] heff, veff, hnext, hcache;
+reg        VBl, okl, HSl, cache_fill;
+
+reg  [7:0] cache[0:15];
+
+assign rom_cs = cache_fill;
+
+always @(posedge clk) if(pxl_cen) begin
+    HSl <= HS;
+    if( HS && !HSl ) begin
+        cache_fill <= 1;
+        cache_cnt  <= 0;
+    end
+    if( cache_fill ) begin
+        if( rom_ok ) begin // not need for wait state because of pxl_cen
+            cache[ cache_cnt ] <= rom_data[7:0];
+            if( cache_cnt==4'hf ) begin
+                cache_fill <= 0;
+            end else begin
+                cache_cnt <= cache_cnt + 1'd1;
+            end
+        end
+    end
+end
 
 always @* begin
     heff = (hpos+hdump)^{9{flip}}; // the flip operation may not be right
-    rom_addr = { heff[8:5], veff };
-    //case( debug_bus[1:0] )
-    //    0: rom_mux = rom_data[ 7: 0];
-    //    1: rom_mux = rom_data[15: 8];
-    //    2: rom_mux = rom_data[23:16];
-    //    3: rom_mux = rom_data[31:24];
-    //endcase
-    rom_mux = rom_data[7:0];
-end
+    hcache = hpos+{cache_cnt,5'd0};
+    rom_addr = { hcache[8:5], veff };
 
-always @(posedge clk) if(pxl_cen) begin
-    okl <= rom_ok;
-    if( rom_ok & ~okl ) begin
-        pal_id <= rom_mux[7:5];
-        pos    <= rom_mux[4:0]^{5{flip}};
-        hnext  <= heff + rom_mux[4:0]^{5{flip}};
-    end
+    star_data = cache[ heff[8:5] ];
+    pal_id = star_data[7:5];
+    pos    = star_data[4:0]^{5{flip}};
+    hnext  = heff + star_data[4:0]^{5{flip}};
 end
 
 always @(posedge clk, posedge rst) begin
