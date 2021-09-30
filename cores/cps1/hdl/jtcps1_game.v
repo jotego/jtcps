@@ -172,7 +172,6 @@ assign turbo = 1;
 `endif
 
 assign pcmfilter_en = status[1];
-assign game_led = star_bank;
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(

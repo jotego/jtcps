@@ -412,7 +412,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
 `endif
 
 // 7+15=22
-wire [22:0] gfx_star0 = { star_bank, 6'd0, { star0_addr, debug_bus[4], 1'b0 } },
+wire [21:0] gfx_star0 = { star_bank, 6'd0, { star0_addr, debug_bus[4], 1'b0 } },
             gfx_star1 = { star_bank, 6'd0, { star1_addr, debug_bus[4], 1'b0 } };
 
 jtframe_rom_4slots #(
