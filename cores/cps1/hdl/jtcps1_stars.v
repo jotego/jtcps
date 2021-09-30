@@ -44,14 +44,15 @@ module jtcps1_stars(
 
 parameter FIELD=0;
 
-reg  [3:0] cnt16, cnt15;
+reg  [3:0] cnt16, cnt15, fcnt;
 reg  [2:0] pal_id;
 reg  [4:0] pos;
-reg  [8:0] heff, veff;
+reg  [8:0] heff, veff, hnext;
 reg  [7:0] rom_mux;
+reg        VBl, okl;
 
 always @* begin
-    heff = hpos+hdump;
+    heff = (hpos+hdump)^{9{flip}}; // the flip operation may not be right
     rom_addr = { heff[8:5], veff };
     //case( debug_bus[1:0] )
     //    0: rom_mux = rom_data[ 7: 0];
@@ -62,10 +63,12 @@ always @* begin
     rom_mux = rom_data[7:0];
 end
 
-always @(posedge clk) begin
-    if( rom_ok ) begin
+always @(posedge clk) if(pxl_cen) begin
+    okl <= rom_ok;
+    if( rom_ok & ~okl ) begin
         pal_id <= rom_mux[7:5];
         pos    <= rom_mux[4:0]^{5{flip}};
+        hnext  <= heff + rom_mux[4:0]^{5{flip}};
     end
 end
 
@@ -74,28 +77,24 @@ always @(posedge clk, posedge rst) begin
         cnt15 <= 0;
         cnt16 <= 0;
         veff  <= 0;
+        fcnt  <= 0;
     end else if( pxl_cen ) begin
         veff <= (vpos+vdump)^{9{flip}};
-        if( VB ) begin
-            cnt15 <= 0;
-            cnt16 <= 0;
-        end else begin
-            if( &hdump[4:0] ) begin
-                cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
-                cnt16 <= cnt16+1'd1; // transparent when cnt16==15
-            end
+        VBl  <= VB;
+        if( VB & ~VBl ) fcnt <= fcnt+1'd1;
+        if( &fcnt[3:0] ) begin
+            cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
+            cnt16 <= cnt16+1'd1; // transparent when cnt16==15
         end
     end
 end
-
-wire [4:0] blank = 5'hf ^ {5{flip}};
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         pxl <= 7'hf;
     end else if( pxl_cen ) begin
         pxl[6:4] <= pal_id;
-        pxl[3:0] <= pos==heff[4:0] && pos != blank ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
+        pxl[3:0] <= hnext==heff && pos != 5'hf ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
     end
 end
 
