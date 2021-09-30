@@ -125,6 +125,7 @@ wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
+wire        star_bank;
 
 wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
@@ -171,6 +172,7 @@ assign turbo = 1;
 `endif
 
 assign pcmfilter_en = status[1];
+assign game_led = star_bank;
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -308,6 +310,7 @@ jtcps1_video #(REGSIZE) u_video(
     .raster         (               ),
     .watch          (               ),
     .watch_vram_cs  (               ),
+    .star_bank      ( star_bank     ),
 
     // CPU interface
     .ppu_rstn       ( ppu_rstn      ),
@@ -502,6 +505,7 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
     .debug_bus   ( debug_bus     ),
+    .star_bank   ( star_bank     ),
 
     .downloading ( downloading   ),
     .dwnld_busy  ( dwnld_busy    ),

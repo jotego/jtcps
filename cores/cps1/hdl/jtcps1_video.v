@@ -56,6 +56,7 @@ module jtcps1_video(
     output             charger,
     output             kabuki_en,
     output             raster,
+    output             star_bank,
 
     // BUS sharing
     output             busreq,
@@ -341,6 +342,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .mmr_dout       ( mmr_dout          ),
     // registers
     .ppu_ctrl       ( ppu_ctrl          ),
+    .star_bank      ( star_bank         ),
     // Scroll
     .hpos1          ( hpos1             ),
     .hpos2          ( hpos2             ),

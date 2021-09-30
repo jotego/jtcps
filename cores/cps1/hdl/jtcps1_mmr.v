@@ -44,6 +44,7 @@ module jtcps1_mmr(
     output             cpu_speed, // 0 for 10MHz, 1 for 12MHz
     output             charger,   // 0 arcade game, 1 charger game
     output             kabuki_en, // 0 for no kabuki, 1 for kabuki encryption
+    output reg         star_bank,
 
     // Extra inputs read through the C-Board
     input      [ 3:0]  start_button,
@@ -196,6 +197,10 @@ assign { kabuki_en /* bit 5*/, charger /* bit 4*/, cpsb_inputs, cpu_speed }  = `
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
+
+always @(posedge clk) begin
+    star_bank <= game==6'd14 || game==6'd15; // Use ROM bank 1 for Forgotten Worlds
+end
 
 // extra inputs
 always @(posedge clk) begin

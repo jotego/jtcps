@@ -126,15 +126,16 @@ module jtcps1_sdram #( parameter
     output reg [31:0] rom0_data,  // obj
     output     [31:0] rom1_data,
 
-    input      [12:0]  star0_addr,
-    output     [31:0]  star0_data,
-    output             star0_ok,
-    input              star0_cs,
+    input             star_bank,
+    input     [12:0]  star0_addr,
+    output    [31:0]  star0_data,
+    output            star0_ok,
+    input             star0_cs,
 
-    input      [12:0]  star1_addr,
-    output     [31:0]  star1_data,
-    output             star1_ok,
-    input              star1_cs,
+    input     [12:0]  star1_addr,
+    output    [31:0]  star1_data,
+    output            star1_ok,
+    input             star1_cs,
 
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
@@ -410,10 +411,9 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign ba2_addr = 0;
 `endif
 
-wire [ 6:0] star_offset = 7'b10_0000;
-
-wire [22:0] gfx_star0 = { 7'b1 << debug_bus[2:0], { star0_addr, debug_bus[4], 1'b0 } },
-            gfx_star1 = { 7'b1 << debug_bus[2:0], { star1_addr, debug_bus[4], 1'b0 } };
+// 7+15=22
+wire [22:0] gfx_star0 = { star_bank, 6'd0, { star0_addr, debug_bus[4], 1'b0 } },
+            gfx_star1 = { star_bank, 6'd0, { star1_addr, debug_bus[4], 1'b0 } };
 
 jtframe_rom_4slots #(
     .SDRAMW      ( 23            ),
