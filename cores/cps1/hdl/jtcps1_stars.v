@@ -27,6 +27,7 @@ module jtcps1_stars(
     input              pxl_cen,
 
     input              VB,
+    input              flip,
     input      [ 8:0]  hdump,
     input      [ 8:0]  vdump,
     // control registers
@@ -37,22 +38,35 @@ module jtcps1_stars(
     input      [31:0]  rom_data,
     input              rom_ok,
 
-    output reg [ 6:0]  pxl
+    output reg [ 6:0]  pxl,
+    input      [ 7:0]  debug_bus
 );
 
 parameter FIELD=0;
 
 reg  [3:0] cnt16, cnt15;
-wire [2:0] pal_id;
-wire [4:0] pos;
+reg  [2:0] pal_id;
+reg  [4:0] pos;
 reg  [8:0] heff, veff;
-
-assign pal_id   = rom_data[7:5];
-assign pos      = rom_data[4:0];
+reg  [7:0] rom_mux;
 
 always @* begin
     heff = hpos+hdump;
     rom_addr = { heff[8:5], veff };
+    //case( debug_bus[1:0] )
+    //    0: rom_mux = rom_data[ 7: 0];
+    //    1: rom_mux = rom_data[15: 8];
+    //    2: rom_mux = rom_data[23:16];
+    //    3: rom_mux = rom_data[31:24];
+    //endcase
+    rom_mux = rom_data[7:0];
+end
+
+always @(posedge clk) begin
+    if( rom_ok ) begin
+        pal_id <= rom_mux[7:5];
+        pos    <= rom_mux[4:0]^{5{flip}};
+    end
 end
 
 always @(posedge clk, posedge rst) begin
@@ -61,7 +75,7 @@ always @(posedge clk, posedge rst) begin
         cnt16 <= 0;
         veff  <= 0;
     end else if( pxl_cen ) begin
-        veff <= vpos+vdump;
+        veff <= (vpos+vdump)^{9{flip}};
         if( VB ) begin
             cnt15 <= 0;
             cnt16 <= 0;
@@ -74,12 +88,14 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
+wire [4:0] blank = 5'hf ^ {5{flip}};
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         pxl <= 7'hf;
     end else if( pxl_cen ) begin
         pxl[6:4] <= pal_id;
-        pxl[3:0] <= pos==heff[4:0] ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
+        pxl[3:0] <= pos==heff[4:0] && pos != blank ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
     end
 end
 

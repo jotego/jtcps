@@ -94,7 +94,14 @@ module jtcps1_game(
     output          game_led,
     // Debug
     input   [3:0]   gfx_en
+    `ifdef JTFRAME_DEBUG
+    ,input   [7:0]   debug_bus
+    `endif
 );
+
+`ifndef JTFRAME_DEBUG
+    wire [7:0] debug_bus=0;
+`endif
 
 wire        clk_gfx, rst_gfx;
 wire        LHBL, LVBL; // internal blanking signals
@@ -125,7 +132,8 @@ wire [ 7:0] dipsw_a, dipsw_b, dipsw_c;
 
 wire [12:0] star0_addr, star1_addr;
 wire [31:0] star0_data, star1_data;
-wire        star0_ok,   star1_ok;
+wire        star0_ok,   star1_ok,
+            star0_cs,   star1_cs;
 
 wire        vram_clr, vram_rfsh_en;
 wire [ 8:0] hdump;
@@ -367,10 +375,13 @@ jtcps1_video #(REGSIZE) u_video(
     .star0_addr     ( star0_addr    ),
     .star0_data     ( star0_data    ),
     .star0_ok       ( star0_ok      ),
+    .star0_cs       ( star0_cs      ),
 
     .star1_addr     ( star1_addr    ),
     .star1_data     ( star1_data    ),
-    .star1_ok       ( star1_ok      )
+    .star1_ok       ( star1_ok      ),
+    .star1_cs       ( star1_cs      ),
+    .debug_bus      ( debug_bus     )
 );
 
 `ifndef NOSOUND
@@ -490,6 +501,7 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .clk_gfx     ( clk_gfx       ),
     .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
+    .debug_bus   ( debug_bus     ),
 
     .downloading ( downloading   ),
     .dwnld_busy  ( dwnld_busy    ),
@@ -583,10 +595,12 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .star0_addr  ( star0_addr    ),
     .star0_data  ( star0_data    ),
     .star0_ok    ( star0_ok      ),
+    .star0_cs    ( star0_cs      ),
 
     .star1_addr  ( star1_addr    ),
     .star1_data  ( star1_data    ),
     .star1_ok    ( star1_ok      ),
+    .star1_cs    ( star1_cs      ),
 
     // Bank 0: allows R/W
     .ba0_addr    ( ba0_addr      ),

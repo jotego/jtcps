@@ -129,10 +129,12 @@ module jtcps1_sdram #( parameter
     input      [12:0]  star0_addr,
     output     [31:0]  star0_data,
     output             star0_ok,
+    input              star0_cs,
 
     input      [12:0]  star1_addr,
     output     [31:0]  star1_data,
     output             star1_ok,
+    input              star1_cs,
 
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
@@ -148,6 +150,7 @@ module jtcps1_sdram #( parameter
     input    [ 3:0] ba_dok,
     input    [ 3:0] ba_rdy,
 
+    input    [ 7:0] debug_bus,
     input    [15:0] data_read
 );
 
@@ -407,6 +410,11 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign ba2_addr = 0;
 `endif
 
+wire [ 6:0] star_offset = 7'b10_0000;
+
+wire [22:0] gfx_star0 = { 7'b1 << debug_bus[2:0], { star0_addr, debug_bus[4], 1'b0 } },
+            gfx_star1 = { 7'b1 << debug_bus[2:0], { star1_addr, debug_bus[4], 1'b0 } };
+
 jtframe_rom_4slots #(
     .SDRAMW      ( 23            ),
     // Slot 0: Obj
@@ -423,12 +431,12 @@ jtframe_rom_4slots #(
     .SLOT1_DOUBLE( 1             ),
 
     // Slot 2: Stars
-    .SLOT2_AW    ( 13            ),
+    .SLOT2_AW    ( 22            ),
     .SLOT2_DW    ( 32            ),
     .SLOT2_OFFSET( SCR_OFFSET    ),
 
     // Slot 3: Stars
-    .SLOT3_AW    ( 13            ),
+    .SLOT3_AW    ( 22            ),
     .SLOT3_DW    ( 32            ),
     .SLOT3_OFFSET( SCR_OFFSET    )
 ) u_bank3 (
@@ -448,12 +456,12 @@ jtframe_rom_4slots #(
     .slot1_dout  ( rom1_data     ),
 
     // stars
-    .slot2_cs    ( LVBL          ),
-    .slot3_cs    ( LVBL          ),
+    .slot2_cs    ( star0_cs      ),
+    .slot3_cs    ( star1_cs      ),
     .slot2_ok    ( star0_ok      ),
     .slot3_ok    ( star1_ok      ),
-    .slot2_addr  ( star0_addr    ),
-    .slot3_addr  ( star1_addr    ),
+    .slot2_addr  ( gfx_star0     ),
+    .slot3_addr  ( gfx_star1     ),
     .slot2_dout  ( star0_data    ),
     .slot3_dout  ( star1_data    ),
 

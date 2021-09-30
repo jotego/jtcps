@@ -108,12 +108,14 @@ module jtcps1_video(
     input              rom0_ok,
 
     output     [12:0]  star0_addr,
+    output             star0_cs,
     input      [31:0]  star0_data,
     input              star0_ok,
 
     output     [12:0]  star1_addr,
     input      [31:0]  star1_data,
     input              star1_ok,
+    output             star1_cs,
 
     input              watch_vram_cs,
     output             watch
@@ -151,6 +153,7 @@ wire [    17:1] vram_pal_addr;
 wire            line_start, frame_start, preVB;
 wire            busack_obj, busack_pal;
 wire [OBJW-1:0] obj_pxl;
+wire [     1:0] star_en;
 
 // Register configuration
 // Scroll
@@ -179,7 +182,12 @@ wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
 
 `ifdef CPS2
-assign obj_dma_ok = 0;
+    assign obj_dma_ok = 0;
+    assign star1_cs   = 0;
+    assign star0_cs   = 0;
+`else
+    assign star1_cs   = ~VB & star_en[1];
+    assign star0_cs   = ~VB & star_en[0];
 `endif
 
 wire               watch_scr1, watch_scr2, watch_scr3,
@@ -468,7 +476,8 @@ jtcps1_scroll u_scroll(
     .scr3_pxl   ( scr3_pxl      ),
 
     .star0_pxl  ( star0_pxl     ),
-    .star1_pxl  ( star1_pxl     )
+    .star1_pxl  ( star1_pxl     ),
+    .debug_bus  ( debug_bus     )
 );
 `else
 assign rom1_cs    = 1'b0;
@@ -558,6 +567,7 @@ jtcps1_colmix u_colmix(
 
     .gfx_en     ( gfx_en        ),
     .scrdma_en  ( scrdma_en     ),
+    .star_en    ( star_en       ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),

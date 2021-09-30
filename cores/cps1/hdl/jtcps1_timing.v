@@ -92,7 +92,8 @@ always @(posedge clk) if(cen8) begin
         // What's the right value for the frame start (FI) signal
         // 261 fails miserably in Cammy's stage
         // 255 works for Cammy, but is it right?
-        frame_start <= vrender1==(9'd255 + { debug_bus[7], debug_bus });
+        //frame_start <= vrender1==(9'd255 + { debug_bus[7], debug_bus });
+        frame_start <= vrender1==9'd255;
     end else begin
         frame_start <= 0;
     end

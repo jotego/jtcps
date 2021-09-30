@@ -76,7 +76,8 @@ module jtcps1_scroll(
     output reg [10:0]  scr3_pxl,
 
     output     [ 6:0]  star0_pxl,
-    output     [ 6:0]  star1_pxl
+    output     [ 6:0]  star1_pxl,
+    input      [ 7:0]  debug_bus
 );
 
 reg         pre_start, sub_start, busy, done;
@@ -284,6 +285,7 @@ jtcps1_stars u_star0(
     .clk            ( clk         ),
     .pxl_cen        ( pxl_cen     ),
     .VB             ( VB          ),
+    .flip           ( flip        ),
     .vdump          ( vdump       ),
     .hdump          ( hdump       ),
     .hpos           ( hstar0      ),
@@ -291,7 +293,8 @@ jtcps1_stars u_star0(
     .rom_addr       ( star0_addr  ),
     .rom_ok         ( star0_ok    ),
     .rom_data       ( star0_data  ),
-    .pxl            ( star0_pxl   )
+    .pxl            ( star0_pxl   ),
+    .debug_bus      ( debug_bus   )
 );
 
 jtcps1_stars u_star1(
@@ -299,6 +302,7 @@ jtcps1_stars u_star1(
     .clk            ( clk         ),
     .pxl_cen        ( pxl_cen     ),
     .VB             ( VB          ),
+    .flip           ( flip        ),
     .vdump          ( vdump       ),
     .hdump          ( hdump       ),
     .hpos           ( hstar1      ),
@@ -306,7 +310,8 @@ jtcps1_stars u_star1(
     .rom_addr       ( star1_addr  ),
     .rom_ok         ( star1_ok    ),
     .rom_data       ( star1_data  ),
-    .pxl            ( star1_pxl   )
+    .pxl            ( star1_pxl   ),
+    .debug_bus      ( debug_bus   )
 );
 
 endmodule

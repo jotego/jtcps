@@ -43,6 +43,7 @@ module jtcps1_colmix(
     input   [15:0]     prio2,
     input   [15:0]     prio3,
 
+    output reg [ 1:0]  star_en,
     // Palette RAM
     output reg [11:0]  pxl
 );
@@ -79,6 +80,8 @@ endfunction
     |(layer_mask1[5:0] & layer_ctrl[5:0]),
     |(layer_mask0[5:0] & layer_ctrl[5:0])
 };
+
+always @(posedge clk) star_en <= lyren[4:3];
 
 //reg [4:0] lyren2, lyren3;
 
