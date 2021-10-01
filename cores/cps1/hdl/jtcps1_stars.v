@@ -82,7 +82,7 @@ always @(posedge clk) begin
 end
 
 always @* begin
-    rom_hpos = ~((~hpos[8:5] + cache_cnt + 4'd2) ^ {4{flip}}); // stars-x schematic
+    rom_hpos = ((hpos[8:5] + cache_cnt + 4'd2) ^ {4{flip}}); // stars-x schematic
 end
 
 always @(posedge clk, posedge rst) begin
@@ -120,7 +120,7 @@ always @(posedge clk, posedge rst) begin
             pos <= pos-1;
         end
         pxl[6:4] <= pal_id;
-        pxl[3:0] <= pos==0 && !blank ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
+        pxl[3:0] <= pos==0 && !blank ? (pal_id[2] ? cnt16 : cnt15) : 4'hf;
     end
 end
 
