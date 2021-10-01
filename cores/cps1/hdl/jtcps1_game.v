@@ -504,8 +504,7 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
     .debug_bus   ( debug_bus     ),
-    //.star_bank   ( star_bank     ),
-    .star_bank   ( 1'b0     ),
+    .star_bank   ( star_bank     ),
 
     .downloading ( downloading   ),
     .dwnld_busy  ( dwnld_busy    ),
