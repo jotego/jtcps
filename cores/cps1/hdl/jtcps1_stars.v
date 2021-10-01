@@ -50,7 +50,7 @@ reg  [3:0] cnt16, cnt15, fcnt, cache_cnt;
 reg  [2:0] pal_id;
 reg  [4:0] pos;
 reg  [7:0] star_data;
-reg  [8:0] heff, veff, hnext, hcache;
+reg  [8:0] heff, veff, hcache;
 reg        VBl, okl, HSl, cache_fill;
 reg  [3:0] rom_hpos;
 
@@ -88,7 +88,6 @@ always @* begin
 
     pal_id = star_data[7:5];
     pos    = star_data[4:0]^{5{flip}};
-    hnext  = heff + star_data[4:0]^{5{flip}};
 end
 
 always @(posedge clk, posedge rst) begin

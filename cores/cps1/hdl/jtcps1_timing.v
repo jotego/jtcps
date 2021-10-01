@@ -60,9 +60,9 @@ assign preVB = shVB[0];
 
 localparam [8:0] VS_START = 9'd251; // larger values pull it up
 localparam [8:0] VS_END   = VS_START + 9'd4;
-localparam [8:0] HS_START = 9'd487; // larger values pull it left
-localparam [8:0] HS_LEN   = 9'd38;
-localparam [8:0] HS_END   = HS_START<(9'd511-HS_LEN) ? (HS_START+HS_LEN) : ( HS_LEN-(9'd511-HS_START)-9'd1  );
+// Values reported by Loic, based on schematics of CPS chips
+localparam [8:0] HS_START = 9'd479; // larger values pull it left
+localparam [8:0] HS_END   = 9'd3;
 
 always @(posedge clk) if(cen8) begin
     hdump     <= hdump+9'd1;
