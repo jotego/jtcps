@@ -35,7 +35,7 @@ module jtcps1_stars(
     input      [ 8:0]  hpos,
     input      [ 8:0]  vpos,
 
-    output reg [12:0]  rom_addr,
+    output     [12:0]  rom_addr,
     input      [31:0]  rom_data,
     input              rom_ok,
     output             rom_cs,
@@ -52,10 +52,12 @@ reg  [4:0] pos;
 reg  [7:0] star_data;
 reg  [8:0] heff, veff, hnext, hcache;
 reg        VBl, okl, HSl, cache_fill;
+reg  [3:0] rom_hpos;
 
 reg  [7:0] cache[0:15];
 
-assign rom_cs = cache_fill;
+assign rom_cs   = cache_fill;
+assign rom_addr = { rom_hpos, veff };
 
 always @(posedge clk) if(pxl_cen) begin
     HSl <= HS;
@@ -80,9 +82,9 @@ always @(posedge clk) begin
 end
 
 always @* begin
-    heff = (hpos+hdump)^{9{flip}}; // the flip operation may not be right
+    heff = (hpos+hdump-debug_bus[7:4])^{9{flip}}; // the flip operation may not be right
     hcache = hpos+{cache_cnt,5'd0};
-    rom_addr = { hcache[8:5], veff };
+    rom_hpos = ~((~hpos[8:5] + cache_cnt + 4'd2) ^ {4{flip}}); // stars-x schematic
 
     pal_id = star_data[7:5];
     pos    = star_data[4:0]^{5{flip}};
@@ -111,7 +113,7 @@ always @(posedge clk, posedge rst) begin
         pxl <= 7'hf;
     end else if( pxl_cen ) begin
         pxl[6:4] <= pal_id;
-        pxl[3:0] <= hnext==heff && pos != 5'hf ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
+        pxl[3:0] <= ({5{debug_bus[0]}}^pos)==heff[4:0] && pos != 5'hf ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
     end
 end
 
