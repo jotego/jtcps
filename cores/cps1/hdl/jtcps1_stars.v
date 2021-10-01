@@ -48,10 +48,10 @@ parameter FIELD=0;
 
 reg  [3:0] cnt16, cnt15, fcnt, cache_cnt;
 reg  [2:0] pal_id;
-reg  [4:0] pos;
+reg  [4:0] pos, xs_cnt;
 reg  [7:0] star_data;
-reg  [8:0] heff, veff, hcache;
-reg        VBl, okl, HSl, cache_fill;
+reg  [8:0] veff;
+reg        VBl, HSl, cache_fill, blank;
 reg  [3:0] rom_hpos;
 
 reg  [7:0] cache[0:15];
@@ -78,16 +78,11 @@ always @(posedge clk) if(pxl_cen) begin
 end
 
 always @(posedge clk) begin
-    star_data <= cache[ heff[8:5] ];
+    star_data <= cache[ hdump[8:5] ];
 end
 
 always @* begin
-    heff = (hpos+hdump-debug_bus[7:4])^{9{flip}}; // the flip operation may not be right
-    hcache = hpos+{cache_cnt,5'd0};
     rom_hpos = ~((~hpos[8:5] + cache_cnt + 4'd2) ^ {4{flip}}); // stars-x schematic
-
-    pal_id = star_data[7:5];
-    pos    = star_data[4:0]^{5{flip}};
 end
 
 always @(posedge clk, posedge rst) begin
@@ -110,9 +105,22 @@ end
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         pxl <= 7'hf;
+        xs_cnt <= 0;
     end else if( pxl_cen ) begin
+        if( hdump[4:0]==0 ) begin
+            xs_cnt <= ~hpos[4:0];
+        end else begin
+            xs_cnt <= xs_cnt-1'd1;
+        end
+        if( xs_cnt==0 ) begin
+            pal_id <= star_data[7:5];
+            pos    <= star_data[4:0]^{5{flip}};
+            blank  <= star_data[4:0]==5'hf;
+        end else begin
+            pos <= pos-1;
+        end
         pxl[6:4] <= pal_id;
-        pxl[3:0] <= ({5{debug_bus[0]}}^pos)==heff[4:0] && pos != 5'hf ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
+        pxl[3:0] <= pos==0 && !blank ? (pal_id[2] ? cnt15 : cnt16) : 4'hf;
     end
 end
 
