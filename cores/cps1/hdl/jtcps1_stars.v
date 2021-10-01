@@ -57,7 +57,7 @@ reg  [3:0] rom_hpos;
 reg  [7:0] cache[0:15];
 
 assign rom_cs   = cache_fill;
-assign rom_addr = { rom_hpos, veff };
+assign rom_addr = { veff[8], rom_hpos, veff[7:0] };
 
 always @(posedge clk) if(pxl_cen) begin
     HSl <= HS;
@@ -94,10 +94,12 @@ always @(posedge clk, posedge rst) begin
     end else if( pxl_cen ) begin
         veff <= (vpos+vdump)^{9{flip}};
         VBl  <= VB;
-        if( VB & ~VBl ) fcnt <= fcnt+1'd1;
-        if( &fcnt[3:0] ) begin
-            cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
-            cnt16 <= cnt16+1'd1; // transparent when cnt16==15
+        if( VB & ~VBl ) begin
+            fcnt <= fcnt+1'd1;
+            if( &fcnt[3:0] ) begin
+                cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
+                cnt16 <= cnt16+1'd1; // transparent when cnt16==15
+            end
         end
     end
 end
