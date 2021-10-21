@@ -126,6 +126,17 @@ module jtcps1_sdram #( parameter
     output reg [31:0] rom0_data,  // obj
     output     [31:0] rom1_data,
 
+    input             star_bank,
+    input     [12:0]  star0_addr,
+    output    [31:0]  star0_data,
+    output            star0_ok,
+    input             star0_cs,
+
+    input     [12:0]  star1_addr,
+    output    [31:0]  star1_data,
+    output            star1_ok,
+    input             star1_cs,
+
     // Bank 0: allows R/W
     output   [22:0] ba0_addr,
     output   [22:0] ba1_addr,
@@ -140,6 +151,7 @@ module jtcps1_sdram #( parameter
     input    [ 3:0] ba_dok,
     input    [ 3:0] ba_rdy,
 
+    input    [ 7:0] debug_bus,
     input    [15:0] data_read
 );
 
@@ -399,7 +411,11 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
     assign ba2_addr = 0;
 `endif
 
-jtframe_rom_2slots #(
+// 7+15=22
+wire [21:0] gfx_star0 = { star_bank, 6'd0, star0_addr, 2'b00 },
+            gfx_star1 = { star_bank, 6'd0, star1_addr, 2'b10 };
+
+jtframe_rom_4slots #(
     .SDRAMW      ( 23            ),
     // Slot 0: Obj
     .SLOT0_AW    ( 23            ),
@@ -412,7 +428,17 @@ jtframe_rom_2slots #(
     .SLOT1_AW    ( 22            ),
     .SLOT1_DW    ( 32            ),
     .SLOT1_OFFSET( SCR_OFFSET    ),
-    .SLOT1_DOUBLE( 1             )
+    .SLOT1_DOUBLE( 1             ),
+
+    // Slot 2: Stars
+    .SLOT2_AW    ( 22            ),
+    .SLOT2_DW    ( 32            ),
+    .SLOT2_OFFSET( SCR_OFFSET    ),
+
+    // Slot 3: Stars
+    .SLOT3_AW    ( 22            ),
+    .SLOT3_DW    ( 32            ),
+    .SLOT3_OFFSET( SCR_OFFSET    )
 ) u_bank3 (
     .rst         ( rst           ),
     .clk         ( clk_gfx       ), // do not use clk
@@ -428,6 +454,16 @@ jtframe_rom_2slots #(
 
     .slot0_dout  ( objgfx_dout1  ),
     .slot1_dout  ( rom1_data     ),
+
+    // stars
+    .slot2_cs    ( star0_cs      ),
+    .slot3_cs    ( star1_cs      ),
+    .slot2_ok    ( star0_ok      ),
+    .slot3_ok    ( star1_ok      ),
+    .slot2_addr  ( gfx_star0     ),
+    .slot3_addr  ( gfx_star1     ),
+    .slot2_dout  ( star0_data    ),
+    .slot3_dout  ( star1_data    ),
 
     .sdram_addr  ( ba3_addr      ),
     .sdram_req   ( ba_rd[3]      ),

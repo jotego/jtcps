@@ -15,10 +15,12 @@ rom/*.rom
 *.wav
 *.xml
 *.jpg
+*.rbf
 sim
 cores/cps*/mist/*
 cores/cps*/sidi/*
 cores/cps*/mister/*
+cores/cps*/neptuno/*
 history
 shift
 sweep

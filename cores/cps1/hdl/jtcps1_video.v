@@ -56,6 +56,7 @@ module jtcps1_video(
     output             charger,
     output             kabuki_en,
     output             raster,
+    output             star_bank,
 
     // BUS sharing
     output             busreq,
@@ -107,6 +108,16 @@ module jtcps1_video(
     output             rom0_cs,
     input              rom0_ok,
 
+    output     [12:0]  star0_addr,
+    input      [31:0]  star0_data,
+    output             star0_cs,
+    input              star0_ok,
+
+    output     [12:0]  star1_addr,
+    input      [31:0]  star1_data,
+    output             star1_cs,
+    input              star1_ok,
+
     input              watch_vram_cs,
     output             watch
 
@@ -136,13 +147,14 @@ localparam OBJW=9, BLNK_DLY=4;
 
 wire [    11:0] pal_addr, merge_pxl, final_pxl;
 wire [    10:0] scr1_pxl, scr2_pxl, scr3_pxl;
-wire [     8:0] star1_pxl, star0_pxl;
+wire [     6:0] star1_pxl, star0_pxl;
 wire [     8:0] vrender1;
 wire [    15:0] ppu_ctrl, pal_raw;
 wire [    17:1] vram_pal_addr;
 wire            line_start, frame_start, preVB;
 wire            busack_obj, busack_pal;
 wire [OBJW-1:0] obj_pxl;
+wire [     1:0] star_en;
 
 // Register configuration
 // Scroll
@@ -169,9 +181,15 @@ wire       [15:0]  objtable_data;
 
 wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
+wire               star1_precs, star0_precs;
 
 `ifdef CPS2
-assign obj_dma_ok = 0;
+    assign obj_dma_ok = 0;
+    assign star1_cs   = 0;
+    assign star0_cs   = 0;
+`else
+    assign star1_cs   = ~VB & star1_precs;// & star_en[1];
+    assign star0_cs   = ~VB & star0_precs;// & star_en[0];
 `endif
 
 wire               watch_scr1, watch_scr2, watch_scr3,
@@ -325,6 +343,7 @@ jtcps1_mmr #(REGSIZE) u_mmr(
     .mmr_dout       ( mmr_dout          ),
     // registers
     .ppu_ctrl       ( ppu_ctrl          ),
+    .star_bank      ( star_bank         ),
     // Scroll
     .hpos1          ( hpos1             ),
     .hpos2          ( hpos2             ),
@@ -416,6 +435,7 @@ jtcps1_scroll u_scroll(
     .preVB      ( preVB         ),
     .VB         ( VB            ),
     .HB         ( HB            ),
+    .HS         ( HS            ),
 
     .hpos1      ( hpos1         ),
     .vpos1      ( vpos1         ),
@@ -447,12 +467,23 @@ jtcps1_scroll u_scroll(
     .rom_ok     ( rom1_ok       ),
     .rom_half   ( rom1_half     ),
 
+    .star0_addr ( star0_addr    ),
+    .star0_data ( star0_data    ),
+    .star0_ok   ( star0_ok      ),
+    .star0_cs   ( star0_precs   ),
+
+    .star1_addr ( star1_addr    ),
+    .star1_data ( star1_data    ),
+    .star1_ok   ( star1_ok      ),
+    .star1_cs   ( star1_precs   ),
+
     .scr1_pxl   ( scr1_pxl      ),
     .scr2_pxl   ( scr2_pxl      ),
     .scr3_pxl   ( scr3_pxl      ),
 
     .star0_pxl  ( star0_pxl     ),
-    .star1_pxl  ( star1_pxl     )
+    .star1_pxl  ( star1_pxl     ),
+    .debug_bus  ( debug_bus     )
 );
 `else
 assign rom1_cs    = 1'b0;
@@ -542,6 +573,7 @@ jtcps1_colmix u_colmix(
 
     .gfx_en     ( gfx_en        ),
     .scrdma_en  ( scrdma_en     ),
+    .star_en    ( star_en       ),
 
     // Layer priority
     .layer_ctrl ( layer_ctrl    ),

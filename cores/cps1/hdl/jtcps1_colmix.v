@@ -26,8 +26,8 @@ module jtcps1_colmix(
     input   [10:0]     scr1_pxl,
     input   [10:0]     scr2_pxl,
     input   [10:0]     scr3_pxl,
-    input   [ 8:0]     star0_pxl,
-    input   [ 8:0]     star1_pxl,
+    input   [ 6:0]     star0_pxl,
+    input   [ 6:0]     star1_pxl,
     input   [ 8:0]     obj_pxl,
 
     // Layer priority
@@ -43,6 +43,7 @@ module jtcps1_colmix(
     input   [15:0]     prio2,
     input   [15:0]     prio3,
 
+    output reg [ 1:0]  star_en,
     // Palette RAM
     output reg [11:0]  pxl
 );
@@ -56,7 +57,7 @@ module jtcps1_colmix(
 // 011 = SCROLL 3
 // 100 = STAR FIELD
 
-localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA=3'd4;
+localparam [2:0] OBJ=3'b0, SCR1=3'b1, SCR2=3'd2, SCR3=3'd3, STA0=3'd4, STA1=3'd5;
 
 /////////////////////////// LAYER MUX ////////////////////////////////////////////
 function [13:0] layer_mux;
@@ -80,6 +81,8 @@ endfunction
     |(layer_mask0[5:0] & layer_ctrl[5:0])
 };
 
+always @(posedge clk) star_en <= lyren[4:3];
+
 //reg [4:0] lyren2, lyren3;
 
 // OBJ layer cannot be disabled by hardware
@@ -87,8 +90,8 @@ wire [ 8:0] obj_mask  = { obj_pxl[8:4],   obj_pxl[3:0]  | {4{~gfx_en[3]}} };
 wire [10:0] scr1_mask = { scr1_pxl[10:4], scr1_pxl[3:0] | {4{~(lyren[0]& scrdma_en[1] & gfx_en[0])}} };
 wire [10:0] scr2_mask = { scr2_pxl[10:4], scr2_pxl[3:0] | {4{~(lyren[1]& scrdma_en[2] & gfx_en[1])}} };
 wire [10:0] scr3_mask = { scr3_pxl[10:4], scr3_pxl[3:0] | {4{~(lyren[2]& scrdma_en[3] & gfx_en[2])}} };
-wire [ 8:0] sta0_mask = { star0_pxl[8:4], star0_pxl[3:0] | {4{~lyren[3]}} };
-wire [ 8:0] sta1_mask = { star1_pxl[8:4], star1_pxl[3:0] | {4{~lyren[4]}} };
+wire [ 6:0] sta0_mask = { star0_pxl[6:4], star0_pxl[3:0] | {4{~lyren[3]}} };
+wire [ 6:0] sta1_mask = { star1_pxl[6:4], star1_pxl[3:0] | {4{~lyren[4]}} };
 
 localparam QW = 14*5;
 reg [13:0] lyr5, lyr4, lyr3, lyr2, lyr1, lyr0;
@@ -103,8 +106,8 @@ wire [2:0] lyr2_code = lyr2[11:9];
 wire [2:0] lyr3_code = lyr3[11:9];
 `endif
 always @(posedge clk) if(pxl_cen) begin
-    lyr5 <= { 2'b00, STA, sta1_mask };
-    lyr4 <= { 2'b00, STA, sta0_mask };
+    lyr5 <= { 2'b00, STA1, 2'b0, sta1_mask };
+    lyr4 <= { 2'b00, STA0, 2'b0, sta0_mask };
     lyr3 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 7: 6] );
     lyr2 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[ 9: 8] );
     lyr1 <= layer_mux( obj_mask, scr1_mask, scr2_mask, scr3_mask, layer_ctrl[11:10] );
@@ -148,7 +151,7 @@ always @(posedge clk) begin
                 && lyr_queue[3:0] != 4'hf ))  )
         begin
             { group, pre_pxl } <= lyr_queue[13:0];
-            check_prio <= lyr_queue[11:9]!=STA;
+            check_prio <= ~lyr_queue[11]; // not a star
             lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
         end
         else begin

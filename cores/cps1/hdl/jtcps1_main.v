@@ -287,7 +287,8 @@ wire       xn_y      = A[3];
 wire       x_rst     = dial_rst & ~xn_y;
 wire       y_rst     = dial_rst &  xn_y;
 wire [1:0] x_in, y_in;
-reg  [1:0] dial_pulse, last_LHBL;
+reg  [1:0] dial_pulse;
+reg        last_LHBL;
 
 // The dial update ryhtm is set to once every four lines
 always @(posedge clk) begin

@@ -14,98 +14,115 @@
 
     Author: Jose Tejada Gomez. Twitter: @topapate
     Version: 1.0
-    Date: 12-3-2020 */
+    Date: 29-9-2021 */
 
 
 // Star field generator
-// Based on the circuit used for Side Arms, but without the ROM
+// Based on research work by Loic
+// https://gitlab.com/loic.petit/cps2-reverse
 
 module jtcps1_stars(
     input              rst,
     input              clk,
     input              pxl_cen,
 
+    input              HS,
     input              VB,
-    input              HB,
+    input              flip,
+    input      [ 8:0]  hdump,
     input      [ 8:0]  vdump,
     // control registers
-    input      [15:0]  hpos0,
-    input      [15:0]  vpos0,
-    input      [15:0]  hpos1,
-    input      [15:0]  vpos1,
-
-    output     [ 8:0]  star0,
-    output     [ 8:0]  star1
-);
-
-wire [22:0] poly1, poly0;
-wire        load = HB | VB;
-
-jtcps1_lfsr #(0) u_lfsr0(
-    .clk        ( clk           ),
-    .pxl_cen    ( pxl_cen       ),
-    .load       ( load          ),
-    .hpos       ( hpos0[ 8:0]   ),
-    .vpos       ( vpos0[ 8:0]   ),
-    .vdump      ( vdump         ),
-    .poly       ( poly0         )
-);
-
-jtcps1_lfsr #(1) u_lfsr1(
-    .clk        ( clk           ),
-    .pxl_cen    ( pxl_cen       ),
-    .load       ( load          ),
-    .hpos       ( hpos1[ 8:0]   ),
-    .vpos       ( vpos1[ 8:0]   ),
-    .vdump      ( vdump         ),
-    .poly       ( poly1         )
-);
-
-function bright;
-    input [22:0] poly;
-    bright = &poly[15:7];
-endfunction
-
-// Bits 8:7 must be zero
-assign star0[8:4] = { 2'd0, poly0[6:4] };
-assign star1[8:4] = { 2'd0, poly1[6:4] };
-
-assign star0[3:0] = bright(poly0) ? poly0[3:0] : 4'hf;
-assign star1[3:0] = bright(poly1) ? poly1[3:0] : 4'hf;
-
-`ifdef SIMULATION
-wire s0 = star0[3:0]!=4'hf;
-wire s1 = star1[3:0]!=4'hf;
-`endif
-
-endmodule
-
-module jtcps1_lfsr (
-    input              clk,
-    input              pxl_cen,
-    input              load,
     input      [ 8:0]  hpos,
     input      [ 8:0]  vpos,
-    input      [ 8:0]  vdump,
-    output reg [22:0]  poly
+
+    output     [12:0]  rom_addr,
+    input      [31:0]  rom_data,
+    input              rom_ok,
+    output             rom_cs,
+
+    output reg [ 6:0]  pxl,
+    input      [ 7:0]  debug_bus
 );
 
-parameter B=0;
-wire bb = B[0];
+parameter FIELD=0;
 
-reg last_load;
-reg [8:0] cnt;
-wire      cnthi = |cnt;
-wire [8:0] v = vpos+vdump;
+reg  [3:0] cnt16, cnt15, fcnt, cache_cnt;
+reg  [2:0] pal_id;
+reg  [4:0] pos, xs_cnt;
+reg  [7:0] star_data;
+reg  [8:0] veff;
+reg        VBl, HSl, cache_fill, blank;
+reg  [3:0] rom_hpos;
+
+reg  [7:0] cache[0:15];
+
+assign rom_cs   = cache_fill;
+assign rom_addr = { veff[8], rom_hpos, veff[7:0] };
+
+always @(posedge clk) if(pxl_cen) begin
+    HSl <= HS;
+    if( !HS && HSl ) begin // start the filling after HS (vdump toggles before)
+        cache_fill <= 1;
+        cache_cnt  <= 0;
+    end
+    if( cache_fill ) begin
+        if( rom_ok ) begin // not need for wait state because of pxl_cen
+            cache[ cache_cnt ] <= rom_data[7:0];
+            if( cache_cnt==4'hf ) begin
+                cache_fill <= 0;
+            end else begin
+                cache_cnt <= cache_cnt + 1'd1;
+            end
+        end
+    end
+end
 
 always @(posedge clk) begin
-    last_load <= load;
-    if( load && !last_load ) begin
-        poly <= { {bb,~bb,~bb,bb}^{v[3:2],v[7:6]}, v[3:0], v[8:4], 10'h55 ^ {10{bb}} };
-        cnt  <= hpos;
-    end else if( (!load && pxl_cen) || (load&&cnthi) ) begin
-        if(cnthi) cnt<=cnt-9'd1;
-        poly <= { poly[21:0], ~(poly[21]^poly[17])};
+    star_data <= cache[ hdump[8:5] ];
+end
+
+always @* begin
+    rom_hpos = ((hpos[8:5] + cache_cnt + 4'd1 ) ^ {4{flip}}); // stars-x schematic
+end
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        cnt15 <= 0;
+        cnt16 <= 0;
+        veff  <= 0;
+        fcnt  <= 0;
+    end else if( pxl_cen ) begin
+        veff <= (vpos+vdump)^{9{flip}};
+        VBl  <= VB;
+        if( VB & ~VBl ) begin
+            fcnt <= fcnt+1'd1;
+            if( &fcnt[3:0] ) begin
+                cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
+                cnt16 <= cnt16+1'd1; // transparent when cnt16==15
+            end
+        end
+    end
+end
+
+always @(posedge clk, posedge rst) begin
+    if( rst ) begin
+        pxl <= 7'hf;
+        xs_cnt <= 0;
+    end else if( pxl_cen ) begin
+        if( hdump[4:0]==0 ) begin
+            xs_cnt <= ~hpos[4:0];
+        end else begin
+            xs_cnt <= xs_cnt-1'd1;
+        end
+        if( xs_cnt==0 ) begin
+            pal_id <= star_data[7:5];
+            pos    <= star_data[4:0]^{5{flip}};
+            blank  <= star_data[4:0]==5'hf;
+        end else begin
+            pos <= pos-1;
+        end
+        pxl[6:4] <= pal_id;
+        pxl[3:0] <= pos==0 && !blank ? (pal_id[2] ? cnt16 : cnt15) : 4'hf;
     end
 end
 

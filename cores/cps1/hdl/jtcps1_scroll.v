@@ -33,6 +33,7 @@ module jtcps1_scroll(
     input              preVB,
     input              VB,
     input              HB,
+    input              HS,
     // control registers
     input      [15:0]  hpos1,
     input      [15:0]  vpos1,
@@ -61,14 +62,25 @@ module jtcps1_scroll(
     output             rom_cs,
     input              rom_ok,
 
+    output     [12:0]  star0_addr,
+    input      [31:0]  star0_data,
+    input              star0_ok,
+    output             star0_cs,
+
+    output     [12:0]  star1_addr,
+    input      [31:0]  star1_data,
+    input              star1_ok,
+    output             star1_cs,
+
     input      [ 3:0]  gfx_en,
 
     output reg [10:0]  scr1_pxl,
     output reg [10:0]  scr2_pxl,
     output reg [10:0]  scr3_pxl,
 
-    output     [ 8:0]  star0_pxl,
-    output     [ 8:0]  star1_pxl
+    output     [ 6:0]  star0_pxl,
+    output     [ 6:0]  star1_pxl,
+    input      [ 7:0]  debug_bus
 );
 
 reg         pre_start, sub_start, busy, done;
@@ -254,7 +266,7 @@ jtcps1_tilemap u_tilemap(
     .vpos       ( vpos          ),
 
     .start      ( sub_start     ),
-    .stop       ( pedg_HB    ),
+    .stop       ( pedg_HB       ),
     .done       ( sub_done      ),
 
     .tile_addr  ( tile_addr     ),
@@ -271,19 +283,42 @@ jtcps1_tilemap u_tilemap(
     .buf_data   ( buf_data      )
 );
 
-jtcps1_stars u_stars(
-    .rst      ( rst         ),
-    .clk      ( clk         ),
-    .pxl_cen  ( pxl_cen     ),
-    .VB       ( VB          ),
-    .HB       ( HB          ),
-    .vdump    ( vdump       ),
-    .hpos0    ( hstar0      ),
-    .vpos0    ( vstar0      ),
-    .hpos1    ( hstar1      ),
-    .vpos1    ( vstar1      ),
-    .star0    ( star0_pxl   ),
-    .star1    ( star1_pxl   )
+jtcps1_stars u_star0(
+    .rst            ( rst         ),
+    .clk            ( clk         ),
+    .pxl_cen        ( pxl_cen     ),
+    .HS             ( HS          ),
+    .VB             ( VB          ),
+    .flip           ( flip        ),
+    .vdump          ( vdump       ),
+    .hdump          ( hdump       ),
+    .hpos           ( hstar0      ),
+    .vpos           ( vstar0      ),
+    .rom_cs         ( star0_cs    ),
+    .rom_addr       ( star0_addr  ),
+    .rom_ok         ( star0_ok    ),
+    .rom_data       ( star0_data  ),
+    .pxl            ( star0_pxl   ),
+    .debug_bus      ( debug_bus   )
+);
+
+jtcps1_stars u_star1(
+    .rst            ( rst         ),
+    .clk            ( clk         ),
+    .pxl_cen        ( pxl_cen     ),
+    .HS             ( HS          ),
+    .VB             ( VB          ),
+    .flip           ( flip        ),
+    .vdump          ( vdump       ),
+    .hdump          ( hdump       ),
+    .hpos           ( hstar1      ),
+    .vpos           ( vstar1      ),
+    .rom_cs         ( star1_cs    ),
+    .rom_addr       ( star1_addr  ),
+    .rom_ok         ( star1_ok    ),
+    .rom_data       ( star1_data  ),
+    .pxl            ( star1_pxl   ),
+    .debug_bus      ( debug_bus   )
 );
 
 endmodule
