@@ -53,7 +53,8 @@ module mist_dump(
             $display("NC Verilog: will dump selected signals");
             $shm_probe(frame_cnt);
             //$shm_probe(UUT.u_game.u_prom_we, "A");
-            //$shm_probe(UUT.u_game.u_sound, "A");
+            $shm_probe(UUT.u_game.u_sound, "A");
+            $shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
             //$shm_probe(UUT.u_game.u_sound.u_adpcm, "AS");
             //$shm_probe(UUT.u_game.u_sdram_mux, "A");
             //$shm_probe(UUT.u_game.u_sdram_mux.u_slot0, "AS");
@@ -74,7 +75,6 @@ module mist_dump(
                 $shm_probe(UUT.u_frame.u_board.u_sdram.u_stats, "A");
             `endif
             //$shm_probe(UUT.u_frame.u_board.u_sdram, "A");
-            $shm_probe(UUT.u_game.u_main, "A");
             //$shm_probe(UUT.u_game.u_sound, "A");
             `ifndef NOMAIN
                 //$shm_probe(UUT.u_game.u_sound.u_dsp16, "A");
@@ -90,7 +90,7 @@ module mist_dump(
                 //$shm_probe(UUT.u_game.u_eeprom,"A");
                 //$shm_probe(UUT.u_game.u_sound.u_buslock, "A");
             `else
-                $shm_probe(UUT.u_game.u_main, "A" );
+                //$shm_probe(UUT.u_game.u_main, "A" );
                 $shm_probe(UUT.u_game.u_main.u_dtack, "A" );
             `endif
             //$shm_probe(UUT.u_game.u_video, "A");
