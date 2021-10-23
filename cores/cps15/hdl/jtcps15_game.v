@@ -506,6 +506,16 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .rom0_data   ( rom0_data     ),
     .rom1_data   ( rom1_data     ),
 
+    .star0_addr  ( 13'd0         ),
+    .star0_data  (               ),
+    .star0_ok    (               ),
+    .star0_cs    ( 1'b0          ),
+
+    .star1_addr  ( 13'd0         ),
+    .star1_data  (               ),
+    .star1_ok    (               ),
+    .star1_cs    ( 1'b0          ),
+
     // Bank 0: allows R/W
     .ba0_addr    ( ba0_addr      ),
     .ba1_addr    ( ba1_addr      ),
