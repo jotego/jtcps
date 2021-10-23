@@ -6,8 +6,11 @@ CORENAME=JTCPS2
 JTFRAME_SDRAM_LARGE
 
 # OSD options
-JTFRAME_OSD_TEST
 CORE_OSD+=O7,1P_hold_for_slow,Off,On;
+# CPS1.5 games don't have DIP switches
+# but use NVRAM instead
+JTFRAME_OSD_TEST
+JTFRAME_MIST_DIPBASE=16
 
 CPS1_NOOBJ
 
