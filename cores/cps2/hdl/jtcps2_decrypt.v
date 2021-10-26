@@ -26,7 +26,7 @@ module jtcps2_decrypt(
 
     // Encryption control
     input      [ 2:0] fc,
-    input             dec_en,
+    output            dec_en,
 
     // Decoding
     input             rom_ok,
@@ -47,7 +47,9 @@ jtcps2_keyload u_keyload(
     .din_we    ( prog_we       ),
 
     .addr_rng  ( addr_rng      ),
-    .key       ( master_key    )
+    .key       ( master_key    ),
+
+    .dec_en    ( dec_en        )
 );
 
 jtcps2_fn1 u_fn1(
