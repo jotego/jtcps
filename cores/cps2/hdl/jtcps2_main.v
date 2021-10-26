@@ -102,6 +102,8 @@ reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 
 wire [15:0] rom_dec;
 
+wire        dec_en;
+
 `ifdef SIMULATION
 wire [23:0] A_full = {A,1'b0};
 `endif
@@ -177,7 +179,7 @@ always @(posedge clk, posedge rst) begin
             pre_oram_cs <= A[23:20] == 4'h7 && A[19:16]==oram_base[11:8];
             io_cs       <= A[23:19] == 5'b1000_0;
             // OBJ engine
-            objcfg_cs   <= A[23:4] == ~20'h0 && !RnW;    // 4?'????
+            objcfg_cs   <= ((dec_en && A[23:20] == 4'h4) || (!dec_en && A[23:4] == ~20'h0)) && !RnW;
             // QSound
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
@@ -391,11 +393,8 @@ jtcps2_decrypt u_decrypt(
 
     // Control
     .fc         ( FC        ),
-    `ifdef NOENCRYPT
-    .dec_en     ( 1'b0      ),
-    `else
-    .dec_en     ( 1'b1      ),
-    `endif
+
+    .dec_en     ( dec_en    ),
 
     // Decoding
     .addr       ( A         ),
