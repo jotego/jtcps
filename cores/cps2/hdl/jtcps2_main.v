@@ -177,7 +177,7 @@ always @(posedge clk, posedge rst) begin
             pre_oram_cs <= A[23:20] == 4'h7 && A[19:16]==oram_base[11:8];
             io_cs       <= A[23:19] == 5'b1000_0;
             // OBJ engine
-            objcfg_cs   <= A[23:20] == 4'h4 && !RnW;    // 4?'????
+            objcfg_cs   <= A[23:4] == ~20'h0 && !RnW;    // 4?'????
             // QSound
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
