@@ -57,8 +57,12 @@ Street Fighter Alpha: Warriors&apos; Dreams (Euro 950727 Phoenix Edition) (bootl
         <part name="sfz.01" crc="ffffec7d"/>
         <part name="sfz.02" crc="45f46a08"/>
         <!-- qsound - starts at 0x240014 -->
-        <part name="sfz.11m" crc="c4b093cd"/>
-        <part name="sfz.12m" crc="8bdbc4b4"/>
+        <interleave output="16">
+            <part name="sfz.11m" crc="c4b093cd" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="sfz.12m" crc="8bdbc4b4" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x640014 -->
         <part repeat="0x800000"> FF</part>
         <interleave output="64">
@@ -73,6 +77,9 @@ Street Fighter Alpha: Warriors&apos; Dreams (Euro 950727 Phoenix Edition) (bootl
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 00 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 01 03 01 00 02 00 00 00 00 00 00 00 00 00 00 07 95 08 27 10 94 ff 45 4c 43 53 41 49 53 21 43 01 00 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 01 03 01 00 02 00 00 00 00 00 00 00 00 00 00 07 95 08 27 10 94 ff 45 4c 43 53 41 49 53 21 43 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 01</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

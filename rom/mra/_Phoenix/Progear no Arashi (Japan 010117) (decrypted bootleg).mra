@@ -52,8 +52,12 @@
         <!-- audiocpu - starts at 0x100014 -->
         <part name="pga.01" crc="bdbfa992"/>
         <!-- qsound - starts at 0x120014 -->
-        <part name="pga.11m" crc="abdd224e"/>
-        <part name="pga.12m" crc="dac53406"/>
+        <interleave output="16">
+            <part name="pga.11m" crc="abdd224e" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga.12m" crc="dac53406" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x920014 -->
         <interleave output="64">
             <part name="pga.13m" crc="5194c198" map="00000021"/>
@@ -67,6 +71,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 01 00 00 00 01 03 00 00 00 00 00 00 00 00 06 97 00 12 10 96 ff 01 52 50 47 4f 4a 45 4e 50 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 01 00 00 00 01 03 00 00 00 00 00 00 00 00 06 97 00 12 10 96 ff 01 52 50 47 4f 4a 45 4e 50 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Shot,Bomb,Rapid Shot,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

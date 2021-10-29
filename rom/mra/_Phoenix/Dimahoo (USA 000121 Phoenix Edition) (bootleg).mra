@@ -55,8 +55,12 @@
         <part name="gmd.01" crc="3f9bc985"/>
         <part name="gmd.02" crc="3fd39dde"/>
         <!-- qsound - starts at 0x240014 -->
-        <part name="gmd.11m" crc="06a65542"/>
-        <part name="gmd.12m" crc="50bc7a31"/>
+        <interleave output="16">
+            <part name="gmd.11m" crc="06a65542" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="gmd.12m" crc="50bc7a31" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xA40014 -->
         <interleave output="64">
             <part name="gmd.13m" crc="80dd19f0" map="00000021"/>
@@ -71,6 +75,9 @@
     <!-- Vertical game -->
     <rom index="1">
         <part>01</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 01 80 00 00 00 02 00 00 00 00 00 00 00 00 02 03 00 03 00 00 00 00 00 00 00 00 00 00 00 00 06 97 02 12 10 96 ff 01 4d 47 48 41 55 4f 41 53 00 00 01 80 00 00 00 02 00 00 00 00 00 00 00 00 02 03 00 03 00 00 00 00 00 00 00 00 00 00 00 00 06 97 02 12 10 96 ff 01 4d 47 48 41 55 4f 41 53 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 25</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Main Shot,Bomb,Rapid Main Shot,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

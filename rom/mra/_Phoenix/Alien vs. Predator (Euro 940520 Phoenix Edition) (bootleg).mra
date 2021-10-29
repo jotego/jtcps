@@ -54,8 +54,12 @@
         <!-- audiocpu - starts at 0x200014 -->
         <part name="avp.01" crc="2d3b4220"/>
         <!-- qsound - starts at 0x220014 -->
-        <part name="avp.11m" crc="83499817"/>
-        <part name="avp.12m" crc="f4110d49"/>
+        <interleave output="16">
+            <part name="avp.11m" crc="83499817" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="avp.12m" crc="f4110d49" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="avp.13m" crc="8f8b5ae4" map="00000021"/>
@@ -75,6 +79,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 00 01 00 01 01 c3 02 00 00 00 00 00 00 00 01 03 00 04 00 00 00 00 00 00 00 00 00 00 00 00 05 94 08 20 10 92 ff 06 72 50 64 65 74 61 72 6f 01 00 01 00 01 01 c3 02 00 00 00 00 00 00 00 01 03 00 04 00 00 00 00 00 00 00 00 00 00 00 00 05 94 08 20 10 92 ff 06 72 50 64 65 74 61 72 6f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 08</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Shoot,Attack,Jump/Dash,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

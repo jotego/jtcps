@@ -54,8 +54,12 @@
         <!-- audiocpu - starts at 0x200014 -->
         <part name="uec.01" crc="c235bd15"/>
         <!-- qsound - starts at 0x220014 -->
-        <part name="uec.11m" crc="81b25d39"/>
-        <part name="uec.12m" crc="27729e52"/>
+        <interleave output="16">
+            <part name="uec.11m" crc="81b25d39" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="uec.12m" crc="27729e52" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="uec.13m" crc="dcaf1436" map="00000021"/>
@@ -75,6 +79,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 04 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 12 93 00 02 00 00 00 00 43 45 4c 4f 47 4f 20 59 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 04 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 12 93 00 02 00 00 00 00 43 45 4c 4f 47 4f 02 27</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Rotate CCW,Shoot,Rotate CW,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

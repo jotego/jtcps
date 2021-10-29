@@ -56,8 +56,12 @@
         <part name="pcf.01" crc="254e5f33"/>
         <part name="pcf.02" crc="6902f4f9"/>
         <!-- qsound - starts at 0x2C0014 -->
-        <part name="pcf.11m" crc="a5dea005"/>
-        <part name="pcf.12m" crc="4ce235fe"/>
+        <interleave output="16">
+            <part name="pcf.11m" crc="a5dea005" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pcf.12m" crc="4ce235fe" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xAC0014 -->
         <interleave output="64">
             <part name="pcf.13m" crc="22d72ab9" map="00000021"/>
@@ -77,6 +81,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 09 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 04 04 00 00 02 00 01 00 00 00 00 00 00 00 00 09 97 02 04 10 44 ff 11 6f 70 6b 63 74 65 20 20 01 09 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 04 04 00 00 02 00 01 00 00 00 00 00 00 00 00 09 97 02 04 10 44 ff 11 6f 70 6b 63 74 65 20 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 0d</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Punch,Kick,Special,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

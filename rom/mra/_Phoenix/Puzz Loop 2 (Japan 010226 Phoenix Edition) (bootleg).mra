@@ -54,8 +54,12 @@
         <!-- audiocpu - starts at 0x200014 -->
         <part name="pl2.01" crc="35697569"/>
         <!-- qsound - starts at 0x220014 -->
-        <part name="pl2-simm.05a" crc="85d8fbe8"/>
-        <part name="pl2-simm.05b" crc="1ed62584"/>
+        <interleave output="16">
+            <part name="pl2-simm.05a" crc="85d8fbe8" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pl2-simm.05b" crc="1ed62584" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x620014 -->
         <interleave output="64">
             <part name="pl2-simm.01c" crc="137b13a7" map="00000001"/>
@@ -73,6 +77,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 01 03 00 01 00 00 00 00 00 00 00 00 00 00 00 00 02 01 00 1a 4c 50 4a 32 49 4d 43 54 45 48 4c 4c 01 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 01 03 00 01 00 00 00 00 00 00 00 00 00 00 00 00 02 01 00 1a 4c 50 4a 32 49 4d 43 54 45 48 4c 4c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Shot,-,-,-,-,-,Start,Coin,Core credits" default="YXBALR,Select,Start,-" count="1"/>

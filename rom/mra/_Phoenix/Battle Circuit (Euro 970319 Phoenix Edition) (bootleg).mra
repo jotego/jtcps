@@ -58,8 +58,12 @@
         <part name="btc.01" crc="1e194310"/>
         <part name="btc.02" crc="01aeb8e6"/>
         <!-- qsound - starts at 0x3C0014 -->
-        <part name="btc.11m" crc="c27f2229"/>
-        <part name="btc.12m" crc="418a2e33"/>
+        <interleave output="16">
+            <part name="btc.11m" crc="c27f2229" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="btc.12m" crc="418a2e33" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x7C0014 -->
         <interleave output="64">
             <part name="btc.13m" crc="dc705bad" map="00000021"/>
@@ -73,6 +77,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 05 00 07 00 00 00 03 01 01 00 01 00 07 03 97 08 19 54 42 20 43 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 05 00 07 00 00 00 03 01 01 00 01 00 07 03 97 08 19 54 42 20 43 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 1b</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Attack,Jump,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="2"/>

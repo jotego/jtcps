@@ -53,8 +53,12 @@
         <part name="pzf.01" crc="600fb2a3"/>
         <part name="pzf.02" crc="496076e0"/>
         <!-- qsound - starts at 0x140014 -->
-        <part name="pzf.11m" crc="78442743"/>
-        <part name="pzf.12m" crc="399d2c7b"/>
+        <interleave output="16">
+            <part name="pzf.11m" crc="78442743" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pzf.12m" crc="399d2c7b" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x540014 -->
         <part repeat="0x800000"> FF</part>
         <interleave output="64">
@@ -69,6 +73,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 01 03 01 01 02 01 01 01 00 00 00 00 00 00 00 00 05 96 00 13 10 44 ff 11 55 50 5a 5a 45 4c 20 20 01 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 01 03 01 01 02 01 01 01 00 00 00 00 00 00 00 00 05 96 00 13 10 44 ff 11 55 50 5a 5a 45 4c 20 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 2f</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Rotate Left,Rotate Right,-,-,-,-,Start,Coin,Core credits" default="Y,XBALR,Select,Start,-" count="2"/>

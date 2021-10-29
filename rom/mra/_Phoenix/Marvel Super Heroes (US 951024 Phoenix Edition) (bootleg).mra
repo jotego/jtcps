@@ -59,8 +59,12 @@
         <part name="msh.01" crc="c976e6f9"/>
         <part name="msh.02" crc="ce67d0d9"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="msh.11m" crc="37ac6d30"/>
-        <part name="msh.12m" crc="de092570"/>
+        <interleave output="16">
+            <part name="msh.11m" crc="37ac6d30" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="msh.12m" crc="de092570" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="msh.13m" crc="09d14566" map="00000021"/>
@@ -80,6 +84,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 01 00 00 00 00 02 00 00 00 00 00 00 00 00 03 03 01 03 00 00 00 01 00 00 00 00 00 00 00 00 10 95 02 16 10 93 ff 01 53 4d 20 48 20 20 20 20 00 00 01 00 00 00 00 02 00 00 00 00 00 00 00 00 03 03 01 03 00 00 00 01 00 00 00 00 00 00 00 00 10 95 02 16 10 93 ff 01 53 4d 20 48 20 20 20 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 13</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

@@ -61,8 +61,12 @@ Night Warriors: Darkstalkers&apos; Revenge (USA 950406 Phoenix Edition) (bootleg
         <part name="vph.01" crc="5045dcac"/>
         <part name="vph.02" crc="86b60e59"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="vph.11m" crc="e1837d33"/>
-        <part name="vph.12m" crc="fbd3cd90"/>
+        <interleave output="16">
+            <part name="vph.11m" crc="e1837d33" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vph.12m" crc="fbd3cd90" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="vph.13m" crc="c51baf99" map="00000021"/>
@@ -82,6 +86,9 @@ Night Warriors: Darkstalkers&apos; Revenge (USA 950406 Phoenix Edition) (bootleg
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 01 00 02 00 04 00 01 01 00 03 00 03 00 01 00 00 00 04 95 02 06 41 56 48 4d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 01 00 02 00 04 00 01 01 00 03 00 03 00 01 00 00 00 04 95 02 06 41 56 48 4d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 2a</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

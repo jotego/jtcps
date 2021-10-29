@@ -54,8 +54,12 @@
         <part name="rm2.01a" crc="d18e7859"/>
         <part name="rm2.02" crc="c463ece0"/>
         <!-- qsound - starts at 0x1C0014 -->
-        <part name="rm2.11m" crc="2106174d"/>
-        <part name="rm2.12m" crc="546c1636"/>
+        <interleave output="16">
+            <part name="rm2.11m" crc="2106174d" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="rm2.12m" crc="546c1636" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x5C0014 -->
         <part repeat="0x800000"> FF</part>
         <interleave output="64">
@@ -70,6 +74,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 09 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 07 96 02 08 05 04 07 06 45 4d 41 47 41 4d 32 4e 01 09 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 07 96 02 08 05 04 07 06 45 4d 41 47 41 4d 32 4e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 15</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Attack,Jump,Weapon Change,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

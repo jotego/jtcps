@@ -55,8 +55,12 @@
         <!-- audiocpu - starts at 0x280014 -->
         <part name="dad.01" crc="3f5e2424"/>
         <!-- qsound - starts at 0x2A0014 -->
-        <part name="dad.11m" crc="0c499b67"/>
-        <part name="dad.12m" crc="2f0b5a4e"/>
+        <interleave output="16">
+            <part name="dad.11m" crc="0c499b67" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="dad.12m" crc="2f0b5a4e" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x6A0014 -->
         <interleave output="64">
             <part name="dad.13m" crc="da3cb7d6" map="00000021"/>
@@ -76,6 +80,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>45 42 4f 48 45 42 4f 48 01 00 00 00 00 01 03 00 04 04 45 42 45 42 4f 48 45 42 4f 48 45 42 4f 48 45 42 4f 48 45 42 4f 48 04 94 00 12 20 20 20 20 75 44 67 6e 6f 65 73 6e 44 26 61 72 6f 67 73 6e 45 42 4f 48 45 42 4f 48 01 00 00 00 00 01 03 00 04 04 45 42 45 42 4f 48 45 42 4f 48 45 42 4f 48 45 42 4f 48 45 42 4f 48 04 94 00 12 20 20 20 20 75 44 67 6e 6f 65 73 6e 44 26 61 72 6f 67 04 32</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Attack,Jump,Item,Select,-,-,Start,Coin,Core credits" default="Y,X,B,ALR,Select,Start,-" count="4"/>

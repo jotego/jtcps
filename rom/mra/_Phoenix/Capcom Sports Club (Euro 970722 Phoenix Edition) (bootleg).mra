@@ -55,14 +55,30 @@
         <!-- audiocpu - starts at 0x280014 -->
         <part name="csc.01" crc="ee162111"/>
         <!-- qsound - starts at 0x2A0014 -->
-        <part name="csc.51" crc="5a52afd5"/>
-        <part name="csc.52" crc="1408a811"/>
-        <part name="csc.53" crc="4fb9f57c"/>
-        <part name="csc.54" crc="9a8f40ec"/>
-        <part name="csc.55" crc="91529a91"/>
-        <part name="csc.56" crc="9a345334"/>
-        <part name="csc.57" crc="aedc27f2"/>
-        <part name="csc.58" crc="2300b7b3"/>
+        <interleave output="16">
+            <part name="csc.51" crc="5a52afd5" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.52" crc="1408a811" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.53" crc="4fb9f57c" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.54" crc="9a8f40ec" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.55" crc="91529a91" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.56" crc="9a345334" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.57" crc="aedc27f2" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="csc.58" crc="2300b7b3" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x6A0014 -->
         <part repeat="0x800000"> FF</part>
         <interleave output="64">
@@ -95,6 +111,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 01 01 01 01 02 01 01 00 01 00 01 01 00 00 07 97 04 22 50 53 20 4f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00 01 01 01 01 02 01 01 00 01 00 01 01 00 00 07 97 04 22 50 53 20 4f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 1e 00 00 00 00 00 00 00 00 00 00 00 00</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Shoot/Weak Shot,Pass/Strong Shot,Dash/Lob/Jump,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>

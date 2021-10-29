@@ -59,8 +59,12 @@
         <part name="vm3.01" crc="f778769b"/>
         <part name="vm3.02" crc="cc09faa1"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="vm3.11m" crc="e80e956e"/>
-        <part name="vm3.12m" crc="9cd71557"/>
+        <interleave output="16">
+            <part name="vm3.11m" crc="e80e956e" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="vm3.12m" crc="9cd71557" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="vm3.13m" crc="fd8a11eb" map="00000021"/>
@@ -80,6 +84,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 09 01 00 00 01 00 01 00 02 00 00 00 00 00 00 01 01 05 01 00 01 00 00 00 00 00 00 00 00 00 00 05 97 0a 19 4d 56 45 33 65 72 73 20 76 61 6f 69 01 09 01 00 00 01 00 01 00 02 00 00 00 00 00 00 01 01 05 01 00 01 00 00 00 00 00 00 00 00 00 00 05 97 0a 19 4d 56 45 33 65 72 73 20 76 61 6f 69 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 05 04</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

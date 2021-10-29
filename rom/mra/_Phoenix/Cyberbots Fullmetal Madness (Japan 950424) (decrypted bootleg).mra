@@ -59,8 +59,12 @@
         <part name="cyb.01" crc="9c0fb079"/>
         <part name="cyb.02" crc="51cb0c4e"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="cyb.11m" crc="362ccab2"/>
-        <part name="cyb.12m" crc="7066e9cc"/>
+        <interleave output="16">
+            <part name="cyb.11m" crc="362ccab2" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="cyb.12m" crc="7066e9cc" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="cyb.13m" crc="f0dce192" map="00000021"/>
@@ -80,6 +84,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 03 00 00 00 01 00 03 01 01 00 01 00 01 04 95 00 24 59 43 20 42 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 03 00 00 00 01 00 03 01 01 00 01 00 01 04 95 00 24 59 43 20 42 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Attack 1,Attack 2,Boost,Weapon,-,-,Start,Coin,Core credits" default="Y,X,B,ALR,Select,Start,-" count="4"/>

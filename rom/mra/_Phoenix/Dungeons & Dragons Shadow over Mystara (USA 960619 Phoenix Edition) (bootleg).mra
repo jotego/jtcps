@@ -61,8 +61,12 @@ Dungeons &amp; Dragons: Shadow over Mystara (USA 960619 Phoenix Edition) (bootle
         <part name="dd2.01" crc="99d657e5"/>
         <part name="dd2.02" crc="117a3824"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="dd2.11m" crc="98d0c325"/>
-        <part name="dd2.12m" crc="5ea2e7fa"/>
+        <interleave output="16">
+            <part name="dd2.11m" crc="98d0c325" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="dd2.12m" crc="5ea2e7fa" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x840014 -->
         <interleave output="64">
             <part name="dd2.13m" crc="a46b4e6e" map="00000021"/>
@@ -82,6 +86,9 @@ Dungeons &amp; Dragons: Shadow over Mystara (USA 960619 Phoenix Edition) (bootle
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>0b 00 00 01 01 01 02 00 00 00 00 00 00 00 00 00 03 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 96 02 01 00 00 00 00 26 44 32 44 55 20 41 53 0b 00 00 01 01 01 02 00 00 00 00 00 00 00 00 00 03 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 96 02 01 00 00 00 00 26 44 32 44 55 20 41 53 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 0c</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Attack,Jump,Select,Magic,-,-,Start,Coin,Core credits" default="Y,X,B,ALR,Select,Start,-" count="4"/>

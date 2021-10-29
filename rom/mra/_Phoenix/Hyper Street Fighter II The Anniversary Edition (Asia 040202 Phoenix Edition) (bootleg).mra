@@ -61,7 +61,9 @@ Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (
         <part name="hs2.01" crc="c1a13786"/>
         <part name="hs2.02" crc="2d8794aa"/>
         <!-- qsound - starts at 0x440014 -->
-        <part name="hs2.11m" crc="0e15c359"/>
+        <interleave output="16">
+            <part name="hs2.11m" crc="0e15c359" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0xC40014 -->
         <interleave output="64">
             <part name="hs2.13m" crc="a6ecab17" map="00000021"/>
@@ -75,6 +77,9 @@ Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 03 01 00 01 01 00 00 02 04 41 02 53 48 41 46 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 03 01 00 01 01 00 00 02 04 41 02 53 48 41 46 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 35</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

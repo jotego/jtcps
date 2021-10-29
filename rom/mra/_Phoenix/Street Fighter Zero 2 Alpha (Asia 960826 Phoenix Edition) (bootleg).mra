@@ -57,8 +57,12 @@
         <part name="sz2.01a" crc="1bc323cf"/>
         <part name="sz2.02a" crc="ba6a5013"/>
         <!-- qsound - starts at 0x340014 -->
-        <part name="sz2.11m" crc="aa47a601"/>
-        <part name="sz2.12m" crc="2237bc53"/>
+        <interleave output="16">
+            <part name="sz2.11m" crc="aa47a601" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="sz2.12m" crc="2237bc53" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x740014 -->
         <interleave output="64">
             <part name="sz2.13m" crc="4d1f1f22" map="00000021"/>
@@ -78,6 +82,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>01 00 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 07 04 01 00 02 00 00 00 00 00 00 00 00 00 00 08 96 08 26 0f c2 a0 65 7a 6f 72 61 32 70 6c 01 00 01 00 00 01 02 00 00 00 00 00 00 00 00 00 01 07 04 01 00 02 00 00 00 00 00 00 00 00 00 00 08 96 08 26 0f c2 a0 65 7a 6f 72 61 32 70 6c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 2c</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick,Start,Coin,Core credits" default="Y,X,B,A,L,R,Select,Start,-" count="6"/>

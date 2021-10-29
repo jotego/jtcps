@@ -52,10 +52,18 @@
         <!-- audiocpu - starts at 0x100014 -->
         <part name="pga.01" crc="bdbfa992"/>
         <!-- qsound - starts at 0x120014 -->
-        <part name="pga-simm.05a" crc="c0aac80c"/>
-        <part name="pga-simm.05b" crc="37a65d86"/>
-        <part name="pga-simm.06a" crc="d3f1e934"/>
-        <part name="pga-simm.06b" crc="8b39489a"/>
+        <interleave output="16">
+            <part name="pga-simm.05a" crc="c0aac80c" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.05b" crc="37a65d86" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.06a" crc="d3f1e934" map="12"/>
+        </interleave>
+        <interleave output="16">
+            <part name="pga-simm.06b" crc="8b39489a" map="12"/>
+        </interleave>
         <!-- gfx - starts at 0x920014 -->
         <interleave output="64">
             <part name="pga-simm.01c" crc="452f98b0" map="00000001"/>
@@ -73,6 +81,9 @@
     </rom>
     <rom index="1">
         <part>00</part>
+    </rom>
+    <rom index="2">
+        <part>00 09 01 00 00 00 00 02 00 00 00 00 00 00 00 00 00 01 01 00 00 00 00 03 00 00 00 00 00 00 00 00 06 97 02 12 10 96 ff 01 52 50 47 4f 55 45 41 53 00 09 01 00 00 00 00 02 00 00 00 00 00 00 00 00 00 01 01 00 00 00 00 03 00 00 00 00 00 00 00 00 06 97 02 12 10 96 ff 01 52 50 47 4f 55 45 41 53 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 33</part>
     </rom>
     <nvram index="2" size="128"/>
     <buttons names="Shot,Bomb,Rapid Shot,-,-,-,Start,Coin,Core credits" default="Y,X,BALR,Select,Start,-" count="3"/>
