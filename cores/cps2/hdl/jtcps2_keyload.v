@@ -23,24 +23,32 @@ module jtcps2_keyload(
     input             din_we,
 
     output     [15:0] addr_rng,
-    output     [63:0] key
+    output     [63:0] key,
+    output            dec_en
 );
 
 reg          last_din_we;
 wire [159:0] cfg;
 reg  [159:0] raw;
 
+reg          dec_en_reg;
+
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
         last_din_we <= 0;
         raw <= 160'd0;
+        dec_en_reg <= 0;
     end else begin
         last_din_we <= din_we;
         if( din_we && !last_din_we ) begin
             raw <= { din, raw[159:8] };
         end
+
+        dec_en_reg <= (addr_rng[15:0] != ~16'h0);
     end
 end
+
+assign dec_en   = dec_en_reg;
 
 assign key      = cfg[63:0];
 assign addr_rng = cfg[159:144];
