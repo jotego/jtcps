@@ -81,7 +81,7 @@ wire signed [15:0] fxd_l, fxd_r;
 wire               resample48;
 
 // DSP16 wires
-wire [15:0] dsp_ab, dsp_pbus_out, dsp_serout;
+wire [15:0] dsp_ab, dsp_pbus_out;
 reg  [15:0] dsp_pbus_in;
 wire        dsp_pods_n, dsp_pids_n;
 wire        dsp_do, dsp_ock, dsp_doen;
@@ -371,6 +371,10 @@ always @(posedge clk48, posedge rst) begin
     end
 end
 
+reg [15:0] ser_cnt;
+reg        dsp_ockl;
+reg        left_done, right_done;
+
 always @(posedge clk96, posedge rst) begin
     if ( rst ) begin
         audio_ws   <= 0;
@@ -384,23 +388,31 @@ always @(posedge clk96, posedge rst) begin
         last_pods_n <= dsp_pods_n;
         last_psel   <= dsp_psel;
         dsp_dsel96  <= dsp_datasel[1];
+        dsp_ockl    <= dsp_ock;
 
-        // latch sound data
+        // latch sound data like the TDA1543 would
         last_sadd <= dsp_sadd;
         if( dsp_irq ) cpu2dsp_s <= cpu2dsp;
         if( !dsp_sadd && last_sadd ) begin
             audio_ws <= dsp_psel;
-            // data is taken directly in parallel. The serial
-            // interface is bypassed for simplificty
-            if( !dsp_psel )
-                reg_left  <= dsp_serout;
-            else
-                reg_right <= dsp_serout;
+            ser_cnt  <= 16'hffff;
         end
-        if( !last_psel && dsp_psel ) begin
+        if( dsp_ockl & ~dsp_ock & ser_cnt[15] ) begin
+            ser_cnt <= ser_cnt << 1;
+            if( audio_ws ) begin
+                reg_right <= { reg_right, dsp_do };
+                if( !ser_cnt[14] ) right_done <= 1;
+            end else begin
+                reg_left <= { reg_left, dsp_do };
+                if( !ser_cnt[14] ) left_done <= 1;
+            end
+        end
+        if( left_done & right_done ) begin
             pre_l <= reg_left;
             pre_r <= reg_right;
             base_sample <= 1;
+            left_done  <= 0;
+            right_done <= 0;
         end else begin
             base_sample <= 0;
         end
@@ -445,7 +457,7 @@ jtdsp16 u_dsp16(
     .doen       ( dsp_doen      ),  // data output enable
     .sadd       ( dsp_sadd      ),  // serial address
     .psel       ( dsp_psel      ),  // peripheral select
-    .ser_out    ( dsp_serout    ),
+    .ser_out    (               ),  // debug output to bypass the serial register
         // Unused by QSound firmware:
     .ose        (               ),  // output shift register empty
     .old        (               ),  // output load
