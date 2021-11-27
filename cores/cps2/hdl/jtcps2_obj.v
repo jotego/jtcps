@@ -61,6 +61,7 @@ wire [ 2:0] dr_prio, buf_prio;
 wire [ 1:0] dr_bank;
 
 wire        dr_start, dr_idle;
+wire        line;
 
 wire [15:0] line_data;
 wire [ 8:0] line_addr;

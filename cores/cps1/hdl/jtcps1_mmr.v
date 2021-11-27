@@ -227,6 +227,7 @@ always @(*) begin
             6'b001_000: pre_mux0 = rslt0;
             6'b010_000: pre_mux0 = rslt1;
             6'b100_000: pre_mux0 = layer_ctrl;
+            default:;
         endcase
         case( addrb[12:6] )
             7'b0_000_001: pre_mux1 = prio0;
@@ -237,6 +238,7 @@ always @(*) begin
             // extra inputs
             7'b0_100_000: pre_mux1 = { in2, in2 };
             7'b1_000_000: pre_mux1 = { in3, in3 };
+            default:;
         endcase
     end
 end
@@ -404,7 +406,7 @@ always @(posedge clk, posedge reg_rst) begin
             if( addrb[ 7] && !dsn) prio1      <= cpu_dout;
             if( addrb[ 8] && !dsn) prio2      <= cpu_dout;
             if( addrb[ 9] && !dsn) prio3      <= cpu_dout;
-            if( addrb[10] && !dsn) pal_page_en<= cpu_dout;
+            if( addrb[10] && !dsn) pal_page_en<= cpu_dout[5:0];
             `ifdef CPS1
             if( game == 6'h14 /*game_pang3*/ ) begin
                 if( addr == 5'h1d && !dsn[0] ) { scs, sclk, sdi } <= { cpu_dout[7], cpu_dout[6], cpu_dout[0] };

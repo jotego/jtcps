@@ -120,6 +120,7 @@ assign uart_wr  = uart_cs && !A[3] && !RnW;
 
 `ifdef SIMULATION
 wire [23:0] A_full = {A,1'b0};
+wire        bad_as = ~ASn & BUSn & ~last_busn;
 `endif
 
 (*keep*) wire        BRn, BGACKn, BGn;
@@ -143,7 +144,6 @@ assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
 
 reg last_busn;
-wire bad_as = ~ASn & BUSn & ~last_busn;
 
 always @(posedge clk) last_busn <= BUSn;
 
@@ -252,61 +252,6 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
-// incremental encoder counter
-wire [7:0] dial_dout;
-`ifndef CPS15
-wire       dial_rst  = dial_cs && !RnW && ~A[4];
-wire       xn_y      = A[3];
-wire       x_rst     = dial_rst & ~xn_y;
-wire       y_rst     = dial_rst &  xn_y;
-wire [1:0] x_in, y_in;
-reg  [1:0] dial_pulse, last_LHBL;
-
-// The dial update ryhtm is set to once every four lines
-always @(posedge clk) begin
-    last_LHBL <= LHBL;
-    if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
-end
-
-jt4701 u_dial(
-    .clk        ( clk       ),
-    .rst        ( rst       ),
-    .x_in       ( x_in      ),
-    .y_in       ( y_in      ),
-    .rightn     ( 1'b1      ),
-    .leftn      ( 1'b1      ),
-    .middlen    ( 1'b1      ),
-    .x_rst      ( x_rst     ),
-    .y_rst      ( y_rst     ),
-    .csn        ( ~dial_cs  ),        // chip select
-    .uln        ( ~A[1]     ),        // byte selection
-    .xn_y       ( xn_y      ),        // select x or y for reading
-    .cfn        (           ),        // counter flag
-    .sfn        (           ),        // switch flag
-    .dout       ( dial_dout )
-);
-
-jt4701_dialemu u_dial1p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick1[5] ),
-    .dec        ( ~joystick1[6] ),
-    .dial       ( x_in          )
-);
-
-jt4701_dialemu u_dial2p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick2[5] ),
-    .dec        ( ~joystick2[6] ),
-    .dial       ( y_in          )
-);
-`else
-assign dial_dout = 8'd0;
-`endif
-
 always @(posedge clk) begin
     // This still doesn't cover all cases
     // Base system, 4 players, 4 buttons
@@ -353,7 +298,7 @@ always @(posedge clk) begin
                     ppu2_cs     ? mmr_dout :
                     vol_cs      ? {3'b111, volume }    :
                     main2qs_cs  ? {8'hff, main2qs_din} :
-                    uart_cs     ? {8'hff, uart_data}
+                    uart_cs     ? {8'hff, uart_data}   :
                                 16'hFFFF;
 
     end

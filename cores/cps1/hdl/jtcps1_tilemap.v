@@ -64,7 +64,6 @@ reg [ 5:0] st;
 
 reg [15:0] code;
 
-reg  [ 2:0] layer;
 reg  [ 3:0] offset, mask;
 reg         unmapped;
 
@@ -80,6 +79,8 @@ wire        pre_unmapped3;
 
 assign rom_ok_and = rom_ok & rom_ok_dly;
 
+`ifdef SIMULATION
+reg  [ 2:0] layer;
 always @(*) begin
     case(size)
         3'b1:  begin
@@ -96,6 +97,7 @@ always @(*) begin
         end
     endcase
 end
+`endif
 
 reg [9:0] mapper_in;
 
@@ -183,20 +185,20 @@ endfunction
 
 // pixels in the blank area are not visible but it takes time to draw them
 // so the start position is offset to avoid blanking
-wire [10:0] hn0  = size[0] ? 11'h38 : (size[1] ? 11'h30 : 11'h20 );
+// wire [10:0] hn0  = size[0] ? 11'h38 : (size[1] ? 11'h30 : 11'h20 );
 wire [ 8:0] buf0 = size[0] ?  9'h38 : (size[1] ?  9'h30 :  9'h20 );
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
-        rom_cs          <= 1'b0;
-        done            <= 1'b0;
-        st              <= 6'd0;
-        rom_addr        <= 23'd0;
-        rom_half        <= 1'b0;
-        code            <= 16'd0;
-        buf_addr        <= 9'd0;
-        buf_wr          <= 1'b0;
-        buf_data        <= 11'd0;
+        rom_cs          <= 0;
+        done            <= 0;
+        st              <= 0;
+        rom_addr        <= 0;
+        rom_half        <= 0;
+        code            <= 0;
+        buf_addr        <= 0;
+        buf_wr          <= 0;
+        buf_data        <= 0;
         rom_ok_dly      <= 0;
     end else begin
         rom_ok_dly <= rom_ok;

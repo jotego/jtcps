@@ -54,7 +54,7 @@ always @(posedge clk) begin
     end else if( cnt_over ) begin
         skipped <= recover;
     end
-    cen_cnt <= cnt_over  ? 0 : (cen_cnt+2'd1);
+    cen_cnt <= cnt_over  ? 3'd0 : (cen_cnt+1'd1);
     cen16   <= cen_cnt==0;
     cen16b  <= cen_cnt==1;
 

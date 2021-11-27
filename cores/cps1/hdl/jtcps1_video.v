@@ -155,6 +155,7 @@ wire            line_start, frame_start, preVB;
 wire            busack_obj, busack_pal;
 wire [OBJW-1:0] obj_pxl;
 wire [     1:0] star_en;
+wire            line_inc;
 
 // Register configuration
 // Scroll

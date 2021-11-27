@@ -57,7 +57,7 @@ reg  [ 1:0] st3_bank, st4_bank;
 reg  [ 2:0] st3_prio, st4_prio;
 wire        start;
 
-reg         done, last_drstart;
+reg         done; // , last_drstart;
 wire [ 3:0] st3_tile_n, st4_tile_n, st3_tile_m;
 reg  [ 3:0] npos;  // tile expansion n==horizontal, m==vertical
 reg  [ 4:0] n;
@@ -70,7 +70,7 @@ reg         last_start;
 wire        stall, nstall;
 reg         cen=0;
 
-reg  [15:0] st3_x, st4_x, st3_y, st4_y,
+reg  [15:0] st3_x, st4_x, st3_y,
             st3_code, st3_attr, st4_attr;
 
 jtcps1_obj_tile_match u_tile_match(
@@ -129,7 +129,6 @@ always @(posedge clk, posedge rst) begin
         st3_x      <= 0;
         st4_x      <= 0;
         st3_y      <= 0;
-        st4_y      <= 0;
         st3_code   <= 0;
         st3_attr   <= 0;
         st4_attr   <= 0;
@@ -160,7 +159,6 @@ always @(posedge clk, posedge rst) begin
         // III
             st4_attr <= st3_attr;
             st4_x    <= st3_x;
-            st4_y    <= st3_y;
             st4_bank <= st3_bank;
             st4_prio <= st3_prio;
         end

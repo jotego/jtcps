@@ -97,7 +97,7 @@ always @(posedge clk, posedge rst) begin
         if( VB & ~VBl ) begin
             fcnt <= fcnt+1'd1;
             if( &fcnt[3:0] ) begin
-                cnt15 <= cnt15==14 ? 0 : cnt15+1'd1; // cnt15 will never be transparent
+                cnt15 <= cnt15==14 ? 4'd0 : cnt15+1'd1; // cnt15 will never be transparent
                 cnt16 <= cnt16+1'd1; // transparent when cnt16==15
             end
         end
@@ -119,7 +119,7 @@ always @(posedge clk, posedge rst) begin
             pos    <= star_data[4:0]^{5{flip}};
             blank  <= star_data[4:0]==5'hf;
         end else begin
-            pos <= pos-1;
+            pos <= pos-1'd1;
         end
         pxl[6:4] <= pal_id;
         pxl[3:0] <= pos==0 && !blank ? (pal_id[2] ? cnt16 : cnt15) : 4'hf;
