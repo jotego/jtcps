@@ -86,7 +86,11 @@ module jtcps2_main(
     output reg         main2qs_cs,
     input              main2qs_busakn,
     input              main2qs_waitn,
-    input       [12:0] volume
+    input       [12:0] volume,
+
+    // UART
+    input              uart_rx,
+    output             uart_tx
 );
 
 localparam [1:0] BUT6 = 2'b00;
@@ -99,10 +103,20 @@ wire        cen16, cen16b;
 
 reg  [15:0] in0, in1, in2;
 reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
+reg         uart_cs;
 
 wire [15:0] rom_dec;
 
 wire        dec_en;
+
+// UART
+wire [7:0] uart_dout;
+reg  [7:0] uart_data;
+wire       uart_error, uart_rdy, uart_clr, uart_busy;
+wire       uart_wr;
+
+assign uart_clr = uart_cs && !A[3] &&  RnW;
+assign uart_wr  = uart_cs && !A[3] && !RnW;
 
 `ifdef SIMULATION
 wire [23:0] A_full = {A,1'b0};
@@ -183,6 +197,8 @@ always @(posedge clk, posedge rst) begin
             // QSound
             main2qs_cs   <= A[23:20] == 4'h6  && A[19:17]==3'd0; // 60'0000-61'FFFF
             main2qs_addr <= A;
+            // Debug UART
+            uart_cs     <= A[23:20] == 4'h6  && A[19:17]==3'd1; // 62'0000-63'FFFF
         end else begin
             rom_cs      <= 0;
             pre_ram_cs  <= 0;
@@ -321,6 +337,7 @@ always @(posedge clk) begin
     sys_data <= in0_cs ? in0 : (
                 in1_cs ? in1 : (
                 in2_cs ? in2 : 16'hFFFF ));
+    uart_data <= A[3] ? { 3'b0, uart_error, uart_rdy, uart_busy } : uart_dout;
 end
 
 // Data bus input
@@ -330,13 +347,14 @@ always @(posedge clk) begin
     if(rst) begin
         cpu_din <= 16'hffff;
     end else begin
-        cpu_din <= sys_cs ? sys_data : (
-                   (ram_cs | vram_cs | oram_cs ) ? ram_data : (
-                    rom_cs      ? rom_dec  : (
-                    ppu2_cs     ? mmr_dout : (
-                    vol_cs      ? {3'b111, volume }    : (
+        cpu_din <= sys_cs ? sys_data :
+                   (ram_cs | vram_cs | oram_cs ) ? ram_data :
+                    rom_cs      ? rom_dec  :
+                    ppu2_cs     ? mmr_dout :
+                    vol_cs      ? {3'b111, volume }    :
                     main2qs_cs  ? {8'hff, main2qs_din} :
-                                16'hFFFF )))));
+                    uart_cs     ? {8'hff, uart_data}
+                                16'hFFFF;
 
     end
 end
@@ -468,6 +486,23 @@ jtframe_m68k u_cpu(
 
     .DTACKn     ( DTACKn      ),
     .IPLn       ( { int2, int1, 1'b1 } ) // Raster, VBLANK
+);
+
+jtframe_uart u_uart(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    // serial wires
+    .uart_rx    ( uart_rx   ),
+    .uart_tx    ( uart_tx   ),
+    // Rx interface
+    .rx_data    ( uart_dout ),
+    .rx_error   ( uart_error),
+    .rx_rdy     ( uart_rdy  ),
+    .rx_clr     ( uart_clr  ),    // clear the rx_rdy flag
+    // Tx interface
+    .tx_busy    ( uart_busy ),
+    .tx_data    (cpu_dout[7:0]),
+    .tx_wr      ( uart_wr   )      // write strobe
 );
 
 endmodule

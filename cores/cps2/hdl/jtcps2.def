@@ -4,6 +4,7 @@ CPS2
 GAMETOP=jtcps2_game
 CORENAME=JTCPS2
 JTFRAME_SDRAM_LARGE
+JTFRAME_UART
 
 # OSD options
 CORE_OSD+=O7,1P_hold_for_slow,Off,On;

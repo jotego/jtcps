@@ -90,7 +90,9 @@ module jtcps2_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [3:0]   gfx_en
+    input   [3:0]   gfx_en,
+    input           uart_rx,
+    output          uart_tx
     `ifdef JTFRAME_DEBUG
     ,input   [7:0]   debug_bus
     `endif
@@ -284,7 +286,10 @@ jtcps2_main u_main(
     .eeprom_sclk ( sclk             ),
     .eeprom_sdi  ( sdi              ),
     .eeprom_sdo  ( sdo              ),
-    .eeprom_scs  ( scs              )
+    .eeprom_scs  ( scs              ),
+    // UART
+    .uart_rx     ( uart_rx          ),
+    .uart_tx     ( uart_tx          )
 );
 
 assign busack = busack_cpu | turbo;
