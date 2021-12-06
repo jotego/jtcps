@@ -64,7 +64,6 @@ reg [ 5:0] st;
 
 reg [15:0] code;
 
-reg  [ 2:0] layer;
 reg  [ 3:0] offset, mask;
 reg         unmapped;
 
@@ -80,6 +79,8 @@ wire        pre_unmapped3;
 
 assign rom_ok_and = rom_ok & rom_ok_dly;
 
+`ifdef SIMULATION
+reg  [ 2:0] layer;
 always @(*) begin
     case(size)
         3'b1:  begin
@@ -96,10 +97,12 @@ always @(*) begin
         end
     endcase
 end
+`endif
 
-reg [9:0] mapper_in;
 
 `ifndef CPS2
+    reg [9:0] mapper_in;
+
     jtcps1_gfx_mappers u_mapper1(
         .clk        ( clk             ),
         .rst        ( rst             ),
@@ -219,7 +222,9 @@ always @(posedge clk or posedge rst) begin
             ///////////////////////
             1: tile_addr[0] <= 1'b1;
             2: begin
+                `ifndef CPS2
                 mapper_in    <= tile_data[15:6];
+                `endif
                 code         <= tile_data;
             end
             3: begin // attributes

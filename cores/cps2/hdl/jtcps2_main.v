@@ -106,6 +106,7 @@ wire        dec_en;
 
 `ifdef SIMULATION
 wire [23:0] A_full = {A,1'b0};
+wire bad_as = ~ASn & BUSn & ~last_busn;
 `endif
 
 (*keep*) wire        BRn, BGACKn, BGn;
@@ -129,7 +130,6 @@ assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
 
 reg last_busn;
-wire bad_as = ~ASn & BUSn & ~last_busn;
 
 always @(posedge clk) last_busn <= BUSn;
 

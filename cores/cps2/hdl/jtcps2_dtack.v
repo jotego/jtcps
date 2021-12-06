@@ -54,7 +54,7 @@ always @(posedge clk) begin
     end else if( cnt_over ) begin
         skipped <= recover;
     end
-    cen_cnt <= cnt_over  ? 0 : (cen_cnt+2'd1);
+    cen_cnt <= cnt_over  ? 3'd0 : (cen_cnt+3'd1);
     cen16   <= cen_cnt==0;
     cen16b  <= cen_cnt==1;
 
@@ -81,7 +81,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
                 // Average delay can be displayed in simulation by defining the
                 // macro REPORT_DELAY
                 if( bus_busy && s3_over && cen16 ) begin
-                    fail_cnt<= next_cnt[FW] ? ~0 : next_cnt[FW-1:0];
+                    fail_cnt<= next_cnt[FW] ? {FW{1'b1}} : next_cnt[FW-1:0];
                 end
                 if (!bus_busy) begin
                     DTACKn <= 1'b0;

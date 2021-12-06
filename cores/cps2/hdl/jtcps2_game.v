@@ -467,7 +467,7 @@ jtcps15_sound u_sound(
 );
 
 jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
-    .rst         ( rst           ),
+    .rst         ( rst_sdram     ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
     .clk_cpu     ( clk48         ),
