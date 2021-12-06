@@ -40,7 +40,7 @@ module jtcps2_obj_frame(
 localparam W=5;
 
 wire         frame, frame_edge;
-reg          wtok, last_LVBL, last_frame;
+reg          wtok, last_frame;
 reg          done;
 reg  [ 11:0] oram_cnt;
 reg  [W-1:0] line_cnt;
@@ -56,7 +56,6 @@ always @(posedge clk, posedge rst ) begin
     if( rst ) begin
         obank_frame <= 0;
     end else begin
-        last_LVBL  <= LVBL;
         last_frame <= frame;
         if( frame_edge )
             obank_frame <= ~obank_frame;

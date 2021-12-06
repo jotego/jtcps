@@ -112,7 +112,7 @@ wire bad_as = ~ASn & BUSn & ~last_busn;
 (*keep*) wire        BRn, BGACKn, BGn;
 (*keep*) wire        ASn;
 reg         io_cs, eeprom_cs,
-            sys_cs, dial_cs;
+            sys_cs, dial_cs; // dial_cs is not driven! review it
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
 reg         dsn_dly, one_wait;
@@ -128,10 +128,6 @@ wire BUSn, UDSn, LDSn;
 assign BUSn  = ASn | (UDSn & LDSn);
 assign UDSWn = RnW | UDSn;
 assign LDSWn = RnW | LDSn;
-
-reg last_busn;
-
-always @(posedge clk) last_busn <= BUSn;
 
 // ram_cs and vram_cs signals go down before DSWn signals
 // that causes a false read request to the SDRAM. In order

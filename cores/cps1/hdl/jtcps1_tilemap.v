@@ -191,15 +191,15 @@ wire [ 8:0] buf0 = size[0] ?  9'h38 : (size[1] ?  9'h30 :  9'h20 );
 
 always @(posedge clk or posedge rst) begin
     if(rst) begin
-        rom_cs          <= 1'b0;
-        done            <= 1'b0;
-        st              <= 6'd0;
-        rom_addr        <= 23'd0;
-        rom_half        <= 1'b0;
-        code            <= 16'd0;
-        buf_addr        <= 9'd0;
-        buf_wr          <= 1'b0;
-        buf_data        <= 11'd0;
+        rom_cs          <= 0;
+        done            <= 0;
+        st              <= 0;
+        rom_addr        <= 0;
+        rom_half        <= 0;
+        code            <= 0;
+        buf_addr        <= 0;
+        buf_wr          <= 0;
+        buf_data        <= 0;
         rom_ok_dly      <= 0;
     end else begin
         rom_ok_dly <= rom_ok;
@@ -208,7 +208,7 @@ always @(posedge clk or posedge rst) begin
             0: begin
                 rom_cs   <= 1'b0;
                 /* verilator lint_off WIDTH */
-                vn       <= vpos + {7'd0, vrender ^ { 1'b0, {8{flip}}} };
+                vn       <= vpos[10:0] + {2'd0, vrender ^ { 1'b0, {8{flip}}} };
                 /* verilator lint_on WIDTH */
                 buf_addr <= buf0+9'h1ff- (
                     size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) );

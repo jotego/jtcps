@@ -182,6 +182,7 @@ wire       [15:0]  objtable_data;
 wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
 wire               star1_precs, star0_precs;
+wire               line_inc;
 
 `ifdef CPS2
     assign obj_dma_ok = 0;

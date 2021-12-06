@@ -297,7 +297,7 @@ jtframe_z80_romwait u_cpu(
 );
 
 reg last_vol_up, last_vol_down;
-reg last_sadd, last_pods_n, last_psel;
+reg last_sadd, last_pods_n;
 reg audio_ws;
 reg dsp_dsel96;
 
@@ -386,7 +386,6 @@ always @(posedge clk96, posedge rst) begin
         cpu2dsp_s  <= 24'd0;
     end else begin
         last_pods_n <= dsp_pods_n;
-        last_psel   <= dsp_psel;
         dsp_dsel96  <= dsp_datasel[1];
         dsp_ockl    <= dsp_ock;
 
@@ -400,10 +399,10 @@ always @(posedge clk96, posedge rst) begin
         if( dsp_ockl & ~dsp_ock & ser_cnt[15] ) begin
             ser_cnt <= ser_cnt << 1;
             if( audio_ws ) begin
-                reg_right <= { reg_right, dsp_do };
+                reg_right <= { reg_right[14:0], dsp_do };
                 if( !ser_cnt[14] ) right_done <= 1;
             end else begin
-                reg_left <= { reg_left, dsp_do };
+                reg_left <= { reg_left[14:0], dsp_do };
                 if( !ser_cnt[14] ) left_done <= 1;
             end
         end

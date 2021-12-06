@@ -73,7 +73,7 @@ wire        buf_wr;
 
 wire [ 9:0] off_x, off_y;
 
-wire        obank_frame, oframe_we;
+wire        obank_frame, oframe_we, line;
 
 // shadow RAM interface
 wire [ 9:0] table_attr;

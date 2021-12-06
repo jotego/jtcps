@@ -70,8 +70,8 @@ reg         last_start;
 wire        stall, nstall;
 reg         cen=0;
 
-reg  [15:0] st3_x, st4_x, st3_y, st4_y,
-            st3_code, st3_attr, st4_attr;
+reg  [15:0] st3_code, st3_attr, st4_attr;
+reg  [ 9:0] st3_y, st3_x, st4_x;
 
 jtcps1_obj_tile_match u_tile_match(
     .rst        ( rst        ),
@@ -85,7 +85,7 @@ jtcps1_obj_tile_match u_tile_match(
 
     .vflip      ( st3_vflip  ),
     .vrenderf   ( vrenderf   ),
-    .obj_y      ( st3_y[9:0] ),
+    .obj_y      ( st3_y      ),
 
     .vsub       ( st4_vsub   ),
     .inzone     ( inzone     ),
@@ -101,11 +101,9 @@ assign      st3_vflip  = st3_attr[6];
 assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
-assign      st4_effx   = st4_x + { 1'b0, subn, 4'd0 }; // effective x value for multi tile objects
+assign      st4_effx   = st4_x + { 2'b0, subn, 4'd0 }; // effective x value for multi tile objects
 assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
 assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start; // || last_drstart;
-
-reg last_inzone;
 
 // the div-2 clock enable is needed because of the table_* signal latency
 // If the OBJ RAM didn't have an output latch, or if the latch had a clock enable
@@ -129,7 +127,7 @@ always @(posedge clk, posedge rst) begin
         st3_x      <= 0;
         st4_x      <= 0;
         st3_y      <= 0;
-        st4_y      <= 0;
+        // st4_y      <= 0;
         st3_code   <= 0;
         st3_attr   <= 0;
         st4_attr   <= 0;
@@ -138,7 +136,6 @@ always @(posedge clk, posedge rst) begin
     end else if(cen) begin
         last_start <= start;
         last_drstart <= dr_start;
-        last_inzone <= inzone;
 
         if( !stall ) begin
         // I
@@ -151,8 +148,8 @@ always @(posedge clk, posedge rst) begin
                 st3_attr <= 0;
             end else begin
                 st3_code <= table_code;
-                st3_x    <= done ? 0 : table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
-                st3_y    <= done ? 0 : table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
+                st3_x    <= done ? 10'd0 : table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
+                st3_y    <= done ? 10'd0 : table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
                 st3_attr <= done ? 0 : table_attr;
                 st3_prio <= table_x[15:13];
                 st3_bank <= table_y[14:13];
@@ -160,7 +157,7 @@ always @(posedge clk, posedge rst) begin
         // III
             st4_attr <= st3_attr;
             st4_x    <= st3_x;
-            st4_y    <= st3_y;
+            // st4_y    <= st3_y;
             st4_bank <= st3_bank;
             st4_prio <= st3_prio;
         end
