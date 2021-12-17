@@ -119,7 +119,8 @@ always @(posedge clk) if(pxl_cen) begin
 end
 
 reg [13:0] below;
-reg has_priority;
+reg [11:0] nx_pxl;
+reg        has_priority;
 
 always @(*) begin
     case( below[13:12] )
@@ -146,20 +147,22 @@ always @(posedge clk) begin
             lyr2[11:9]: below <= lyr3;
             default: below <= ~14'h0;
         endcase
+        pxl <= nx_pxl;
     end else begin
         if( lyr0[3:0]!=4'hf && (lyr0[11:9]!=OBJ || !has_priority) )
-            pxl <= lyr0[11:0];
+            nx_pxl <= lyr0[11:0];
         else if( lyr1[3:0]!=4'hf && (lyr1[11:9]!=OBJ || !has_priority) )
-            pxl <= lyr1[11:0];
+            nx_pxl <= lyr1[11:0];
         else if( lyr2[3:0]!=4'hf && (lyr2[11:9]!=OBJ || !has_priority) )
-            pxl <= lyr2[11:0];
+            nx_pxl <= lyr2[11:0];
         else if( lyr3[3:0]!=4'hf )
-            pxl <= lyr3[11:0];
+            nx_pxl <= lyr3[11:0];
         else if( lyr4[3:0]!=4'hf )
-            pxl <= lyr4[11:0];
+            nx_pxl <= lyr4[11:0];
+        else if( lyr5[3:0]!=4'hf )
+            nx_pxl <= lyr5[11:0];
         else
-            pxl <= lyr5[11:0];
-
+            nx_pxl <= BLANK_PXL;
     end
 end
 
