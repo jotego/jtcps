@@ -25,11 +25,11 @@
 # SDRAM
 -F $JTFRAME/hdl/sdram/jtframe_sdram64.f
 
-$JTFRAME/hdl/ram/jtframe_dual_ram.v
+#$JTFRAME/hdl/ram/jtframe_dual_ram.v
 $JTFRAME/hdl/ram/jtframe_ram.v
 # Z80
 $JTFRAME/hdl/cpu/jtframe_z80.v
-$JTFRAME/hdl/jtframe_z80wait.v
+$JTFRAME/hdl/cpu/jtframe_z80wait.v
 
 # 68000
 $JTFRAME/hdl/cpu/jtframe_68kdma.v
@@ -48,7 +48,7 @@ $JTFRAME/hdl/clocking/jtframe_frac_cen.v
 # Other
 $JTFRAME/hdl/jtframe_sh.v
 $JTFRAME/hdl/keyboard/jt4701.v
-$JTFRAME/hdl/keyboard/jtframe_4wayjoy.v
+# $JTFRAME/hdl/keyboard/jtframe_4wayjoy.v
 $JTFRAME/hdl/sound/jtframe_mixer.v
 
 # Filters

@@ -29,11 +29,10 @@ module mist_dump(
             `ifdef DEEPDUMP
                 $dumpvars(0,mist_test);
             `else
-                $dumpvars(1,mist_test.UUT.u_game.u_main);
                 $dumpvars(1,mist_test.UUT.u_game);
-                $dumpvars(0,mist_test.UUT.u_game.u_sdram_mux);
                 $dumpvars(1,mist_test.UUT.u_game.u_video.u_mmr);
-                $dumpvars(0,mist_test.UUT.u_frame.u_board.u_sdram);
+                $dumpvars(1,mist_test.UUT.u_game.u_video.u_colmix);
+                //$dumpvars(0,mist_test.UUT.u_frame.u_board.u_sdram);
                 $dumpvars(1,mist_test.frame_cnt);
             `endif
             $dumpon;
