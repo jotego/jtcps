@@ -302,6 +302,12 @@ initial begin
     // Strider layer order = 4E = 01 00 11 10
     //layer_ctrl     = 16'h138e; // strider
     //layer_ctrl     = {2'b0,2'b01,2'b11,2'b10,2'b00,6'd0}; // strider
+    // Carrier Airwing scene 2
+    // 06da = 00 /00 01 10 11 / 01 10 10
+    // layer_ctrl     = {2'b0, 2'b0,2'd2,2'd1,2'd3,6'h1a}; // change layer order
+    // layer_ctrl     = {2'b0, 2'd0,2'd3,2'd1,2'd2,6'h1f}; // no carrier
+    layer_ctrl     = {  8'b01_00_10_11 , 6'b011010 };
+    //layer_ctrl     = {  8'b01_10_00_11 , 6'b011010 }; // works
     obj_dma_ok = 1'b1; // so data is copied at the beginning of sim.
 end
 assign reg_rst = 1'b0;  // reset is skipped for this type of simulation
@@ -338,7 +344,7 @@ always @(posedge clk, posedge reg_rst) begin
         prio2         <= 16'h0;
         prio3         <= 16'h0;
         pal_page_en   <= 6'h3f;
-        layer_ctrl    <= {2'b0,2'b11,2'b10,2'b01,2'b00,5'd0};
+        layer_ctrl    <= {2'b0,2'b11,2'b10,2'b01,2'b00,6'd0};
         ppu_ctrl      <= 16'd0;
 
         pal_copy      <= 1'b0;

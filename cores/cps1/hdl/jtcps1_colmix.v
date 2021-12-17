@@ -119,15 +119,19 @@ always @(posedge clk) if(pxl_cen) begin
     //lyren2[0] <= lyren[ layer_ctrl[7:6] ];
 end
 
-reg has_priority, check_prio;
+reg has_priority, obj_skip;
+reg [13:0] below;
 
 always @(*) begin
+    below = lyr_queue[27:14];
     case( group )
-        2'd0: has_priority = prio0[ pre_pxl[3:0] ];
-        2'd1: has_priority = prio1[ pre_pxl[3:0] ];
-        2'd2: has_priority = prio2[ pre_pxl[3:0] ];
-        2'd3: has_priority = prio3[ pre_pxl[3:0] ];
+        2'd0: has_priority = prio0[ below[3:0] ];
+        2'd1: has_priority = prio1[ below[3:0] ];
+        2'd2: has_priority = prio2[ below[3:0] ];
+        2'd3: has_priority = prio3[ below[3:0] ];
     endcase
+    if( below[11] ) has_priority=0; // Stars never have priority over objects
+    obj_skip = lyr_queue[11:9]==OBJ && has_priority;
 end
 
 `ifdef CPS2
@@ -138,25 +142,16 @@ localparam [13:0] BLANK_PXL = ~14'd0;
 `endif
 
 // This take 6 clock cycles to process the 6 layers
+
 always @(posedge clk) begin
     if(pxl_cen) begin
-        pxl               <= pre_pxl;
-        {group, pre_pxl } <= lyr5;
-        lyr_queue         <= { lyr0, lyr1, lyr2, lyr3, lyr4 };
-        check_prio        <= 1'b0;
-        //lyren3            <= lyren2;
+        pxl              <= pre_pxl;
+        {group, pre_pxl} <= lyr0;
+        lyr_queue        <= { lyr5, lyr4, lyr3, lyr2, lyr1 };
     end else begin
-        if( (pre_pxl[3:0]==4'hf ||
-            ( !(lyr_queue[11:9]==OBJ && has_priority && check_prio )
-                && lyr_queue[3:0] != 4'hf ))  )
-        begin
+        lyr_queue  <= { BLANK_PXL, lyr_queue[QW-1:14] };
+        if( pre_pxl[3:0]==4'hf && !obj_skip ) begin
             { group, pre_pxl } <= lyr_queue[13:0];
-            check_prio <= ~lyr_queue[11]; // not a star
-            lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
-        end
-        else begin
-            check_prio <= 1'b0;
-            lyr_queue <= { BLANK_PXL, lyr_queue[QW-1:14] };
         end
     end
 end
