@@ -30,7 +30,7 @@ module jtcps1_colmix(
     input   [ 6:0]     star1_pxl,
     input   [ 8:0]     obj_pxl,
 
-    // Layer priority
+    // Layer has_priority
     input   [15:0]     layer_ctrl,
     input   [ 3:1]     scrdma_en,
     input   [ 7:0]     layer_mask0, // mask for enable bits
@@ -97,7 +97,6 @@ localparam QW = 14*5;
 reg [13:0] lyr5, lyr4, lyr3, lyr2, lyr1, lyr0;
 reg [QW-1:0] lyr_queue;
 reg [11:0] pre_pxl;
-reg [ 1:0] group;
 
 `ifdef SIMULATION
 wire [2:0] lyr0_code = lyr0[11:9];
@@ -119,19 +118,17 @@ always @(posedge clk) if(pxl_cen) begin
     //lyren2[0] <= lyren[ layer_ctrl[7:6] ];
 end
 
-reg has_priority, obj_skip;
 reg [13:0] below;
+reg has_priority;
 
 always @(*) begin
-    below = lyr_queue[27:14];
-    case( group )
-        2'd0: has_priority = prio0[ below[3:0] ];
-        2'd1: has_priority = prio1[ below[3:0] ];
-        2'd2: has_priority = prio2[ below[3:0] ];
-        2'd3: has_priority = prio3[ below[3:0] ];
+    case( below[13:12] )
+        0: has_priority = prio0[ below[3:0] ];
+        1: has_priority = prio1[ below[3:0] ];
+        2: has_priority = prio2[ below[3:0] ];
+        3: has_priority = prio3[ below[3:0] ];
     endcase
-    if( below[11] ) has_priority=0; // Stars never have priority over objects
-    obj_skip = lyr_queue[11:9]==OBJ && has_priority;
+    if( below[11] ) has_priority=0; // Stars never have has_priority over objects
 end
 
 `ifdef CPS2
@@ -141,18 +138,28 @@ localparam [13:0] BLANK_PXL = { 2'b11, 12'hBFF }; // according to DL-0921 RE but
 localparam [13:0] BLANK_PXL = ~14'd0;
 `endif
 
-// This take 6 clock cycles to process the 6 layers
-
 always @(posedge clk) begin
     if(pxl_cen) begin
-        pxl              <= pre_pxl;
-        {group, pre_pxl} <= lyr0;
-        lyr_queue        <= { lyr5, lyr4, lyr3, lyr2, lyr1 };
+        case( OBJ )
+            lyr0[11:9]: below <= lyr1;
+            lyr1[11:9]: below <= lyr2;
+            lyr2[11:9]: below <= lyr3;
+            default: below <= ~14'h0;
+        endcase
     end else begin
-        lyr_queue  <= { BLANK_PXL, lyr_queue[QW-1:14] };
-        if( pre_pxl[3:0]==4'hf && !obj_skip ) begin
-            { group, pre_pxl } <= lyr_queue[13:0];
-        end
+        if( lyr0[3:0]!=4'hf && (lyr0[11:9]!=OBJ || !has_priority) )
+            pxl <= lyr0[11:0];
+        else if( lyr1[3:0]!=4'hf && (lyr1[11:9]!=OBJ || !has_priority) )
+            pxl <= lyr1[11:0];
+        else if( lyr2[3:0]!=4'hf && (lyr2[11:9]!=OBJ || !has_priority) )
+            pxl <= lyr2[11:0];
+        else if( lyr3[3:0]!=4'hf )
+            pxl <= lyr3[11:0];
+        else if( lyr4[3:0]!=4'hf )
+            pxl <= lyr4[11:0];
+        else
+            pxl <= lyr5[11:0];
+
     end
 end
 

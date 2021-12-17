@@ -306,7 +306,7 @@ initial begin
     // 06da = 00 /00 01 10 11 / 01 10 10
     // layer_ctrl     = {2'b0, 2'b0,2'd2,2'd1,2'd3,6'h1a}; // change layer order
     // layer_ctrl     = {2'b0, 2'd0,2'd3,2'd1,2'd2,6'h1f}; // no carrier
-    layer_ctrl     = {  8'b01_00_10_11 , 6'b011010 };
+    //layer_ctrl     = {  8'b01_00_10_11 , 6'b011010 };
     //layer_ctrl     = {  8'b01_10_00_11 , 6'b011010 }; // works
     obj_dma_ok = 1'b1; // so data is copied at the beginning of sim.
 end
