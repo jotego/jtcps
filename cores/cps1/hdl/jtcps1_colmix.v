@@ -119,7 +119,6 @@ always @(posedge clk) if(pxl_cen) begin
 end
 
 reg [13:0] below;
-reg [11:0] nx_pxl;
 reg        has_priority;
 
 always @(*) begin
@@ -141,28 +140,28 @@ localparam [13:0] BLANK_PXL = ~14'd0;
 
 always @(posedge clk) begin
     if(pxl_cen) begin
+        pxl <= pre_pxl;
         case( OBJ )
             lyr0[11:9]: below <= lyr1;
             lyr1[11:9]: below <= lyr2;
             lyr2[11:9]: below <= lyr3;
             default: below <= ~14'h0;
         endcase
-        pxl <= nx_pxl;
     end else begin
         if( lyr0[3:0]!=4'hf && (lyr0[11:9]!=OBJ || !has_priority) )
-            nx_pxl <= lyr0[11:0];
+            pre_pxl <= lyr0[11:0];
         else if( lyr1[3:0]!=4'hf && (lyr1[11:9]!=OBJ || !has_priority) )
-            nx_pxl <= lyr1[11:0];
+            pre_pxl <= lyr1[11:0];
         else if( lyr2[3:0]!=4'hf && (lyr2[11:9]!=OBJ || !has_priority) )
-            nx_pxl <= lyr2[11:0];
+            pre_pxl <= lyr2[11:0];
         else if( lyr3[3:0]!=4'hf )
-            nx_pxl <= lyr3[11:0];
+            pre_pxl <= lyr3[11:0];
         else if( lyr4[3:0]!=4'hf )
-            nx_pxl <= lyr4[11:0];
+            pre_pxl <= lyr4[11:0];
         else if( lyr5[3:0]!=4'hf )
-            nx_pxl <= lyr5[11:0];
+            pre_pxl <= lyr5[11:0];
         else
-            nx_pxl <= BLANK_PXL;
+            pre_pxl <= BLANK_PXL;
     end
 end
 
