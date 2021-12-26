@@ -319,39 +319,45 @@ int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
 // SCR3      code[13:..]
 
 void output_range( stringstream& ss, const char *layer, const char *layer_bits,
-    int min, int max, const gfx_range *r, bool& addor, const char *extra="" ) {
+    int min, int max, const gfx_range *r, bool& addor, int bw, const char *extra="" ) {
         if(addor) ss << "\n        || ";
         ss << " ( layer==" << layer << " ";
+        int absmax = (1<<bw)-1;
         if( min!=0 ) {
             ss << " &&";
-            ss << " code[" << layer_bits << "]>=7'h" << hex << min;
+            ss << " code[" << layer_bits << "]>=" << bw <<"'h" << hex << min;
         }
-        if( max != 31 ) {
+        if( max < absmax ) {
             ss << " &&";
-            ss << " code[" << layer_bits << "]<=7'h"  << hex << max;
+            ss << " code[" << layer_bits << "]<="<< bw << "'h"  << hex << max;
         }
         if( extra[0] ) ss << extra;
         ss << ") /* " << hex << r->start << " - " << r->end << " */ ";
         addor= true;
 }
 
-void parse_range( string& s, const gfx_range *r ) {
+int parse_range( string& s, const gfx_range *r ) {
     stringstream ss;
     bool addor=false;
     int min=r->start>>10;
     int max=(r->end>>10);
+    int bw=7;
 
     if( r->type & GFXTYPE_SPRITES ) {
-        output_range( ss, "OBJ ",  "15:9", min, max, r, addor );
+        bw=7;
+        output_range( ss, "OBJ ",  "15:9", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL2 ) {
-        output_range( ss, "SCR2", "15:9", min, max, r, addor );
+        bw=7;
+        output_range( ss, "SCR2", "15:9", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL1 ) {
-        output_range( ss, "SCR1", "15:10", min, max, r, addor );
+        bw=6;
+        output_range( ss, "SCR1", "15:10", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL3 ) {
-        output_range( ss, "SCR3", "13:7", min, max, r, addor, " && code[15:14]==2'b00 " );
+        bw=7;
+        output_range( ss, "SCR3", "13:7", min, max, r, addor, bw, " && code[15:14]==2'b00 " );
     }
     // ss << " 1'b0 /* STARS ommitted*/ ";
     /*
@@ -360,6 +366,7 @@ void parse_range( string& s, const gfx_range *r ) {
     }
     */
     s = ss.str();
+    return bw;
 }
 
 string parent_name( game_entry* game ) {
