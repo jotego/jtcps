@@ -323,7 +323,7 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
         int absmax = (1<<bw)-1;
         if( min > absmax ) return; // skip it completely
         if(addor) ss << "\n        || ";
-        ss << " ( layer==" << layer << " ";
+        ss << " ( layer" << layer << " ";
         if( min!=0 ) {
             ss << " &&";
             ss << " code[" << layer_bits << "]>=" << bw <<"'h" << hex << min;
@@ -348,26 +348,25 @@ int parse_range( string& s, const gfx_range *r ) {
 
     if( r->type & GFXTYPE_SPRITES ) {
         bw=7;
-        output_range( ss, "OBJ ",  "15:9", min, max, r, addor, bw );
+        output_range( ss, "==OBJ ",  "15:9", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL2 ) {
         bw=7;
-        output_range( ss, "SCR2", "15:9", min, max, r, addor, bw );
+        output_range( ss, "==SCR2", "15:9", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL1 ) {
         bw=6;
-        output_range( ss, "SCR1", "15:10", min, max, r, addor, bw );
+        output_range( ss, "==SCR1", "15:10", min, max, r, addor, bw );
     }
     if( r->type & GFXTYPE_SCROLL3 ) {
         bw=7;
-        output_range( ss, "SCR3", "13:7", min, max, r, addor, bw, " && code[15:14]==2'b00 " );
+        output_range( ss, "==SCR3", "13:7", min, max, r, addor, bw, " && code[15:14]==2'b00 " );
     }
     // ss << " 1'b0 /* STARS ommitted*/ ";
-    /*
     if( r->type & GFXTYPE_STARS   ) {
-        output_range( ss, "STARS", "15:10", min, max, r, addor );
+        bw=6;
+        output_range( ss, ">=STARS", "15:10", min, max, r, addor, bw );
     }
-    */
     s = ss.str();
     return bw;
 }

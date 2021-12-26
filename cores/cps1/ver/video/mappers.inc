@@ -3,7 +3,8 @@
         bank_a[0] <=  ( layer==OBJ   /* max=1f*/ ) /* 0 - 7fff */  ||
          ( layer==SCR1  /* max=7f*/ ) /* 0 - 1ffff */ ;
         // Bank 1 size 0x08000
-        bank_a[1] <=  ( layer==SCR2  /* max=7f*/ ) /* 0 - 1ffff */  ||
+        bank_a[1] <=  ( layer>=STARS  /* max=7f*/ ) /* 0 - 1ffff */  ||
+         ( layer==SCR2  /* max=7f*/ ) /* 0 - 1ffff */  ||
          ( layer==SCR3  /* max=7f*/  && code[15:14]==2'b00 ) /* 0 - 1ffff */ ;
         bank_a[2] <= 1'b0;
         bank_a[3] <= 1'b0;
@@ -14,7 +15,8 @@
         bank_b[0] <=  ( layer==OBJ   /* max=1f*/ ) /* 0 - 7fff */  ||
          ( layer==SCR1  /* max=7f*/ ) /* 0 - 1ffff */ ;
         // Bank 1 size 0x08000
-        bank_b[1] <=  ( layer==SCR2  /* max=7f*/ ) /* 0 - 1ffff */  ||
+        bank_b[1] <=  ( layer>=STARS  /* max=7f*/ ) /* 0 - 1ffff */  ||
+         ( layer==SCR2  /* max=7f*/ ) /* 0 - 1ffff */  ||
          ( layer==SCR3  /* max=7f*/  && code[15:14]==2'b00 ) /* 0 - 1ffff */ ;
         bank_b[2] <= 1'b0;
         bank_b[3] <= 1'b0;
@@ -28,7 +30,8 @@
         // Bank 0 size 0x08000
         bank_a[0] <=  ( layer==SCR2  /* max=7f*/ ) /* 0 - 1ffff */ 
         ||  ( layer==SCR1  /* max=7f*/ ) /* 0 - 1ffff */ 
-        ||  ( layer==SCR3  /* max=7f*/  && code[15:14]==2'b00 ) /* 0 - 1ffff */  ||
+        ||  ( layer==SCR3  /* max=7f*/  && code[15:14]==2'b00 ) /* 0 - 1ffff */ 
+        ||  ( layer>=STARS  /* max=7f*/ ) /* 0 - 1ffff */  ||
          ( layer==OBJ   && code[15:9]<=7'h7) /* 0 - 1fff */ ;
         bank_a[3] <= 1'b0;
         set_used  <= 1'b0;
@@ -59,7 +62,8 @@
     end
 6'h22: begin
         // Bank 0 size 0x08000
-        bank_a[0] <=  ( layer==OBJ   && code[15:9]<=7'h13) /* 0 - 4fff */  ||
+        bank_a[0] <=  ( layer>=STARS  && code[15:10]<=6'h0) /* 0 - 3ff */  ||
+         ( layer==OBJ   && code[15:9]<=7'h13) /* 0 - 4fff */  ||
          ( layer==SCR2  && code[15:9]>=7'h10 /* max=1f*/ ) /* 4000 - 7fff */ ;
         // Bank 1 size 0x08000
         bank_a[1] <=  ( layer==SCR3  /* max=1f*/  && code[15:14]==2'b00 ) /* 0 - 7fff */  ||
@@ -70,7 +74,8 @@
     end
 6'h21: begin
         // Bank 0 size 0x04000
-        bank_b[0] <=  ( layer==OBJ   && code[15:9]<=7'hf) /* 0 - 3fff */ ;
+        bank_b[0] <=  ( layer>=STARS  /* max=7f*/ ) /* 0 - 1ffff */  ||
+         ( layer==OBJ   && code[15:9]<=7'hf) /* 0 - 3fff */ ;
         // Bank 1 size 0x04000
         bank_b[1] <=  ( layer==OBJ   && code[15:9]>=7'h10 && code[15:9]<=7'h13) /* 4000 - 4fff */  ||
          ( layer==SCR2  && code[15:9]>=7'h10 /* max=1f*/ ) /* 4000 - 7fff */ ;
