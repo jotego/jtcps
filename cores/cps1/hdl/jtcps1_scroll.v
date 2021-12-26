@@ -245,6 +245,7 @@ always @(posedge clk, posedge rst) begin
                         wr_half   <= ~wr_half;
                     end
                 end
+                default:;
             endcase
         end
     end

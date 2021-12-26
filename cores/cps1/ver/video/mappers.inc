@@ -478,12 +478,10 @@
         // Bank 2 size 0x08000
         bank_b[2] <=  ( layer==OBJ   && code[15:9]>=7'h40 && code[15:9]<=7'h5f) /* 10000 - 17fff */ 
         ||  ( layer==SCR2  && code[15:9]>=7'h40 && code[15:9]<=7'h5f) /* 10000 - 17fff */ 
-        ||  ( layer==SCR1  && code[15:10]>=6'h40) /* 10000 - 17fff */ 
         ||  ( layer==SCR3  && code[13:7]>=7'h40 && code[13:7]<=7'h5f && code[15:14]==2'b00 ) /* 10000 - 17fff */ ;
         // Bank 3 size 0x08000
         bank_b[3] <=  ( layer==OBJ   && code[15:9]>=7'h60) /* 18000 - 1ffff */ 
         ||  ( layer==SCR2  && code[15:9]>=7'h60) /* 18000 - 1ffff */ 
-        ||  ( layer==SCR1  && code[15:10]>=6'h60) /* 18000 - 1ffff */ 
         ||  ( layer==SCR3  && code[13:7]>=7'h60 && code[15:14]==2'b00 ) /* 18000 - 1ffff */ ;
         set_used  <= 1'b1;
     end

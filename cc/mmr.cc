@@ -320,9 +320,10 @@ int generate_cpsb(stringstream& of, int *sim_cfg, const CPS1config* x) {
 
 void output_range( stringstream& ss, const char *layer, const char *layer_bits,
     int min, int max, const gfx_range *r, bool& addor, int bw, const char *extra="" ) {
+        int absmax = (1<<bw)-1;
+        if( min > absmax ) return; // skip it completely
         if(addor) ss << "\n        || ";
         ss << " ( layer==" << layer << " ";
-        int absmax = (1<<bw)-1;
         if( min!=0 ) {
             ss << " &&";
             ss << " code[" << layer_bits << "]>=" << bw <<"'h" << hex << min;

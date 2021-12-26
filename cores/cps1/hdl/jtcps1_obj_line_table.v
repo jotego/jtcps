@@ -71,7 +71,7 @@ assign      tile_n     = obj_attr[11: 8];
 assign      vflip      = obj_attr[6];
 wire        hflip      = obj_attr[5];
 //          pal        = obj_attr[4:0];
-assign      eff_x      = obj_x + { 1'b0, npos, 4'd0}; // effective x value for multi tile objects
+assign      eff_x      = obj_x + { 8'b0, npos, 4'd0}; // effective x value for multi tile objects
 `ifdef CPS2
     assign  ext_y      = obj_y[9:0];
 `else
@@ -184,7 +184,7 @@ always @(posedge clk, posedge rst) begin
             end
             5: begin
                 obj_code   <= { (pre_code[15:12]&mask) | offset, pre_code[11:0] };
-                if( unmapped  || (pre_code[15:12]&~mask) )
+                if( unmapped  || (pre_code[15:12]&~mask)!=0 )
                     st <= 1; // skip
             end
             6: begin // check whether sprite is visible
