@@ -27,9 +27,6 @@
 
 #$JTFRAME/hdl/ram/jtframe_dual_ram.v
 $JTFRAME/hdl/ram/jtframe_ram.v
-# Z80
-$JTFRAME/hdl/cpu/jtframe_z80.v
-$JTFRAME/hdl/cpu/jtframe_z80wait.v
 
 # 68000
 $JTFRAME/hdl/cpu/jtframe_68kdma.v

@@ -425,7 +425,7 @@ always @(posedge clk) begin
                 if( step[3] && !vram_ok ) begin
                     if( ~&misses ) misses <= misses + 1'd1;    // wait for SDRAM
                 end else begin
-                    if( step[1] && vram_ok && misses ) begin
+                    if( step[1] && vram_ok && misses!=0 ) begin
                         misses <= misses - 1'd1;
                         step <= 4'b1000; // skip one to recover a cycle
                     end else begin

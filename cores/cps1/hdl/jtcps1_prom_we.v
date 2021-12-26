@@ -28,15 +28,15 @@ parameter        EEPROM_AW  = 7
 )(
     input                clk,
     input                downloading,
-(*keep*)    input      [25:0]    ioctl_addr,    // max 64 MB
-(*keep*)    input      [ 7:0]    ioctl_dout,
+    input      [25:0]    ioctl_addr,    // max 64 MB
+    input      [ 7:0]    ioctl_dout,
     output     [ 7:0]    ioctl_din,
-(*keep*)    input                ioctl_wr,
+    input                ioctl_wr,
     input                ioctl_ram,
-(*keep*)    output reg [22:0]    prog_addr,
+    output reg [22:0]    prog_addr,
     output     [15:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
-(*keep*)    output reg [ 1:0]    prog_ba,
+    output reg [ 1:0]    prog_ba,
     output reg           prog_we,
     output reg           prom_we,   // for Q-Sound internal ROM
     input                prog_rdy,

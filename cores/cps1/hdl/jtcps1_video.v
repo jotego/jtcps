@@ -48,7 +48,7 @@ module jtcps1_video(
     input              ppu_rstn,
     input              ppu1_cs,
     input              ppu2_cs,
-    input   [13:1]     addr,
+    input   [12:1]     addr,
     input   [ 1:0]     dsn,      // data select, active low
     input   [15:0]     cpu_dout,
     output  [15:0]     mmr_dout,

@@ -160,6 +160,7 @@ always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
 `define MMR(a) regs[8*(a+1)-1:8*a]
 
+/*verilator lint_off width*/
 assign addr_id       = `MMR(0)>>1;
 assign cpsb_id       = `MMR(1); // 16-bit value compressed in 8 bits
 assign addr_mult1    = `MMR(2)>>1;
@@ -194,6 +195,7 @@ assign game         = `MMR(18);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
 assign { kabuki_en /* bit 5*/, charger /* bit 4*/, cpsb_inputs, cpu_speed }  = `MMR(23);
+/*verilator lint_on width*/
 
 reg [15:0] pre_mux0, pre_mux1;
 reg [ 1:0] sel;
@@ -227,6 +229,7 @@ always @(*) begin
             6'b001_000: pre_mux0 = rslt0;
             6'b010_000: pre_mux0 = rslt1;
             6'b100_000: pre_mux0 = layer_ctrl;
+            default:;
         endcase
         case( addrb[12:6] )
             7'b0_000_001: pre_mux1 = prio0;
@@ -237,6 +240,7 @@ always @(*) begin
             // extra inputs
             7'b0_100_000: pre_mux1 = { in2, in2 };
             7'b1_000_000: pre_mux1 = { in3, in3 };
+            default:;
         endcase
     end
 end
@@ -286,7 +290,7 @@ initial begin
     hpos3          = mmr_regs[9];
     vpos3          = mmr_regs[10];
     layer_ctrl     = mmr_regs[11]; //16'h12ce; // default
-    pal_page_en    = mmr_regs[12];
+    pal_page_en    = mmr_regs[12][5:0];
     vram_row_base  = mmr_regs[13];
     row_offset     = mmr_regs[14];
     ppu_ctrl       = mmr_regs[15];
@@ -403,14 +407,14 @@ always @(posedge clk, posedge reg_rst) begin
         end
         if( ppu2_cs ) begin
             mmr_dout <= sel[0] ? pre_mux0 : (sel[1] ? pre_mux1 : 16'hffff);
-            if( addrb[ 1] && !dsn) mult1      <= cpu_dout;
-            if( addrb[ 2] && !dsn) mult2      <= cpu_dout;
-            if( addrb[ 5] && !dsn) layer_ctrl <= cpu_dout;
-            if( addrb[ 6] && !dsn) prio0      <= cpu_dout;
-            if( addrb[ 7] && !dsn) prio1      <= cpu_dout;
-            if( addrb[ 8] && !dsn) prio2      <= cpu_dout;
-            if( addrb[ 9] && !dsn) prio3      <= cpu_dout;
-            if( addrb[10] && !dsn) pal_page_en<= cpu_dout;
+            if( addrb[ 1] && dsn==0) mult1      <= cpu_dout;
+            if( addrb[ 2] && dsn==0) mult2      <= cpu_dout;
+            if( addrb[ 5] && dsn==0) layer_ctrl <= cpu_dout;
+            if( addrb[ 6] && dsn==0) prio0      <= cpu_dout;
+            if( addrb[ 7] && dsn==0) prio1      <= cpu_dout;
+            if( addrb[ 8] && dsn==0) prio2      <= cpu_dout;
+            if( addrb[ 9] && dsn==0) prio3      <= cpu_dout;
+            if( addrb[10] && dsn==0) pal_page_en<= cpu_dout[5:0];
             `ifdef CPS1
             if( game == 6'h14 /*game_pang3*/ ) begin
                 if( addr == 5'h1d && !dsn[0] ) { scs, sclk, sdi } <= { cpu_dout[7], cpu_dout[6], cpu_dout[0] };

@@ -210,8 +210,8 @@ always @(posedge clk or posedge rst) begin
                 /* verilator lint_off WIDTH */
                 vn       <= vpos[10:0] + {2'd0, vrender ^ { 1'b0, {8{flip}}} };
                 /* verilator lint_on WIDTH */
-                buf_addr <= buf0+9'h1ff- (
-                    size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) );
+                buf_addr <= buf0+9'h1ff- {4'd0,
+                    size[0] ? {2'b0, hpos[2:0]} : (size[1] ? {1'b0,hpos[3:0]} : hpos[4:0]) };
                 buf_wr    <= 1'b0;
                 done      <= 1'b0;
                 tile_addr <= size[0] ? 8'd0 : (size[1] ? (8'h80+{1'b0,hpos[9:4],1'b0}) : 8'd226 );

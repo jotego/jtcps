@@ -49,7 +49,9 @@ reg  [YW-1:0] vd;
 wire [YW-1:0] objy_ext = { {YW-10{obj_y[9]}}, obj_y };
 
 always @(*) begin
+    /*verilator lint_off width*/
     bottom = objy_ext + { {YW-8{1'b0}}, tile_m, 4'd0 }+5'h10;
+    /*verilator lint_on width*/
     ycross = vs-objy_ext;
     m      = ycross[7:4];
     vd     = vrenderf-obj_y[8:0];

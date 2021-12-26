@@ -42,8 +42,8 @@ reg [1:0] shVB;
 `ifdef SIMULATION
 initial begin
     hdump       = 9'd0;
-    vrender1    = 8'hf2;
-    vrender     = 8'hf1;
+    vrender1    = 9'hf2;
+    vrender     = 9'hf1;
     vdump       = 9'hf0;  // start with the full V blank period
     HS          = 1'b0;
     VS          = 1'b0;
@@ -81,7 +81,7 @@ always @(posedge clk) if(cen8) begin
         if ( vdump==VS_END   ) VS <= 1'b0;
     end
     if( hdump== HS_END ) HS <= 1'b0;
-    line_start  <= hdump==9'h1ff && vdump<8'hF0 && vdump>8'h0c;
+    line_start  <= hdump==9'h1ff && vdump<9'hF0 && vdump>9'h0c;
     line_inc    <= hdump==9'h1ff;
     if(&hdump) begin
         hdump   <= 9'd0;

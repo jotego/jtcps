@@ -97,6 +97,7 @@ always @(posedge clk, posedge rst) begin
             3'd6: begin
                 lut_b    <= lut_dout;
             end
+            default:;
         endcase
     end
 end

@@ -33,7 +33,7 @@ while [ $# -gt 0 ]; do
             echo "   -g|-game   selects game. Use MAME names"
             echo "   -s|-scene  selects simulation scene. Turns off MAIN/SOUND simulation"
             echo "   ---------------------- "
-            $JTFRAME/bin/sim.sh -sysname cps1 -help
+            jtsim -sysname cps1 -help
             exit 0;;
         *) OTHER="$OTHER $1";;
     esac
