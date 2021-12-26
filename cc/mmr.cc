@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <set>
 #include <vector>
-#include <mamegame.hpp>
+#include "mamegame.hpp"
 
 #include "config.h"
 #include "dips.h"
