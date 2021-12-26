@@ -328,9 +328,11 @@ void output_range( stringstream& ss, const char *layer, const char *layer_bits,
             ss << " &&";
             ss << " code[" << layer_bits << "]>=" << bw <<"'h" << hex << min;
         }
-        if( max < absmax ) {
+        if( max != 31 && max<absmax ) { // I don't remember why it has to be !=31 :-(
             ss << " &&";
             ss << " code[" << layer_bits << "]<="<< bw << "'h"  << hex << max;
+        } else {
+            ss << " /* max=" << hex << max << "*/ ";
         }
         if( extra[0] ) ss << extra;
         ss << ") /* " << hex << r->start << " - " << r->end << " */ ";
