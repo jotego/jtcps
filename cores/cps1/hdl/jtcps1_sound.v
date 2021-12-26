@@ -54,6 +54,7 @@ wire        [ 6:0] pole_a;
 wire signed [15:0] adpcm_snd;
 wire signed [15:0] fm_left, fm_right;
 wire               peak_l, peak_r;
+wire               oki_sample;
 
 localparam [7:0] FMGAIN = 8'h06;
 

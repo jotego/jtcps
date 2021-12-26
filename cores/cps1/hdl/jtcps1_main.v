@@ -103,7 +103,6 @@ reg         io_cs, joy_cs, eeprom_cs,
             sys_cs, olatch_cs, snd1_cs, snd0_cs, dial_cs;
 reg         pre_ram_cs, pre_vram_cs, reg_ram_cs, reg_vram_cs;
 reg         dsn_dly;
-reg         one_wait;
 
 reg         sys_sel;
 `ifdef CPS15
@@ -145,9 +144,14 @@ end
 // buf1 = A[23:16]==1001_0001 = 8'h91
 // buf2 = A[23:16]==1001_0010 = 8'h92
 
-always @(*) begin
-    one_wait = !ASn && BGACKn && (A[23] || A[23:22]==2'b0); // RAM or ROM // A[23] | ~A[22];
-end
+`ifdef SIMULATION
+    // This signal is present in the schematics
+    reg one_wait;
+
+    always @(*) begin
+        one_wait = !ASn && BGACKn && (A[23] || A[23:22]==2'b0); // RAM or ROM // A[23] | ~A[22];
+    end
+`endif
 
 always @(posedge clk, posedge rst) begin
     if( rst ) begin
@@ -429,8 +433,8 @@ wire BUSn = ASn | (LDSn & UDSn);
 
 wire [4:0] cen_num, cen_den;
 
-assign cen_num = turbo ? 1 : 5;
-assign cen_den = turbo ? 4 : 24;
+assign cen_num = turbo ? 5'd1 : 5'd5;
+assign cen_den = turbo ? 5'd4 : 5'd24;
 
 jtframe_68kdtack u_dtack(
     .rst        ( rst       ),
