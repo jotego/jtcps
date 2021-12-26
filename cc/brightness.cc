@@ -2,11 +2,12 @@
 #include <cstdlib>
 
 int main() {
-    float gsig[] = {1.0/220.0, 1.0/470, 1.0/1000.0, 1.0/2200.0 };
-    float gbri[] = {1.0/100.0, 1.0/220.0, 1.0/470, 1.0/1000.0 };
+    const float rout=30; // estimated output impedance of 74LS367
+    float gsig[] = {1.0/(220.0+rout), 1.0/(470.0+rout), 1.0/(1000.0+rout), 1.0/(2200.0+rout) };
+    float gbri[] = {1.0/(100.0+rout), 1.0/(220.0+rout), 1.0/( 470.0+rout), 1.0/(1000.0+rout) };
     float gsum_sig;
 
-    FILE *f = fopen("pal_lut.hex","w");
+    FILE *f = fopen("../cores/cps1/hdl/pal_lut.hex","w");
 
     for( int k=0; k<4; k++ ) gsum_sig+=gsig[k];
 
