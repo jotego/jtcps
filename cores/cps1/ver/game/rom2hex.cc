@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         }
         read_bank( data, fin, 0, snd_start );   // Main CPU
         read_bank( data, fin, snd_start, pcm_start, SND_OFFSET<<1 );
-        dump_bank( data, "sdram_bank0.hex" );
+        dump_bank( data, "sdram_bank0" );
         // GFX
         int rd_ptr = gfx_start;
         for( int bank=cps2?2:3; bank<4 && rd_ptr < qsnd_start; bank++, rd_ptr+=0x80'0000 ) {
@@ -115,13 +115,13 @@ int main(int argc, char *argv[]) {
                     rewrite( (uint64_t *)(data+i) ); // address wires are shuffled
             }
             char szaux[32];
-            sprintf(szaux,"sdram_bank%d.hex",bank);
+            sprintf(szaux,"sdram_bank%d",bank);
             dump_bank( data, szaux );
         }
         // Sound
         clear_bank( data );
         read_bank( data, fin, pcm_start, gfx_start, 0x10'0000<<1 );
-        dump_bank( data, "sdram_bank1.hex" );
+        dump_bank( data, "sdram_bank1" );
         // QSound firmware
         if( qnsd_game ) {
             read_bank( data, fin, qsnd_start, qsnd_start+0x2000 );
@@ -153,8 +153,9 @@ void clear_bank( char *data ) {
 }
 
 void dump_bank( char *data, const char *fname ) {
-    ofstream fout(fname);
-    if( !fout.good() ) throw "Cannot open output file";
+    string fullname(fname);
+    ofstream fout(fullname+".hex");
+    if( !fout.good() ) throw "Cannot open output hex file\n";
     for( int k=0; k<8*1024*1024; k+=2 ) {
         int a = data[k+1];
         int b = data[k];
@@ -168,6 +169,10 @@ void dump_bank( char *data, const char *fname ) {
         else
             fout << ' ';
     }
+    fout.close();
+    // Binary file
+    fout.open(fullname+".bin");
+    fout.write(data,0x80'0000 );
 }
 
 void read_bank(char *data, ifstream& fin, int start, int end, int offset ) {
