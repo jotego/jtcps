@@ -102,7 +102,7 @@ assign      st4_tile_n = st4_attr[11: 8];
 wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
 assign      st4_effx   = st4_x + { 2'b0, subn, 4'd0 }; // effective x value for multi tile objects
-assign      nstall     = n<=st4_tile_n && st4_tile_n!=0;
+assign      nstall     = n<={1'b0,st4_tile_n} && st4_tile_n!=0;
 assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start; // || last_drstart;
 
 // the div-2 clock enable is needed because of the table_* signal latency
@@ -165,11 +165,11 @@ always @(posedge clk, posedge rst) begin
         if( inzone ) begin
             if( dr_idle /*&& !dr_start && !last_drstart*/) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
-                dr_code  <= code_mn + n[3:0];
-                dr_hpos  <= st4_effx - 10'd1;
+                dr_code  <= code_mn + {12'd0,n[3:0]};
+                dr_hpos  <= st4_effx[8:0] - 9'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
-                dr_start <= n <= st4_tile_n && !st4_effx[9];
+                dr_start <= n <= {1'b0,st4_tile_n} && !st4_effx[9];
                 if( !nstall ) begin
                     n    <= 0;
                     npos <= 0;

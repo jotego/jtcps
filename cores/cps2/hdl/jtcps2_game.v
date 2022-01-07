@@ -128,7 +128,7 @@ wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, qsnd_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
-wire        z80_rstn;
+wire        z80_rstn, star_bank;
 
 wire        main_rnw, busreq, busack;
 
@@ -341,7 +341,7 @@ jtcps1_video #(REGSIZE) u_video(
     .ppu_rstn       ( ppu_rstn      ),
     .ppu1_cs        ( ppu1_cs       ),
     .ppu2_cs        ( ppu2_cs       ),
-    .addr           ( ram_addr[13:1]),
+    .addr           ( ram_addr[12:1]),
     .dsn            ( dsn           ),      // data select, active low
     .cpu_dout       ( main_dout     ),
     .mmr_dout       ( mmr_dout      ),
@@ -402,6 +402,17 @@ jtcps1_video #(REGSIZE) u_video(
     .rom0_data      ( rom0_data     ),
     .rom0_cs        ( rom0_cs       ),
     .rom0_ok        ( rom0_ok       ),
+
+    .star_bank      ( star_bank     ),
+    .star0_addr     (               ),
+    .star0_data     ( 0             ),
+    .star0_cs       (               ),
+    .star0_ok       ( 1'b1          ),
+
+    .star1_addr     (               ),
+    .star1_data     ( 0             ),
+    .star1_cs       (               ),
+    .star1_ok       ( 1'b1          ),
 
     // Watched signals
     .watch_vram_cs  ( main_vram_cs  ),
@@ -568,6 +579,7 @@ jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .rom0_data   ( rom0_data     ),
     .rom1_data   ( rom1_data     ),
 
+    .star_bank   ( star_bank     ),
     .star0_addr  ( 13'd0         ),
     .star0_data  (               ),
     .star0_ok    (               ),

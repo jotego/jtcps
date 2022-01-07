@@ -27,6 +27,8 @@ int get_offset( char *b, int s ) {
     return a2;
 }
 
+int BANK_LEN = 0x80'0000;
+
 void clear_bank( char *data );
 void dump_bank( char *data, const char *fname );
 void read_bank( char *data, ifstream& fin, int start, int end, int offset=0 );
@@ -46,6 +48,7 @@ int main(int argc, char *argv[]) {
         if( strcmp(argv[k], "-cps2")==0 ) {
             // printf("rom2hex: CPS2 mode enabled\n");
             cps2=true;
+            BANK_LEN = 0x100'0000;
             continue;
         }
         if( strcmp(argv[k], "-game")==0 ) {
@@ -87,7 +90,7 @@ int main(int argc, char *argv[]) {
     dump_cfg( header );
     dump_kabuki( header );
 
-    char *data = new char[8*1024*1024];
+    char *data = new char[BANK_LEN];
     try{
         // VRAM
         const int VRAM_OFFSET=0x20'0000;
@@ -108,10 +111,10 @@ int main(int argc, char *argv[]) {
         int rd_ptr = gfx_start;
         for( int bank=cps2?2:3; bank<4 && rd_ptr < qsnd_start; bank++, rd_ptr+=0x80'0000 ) {
             clear_bank( data );
-            read_bank( data, fin, rd_ptr, rd_ptr+0x80'0000 );
+            read_bank( data, fin, rd_ptr, rd_ptr+BANK_LEN );
             if( cps2 ) {
                 const int banksize=0x20'0000;
-                for (int i = 0; i < 0x80'0000; i += banksize)
+                for (int i = 0; i < BANK_LEN; i += banksize)
                     rewrite( (uint64_t *)(data+i) ); // address wires are shuffled
             }
             char szaux[32];
@@ -149,14 +152,14 @@ void rewrite( uint64_t* io ) {
 void clear_bank( char *data ) {
     const int v = ~0;
     int *b = (int*)data;
-    for( int k=0; k<8*1024*1024; k+=sizeof(int) ) *b++=v;
+    for( int k=0; k<BANK_LEN; k+=sizeof(int) ) *b++=v;
 }
 
 void dump_bank( char *data, const char *fname ) {
     string fullname(fname);
     ofstream fout(fullname+".hex");
     if( !fout.good() ) throw "Cannot open output hex file\n";
-    for( int k=0; k<8*1024*1024; k+=2 ) {
+    for( int k=0; k<BANK_LEN; k+=2 ) {
         int a = data[k+1];
         int b = data[k];
         a&=0xff;
@@ -172,7 +175,7 @@ void dump_bank( char *data, const char *fname ) {
     fout.close();
     // Binary file
     fout.open(fullname+".bin");
-    fout.write(data,0x80'0000 );
+    fout.write(data,BANK_LEN );
 }
 
 void read_bank(char *data, ifstream& fin, int start, int end, int offset ) {

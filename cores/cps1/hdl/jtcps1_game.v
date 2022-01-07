@@ -503,7 +503,6 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .clk_gfx     ( clk_gfx       ),
     .clk_cpu     ( clk48         ),
     .LVBL        ( LVBL          ),
-    .debug_bus   ( debug_bus     ),
     .star_bank   ( star_bank     ),
 
     .downloading ( downloading   ),

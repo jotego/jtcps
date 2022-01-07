@@ -182,7 +182,7 @@ end
 
 // wire qs0l_w = qsnd_wr && A[2:0]==2'd0;
 // wire qs0h_w = qsnd_wr && A[2:0]==2'd1;
-wire qs1l_w = qsnd_wr && A[2:0]==2'd2;
+wire qs1l_w = qsnd_wr && A[2:0]==2;
 reg [23:0] cpu2dsp_s;
 
 always @(posedge clk48, posedge rst) begin
@@ -197,9 +197,9 @@ always @(posedge clk48, posedge rst) begin
         end
         if( qsnd_wr ) begin
             case( A[2:0] )
-                2'd0: cpu2dsp[15: 8] <= bus_din; // data word MSB
-                2'd1: cpu2dsp[ 7: 0] <= bus_din; // data word LSB
-                2'd2: cpu2dsp[23:16] <= bus_din; // address
+                0: cpu2dsp[15: 8] <= bus_din; // data word MSB
+                1: cpu2dsp[ 7: 0] <= bus_din; // data word LSB
+                2: cpu2dsp[23:16] <= bus_din; // address
                 default:;
             endcase // A[2:0]
         end

@@ -54,9 +54,9 @@ endfunction
 
 always @(*) begin
     case( scr_lyr )
-        2'd1: scr_prio = lyr_prio[ 7: 4];
-        2'd2: scr_prio = lyr_prio[11: 8];
-        2'd3: scr_prio = lyr_prio[15:12];
+        1: scr_prio = lyr_prio[ 7: 4];
+        2: scr_prio = lyr_prio[11: 8];
+        3: scr_prio = lyr_prio[15:12];
         default: scr_prio = 4'd7;
     endcase
     obj1st = obj_prio > scr_prio[2:0];

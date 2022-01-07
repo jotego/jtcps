@@ -7,7 +7,6 @@ game:
       - jtcps1_tilemap.v
       - jtcps1_colmix.v
       - jtcps1_pal.v
-      - jtcps1_obj.v
       - jtcps1_mmr.v
       - jtcps1_obj_line_table.v
       - jtcps1_obj_tile_match.v

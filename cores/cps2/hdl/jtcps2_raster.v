@@ -69,7 +69,7 @@ always @(posedge clk) begin
 end
 
 initial begin
-    cnt4 <= 0;
+    cnt4 = 0;
 end
 
 jtcps2_raster_cnt u_cnt0(

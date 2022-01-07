@@ -151,7 +151,6 @@ module jtcps1_sdram #( parameter
     input    [ 3:0] ba_dok,
     input    [ 3:0] ba_rdy,
 
-    input    [ 7:0] debug_bus,
     input    [15:0] data_read
 );
 

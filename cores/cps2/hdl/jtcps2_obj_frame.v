@@ -100,8 +100,8 @@ end
 
 `ifdef SIMULATION
 initial begin
-    oram_cnt = 12'd0;
-    line_cnt = 4'd0;
+    oram_cnt = 0;
+    line_cnt = 0;
 end
 `endif
 
