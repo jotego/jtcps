@@ -27,7 +27,7 @@ jtframe:
       - jtframe_virq.v
       - jtframe_z80wait.v
       - t80/T80.qip
-      - jtframe_m68k.qip
+      - jtframe_m68k.yaml
   - from: sdram
     get:
       - jtframe_romrq.v
