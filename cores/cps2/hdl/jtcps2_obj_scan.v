@@ -165,7 +165,7 @@ always @(posedge clk, posedge rst) begin
         if( inzone ) begin
             if( dr_idle /*&& !dr_start && !last_drstart*/) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
-                dr_code  <= code_mn + {12'd0,n[3:0]};
+                dr_code  <= { code_mn[15:4], code_mn[3:0]+n[3:0]};
                 dr_hpos  <= st4_effx[8:0] - 9'd1;
                 dr_prio  <= st4_prio;
                 dr_bank  <= st4_bank;
