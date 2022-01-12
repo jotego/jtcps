@@ -18,7 +18,6 @@ game:
       - jtcps1_cpucen.v
       - jtcps1_dma.v
       - jtcps1_sdram.v
-      - jtcps1_dtack.v
       - jtcps1_watch.v
 jtframe:
   - from: cpu

@@ -14,18 +14,21 @@
               obtained ROM dumps of CAPCOM games or with homework software for
               the CPS platform.
 
+              This file license is GNU GPLv2.
+              You can read the whole license file in
+              https://opensource.org/licenses/gpl-2.0.php
 -->
 
 <misterromdescription>
     <about author="jotego" webpage="https://patreon.com/topapate"
                            source ="https://github.com/jotego/jtcps1"
                            twitter="@topapate"/>
-    <name>The King of Dragons (USA 910910)</name>
-    <setname>kodu</setname>
+    <name>The King of Dragons (Japan 910805, B-Board 90629B-3)</name>
+    <setname>kodj</setname>
     <year>1991</year>
     <manufacturer>Capcom</manufacturer>
     <rbf>jtcps1</rbf>
-    <rom index="0" zip="kod.zip|kodu.zip" md5="none">
+    <rom index="0" zip="kod.zip|kodj.zip" md5="none">
         <!-- relative position of each ROM section in the file, discounting the header, in kilobytes -->
         <!-- Size of M68000 code 1024 kB -->
         <!-- Sound CPU size 64 kB -->
@@ -35,28 +38,23 @@
         <!-- Graphics size 4096 kB -->
         <part>40 05 </part>
         <part repeat="10">FF</part>
-        <!-- CPS-B config for kodu --> 
+        <!-- CPS-B config for kodj --> 
         <part> FF FF 1E 1C 1A 18 20 2E 2C 2A 28 36 00 30 30 08 30 00 </part>
         <!-- Mapper for  --> 
         <part> 0B 40 88 73 FF </part>
-        <part> 02 </part>
+        <part> 03 </part>
         <part repeat="24">FF</part>
         <!-- maincpu -->
         <interleave output="16">
-            <part name="kdu_37b.11f" crc="d2422dfb" map="01"/>
-            <part name="kdu_30b.11e" crc="825817f9" map="10"/>
+            <part name="kdj_37a.11f" crc="e55c3529" map="01"/>
+            <part name="kdj_30a.11e" crc="ebc788ad" map="10"/>
         </interleave>
         <interleave output="16">
-            <part name="kdu_38b.12f" crc="be8405a1" map="01"/>
-            <part name="kdu_31b.12e" crc="9af36039" map="10"/>
+            <part name="kdj_38a.12f" crc="57d6ed3a" map="01"/>
+            <part name="kdj_31a.12e" crc="c710d722" map="10"/>
         </interleave>
         <interleave output="16">
-            <part name="kdu_35.9f" crc="4ca6a48a" map="01"/>
-            <part name="kdu_28.9e" crc="9367bcd9" map="10"/>
-        </interleave>
-        <interleave output="16">
-            <part name="kdu_36a.10f" crc="95a3cef8" map="01"/>
-            <part name="kdu_29.10e" crc="0360fa72" map="10"/>
+            <part name="kd_33.6f" crc="9bd7ad4b" map="21"/>
         </interleave>
         <!-- audiocpu -->
         <part name="kd_09.12a" crc="bac6ec26"/>
@@ -65,16 +63,16 @@
         <part name="kd_19.12c" crc="92941b80"/>
         <!-- gfx -->
         <interleave output="64">
-            <part name="kd-5m.4a" crc="e45b8701"  map="00000021"/>
-            <part name="kd-7m.6a" crc="a7750322"  map="00002100"/>
-            <part name="kd-1m.3a" crc="5f74bf78"  map="00210000"/>
-            <part name="kd-3m.5a" crc="5e5303bf"  map="21000000"/>
+            <part name="kd_06.8a" crc="e45b8701"  map="00000021"/>
+            <part name="kd_08.10a" crc="a7750322"  map="00002100"/>
+            <part name="kd_05.7a" crc="5f74bf78"  map="00210000"/>
+            <part name="kd_07.9a" crc="5e5303bf"  map="21000000"/>
         </interleave>
         <interleave output="64">
-            <part name="kd-6m.4c" crc="113358f3"  map="00000021"/>
-            <part name="kd-8m.6c" crc="38853c44"  map="00002100"/>
-            <part name="kd-2m.3c" crc="9ef36604"  map="00210000"/>
-            <part name="kd-4m.5c" crc="402b9b4f"  map="21000000"/>
+            <part name="kd_15.8c" crc="113358f3"  map="00000021"/>
+            <part name="kd_17.10c" crc="38853c44"  map="00002100"/>
+            <part name="kd_14.7c" crc="9ef36604"  map="00210000"/>
+            <part name="kd_16.9c" crc="402b9b4f"  map="21000000"/>
         </interleave>
     </rom>
 

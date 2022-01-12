@@ -9728,12 +9728,12 @@ GAME( 1991, 3wondersu,   3wonders, cps1_10MHz, 3wonders, cps_state, init_cps1,  
 GAME( 1991, wonder3,     3wonders, cps1_10MHz, 3wonders, cps_state, init_cps1,     ROT0,   "Capcom", "Wonder 3 (Japan 910520)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, 3wondersb,   3wonders, cps1_10MHz, 3wonders, cps_state, init_cps1,     ROT0,   "bootleg", "Three Wonders (bootleg)", MACHINE_SUPPORTS_SAVE )   // 910520 - based on World version
 GAME( 1991, 3wondersh,   3wonders, cps1_10MHz, 3wonders, cps_state, init_cps1,     ROT0,   "bootleg", "Three Wonders (hack)", MACHINE_SUPPORTS_SAVE ) // 910520 - based on World version
-GAME( 1991, kod,         0,        cps1_10MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910805)", MACHINE_SUPPORTS_SAVE )    // "ETC"
-GAME( 1991, kodr1,       kod,      cps1_10MHz, kodr1,    cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910711)", MACHINE_SUPPORTS_SAVE )    // "ETC"
-GAME( 1991, kodr2,       kod,      cps1_10MHz, kodr1,    cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910731)", MACHINE_SUPPORTS_SAVE )    // "ETC"
-GAME( 1991, kodu,        kod,      cps1_10MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (USA 910910)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, kodj,        kod,      cps1_10MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (Japan 910805, B-Board 90629B-3)", MACHINE_SUPPORTS_SAVE )
-GAME( 1991, kodja,       kod,      cps1_10MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (Japan 910805, B-Board 89625B-1)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, kod,         0,        cps1_12MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910805)", MACHINE_SUPPORTS_SAVE )    // "ETC"
+GAME( 1991, kodr1,       kod,      cps1_12MHz, kodr1,    cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910711)", MACHINE_SUPPORTS_SAVE )    // "ETC"
+GAME( 1991, kodr2,       kod,      cps1_12MHz, kodr1,    cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (World 910731)", MACHINE_SUPPORTS_SAVE )    // "ETC"
+GAME( 1991, kodu,        kod,      cps1_12MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (USA 910910)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, kodj,        kod,      cps1_12MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (Japan 910805, B-Board 90629B-3)", MACHINE_SUPPORTS_SAVE )
+GAME( 1991, kodja,       kod,      cps1_12MHz, kod,      cps_state, init_cps1,     ROT0,   "Capcom", "The King of Dragons (Japan 910805, B-Board 89625B-1)", MACHINE_SUPPORTS_SAVE )
 GAME( 1991, captcomm,    0,        cps1_10MHz, captcomm, cps_state, init_cps1,     ROT0,   "Capcom", "Captain Commando (World 911202)", MACHINE_SUPPORTS_SAVE )   // "OTHER COUNTRY"
 GAME( 1991, captcommr1,  captcomm, cps1_10MHz, captcomm, cps_state, init_cps1,     ROT0,   "Capcom", "Captain Commando (World 911014)", MACHINE_SUPPORTS_SAVE )   // "OTHER COUNTRY"
 GAME( 1991, captcommu,   captcomm, cps1_10MHz, captcomm, cps_state, init_cps1,     ROT0,   "Capcom", "Captain Commando (USA 910928)", MACHINE_SUPPORTS_SAVE )
