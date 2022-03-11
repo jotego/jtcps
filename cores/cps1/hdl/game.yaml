@@ -9,7 +9,7 @@ game:
 jtframe:
   - from: sound
     get:
-      - jtframe_uprate2_fir.qip
+      - jtframe_uprate2_fir.yaml
       - jtframe_pole.v
 modules:
   jt:
