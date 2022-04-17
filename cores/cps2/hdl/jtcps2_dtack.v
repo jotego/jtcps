@@ -83,7 +83,7 @@ always @(posedge clk, posedge rst) begin : dtack_gen
                 if( bus_busy && s3_over && cen16 ) begin
                     fail_cnt<= next_cnt[FW] ? {FW{1'b1}} : next_cnt[FW-1:0];
                 end
-                if (!bus_busy) begin
+                if (!bus_busy && {UDSn,LDSn}!=3) begin
                     DTACKn <= 1'b0;
                 end
             end else begin
