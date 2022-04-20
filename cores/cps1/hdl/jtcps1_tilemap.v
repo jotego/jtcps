@@ -186,7 +186,7 @@ endfunction
 
 // pixels in the blank area are not visible but it takes time to draw them
 // so the start position is offset to avoid blanking
-wire [10:0] hn0  = size[0] ? 11'h38 : (size[1] ? 11'h30 : 11'h20 );
+// wire [10:0] hn0  = size[0] ? 11'h38 : (size[1] ? 11'h30 : 11'h20 );
 wire [ 8:0] buf0 = size[0] ?  9'h38 : (size[1] ?  9'h30 :  9'h20 );
 
 always @(posedge clk or posedge rst) begin

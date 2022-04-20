@@ -415,7 +415,7 @@ assign qsnd_addr = 0;
 `endif
 
 jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
-    .rst         ( rst           ),
+    .rst         ( rst_sdram     ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
     .clk_cpu     ( clk48         ),

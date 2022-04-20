@@ -159,27 +159,29 @@ reg  [ 2:0]  cnt_sel;
 always @(posedge clk) {rslt1,rslt0} <= mult1*mult2;
 
 `define MMR(a) regs[8*(a+1)-1:8*a]
+`define MMR2(a) regs[8*a+1 +: 5]
+`define MMR3(a,b) regs[8*a +: b]
 
 /*verilator lint_off width*/
-assign addr_id       = `MMR(0)>>1;
+assign addr_id       = `MMR2(0);
 assign cpsb_id       = `MMR(1); // 16-bit value compressed in 8 bits
-assign addr_mult1    = `MMR(2)>>1;
-assign addr_mult2    = `MMR(3)>>1;
-assign addr_rslt0    = `MMR(4)>>1;
-assign addr_rslt1    = `MMR(5)>>1;
-assign addr_layer    = `MMR(6)>>1;
-assign addr_prio0    = `MMR(7)>>1;
-assign addr_prio1    = `MMR(8)>>1;
-assign addr_prio2    = `MMR(9)>>1;
-assign addr_prio3    = `MMR(10)>>1;
+assign addr_mult1    = `MMR2(2);
+assign addr_mult2    = `MMR2(3);
+assign addr_rslt0    = `MMR2(4);
+assign addr_rslt1    = `MMR2(5);
+assign addr_layer    = `MMR2(6);
+assign addr_prio0    = `MMR2(7);
+assign addr_prio1    = `MMR2(8);
+assign addr_prio2    = `MMR2(9);
+assign addr_prio3    = `MMR2(10);
 `ifdef CPS15
 assign addr_in2      = 5'd0; // no inputs on CPS-B chip for CPS1.5 games
 assign addr_in3      = 5'd0;
 `else
-assign addr_in2      = `MMR(11)>>1;
-assign addr_in3      = `MMR(12)>>1;
+assign addr_in2      = `MMR2(11);
+assign addr_in3      = `MMR2(12);
 `endif
-assign addr_pal_page = `MMR(13)>>1;
+assign addr_pal_page = `MMR2(13);
 assign layer_mask0   = `MMR(14);
 assign layer_mask1   = `MMR(15);
 assign layer_mask2   = `MMR(16);
@@ -191,7 +193,7 @@ assign layer_mask4   = layer_mask3; // it is not well know what the
 // a multiple of 2 in order to work with the ROM downloading
 
 // Mapper, last 5 bytes
-assign game         = `MMR(18);
+assign game         = `MMR3(18,6);
 assign bank_offset  = { `MMR(20), `MMR(19) };
 assign bank_mask    = { `MMR(22), `MMR(21) };
 assign { kabuki_en /* bit 5*/, charger /* bit 4*/, cpsb_inputs, cpu_speed }  = `MMR(23);
