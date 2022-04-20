@@ -57,7 +57,7 @@ reg  [ 1:0] st3_bank, st4_bank;
 reg  [ 2:0] st3_prio, st4_prio;
 wire        start;
 
-reg         done, last_drstart;
+reg         done;
 wire [ 3:0] st3_tile_n, st4_tile_n, st3_tile_m;
 reg  [ 3:0] npos;  // tile expansion n==horizontal, m==vertical
 reg  [ 4:0] n;
@@ -103,7 +103,7 @@ wire        st4_hflip  = st4_attr[5];
 assign      subn       = (st4_hflip ? ( st4_tile_n - n[3:0] ) : n[3:0]);
 assign      st4_effx   = st4_x + { 2'b0, subn, 4'd0 }; // effective x value for multi tile objects
 assign      nstall     = n<={1'b0,st4_tile_n} && st4_tile_n!=0;
-assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start; // || last_drstart;
+assign      stall      = (inzone && (!dr_idle || nstall));// || dr_start;
 
 // the div-2 clock enable is needed because of the table_* signal latency
 // If the OBJ RAM didn't have an output latch, or if the latch had a clock enable
@@ -131,15 +131,12 @@ always @(posedge clk, posedge rst) begin
         st3_code   <= 0;
         st3_attr   <= 0;
         st4_attr   <= 0;
-
-        last_drstart <= 0;
     end else if(cen) begin
         last_start <= start;
-        last_drstart <= dr_start;
 
         if( !stall ) begin
         // I
-            table_addr <= done ? 0 : (table_addr+1'd1);
+            table_addr <= done ? 10'd0 : (table_addr+1'd1);
         // II
             if( table_y[15] || table_attr[15:8]==8'hff || &table_addr ) begin
                 done     <= 1;
@@ -150,7 +147,7 @@ always @(posedge clk, posedge rst) begin
                 st3_code <= table_code;
                 st3_x    <= done ? 10'd0 : table_x[9:0] + 10'h40 - (table_attr[7] ? 10'd0 : off_x);
                 st3_y    <= done ? 10'd0 : table_y[9:0] + 10'h10 - (table_attr[7] ? 10'd0 : off_y);
-                st3_attr <= done ? 0 : table_attr;
+                st3_attr <= done ? 16'd0 : table_attr;
                 st3_prio <= table_x[15:13];
                 st3_bank <= table_y[14:13];
             end
@@ -163,7 +160,7 @@ always @(posedge clk, posedge rst) begin
         end
         // IV
         if( inzone ) begin
-            if( dr_idle /*&& !dr_start && !last_drstart*/) begin
+            if( dr_idle ) begin
                 dr_attr  <= { 4'd0, st4_vsub, st4_attr[7:0] };
                 dr_code  <= { code_mn[15:4], code_mn[3:0]+n[3:0]};
                 dr_hpos  <= st4_effx[8:0] - 9'd1;

@@ -109,10 +109,11 @@ wire [23:0] A_full = {A,1'b0};
 wire bad_as = ~ASn & BUSn & ~last_busn;
 `endif
 
-(*keep*) wire        BRn, BGACKn, BGn;
-(*keep*) wire        ASn;
+wire        BRn, BGACKn, BGn;
+wire        ASn;
 reg         io_cs, eeprom_cs,
-            sys_cs, dial_cs; // dial_cs is not driven! review it
+            sys_cs;
+wire        dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
 reg         dsn_dly, one_wait;
@@ -121,6 +122,7 @@ assign cpu_cen   = cen16;
 // As RAM and VRAM share contiguous spaces in the SDRAM
 // it is important to prevent overlapping
 assign addr      = ram_cs ? {2'b0, A[15:1] } : A[17:1];
+assign dial_cs   = 0; // dial_cs is not driven! review it
 
 // high during DMA transfer
 wire BUSn, UDSn, LDSn;
