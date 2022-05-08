@@ -30,8 +30,8 @@ module jtcps1_game(
     output   [7:0]  red,
     output   [7:0]  green,
     output   [7:0]  blue,
-    output          LHBL_dly,
-    output          LVBL_dly,
+    output          LHBL,
+    output          LVBL,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -104,11 +104,9 @@ module jtcps1_game(
 `endif
 
 wire        clk_gfx, rst_gfx;
-wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
-wire        HB, VB;
 wire [15:0] snd_addr;
 wire [17:0] adpcm_addr;
 wire [ 7:0] snd_data, adpcm_data;
@@ -151,9 +149,6 @@ wire        sclk, sdi, sdo, scs;
 `else
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 `endif
-
-assign LVBL         = ~VB;
-assign LHBL         = ~HB;
 
 wire [ 1:0] dsn;
 wire        cen16, cen12, cen8, cen10b;
@@ -326,10 +321,8 @@ jtcps1_video #(REGSIZE) u_video(
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
-    .HB             ( HB            ),
-    .VB             ( VB            ),
-    .LHBL_dly       ( LHBL_dly      ),
-    .LVBL_dly       ( LVBL_dly      ),
+    .LHBL           ( LHBL          ),
+    .LVBL           ( LVBL          ),
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),
@@ -394,7 +387,7 @@ assign snd_latch1 = fake_latch1;
 assign snd_latch0 = fake_latch0;
 localparam FAKE0=20;
 localparam FAKE1=1000;
-always @(posedge VB) begin
+always @(negedge LVBL) begin
     snd_frame_cnt <= snd_frame_cnt+1;
     case( snd_frame_cnt )
         /* ffight

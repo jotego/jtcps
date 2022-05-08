@@ -28,8 +28,8 @@ module jtcps15_game(
     output   [7:0]  red,
     output   [7:0]  green,
     output   [7:0]  blue,
-    output          LHBL_dly,
-    output          LVBL_dly,
+    output          LHBL,
+    output          LVBL,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -94,7 +94,6 @@ module jtcps15_game(
 );
 
 wire        clk_gfx, rst_gfx;
-wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, qsnd_cs, main_ram_cs, main_vram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
@@ -141,9 +140,6 @@ wire        sclk, sdi, sdo, scs;
 
 assign { dipsw_c, dipsw_b, dipsw_a } = ~24'd0;
 assign game_led = 0;
-
-assign LVBL         = ~VB;
-assign LHBL         = ~HB;
 
 wire [ 1:0] dsn;
 wire        cen16, cen12, cen8, cen10b;
@@ -319,10 +315,8 @@ jtcps1_video #(REGSIZE) u_video(
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
-    .HB             ( HB            ),
-    .VB             ( VB            ),
-    .LHBL_dly       ( LHBL_dly      ),
-    .LVBL_dly       ( LVBL_dly      ),
+    .LHBL           ( LHBL          ),
+    .LVBL           ( LVBL          ),
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),

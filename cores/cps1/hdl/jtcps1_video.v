@@ -85,10 +85,8 @@ module jtcps1_video(
     // Video signal
     output             HS,
     output             VS,
-    output             HB,
-    output             VB,
-    output             LHBL_dly,
-    output             LVBL_dly,
+    output             LHBL,
+    output             LVBL,
     output     [ 7:0]  red,
     output     [ 7:0]  green,
     output     [ 7:0]  blue,
@@ -182,7 +180,7 @@ wire       [15:0]  objtable_data;
 wire               objdma_en, row_en;
 wire       [ 3:1]  scrdma_en;
 wire               star1_precs, star0_precs;
-wire               line_inc;
+wire               line_inc, VB, HB;
 
 `ifdef CPS2
     assign obj_dma_ok = 0;
@@ -631,8 +629,8 @@ jtcps1_pal #(.BLNK_DLY(BLNK_DLY)) u_pal(
 
     .vb         ( VB            ),
     .hb         ( HB            ),
-    .LHBL_dly   ( LHBL_dly      ),
-    .LVBL_dly   ( LVBL_dly      ),
+    .LHBL       ( LHBL          ),
+    .LVBL       ( LVBL          ),
 
     // Palette RAM
     .pxl_in     ( final_pxl     ),

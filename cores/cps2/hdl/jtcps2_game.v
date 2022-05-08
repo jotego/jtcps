@@ -28,8 +28,8 @@ module jtcps2_game(
     output   [7:0]  red,
     output   [7:0]  green,
     output   [7:0]  blue,
-    output          LHBL_dly,
-    output          LVBL_dly,
+    output          LHBL,
+    output          LVBL,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -101,14 +101,12 @@ wire [7:0] debug_bus=0;
 `endif
 
 wire        clk_gfx, rst_gfx;
-wire        LHBL, LVBL; // internal blanking signals
 wire        snd_cs, qsnd_cs,
             main_ram_cs, main_vram_cs, main_oram_cs, main_rom_cs,
             rom0_cs, rom1_cs,
             vram_dma_cs;
 wire        obank;  // OBJ bank
 wire [15:0] oram_base;
-wire        HB, VB;
 wire [18:0] snd_addr;
 wire [22:0] qsnd_addr;
 wire        prog_qsnd;
@@ -153,9 +151,6 @@ wire [12:0] volume;
 
 // EEPROM
 wire        sclk, sdi, sdo, scs;
-
-assign LVBL         = ~VB;
-assign LHBL         = ~HB;
 
 wire [ 1:0] dsn;
 wire        cen16, cen16b, cen12, cen8, cen10b;
@@ -361,10 +356,8 @@ jtcps1_video #(REGSIZE) u_video(
     // Video signal
     .HS             ( HS            ),
     .VS             ( VS            ),
-    .HB             ( HB            ),
-    .VB             ( VB            ),
-    .LHBL_dly       ( LHBL_dly      ),
-    .LVBL_dly       ( LVBL_dly      ),
+    .LHBL           ( LHBL          ),
+    .LVBL           ( LVBL          ),
     .red            ( red           ),
     .green          ( green         ),
     .blue           ( blue          ),

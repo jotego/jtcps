@@ -25,8 +25,8 @@ module jtcps1_pal(
 
     input             vb,
     input             hb,
-    output            LVBL_dly,
-    output            LHBL_dly,
+    output            LVBL,
+    output            LHBL,
 
     input      [11:0] pxl_in,
     output     [11:0] pal_addr,
@@ -110,7 +110,7 @@ always @(posedge clk, posedge rst) begin
     end else if(pxl_cen) begin
         // signal * 17 - signal*15/2 - signal*15/4 = signal * (17-15/2-15/4)
         // 66% max attenuation for brightness
-        if( vb || (hb && !LHBL_dly) ) begin
+        if( vb || (hb && !LHBL) ) begin
             red   <= 8'd0;
             green <= 8'd0;
             blue  <= 8'd0;
@@ -123,10 +123,10 @@ always @(posedge clk, posedge rst) begin
 end
 
 jtframe_sh #(.width(2),.stages(BLNK_DLY)) u_sh(
-    .clk    ( clk                  ),
-    .clk_en ( pxl_cen              ),
-    .din    ( {~vb, ~hb}           ),
-    .drop   ( {LVBL_dly, LHBL_dly} )
+    .clk    ( clk          ),
+    .clk_en ( pxl_cen      ),
+    .din    ( {~vb, ~hb}   ),
+    .drop   ( {LVBL, LHBL} )
 );
 
 endmodule

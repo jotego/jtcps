@@ -39,7 +39,7 @@ assign rom_ok_out = ok_sh[1];
 wire op_fetch = fc[1:0]==2'b10;
 
 always @(posedge clk) begin
-    en_latch <= op_fetch && en && (addr[23:16] <= range[11:4]);
+    en_latch <= op_fetch && en && (addr[23:16] < range[11:4]);
     ok_sh    <= { ok_sh[0], rom_ok };
     dout     <= en_latch ? dec : din;
 end
