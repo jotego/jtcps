@@ -3,7 +3,6 @@ include common.def
 CPS1
 CORENAME=JTCPS1
 GAMETOP=jtcps1_game
-JTFRAME_MRA_DIP
 JTFRAME_CREDITS
 
 CORE_OSD+=;O1,Original filter,Off,On;
