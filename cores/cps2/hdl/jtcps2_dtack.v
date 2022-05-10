@@ -56,7 +56,7 @@ wire [2:0] cnt_over = recover ? cen_cnt>=1 : cen_cnt>=2;
     end
 `endif
 
-always @(posedge clk, posedge rst) begin
+always @(posedge clk) begin
     if( cen_cnt==0 ) begin
         skipped <= 0;
     end else if( cnt_over ) begin
