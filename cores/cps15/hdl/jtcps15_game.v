@@ -77,6 +77,7 @@ module jtcps15_game(
     input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
+    input   [31:0]  dipsw,
     input           service,
     input           dip_pause,
     inout           dip_flip,

@@ -33,7 +33,7 @@ for i in ddtod ssf2 ssf2t ecofghtr avsp dstlk ringdest \
     armwar xmcota nwarr cybots sfa mmancp2u mmancp2ur1 rmancp2j msh \
     19xx ddsom sfa2 sfz2al spf2t megaman2 qndream  xmvsf batcir vsav mmatrix \
     mshvsf csclub sgemf vhunt2 vsav2 mvsc sfa3 jyangoku hsf2 mpang progear\
-    gigawing; do
+    gigawing ssf2xj; do
     if [ $GAME = $i ]; then
         GOOD=1
         break

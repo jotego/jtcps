@@ -46,9 +46,17 @@ wire [FW:0] next_cnt = {1'd0,fail_cnt} + FS;
 reg        skipped, s3_over;
 reg  [2:0] cen_cnt=0;
 wire       recover  = (ASn || (!ASn && !DTACKn)) && fail_cnt!=0 && !busack;
-wire [2:0] cnt_over = recover ? cen_cnt==1 : cen_cnt==2;
+wire [2:0] cnt_over = recover ? cen_cnt>=1 : cen_cnt>=2;
 
-always @(posedge clk) begin
+`ifdef SIMULATION
+    initial begin
+        fail_cnt = 0;
+        s3_over  = 0;
+        DTACKn   = 1;
+    end
+`endif
+
+always @(posedge clk, posedge rst) begin
     if( cen_cnt==0 ) begin
         skipped <= 0;
     end else if( cnt_over ) begin

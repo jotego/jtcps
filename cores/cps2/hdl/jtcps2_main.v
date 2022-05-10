@@ -103,12 +103,6 @@ reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 wire [15:0] rom_dec;
 
 wire        dec_en;
-
-`ifdef SIMULATION
-wire [23:0] A_full = {A,1'b0};
-wire bad_as = ~ASn & BUSn & ~last_busn;
-`endif
-
 wire        BRn, BGACKn, BGn;
 wire        ASn;
 reg         io_cs, eeprom_cs,
@@ -117,6 +111,10 @@ wire        dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
 reg         dsn_dly, one_wait;
+
+`ifdef SIMULATION
+wire [23:0] A_full = {A,1'b0};
+`endif
 
 assign cpu_cen   = cen16;
 // As RAM and VRAM share contiguous spaces in the SDRAM
