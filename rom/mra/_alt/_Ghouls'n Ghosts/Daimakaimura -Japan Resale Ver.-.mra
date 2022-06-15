@@ -75,18 +75,18 @@
         default="A,B,R,L,Start"/>
     <switches default="FF,FF,FF" base="8">
         <!--DIP A-->
-        <dip bits="0,2"	  name="Coin A" ids="1 Coin/1 Credit,1 Coin/2 Credits,1 Coin/3 Credits,1 Coin/4 Credits,1 Coin/6 Credits,2 Coins/1 Credit,3 Coins/1 Credit,4 Coins/1 Credit" values=7,6,5,4,3,2,1,0/>
-        <dip bits="3,5"	  name="Coin B" ids="1 Coin/1 Credit,1 Coin/2 Credits,1 Coin/3 Credits,1 Coin/4 Credits,1 Coin/6 Credits,2 Coins/1 Credit,3 Coins/1 Credit,4 Coins/1 Credit" values=7,6,5,4,3,2,1,0/>
-        <dip bits="6,7"	  name="Cabinet" ids="Upright 1 Player,Upright 2 Players,Cocktail,Cocktail" values="3,2,1,0"/>
+        <dip bits="0,2"	  name="Coin A" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="3,5"	  name="Coin B" ids="4 Coins/1 Credit,3 Coins/1 Credit,2 Coins/1 Credit,1 Coin/6 Credits,1 Coin/4 Credits,1 Coin/3 Credits,1 Coin/2 Credits,1 Coin/1 Credit"/>
+        <dip bits="6,7"	  name="Cabinet" ids="Cocktail,Cocktail,Upright 2 Players,Upright 1 Player"/>
         <!--DIP B-->
-        <dip bits="8,10"  name="Difficulty" ids="1 Very Easy,2,3,4 Normal,5,6,7,8 Very Difficult" values="4,5,6,7,3,2,1,0"/>
+        <dip bits="8,10"  name="Difficulty" ids="8 Very Difficult,7,6,5,1 Very Easy,2,3,4 Normal"/>
         <dip bits="11"	  name="Dip B4 (Unused)" ids="On,Off"/>
-        <dip bits="12,13" name="Bonus Extend" ids="30 60 Every 70,10 30 Every 30,20 50 Every 70,40 70 Every 80" values="3,2,1,0"/>
+        <dip bits="12,13" name="Bonus Extend" ids="40 70 Every 80,20 50 Every 70,10 30 Every 30,30 60 Every 70"/>
         <dip bits="14"	  name="Dip B7 (Unused)" ids="On,Off"/>
         <dip bits="15"	  name="Freeze" ids="On,Off"/>
         <!--DIP C-->
-        <dip bits="16,17" name="Num of Player" ids="3,4,5,6" values="3,2,1,0"/>
-        <dip bits="16,19" name="Stage Select" ids="1,1-Checkpoint,2,2-Checkpoint,3,3-Checkpoint,4,4-Checkpoint,5,5-Checkpoint,Last Boss" values="15,14,13,12,11,10,9,8,7,6,5"/>
+        <dip bits="16,17" name="Num of Player" ids="6,5,4,3"/>
+        <dip bits="16,19" name="Stage Select" ids="Do Not Use,Do Not Use,Do Not Use,Do Not Use,Do Not Use,Last Boss,5-Checkpoint,5,4-Checkpoint,4,3-Checkpoint,3,2-Checkpoint,2,1-Checkpoint,1"/>
         <dip bits="20"	  name="Flip Screen" ids="Flip,Normal"/>
         <dip bits="21"    name="Demo Sound" ids="No,Yes"/>
         <dip bits="22"	  name="Continue" ids="No,Yes"/>
