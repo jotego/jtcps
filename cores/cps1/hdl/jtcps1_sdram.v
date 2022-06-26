@@ -151,7 +151,9 @@ module jtcps1_sdram #( parameter
     input    [ 3:0] ba_dok,
     input    [ 3:0] ba_rdy,
 
-    input    [15:0] data_read
+    input    [15:0] data_read,
+    input    [ 7:0] debug_bus,
+    output   [ 7:0] debug_view
 );
 
 localparam [22:0] ZERO_OFFSET  = 23'h0,
@@ -188,11 +190,7 @@ localparam OBJ_LATCH=1;
     wire        gfx_oram_cs  = 0;
 `endif
 
-`ifdef CPS15
-localparam EEPROM_AW=7;
-`else
-localparam EEPROM_AW=6;
-`endif
+localparam EEPROM_AW=$clog2(`JTFRAME_IOCTL_RD)-1;
 
 (*keep*) wire [22:0] cps2_gfx0;
 wire [21:0] gfx1_addr, gfx0_addr;
@@ -242,7 +240,6 @@ jtcps1_prom_we #(
     .ioctl_addr     ( ioctl_addr    ),
 `endif
     .ioctl_dout     ( ioctl_dout    ),
-    .ioctl_din      ( ioctl_din     ),
     .ioctl_wr       ( ioctl_wr      ),
     .ioctl_ram      ( ioctl_ram     ),
     .prog_addr      ( prog_addr     ),
@@ -253,11 +250,6 @@ jtcps1_prom_we #(
     .prog_rdy       ( prog_rdy      ),
     .cfg_we         ( cfg_we        ),
     .dwnld_busy     ( dwnld_busy    ),
-    // EEPROM
-    .dump_din       ( dump_din      ),
-    .dump_dout      ( dump_dout     ),
-    .dump_addr      ( dump_addr     ),
-    .dump_we        ( dump_we       ),
     // QSound & Kabuki keys
     .prom_we        ( prog_qsnd     ),
     .kabuki_we      ( kabuki_we     ),
@@ -472,8 +464,10 @@ jtframe_rom_4slots #(
     .data_read   ( data_read     )
 );
 
+assign debug_view = 0;
+
 // EEPROM used by Pang 3 and by CPS1.5/2
-jt9346 #(.DW(16),.AW(EEPROM_AW)) u_eeprom(
+jt9346 #(.DW(8),.AW(7)) u_eeprom(
     .rst        ( rst       ),  // system reset
     .clk        ( clk       ),  // system clock
     // chip interface
@@ -483,10 +477,10 @@ jt9346 #(.DW(16),.AW(EEPROM_AW)) u_eeprom(
     .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
     // Dump access
     .dump_clk   ( clk       ),  // same as prom_we module
-    .dump_addr  ( dump_addr ),
-    .dump_we    ( dump_we   ),
-    .dump_din   ( dump_din  ),
-    .dump_dout  ( dump_dout )
+    .dump_addr  ( ioctl_addr[6:0] ),
+    .dump_we    ( ioctl_wr & ioctl_ram   ),
+    .dump_din   ( ioctl_dout),
+    .dump_dout  ( ioctl_din )
 );
 
 endmodule

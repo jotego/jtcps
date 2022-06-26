@@ -30,7 +30,6 @@ parameter        EEPROM_AW  = 7
     input                downloading,
     input      [25:0]    ioctl_addr,    // max 64 MB
     input      [ 7:0]    ioctl_dout,
-    output     [ 7:0]    ioctl_din,
     input                ioctl_wr,
     input                ioctl_ram,
     output reg [22:0]    prog_addr,
@@ -42,11 +41,6 @@ parameter        EEPROM_AW  = 7
     input                prog_rdy,
     output reg           cfg_we,
     output               dwnld_busy,
-    // EEPROM
-    output reg [15:0]    dump_din,
-    input      [15:0]    dump_dout,
-    output     [EEPROM_AW-1:0]    dump_addr,
-    output reg           dump_we,
     // Kabuki decoder (CPS 1.5)
     output               kabuki_we,
     // CPS2 keys
@@ -182,27 +176,6 @@ always @(posedge clk) begin
         end
         kabuki_sr <= kabuki_sr>>1;
         cfg_we    <= 0;
-    end
-end
-
-// EEPROM 16 bit parallel interface <-> 8 bit dump interface
-assign dump_addr = ioctl_addr[EEPROM_AW:1];
-assign ioctl_din = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
-
-initial begin
-    dump_we  = 0;
-    dump_din = 16'd0;
-end
-
-always @(posedge clk) begin
-    dump_we <= 0;
-    if (ioctl_wr && ioctl_ram) begin
-        dump_we <= 1;
-        if(ioctl_addr[0]) begin
-            dump_din[15:8] <= ioctl_dout;
-        end else begin
-            dump_din[7:0] <= ioctl_dout;
-        end
     end
 end
 

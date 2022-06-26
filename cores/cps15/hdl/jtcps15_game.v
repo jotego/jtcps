@@ -91,7 +91,9 @@ module jtcps15_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [3:0]   gfx_en
+    input   [3:0]   gfx_en,
+    input   [7:0]   debug_bus,
+    output  [7:0]   debug_view
 );
 
 wire        clk_gfx, rst_gfx;
@@ -525,7 +527,9 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .ba0_din     ( ba0_din       ),
     .ba0_din_m   ( ba0_din_m     ),
 
-    .data_read   ( data_read     )
+    .data_read   ( data_read     ),
+    .debug_bus   ( debug_bus     ),
+    .debug_view  ( debug_view    )
 );
 
 endmodule
