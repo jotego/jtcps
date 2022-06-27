@@ -23,8 +23,7 @@ parameter [22:0] CPU_OFFSET =22'h0,
                  SND_OFFSET =22'h0,
                  PCM_OFFSET =22'h0,
                  GFX_OFFSET =22'h0,
-parameter [ 5:0] CFG_BYTE   =6'd39, // location of the byte with encoder information
-parameter        EEPROM_AW  = 7
+parameter [ 5:0] CFG_BYTE   =6'd39  // location of the byte with encoder information
 )(
     input                clk,
     input                downloading,

@@ -190,7 +190,11 @@ localparam OBJ_LATCH=1;
     wire        gfx_oram_cs  = 0;
 `endif
 
-localparam EEPROM_AW=$clog2(`JTFRAME_IOCTL_RD)-1;
+`ifdef CPS15
+localparam EEPROM_AW=7, EEPROM_DW=8;
+`else
+localparam EEPROM_AW=6, EEPROM_DW=16;
+`endif
 
 (*keep*) wire [22:0] cps2_gfx0;
 wire [21:0] gfx1_addr, gfx0_addr;
@@ -199,11 +203,6 @@ wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
 reg  [17:1] main_addr_x; // main addr modified for object bank access
 reg         ocache_clr, obank_last;
-
-// EEPROM
-wire [EEPROM_AW-1:0] dump_addr;
-wire [15:0] dump_din, dump_dout;
-wire        dump_we;
 
 assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
@@ -227,8 +226,7 @@ jtcps1_prom_we #(
     .REGSIZE    ( REGSIZE       ),
     .CPU_OFFSET ( ROM_OFFSET    ),
     .PCM_OFFSET ( PCM_OFFSET    ),
-    .SND_OFFSET ( SND_OFFSET    ),
-    .EEPROM_AW  ( EEPROM_AW     )
+    .SND_OFFSET ( SND_OFFSET    )
 ) u_prom_we(
     .clk            ( clk           ),
     .downloading    ( downloading   ),
@@ -465,9 +463,38 @@ jtframe_rom_4slots #(
 );
 
 assign debug_view = 0;
+// EEPROM
+wire [EEPROM_AW:-0] dump_addr;
+wire [EEPROM_DW:-0] dump_dout;
+
+`ifdef CPS15
+    wire dump_we;
+    wire [EEPROM_DW:-0] dump_din;
+    assign dump_addr  = ioctl_addr[6:0];
+    assign dump_we    = ioctl_wr & ioctl_ram;
+    assign dump_din   = ioctl_dout;
+    assign ioctl_din  = dump_dout;
+`else
+    reg dump_we=0;
+    reg [EEPROM_DW:-0] dump_din=0;
+    assign dump_addr  = ioctl_addr[6:1];
+    assign ioctl_din  = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
+
+    always @(posedge clk) begin
+        dump_we <= 0;
+        if (ioctl_wr && ioctl_ram) begin
+            if(ioctl_addr[0]) begin
+                dump_we <= 1;
+                dump_din[15:8] <= ioctl_dout;
+            end else begin
+                dump_din[7:0] <= ioctl_dout;
+            end
+        end
+    end
+`endif
 
 // EEPROM used by Pang 3 and by CPS1.5/2
-jt9346 #(.DW(8),.AW(7)) u_eeprom(
+jt9346 #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
     .rst        ( rst       ),  // system reset
     .clk        ( clk       ),  // system clock
     // chip interface
@@ -477,10 +504,10 @@ jt9346 #(.DW(8),.AW(7)) u_eeprom(
     .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
     // Dump access
     .dump_clk   ( clk       ),  // same as prom_we module
-    .dump_addr  ( ioctl_addr[6:0] ),
-    .dump_we    ( ioctl_wr & ioctl_ram   ),
-    .dump_din   ( ioctl_dout),
-    .dump_dout  ( ioctl_din )
+    .dump_addr  ( dump_addr ),
+    .dump_we    ( dump_we   ),
+    .dump_din   ( dump_din  ),
+    .dump_dout  ( dump_dout )
 );
 
 endmodule
