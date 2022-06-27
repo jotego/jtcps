@@ -462,10 +462,12 @@ jtframe_rom_4slots #(
     .data_read   ( data_read     )
 );
 
-assign debug_view = 0;
 // EEPROM
 wire [EEPROM_AW:-0] dump_addr;
 wire [EEPROM_DW:-0] dump_dout;
+wire                dump_flag;
+
+assign debug_view = {7'd0,dump_flag};
 
 `ifdef CPS15
     wire dump_we;
@@ -507,7 +509,9 @@ jt9346 #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
     .dump_addr  ( dump_addr ),
     .dump_we    ( dump_we   ),
     .dump_din   ( dump_din  ),
-    .dump_dout  ( dump_dout )
+    .dump_dout  ( dump_dout ),
+    .dump_flag  ( dump_flag ),
+    .dump_clr   ( ioctl_ram )
 );
 
 endmodule
