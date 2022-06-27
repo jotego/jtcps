@@ -53,4 +53,5 @@ modules:
   other:
     - from: jteeprom/hdl
       get:
+      - jt9346_16b8b.v
       - jt9346.v

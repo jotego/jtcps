@@ -463,40 +463,15 @@ jtframe_rom_4slots #(
 );
 
 // EEPROM
-wire [EEPROM_AW:-0] dump_addr;
-wire [EEPROM_DW:-0] dump_dout;
-wire                dump_flag;
+wire dump_flag, dump_we;
 
 assign debug_view = {7'd0,dump_flag};
 
-`ifdef CPS15
-    wire dump_we;
-    wire [EEPROM_DW:-0] dump_din;
-    assign dump_addr  = ioctl_addr[6:0];
-    assign dump_we    = ioctl_wr & ioctl_ram;
-    assign dump_din   = ioctl_dout;
-    assign ioctl_din  = dump_dout;
-`else
-    reg dump_we=0;
-    reg [EEPROM_DW:-0] dump_din=0;
-    assign dump_addr  = ioctl_addr[6:1];
-    assign ioctl_din  = ioctl_addr[0] ? dump_dout[15:8] : dump_dout[7:0];
+assign dump_we    = ioctl_wr & ioctl_ram;
 
-    always @(posedge clk) begin
-        dump_we <= 0;
-        if (ioctl_wr && ioctl_ram) begin
-            if(ioctl_addr[0]) begin
-                dump_we <= 1;
-                dump_din[15:8] <= ioctl_dout;
-            end else begin
-                dump_din[7:0] <= ioctl_dout;
-            end
-        end
-    end
-`endif
 
 // EEPROM used by Pang 3 and by CPS1.5/2
-jt9346 #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
+jt9346_16b8b #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
     .rst        ( rst       ),  // system reset
     .clk        ( clk       ),  // system clock
     // chip interface
@@ -506,10 +481,10 @@ jt9346 #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
     .scs        ( scs       ),  // chip select, active high. Goes low in between instructions
     // Dump access
     .dump_clk   ( clk       ),  // same as prom_we module
-    .dump_addr  ( dump_addr ),
+    .dump_addr  ( ioctl_addr[6:0] ),
     .dump_we    ( dump_we   ),
-    .dump_din   ( dump_din  ),
-    .dump_dout  ( dump_dout ),
+    .dump_din   ( ioctl_dout),
+    .dump_dout  ( ioctl_din ),
     .dump_flag  ( dump_flag ),
     .dump_clr   ( ioctl_ram )
 );
