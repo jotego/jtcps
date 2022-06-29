@@ -71,15 +71,10 @@ CPSB_CONFIG=$(cat $CFG_FILE)
 export MEM_CHECK_TIME=310_000_000
 # 280ms to load the ROM ~17 frames
 export CONVERT_OPTIONS="-resize 300%x300%"
-export YM2151=1
-export MSM6295=1
 
 # Generic simulation script from JTFRAME
-jtsim -mist \
-    -sysname cps1  \
-    -def ../../hdl/jtcps1.def \
-    -d SCAN2X_TYPE=5 -d SKIP_RAMCLR\
-    -videow 384 -videoh 224 $MMR_FILE -d JTFRAME_SIM_ROMRQ_NOCHECK \
+jtsim -mist -sysname cps1 -d SKIP_RAMCLR\
+    $MMR_FILE -d JTFRAME_SIM_ROMRQ_NOCHECK \
     -d VIDEO_START=2 $OTHER
     #-d JTCPS_TURBO \
     #-d CPSB_CONFIG="$CPSB_CONFIG" \

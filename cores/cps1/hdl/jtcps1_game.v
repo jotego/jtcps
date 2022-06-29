@@ -93,15 +93,10 @@ module jtcps1_game(
     input           enable_fm,
     output          game_led,
     // Debug
-    input   [3:0]   gfx_en
-    `ifdef JTFRAME_DEBUG
-    ,input   [7:0]   debug_bus
-    `endif
+    input   [3:0]   gfx_en,
+    input   [7:0]   debug_bus,
+    output  [7:0]   debug_view
 );
-
-`ifndef JTFRAME_DEBUG
-    wire [7:0] debug_bus=0;
-`endif
 
 wire        clk_gfx, rst_gfx;
 wire        snd_cs, adpcm_cs, main_ram_cs, main_vram_cs, main_rom_cs,
@@ -123,7 +118,7 @@ wire [15:0] vram_dma_data;
 wire        vram_dma_ok, rom0_ok, rom1_ok, snd_ok, adpcm_ok;
 wire [15:0] cpu_dout;
 wire        cpu_speed;
-wire        star_bank;
+wire        star_bank, dump_flag;
 
 wire        main_rnw, busreq, busack;
 wire [ 7:0] snd_latch0, snd_latch1;
@@ -167,6 +162,7 @@ assign turbo = 1;
 `endif
 
 assign pcmfilter_en = status[1];
+assign debug_view   = { 7'd0, dump_flag };
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -270,13 +266,18 @@ jtcps1_main u_main(
     .dipsw_c     ( dipsw_c          )
 );
 `else
-assign ram_addr = 17'd0;
-assign main_ram_cs = 1'b0;
-assign main_vram_cs = 1'b0;
-assign main_rom_cs = 1'b0;
-assign dsn = 2'b11;
-assign main_rnw = 1'b1;
-assign busack_cpu = 1;
+assign ram_addr      = 0;
+assign main_ram_cs   = 0;
+assign main_vram_cs  = 0;
+assign main_rom_cs   = 0;
+assign main_rom_addr = 0;
+assign main_dout     = 0;
+assign dsn           = 2'b11;
+assign main_rnw      = 1'b1;
+assign busack_cpu    = 1;
+assign ppu1_cs       = 0;
+assign ppu2_cs       = 0;
+assign ppu_rstn      = 1;
 `endif
 
 reg rst_video;
@@ -481,13 +482,14 @@ jtcps1_sound u_sound(
     .peak           ( game_led      )
 );
 `else
-assign snd_addr   = 16'd0;
-assign snd_cs     = 1'b0;
-assign snd_left   = 16'd0;
-assign snd_right  = 16'd0;
-assign adpcm_addr = 18'd0;
-assign adpcm_cs   = 1'b0;
-assign sample   = 1'b0;
+assign snd_addr   = 0;
+assign snd_cs     = 0;
+assign snd_left   = 0;
+assign snd_right  = 0;
+assign adpcm_addr = 0;
+assign adpcm_cs   = 0;
+assign sample     = 0;
+assign game_led   = 0;
 `endif
 
 jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
@@ -615,7 +617,8 @@ jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
     .ba0_din     ( ba0_din       ),
     .ba0_din_m   ( ba0_din_m     ),
 
-    .data_read   ( data_read     )
+    .data_read   ( data_read     ),
+    .dump_flag   ( dump_flag     )
 );
 
 endmodule

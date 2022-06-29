@@ -152,8 +152,7 @@ module jtcps1_sdram #( parameter
     input    [ 3:0] ba_rdy,
 
     input    [15:0] data_read,
-    input    [ 7:0] debug_bus,
-    output   [ 7:0] debug_view
+    output          dump_flag
 );
 
 localparam [22:0] ZERO_OFFSET  = 23'h0,
@@ -203,6 +202,8 @@ wire        ram_vram_cs;
 wire        ba2_rdy_gfx, ba2_ack_gfx;
 reg  [17:1] main_addr_x; // main addr modified for object bank access
 reg         ocache_clr, obank_last;
+wire        dump_we;
+
 
 assign gfx0_addr   = {rom0_addr, rom0_half, 1'b0 }; // OBJ
 assign gfx1_addr   = {rom1_addr, rom1_half, 1'b0 };
@@ -210,6 +211,7 @@ assign ram_vram_cs = main_ram_cs | main_vram_cs | main_oram_cs;
 assign main_offset = main_oram_cs ? ORAM_OFFSET :
                     (main_ram_cs  ? WRAM_OFFSET : VRAM_OFFSET );
 assign prog_rd     = 0;
+assign dump_we     = ioctl_wr & ioctl_ram;
 
 always @(*) begin
     main_addr_x = main_ram_addr;
@@ -461,14 +463,6 @@ jtframe_rom_4slots #(
     .data_rdy    ( ba_rdy[3]     ),
     .data_read   ( data_read     )
 );
-
-// EEPROM
-wire dump_flag, dump_we;
-
-assign debug_view = {7'd0,dump_flag};
-
-assign dump_we    = ioctl_wr & ioctl_ram;
-
 
 // EEPROM used by Pang 3 and by CPS1.5/2
 jt9346_16b8b #(.DW(EEPROM_DW),.AW(EEPROM_AW)) u_eeprom(
