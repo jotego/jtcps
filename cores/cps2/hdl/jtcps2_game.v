@@ -99,7 +99,9 @@ module jtcps2_game(
 );
 
 `ifndef JTFRAME_DEBUG
-wire [7:0] debug_bus=0;
+    wire [7:0] debug_bus=0;
+`else
+    assign debug_view = 0;
 `endif
 
 wire        clk_gfx, rst_gfx;
@@ -287,22 +289,27 @@ jtcps2_main u_main(
 assign busack = busack_cpu | turbo;
 
 `else
-assign ram_addr = 17'd0;
-assign main_ram_cs = 1'b0;
-assign main_vram_cs = 1'b0;
-assign main_rom_cs = 1'b0;
-assign dsn = 2'b11;
-assign main_rnw = 1'b1;
-assign sclk     = 0;
-assign sdo      = 0;
-assign scs      = 0;
-assign obank    = 0;
-assign busack   = 1;
-assign ppu1_cs  = 0;
-assign ppu2_cs  = 0;
-assign objcfg_cs = 0;
-assign ppu_rstn = 1;
-assign cpu_dout = 0;
+    assign ram_addr      = 0;
+    assign main_ram_cs   = 0;
+    assign main_vram_cs  = 0;
+    assign main_rom_cs   = 0;
+    assign oram_base     = 0;
+    assign main_oram_cs  = 0;
+    assign main_rom_addr = 0;
+    assign main_dout     = 0;
+    assign z80_rstn      = 1;
+    assign dsn           = 2'b11;
+    assign main_rnw      = 1;
+    assign sclk          = 0;
+    assign sdi           = 0;
+    assign scs           = 0;
+    assign obank         = 0;
+    assign busack        = 1;
+    assign ppu1_cs       = 0;
+    assign ppu2_cs       = 0;
+    assign objcfg_cs     = 0;
+    assign ppu_rstn      = 1;
+    assign cpu_dout      = 0;
 `endif
 
 reg rst_video, rst_sdram;
@@ -428,6 +435,7 @@ end
 wire vol_up   = ~(coin_input[0] | joystick1[3]);
 wire vol_down = ~(coin_input[0] | joystick1[2]);
 
+`ifndef NOMAIN
 jtcps15_sound u_sound(
     .rst        ( qsnd_rst          ),
     .clk48      ( clk48             ),
@@ -471,6 +479,15 @@ jtcps15_sound u_sound(
     .right      ( snd_right         ),
     .sample     ( sample            )
 );
+`else
+    assign snd_left  = 0;
+    assign snd_right = 0;
+    assign sample    = 0;
+    assign snd_cs    = 0;
+    assign snd_addr  = 0;
+    assign qsnd_cs   = 0;
+    assign qsnd_addr = 0;
+`endif
 
 jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .rst         ( rst_sdram     ),
@@ -508,6 +525,7 @@ jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .sdi            ( sdi           ),
     .sdo            ( sdo           ),
     .scs            ( scs           ),
+    .dump_flag      (               ),
 
     // Main CPU
     .main_rom_cs    ( main_rom_cs   ),
