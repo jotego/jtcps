@@ -94,6 +94,7 @@ module jtcps2_game(
     input   [3:0]   gfx_en
     `ifdef JTFRAME_DEBUG
     ,input   [7:0]   debug_bus
+    ,output  [7:0]   debug_view
     `endif
 );
 

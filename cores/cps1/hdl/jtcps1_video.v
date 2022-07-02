@@ -616,7 +616,8 @@ jtcps2_colmix u_objmix(
     .scr_pxl    ( merge_pxl     ),
     .obj_pxl    ( obj_pxl       ),
     .obj_en     ( gfx_en[3]     ),
-    .pxl        ( final_pxl     )
+    .pxl        ( final_pxl     ),
+    .debug_bus  ( debug_bus     )
 );
 `else
 assign final_pxl = merge_pxl;
