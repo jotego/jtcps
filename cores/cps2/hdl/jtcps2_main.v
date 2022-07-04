@@ -340,7 +340,7 @@ end
 // DTACKn generation
 wire       inta_n;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs, pre_oram_cs };
-wire       bus_busy = |{ rom_cs & ~(rom_ok|rom_ok2),
+wire       bus_busy = |{ rom_cs & ~(rom_ok&rom_ok2),
                     (pre_ram_cs|pre_vram_cs|pre_oram_cs) & ~ram_ok,
                     main2qs_cs & ~main2qs_waitn
                      };

@@ -34,7 +34,7 @@ module jtcps2_dec_ctrl(
 reg en_latch;
 reg [1:0] ok_sh;
 
-assign rom_ok_out = ok_sh[1];
+assign rom_ok_out = ok_sh[0];
 
 wire op_fetch = fc[1:0]==2'b10;
 

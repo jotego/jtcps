@@ -213,21 +213,6 @@ always @(*) begin
               ));
 end
 
-/*
-jtcps15_z80buslock u_buslock(
-    .clk        ( clk48            ),
-    .rst        ( rst              ),
-    .cen8       ( cen8             ),
-    .busrq_n    ( busrq_n          ),
-    .busak_n    ( busak_n          ),
-    // Signals from M68000
-    .buse_n     ( main_buse_n      ),
-    .m68_addr   ( main_addr[23:12] ),
-    .m68_buswen ( main_ldswn       ),
-    .z80_buswn  ( z80_buswn        ),
-    .m68_busakn ( main_busn        )
-);
-*/
 assign busrq_n = main_buse_n;
 assign main_busn = busak_n;
 

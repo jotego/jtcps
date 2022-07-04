@@ -101,7 +101,7 @@ module jtcps2_game(
 `ifndef JTFRAME_DEBUG
     wire [7:0] debug_bus=0;
 `else
-    assign debug_view = 0;
+    assign debug_view = {7'd0, main_busakn};
 `endif
 
 wire        clk_gfx, rst_gfx;
