@@ -535,9 +535,7 @@ jtcps1_sdram #(.CPS(15), .REGSIZE(REGSIZE)) u_sdram (
     .ba0_din     ( ba0_din       ),
     .ba0_din_m   ( ba0_din_m     ),
 
-    .data_read   ( data_read     ),
-    .debug_bus   ( debug_bus     ),
-    .debug_view  ( debug_view    )
+    .data_read   ( data_read     )
 );
 
 endmodule
