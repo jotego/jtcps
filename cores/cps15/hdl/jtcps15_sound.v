@@ -133,6 +133,11 @@ end
 wire bank_access = rom_cs & A[15];
 `endif
 
+reg [1:0] ram_ok;
+reg  main_busnl;
+wire bus_equ;
+
+assign bus_equ     = main_busn == main_busnl;
 assign ram_we      = ram_cs && !bus_wrn;
 assign bus_A       = main_busn ?        A : main_addr[16:1];
 assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
@@ -141,10 +146,12 @@ assign bus_mreqn   = main_busn ?   mreq_n : main_buse_n;
 assign main_busakn = main_busn_dly | main_busn | busrq_n |
     (rom_cs & ~(rom_ok & rom_okl)) |
     (rom_cs & ~last_romcs);
-assign main_waitn  = main_busn | ~rom_cs | rom_ok;
+assign main_waitn  = main_busn | ( rom_cs ? ~rom_ok : ~( bus_equ & ram_ok[1]) );
 
 always @(posedge clk48) begin
-    main_din      <= cpu_din; // bus output
+    main_busnl <= main_busn;
+    ram_ok <= { ram_ok[0] & bus_equ, bus_equ };
+    if(!main_busn) main_din <= cpu_din; // bus output
     main_busn_dly <= main_busn;
     rom_okl    <= rom_ok;
     last_romcs <= rom_cs;
