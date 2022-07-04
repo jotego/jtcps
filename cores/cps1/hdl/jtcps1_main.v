@@ -405,12 +405,10 @@ end
 
 // DTACKn generation
 wire       inta_n;
-wire       bus_legit;
-wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs, bus_legit };
+wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
 wire       bus_busy = |{ rom_cs & ~rom_ok,
                     (pre_ram_cs|pre_vram_cs) & ~ram_ok,
                     main2qs_cs & ~main2qs_waitn
-                    //bus_legit
                      };
 //                          wait_cycles[0] };
 wire       DTACKn;
@@ -425,9 +423,6 @@ reg        last_LVBL;
         else if(cpu_cen)
             qs_busakn_s <= main2qs_busakn;
     end
-    assign bus_legit = 0; // main2qs_cs & (~main2qs_waitn | qs_busakn_s);
-`else
-    assign bus_legit = 0;
 `endif
 
 wire BUSn = ASn | (LDSn & UDSn);
@@ -444,7 +439,7 @@ jtframe_68kdtack u_dtack(
     .cpu_cenb   ( cen10b    ),
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),
-    .bus_legit  ( bus_legit ),
+    .bus_legit  ( 1'b0      ), // trying to make it main2qs_cs & ~main2qs_waitn, breaks it
     .ASn        ( ASn       ),
 `ifdef CPS15
     .dtack_clr(main2qs_cs && qs_busakn_s),
