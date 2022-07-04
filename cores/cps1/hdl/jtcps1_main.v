@@ -411,6 +411,7 @@ wire       bus_busy = |{ rom_cs & ~rom_ok,
 //                          wait_cycles[0] };
 wire       DTACKn;
 reg        last_LVBL;
+wire       dtack_clr;
 
 `ifdef CPS15
     reg qs_busakn_s;
@@ -421,15 +422,19 @@ reg        last_LVBL;
         else if(cpu_cen)
             qs_busakn_s <= main2qs_busakn;
     end
+    assign dtack_clr = main2qs_cs & qs_busakn_s; // do not count until the bus is granted
+`else
+    assign dtack_clr = 0;
 `endif
-
-wire BUSn = ASn | (LDSn & UDSn);
 
 wire [4:0] cen_num, cen_den;
 
 assign cen_num = turbo ? 5'd1 : 5'd5;
 assign cen_den = turbo ? 5'd4 : 5'd24;
 
+// trying to use main2qs_waitn breaks "The Punisher"
+// I should try to understand why
+// Not using main2qs_waitn can potentially cause issues in CPS 1.5
 jtframe_68kdtack u_dtack(
     .rst        ( rst       ),
     .clk        ( clk       ),
@@ -437,13 +442,8 @@ jtframe_68kdtack u_dtack(
     .cpu_cenb   ( cen10b    ),
     .bus_cs     ( bus_cs    ),
     .bus_busy   ( bus_busy  ),
-    .bus_legit  ( 1'b0      ), // trying to make it main2qs_cs & ~main2qs_waitn, breaks it
-    .ASn        ( ASn       ),
-`ifdef CPS15
-    .dtack_clr(main2qs_cs && qs_busakn_s),
-`else
-    .dtack_clr  ( 1'b0      ),
-`endif
+    .bus_legit  ( 1'b0      ),
+    .ASn        ( ASn | dtack_clr ),
     .DSn        ( {UDSn, LDSn} ),
     .num        ( cen_num   ),
     .den        ( cen_den   ),
@@ -536,6 +536,8 @@ fx68k u_cpu(
 );
 
 `ifdef SIMULATION
+wire BUSn = ASn | (LDSn & UDSn);
+
 integer fdebug;
 
 initial begin
