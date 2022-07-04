@@ -407,9 +407,7 @@ end
 wire       inta_n;
 wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
 wire       bus_busy = |{ rom_cs & ~rom_ok,
-                    (pre_ram_cs|pre_vram_cs) & ~ram_ok,
-                    main2qs_cs & ~main2qs_waitn
-                     };
+                    (pre_ram_cs|pre_vram_cs) & ~ram_ok };
 //                          wait_cycles[0] };
 wire       DTACKn;
 reg        last_LVBL;
