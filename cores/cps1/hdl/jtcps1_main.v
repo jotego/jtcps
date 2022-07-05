@@ -405,9 +405,18 @@ end
 
 // DTACKn generation
 wire       inta_n;
-wire       bus_cs =   |{ rom_cs, pre_ram_cs, pre_vram_cs };
-wire       bus_busy = |{ rom_cs & ~rom_ok,
-                    (pre_ram_cs|pre_vram_cs) & ~ram_ok };
+wire       bus_cs =   |{
+`ifdef CPS15
+    main2qs_cs,
+`endif
+    rom_cs, pre_ram_cs, pre_vram_cs };
+
+wire       bus_busy = |{
+`ifdef CPS15
+    main2qs_cs & ~main2qs_waitn,
+`endif
+    rom_cs & ~rom_ok,
+    (pre_ram_cs|pre_vram_cs) & ~ram_ok };
 //                          wait_cycles[0] };
 wire       DTACKn;
 reg        last_LVBL;
@@ -432,9 +441,6 @@ wire [4:0] cen_num, cen_den;
 assign cen_num = turbo ? 5'd1 : 5'd5;
 assign cen_den = turbo ? 5'd4 : 5'd24;
 
-// trying to use main2qs_waitn breaks "The Punisher"
-// I should try to understand why
-// Not using main2qs_waitn can potentially cause issues in CPS 1.5
 jtframe_68kdtack u_dtack(
     .rst        ( rst       ),
     .clk        ( clk       ),

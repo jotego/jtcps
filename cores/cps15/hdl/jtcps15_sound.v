@@ -144,9 +144,9 @@ assign bus_wrn     = main_busn ?     wr_n : main_ldswn;
 assign bus_din     = main_busn ? cpu_dout : main_dout;
 assign bus_mreqn   = main_busn ?   mreq_n : main_buse_n;
 assign main_busakn = main_busn_dly | main_busn | busrq_n |
-    (rom_cs & ~(rom_ok & rom_okl)) |
+    //(rom_cs & ~(rom_ok & rom_okl)) |
     (rom_cs & ~last_romcs);
-assign main_waitn  = main_busn | ( rom_cs ? ~rom_ok : ~( bus_equ & ram_ok[1]) );
+assign main_waitn  = rom_cs ? rom_ok & rom_okl : bus_equ & ram_ok[0];
 
 always @(posedge clk48) begin
     main_busnl <= main_busn;
