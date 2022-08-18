@@ -1,4 +1,8 @@
-# jtcps
+# JTCPS - FPGA Arcade Hardware
+
+You can show your appreciation through
+    * Patreon: https://patreon.com/jotego
+    * Paypal: https://paypal.me/topapate
 
 Capcom System 1/1.5/2 compatible verilog core for FPGA by Jose Tejada (jotego).
 
