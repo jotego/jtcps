@@ -725,7 +725,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             "              This work is not mantained by the MiSTer project. Please contact the\n"
             "              core author for issues and updates.\n\n"
             "              (c) Jose Tejada, 2020. Please support the author\n"
-            "              Patreon: https://patreon.com/topapate\n"
+            "              Patreon: https://patreon.com/jotego\n"
             "              Paypal:  https://paypal.me/topapate\n\n"
             "              The author does not endorse or participate in illegal distribution\n"
             "              of CAPCOM copyrighted material. This work can be used with legally\n"
@@ -736,7 +736,7 @@ void generate_mra( game_entry* game, Game* dip_info, bool skip_include, bool ski
             "              https://opensource.org/licenses/gpl-2.0.php\n"
             "-->\n\n";
     mras << "<misterromdescription>\n"
-            "    <about author=\"jotego\" webpage=\"https://patreon.com/topapate\"\n"
+            "    <about author=\"jotego\" webpage=\"https://patreon.com/jotego\"\n"
             "                           source =\"https://github.com/jotego/jtcps1\"\n"
             "                           twitter=\"@topapate\"/>\n";
     xml_element(mras,"name", game->full_name,1 );
