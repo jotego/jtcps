@@ -6,6 +6,12 @@ You can show your appreciation through
 
 Capcom System 1/1.5/2 compatible verilog core for FPGA by Jose Tejada (jotego).
 
+# Original Documentation
+
+[The internet archive](www.archive.org) holds some schematics related to this work.
+
+* [Forgotten Worlds manual](https://archive.org/details/arcademanual_forgotten-worlds/page/n15/mode/2up)
+
 # Memory Requirements
 
 All CPS1 and CPS1.5 operate correctly on a 32MB SDRAM system. Some CPS2 games may require a 64MB module. Those games are listed as having a GFX ROM of 16MB or more below. Please check the CPS2 ROM size section.
