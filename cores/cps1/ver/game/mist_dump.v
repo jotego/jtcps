@@ -9,9 +9,11 @@ module mist_dump(
 `ifdef DUMP
 `ifndef NCVERILOG // iVerilog:
     initial begin
-        // #(200*100*1000*1000);
-        $display("DUMP enabled");
-        $dumpfile("test.lxt");
+        `ifdef IVERILOG
+            $dumpfile("test.lxt");
+        `else
+            $dumpfile("test.vcd");
+        `endif
     end
     `ifdef LOADROM
     always @(negedge led) if( $time > 20000 ) begin // led = downloading signal

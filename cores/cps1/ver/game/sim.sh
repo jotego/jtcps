@@ -8,6 +8,7 @@
 # First character display around frame 170
 # Boot up fails around frame 3220
 
+eval `$JTCFGSTR -core cps1 -output bash`
 
 GAME=ghouls
 PATCH=
@@ -68,12 +69,8 @@ fi
 
 CPSB_CONFIG=$(cat $CFG_FILE)
 
-export MEM_CHECK_TIME=310_000_000
-# 280ms to load the ROM ~17 frames
-export CONVERT_OPTIONS="-resize 300%x300%"
-
 # Generic simulation script from JTFRAME
-jtsim -mist -sysname cps1 -d SKIP_RAMCLR\
+$JTFRAME/bin/jtsim -mist -sysname cps1 -d SKIP_RAMCLR\
     $MMR_FILE -d JTFRAME_SIM_ROMRQ_NOCHECK \
     -d VIDEO_START=2 $OTHER
     #-d JTCPS_TURBO \

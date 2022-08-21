@@ -1,5 +1,7 @@
 #!/bin/bash
 
+eval `$JTCFGSTR -core cps1 -output bash`
+
 GAME=spf2t
 PATCH=
 OTHER=
@@ -79,16 +81,11 @@ fi
 
 CPSB_CONFIG=$(cat $CFG_FILE)
 
-export MEM_CHECK_TIME=310_000_000
-# 280ms to load the ROM ~17 frames
-export CONVERT_OPTIONS="-resize 300%x300%"
-
-# Generic simulation script from JTFRAME
-jtsim -mist \
+$JTFRAME/bin/jtsim -mist \
     -sysname cps2 \
     -def ../../hdl/jtcps2.def \
     -d CPSB_CONFIG="$CPSB_CONFIG"  \
     -d JT9346_SIMULATION -d JTDSP16_FWLOAD -d SKIP_RAMCLR \
-    -videow 384 -videoh 224 $MMR_FILE $PRIO_SIM $OFF_RST \
+    $MMR_FILE $PRIO_SIM $OFF_RST \
     -d JTFRAME_SIM_ROMRQ_NOCHECK $TURBO \
     $OTHER

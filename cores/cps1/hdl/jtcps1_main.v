@@ -454,6 +454,8 @@ jtframe_68kdtack u_dtack(
     .num        ( cen_num   ),
     .den        ( cen_den   ),
     .DTACKn     ( DTACKn    ),
+    .wait2      ( 1'b0      ),
+    .wait3      ( 1'b0      ),
     // unused
     .fave       (           ),
     .fworst     (           ),
