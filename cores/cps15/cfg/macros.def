@@ -1,4 +1,4 @@
-include ../../cps1/hdl/common.def
+include ../../cps1/cfg/common.def
 
 CPS15
 CORENAME=JTCPS15
