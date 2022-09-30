@@ -1,0 +1,15 @@
+[global]
+mraauthor=["jotego"]
+
+[parse]
+sourcefile="cps1.cpp"
+skip.descriptions=[
+    "Cadillacs",
+    "1.5",
+    "Kurau II",
+    "Punisher",
+]
+skip.bootlegs=true
+
+[dipsw]
+delete=[ "Unused" ]
