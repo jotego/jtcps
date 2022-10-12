@@ -11,5 +11,8 @@ skip.descriptions=[
 ]
 skip.bootlegs=true
 
+[buttons]
+count=$JTFRAME_BUTTONS
+
 [dipsw]
 delete=[ "Unused" ]
