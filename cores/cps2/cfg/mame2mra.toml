@@ -1,0 +1,13 @@
+[global]
+mraauthor=["jotego"]
+
+[parse]
+sourcefile="cps2.cpp"
+mustbe.devices=["qsound"]
+skip.bootlegs=true
+
+[buttons]
+count=$JTFRAME_BUTTONS
+
+[dipsw]
+delete=[ "Unused" ]

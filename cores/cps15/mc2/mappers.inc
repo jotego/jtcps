@@ -1,1 +1,0 @@
-../../cps1/ver/video/mappers.inc

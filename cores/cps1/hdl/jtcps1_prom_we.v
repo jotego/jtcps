@@ -51,9 +51,9 @@ assign dwnld_busy = downloading;
 
 // The start position header has 16 bytes, from which 6 are actually used and
 // 10 are reserved
-localparam START_BYTES   = 8,
-           START_HEADER  = 16,
-           STARTW        = 8*START_BYTES;
+localparam [25:0] START_BYTES   = 8,
+                  START_HEADER  = 16,
+                  STARTW        = START_BYTES<<3;
 
 localparam [25:0] FULL_HEADER   = 26'd64,
                   KABUKI_HEADER = 26'd48,
@@ -145,7 +145,7 @@ always @(posedge clk) begin
         if( is_cps2 ) begin
             cps2_key_we <= 1;
         end
-        if( ioctl_addr < START_BYTES[25:0] ) begin
+        if( ioctl_addr < START_BYTES ) begin
             starts  <= { ioctl_dout, starts[STARTW-1:8] };
             cfg_we  <= 1'b0;
             prog_we <= 1'b0;

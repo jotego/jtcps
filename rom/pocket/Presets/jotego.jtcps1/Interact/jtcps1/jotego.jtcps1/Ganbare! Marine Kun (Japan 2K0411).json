@@ -1,0 +1,383 @@
+{
+	"interact":{
+		"magic": "APF_VER_1",
+		"variables": [
+			{
+				"name": "Version",
+				"id": 1000,
+				"type": "number_u32",
+				"enabled": false,
+				"persist": false,
+				"address": "0xFF000000",
+				"defaultval": 0,
+				"mask": "",
+				"options": null
+			},
+			{
+				"name": "Medal Setup",
+				"id": 1,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFFFFE",
+				"options": [
+					{
+						"name": "Don't use",
+						"value": "0x0"
+					},
+					{
+						"name": "1 Medal 1 Credit",
+						"value": "0x1"
+					}
+				]
+			},
+			{
+				"name": "Coin Setup",
+				"id": 2,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFFFFD",
+				"options": [
+					{
+						"name": "10 Yen",
+						"value": "0x0"
+					},
+					{
+						"name": "100 Yen",
+						"value": "0x2"
+					}
+				]
+			},
+			{
+				"name": "Change Setup",
+				"id": 3,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 7,
+				"mask": "0xFFFFFFE3",
+				"options": [
+					{
+						"name": "11",
+						"value": "0x0"
+					},
+					{
+						"name": "12",
+						"value": "0x4"
+					},
+					{
+						"name": "No change",
+						"value": "0x8"
+					},
+					{
+						"name": "5",
+						"value": "0xC"
+					},
+					{
+						"name": "6",
+						"value": "0x10"
+					},
+					{
+						"name": "7",
+						"value": "0x14"
+					},
+					{
+						"name": "8",
+						"value": "0x18"
+					},
+					{
+						"name": "10",
+						"value": "0x1C"
+					}
+				]
+			},
+			{
+				"name": "10 Yen Setup",
+				"id": 4,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 3,
+				"mask": "0xFFFFFF9F",
+				"options": [
+					{
+						"name": "Don't use",
+						"value": "0x0"
+					},
+					{
+						"name": "3 Coins/1 Credit",
+						"value": "0x20"
+					},
+					{
+						"name": "2 Coins/1 Credit",
+						"value": "0x40"
+					},
+					{
+						"name": "1 Coin/1 Credit",
+						"value": "0x60"
+					}
+				]
+			},
+			{
+				"name": "Payout Setup",
+				"id": 5,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFFF7F",
+				"options": [
+					{
+						"name": "Payout Mode",
+						"value": "0x0"
+					},
+					{
+						"name": "Credit Mode",
+						"value": "0x80"
+					}
+				]
+			},
+			{
+				"name": "Payout Rate Setup",
+				"id": 6,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 7,
+				"mask": "0xFFFFF8FF",
+				"options": [
+					{
+						"name": "85%",
+						"value": "0x0"
+					},
+					{
+						"name": "90%",
+						"value": "0x100"
+					},
+					{
+						"name": "55%",
+						"value": "0x200"
+					},
+					{
+						"name": "60%",
+						"value": "0x300"
+					},
+					{
+						"name": "65%",
+						"value": "0x400"
+					},
+					{
+						"name": "70%",
+						"value": "0x500"
+					},
+					{
+						"name": "75%",
+						"value": "0x600"
+					},
+					{
+						"name": "80%",
+						"value": "0x700"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 7,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFF7FF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x800"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 8,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFEFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x1000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 9,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFDFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x2000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 10,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFBFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x4000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 11,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFF7FFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x8000"
+					}
+				]
+			},
+			{
+				"name": "Demo Sounds",
+				"id": 12,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 3,
+				"mask": "0xFFFCFFFF",
+				"options": [
+					{
+						"name": "Off",
+						"value": "0x0"
+					},
+					{
+						"name": "Every third sound",
+						"value": "0x10000"
+					},
+					{
+						"name": "Every second sound",
+						"value": "0x20000"
+					},
+					{
+						"name": "On",
+						"value": "0x30000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 13,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFBFFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x40000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 14,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFF7FFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x80000"
+					}
+				]
+			},
+			{
+				"name": "Unknown",
+				"id": 15,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFEFFFFF",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x100000"
+					}
+				]
+			}
+		],
+		"messages": []
+	}
+}

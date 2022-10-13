@@ -1,0 +1,159 @@
+{
+	"interact":{
+		"magic": "APF_VER_1",
+		"variables": [
+			{
+				"name": "Version",
+				"id": 1000,
+				"type": "number_u32",
+				"enabled": false,
+				"persist": false,
+				"address": "0xFF000000",
+				"defaultval": 0,
+				"mask": "",
+				"options": null
+			},
+			{
+				"name": "Coin A",
+				"id": 1,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 3,
+				"mask": "0xFFFFFFFC",
+				"options": [
+					{
+						"name": "1 Coin/4 Credits",
+						"value": "0x0"
+					},
+					{
+						"name": "1 Coin/3 Credits",
+						"value": "0x1"
+					},
+					{
+						"name": "1 Coin/2 Credits",
+						"value": "0x2"
+					},
+					{
+						"name": "1 Coin/1 Credit",
+						"value": "0x3"
+					}
+				]
+			},
+			{
+				"name": "Difficulty",
+				"id": 2,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 4,
+				"mask": "0xFFFFF8FF",
+				"options": [
+					{
+						"name": "Hardest",
+						"value": "0x0"
+					},
+					{
+						"name": "Extra Hard",
+						"value": "0x100"
+					},
+					{
+						"name": "Very Hard",
+						"value": "0x200"
+					},
+					{
+						"name": "Hard",
+						"value": "0x300"
+					},
+					{
+						"name": "Normal",
+						"value": "0x400"
+					},
+					{
+						"name": "Easy",
+						"value": "0x500"
+					},
+					{
+						"name": "Very Easy",
+						"value": "0x600"
+					},
+					{
+						"name": "Extra Easy",
+						"value": "0x700"
+					}
+				]
+			},
+			{
+				"name": "Lives",
+				"id": 3,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 6,
+				"mask": "0xFFFF8FFF",
+				"options": [
+					{
+						"name": "Start 4 Continue 5",
+						"value": "0x0"
+					},
+					{
+						"name": "Start 3 Continue 4",
+						"value": "0x1000"
+					},
+					{
+						"name": "Start 2 Continue 3",
+						"value": "0x2000"
+					},
+					{
+						"name": "Start 1 Continue 2",
+						"value": "0x3000"
+					},
+					{
+						"name": "Start 4 Continue 4",
+						"value": "0x4000"
+					},
+					{
+						"name": "Start 3 Continue 3",
+						"value": "0x5000"
+					},
+					{
+						"name": "Start 2 Continue 2",
+						"value": "0x6000"
+					},
+					{
+						"name": "Start 1 Continue 1",
+						"value": "0x7000"
+					}
+				]
+			},
+			{
+				"name": "Coin Slots",
+				"id": 4,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 2,
+				"mask": "0xFFFCFFFF",
+				"options": [
+					{
+						"name": "2 Players 1 Shooter",
+						"value": "0x10000"
+					},
+					{
+						"name": "3 Players 1 Shooter",
+						"value": "0x20000"
+					},
+					{
+						"name": "3 Players 3 Shooters",
+						"value": "0x30000"
+					}
+				]
+			}
+		],
+		"messages": []
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"core":{
+		"magic": "APF_VER_1",
+		"metadata": {
+			"platform_ids": [
+				"jtcps2"
+			],
+			"shortname": "jtcps2",
+			"description": "Arcade hardware",
+			"author": "JOTEGO",
+			"url": "https://patreon.com/jotego",
+			"version": "noversion",
+			"date_release": "2022-10-13"
+		},
+		"framework": {
+			"target_product": "Analogue Pocket",
+			"version_required": "1.1",
+			"sleep_supported": false,
+			"dock": {
+				"supported": true,
+				"analog_output": false
+			},
+			"hardware": {
+				"link_port": false,
+				"cartridge_adapter": -1
+			}
+		},
+		"cores": [
+			{
+				"name": "jtcps2",
+				"id": 0,
+				"filename": "JTCPS2.rbf_r"
+			}
+		]
+	}
+}
