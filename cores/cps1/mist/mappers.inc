@@ -1,1 +1,0 @@
-../ver/video/mappers.inc

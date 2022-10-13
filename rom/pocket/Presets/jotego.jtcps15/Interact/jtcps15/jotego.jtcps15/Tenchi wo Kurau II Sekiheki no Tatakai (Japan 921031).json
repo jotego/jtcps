@@ -1,0 +1,39 @@
+{
+	"interact":{
+		"magic": "APF_VER_1",
+		"variables": [
+			{
+				"name": "Version",
+				"id": 1000,
+				"type": "number_u32",
+				"enabled": false,
+				"persist": false,
+				"address": "0xFF000000",
+				"defaultval": 0,
+				"mask": "",
+				"options": null
+			},
+			{
+				"name": "Freeze",
+				"id": 1,
+				"type": "list",
+				"enabled": true,
+				"persist": true,
+				"address": "0xfa000000",
+				"defaultval": 1,
+				"mask": "0xFFFFFFF7",
+				"options": [
+					{
+						"name": "On",
+						"value": "0x0"
+					},
+					{
+						"name": "Off",
+						"value": "0x8"
+					}
+				]
+			}
+		],
+		"messages": []
+	}
+}

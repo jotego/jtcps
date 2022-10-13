@@ -23,7 +23,7 @@ game:
       - ../cfg/common.yaml
   - from: cps15
     get:
-      - qsound.yaml
+      - ../cfg/qsound.yaml
 jtframe:
   - from: ram
     get:

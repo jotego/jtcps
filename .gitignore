@@ -2,6 +2,7 @@
 *.arc
 *.bak
 *.bin
+*.F
 *.fst
 *.hex
 *.jpg
@@ -30,6 +31,7 @@ cores/cps*/mister/*
 cores/cps*/neptuno/*
 cores/cps*/sidi/*
 db
+game_test.v
 history
 jtsim.f
 jtsim_vhdl.f
