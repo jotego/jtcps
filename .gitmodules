@@ -19,3 +19,6 @@
 [submodule "doc/cps2-reverse"]
 	path = doc/cps2-reverse
 	url = https://gitlab.com/loic.petit/cps2-reverse.git
+[submodule "modules/jtkicad"]
+	path = modules/jtkicad
+	url = https://github.com/jotego/jtkicad
