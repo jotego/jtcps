@@ -344,6 +344,14 @@
     [
       "7609a0d1-d1f1-41e0-a233-39fd327a66c8",
       "colmix"
+    ],
+    [
+      "ecabe3b9-3cbd-418e-8efb-2cc94bb41ede",
+      "memories_gfx"
+    ],
+    [
+      "77bbff4f-2c87-4530-b594-97c3e9a50aa8",
+      "memories_main"
     ]
   ],
   "text_variables": {}
