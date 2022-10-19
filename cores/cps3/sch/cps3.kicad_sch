@@ -4,6 +4,10 @@
 
   (paper "A3")
 
+  (title_block
+    (date "14/10/22")
+  )
+
   (lib_symbols
     (symbol "arcade:JAMMA_CONN" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (id 0) (at 10.16 -8.89 90)
@@ -1506,47 +1510,41 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/699d921b-4f5f-4f27-8146-2e98baf72da3"
       (reference "KB13") (unit 1) (value "29F016-90PFTN") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/d89f23f3-9413-447a-a9df-75fca8577323"
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/98a3635e-eebe-4dc3-b1ba-3525ff2fb6a9"
       (reference "SIMM1A") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7186ebbc-cfb3-4530-8843-2e7b27a1b5c1"
-      (reference "SIMM1A?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/d7893661-72e0-42f7-b025-a579792b660a"
-      (reference "SIMM1A?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/6ff873b7-54a4-4ce8-b3df-459083ac954c"
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/3a44e0eb-5144-4463-921f-6870c52172a4"
       (reference "SIMM1B") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/1f4a9266-ddb7-4125-bf06-d81ac7b53568"
-      (reference "SIMM1B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ab02a078-efd1-45b7-b000-c46f2b7a37e1"
-      (reference "SIMM1B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/10d82c2e-79b9-4f5a-be8a-8b2ea5867083"
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7422f995-8c53-4586-8542-9d7f6855a4e5"
       (reference "SIMM2A") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/11fced91-5a1e-4a2c-8d5c-dffe5ec26dd2"
-      (reference "SIMM2A?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/1bd1b5a8-28f2-44fc-9c1a-94d23aaa0af3"
-      (reference "SIMM2A?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/553ed18f-7d0e-4c2e-ad69-ea647f1f48b4"
-      (reference "SIMM2A?") (unit 1) (value "Conn_01x36_Male") (footprint "")
-    )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/d4d26bc4-5cfc-435f-8887-e52f9c478015"
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/99ba1351-d224-46b9-b80f-e688c05f7c42"
       (reference "SIMM2B") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/4a5e2000-1742-40f3-a427-e243f496e842"
-      (reference "SIMM2B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/1bd1b5a8-28f2-44fc-9c1a-94d23aaa0af3"
+      (reference "SIMM3A") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/539898df-42e7-48f4-9f66-dfaabcbb9a5d"
-      (reference "SIMM2B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/553ed18f-7d0e-4c2e-ad69-ea647f1f48b4"
+      (reference "SIMM4A") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    )
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/d7893661-72e0-42f7-b025-a579792b660a"
+      (reference "SIMM5A") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    )
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/11fced91-5a1e-4a2c-8d5c-dffe5ec26dd2"
+      (reference "SIMM6A") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7742aad4-10f0-46ab-af82-de5a8b6af772"
-      (reference "SIMM2B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
+      (reference "SIMM6B") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    )
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/a7ffd98f-7b79-4b02-a3e6-2f5ad85cf840"
+      (reference "SIMM6B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    )
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/dec2bd74-bafa-49e9-bfab-82964e1ac471"
+      (reference "SIMM6B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
+    )
+    (path "/108e58e9-06a6-483d-aa3f-469d137462b0/f86013e2-fc31-4fff-90ee-d05a1747706f"
+      (reference "SIMM6B?") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
   )
 )
