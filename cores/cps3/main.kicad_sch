@@ -1,11 +1,15 @@
 (kicad_sch (version 20211123) (generator eeschema)
 
-  (uuid d0c3824b-5615-4bb4-abb7-c818dc6628be)
+  (uuid 71faf961-30a7-48da-9f50-eae6f966ece4)
 
   (paper "A3")
 
   (title_block
+    (title "CP SYSTEM III")
     (date "14/10/22")
+    (rev "José Tejada G.")
+    (company "JOTEGO")
+    (comment 1 "E.Triana")
   )
 
   (lib_symbols
@@ -13,7 +17,7 @@
 
 
   (image (at 398.78 261.62) (scale 0.294008)
-    (uuid 497b0b6a-a5b9-44f7-8e80-62866c206f8f)
+    (uuid 3e71711f-e5cc-4aff-aba7-4868cb0ce855)
     (data
       iVBORw0KGgoAAAANSUhEUgAAAtEAAAGsCAMAAAAsQwu3AAAAA3NCSVQICAjb4U/gAAADAFBMVEX/
       ///y8vIxMTEvLy9dXV2wsLAAAAB1dXVtbW28vLwoKCgICAj39/fk5ORERESgoKCJiYnMzMz+/v4b
