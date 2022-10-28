@@ -4,6 +4,14 @@
 
   (paper "A4")
 
+  (title_block
+    (title "CP SYSTEM III")
+    (date "14/10/22")
+    (rev "José Tejada G.")
+    (company "JOTEGO")
+    (comment 1 "E.Triana")
+  )
+
   (lib_symbols
   )
 
