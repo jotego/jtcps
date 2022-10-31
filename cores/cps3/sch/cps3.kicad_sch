@@ -8877,6 +8877,15 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/4a800f98-42d8-476b-b98f-4f2b3af46307"
       (reference "KB14") (unit 1) (value "29F016-90PFTN") (footprint "")
     )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/59f9bbd5-42d4-4b83-a8a7-41d24bb80595"
+      (reference "R63") (unit 1) (value "110Ω") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/d88e0f6c-2d0b-4fdc-92c6-a81e234ebbdf"
+      (reference "R74") (unit 1) (value "110Ω") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/1604f430-6a9f-4640-8731-541b53552af3"
+      (reference "R75") (unit 1) (value "110Ω") (footprint "")
+    )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/3a44e0eb-5144-4463-921f-6870c52172a4"
       (reference "SIMM1E") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
@@ -8913,8 +8922,14 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7742aad4-10f0-46ab-af82-de5a8b6af772"
       (reference "SIMM6BB") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/8b8b4975-2bfb-41e1-9ce6-96181c9d3960"
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/8410d260-e723-4594-b055-4033273fbda7"
       (reference "U?") (unit 1) (value "DL-2729_PPU") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/cdc8fbe6-64bf-4c2f-a581-d3e9076ec1c5"
+      (reference "X1") (unit 1) (value "7100A OSC 9640") (footprint "Oscillator:Oscillator_SMD_Abracon_ASDMB-4Pin_2.5x2.0mm")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/1aeadd48-0c51-46bd-b768-4c6fc6ae0a75"
+      (reference "X2") (unit 1) (value "7100A OSC 9640") (footprint "Oscillator:Oscillator_SMD_Abracon_ASDMB-4Pin_2.5x2.0mm")
     )
   )
 )
