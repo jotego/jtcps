@@ -8922,7 +8922,19 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7742aad4-10f0-46ab-af82-de5a8b6af772"
       (reference "SIMM6BB") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
-    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/8410d260-e723-4594-b055-4033273fbda7"
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/003ea56e-a63f-4685-9bfb-94ed3bfa9a7c"
+      (reference "U?") (unit 1) (value "HM5118160AJ") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/20e5aeaa-6f68-4481-9838-91383a6dc25b"
+      (reference "U?") (unit 1) (value "HM5118160AJ") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/62453c76-81fa-4f75-8365-1615470c77a0"
+      (reference "U?") (unit 1) (value "HM5118160AJ") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/7932cc04-b662-40ea-995c-56727a8abdca"
+      (reference "U?") (unit 1) (value "HM5118160AJ") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/c85c3213-9dcc-42b2-98ea-fcda581f1af5"
       (reference "U?") (unit 1) (value "DL-2729_PPU") (footprint "")
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/cdc8fbe6-64bf-4c2f-a581-d3e9076ec1c5"
