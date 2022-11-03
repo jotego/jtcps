@@ -323,7 +323,7 @@
     ],
     [
       "108e58e9-06a6-483d-aa3f-469d137462b0",
-      "memories"
+      "simms"
     ],
     [
       "1b942bf0-f209-4faa-8423-ee254f4f1637",
@@ -347,15 +347,19 @@
     ],
     [
       "ecabe3b9-3cbd-418e-8efb-2cc94bb41ede",
-      "memories_main"
+      "simm_main"
     ],
     [
       "77bbff4f-2c87-4530-b594-97c3e9a50aa8",
-      "memories_gfx"
+      "simm_gfx"
     ],
     [
       "25fa4174-e28a-4575-b15a-f0729d234f00",
       "plane_color"
+    ],
+    [
+      "bc3d6875-0ca0-48c3-aaec-3a112743687f",
+      "memories"
     ]
   ],
   "text_variables": {}
