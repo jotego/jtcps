@@ -1,0 +1,18 @@
+(kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid 990c0f38-a217-49a9-9b6c-aabdca99943a)
+
+  (paper "A4")
+
+  (title_block
+    (title "CP SYSTEM III")
+    (date "14/10/22")
+    (rev "José Tejada G.")
+    (company "JOTEGO")
+    (comment 1 "E.Triana")
+  )
+
+  (lib_symbols
+  )
+
+)
