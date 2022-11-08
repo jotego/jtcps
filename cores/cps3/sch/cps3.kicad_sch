@@ -8737,6 +8737,18 @@
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/e83e4f4d-3454-4c4c-af2a-e310b00895aa"
       (reference "H9") (unit 1) (value "74FCT-16244ATPV") (footprint "")
     )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/4532daa7-556c-42bc-9aa9-8588bcb5d9f3"
+      (reference "H?") (unit 1) (value "CU383-69K") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/75b32567-b83e-4e86-9e2c-92ec2c57c52a"
+      (reference "H?") (unit 1) (value "CU383-69K") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/84e4332c-fa03-4f67-b577-6dea5149d203"
+      (reference "H?") (unit 1) (value "CU383-69K") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/d98a15fb-c675-4fd5-b70b-bd3950b374c6"
+      (reference "H?") (unit 1) (value "CU383-69K") (footprint "")
+    )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/77bbff4f-2c87-4530-b594-97c3e9a50aa8/afca0431-7c84-439b-8da5-427b127abbc3"
       (reference "JB1") (unit 1) (value "29F016-90PFTN") (footprint "")
     )
@@ -8962,6 +8974,9 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/7742aad4-10f0-46ab-af82-de5a8b6af772"
       (reference "SIMM6BB") (unit 1) (value "Conn_01x36_Male") (footprint "")
     )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/ab764f4f-f006-483b-b04a-86c129383599"
+      (reference "U1") (unit 1) (value "74LS08") (footprint "")
+    )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/98404a03-e6fb-4820-b990-0ef426d846de"
       (reference "U?") (unit 1) (value "HD6417604F28_SH2") (footprint "")
     )
@@ -8970,6 +8985,18 @@
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/daa5a817-cb75-4bf2-8b0b-61e80e291f90"
       (reference "U?") (unit 1) (value "PS6406B_9808OAFB") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/4bf749af-3a9b-4cf2-8111-50d5b641c85b"
+      (reference "U?") (unit 2) (value "74LS08") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/083990e8-87f9-4b06-95c0-2f3941ba35ff"
+      (reference "U?") (unit 3) (value "74LS08") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/a602236c-9a63-43d9-8eb3-9aa13514ed21"
+      (reference "U?") (unit 4) (value "74LS08") (footprint "")
+    )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/ef8b54cb-f742-4d73-8bd2-0679363ce61e"
+      (reference "U?") (unit 5) (value "74LS08") (footprint "")
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/cdc8fbe6-64bf-4c2f-a581-d3e9076ec1c5"
       (reference "X1") (unit 1) (value "7100A OSC 9640") (footprint "Oscillator:Oscillator_SMD_Abracon_ASDMB-4Pin_2.5x2.0mm")
