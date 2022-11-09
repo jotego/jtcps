@@ -70,6 +70,19 @@
     "version": 3
   },
   "project": {
-    "files": []
+    "files": [
+      {
+        "name": "cps3.kicad_sch",
+        "open": true,
+        "window": {
+          "display": 0,
+          "maximized": true,
+          "pos_x": 749,
+          "pos_y": 86,
+          "size_x": 566,
+          "size_y": 1024
+        }
+      }
+    ]
   }
 }
