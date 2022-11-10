@@ -327,7 +327,7 @@
     ],
     [
       "1b942bf0-f209-4faa-8423-ee254f4f1637",
-      "main"
+      "iou"
     ],
     [
       "39349e27-3581-43b0-a2a9-76c521c74f3d",
@@ -335,7 +335,7 @@
     ],
     [
       "a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb",
-      "gfx"
+      "ppu"
     ],
     [
       "a8c99e2c-a143-4c69-9194-e7df3ea5db5d",
@@ -343,7 +343,7 @@
     ],
     [
       "7609a0d1-d1f1-41e0-a233-39fd327a66c8",
-      "colmix"
+      "objects"
     ],
     [
       "ecabe3b9-3cbd-418e-8efb-2cc94bb41ede",
@@ -360,6 +360,26 @@
     [
       "bc3d6875-0ca0-48c3-aaec-3a112743687f",
       "memories_main"
+    ],
+    [
+      "faff34ab-5a16-490e-bc64-379c4a71ae98",
+      "ssu"
+    ],
+    [
+      "cca0a59c-941f-4e30-a904-3346440fa12b",
+      "gll1"
+    ],
+    [
+      "8353ddb9-f5ea-4a41-b04d-8c48f9582ff0",
+      "gll2"
+    ],
+    [
+      "3d8f6216-acf8-42c6-a729-9aab2d99566f",
+      "ccu"
+    ],
+    [
+      "501c2507-2861-4aa2-836f-6876a697c5dd",
+      "bic"
     ]
   ],
   "text_variables": {}
