@@ -3087,7 +3087,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 4d8b6a30-ec4b-4c2a-b958-e7d851be42f3)
   )
-  (hierarchical_label "PPU_D[0..31]" (shape output) (at 190.5 38.1 0)
+  (hierarchical_label "PPU_D[31..0]" (shape output) (at 190.5 38.1 0)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 82b2f790-b87d-40c7-bcb0-adddf3525186)
   )
