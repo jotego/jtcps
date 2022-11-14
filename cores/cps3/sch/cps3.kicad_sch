@@ -6613,7 +6613,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 6cf13164-d0e8-4bfc-97d5-24f1800bf6d0)
   )
-  (label "GLL[7..0]" (at 394.97 26.67 180)
+  (label "GLL_A[6..0]" (at 394.97 26.67 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 6d475623-713f-4b59-bbc8-1d273bcd8419)
   )
@@ -8800,7 +8800,7 @@
       (effects (font (size 1.27 1.27)) (justify right))
       (uuid 76d1fbaa-3648-4ec6-8aae-43e294ebc25f)
     )
-    (pin "GLL[7..0]" bidirectional (at 381 26.67 0)
+    (pin "GLL_A[6..0]" bidirectional (at 381 26.67 0)
       (effects (font (size 1.27 1.27)) (justify right))
       (uuid 660d1030-6e49-4391-bb09-b723e6aed677)
     )
@@ -8977,6 +8977,9 @@
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/59052694-7a8c-473e-98dd-dc69652279db"
       (reference "#PWR?") (unit 1) (value "VSS") (footprint "")
     )
+    (path "/7609a0d1-d1f1-41e0-a233-39fd327a66c8/cca0a59c-941f-4e30-a904-3346440fa12b/646ab279-6641-444e-8c1b-38ac187e5b28"
+      (reference "#PWR?") (unit 1) (value "VSS") (footprint "")
+    )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/7641990b-3c80-473b-bc92-2a675daa7226"
       (reference "#PWR?") (unit 1) (value "VCC") (footprint "")
     )
@@ -9024,6 +9027,9 @@
     )
     (path "/faff34ab-5a16-490e-bc64-379c4a71ae98/dba9ecae-cdb7-492a-a811-07084a983473"
       (reference "#PWR?") (unit 1) (value "VSS") (footprint "")
+    )
+    (path "/7609a0d1-d1f1-41e0-a233-39fd327a66c8/cca0a59c-941f-4e30-a904-3346440fa12b/e0334253-a77d-443a-ace9-d50e47622a0e"
+      (reference "#PWR?") (unit 1) (value "VCC") (footprint "")
     )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ecabe3b9-3cbd-418e-8efb-2cc94bb41ede/e5a8efe9-f8a2-4814-9080-59875dcf173e"
       (reference "#PWR?") (unit 1) (value "VCC") (footprint "")
@@ -9334,20 +9340,17 @@
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/a602236c-9a63-43d9-8eb3-9aa13514ed21"
       (reference "U1") (unit 4) (value "74LS08") (footprint "")
     )
+    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/ef8b54cb-f742-4d73-8bd2-0679363ce61e"
+      (reference "U1") (unit 5) (value "74LS08") (footprint "")
+    )
     (path "/7609a0d1-d1f1-41e0-a233-39fd327a66c8/8353ddb9-f5ea-4a41-b04d-8c48f9582ff0/1579195c-802f-442a-9bd1-dfc1a459e19c"
       (reference "U?") (unit 1) (value "DL-3529-GLL2") (footprint "")
     )
     (path "/3d8f6216-acf8-42c6-a729-9aab2d99566f/476cd7eb-7172-4140-b277-c795ec45f8fb"
       (reference "U?") (unit 1) (value "DL-2829-CCU") (footprint "")
     )
-    (path "/faff34ab-5a16-490e-bc64-379c4a71ae98/c20b2701-4012-4ce3-9758-9714bde36c02"
-      (reference "U?") (unit 1) (value "HD6417604F28_SH2") (footprint "")
-    )
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/e90cc38c-a92b-4991-a90f-f2489df2b299"
       (reference "U?") (unit 1) (value "DL-2929-IOU") (footprint "")
-    )
-    (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/ef8b54cb-f742-4d73-8bd2-0679363ce61e"
-      (reference "U?") (unit 5) (value "74LS08") (footprint "")
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/cdc8fbe6-64bf-4c2f-a581-d3e9076ec1c5"
       (reference "X1") (unit 1) (value "7100A OSC 9640") (footprint "Oscillator:Oscillator_SMD_Abracon_ASDMB-4Pin_2.5x2.0mm")
