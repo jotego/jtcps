@@ -1,7 +1,7 @@
 {
   "board": {
     "active_layer": 0,
-    "active_layer_preset": "",
+    "active_layer_preset": "All Copper Layers",
     "auto_track_width": true,
     "hidden_nets": [],
     "high_contrast_mode": 0,
@@ -70,6 +70,31 @@
     "version": 3
   },
   "project": {
-    "files": []
+    "files": [
+      {
+        "name": "cps3.kicad_sch",
+        "open": false,
+        "window": {
+          "display": 0,
+          "maximized": true,
+          "pos_x": 1233,
+          "pos_y": 28,
+          "size_x": 568,
+          "size_y": 1024
+        }
+      },
+      {
+        "name": "cps3.kicad_pcb",
+        "open": false,
+        "window": {
+          "display": 0,
+          "maximized": true,
+          "pos_x": 36,
+          "pos_y": -1,
+          "size_x": 1848,
+          "size_y": 1053
+        }
+      }
+    ]
   }
 }
