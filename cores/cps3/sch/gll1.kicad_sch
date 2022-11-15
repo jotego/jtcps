@@ -878,7 +878,7 @@
   )
   (bus_entry (at 142.24 33.02) (size -2.54 2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
-    (uuid 72ce6e01-952f-4c6f-9fc2-df45dd4bd50e)
+    (uuid 72ce6e01-952f-4c6f-9fc2-df45dd4bd50f)
   )
   (bus_entry (at 62.23 69.85) (size 2.54 -2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
