@@ -1083,7 +1083,7 @@
   (symbol (lib_id "capcom:DL-2929-IOU") (at 209.55 137.16 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid e90cc38c-a92b-4991-a90f-f2489df2b299)
-    (property "Reference" "U?" (id 0) (at 208.915 132.08 0)
+    (property "Reference" "F11" (id 0) (at 208.915 132.08 0)
       (effects (font (size 3.81 3.81)))
     )
     (property "Value" "DL-2929-IOU" (id 1) (at 209.55 137.16 0)
