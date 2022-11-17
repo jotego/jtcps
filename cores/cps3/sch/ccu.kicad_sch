@@ -1083,7 +1083,7 @@
   (symbol (lib_id "capcom:DL-2829-CCU") (at 201.93 130.81 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 476cd7eb-7172-4140-b277-c795ec45f8fb)
-    (property "Reference" "U?" (id 0) (at 200.66 125.73 0)
+    (property "Reference" "J13" (id 0) (at 200.66 125.73 0)
       (effects (font (size 3.81 3.81)))
     )
     (property "Value" "DL-2829-CCU" (id 1) (at 201.93 130.81 0)
