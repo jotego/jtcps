@@ -2577,7 +2577,7 @@
     )
   )
 
-  (text "MEMORIES MAIN?\n\n\n" (at 87.63 35.56 0)
+  (text "MEMORIES FRAME BUFFER?\n\n\n" (at 87.63 35.56 0)
     (effects (font (size 5 5)) (justify left bottom))
     (uuid 1f42852e-d0e9-4228-a86c-da63429b9fc8)
   )
