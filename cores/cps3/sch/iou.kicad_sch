@@ -2114,9 +2114,9 @@
   )
 
   (no_connect (at 205.74 176.53) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc42))
-  (no_connect (at 205.74 173.99) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc42))
-  (no_connect (at 205.74 171.45) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc42))
-  (no_connect (at 198.12 185.42) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc42))
+  (no_connect (at 205.74 173.99) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc43))
+  (no_connect (at 205.74 171.45) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc44))
+  (no_connect (at 198.12 185.42) (uuid 93235bd8-6e4f-4e2b-ab7f-bc299240bc45))
 
   (bus_entry (at 44.45 144.78) (size 2.54 -2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
@@ -3551,8 +3551,8 @@
     (pin "123" (uuid 32fd47b8-609d-40b1-8a88-df87eff1529c))
     (pin "124" (uuid 3b585b85-c671-42b2-b774-5b5b7fc200b0))
     (pin "125" (uuid 4b4202d7-11f5-4117-9c10-2938854f9945))
-    (pin "126" (uuid 25982f91-5940-4089-b5be-5dcbfea91200))
-    (pin "126" (uuid 25982f91-5940-4089-b5be-5dcbfea91200))
+    (pin "126" (uuid 25982f91-5940-4089-b5be-5dcbfea91201))
+    (pin "126" (uuid 25982f91-5940-4089-b5be-5dcbfea91201))
     (pin "127" (uuid 9e8ed8aa-7970-4231-b54b-5a6aaede6899))
     (pin "128" (uuid d23f0753-69ba-49ad-9506-0d1ce72fe1ee))
     (pin "129" (uuid 9153c972-c43d-499c-b569-356ae2b0961c))
