@@ -678,12 +678,12 @@
           (name "BLUE1" (effects (font (size 1.27 1.27))))
           (number "55" (effects (font (size 1.27 1.27))))
         )
-        (pin output line (at 69.85 -7.62 180) (length 2.54)
-          (name "BLUE2" (effects (font (size 1.27 1.27))))
+        (pin bidirectional line (at 72.39 -7.62 180) (length 5.08)
+          (name "PPU2CCU1" (effects (font (size 1.27 1.27))))
           (number "56" (effects (font (size 1.27 1.27))))
         )
-        (pin output line (at 69.85 -10.16 180) (length 2.54)
-          (name "BLUE3" (effects (font (size 1.27 1.27))))
+        (pin bidirectional line (at 72.39 -10.16 180) (length 5.08)
+          (name "PPU2CCU0" (effects (font (size 1.27 1.27))))
           (number "57" (effects (font (size 1.27 1.27))))
         )
         (pin output line (at 69.85 -12.7 180) (length 2.54)
@@ -874,6 +874,33 @@
     )
   )
 
+
+  (bus_entry (at 284.48 140.97) (size 2.54 2.54)
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 249bf64e-7324-4630-aaf7-c20414d7d031)
+  )
+  (bus_entry (at 284.48 138.43) (size 2.54 2.54)
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 556a60ab-6265-4e97-ac97-239a8c3c379b)
+  )
+
+  (bus (pts (xy 287.02 140.97) (xy 293.37 140.97))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 0321f6e8-10b5-4f20-a9d8-6bb8bbba15e9)
+  )
+
+  (wire (pts (xy 274.32 138.43) (xy 284.48 138.43))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 374e94bd-7a2d-4381-9c84-98dfc270b77d)
+  )
+  (wire (pts (xy 274.32 140.97) (xy 284.48 140.97))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid aeff2efb-9b25-459a-86ac-ddaae3775f3b)
+  )
+  (bus (pts (xy 287.02 143.51) (xy 287.02 140.97))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid c363fcde-d4ac-4689-a224-b4b051e7a1fd)
+  )
 
   (image (at 398.78 261.62) (scale 0.294008)
     (uuid 98aae740-f196-4ade-80fd-166279b8203c)
@@ -1078,6 +1105,26 @@
       eio8O4hGlZ6+YhiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRgV538AZVSFE5de
       GbwAAAAASUVORK5CYII=
     )
+  )
+
+  (text "CCU Unidad de control de comunicación \nCaracterísticas principales:\nse utiliza para activar, supervisar y\ncontrolar todas las actividades del sistema.\nPuede utilizarse como parte de la \nconﬁguración de la estación de control \nde ATI o como una unidad independiente. \nTransmisiones en vivo, activaciones, y\n veriﬁcación del sistema.\n"
+    (at 182.88 167.64 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid dd0a83ac-9584-4002-8153-e8c43667a93e)
+  )
+
+  (label "PPU2CCU0" (at 284.48 138.43 180)
+    (effects (font (size 1.27 1.27)) (justify right bottom))
+    (uuid aa692dc6-4ade-4e2d-ac36-0d94f8ac8c96)
+  )
+  (label "PPU2CCU1" (at 284.48 140.97 180)
+    (effects (font (size 1.27 1.27)) (justify right bottom))
+    (uuid c6b5e9cc-9861-4833-913c-0e3426a2f3d6)
+  )
+
+  (hierarchical_label "PPU2CCU[1..0]" (shape bidirectional) (at 293.37 140.97 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid ec035317-f321-456e-867e-db9bd9ab58b0)
   )
 
   (symbol (lib_id "capcom:DL-2829-CCU") (at 201.93 130.81 0) (unit 1)
