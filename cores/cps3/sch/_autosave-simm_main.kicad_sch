@@ -5483,6 +5483,11 @@
     )
   )
 
+  (text "Warzard / Red Earth 	64MBit 		128MBit 	128MBit 	32MBit o 128MBit "
+    (at -53.34 62.23 0)
+    (effects (font (size 1.27 1.27) bold) (justify left bottom))
+    (uuid 030773dc-101f-4070-8e20-6509919d790e)
+  )
   (text "The pattern table ?\n" (at 148.59 26.67 0)
     (effects (font (size 5 5)) (justify left bottom))
     (uuid deb92885-13b7-48d5-9917-923997da24a4)
