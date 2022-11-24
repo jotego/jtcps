@@ -258,7 +258,7 @@ jtcps1_prom_we #(
     .joymode        ( cps2_joymode  )
 );
 
-jtframe_ram_5slots #(
+jtframe_ram1_5slots #(
     .SDRAMW      ( 23            ),
     .SLOT0_AW    ( 17            ), // Main CPU RAM
     .SLOT0_DW    ( 16            ),
