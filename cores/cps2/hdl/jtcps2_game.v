@@ -49,9 +49,15 @@ module jtcps2_game(
     output   [22:0] ba2_addr,
     output   [22:0] ba3_addr,
     output   [ 3:0] ba_rd,
-    output          ba_wr,
+    output   [ 3:0] ba_wr,
     output   [15:0] ba0_din,
-    output   [ 1:0] ba0_din_m,  // write mask
+    output   [ 1:0] ba0_dsn,
+    output   [15:0] ba1_din,
+    output   [ 1:0] ba1_dsn,
+    output   [15:0] ba2_din,
+    output   [ 1:0] ba2_dsn,
+    output   [15:0] ba3_din,
+    output   [ 1:0] ba3_dsn,
     input    [ 3:0] ba_ack,
     input    [ 3:0] ba_dst,
     input    [ 3:0] ba_dok,
@@ -615,7 +621,7 @@ jtcps1_sdram #(.CPS(2), .REGSIZE(REGSIZE)) u_sdram (
     .ba_dok      ( ba_dok        ),
     .ba_rdy      ( ba_rdy        ),
     .ba0_din     ( ba0_din       ),
-    .ba0_din_m   ( ba0_din_m     ),
+    .ba0_dsn     ( ba0_dsn       ),
 
     .data_read   ( data_read     )
 );

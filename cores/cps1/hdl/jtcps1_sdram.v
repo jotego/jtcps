@@ -143,9 +143,9 @@ module jtcps1_sdram #( parameter
     output   [22:0] ba2_addr,
     output   [22:0] ba3_addr,
     output   [ 3:0] ba_rd,
-    output          ba_wr,
+    output   [ 3:0] ba_wr,
     output   [15:0] ba0_din,
-    output   [ 1:0] ba0_din_m,  // write mask
+    output   [ 1:0] ba0_dsn,  // write mask
     input    [ 3:0] ba_ack,
     input    [ 3:0] ba_dst,
     input    [ 3:0] ba_dok,
@@ -212,6 +212,7 @@ assign main_offset = main_oram_cs ? ORAM_OFFSET :
                     (main_ram_cs  ? WRAM_OFFSET : VRAM_OFFSET );
 assign prog_rd     = 0;
 assign dump_we     = ioctl_wr & ioctl_ram;
+assign ba_wr[3:1]  = 0;
 
 always @(*) begin
     main_addr_x = main_ram_addr;
@@ -268,29 +269,28 @@ jtframe_ram1_5slots #(
     .SLOT1_DW    ( 16            ),
     .SLOT1_LATCH (  OBJ_LATCH    ),
     .SLOT1_DOUBLE(  1            ),
+    .SLOT1_OFFSET( VRAM_OFFSET   ),
 
     .SLOT2_AW    ( 13            ), // Object RAM - read only access
     .SLOT2_DW    ( 16            ),
     .SLOT2_LATCH (  OBJ_LATCH    ),
     .SLOT2_DOUBLE(  1            ),
+    .SLOT2_OFFSET( ORAM_OFFSET   ),
 
     .SLOT3_AW    ( 21            ), // Main CPU ROM
     .SLOT3_DW    ( 16            ),
     .SLOT3_LATCH (  1            ),
     .SLOT3_DOUBLE(  1            ),
+    .SLOT3_OFFSET(  ROM_OFFSET   ),
 
     .SLOT4_AW    ( Z80_AW        ), // Sound CPU
-    .SLOT4_DW    (  8            )
+    .SLOT4_DW    (  8            ),
+    .SLOT4_OFFSET(  SND_OFFSET   )
 ) u_bank0 (
     .rst         ( rst           ),
     .clk         ( clk           ),
 
-    .offset0     ( main_offset   ),
-    .offset1     ( VRAM_OFFSET   ),
-    .offset2     ( ORAM_OFFSET   ),
-    .offset3     (  ROM_OFFSET   ),
-    .offset4     (  SND_OFFSET   ),
-
+    .slot0_offset( main_offset   ),
     .slot0_cs    ( ram_vram_cs   ),
     .slot0_wen   ( !main_rnw     ),
     .slot1_cs    ( vram_dma_cs   ),
@@ -326,12 +326,12 @@ jtframe_ram1_5slots #(
     // SDRAM interface
     .sdram_addr  ( ba0_addr      ),
     .sdram_rd    ( ba_rd[0]      ),
-    .sdram_wr    ( ba_wr         ),
+    .sdram_wr    ( ba_wr[0]      ),
     .sdram_ack   ( ba_ack[0]     ),
     .data_dst    ( ba_dst[0]     ),
     .data_rdy    ( ba_rdy[0]     ),
     .data_write  ( ba0_din       ),
-    .sdram_wrmask( ba0_din_m     ),
+    .sdram_wrmask( ba0_dsn       ),
     .data_read   ( data_read     )
 );
 
@@ -349,7 +349,7 @@ jtframe_rom_1slot #(
     .slot0_dout  ( pcm_data      ),
 
     .sdram_addr  ( ba1_addr      ),
-    .sdram_req   ( ba_rd[1]      ),
+    .sdram_rd    ( ba_rd[1]      ),
     .sdram_ack   ( ba_ack[1]     ),
     .data_dst    ( ba_dst[1]     ),
     .data_rdy    ( ba_rdy[1]     ),
@@ -385,7 +385,7 @@ wire [31:0] objgfx_dout0, objgfx_dout1;
         .slot0_dout  ( objgfx_dout0  ),
 
         .sdram_addr  ( ba2_addr      ),
-        .sdram_req   ( ba_rd[2]      ),
+        .sdram_rd    ( ba_rd[2]      ),
         .sdram_ack   ( ba_ack[2]     ),
         .data_dst    ( ba_dst[2]     ),
         .data_rdy    ( ba_rdy[2]     ),
@@ -457,7 +457,7 @@ jtframe_rom_4slots #(
     .slot3_dout  ( star1_data    ),
 
     .sdram_addr  ( ba3_addr      ),
-    .sdram_req   ( ba_rd[3]      ),
+    .sdram_rd    ( ba_rd[3]      ),
     .sdram_ack   ( ba_ack[3]     ),
     .data_dst    ( ba_dst[3]     ),
     .data_rdy    ( ba_rdy[3]     ),
