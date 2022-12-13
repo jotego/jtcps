@@ -3625,11 +3625,20 @@
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/bc3d6875-0ca0-48c3-aaec-3a112743687f/84b987bb-2382-4981-8868-9f384db7a368"
       (reference "5D?") (unit 1) (value "HM5118160AJ") (footprint "")
     )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/d8fba155-c45a-438a-b74f-54459374279f"
+      (reference "A5") (unit 2) (value "LM833N") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/0f386023-bf9f-4c09-bc7c-d8967f6ab93f"
+      (reference "A6") (unit 1) (value "LM833N") (footprint "")
+    )
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/421c17c9-3f4e-495f-b87c-bc37fbf1e380"
       (reference "A13") (unit 1) (value "2501") (footprint "")
     )
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/f4ebe383-ca1f-4210-8a77-28ee93e15834"
       (reference "A14") (unit 1) (value "2501") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/785fd69e-97fb-4d31-8dc9-c63e1073a4b1"
+      (reference "B3") (unit 1) (value "TA8201AK") (footprint "")
     )
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/c79b1702-e2fb-4f75-994b-d0f0f1a5c4a6"
       (reference "B11") (unit 1) (value "TD62064") (footprint "")
@@ -4070,7 +4079,7 @@
       (reference "CP142") (unit 1) (value "220μF") (footprint "")
     )
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/8cfde02c-cb53-4b4e-a5eb-49b0fa52ec55"
-      (reference "CP143") (unit 1) (value "33μF") (footprint "")
+      (reference "CP143") (unit 1) (value "3.3μF") (footprint "")
     )
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/bf96ca97-5d02-41ca-9429-1ee6f2bc9524"
       (reference "CP?") (unit 1) (value "1000μF") (footprint "")
@@ -4351,6 +4360,12 @@
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/f8d1f120-9dfa-4cb0-b1d6-adcaf62eac8c"
       (reference "R2") (unit 1) (value "R_Network08") (footprint "Resistor_THT:R_Array_SIP9")
     )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/55aa225c-b323-423b-8233-28b34406f42a"
+      (reference "R17") (unit 1) (value "2.3kΩ") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/e3fd534c-c4a2-40d7-a689-99625bc6c501"
+      (reference "R18") (unit 1) (value "2.3kΩ") (footprint "")
+    )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/59f9bbd5-42d4-4b83-a8a7-41d24bb80595"
       (reference "R63") (unit 1) (value "110Ω") (footprint "")
     )
@@ -4392,6 +4407,9 @@
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/df209c23-627c-462f-adc4-3621b98afbb6"
       (reference "RN14") (unit 1) (value "620Ω") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/c7edb159-d672-4f6a-bab6-1039a440f9b6"
+      (reference "RV1") (unit 1) (value "R_Potentiometer_US") (footprint "")
     )
     (path "/108e58e9-06a6-483d-aa3f-469d137462b0/ab2b5c3d-d20f-4d7f-b25d-a8a84d645891"
       (reference "SIMM1E") (unit 1) (value "Conn_01x36_Male") (footprint "")
@@ -4443,6 +4461,9 @@
     )
     (path "/a8c99e2c-a143-4c69-9194-e7df3ea5db5d/d266436f-b44a-4c9f-8647-7e812d86be57"
       (reference "U2") (unit 5) (value "74LS08") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/a1e72195-3a0a-4a03-900e-f0f6fbbb5b9e"
+      (reference "U?") (unit 3) (value "Opamp_Dual") (footprint "")
     )
     (path "/a1185fe8-0f30-42b6-aa0b-c4c1c57c93fb/cdc8fbe6-64bf-4c2f-a581-d3e9076ec1c5"
       (reference "X1") (unit 1) (value "7100A OSC 9640") (footprint "Oscillator:Oscillator_SMD_Abracon_ASDMB-4Pin_2.5x2.0mm")
