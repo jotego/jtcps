@@ -72,3 +72,27 @@ Fastest setting
 1a67
 Slowest setting
 1833
+
+## Timing History
+
+Some changes in how the /DTACK signal is handled have affected the core performance over time. This is a collection of the different values recorded using _SF2 DMA no b3.mra_
+
+Version         | commit  | Speed     | JTFRAME
+----------------|---------|-----------|-------------------------
+Original PCB    |  N/A    |  2C00     |
+20210131        |         |  2C04     |
+20210604        |         |  2C0A     |
+20210828        |         |  2C0B     |
+20210921        |         |**357C**   |
+20211002        |         |  357C     |
+20211024        |         |  357C     |
+20220112        |         |  3584     |
+20220321        |         |  3584     |
+20220417        |         |**2BF9**   |
+20220422        |         |  2BF9     |
+20220427        |         |  2BF9     |
+20220601        |         |  2BF9     |
+20220627        |         |  2BF9     |
+20220704        |         |  2BF9     |
+20220705        | 61626fc |  2BF9     |  bd7cf34
+20220819        | b78bdae |**3576**   |  a108a4a
