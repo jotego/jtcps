@@ -355,7 +355,7 @@
     ],
     [
       "bc3d6875-0ca0-48c3-aaec-3a112743687f",
-      "memories_main"
+      "memories_fb"
     ],
     [
       "faff34ab-5a16-490e-bc64-379c4a71ae98",
@@ -384,6 +384,10 @@
     [
       "d71d286f-f8ae-4a02-91ec-2ec5860b5d56",
       "slots_female"
+    ],
+    [
+      "e56b5771-b38e-42bb-a045-d37da1aab8a9",
+      "blanking"
     ]
   ],
   "text_variables": {}
