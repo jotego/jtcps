@@ -4269,6 +4269,9 @@
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/e56b5771-b38e-42bb-a045-d37da1aab8a9/50ae8522-0fcc-44af-9848-403ea2dcde34"
       (reference "CP156") (unit 1) (value "10μF") (footprint "")
     )
+    (path "/a8c99e2c-a143-4c69-9194-e7df3ea5db5d/4cf72a41-2f1f-49c7-ab9b-ea9bac68807f"
+      (reference "CP157") (unit 1) (value "μ") (footprint "")
+    )
     (path "/1b942bf0-f209-4faa-8423-ee254f4f1637/85558694-7a3f-454d-aaeb-5c2cbe23fce8"
       (reference "CR1") (unit 1) (value "CRE438-60") (footprint "")
     )
@@ -4581,6 +4584,9 @@
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/002171da-938e-4b50-b739-52b0d3c56d28"
       (reference "LS1") (unit 1) (value "Speaker") (footprint "")
     )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/e56b5771-b38e-42bb-a045-d37da1aab8a9/39ddc969-9452-4e1c-a806-636d405da7bd"
+      (reference "Q2") (unit 1) (value "Q_NPN_ECB") (footprint "")
+    )
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/e56b5771-b38e-42bb-a045-d37da1aab8a9/260e9b7c-7a44-4e1d-8b8a-9bc37a9e2755"
       (reference "Q5") (unit 1) (value "Q_PNP_ECB") (footprint "")
     )
@@ -4616,6 +4622,9 @@
     )
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/51f4675a-6974-4488-b89d-7a1e67c5997f"
       (reference "R12") (unit 1) (value "24Ω") (footprint "")
+    )
+    (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/e56b5771-b38e-42bb-a045-d37da1aab8a9/696f0075-076b-426f-8324-716f6e85e894"
+      (reference "R14") (unit 1) (value "101Ω") (footprint "")
     )
     (path "/39349e27-3581-43b0-a2a9-76c521c74f3d/55aa225c-b323-423b-8233-28b34406f42a"
       (reference "R17") (unit 1) (value "2.3kΩ") (footprint "")
