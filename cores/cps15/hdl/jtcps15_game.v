@@ -85,6 +85,7 @@ module jtcps15_game(
     input   [31:0]  status,     // only bits 31:16 are looked at
     input   [31:0]  dipsw,
     input           service,
+    input           tilt,
     input           dip_pause,
     inout           dip_flip,
     input           dip_test,
