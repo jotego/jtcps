@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coinage",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 7,
+				"value": 0,
 				"mask": "0xFFFFFFF8",
 				"options": [
 					{
@@ -60,82 +59,50 @@
 			{
 				"name": "Unknown",
 				"id": 2,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFF7",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x8"
-					}
-				]
+				"defaultval": 8,
+				"value": 0,
+				"value_off": 8,
+				"mask": "0xFFFFFFF7"
 			},
 			{
 				"name": "Unknown",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFEF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10"
-					}
-				]
+				"defaultval": 16,
+				"value": 0,
+				"value_off": 16,
+				"mask": "0xFFFFFFEF"
 			},
 			{
 				"name": "Unknown",
 				"id": 4,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFDF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x20"
-					}
-				]
+				"defaultval": 32,
+				"value": 0,
+				"value_off": 32,
+				"mask": "0xFFFFFFDF"
 			},
 			{
 				"name": "2 Coins to Start, 1 to Continue",
 				"id": 5,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFBF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40"
-					}
-				]
+				"defaultval": 64,
+				"value": 0,
+				"value_off": 64,
+				"mask": "0xFFFFFFBF"
 			},
 			{
 				"name": "Difficulty",
@@ -145,6 +112,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFFF8FF",
 				"options": [
 					{
@@ -177,6 +145,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFFE7FF",
 				"options": [
 					{
@@ -205,6 +174,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFF1FFF",
 				"options": [
 					{
@@ -232,82 +202,49 @@
 			{
 				"name": "Free Play",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFBFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40000"
-					}
-				]
+				"defaultval": 262144,
+				"value": 0,
+				"value_off": 262144,
+				"mask": "0xFFFBFFFF"
 			},
 			{
 				"name": "Freeze",
 				"id": 10,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			},
 			{
 				"name": "Flip Screen",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFEFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x100000"
-					}
-				]
+				"defaultval": 1048576,
+				"value": 0,
+				"value_off": 1048576,
+				"mask": "0xFFEFFFFF"
 			},
 			{
 				"name": "Demo Sounds",
 				"id": 12,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFDFFFFF",
-				"options": [
-					{
-						"name": "Off",
-						"value": "0x0"
-					},
-					{
-						"name": "On",
-						"value": "0x200000"
-					}
-				]
+				"defaultval": 2097152,
+				"value": 2097152,
+				"mask": "0xFFDFFFFF"
 			},
 			{
 				"name": "Allow Continue",
@@ -317,6 +254,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFBFFFFF",
 				"options": [
 					{
@@ -337,6 +275,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFF7FFFFF",
 				"options": [
 					{

@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coinage",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 18,
+				"value": 0,
 				"mask": "0xFFFFFFE0",
 				"options": [
 					{
@@ -109,6 +108,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFFFF9F",
 				"options": [
 					{
@@ -128,22 +128,14 @@
 			{
 				"name": "Unknown",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFF7F",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80"
-					}
-				]
+				"defaultval": 128,
+				"value": 0,
+				"value_off": 128,
+				"mask": "0xFFFFFF7F"
 			},
 			{
 				"name": "Difficulty",
@@ -153,6 +145,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFFFCFF",
 				"options": [
 					{
@@ -181,6 +174,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 3,
+				"value": 0,
 				"mask": "0xFFFFF3FF",
 				"options": [
 					{
@@ -204,122 +198,72 @@
 			{
 				"name": "Unknown",
 				"id": 6,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFEFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x1000"
-					}
-				]
+				"defaultval": 4096,
+				"value": 0,
+				"value_off": 4096,
+				"mask": "0xFFFFEFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 7,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFDFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x2000"
-					}
-				]
+				"defaultval": 8192,
+				"value": 0,
+				"value_off": 8192,
+				"mask": "0xFFFFDFFF"
 			},
 			{
 				"name": "Voice",
 				"id": 8,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFBFFF",
-				"options": [
-					{
-						"name": "Off",
-						"value": "0x0"
-					},
-					{
-						"name": "On",
-						"value": "0x4000"
-					}
-				]
+				"defaultval": 16384,
+				"value": 16384,
+				"mask": "0xFFFFBFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFF7FFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x8000"
-					}
-				]
+				"defaultval": 32768,
+				"value": 0,
+				"value_off": 32768,
+				"mask": "0xFFFF7FFF"
 			},
 			{
 				"name": "Flip Screen",
 				"id": 10,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFEFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10000"
-					}
-				]
+				"defaultval": 65536,
+				"value": 0,
+				"value_off": 65536,
+				"mask": "0xFFFEFFFF"
 			},
 			{
 				"name": "Demo Sounds",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFDFFFF",
-				"options": [
-					{
-						"name": "Off",
-						"value": "0x0"
-					},
-					{
-						"name": "On",
-						"value": "0x20000"
-					}
-				]
+				"defaultval": 131072,
+				"value": 131072,
+				"mask": "0xFFFDFFFF"
 			},
 			{
 				"name": "Allow Continue",
@@ -329,6 +273,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFFBFFFF",
 				"options": [
 					{
@@ -344,62 +289,38 @@
 			{
 				"name": "Unknown",
 				"id": 13,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 14,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFEFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x100000"
-					}
-				]
+				"defaultval": 1048576,
+				"value": 0,
+				"value_off": 1048576,
+				"mask": "0xFFEFFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 15,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFDFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x200000"
-					}
-				]
+				"defaultval": 2097152,
+				"value": 0,
+				"value_off": 2097152,
+				"mask": "0xFFDFFFFF"
 			}
 		],
 		"messages": []

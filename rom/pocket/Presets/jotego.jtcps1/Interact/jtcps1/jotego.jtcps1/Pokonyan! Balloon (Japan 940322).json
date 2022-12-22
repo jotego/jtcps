@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coinage",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFFFFFC",
 				"options": [
 					{
@@ -44,22 +43,13 @@
 			{
 				"name": "Unknown",
 				"id": 2,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
-				"mask": "0xFFFFFFBF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40"
-					}
-				]
+				"value": 0,
+				"value_off": 64,
+				"mask": "0xFFFFFFBF"
 			},
 			{
 				"name": "Demo Sounds",
@@ -69,6 +59,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 3,
+				"value": 0,
 				"mask": "0xFFFFFCFF",
 				"options": [
 					{
@@ -96,7 +87,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
+				"value": 0,
 				"mask": "0xFFFFFBFF",
 				"options": [
 					{
@@ -112,22 +103,14 @@
 			{
 				"name": "Credit Mode",
 				"id": 5,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFF7FF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x800"
-					}
-				]
+				"defaultval": 2048,
+				"value": 0,
+				"value_off": 2048,
+				"mask": "0xFFFFF7FF"
 			},
 			{
 				"name": "Max Stage",
@@ -137,6 +120,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFFFEFFF",
 				"options": [
 					{
@@ -152,182 +136,110 @@
 			{
 				"name": "Card Check",
 				"id": 7,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFDFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x2000"
-					}
-				]
+				"defaultval": 8192,
+				"value": 0,
+				"value_off": 8192,
+				"mask": "0xFFFFDFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 8,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFEFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10000"
-					}
-				]
+				"defaultval": 65536,
+				"value": 0,
+				"value_off": 65536,
+				"mask": "0xFFFEFFFF"
 			},
 			{
 				"name": "Body Check",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFDFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x20000"
-					}
-				]
+				"defaultval": 131072,
+				"value": 0,
+				"value_off": 131072,
+				"mask": "0xFFFDFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 10,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFBFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40000"
-					}
-				]
+				"defaultval": 262144,
+				"value": 0,
+				"value_off": 262144,
+				"mask": "0xFFFBFFFF"
 			},
 			{
 				"name": "Screen Stop",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			},
 			{
 				"name": "Flip Screen",
 				"id": 12,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFEFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x100000"
-					}
-				]
+				"defaultval": 1048576,
+				"value": 0,
+				"value_off": 1048576,
+				"mask": "0xFFEFFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 13,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFDFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x200000"
-					}
-				]
+				"defaultval": 2097152,
+				"value": 0,
+				"value_off": 2097152,
+				"mask": "0xFFDFFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 14,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFBFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x400000"
-					}
-				]
+				"defaultval": 4194304,
+				"value": 0,
+				"value_off": 4194304,
+				"mask": "0xFFBFFFFF"
 			},
 			{
 				"name": "Service Mode",
 				"id": 15,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFF7FFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x800000"
-					}
-				]
+				"defaultval": 8388608,
+				"value": 0,
+				"value_off": 8388608,
+				"mask": "0xFF7FFFFF"
 			}
 		],
 		"messages": []

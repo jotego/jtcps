@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coin A",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 7,
+				"value": 0,
 				"mask": "0xFFFFFFF8",
 				"options": [
 					{
@@ -65,6 +64,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 7,
+				"value": 0,
 				"mask": "0xFFFFFFC7",
 				"options": [
 					{
@@ -104,22 +104,14 @@
 			{
 				"name": "2 Coins to Start, 1 to Continue",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFBF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40"
-					}
-				]
+				"defaultval": 64,
+				"value": 0,
+				"value_off": 64,
+				"mask": "0xFFFFFFBF"
 			},
 			{
 				"name": "Shot Type",
@@ -128,7 +120,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
+				"value": 0,
 				"mask": "0xFFFFFF7F",
 				"options": [
 					{
@@ -149,6 +141,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFFF8FF",
 				"options": [
 					{
@@ -193,6 +186,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFFC7FF",
 				"options": [
 					{
@@ -232,162 +226,96 @@
 			{
 				"name": "Guile special rapid multiple shots",
 				"id": 7,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFBFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x4000"
-					}
-				]
+				"defaultval": 16384,
+				"value": 0,
+				"value_off": 16384,
+				"mask": "0xFFFFBFFF"
 			},
 			{
 				"name": "Blanka special rapid multiple shots",
 				"id": 8,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFF7FFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x8000"
-					}
-				]
+				"defaultval": 32768,
+				"value": 0,
+				"value_off": 32768,
+				"mask": "0xFFFF7FFF"
 			},
 			{
 				"name": "Ken special rapid multiple shots",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFEFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10000"
-					}
-				]
+				"defaultval": 65536,
+				"value": 0,
+				"value_off": 65536,
+				"mask": "0xFFFEFFFF"
 			},
 			{
 				"name": "Ryu special rapid multiple shots",
 				"id": 10,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
-				"mask": "0xFFFDFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x20000"
-					}
-				]
+				"value": 0,
+				"value_off": 131072,
+				"mask": "0xFFFDFFFF"
 			},
 			{
 				"name": "Free Play",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFBFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40000"
-					}
-				]
+				"defaultval": 262144,
+				"value": 0,
+				"value_off": 262144,
+				"mask": "0xFFFBFFFF"
 			},
 			{
 				"name": "Freeze",
 				"id": 12,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			},
 			{
 				"name": "Flip Screen",
 				"id": 13,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFEFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x100000"
-					}
-				]
+				"defaultval": 1048576,
+				"value": 0,
+				"value_off": 1048576,
+				"mask": "0xFFEFFFFF"
 			},
 			{
 				"name": "Demo Sounds",
 				"id": 14,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
-				"mask": "0xFFDFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x200000"
-					}
-				]
+				"value": 0,
+				"value_off": 2097152,
+				"mask": "0xFFDFFFFF"
 			},
 			{
 				"name": "Allow Continue",
@@ -396,7 +324,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
+				"value": 0,
 				"mask": "0xFFBFFFFF",
 				"options": [
 					{

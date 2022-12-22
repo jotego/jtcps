@@ -9,69 +9,43 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Unknown",
 				"id": 1,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFF00",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0xFF"
-					}
-				]
+				"defaultval": 255,
+				"value": 0,
+				"value_off": 255,
+				"mask": "0xFFFFFF00"
 			},
 			{
 				"name": "Unknown",
 				"id": 2,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFF00FF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0xFF00"
-					}
-				]
+				"defaultval": 65280,
+				"value": 0,
+				"value_off": 65280,
+				"mask": "0xFFFF00FF"
 			},
 			{
 				"name": "Unknown",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFF00FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0xFF0000"
-					}
-				]
+				"defaultval": 16711680,
+				"value": 0,
+				"value_off": 16711680,
+				"mask": "0xFF00FFFF"
 			}
 		],
 		"messages": []

@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coin A",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 3,
+				"value": 0,
 				"mask": "0xFFFFFFFC",
 				"options": [
 					{
@@ -49,6 +48,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFFF8FF",
 				"options": [
 					{
@@ -93,6 +93,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 6,
+				"value": 0,
 				"mask": "0xFFFF8FFF",
 				"options": [
 					{
@@ -137,6 +138,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 2,
+				"value": 0,
 				"mask": "0xFFFCFFFF",
 				"options": [
 					{

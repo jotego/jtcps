@@ -9,9 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
 				"name": "Coinage",
@@ -21,6 +19,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 7,
+				"value": 0,
 				"mask": "0xFFFFFFF8",
 				"options": [
 					{
@@ -65,6 +64,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFFFFFF7",
 				"options": [
 					{
@@ -80,82 +80,50 @@
 			{
 				"name": "Unknown",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFEF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10"
-					}
-				]
+				"defaultval": 16,
+				"value": 0,
+				"value_off": 16,
+				"mask": "0xFFFFFFEF"
 			},
 			{
 				"name": "Unknown",
 				"id": 4,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFDF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x20"
-					}
-				]
+				"defaultval": 32,
+				"value": 0,
+				"value_off": 32,
+				"mask": "0xFFFFFFDF"
 			},
 			{
 				"name": "Unknown",
 				"id": 5,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFBF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40"
-					}
-				]
+				"defaultval": 64,
+				"value": 0,
+				"value_off": 64,
+				"mask": "0xFFFFFFBF"
 			},
 			{
 				"name": "Unknown",
 				"id": 6,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFF7F",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80"
-					}
-				]
+				"defaultval": 128,
+				"value": 0,
+				"value_off": 128,
+				"mask": "0xFFFFFF7F"
 			},
 			{
 				"name": "Difficulty",
@@ -165,6 +133,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFFF8FF",
 				"options": [
 					{
@@ -204,62 +173,38 @@
 			{
 				"name": "Unknown",
 				"id": 8,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFF7FF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x800"
-					}
-				]
+				"defaultval": 2048,
+				"value": 0,
+				"value_off": 2048,
+				"mask": "0xFFFFF7FF"
 			},
 			{
 				"name": "Unknown",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFEFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x1000"
-					}
-				]
+				"defaultval": 4096,
+				"value": 0,
+				"value_off": 4096,
+				"mask": "0xFFFFEFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 10,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFDFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x2000"
-					}
-				]
+				"defaultval": 8192,
+				"value": 0,
+				"value_off": 8192,
+				"mask": "0xFFFFDFFF"
 			},
 			{
 				"name": "Vs Play Mode",
@@ -269,6 +214,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 3,
+				"value": 0,
 				"mask": "0xFFFF3FFF",
 				"options": [
 					{
@@ -292,82 +238,50 @@
 			{
 				"name": "Unknown",
 				"id": 12,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFEFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x10000"
-					}
-				]
+				"defaultval": 65536,
+				"value": 0,
+				"value_off": 65536,
+				"mask": "0xFFFEFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 13,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFDFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x20000"
-					}
-				]
+				"defaultval": 131072,
+				"value": 0,
+				"value_off": 131072,
+				"mask": "0xFFFDFFFF"
 			},
 			{
 				"name": "Unknown",
 				"id": 14,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFBFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40000"
-					}
-				]
+				"defaultval": 262144,
+				"value": 0,
+				"value_off": 262144,
+				"mask": "0xFFFBFFFF"
 			},
 			{
 				"name": "Freeze",
 				"id": 15,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			}
 		],
 		"messages": []

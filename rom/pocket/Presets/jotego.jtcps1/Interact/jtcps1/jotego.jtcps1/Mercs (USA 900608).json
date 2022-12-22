@@ -9,20 +9,18 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
-				"defaultval": 0,
-				"mask": "",
-				"options": null
+				"value": 0
 			},
 			{
-				"name": "Rotate controls",
+				"name": "Rotate screen",
 				"id": 1,
 				"type": "check",
 				"enabled": true,
 				"persist": true,
+				"writeonly": true,
 				"address": "0xfb000000",
-				"defaultval": 0,
-				"mask": "0x-5",
-				"options": null
+				"defaultval": 4,
+				"value": 4
 			},
 			{
 				"name": "Coinage",
@@ -32,6 +30,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 7,
+				"value": 0,
 				"mask": "0xFFFFFFF8",
 				"options": [
 					{
@@ -71,22 +70,14 @@
 			{
 				"name": "2 Coins to Start, 1 to Continue",
 				"id": 3,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFFFFFBF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x40"
-					}
-				]
+				"defaultval": 64,
+				"value": 0,
+				"value_off": 64,
+				"mask": "0xFFFFFFBF"
 			},
 			{
 				"name": "Difficulty",
@@ -96,6 +87,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 4,
+				"value": 0,
 				"mask": "0xFFFFF8FF",
 				"options": [
 					{
@@ -140,6 +132,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFFFF7FF",
 				"options": [
 					{
@@ -160,6 +153,7 @@
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
+				"value": 0,
 				"mask": "0xFFFFEFFF",
 				"options": [
 					{
@@ -175,62 +169,37 @@
 			{
 				"name": "Freeze",
 				"id": 7,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFF7FFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x80000"
-					}
-				]
+				"defaultval": 524288,
+				"value": 0,
+				"value_off": 524288,
+				"mask": "0xFFF7FFFF"
 			},
 			{
 				"name": "Flip Screen",
 				"id": 8,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFFEFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x100000"
-					}
-				]
+				"defaultval": 1048576,
+				"value": 0,
+				"value_off": 1048576,
+				"mask": "0xFFEFFFFF"
 			},
 			{
 				"name": "Demo Sounds",
 				"id": 9,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
-				"mask": "0xFFDFFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x200000"
-					}
-				]
+				"value": 0,
+				"value_off": 2097152,
+				"mask": "0xFFDFFFFF"
 			},
 			{
 				"name": "Allow Continue",
@@ -239,7 +208,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 0,
+				"value": 0,
 				"mask": "0xFFBFFFFF",
 				"options": [
 					{
@@ -255,22 +224,14 @@
 			{
 				"name": "Service Mode",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1,
-				"mask": "0xFF7FFFFF",
-				"options": [
-					{
-						"name": "On",
-						"value": "0x0"
-					},
-					{
-						"name": "Off",
-						"value": "0x800000"
-					}
-				]
+				"defaultval": 8388608,
+				"value": 0,
+				"value_off": 8388608,
+				"mask": "0xFF7FFFFF"
 			}
 		],
 		"messages": []

@@ -7,10 +7,10 @@
 			],
 			"shortname": "jtcps1",
 			"description": "Arcade hardware",
-			"author": "JOTEGO",
+			"author": "jotego",
 			"url": "https://patreon.com/jotego",
 			"version": "noversion",
-			"date_release": "2022-10-13"
+			"date_release": "2022-12-22"
 		},
 		"framework": {
 			"target_product": "Analogue Pocket",
@@ -29,7 +29,7 @@
 			{
 				"name": "jtcps1",
 				"id": 0,
-				"filename": "JTCPS1.rbf_r"
+				"filename": "jtcps1.rbf_r"
 			}
 		]
 	}
