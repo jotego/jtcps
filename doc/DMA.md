@@ -96,3 +96,7 @@ Original PCB    |  N/A    |  2C00     |
 20220704        |         |  2BF9     |
 20220705        | 61626fc |  2BF9     |  bd7cf34
 20220819        | b78bdae |**3576**   |  a108a4a
+                | f0c96fc |**3576**   |  79e0574
+
+The regression caused by JTFRAME's a108a4a was Fixed in JTFRAME's f697791.
+
