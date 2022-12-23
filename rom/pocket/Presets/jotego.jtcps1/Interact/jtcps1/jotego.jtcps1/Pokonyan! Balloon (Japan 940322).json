@@ -9,6 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
+				"defaultval": 0,
 				"value": 0
 			},
 			{
@@ -47,6 +48,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
+				"defaultval": 1,
 				"value": 0,
 				"value_off": 64,
 				"mask": "0xFFFFFFBF"
@@ -87,6 +89,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
+				"defaultval": 0,
 				"value": 0,
 				"mask": "0xFFFFFBFF",
 				"options": [
@@ -107,7 +110,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 2048,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 2048,
 				"mask": "0xFFFFF7FF"
@@ -140,7 +143,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 8192,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 8192,
 				"mask": "0xFFFFDFFF"
@@ -152,7 +155,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 65536,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 65536,
 				"mask": "0xFFFEFFFF"
@@ -164,7 +167,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 131072,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 131072,
 				"mask": "0xFFFDFFFF"
@@ -176,7 +179,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 262144,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 262144,
 				"mask": "0xFFFBFFFF"
@@ -188,7 +191,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 524288,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 524288,
 				"mask": "0xFFF7FFFF"
@@ -200,7 +203,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1048576,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 1048576,
 				"mask": "0xFFEFFFFF"
@@ -212,7 +215,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 2097152,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 2097152,
 				"mask": "0xFFDFFFFF"
@@ -224,7 +227,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 4194304,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 4194304,
 				"mask": "0xFFBFFFFF"
@@ -236,7 +239,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 8388608,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 8388608,
 				"mask": "0xFF7FFFFF"

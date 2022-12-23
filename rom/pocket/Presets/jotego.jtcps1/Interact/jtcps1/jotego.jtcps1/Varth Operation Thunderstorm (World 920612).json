@@ -9,6 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
+				"defaultval": 0,
 				"value": 0
 			},
 			{
@@ -119,7 +120,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 64,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 64,
 				"mask": "0xFFFFFFBF"
@@ -234,7 +235,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 262144,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 262144,
 				"mask": "0xFFFBFFFF"
@@ -246,7 +247,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 524288,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 524288,
 				"mask": "0xFFF7FFFF"
@@ -258,7 +259,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1048576,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 1048576,
 				"mask": "0xFFEFFFFF"
@@ -270,6 +271,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
+				"defaultval": 1,
 				"value": 0,
 				"value_off": 2097152,
 				"mask": "0xFFDFFFFF"
@@ -277,22 +279,14 @@
 			{
 				"name": "Allow Continue",
 				"id": 12,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
+				"defaultval": 1,
 				"value": 0,
-				"mask": "0xFFBFFFFF",
-				"options": [
-					{
-						"name": "Yes",
-						"value": "0x0"
-					},
-					{
-						"name": "No",
-						"value": "0x400000"
-					}
-				]
+				"value_off": 4194304,
+				"mask": "0xFFBFFFFF"
 			},
 			{
 				"name": "Game Mode",

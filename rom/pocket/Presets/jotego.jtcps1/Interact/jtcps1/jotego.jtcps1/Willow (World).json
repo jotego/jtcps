@@ -9,6 +9,7 @@
 				"enabled": false,
 				"persist": false,
 				"address": "0xFF000000",
+				"defaultval": 0,
 				"value": 0
 			},
 			{
@@ -207,7 +208,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 32768,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 32768,
 				"mask": "0xFFFF7FFF"
@@ -277,7 +278,7 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 1048576,
+				"defaultval": 0,
 				"value": 0,
 				"value_off": 1048576,
 				"mask": "0xFFEFFFFF"
@@ -289,30 +290,20 @@
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
-				"defaultval": 2097152,
+				"defaultval": 1,
 				"value": 2097152,
 				"mask": "0xFFDFFFFF"
 			},
 			{
 				"name": "Allow Continue",
 				"id": 11,
-				"type": "list",
+				"type": "check",
 				"enabled": true,
 				"persist": true,
 				"address": "0xfa000000",
 				"defaultval": 1,
-				"value": 0,
-				"mask": "0xFFBFFFFF",
-				"options": [
-					{
-						"name": "No",
-						"value": "0x0"
-					},
-					{
-						"name": "Yes",
-						"value": "0x400000"
-					}
-				]
+				"value": 4194304,
+				"mask": "0xFFBFFFFF"
 			},
 			{
 				"name": "Game Mode",
