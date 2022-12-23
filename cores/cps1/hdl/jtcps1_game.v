@@ -289,7 +289,7 @@ assign ppu_rstn      = 1;
 
 reg rst_video;
 
-always @(negedge clk_gfx) begin
+always @(posedge clk_gfx) begin
     rst_video <= rst_gfx;
 end
 
@@ -448,8 +448,8 @@ always @(negedge LVBL) begin
 end
 `endif
 
-(*keep*) reg [3:0] rst_snd;
-always @(negedge clk) begin
+reg [3:0] rst_snd;
+always @(posedge clk) begin
     rst_snd <= { rst_snd[2:0], rst48 };
 end
 
@@ -499,8 +499,11 @@ assign sample     = 0;
 assign game_led   = 0;
 `endif
 
+reg rst_sdram;
+always @(posedge clk) rst_sdram <= rst;
+
 jtcps1_sdram #(.REGSIZE(REGSIZE)) u_sdram (
-    .rst         ( rst           ),
+    .rst         ( rst_sdram     ),
     .clk         ( clk           ),
     .clk_gfx     ( clk_gfx       ),
     .clk_cpu     ( clk48         ),
