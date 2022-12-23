@@ -70,8 +70,6 @@ kodu.rom
 lostwrld.rom
 lostwldo.rom
 mbomberj.rom
-mbombrd.rom
-mbombrdj.rom
 megaman.rom
 megamana.rom
 mercs.rom
@@ -201,11 +199,6 @@ willow.rom
 willowj.rom
 willowu.rom
 willowuo.rom
-wof.rom
-wofa.rom
-wofhfh.rom
-wofr1.rom
-wofu.rom
 wonder3.rom
 
 These files are generated using the mra tool in:

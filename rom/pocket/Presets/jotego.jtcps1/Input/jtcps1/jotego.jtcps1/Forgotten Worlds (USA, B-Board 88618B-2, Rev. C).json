@@ -7,8 +7,18 @@
 				"mappings": [
 					{
 						"id": 0,
-						"name": "button 0",
+						"name": "Shoot",
 						"key": "pad_btn_a"
+					},
+					{
+						"id": 1,
+						"name": "Rotate left",
+						"key": "pad_btn_b"
+					},
+					{
+						"id": 2,
+						"name": "Rotate right",
+						"key": "pad_btn_x"
 					}
 				]
 			}

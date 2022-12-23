@@ -70,8 +70,6 @@ cp kodu.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp lostwrld.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp lostwldo.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp mbomberj.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp mbombrd.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp mbombrdj.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp megaman.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp megamana.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp mercs.rom /media/$USER/POCKET/Assets/jtcps1/common
@@ -201,9 +199,4 @@ cp willow.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp willowj.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp willowu.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp willowuo.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp wof.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp wofa.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp wofhfh.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp wofr1.rom /media/$USER/POCKET/Assets/jtcps1/common
-cp wofu.rom /media/$USER/POCKET/Assets/jtcps1/common
 cp wonder3.rom /media/$USER/POCKET/Assets/jtcps1/common
