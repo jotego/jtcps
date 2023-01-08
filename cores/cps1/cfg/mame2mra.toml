@@ -13,7 +13,6 @@ skip.descriptions=[
 skip.bootlegs=true
 
 [buttons]
-count=$JTFRAME_BUTTONS
 Names = [
     { machine="1941",     names="Shoot,Bomb"},
     { machine="unsquad",  names="Shoot,Bomb"},
