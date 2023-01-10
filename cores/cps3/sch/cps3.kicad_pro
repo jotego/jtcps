@@ -388,6 +388,10 @@
     [
       "73e97af8-8757-47bc-9106-1c8a44eb3cd5",
       "cbi"
+    ],
+    [
+      "a3eaa016-f145-419c-a632-73f45a370a93",
+      "ram_cassette"
     ]
   ],
   "text_variables": {}

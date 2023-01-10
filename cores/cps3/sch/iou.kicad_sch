@@ -6591,7 +6591,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 67c1f547-bf41-436c-92c1-02b46aabc0cc)
   )
-  (hierarchical_label "RESET?" (shape input) (at 114.3 31.75 180)
+  (hierarchical_label "GLL2IOU0" (shape input) (at 114.3 31.75 180)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 75e2056c-c107-461a-9984-c6a199e631e8)
   )
