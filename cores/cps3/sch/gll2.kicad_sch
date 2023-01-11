@@ -609,6 +609,10 @@
     (uuid 815783c1-7cc7-445e-8a25-e5dbfe123aa5)
   )
 
+  (wire (pts (xy 149.86 62.23) (xy 163.83 62.23))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 853ad396-49fb-42cc-a860-d5b8eb8a005a)
+  )
   (wire (pts (xy 124.46 34.29) (xy 127 34.29))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 8cc1752c-89b1-4c5e-94dc-701350c9b717)
@@ -902,7 +906,11 @@
     (uuid d79cb692-348c-404a-b282-44303fabaed9)
   )
 
-  (hierarchical_label "GLL_DRIVER0" (shape input) (at 161.29 46.99 0)
+  (hierarchical_label "2GLL2IOU0" (shape bidirectional) (at 163.83 62.23 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid af23cb99-a5a1-4dbf-b446-78deed8c722c)
+  )
+  (hierarchical_label "DRIVER_GLL2" (shape input) (at 161.29 46.99 0)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid ba40b6d7-e3a8-49b5-bd34-89aebbbb7479)
   )

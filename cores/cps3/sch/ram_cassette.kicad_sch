@@ -4,6 +4,14 @@
 
   (paper "A4")
 
+  (title_block
+    (title "CP SYSTEM III")
+    (date "14/10/22")
+    (rev "José Tejada G.")
+    (company "JOTEGO")
+    (comment 1 "E.Triana")
+  )
+
   (lib_symbols
     (symbol "arcade:Conn_02x60_Male" (pin_names hide) (in_bom yes) (on_board yes)
       (property "Reference" "U" (id 0) (at 1.27 76.2 0)
@@ -1271,7 +1279,7 @@
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 02152af2-42c5-42b9-bcbb-d8968c3c2ac8)
   )
-  (hierarchical_label "GLL2RC0" (shape input) (at 49.53 92.71 0)
+  (hierarchical_label "~{RST_WD}" (shape input) (at 49.53 92.71 0)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 70cadc14-dda4-4ad8-aa06-bfb96b721967)
   )
