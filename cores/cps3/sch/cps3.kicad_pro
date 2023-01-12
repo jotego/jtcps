@@ -279,7 +279,7 @@
     "page_layout_descr_file": ""
   },
   "schematic": {
-    "annotate_start_num": 122,
+    "annotate_start_num": 1,
     "drawing": {
       "default_line_thickness": 6.0,
       "default_text_size": 50.0,
@@ -392,6 +392,10 @@
     [
       "a3eaa016-f145-419c-a632-73f45a370a93",
       "ram_cassette"
+    ],
+    [
+      "04241854-3694-432a-b640-011dba95cffc",
+      "trans"
     ]
   ],
   "text_variables": {}
