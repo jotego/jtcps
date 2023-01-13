@@ -3470,7 +3470,7 @@
     (in_bom yes) (on_board yes)
     (uuid ea922cc3-2373-4f04-a505-e07011cbdfac)
     (property "Reference" "R85" (id 0) (at 205.74 111.76 0))
-    (property "Value" "472Ω" (id 1) (at 205.74 114.3 0))
+    (property "Value" "472" (id 1) (at 205.74 114.3 0))
     (property "Footprint" "" (id 2) (at 202.946 114.046 90)
       (effects (font (size 1.27 1.27)) hide)
     )

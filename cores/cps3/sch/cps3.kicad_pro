@@ -382,7 +382,7 @@
       "h_description"
     ],
     [
-      "d71d286f-f8ae-4a02-91ec-2ec5860b5d56",
+      "e83fcd5f-2fc9-4f25-82fa-014f1f0cec07",
       "slots_female"
     ],
     [
@@ -394,8 +394,8 @@
       "ram_cassette"
     ],
     [
-      "04241854-3694-432a-b640-011dba95cffc",
-      "trans"
+      "f1a6563b-7cdb-4252-889d-dd4a49e136cc",
+      "slot_male"
     ]
   ],
   "text_variables": {}
