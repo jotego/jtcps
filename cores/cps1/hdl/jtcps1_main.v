@@ -288,31 +288,30 @@ end
 // incremental encoder counter
 wire [7:0] dial_dout;
 `ifndef CPS15
-wire       dial_rst  = dial_cs && !RnW && ~A[4];
-wire       xn_y      = A[3];
-wire       x_rst     = dial_rst & ~xn_y;
-wire       y_rst     = dial_rst &  xn_y;
+    wire       dial_rst  = dial_cs && !RnW && ~A[4];
+    wire       xn_y      = A[3];
+    wire       x_rst     = dial_rst & ~xn_y;
+    wire       y_rst     = dial_rst &  xn_y;
 
-jt4701 u_dial(
-    .clk        ( clk       ),
-    .rst        ( rst       ),
-    .x_in       ( dial_x    ),
-    .y_in       ( dial_y    ),
-    .rightn     ( 1'b1      ),
-    .leftn      ( 1'b1      ),
-    .middlen    ( 1'b1      ),
-    .x_rst      ( x_rst     ),
-    .y_rst      ( y_rst     ),
-    .csn        ( ~dial_cs  ),        // chip select
-    .uln        ( ~A[1]     ),        // byte selection
-    .xn_y       ( xn_y      ),        // select x or y for reading
-    .cfn        (           ),        // counter flag
-    .sfn        (           ),        // switch flag
-    .dout       ( dial_dout )
-);
-
+    jt4701 u_dial(
+        .clk        ( clk       ),
+        .rst        ( rst       ),
+        .x_in       ( dial_x    ),
+        .y_in       ( dial_y    ),
+        .rightn     ( 1'b1      ),
+        .leftn      ( 1'b1      ),
+        .middlen    ( 1'b1      ),
+        .x_rst      ( x_rst     ),
+        .y_rst      ( y_rst     ),
+        .csn        ( ~dial_cs  ),        // chip select
+        .uln        ( ~A[1]     ),        // byte selection
+        .xn_y       ( xn_y      ),        // select x or y for reading
+        .cfn        (           ),        // counter flag
+        .sfn        (           ),        // switch flag
+        .dout       ( dial_dout )
+    );
 `else
-assign dial_dout = 8'd0;
+    assign dial_dout = 0;
 `endif
 
 reg [15:0] sys_data;

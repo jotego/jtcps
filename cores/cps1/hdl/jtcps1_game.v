@@ -297,7 +297,7 @@ always @(posedge clk_gfx) begin
     rst_video <= rst_gfx;
 end
 
-assign dip_flip = ~video_flip;
+assign dip_flip = video_flip;
 
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
