@@ -41,6 +41,8 @@ module jtcps1_game(
     input   [ 9:0]  joystick2,
     input   [ 9:0]  joystick3,
     input   [ 9:0]  joystick4,
+    input   [ 1:0]  dial_x,
+    input   [ 1:0]  dial_y,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -247,6 +249,8 @@ jtcps1_main u_main(
     .coin_input  ( coin_input[1:0]  ),
     .joystick1   ( joystick1        ),
     .joystick2   ( joystick2        ),
+    .dial_x      ( dial_x           ),
+    .dial_y      ( dial_y           ),
     .service     ( service          ),
     .tilt        ( 1'b1             ),
     // BUS sharing

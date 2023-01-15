@@ -41,6 +41,8 @@ module jtcps1_main(
     input              charger,
     input   [9:0]      joystick1,
     input   [9:0]      joystick2,
+    input   [1:0]      dial_x,
+    input   [1:0]      dial_y,
     `ifdef CPS15
     input   [9:0]      joystick3,
     input   [9:0]      joystick4,
@@ -290,21 +292,12 @@ wire       dial_rst  = dial_cs && !RnW && ~A[4];
 wire       xn_y      = A[3];
 wire       x_rst     = dial_rst & ~xn_y;
 wire       y_rst     = dial_rst &  xn_y;
-wire [1:0] x_in, y_in;
-reg  [1:0] dial_pulse;
-reg        last_LHBL;
-
-// The dial update ryhtm is set to once every four lines
-always @(posedge clk) begin
-    last_LHBL <= LHBL;
-    if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
-end
 
 jt4701 u_dial(
     .clk        ( clk       ),
     .rst        ( rst       ),
-    .x_in       ( x_in      ),
-    .y_in       ( y_in      ),
+    .x_in       ( dial_x    ),
+    .y_in       ( dial_y    ),
     .rightn     ( 1'b1      ),
     .leftn      ( 1'b1      ),
     .middlen    ( 1'b1      ),
@@ -318,23 +311,6 @@ jt4701 u_dial(
     .dout       ( dial_dout )
 );
 
-jt4701_dialemu u_dial1p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick1[5] ),
-    .dec        ( ~joystick1[6] ),
-    .dial       ( x_in          )
-);
-
-jt4701_dialemu u_dial2p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick2[5] ),
-    .dec        ( ~joystick2[6] ),
-    .dial       ( y_in          )
-);
 `else
 assign dial_dout = 8'd0;
 `endif

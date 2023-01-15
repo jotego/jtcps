@@ -35,6 +35,7 @@ jtframe:
   - from: keyboard
     get:
       - jt4701.v
+      - jtframe_dial.v
   - from: ram
     get:
       - jtframe_dual_ram.v
