@@ -42,9 +42,23 @@ data=[
 [rom]
 regions=[
     # The Q-Sound may fail because the dl-1425.bin length is larger than 0x2000
-    { name="maincpu", width=16, reverse=true },
-    { name="qsound", width=16 },
-    { name="gfx",     width=64 },
+    { name="maincpu",  width=16 },
+    { name="audiocpu", no_offset=true },
+
+    { name="qsound",   width=16, reverse=true },
+    # { name="qsound",   width=16, reverse=true, machine="dstlk" },
+    # { name="qsound",   width=16, reverse=true, machine="ddtod" },
+    # { name="qsound",   width=16, reverse=true, machine="ecofghtr" },
+    # { name="qsound",   width=16, reverse=true, machine="gigawing" },
+    # { name="qsound",   width=16, reverse=true, machine="mmatrix" },
+    # { name="qsound",   width=16, reverse=true, machine="mshvsf" },
+    # { name="qsound",   width=16, reverse=true, machine="mvsc" },
+    # { name="qsound",   width=16, reverse=true, machine="megaman2" },
+    # { name="qsound",   width=16, reverse=true, machine="mpang" },
+    # { name="qsound",   width=16, reverse=true, machine="nwarr" },
+    # { name="qsound",   width=16, reverse=true, machine="progear" },
+
+    { name="gfx",      width=64 },
     { name="firmware", files=[ { name="dl-1425.bin", crc="d6cf5ef5", size=0x2000 } ], rom_len=0x2000 },
     { name="aboardplds", skip=true },
     { name="bboardplds", skip=true },
