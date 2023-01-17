@@ -36,7 +36,7 @@ module jtcps2_game(
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
     input   [ 9:0]  joystick1, joystick2, joystick3, joystick4,
-    input   [ 7:0]  paddle1,   paddle2,
+    input   [ 7:0]  paddle_1,   paddle_2,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -81,7 +81,7 @@ module jtcps2_game(
     input           prog_rdy,
     // DIP switches
     input   [31:0]  status,     // only bits 31:16 are looked at
-    input   [31:0]  dipsw,      // unused
+    input   [31:0]  dipsw,      // bit 0 used to enable the spinner on Eco Fighters
     input           service,
     input           tilt,
     input           dip_pause,
@@ -260,6 +260,8 @@ jtcps2_main u_main(
     .joystick2   ( joystick2        ),
     .joystick3   ( joystick3        ),
     .joystick4   ( joystick4        ),
+    .paddle_1    ( paddle_1         ),
+    .paddle_2    ( paddle_2         ),
     .service     ( service          ),
     .tilt        ( 1'b1             ),
     // BUS sharing

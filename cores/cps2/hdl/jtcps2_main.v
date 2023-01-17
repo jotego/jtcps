@@ -42,7 +42,7 @@ module jtcps2_main(
     // cabinet I/O
     input   [1:0]      joymode,
     input   [9:0]      joystick1, joystick2, joystick3, joystick4,
-    input   [7:0]      paddle1,   paddle2,
+    input   [7:0]      paddle_1,   paddle_2,
     input   [3:0]      start_button,
     input   [3:0]      coin_input,
     input              service,
@@ -87,7 +87,9 @@ module jtcps2_main(
     input       [12:0] volume
 );
 
-localparam [1:0] BUT6 = 2'b00;
+localparam [1:0] BUT6   = 2'b00,
+                 PUZZL2 = 2'b01,
+                 ECOFGT = 2'b10;
 
 wire [23:1] A;
 wire [ 2:0] FC;
@@ -100,7 +102,7 @@ reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 
 wire [15:0] rom_dec;
 
-wire        dec_en;
+wire        dec_en, paddle_en;
 wire        BRn, BGACKn, BGn;
 wire        ASn;
 reg         io_cs, eeprom_cs,
@@ -220,6 +222,9 @@ always @(posedge clk, posedge rst) begin
                 eeprom_sclk <= cpu_dout[13];
                 eeprom_scs  <= cpu_dout[14];
             end
+            if( !LDSWn && joymode==PUZZL2 ) begin
+                paddle_en <= cpu_dout[1];
+            end
         end
         if( out_cs ) begin
             z80_rstn <= cpu_dout[3];
@@ -235,7 +240,7 @@ end
 always @(posedge clk) begin
     // This still doesn't cover all cases
     // Base system, 4 players, 4 buttons
-    in0 <= { joystick2[7:0], joystick1[7:0] };
+    in0 <= paddle_en ? { paddle_2, paddle_1 } : { joystick2[7:0], joystick1[7:0] };
     in1 <= { joystick4[7:0], joystick3[7:0] };
     in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
     case( joymode )

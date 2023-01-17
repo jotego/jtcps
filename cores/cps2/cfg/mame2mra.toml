@@ -9,6 +9,9 @@ skip.setnames=["ssf2us2"]
 
 [dipsw]
 delete=[ "Unused" ]
+extra=[
+    { machine="ecofghtr", name="Spinner", options="on,off", bits="0" }
+]
 
 [buttons]
 names=[
@@ -44,7 +47,11 @@ data=[
         32 ff 00 02 04 06 26 28 2a 2c 2e 00 00 30 02 04 08 30 """ },
 # byte 40 configures joystick mode in bits 1:0
 # 0 = 6 buttons
-# 3 = 4 buttuns
+# 1 = Puzzle Loop 2 (spinner and 4-button joystick)
+# 2 = Eco Fighter   (spinner and 4-button joystick)
+# 3 = 4 buttons
+
+    # 6-button games:
     { machine="dstlk",    pointer=40, data="fc" },
     { machine="hsf2",     pointer=40, data="fc" },
     { machine="msh",      pointer=40, data="fc" },
@@ -63,6 +70,9 @@ data=[
     { machine="vsav2",    pointer=40, data="fc" },
     { machine="xmcota",   pointer=40, data="fc" },
     { machine="xmvsf",    pointer=40, data="fc" },
+    # Spinner games:
+    { machine="pzloop2",  pointer=40, data="fd" },
+    { machine="ecofghtr", pointer=40, data="fe" },
 ]
 
 [rom]
