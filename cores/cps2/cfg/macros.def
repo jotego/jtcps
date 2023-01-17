@@ -12,8 +12,9 @@ CORE_OSD+=O7,1P_hold_for_slow,Off,On;
 JTFRAME_OSD_TEST
 JTFRAME_MIST_DIPBASE=16
 JTFRAME_PADDLE
-
+JTFRAME_IOCTL_RD=128
 CPS1_NOOBJ
+JTFRAME_HEADER=44
 
 [mist|sidi]
 # Not enough BRAM to show the credits
