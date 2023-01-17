@@ -42,7 +42,7 @@ module jtcps2_main(
     // cabinet I/O
     input   [1:0]      joymode,
     input   [9:0]      joystick1, joystick2, joystick3, joystick4,
-    input   [7:0]      paddle_1,   paddle_2,
+    input   [1:0]      dial_x, dial_y,
     input   [3:0]      start_button,
     input   [3:0]      coin_input,
     input              service,
@@ -243,10 +243,12 @@ always @(posedge clk, posedge rst) begin
     end
 end
 
+wire [11:0] spin1p, spin2p;
+
 always @(posedge clk) begin
     // This still doesn't cover all cases
     // Base system, 4 players, 4 buttons
-    in0 <= paddle_en ? { paddle_2<<3,    paddle_1<<3    }: // Puzzle Loop 2 needs the paddle to loop over
+    in0 <= paddle_en ? { spin2p, spin1p }: // Puzzle Loop 2 needs the paddle to loop over
                        { joystick2[7:0], joystick1[7:0] };
     in1 <= { joystick4[7:0], joystick3[7:0] };
     in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
@@ -265,6 +267,25 @@ always @(posedge clk) begin
         end
     endcase
 end
+
+jt4701_axis u_spin1p(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .sigin      ( dial_x    ),
+    .flag_clrn  ( 1'b1      ),
+    .flagn      (           ),
+    .axis       ( spin1p    )
+);
+
+jt4701_axis u_spin2p(
+    .rst        ( rst       ),
+    .clk        ( clk       ),
+    .sigin      ( dial_x    ),
+    .flag_clrn  ( 1'b1      ),
+    .flagn      (           ),
+    .axis       ( spin2p    )
+);
+
 
 reg [15:0] sys_data;
 

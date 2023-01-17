@@ -36,7 +36,7 @@ module jtcps2_game(
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
     input   [ 9:0]  joystick1, joystick2, joystick3, joystick4,
-    input   [ 7:0]  paddle_1,   paddle_2, paddle_3,  paddle_4,
+    input   [ 1:0]  dial_x, dial_y,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -255,11 +255,11 @@ jtcps2_main u_main(
     .joystick2   ( joystick2        ),
     .joystick3   ( joystick3        ),
     .joystick4   ( joystick4        ),
-    .paddle_1    ( paddle_1         ),
-    .paddle_2    ( paddle_2         ),
     .service     ( service          ),
     .tilt        ( 1'b1             ),
     .dipsw       ( dipsw            ),
+    .dial_x      ( dial_x           ),
+    .dial_y      ( dial_y           ),
     // BUS sharing
     .busreq      ( busreq_cpu       ),
     .busack      ( busack_cpu       ),
@@ -286,7 +286,9 @@ jtcps2_main u_main(
     .eeprom_sclk ( sclk             ),
     .eeprom_sdi  ( sdi              ),
     .eeprom_sdo  ( sdo              ),
-    .eeprom_scs  ( scs              )
+    .eeprom_scs  ( scs              ),
+    // Debug
+    .st_dout     ( debug_view       )
 );
 
 assign busack = busack_cpu | turbo;
