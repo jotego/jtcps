@@ -35,10 +35,8 @@ module jtcps2_game(
     // cabinet I/O
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
-    input   [ 9:0]  joystick1,
-    input   [ 9:0]  joystick2,
-    input   [ 9:0]  joystick3,
-    input   [ 9:0]  joystick4,
+    input   [ 9:0]  joystick1, joystick2, joystick3, joystick4,
+    input   [ 7:0]  paddle1,   paddle2,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,

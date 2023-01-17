@@ -41,10 +41,8 @@ module jtcps2_main(
     input              key_we,
     // cabinet I/O
     input   [1:0]      joymode,
-    input   [9:0]      joystick1,
-    input   [9:0]      joystick2,
-    input   [9:0]      joystick3,
-    input   [9:0]      joystick4,
+    input   [9:0]      joystick1, joystick2, joystick3, joystick4,
+    input   [7:0]      paddle1,   paddle2,
     input   [3:0]      start_button,
     input   [3:0]      coin_input,
     input              service,
@@ -200,7 +198,7 @@ always @(*) begin
     in2_cs    = io_cs && A[8:3] == 6'b00_0100;
     vol_cs    = io_cs && A[8:3] == 6'b000_110; // QSound volume
     out_cs    = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !LDSWn;
-    eeprom_cs = io_cs && A[8:3] == 6'b0_0100_0 && !RnW && !UDSWn;
+    eeprom_cs = io_cs && A[8:3] == 6'b0_0100_0 && !RnW;
     obank_cs  = io_cs && A[8:3] == 6'b0_1110_0 && !RnW && !LDSWn;
     sys_cs    = in0_cs | in1_cs | in2_cs | eeprom_cs;
 end
@@ -217,9 +215,11 @@ always @(posedge clk, posedge rst) begin
     end
     else if(cpu_cen) begin
         if( eeprom_cs ) begin
-            eeprom_sdi  <= cpu_dout[12];
-            eeprom_sclk <= cpu_dout[13];
-            eeprom_scs  <= cpu_dout[14];
+            if( !UDSWn ) begin
+                eeprom_sdi  <= cpu_dout[12];
+                eeprom_sclk <= cpu_dout[13];
+                eeprom_scs  <= cpu_dout[14];
+            end
         end
         if( out_cs ) begin
             z80_rstn <= cpu_dout[3];
@@ -231,61 +231,6 @@ always @(posedge clk, posedge rst) begin
         end
     end
 end
-
-// incremental encoder counter
-wire [7:0] dial_dout;
-`ifndef CPS15
-wire       dial_rst  = dial_cs && !RnW && ~A[4];
-wire       xn_y      = A[3];
-wire       x_rst     = dial_rst & ~xn_y;
-wire       y_rst     = dial_rst &  xn_y;
-wire [1:0] x_in, y_in;
-reg  [1:0] dial_pulse, last_LHBL;
-
-// The dial update ryhtm is set to once every four lines
-always @(posedge clk) begin
-    last_LHBL <= LHBL;
-    if( LHBL && !last_LHBL ) dial_pulse <= dial_pulse+2'd1;
-end
-
-jt4701 u_dial(
-    .clk        ( clk       ),
-    .rst        ( rst       ),
-    .x_in       ( x_in      ),
-    .y_in       ( y_in      ),
-    .rightn     ( 1'b1      ),
-    .leftn      ( 1'b1      ),
-    .middlen    ( 1'b1      ),
-    .x_rst      ( x_rst     ),
-    .y_rst      ( y_rst     ),
-    .csn        ( ~dial_cs  ),        // chip select
-    .uln        ( ~A[1]     ),        // byte selection
-    .xn_y       ( xn_y      ),        // select x or y for reading
-    .cfn        (           ),        // counter flag
-    .sfn        (           ),        // switch flag
-    .dout       ( dial_dout )
-);
-
-jt4701_dialemu u_dial1p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick1[5] ),
-    .dec        ( ~joystick1[6] ),
-    .dial       ( x_in          )
-);
-
-jt4701_dialemu u_dial2p(
-    .clk        ( clk           ),
-    .rst        ( rst           ),
-    .pulse      ( dial_pulse[1] ),
-    .inc        ( ~joystick2[5] ),
-    .dec        ( ~joystick2[6] ),
-    .dial       ( y_in          )
-);
-`else
-assign dial_dout = 8'd0;
-`endif
 
 always @(posedge clk) begin
     // This still doesn't cover all cases
