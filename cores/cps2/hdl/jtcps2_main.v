@@ -47,6 +47,7 @@ module jtcps2_main(
     input   [3:0]      coin_input,
     input              service,
     input              tilt,
+    input   [31:0]     dipsw,      // bit 0 used to enable the spinner on Eco Fighters
     // BUS sharing
     input              busreq,
     output             busack,
@@ -84,7 +85,9 @@ module jtcps2_main(
     output reg         main2qs_cs,
     input              main2qs_busakn,
     input              main2qs_waitn,
-    input       [12:0] volume
+    input       [12:0] volume,
+    // Debug
+    output      [ 7:0] st_dout
 );
 
 localparam [1:0] BUT6   = 2'b00,
@@ -102,11 +105,11 @@ reg         in0_cs, in1_cs, in2_cs, vol_cs, out_cs, obank_cs;
 
 wire [15:0] rom_dec;
 
-wire        dec_en, paddle_en;
+wire        dec_en;
 wire        BRn, BGACKn, BGn;
 wire        ASn;
 reg         io_cs, eeprom_cs,
-            sys_cs;
+            sys_cs, paddle_en;
 wire        dial_cs;
 reg         pre_ram_cs, pre_vram_cs, pre_oram_cs,
             reg_ram_cs, reg_vram_cs, reg_oram_cs;
@@ -136,6 +139,8 @@ assign ram_cs   = ~BUSn & (dsn_dly ? reg_ram_cs  : pre_ram_cs);
 assign vram_cs  = ~BUSn & (dsn_dly ? reg_vram_cs : pre_vram_cs);
 assign oram_cs  = ~BUSn & (dsn_dly ? reg_oram_cs : pre_oram_cs);
 assign ppu_rstn = 1'b1;
+
+assign st_dout  = { 7'd0, paddle_en };
 
 always @(posedge clk) begin
     if( rst ) begin
@@ -213,6 +218,7 @@ always @(posedge clk, posedge rst) begin
         eeprom_sdi  <= 0;
         z80_rstn    <= 0;
         obank       <= 0;
+        paddle_en   <= 0;
         oram_base   <= 16'h0;
     end
     else if(cpu_cen) begin
@@ -223,7 +229,7 @@ always @(posedge clk, posedge rst) begin
                 eeprom_scs  <= cpu_dout[14];
             end
             if( !LDSWn && joymode==PUZZL2 ) begin
-                paddle_en <= cpu_dout[1];
+                paddle_en <= ~cpu_dout[1];
             end
         end
         if( out_cs ) begin
@@ -240,7 +246,8 @@ end
 always @(posedge clk) begin
     // This still doesn't cover all cases
     // Base system, 4 players, 4 buttons
-    in0 <= paddle_en ? { paddle_2, paddle_1 } : { joystick2[7:0], joystick1[7:0] };
+    in0 <= paddle_en ? { paddle_2<<3,    paddle_1<<3    }: // Puzzle Loop 2 needs the paddle to loop over
+                       { joystick2[7:0], joystick1[7:0] };
     in1 <= { joystick4[7:0], joystick3[7:0] };
     in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
     case( joymode )
@@ -248,16 +255,14 @@ always @(posedge clk) begin
         BUT6: begin
             in0[15] <= 1'b1;
             in0[ 7] <= 1'b1;
-            in1 <= 16'hffff;
+            in1     <= 16'hffff;
             in1[2:0] <= joystick1[9:7];
             in1[5:4] <= joystick2[8:7];
             in2[ 14] <= joystick2[9];
         end
-//        BUTX: begin // buttons only
-//            in0 <= { 4'hf, joystick2[7:4], 4'hf, joystick1[7:4] };
-//            in1 <= { joystick4[7:0], joystick3[7:0] };
-//            in2 <= { coin_input, start_button, ~5'b0, service, ~dip_test, eeprom_sdi };
-//        end
+        ECOFGT: begin
+            in1[4] <= dipsw[0];
+        end
     endcase
 end
 

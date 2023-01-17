@@ -36,7 +36,7 @@ module jtcps2_game(
     input   [ 3:0]  start_button,
     input   [ 3:0]  coin_input,
     input   [ 9:0]  joystick1, joystick2, joystick3, joystick4,
-    input   [ 7:0]  paddle_1,   paddle_2,
+    input   [ 7:0]  paddle_1,   paddle_2, paddle_3,  paddle_4,
     // SDRAM interface
     input           downloading,
     output          dwnld_busy,
@@ -96,18 +96,10 @@ module jtcps2_game(
     input           enable_psg,
     input           enable_fm,
     // Debug
-    input   [3:0]   gfx_en
-    `ifdef JTFRAME_DEBUG
-    ,input   [7:0]   debug_bus
-    ,output  [7:0]   debug_view
-    `endif
+    input   [3:0]   gfx_en,
+    input   [7:0]   debug_bus,
+    output  [7:0]   debug_view
 );
-
-`ifndef JTFRAME_DEBUG
-    wire [7:0] debug_bus=0;
-`else
-    assign debug_view = 0;
-`endif
 
 wire        clk_gfx, rst_gfx;
 wire        snd_cs, qsnd_cs,
@@ -173,6 +165,9 @@ assign turbo = status[6];
 `endif
 
 assign skip_en = status[7];
+
+assign ba1_din=0, ba2_din=0, ba3_din=0,
+       ba1_dsn=3, ba2_dsn=3, ba3_dsn=3;
 
 // CPU clock enable signals come from 48MHz domain
 jtframe_cen48 u_cen48(
@@ -264,6 +259,7 @@ jtcps2_main u_main(
     .paddle_2    ( paddle_2         ),
     .service     ( service          ),
     .tilt        ( 1'b1             ),
+    .dipsw       ( dipsw            ),
     // BUS sharing
     .busreq      ( busreq_cpu       ),
     .busack      ( busack_cpu       ),
@@ -329,7 +325,7 @@ always @(negedge clk) begin
     rst_sdram <= rst;
 end
 
-assign dip_flip = ~video_flip;
+assign dip_flip = video_flip;
 
 jtcps1_video #(REGSIZE) u_video(
     .rst            ( rst_video     ),
