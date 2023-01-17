@@ -10,6 +10,32 @@ skip.setnames=["ssf2us2"]
 [dipsw]
 delete=[ "Unused" ]
 
+[buttons]
+names=[
+    { names="Light Punch,Middle Punch,Heavy Punch,Light Kick,Middle Kick,Heavy Kick" },
+    { machine="1944", names="Shot,Bomb" },
+    { machine="19xx", names="Shot,Bomb" },
+    { machine="avsp", names="Shoot,Attack,Jump/Dash" },
+    { machine="csclub", names="Shoot/Weak Shot,Pass/Strong Shot,Dash/Lob/Jump" },
+    { machine="cybots", names="Attack 1,Attack 2,Boost,Weapon" },
+    { machine="dimahoo", names="Main Shot,Bomb,Rapid Main Shot" },
+    { machine="ddsom", names="Attack,Jump,Select,Magic" },
+    { machine="ddtod", names="Attack,Jump,Item,Select" },
+    { machine="ecofghtr", names="Rotate CCW,Shoot,Rotate CW" },
+    { machine="gigawing", names="Shot,Force Bomb" },
+    { machine="choko", names="Select,Cancel,Help" },
+    { machine="jyangoku", names="Tsumo,Open Menu" },
+    { machine="mmatrix", names="Shot" },
+    { machine="megaman2", names="Attack,Jump,Weapon Change" },
+    { machine="mpang", names="Shot" },
+    { machine="progear", names="Shot" },
+    { machine="pzloop2", names="Shot" },
+    { machine="qndream", names="Button 1,Button 2,Button 3,Button 4" },
+    { machine="ringdest", names="Grab,Light Punch,Heavy Punch,Unused,Light Kick,Heavy Kick" },
+    { machine="sgemf", names="Punch,Kick,Special" },
+    { machine="spf2t", names="Rotate Left,Rotate Right" },
+]
+
 [header]
 fill=0xff
 offset={ bits=10, regions=["audiocpu","qsound","gfx","firmware"], reverse=true }
@@ -46,6 +72,11 @@ regions=[
     { name="audiocpu", no_offset=true },
 
     { name="qsound",   width=16, reverse=true },
+    { name="qsound",   width=16, machine="ssf2" },
+    { name="qsound",   width=16, setname="mpangu" },
+    { name="qsound",   width=16, machine="choko" },
+    { name="qsound",   width=16, machine="jyangoku" },
+    { name="qsound",   width=16, machine="mvscjing" },
     # { name="qsound",   width=16, reverse=true, machine="dstlk" },
     # { name="qsound",   width=16, reverse=true, machine="ddtod" },
     # { name="qsound",   width=16, reverse=true, machine="ecofghtr" },
