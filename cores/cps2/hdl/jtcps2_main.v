@@ -87,6 +87,7 @@ module jtcps2_main(
     input              main2qs_waitn,
     input       [12:0] volume,
     // Debug
+    input       [ 7:0] debug_bus,
     output      [ 7:0] st_dout
 );
 
@@ -140,7 +141,7 @@ assign vram_cs  = ~BUSn & (dsn_dly ? reg_vram_cs : pre_vram_cs);
 assign oram_cs  = ~BUSn & (dsn_dly ? reg_oram_cs : pre_oram_cs);
 assign ppu_rstn = 1'b1;
 
-assign st_dout  = { 7'd0, paddle_en };
+assign st_dout  = { 2'd0, dir2p, dir1p, 2'd0, dipsw[0], paddle_en };
 
 always @(posedge clk) begin
     if( rst ) begin
@@ -227,6 +228,7 @@ always @(posedge clk, posedge rst) begin
                 eeprom_sdi  <= cpu_dout[12];
                 eeprom_sclk <= cpu_dout[13];
                 eeprom_scs  <= cpu_dout[14];
+                if( joymode==ECOFGT ) paddle_en <= cpu_dout[8]^debug_bus[0];
             end
             if( !LDSWn && joymode==PUZZL2 ) begin
                 paddle_en <= ~cpu_dout[1];
@@ -244,12 +246,12 @@ always @(posedge clk, posedge rst) begin
 end
 
 wire [11:0] spin1p, spin2p;
+wire        dir1p,  dir2p;
 
 always @(posedge clk) begin
     // This still doesn't cover all cases
     // Base system, 4 players, 4 buttons
-    in0 <= paddle_en ? { spin2p, spin1p }: // Puzzle Loop 2 needs the paddle to loop over
-                       { joystick2[7:0], joystick1[7:0] };
+    in0 <= { joystick2[7:0], joystick1[7:0] };
     in1 <= { joystick4[7:0], joystick3[7:0] };
     in2 <= { coin_input, start_button, ~5'b0, service, dip_test, eeprom_sdo };
     case( joymode )
@@ -262,8 +264,17 @@ always @(posedge clk) begin
             in1[5:4] <= joystick2[8:7];
             in2[ 14] <= joystick2[9];
         end
+        PUZZL2: if(paddle_en) in0 <= { spin2p[7:0], spin1p[7:0] };
         ECOFGT: begin
             in1[4] <= dipsw[0];
+            if( ~dipsw[0] ) begin
+                if( paddle_en ) begin
+                    in0 <= { spin2p[7:0], spin1p[7:0] };
+                end else begin
+                    in0[13] <= dir2p;
+                    in0[ 5] <= dir1p;
+                end
+            end
         end
     endcase
 end
@@ -274,16 +285,18 @@ jt4701_axis u_spin1p(
     .sigin      ( dial_x    ),
     .flag_clrn  ( 1'b1      ),
     .flagn      (           ),
-    .axis       ( spin1p    )
+    .axis       ( spin1p    ),
+    .dir        ( dir1p     )
 );
 
 jt4701_axis u_spin2p(
     .rst        ( rst       ),
     .clk        ( clk       ),
-    .sigin      ( dial_x    ),
+    .sigin      ( dial_y    ),
     .flag_clrn  ( 1'b1      ),
     .flagn      (           ),
-    .axis       ( spin2p    )
+    .axis       ( spin2p    ),
+    .dir        ( dir2p     )
 );
 
 

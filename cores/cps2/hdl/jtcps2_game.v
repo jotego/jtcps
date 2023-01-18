@@ -288,6 +288,7 @@ jtcps2_main u_main(
     .eeprom_sdo  ( sdo              ),
     .eeprom_scs  ( scs              ),
     // Debug
+    .debug_bus   ( debug_bus        ),
     .st_dout     ( debug_view       )
 );
 
