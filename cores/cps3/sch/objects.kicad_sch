@@ -431,6 +431,15 @@
     )
   )
 
+  (text "OK" (at 48.26 60.96 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 84b91f1e-1216-4c30-ad02-8d9422de0786)
+  )
+  (text "OK" (at 147.32 68.58 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid ae649dea-138c-4143-a9a0-b349d50b82f3)
+  )
+
   (label "DRIVER_GLL[4..0]" (at 111.76 40.64 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 871f075e-e770-40bd-a3a9-d70c13b23dbe)

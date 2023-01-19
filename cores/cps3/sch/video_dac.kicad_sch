@@ -4948,8 +4948,8 @@
     (property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV99_SER.pdf" (id 3) (at 337.82 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid b485fedc-bf73-4dc1-90d8-e784115b7905))
-    (pin "" (uuid 5bbc2f33-175e-4893-8ac3-446ca5dee7d2))
+    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0aa))
+    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0aa))
     (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0aa))
   )
 
