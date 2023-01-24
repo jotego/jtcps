@@ -445,7 +445,7 @@
     ],
     [
       "77bbff4f-2c87-4530-b594-97c3e9a50aa8",
-      "simms_6~3"
+      "simm3"
     ],
     [
       "47f33d46-1dcf-406e-b526-e95dcccc85cf",
@@ -460,12 +460,8 @@
       "ssu"
     ],
     [
-      "cca0a59c-941f-4e30-a904-3346440fa12b",
-      "gll1"
-    ],
-    [
-      "8353ddb9-f5ea-4a41-b04d-8c48f9582ff0",
-      "gll2"
+      "72388bf8-c1a6-44d3-a571-9377c7970174",
+      "simm6"
     ],
     [
       "3d8f6216-acf8-42c6-a729-9aab2d99566f",
@@ -480,16 +476,24 @@
       "slots_female"
     ],
     [
-      "73e97af8-8757-47bc-9106-1c8a44eb3cd5",
-      "cbi"
-    ],
-    [
       "dbde35af-d2a9-4ba1-97a3-04218762182a",
       "cassette"
     ],
     [
+      "a8e88c88-969d-475e-b44c-46555a2b7fa6",
+      "simm5"
+    ],
+    [
       "f1a6563b-7cdb-4252-889d-dd4a49e136cc",
       "simm_connector"
+    ],
+    [
+      "474a6e92-2e13-4292-b4a6-24da1f19d00f",
+      "buffer_line_driver"
+    ],
+    [
+      "a8ca4696-a1d6-4a8e-b8a4-a72f5338d1b6",
+      "simm4"
     ]
   ],
   "text_variables": {}

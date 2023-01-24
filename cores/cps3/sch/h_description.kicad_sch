@@ -2,7 +2,7 @@
 
   (uuid b89f8216-74f9-4c19-935c-201a6610d2d5)
 
-  (paper "A5")
+  (paper "A3")
 
   (title_block
     (title "CP SYSTEM III")
@@ -16,7 +16,7 @@
   )
 
 
-  (image (at 187.96 111.76) (scale 0.294008)
+  (image (at 397.51 261.62) (scale 0.294008)
     (uuid 24574b44-e029-47b5-b096-96404c57bff1)
     (data
       iVBORw0KGgoAAAANSUhEUgAAAtEAAAGsCAMAAAAsQwu3AAAAA3NCSVQICAjb4U/gAAADAFBMVEX/
@@ -221,25 +221,25 @@
     )
   )
 
-  (text "HARDWARE DESCRIPTION" (at 26.035 31.115 0)
+  (text "HARDWARE DESCRIPTION" (at 114.3 110.49 0)
     (effects (font (size 3 3) (thickness 0.6) bold) (justify left bottom))
     (uuid 10114d7e-f10f-4b10-8d53-5f634e9a5811)
   )
   (text "1. JoJo no Kimyouna Bouken / JoJo's Venture\n2. JoJo no Kimyouna Bouken Miraie no Isan /\n   JoJo's Bizarre Adventure.\n3. Street Fighter III 2nd Impact: Giant Attack.\n4. Street Fighter III 3rd Strike: Fight for the Future.\n5. Street Fighter III : New Generation.\n6. Warzard / Red Earth "
-    (at 110.49 62.23 0)
+    (at 229.87 140.97 0)
     (effects (font (size 2 2) italic) (justify left bottom))
     (uuid 7f5501cd-1eaf-43f5-baed-fe6484e67adb)
   )
-  (text "Font:\nThe Museum Arcade System 16\n\n" (at 101.6 86.36 0)
+  (text "Font:\nThe Museum Arcade System 16\n\n" (at 220.98 165.1 0)
     (effects (font (size 2 2) bold) (justify left bottom))
     (uuid 8a9dcb8a-aaa1-49d8-9d67-af23dd850701)
   )
   (text "Main CPU : Hitachi SH2 @ 25 MHz\nStorage : SCSI CD Rom, RAM and Flash ROM.\nRAM : SIMMs on the left will physically \nhold 16M of data each (each has 8x 16M\nFlash ROMs, there's 4 SIMMs plugged in on \nthis board). The SIMMs on the right will\nphysically hold 8M each (there's 4 Flash \nROMs on each board and there are 2 SIMMs \nplugged in)\nOSC : 60MHz. 42.9545MHz, XTAL :3.6864MHz"
-    (at 18.415 71.755 0)
+    (at 106.68 151.13 0)
     (effects (font (size 2 2) italic) (justify left bottom))
     (uuid a8dee47d-430d-47ab-9e0e-da6a0dd878e1)
   )
-  (text "KNOWN CP SYSTEM III (CPS3) GAME LIST" (at 101.6 30.48 0)
+  (text "KNOWN CP SYSTEM III (CPS3) GAME LIST" (at 220.98 109.22 0)
     (effects (font (size 3 3) bold) (justify left bottom))
     (uuid c27a1d83-3a2b-4901-abc2-51df4f4b34e4)
   )

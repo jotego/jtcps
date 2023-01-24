@@ -1,6 +1,6 @@
 (kicad_sch (version 20211123) (generator eeschema)
 
-  (uuid 6c5ea9f9-31cc-45da-a608-b9310d02b782)
+  (uuid ac1bdb4e-7424-4e44-b668-b70dd064b63e)
 
   (paper "A3")
 
@@ -16,8 +16,8 @@
   )
 
 
-  (image (at 393.7 261.62) (scale 0.294008)
-    (uuid cac47d06-dd42-4fc2-8c27-bd99862885bc)
+  (image (at 396.24 261.62) (scale 0.294008)
+    (uuid 9419c28c-fcec-4f4b-9ad1-348e8422aaad)
     (data
       iVBORw0KGgoAAAANSUhEUgAAAtEAAAGsCAMAAAAsQwu3AAAAA3NCSVQICAjb4U/gAAADAFBMVEX/
       ///y8vIxMTEvLy9dXV2wsLAAAAB1dXVtbW28vLwoKCgICAj39/fk5ORERESgoKCJiYnMzMz+/v4b
