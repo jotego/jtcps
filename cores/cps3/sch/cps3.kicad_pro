@@ -494,6 +494,10 @@
     [
       "a8ca4696-a1d6-4a8e-b8a4-a72f5338d1b6",
       "simm4"
+    ],
+    [
+      "c7616662-a30d-4822-a3c1-ecc63ec7503f",
+      "memories_scu"
     ]
   ],
   "text_variables": {}

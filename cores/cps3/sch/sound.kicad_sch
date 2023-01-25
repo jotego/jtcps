@@ -4819,9 +4819,9 @@
     (property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV99_SER.pdf" (id 3) (at 210.82 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510d))
-    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510d))
-    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510d))
+    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510f))
+    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510f))
+    (pin "" (uuid 5f49944f-91e3-4530-a169-89668073510f))
   )
 
   (symbol (lib_id "Device:R_US") (at 247.65 105.41 0) (unit 1)
