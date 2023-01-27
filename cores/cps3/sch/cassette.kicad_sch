@@ -2733,6 +2733,7 @@
     )
   )
 
+
   (junction (at 303.53 93.98) (diameter 0) (color 0 0 0 0)
     (uuid 03455794-9e3f-4383-8e87-a2e044c857d4)
   )
@@ -7627,7 +7628,7 @@
   (symbol (lib_id "power:VSS") (at 199.39 218.44 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 474b0d2d-a71e-4c95-88af-e5161295a052)
-    (property "Reference" "#PWR?" (id 0) (at 199.39 214.63 0)
+    (property "Reference" "#PWR0144" (id 0) (at 199.39 214.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VSS" (id 1) (at 199.39 222.25 0))
@@ -7838,7 +7839,7 @@
   (symbol (lib_id "power:VCC") (at 153.67 19.05 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 59e301fc-802f-4b3a-b672-15890c81a2c7)
-    (property "Reference" "#PWR?" (id 0) (at 153.67 22.86 0)
+    (property "Reference" "#PWR0145" (id 0) (at 153.67 22.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (id 1) (at 153.67 15.24 0))
