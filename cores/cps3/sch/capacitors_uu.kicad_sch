@@ -10,6 +10,7 @@
     (rev "José Tejada G.")
     (company "JOTEGO")
     (comment 1 "E.Triana")
+    (comment 2 "14/10/22-30/01/23")
   )
 
   (lib_symbols
@@ -1047,7 +1048,6 @@
       )
     )
   )
-
 
   (junction (at 228.6 66.04) (diameter 0) (color 0 0 0 0)
     (uuid 00be1ee6-e8d7-475c-bb04-c491dbb2b2d3)
@@ -4441,7 +4441,7 @@
   (symbol (lib_id "jt74:7400") (at 106.68 220.98 0) (unit 5)
     (in_bom yes) (on_board yes)
     (uuid 7b9a49a3-3970-47fb-b44b-bd6c6d77c96c)
-    (property "Reference" "U1" (id 0) (at 106.68 219.71 0))
+    (property "Reference" "T1" (id 0) (at 106.68 219.71 0))
     (property "Value" "7400" (id 1) (at 106.68 222.25 0))
     (property "Footprint" "" (id 2) (at 106.68 220.98 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -5152,7 +5152,7 @@
   (symbol (lib_id "jt74:7400") (at 93.98 220.98 0) (unit 5)
     (in_bom yes) (on_board yes)
     (uuid c2b99580-ef96-406d-bab7-257583ce834f)
-    (property "Reference" "U4" (id 0) (at 93.98 219.71 0))
+    (property "Reference" "T4" (id 0) (at 93.98 219.71 0))
     (property "Value" "7400" (id 1) (at 93.98 222.25 0))
     (property "Footprint" "" (id 2) (at 93.98 220.98 0)
       (effects (font (size 1.27 1.27)) hide)

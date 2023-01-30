@@ -10,6 +10,7 @@
     (rev "José Tejada G.")
     (company "JOTEGO")
     (comment 1 "E.Triana")
+    (comment 2 "14/10/22-30/01/23")
   )
 
   (lib_symbols
@@ -6074,9 +6075,9 @@
     (property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV99_SER.pdf" (id 3) (at 337.82 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0b8))
-    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0b8))
-    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0b8))
+    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0be))
+    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0be))
+    (pin "" (uuid d986511d-6034-421a-954c-f4312f8bb0be))
   )
 
   (symbol (lib_id "Device:R_US") (at 300.99 210.82 0) (mirror x) (unit 1)

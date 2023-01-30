@@ -10,6 +10,7 @@
     (rev "José Tejada G.")
     (company "JOTEGO")
     (comment 1 "E.Triana")
+    (comment 2 "14/10/22-30/01/23")
   )
 
   (lib_symbols
@@ -1865,7 +1866,6 @@
     )
   )
 
-
   (junction (at 195.58 238.76) (diameter 0) (color 0 0 0 0)
     (uuid 03987c9a-07db-41ef-83a7-313f0c105c27)
   )
@@ -1949,6 +1949,7 @@
   )
 
   (no_connect (at 176.53 185.42) (uuid 1360f7b7-bd81-4af3-a275-e5536e959091))
+  (no_connect (at 245.11 185.42) (uuid 2b1af5e1-3ced-40c8-9931-096ebb6ddea4))
   (no_connect (at 107.95 185.42) (uuid 2ee5144b-5cfe-4dd0-8329-c5749ccaa026))
   (no_connect (at 313.69 82.55) (uuid 50d6710c-6054-4279-bd12-45784c383198))
   (no_connect (at 313.69 185.42) (uuid 87fd6dfd-b5a7-48d7-9015-ef3413f9ecd2))

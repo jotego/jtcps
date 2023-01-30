@@ -10,6 +10,7 @@
     (rev "José Tejada G.")
     (company "JOTEGO")
     (comment 1 "E.Triana")
+    (comment 2 "14/10/22-30/01/23")
   )
 
   (lib_symbols
