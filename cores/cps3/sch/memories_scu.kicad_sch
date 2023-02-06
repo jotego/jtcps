@@ -3325,7 +3325,7 @@
     (property "Reference" "CCP180" (id 0) (at 204.47 212.09 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "10μF" (id 1) (at 204.47 214.63 0)
+    (property "Value" "1µF" (id 1) (at 204.47 214.63 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "" (id 2) (at 201.93 213.36 0)
